@@ -1,0 +1,512 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		55B2F0D01A091C68008C2272 /* QMChatService.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 55B2F0CF1A091C68008C2272 /* QMChatService.h */; };
+		55B2F0D21A091C68008C2272 /* QMChatService.m in Sources */ = {isa = PBXBuildFile; fileRef = 55B2F0D11A091C68008C2272 /* QMChatService.m */; };
+		55B2F0D81A091C68008C2272 /* libQMChatService.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 55B2F0CC1A091C68008C2272 /* libQMChatService.a */; };
+		55F41E371A0A4C3B008D1C68 /* QMDialogsMemoryStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 55F41E361A0A4C3B008D1C68 /* QMDialogsMemoryStorage.m */; };
+		55F41E421A0A627D008D1C68 /* NSString+GTMNSStringHTMLAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 55F41E3F1A0A627D008D1C68 /* NSString+GTMNSStringHTMLAdditions.m */; };
+		55F41E431A0A627D008D1C68 /* QBChatAbstractMessage+TextEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 55F41E411A0A627D008D1C68 /* QBChatAbstractMessage+TextEncoding.m */; };
+		55F41E461A0A6329008D1C68 /* QBChatAbstractMessage+CustomParameters.m in Sources */ = {isa = PBXBuildFile; fileRef = 55F41E451A0A6329008D1C68 /* QBChatAbstractMessage+CustomParameters.m */; };
+		55F41EAB1A0A70C9008D1C68 /* QBChatAbstractMessage+CustomParameters.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 55F41E441A0A6329008D1C68 /* QBChatAbstractMessage+CustomParameters.h */; };
+		55F41EAC1A0A70C9008D1C68 /* QBChatAbstractMessage+TextEncoding.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 55F41E401A0A627D008D1C68 /* QBChatAbstractMessage+TextEncoding.h */; };
+		55F41EAE1A0A70F1008D1C68 /* QMDialogsMemoryStorage.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 55F41E351A0A4C3B008D1C68 /* QMDialogsMemoryStorage.h */; };
+		55F41EAF1A0A7100008D1C68 /* NSString+GTMNSStringHTMLAdditions.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 55F41E3E1A0A627D008D1C68 /* NSString+GTMNSStringHTMLAdditions.h */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		55B2F0D91A091C68008C2272 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 55C276C11A0916BF005A0C38 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 55B2F0CB1A091C68008C2272;
+			remoteInfo = QMChatService;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		55B2F0CA1A091C68008C2272 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+				55F41EAF1A0A7100008D1C68 /* NSString+GTMNSStringHTMLAdditions.h in CopyFiles */,
+				55F41EAE1A0A70F1008D1C68 /* QMDialogsMemoryStorage.h in CopyFiles */,
+				55F41EAB1A0A70C9008D1C68 /* QBChatAbstractMessage+CustomParameters.h in CopyFiles */,
+				55F41EAC1A0A70C9008D1C68 /* QBChatAbstractMessage+TextEncoding.h in CopyFiles */,
+				55B2F0D01A091C68008C2272 /* QMChatService.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		55B2F0CC1A091C68008C2272 /* libQMChatService.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libQMChatService.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		55B2F0CF1A091C68008C2272 /* QMChatService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QMChatService.h; sourceTree = "<group>"; };
+		55B2F0D11A091C68008C2272 /* QMChatService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QMChatService.m; sourceTree = "<group>"; };
+		55B2F0D71A091C68008C2272 /* QMChatServiceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QMChatServiceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		55B2F0DD1A091C68008C2272 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		55F41E301A0A4483008D1C68 /* QBChatAbstractMessage+CustomParameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QBChatAbstractMessage+CustomParameters.h"; sourceTree = "<group>"; };
+		55F41E311A0A4483008D1C68 /* QBChatAbstractMessage+CustomParameters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "QBChatAbstractMessage+CustomParameters.m"; sourceTree = "<group>"; };
+		55F41E351A0A4C3B008D1C68 /* QMDialogsMemoryStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMDialogsMemoryStorage.h; sourceTree = "<group>"; };
+		55F41E361A0A4C3B008D1C68 /* QMDialogsMemoryStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMDialogsMemoryStorage.m; sourceTree = "<group>"; };
+		55F41E3E1A0A627D008D1C68 /* NSString+GTMNSStringHTMLAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+GTMNSStringHTMLAdditions.h"; sourceTree = "<group>"; };
+		55F41E3F1A0A627D008D1C68 /* NSString+GTMNSStringHTMLAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+GTMNSStringHTMLAdditions.m"; sourceTree = "<group>"; };
+		55F41E401A0A627D008D1C68 /* QBChatAbstractMessage+TextEncoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QBChatAbstractMessage+TextEncoding.h"; sourceTree = "<group>"; };
+		55F41E411A0A627D008D1C68 /* QBChatAbstractMessage+TextEncoding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "QBChatAbstractMessage+TextEncoding.m"; sourceTree = "<group>"; };
+		55F41E441A0A6329008D1C68 /* QBChatAbstractMessage+CustomParameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QBChatAbstractMessage+CustomParameters.h"; sourceTree = "<group>"; };
+		55F41E451A0A6329008D1C68 /* QBChatAbstractMessage+CustomParameters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "QBChatAbstractMessage+CustomParameters.m"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		55B2F0C91A091C68008C2272 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		55B2F0D41A091C68008C2272 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				55B2F0D81A091C68008C2272 /* libQMChatService.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		55B2F0CD1A091C68008C2272 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				55B2F0CC1A091C68008C2272 /* libQMChatService.a */,
+				55B2F0D71A091C68008C2272 /* QMChatServiceTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		55B2F0CE1A091C68008C2272 /* QMChatService */ = {
+			isa = PBXGroup;
+			children = (
+				55B2F0CF1A091C68008C2272 /* QMChatService.h */,
+				55B2F0D11A091C68008C2272 /* QMChatService.m */,
+				55F41E3D1A0A627D008D1C68 /* Categories */,
+				55F41E341A0A4C3B008D1C68 /* QMDialogsMemoryStorage */,
+				55F41E2F1A0A4483008D1C68 /* QBChatMessage+CustomParameters */,
+			);
+			path = QMChatService;
+			sourceTree = "<group>";
+		};
+		55B2F0DB1A091C68008C2272 /* QMChatServiceTests */ = {
+			isa = PBXGroup;
+			children = (
+				55B2F0DC1A091C68008C2272 /* Supporting Files */,
+			);
+			path = QMChatServiceTests;
+			sourceTree = "<group>";
+		};
+		55B2F0DC1A091C68008C2272 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				55B2F0DD1A091C68008C2272 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		55C276C01A0916BF005A0C38 = {
+			isa = PBXGroup;
+			children = (
+				55B2F0CE1A091C68008C2272 /* QMChatService */,
+				55B2F0DB1A091C68008C2272 /* QMChatServiceTests */,
+				55B2F0CD1A091C68008C2272 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		55F41E2F1A0A4483008D1C68 /* QBChatMessage+CustomParameters */ = {
+			isa = PBXGroup;
+			children = (
+				55F41E301A0A4483008D1C68 /* QBChatAbstractMessage+CustomParameters.h */,
+				55F41E311A0A4483008D1C68 /* QBChatAbstractMessage+CustomParameters.m */,
+			);
+			path = "QBChatMessage+CustomParameters";
+			sourceTree = "<group>";
+		};
+		55F41E341A0A4C3B008D1C68 /* QMDialogsMemoryStorage */ = {
+			isa = PBXGroup;
+			children = (
+				55F41E351A0A4C3B008D1C68 /* QMDialogsMemoryStorage.h */,
+				55F41E361A0A4C3B008D1C68 /* QMDialogsMemoryStorage.m */,
+			);
+			path = QMDialogsMemoryStorage;
+			sourceTree = "<group>";
+		};
+		55F41E3D1A0A627D008D1C68 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				55F41E441A0A6329008D1C68 /* QBChatAbstractMessage+CustomParameters.h */,
+				55F41E451A0A6329008D1C68 /* QBChatAbstractMessage+CustomParameters.m */,
+				55F41E3E1A0A627D008D1C68 /* NSString+GTMNSStringHTMLAdditions.h */,
+				55F41E3F1A0A627D008D1C68 /* NSString+GTMNSStringHTMLAdditions.m */,
+				55F41E401A0A627D008D1C68 /* QBChatAbstractMessage+TextEncoding.h */,
+				55F41E411A0A627D008D1C68 /* QBChatAbstractMessage+TextEncoding.m */,
+			);
+			path = Categories;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		55B2F0CB1A091C68008C2272 /* QMChatService */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 55B2F0DE1A091C68008C2272 /* Build configuration list for PBXNativeTarget "QMChatService" */;
+			buildPhases = (
+				55B2F0C81A091C68008C2272 /* Sources */,
+				55B2F0C91A091C68008C2272 /* Frameworks */,
+				55B2F0CA1A091C68008C2272 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = QMChatService;
+			productName = QMChatService;
+			productReference = 55B2F0CC1A091C68008C2272 /* libQMChatService.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		55B2F0D61A091C68008C2272 /* QMChatServiceTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 55B2F0E11A091C68008C2272 /* Build configuration list for PBXNativeTarget "QMChatServiceTests" */;
+			buildPhases = (
+				55B2F0D31A091C68008C2272 /* Sources */,
+				55B2F0D41A091C68008C2272 /* Frameworks */,
+				55B2F0D51A091C68008C2272 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				55B2F0DA1A091C68008C2272 /* PBXTargetDependency */,
+			);
+			name = QMChatServiceTests;
+			productName = QMChatServiceTests;
+			productReference = 55B2F0D71A091C68008C2272 /* QMChatServiceTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		55C276C11A0916BF005A0C38 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0610;
+				TargetAttributes = {
+					55B2F0CB1A091C68008C2272 = {
+						CreatedOnToolsVersion = 6.1;
+					};
+					55B2F0D61A091C68008C2272 = {
+						CreatedOnToolsVersion = 6.1;
+					};
+				};
+			};
+			buildConfigurationList = 55C276C41A0916BF005A0C38 /* Build configuration list for PBXProject "QMChatService" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 55C276C01A0916BF005A0C38;
+			productRefGroup = 55B2F0CD1A091C68008C2272 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				55B2F0CB1A091C68008C2272 /* QMChatService */,
+				55B2F0D61A091C68008C2272 /* QMChatServiceTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		55B2F0D51A091C68008C2272 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		55B2F0C81A091C68008C2272 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				55B2F0D21A091C68008C2272 /* QMChatService.m in Sources */,
+				55F41E421A0A627D008D1C68 /* NSString+GTMNSStringHTMLAdditions.m in Sources */,
+				55F41E371A0A4C3B008D1C68 /* QMDialogsMemoryStorage.m in Sources */,
+				55F41E461A0A6329008D1C68 /* QBChatAbstractMessage+CustomParameters.m in Sources */,
+				55F41E431A0A627D008D1C68 /* QBChatAbstractMessage+TextEncoding.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		55B2F0D31A091C68008C2272 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		55B2F0DA1A091C68008C2272 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 55B2F0CB1A091C68008C2272 /* QMChatService */;
+			targetProxy = 55B2F0D91A091C68008C2272 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		55B2F0DF1A091C68008C2272 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"~/Documents/Quickblox",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(BUILT_PRODUCTS_DIR)/**",
+					/usr/include/libxml2,
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		55B2F0E01A091C68008C2272 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"~/Documents/Quickblox",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(BUILT_PRODUCTS_DIR)/**",
+					/usr/include/libxml2,
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		55B2F0E21A091C68008C2272 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = QMChatServiceTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		55B2F0E31A091C68008C2272 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = QMChatServiceTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		55C276C51A0916BF005A0C38 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		55C276C61A0916BF005A0C38 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		55B2F0DE1A091C68008C2272 /* Build configuration list for PBXNativeTarget "QMChatService" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				55B2F0DF1A091C68008C2272 /* Debug */,
+				55B2F0E01A091C68008C2272 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		55B2F0E11A091C68008C2272 /* Build configuration list for PBXNativeTarget "QMChatServiceTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				55B2F0E21A091C68008C2272 /* Debug */,
+				55B2F0E31A091C68008C2272 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		55C276C41A0916BF005A0C38 /* Build configuration list for PBXProject "QMChatService" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				55C276C51A0916BF005A0C38 /* Debug */,
+				55C276C61A0916BF005A0C38 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 55C276C11A0916BF005A0C38 /* Project object */;
+}
