@@ -26,7 +26,7 @@
 		55B2F0921A091C17008C2272 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = "";
+			dstPath = include;
 			dstSubfolderSpec = 16;
 			files = (
 				55B2F1911A093851008C2272 /* QMAuthService.h in CopyFiles */,

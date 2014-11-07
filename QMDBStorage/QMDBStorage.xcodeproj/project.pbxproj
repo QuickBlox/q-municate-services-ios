@@ -93,7 +93,7 @@
 		5550BC711A0CCC890015965D /* MagicalRecord copy Headers */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 12;
-			dstPath = "";
+			dstPath = include/MagicalRecord;
 			dstSubfolderSpec = 16;
 			files = (
 				5550BC721A0CCCDB0015965D /* CoreData+MagicalRecord.h in MagicalRecord copy Headers */,
@@ -133,7 +133,7 @@
 		5590F2351A0B87AB00C5044F /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = "";
+			dstPath = include;
 			dstSubfolderSpec = 16;
 			files = (
 				5590F23B1A0B87AB00C5044F /* QMDBStorage.h in CopyFiles */,

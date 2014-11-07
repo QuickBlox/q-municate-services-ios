@@ -34,7 +34,7 @@
 		55B2F0CA1A091C68008C2272 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = "";
+			dstPath = include;
 			dstSubfolderSpec = 16;
 			files = (
 				55F41EAF1A0A7100008D1C68 /* NSString+GTMNSStringHTMLAdditions.h in CopyFiles */,

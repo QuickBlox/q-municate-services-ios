@@ -26,7 +26,7 @@
 		55B2F0AE1A091C38008C2272 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = "";
+			dstPath = include;
 			dstSubfolderSpec = 16;
 			files = (
 				55B2F0B41A091C38008C2272 /* QMContactListService.h in CopyFiles */,

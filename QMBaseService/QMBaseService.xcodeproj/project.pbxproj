@@ -27,7 +27,7 @@
 		552065141A0940E2004ED955 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 12;
-			dstPath = "";
+			dstPath = include;
 			dstSubfolderSpec = 16;
 			files = (
 				552065151A094123004ED955 /* QMBaseService.h in CopyFiles */,
@@ -325,7 +325,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/include/libxml2,
-					"$(BUILT_PRODUCTS_DIR)/include",
+					"$(BUILT_PRODUCTS_DIR)/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
