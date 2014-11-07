@@ -9,14 +9,14 @@
          <BuildActionEntry
             buildForTesting = "YES"
             buildForRunning = "YES"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "55F41D761A0A2862008D1C68"
-               BuildableName = "QMSevicesTests.xctest"
-               BlueprintName = "QMSevicesTests"
+               BlueprintIdentifier = "554A28151A0CE1C600C4E03C"
+               BuildableName = "Model.bundle"
+               BlueprintName = "Model"
                ReferencedContainer = "container:QMServices.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -28,26 +28,7 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       buildConfiguration = "Debug">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "55F41D761A0A2862008D1C68"
-               BuildableName = "QMSevicesTests.xctest"
-               BlueprintName = "QMSevicesTests"
-               ReferencedContainer = "container:QMServices.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "55F41D761A0A2862008D1C68"
-            BuildableName = "QMSevicesTests.xctest"
-            BlueprintName = "QMSevicesTests"
-            ReferencedContainer = "container:QMServices.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
    </TestAction>
    <LaunchAction
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
@@ -61,9 +42,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "55F41D761A0A2862008D1C68"
-            BuildableName = "QMSevicesTests.xctest"
-            BlueprintName = "QMSevicesTests"
+            BlueprintIdentifier = "554A28151A0CE1C600C4E03C"
+            BuildableName = "Model.bundle"
+            BlueprintName = "Model"
             ReferencedContainer = "container:QMServices.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -79,9 +60,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "55F41D761A0A2862008D1C68"
-            BuildableName = "QMSevicesTests.xctest"
-            BlueprintName = "QMSevicesTests"
+            BlueprintIdentifier = "554A28151A0CE1C600C4E03C"
+            BuildableName = "Model.bundle"
+            BlueprintName = "Model"
             ReferencedContainer = "container:QMServices.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

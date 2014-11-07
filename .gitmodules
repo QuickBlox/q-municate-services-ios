@@ -1,0 +1,3 @@
+[submodule "QMDBStorage/MagicalRecord"]
+	path = QMDBStorage/MagicalRecord
+	url = https://github.com/magicalpanda/MagicalRecord.git

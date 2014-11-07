@@ -12,31 +12,76 @@
 		<key>AuthService.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>2</integer>
+			<integer>6</integer>
 		</dict>
 		<key>BaseService.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>1</integer>
+			<integer>2</integer>
+		</dict>
+		<key>ChatCache.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>7</integer>
 		</dict>
 		<key>ChatService.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>3</integer>
 		</dict>
+		<key>ContactListCache.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>20</integer>
+		</dict>
 		<key>ContactListService.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
+		<key>DBStorage.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>4</integer>
 		</dict>
-		<key>QMSevicesTests.xcscheme</key>
+		<key>MagicalRecord.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>9</integer>
+			<integer>5</integer>
+		</dict>
+		<key>Model.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>21</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>554A28001A0CDF2500C4E03C</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>554A28151A0CE1C600C4E03C</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>5590F2551A0B87DC00C5044F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>5590F2921A0B8CB300C5044F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>5590F2D81A0B8DD600C5044F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>55B2F0551A091A85008C2272</key>
 		<dict>
 			<key>primary</key>

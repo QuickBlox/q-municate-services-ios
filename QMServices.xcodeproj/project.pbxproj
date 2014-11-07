@@ -7,6 +7,52 @@
 	objects = {
 
 /* Begin PBXAggregateTarget section */
+		554A28001A0CDF2500C4E03C /* ContactListCache */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 554A28011A0CDF2500C4E03C /* Build configuration list for PBXAggregateTarget "ContactListCache" */;
+			buildPhases = (
+			);
+			dependencies = (
+				554A28051A0CDF3900C4E03C /* PBXTargetDependency */,
+				554A28071A0CDF4800C4E03C /* PBXTargetDependency */,
+			);
+			name = ContactListCache;
+			productName = ContactListCache;
+		};
+		5590F2551A0B87DC00C5044F /* DBStorage */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 5590F2561A0B87DC00C5044F /* Build configuration list for PBXAggregateTarget "DBStorage" */;
+			buildPhases = (
+			);
+			dependencies = (
+				5590F2DF1A0B8DF100C5044F /* PBXTargetDependency */,
+				5590F29B1A0B8CE900C5044F /* PBXTargetDependency */,
+			);
+			name = DBStorage;
+			productName = QMDBStorage;
+		};
+		5590F2921A0B8CB300C5044F /* ChatCache */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 5590F2931A0B8CB300C5044F /* Build configuration list for PBXAggregateTarget "ChatCache" */;
+			buildPhases = (
+			);
+			dependencies = (
+				5590F2971A0B8CC100C5044F /* PBXTargetDependency */,
+				5590F2991A0B8CD400C5044F /* PBXTargetDependency */,
+			);
+			name = ChatCache;
+			productName = QMChatCache;
+		};
+		5590F2D81A0B8DD600C5044F /* MagicalRecord */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 5590F2D91A0B8DD600C5044F /* Build configuration list for PBXAggregateTarget "MagicalRecord" */;
+			buildPhases = (
+			);
+			dependencies = (
+			);
+			name = MagicalRecord;
+			productName = MagicalRecord;
+		};
 		55B2F0551A091A85008C2272 /* AllServices */ = {
 			isa = PBXAggregateTarget;
 			buildConfigurationList = 55B2F0561A091A85008C2272 /* Build configuration list for PBXAggregateTarget "AllServices" */;
@@ -14,9 +60,13 @@
 				55B2F1851A093429008C2272 /* CopyFiles */,
 			);
 			dependencies = (
-				55F41EB91A0A7140008D1C68 /* PBXTargetDependency */,
+				55A621241A0BE5E4001BA470 /* PBXTargetDependency */,
+				5590F2EC1A0BA13B00C5044F /* PBXTargetDependency */,
 				55F41EAA1A0A7094008D1C68 /* PBXTargetDependency */,
-				55F41E9C1A0A6F29008D1C68 /* PBXTargetDependency */,
+				55F41EB91A0A7140008D1C68 /* PBXTargetDependency */,
+				5590F2EE1A0BA13F00C5044F /* PBXTargetDependency */,
+				55A620C81A0BB288001BA470 /* PBXTargetDependency */,
+				554A28091A0CDF5000C4E03C /* PBXTargetDependency */,
 			);
 			name = AllServices;
 			productName = QMServices;
@@ -39,7 +89,7 @@
 			buildPhases = (
 			);
 			dependencies = (
-				55F41E921A0A6E15008D1C68 /* PBXTargetDependency */,
+				5590F2EA1A0BA12700C5044F /* PBXTargetDependency */,
 			);
 			name = BaseService;
 			productName = BaseService;
@@ -71,6 +121,153 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXContainerItemProxy section */
+		554A28041A0CDF3900C4E03C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 55C276A91A09162F005A0C38 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5590F2551A0B87DC00C5044F;
+			remoteInfo = DBStorage;
+		};
+		554A28061A0CDF4800C4E03C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5590F2A31A0B8D2900C5044F /* QMContactListCache.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 5590F2A91A0B8D4000C5044F;
+			remoteInfo = QMContactListCache;
+		};
+		554A28081A0CDF5000C4E03C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 55C276A91A09162F005A0C38 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 554A28001A0CDF2500C4E03C;
+			remoteInfo = ContactListCache;
+		};
+		5590F2511A0B87B900C5044F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5590F22C1A0B876F00C5044F /* QMDBStorage.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 5590F2371A0B87AB00C5044F;
+			remoteInfo = QMDBStorage;
+		};
+		5590F2531A0B87B900C5044F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5590F22C1A0B876F00C5044F /* QMDBStorage.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 5590F2421A0B87AB00C5044F;
+			remoteInfo = QMDBStorageTests;
+		};
+		5590F28D1A0B8C5200C5044F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5590F26B1A0B8C0500C5044F /* QMChatCache.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 5590F2721A0B8C4200C5044F;
+			remoteInfo = QMChatCache;
+		};
+		5590F28F1A0B8C5200C5044F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5590F26B1A0B8C0500C5044F /* QMChatCache.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 5590F27D1A0B8C4200C5044F;
+			remoteInfo = QMChatCacheTests;
+		};
+		5590F2961A0B8CC100C5044F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 55C276A91A09162F005A0C38 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5590F2551A0B87DC00C5044F;
+			remoteInfo = QMDBStorage;
+		};
+		5590F2981A0B8CD400C5044F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5590F26B1A0B8C0500C5044F /* QMChatCache.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 5590F2711A0B8C4200C5044F;
+			remoteInfo = QMChatCache;
+		};
+		5590F29A1A0B8CE900C5044F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5590F22C1A0B876F00C5044F /* QMDBStorage.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 5590F2361A0B87AB00C5044F;
+			remoteInfo = QMDBStorage;
+		};
+		5590F2C41A0B8D4600C5044F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5590F2A31A0B8D2900C5044F /* QMContactListCache.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 5590F2AA1A0B8D4000C5044F;
+			remoteInfo = QMContactListCache;
+		};
+		5590F2C61A0B8D4600C5044F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5590F2A31A0B8D2900C5044F /* QMContactListCache.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 5590F2B51A0B8D4000C5044F;
+			remoteInfo = QMContactListCacheTests;
+		};
+		5590F2DE1A0B8DF100C5044F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 55C276A91A09162F005A0C38 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5590F2D81A0B8DD600C5044F;
+			remoteInfo = MagicalRecord;
+		};
+		5590F2E51A0BA11900C5044F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5590F2E01A0BA11900C5044F /* QMBaseService.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 55B2F1041A091CC9008C2272;
+			remoteInfo = QMBaseService;
+		};
+		5590F2E71A0BA11900C5044F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5590F2E01A0BA11900C5044F /* QMBaseService.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 55B2F10F1A091CC9008C2272;
+			remoteInfo = QMBaseServiceTests;
+		};
+		5590F2E91A0BA12700C5044F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5590F2E01A0BA11900C5044F /* QMBaseService.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 55B2F1031A091CC9008C2272;
+			remoteInfo = QMBaseService;
+		};
+		5590F2EB1A0BA13B00C5044F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 55C276A91A09162F005A0C38 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 55F41E7D1A0A6CD9008D1C68;
+			remoteInfo = AuthService;
+		};
+		5590F2ED1A0BA13F00C5044F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 55C276A91A09162F005A0C38 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5590F2551A0B87DC00C5044F;
+			remoteInfo = QMDBStorage;
+		};
+		55A620C71A0BB288001BA470 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 55C276A91A09162F005A0C38 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5590F2921A0B8CB300C5044F;
+			remoteInfo = QMChatCache;
+		};
+		55A620FC1A0BCB49001BA470 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5590F26B1A0B8C0500C5044F /* QMChatCache.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 55A620F01A0BCA5E001BA470;
+			remoteInfo = model;
+		};
+		55A621231A0BE5E4001BA470 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 55C276A91A09162F005A0C38 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 55F41E8D1A0A6E0C008D1C68;
+			remoteInfo = BaseService;
+		};
 		55B2F0F01A091CBB008C2272 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 55C276E51A0917AF005A0C38 /* QMAuthService.xcodeproj */;
@@ -113,41 +310,6 @@
 			remoteGlobalIDString = 55B2F0BB1A091C38008C2272;
 			remoteInfo = QMContactListServiceTests;
 		};
-		55F41E041A0A3FE3008D1C68 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 55F41DFF1A0A3FE3008D1C68 /* QMBaseService.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 55B2F1041A091CC9008C2272;
-			remoteInfo = QMBaseService;
-		};
-		55F41E061A0A3FE3008D1C68 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 55F41DFF1A0A3FE3008D1C68 /* QMBaseService.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 55B2F10F1A091CC9008C2272;
-			remoteInfo = QMBaseServiceTests;
-		};
-		55F41E4B1A0A666F008D1C68 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 55C276E51A0917AF005A0C38 /* QMAuthService.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 55B2F0931A091C17008C2272;
-			remoteInfo = QMAuthService;
-		};
-		55F41E4D1A0A666F008D1C68 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 55C276DB1A091739005A0C38 /* QMContactListService.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 55B2F0AF1A091C38008C2272;
-			remoteInfo = QMContactListService;
-		};
-		55F41E4F1A0A666F008D1C68 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 55C276C71A0916BF005A0C38 /* QMChatService.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 55B2F0CB1A091C68008C2272;
-			remoteInfo = QMChatService;
-		};
 		55F41E851A0A6CFB008D1C68 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 55C276E51A0917AF005A0C38 /* QMAuthService.xcodeproj */;
@@ -155,26 +317,12 @@
 			remoteGlobalIDString = 55B2F0931A091C17008C2272;
 			remoteInfo = QMAuthService;
 		};
-		55F41E911A0A6E15008D1C68 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 55F41DFF1A0A3FE3008D1C68 /* QMBaseService.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 55B2F1031A091CC9008C2272;
-			remoteInfo = QMBaseService;
-		};
 		55F41E931A0A6E1E008D1C68 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 55C276A91A09162F005A0C38 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 55F41E8D1A0A6E0C008D1C68;
 			remoteInfo = BaseService;
-		};
-		55F41E9B1A0A6F29008D1C68 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 55C276A91A09162F005A0C38 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 55F41E7D1A0A6CD9008D1C68;
-			remoteInfo = AuthService;
 		};
 		55F41EA51A0A7072008D1C68 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -233,15 +381,18 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		55A65D581A0A87D800D09D66 /* QMSevicesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = QMSevicesTests.xctest; path = "/Users/andrey/Desktop/QMServices/build/Debug-iphoneos/QMSevicesTests.xctest"; sourceTree = "<absolute>"; };
+		554A28161A0CE1C600C4E03C /* Model.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = Model.bundle; path = "/Users/andrey/Projects/qmunicate-services-ios/build/Debug/Model.bundle"; sourceTree = "<absolute>"; };
+		5590F22C1A0B876F00C5044F /* QMDBStorage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMDBStorage.xcodeproj; path = QMDBStorage/QMDBStorage.xcodeproj; sourceTree = "<group>"; };
+		5590F26B1A0B8C0500C5044F /* QMChatCache.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMChatCache.xcodeproj; path = QMChatCache/QMChatCache.xcodeproj; sourceTree = "<group>"; };
+		5590F2A31A0B8D2900C5044F /* QMContactListCache.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMContactListCache.xcodeproj; path = QMContactListCache/QMContactListCache.xcodeproj; sourceTree = "<group>"; };
+		5590F2E01A0BA11900C5044F /* QMBaseService.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMBaseService.xcodeproj; path = QMBaseService/QMBaseService.xcodeproj; sourceTree = "<group>"; };
 		55C276C71A0916BF005A0C38 /* QMChatService.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMChatService.xcodeproj; path = QMChatService/QMChatService.xcodeproj; sourceTree = "<group>"; };
 		55C276DB1A091739005A0C38 /* QMContactListService.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMContactListService.xcodeproj; path = QMContactListService/QMContactListService.xcodeproj; sourceTree = "<group>"; };
 		55C276E51A0917AF005A0C38 /* QMAuthService.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMAuthService.xcodeproj; path = QMAuthService/QMAuthService.xcodeproj; sourceTree = "<group>"; };
-		55F41DFF1A0A3FE3008D1C68 /* QMBaseService.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMBaseService.xcodeproj; path = QMAuthService/../QMBaseService/QMBaseService.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		55F41D741A0A2862008D1C68 /* Frameworks */ = {
+		554A28131A0CE1C600C4E03C /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -251,13 +402,69 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5590F22D1A0B876F00C5044F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5590F2521A0B87B900C5044F /* libQMDBStorage.a */,
+				5590F2541A0B87B900C5044F /* QMDBStorageTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		5590F26C1A0B8C0500C5044F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5590F28E1A0B8C5200C5044F /* libQMChatCache.a */,
+				55A620FD1A0BCB49001BA470 /* model.bundle */,
+				5590F2901A0B8C5200C5044F /* QMChatCacheTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		5590F28A1A0B8C5200C5044F /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				5590F2E01A0BA11900C5044F /* QMBaseService.xcodeproj */,
+				55C276C71A0916BF005A0C38 /* QMChatService.xcodeproj */,
+				55C276E51A0917AF005A0C38 /* QMAuthService.xcodeproj */,
+				55C276DB1A091739005A0C38 /* QMContactListService.xcodeproj */,
+			);
+			name = Services;
+			sourceTree = "<group>";
+		};
+		5590F2911A0B8C7B00C5044F /* Cache */ = {
+			isa = PBXGroup;
+			children = (
+				5590F22C1A0B876F00C5044F /* QMDBStorage.xcodeproj */,
+				5590F2A31A0B8D2900C5044F /* QMContactListCache.xcodeproj */,
+				5590F26B1A0B8C0500C5044F /* QMChatCache.xcodeproj */,
+			);
+			name = Cache;
+			sourceTree = "<group>";
+		};
+		5590F2A41A0B8D2900C5044F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5590F2C51A0B8D4600C5044F /* libQMContactListCache.a */,
+				5590F2C71A0B8D4600C5044F /* QMContactListCacheTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		5590F2E11A0BA11900C5044F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5590F2E61A0BA11900C5044F /* libQMBaseService.a */,
+				5590F2E81A0BA11900C5044F /* QMBaseServiceTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		55C276A81A09162F005A0C38 = {
 			isa = PBXGroup;
 			children = (
-				55F41DFF1A0A3FE3008D1C68 /* QMBaseService.xcodeproj */,
-				55C276E51A0917AF005A0C38 /* QMAuthService.xcodeproj */,
-				55C276DB1A091739005A0C38 /* QMContactListService.xcodeproj */,
-				55C276C71A0916BF005A0C38 /* QMChatService.xcodeproj */,
+				5590F2911A0B8C7B00C5044F /* Cache */,
+				5590F28A1A0B8C5200C5044F /* Services */,
 			);
 			sourceTree = "<group>";
 		};
@@ -288,37 +495,25 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		55F41E001A0A3FE3008D1C68 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				55F41E051A0A3FE3008D1C68 /* libQMBaseService.a */,
-				55F41E071A0A3FE3008D1C68 /* QMBaseServiceTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		55F41D761A0A2862008D1C68 /* QMSevicesTests */ = {
+		554A28151A0CE1C600C4E03C /* Model */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 55F41D861A0A2862008D1C68 /* Build configuration list for PBXNativeTarget "QMSevicesTests" */;
+			buildConfigurationList = 554A281A1A0CE1C600C4E03C /* Build configuration list for PBXNativeTarget "Model" */;
 			buildPhases = (
-				55F41D731A0A2862008D1C68 /* Sources */,
-				55F41D741A0A2862008D1C68 /* Frameworks */,
-				55F41D751A0A2862008D1C68 /* Resources */,
+				554A28121A0CE1C600C4E03C /* Sources */,
+				554A28131A0CE1C600C4E03C /* Frameworks */,
+				554A28141A0CE1C600C4E03C /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				55F41E4C1A0A666F008D1C68 /* PBXTargetDependency */,
-				55F41E4E1A0A666F008D1C68 /* PBXTargetDependency */,
-				55F41E501A0A666F008D1C68 /* PBXTargetDependency */,
 			);
-			name = QMSevicesTests;
-			productName = QMSevicesTests;
-			productReference = 55A65D581A0A87D800D09D66 /* QMSevicesTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
+			name = Model;
+			productName = Model;
+			productReference = 554A28161A0CE1C600C4E03C /* Model.bundle */;
+			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
 
@@ -328,10 +523,22 @@
 			attributes = {
 				LastUpgradeCheck = 0610;
 				TargetAttributes = {
-					55B2F0551A091A85008C2272 = {
+					554A28001A0CDF2500C4E03C = {
 						CreatedOnToolsVersion = 6.1;
 					};
-					55F41D761A0A2862008D1C68 = {
+					554A28151A0CE1C600C4E03C = {
+						CreatedOnToolsVersion = 6.1;
+					};
+					5590F2551A0B87DC00C5044F = {
+						CreatedOnToolsVersion = 6.1;
+					};
+					5590F2921A0B8CB300C5044F = {
+						CreatedOnToolsVersion = 6.1;
+					};
+					5590F2D81A0B8DD600C5044F = {
+						CreatedOnToolsVersion = 6.1;
+					};
+					55B2F0551A091A85008C2272 = {
 						CreatedOnToolsVersion = 6.1;
 					};
 					55F41E7D1A0A6CD9008D1C68 = {
@@ -364,31 +571,110 @@
 					ProjectRef = 55C276E51A0917AF005A0C38 /* QMAuthService.xcodeproj */;
 				},
 				{
-					ProductGroup = 55F41E001A0A3FE3008D1C68 /* Products */;
-					ProjectRef = 55F41DFF1A0A3FE3008D1C68 /* QMBaseService.xcodeproj */;
+					ProductGroup = 5590F2E11A0BA11900C5044F /* Products */;
+					ProjectRef = 5590F2E01A0BA11900C5044F /* QMBaseService.xcodeproj */;
+				},
+				{
+					ProductGroup = 5590F26C1A0B8C0500C5044F /* Products */;
+					ProjectRef = 5590F26B1A0B8C0500C5044F /* QMChatCache.xcodeproj */;
 				},
 				{
 					ProductGroup = 55C276C81A0916BF005A0C38 /* Products */;
 					ProjectRef = 55C276C71A0916BF005A0C38 /* QMChatService.xcodeproj */;
 				},
 				{
+					ProductGroup = 5590F2A41A0B8D2900C5044F /* Products */;
+					ProjectRef = 5590F2A31A0B8D2900C5044F /* QMContactListCache.xcodeproj */;
+				},
+				{
 					ProductGroup = 55C276DC1A091739005A0C38 /* Products */;
 					ProjectRef = 55C276DB1A091739005A0C38 /* QMContactListService.xcodeproj */;
+				},
+				{
+					ProductGroup = 5590F22D1A0B876F00C5044F /* Products */;
+					ProjectRef = 5590F22C1A0B876F00C5044F /* QMDBStorage.xcodeproj */;
 				},
 			);
 			projectRoot = "";
 			targets = (
+				55B2F0551A091A85008C2272 /* AllServices */,
 				55F41E8D1A0A6E0C008D1C68 /* BaseService */,
 				55F41E7D1A0A6CD9008D1C68 /* AuthService */,
 				55F41E9F1A0A7045008D1C68 /* ChatService */,
 				55F41EB01A0A7124008D1C68 /* ContactListService */,
-				55B2F0551A091A85008C2272 /* AllServices */,
-				55F41D761A0A2862008D1C68 /* QMSevicesTests */,
+				5590F2551A0B87DC00C5044F /* DBStorage */,
+				5590F2D81A0B8DD600C5044F /* MagicalRecord */,
+				5590F2921A0B8CB300C5044F /* ChatCache */,
+				554A28001A0CDF2500C4E03C /* ContactListCache */,
+				554A28151A0CE1C600C4E03C /* Model */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		5590F2521A0B87B900C5044F /* libQMDBStorage.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libQMDBStorage.a;
+			remoteRef = 5590F2511A0B87B900C5044F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		5590F2541A0B87B900C5044F /* QMDBStorageTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = QMDBStorageTests.xctest;
+			remoteRef = 5590F2531A0B87B900C5044F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		5590F28E1A0B8C5200C5044F /* libQMChatCache.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libQMChatCache.a;
+			remoteRef = 5590F28D1A0B8C5200C5044F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		5590F2901A0B8C5200C5044F /* QMChatCacheTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = QMChatCacheTests.xctest;
+			remoteRef = 5590F28F1A0B8C5200C5044F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		5590F2C51A0B8D4600C5044F /* libQMContactListCache.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libQMContactListCache.a;
+			remoteRef = 5590F2C41A0B8D4600C5044F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		5590F2C71A0B8D4600C5044F /* QMContactListCacheTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = QMContactListCacheTests.xctest;
+			remoteRef = 5590F2C61A0B8D4600C5044F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		5590F2E61A0BA11900C5044F /* libQMBaseService.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libQMBaseService.a;
+			remoteRef = 5590F2E51A0BA11900C5044F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		5590F2E81A0BA11900C5044F /* QMBaseServiceTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = QMBaseServiceTests.xctest;
+			remoteRef = 5590F2E71A0BA11900C5044F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		55A620FD1A0BCB49001BA470 /* model.bundle */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = model.bundle;
+			remoteRef = 55A620FC1A0BCB49001BA470 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		55B2F0F11A091CBB008C2272 /* libQMAuthService.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -431,24 +717,10 @@
 			remoteRef = 55B2F0FE1A091CBB008C2272 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		55F41E051A0A3FE3008D1C68 /* libQMBaseService.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libQMBaseService.a;
-			remoteRef = 55F41E041A0A3FE3008D1C68 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		55F41E071A0A3FE3008D1C68 /* QMBaseServiceTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = QMBaseServiceTests.xctest;
-			remoteRef = 55F41E061A0A3FE3008D1C68 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
-		55F41D751A0A2862008D1C68 /* Resources */ = {
+		554A28141A0CE1C600C4E03C /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -458,7 +730,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		55F41D731A0A2862008D1C68 /* Sources */ = {
+		554A28121A0CE1C600C4E03C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -468,40 +740,75 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		55F41E4C1A0A666F008D1C68 /* PBXTargetDependency */ = {
+		554A28051A0CDF3900C4E03C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = QMAuthService;
-			targetProxy = 55F41E4B1A0A666F008D1C68 /* PBXContainerItemProxy */;
+			target = 5590F2551A0B87DC00C5044F /* DBStorage */;
+			targetProxy = 554A28041A0CDF3900C4E03C /* PBXContainerItemProxy */;
 		};
-		55F41E4E1A0A666F008D1C68 /* PBXTargetDependency */ = {
+		554A28071A0CDF4800C4E03C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = QMContactListService;
-			targetProxy = 55F41E4D1A0A666F008D1C68 /* PBXContainerItemProxy */;
+			name = QMContactListCache;
+			targetProxy = 554A28061A0CDF4800C4E03C /* PBXContainerItemProxy */;
 		};
-		55F41E501A0A666F008D1C68 /* PBXTargetDependency */ = {
+		554A28091A0CDF5000C4E03C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = QMChatService;
-			targetProxy = 55F41E4F1A0A666F008D1C68 /* PBXContainerItemProxy */;
+			target = 554A28001A0CDF2500C4E03C /* ContactListCache */;
+			targetProxy = 554A28081A0CDF5000C4E03C /* PBXContainerItemProxy */;
+		};
+		5590F2971A0B8CC100C5044F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5590F2551A0B87DC00C5044F /* DBStorage */;
+			targetProxy = 5590F2961A0B8CC100C5044F /* PBXContainerItemProxy */;
+		};
+		5590F2991A0B8CD400C5044F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = QMChatCache;
+			targetProxy = 5590F2981A0B8CD400C5044F /* PBXContainerItemProxy */;
+		};
+		5590F29B1A0B8CE900C5044F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = QMDBStorage;
+			targetProxy = 5590F29A1A0B8CE900C5044F /* PBXContainerItemProxy */;
+		};
+		5590F2DF1A0B8DF100C5044F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5590F2D81A0B8DD600C5044F /* MagicalRecord */;
+			targetProxy = 5590F2DE1A0B8DF100C5044F /* PBXContainerItemProxy */;
+		};
+		5590F2EA1A0BA12700C5044F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = QMBaseService;
+			targetProxy = 5590F2E91A0BA12700C5044F /* PBXContainerItemProxy */;
+		};
+		5590F2EC1A0BA13B00C5044F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 55F41E7D1A0A6CD9008D1C68 /* AuthService */;
+			targetProxy = 5590F2EB1A0BA13B00C5044F /* PBXContainerItemProxy */;
+		};
+		5590F2EE1A0BA13F00C5044F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5590F2551A0B87DC00C5044F /* DBStorage */;
+			targetProxy = 5590F2ED1A0BA13F00C5044F /* PBXContainerItemProxy */;
+		};
+		55A620C81A0BB288001BA470 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5590F2921A0B8CB300C5044F /* ChatCache */;
+			targetProxy = 55A620C71A0BB288001BA470 /* PBXContainerItemProxy */;
+		};
+		55A621241A0BE5E4001BA470 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 55F41E8D1A0A6E0C008D1C68 /* BaseService */;
+			targetProxy = 55A621231A0BE5E4001BA470 /* PBXContainerItemProxy */;
 		};
 		55F41E861A0A6CFB008D1C68 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = QMAuthService;
 			targetProxy = 55F41E851A0A6CFB008D1C68 /* PBXContainerItemProxy */;
 		};
-		55F41E921A0A6E15008D1C68 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = QMBaseService;
-			targetProxy = 55F41E911A0A6E15008D1C68 /* PBXContainerItemProxy */;
-		};
 		55F41E941A0A6E1E008D1C68 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 55F41E8D1A0A6E0C008D1C68 /* BaseService */;
 			targetProxy = 55F41E931A0A6E1E008D1C68 /* PBXContainerItemProxy */;
-		};
-		55F41E9C1A0A6F29008D1C68 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 55F41E7D1A0A6CD9008D1C68 /* AuthService */;
-			targetProxy = 55F41E9B1A0A6F29008D1C68 /* PBXContainerItemProxy */;
 		};
 		55F41EA61A0A7072008D1C68 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -536,6 +843,154 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		554A28021A0CDF2500C4E03C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		554A28031A0CDF2500C4E03C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		554A281B1A0CE1C600C4E03C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = Model/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Debug;
+		};
+		554A281C1A0CE1C600C4E03C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = Model/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Release;
+		};
+		5590F2571A0B87DC00C5044F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		5590F2581A0B87DC00C5044F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+			};
+			name = Release;
+		};
+		5590F2941A0B8CB300C5044F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		5590F2951A0B8CB300C5044F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+			};
+			name = Release;
+		};
+		5590F2DA1A0B8DD600C5044F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		5590F2DB1A0B8DD600C5044F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+			};
+			name = Release;
+		};
 		55B2F0571A091A85008C2272 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -575,94 +1030,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = "~/Documents/Quickblox";
-			};
-			name = Release;
-		};
-		55F41D801A0A2862008D1C68 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = QMSevicesTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = YES;
-				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-			};
-			name = Debug;
-		};
-		55F41D811A0A2862008D1C68 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = YES;
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = QMSevicesTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
@@ -747,6 +1114,49 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		554A28011A0CDF2500C4E03C /* Build configuration list for PBXAggregateTarget "ContactListCache" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				554A28021A0CDF2500C4E03C /* Debug */,
+				554A28031A0CDF2500C4E03C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		554A281A1A0CE1C600C4E03C /* Build configuration list for PBXNativeTarget "Model" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				554A281B1A0CE1C600C4E03C /* Debug */,
+				554A281C1A0CE1C600C4E03C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		5590F2561A0B87DC00C5044F /* Build configuration list for PBXAggregateTarget "DBStorage" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5590F2571A0B87DC00C5044F /* Debug */,
+				5590F2581A0B87DC00C5044F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5590F2931A0B8CB300C5044F /* Build configuration list for PBXAggregateTarget "ChatCache" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5590F2941A0B8CB300C5044F /* Debug */,
+				5590F2951A0B8CB300C5044F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5590F2D91A0B8DD600C5044F /* Build configuration list for PBXAggregateTarget "MagicalRecord" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5590F2DA1A0B8DD600C5044F /* Debug */,
+				5590F2DB1A0B8DD600C5044F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		55B2F0561A091A85008C2272 /* Build configuration list for PBXAggregateTarget "AllServices" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -761,15 +1171,6 @@
 			buildConfigurations = (
 				55C276AD1A09162F005A0C38 /* Debug */,
 				55C276AE1A09162F005A0C38 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		55F41D861A0A2862008D1C68 /* Build configuration list for PBXNativeTarget "QMSevicesTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				55F41D801A0A2862008D1C68 /* Debug */,
-				55F41D811A0A2862008D1C68 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

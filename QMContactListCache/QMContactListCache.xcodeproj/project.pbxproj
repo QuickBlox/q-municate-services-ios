@@ -1,0 +1,734 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		554A28111A0CE1A900C4E03C /* QMContactListModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 554A280F1A0CE1A900C4E03C /* QMContactListModel.xcdatamodeld */; };
+		554A28291A0CE28300C4E03C /* QMContactListModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 554A280F1A0CE1A900C4E03C /* QMContactListModel.xcdatamodeld */; };
+		554A28371A0CE38600C4E03C /* CDContactListItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 554A282E1A0CE38600C4E03C /* CDContactListItem.m */; };
+		554A28381A0CE38600C4E03C /* CDUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 554A28301A0CE38600C4E03C /* CDUser.m */; };
+		554A28391A0CE38600C4E03C /* _CDContactListItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 554A28331A0CE38600C4E03C /* _CDContactListItem.m */; };
+		554A283A1A0CE38600C4E03C /* _CDUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 554A28351A0CE38600C4E03C /* _CDUser.m */; };
+		5590F2AE1A0B8D4000C5044F /* QMContactListCache.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5590F2AD1A0B8D4000C5044F /* QMContactListCache.h */; };
+		5590F2B01A0B8D4000C5044F /* QMContactListCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 5590F2AF1A0B8D4000C5044F /* QMContactListCache.m */; };
+		5590F2B61A0B8D4000C5044F /* libQMContactListCache.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5590F2AA1A0B8D4000C5044F /* libQMContactListCache.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXBuildRule section */
+		55A620CB1A0BBCB3001BA470 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			fileType = wrapper.xcdatamodeld;
+			isEditable = 1;
+			outputFiles = (
+			);
+			script = "echo \"Running mogend\"\n\"${PROJECT_DIR}/Q-municate/Classes/CoreData/mogend.sh\"\n";
+		};
+		55A620CC1A0BBCBD001BA470 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			fileType = wrapper.xcdatamodel;
+			isEditable = 1;
+			outputFiles = (
+			);
+			script = "echo \"Running mogen\"\n\"${PROJECT_DIR}/Q-municate/Classes/CoreData/mogen.sh\"";
+		};
+/* End PBXBuildRule section */
+
+/* Begin PBXContainerItemProxy section */
+		554A282A1A0CE2B400C4E03C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5590F29D1A0B8D2900C5044F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 554A28201A0CE22200C4E03C;
+			remoteInfo = QMCotactListCacheModel;
+		};
+		5590F2B71A0B8D4000C5044F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5590F29D1A0B8D2900C5044F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5590F2A91A0B8D4000C5044F;
+			remoteInfo = QMContactListCache;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		5590F2A81A0B8D4000C5044F /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 16;
+			files = (
+				5590F2AE1A0B8D4000C5044F /* QMContactListCache.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		554A28101A0CE1A900C4E03C /* QMModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = QMModel.xcdatamodel; sourceTree = "<group>"; };
+		554A28211A0CE22200C4E03C /* QMCotactListCacheModel.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QMCotactListCacheModel.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		554A28241A0CE22200C4E03C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		554A282D1A0CE38600C4E03C /* CDContactListItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDContactListItem.h; sourceTree = "<group>"; };
+		554A282E1A0CE38600C4E03C /* CDContactListItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDContactListItem.m; sourceTree = "<group>"; };
+		554A282F1A0CE38600C4E03C /* CDUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDUser.h; sourceTree = "<group>"; };
+		554A28301A0CE38600C4E03C /* CDUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDUser.m; sourceTree = "<group>"; };
+		554A28321A0CE38600C4E03C /* _CDContactListItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _CDContactListItem.h; sourceTree = "<group>"; };
+		554A28331A0CE38600C4E03C /* _CDContactListItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _CDContactListItem.m; sourceTree = "<group>"; };
+		554A28341A0CE38600C4E03C /* _CDUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _CDUser.h; sourceTree = "<group>"; };
+		554A28351A0CE38600C4E03C /* _CDUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _CDUser.m; sourceTree = "<group>"; };
+		554A28361A0CE38600C4E03C /* ModelIncludes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModelIncludes.h; sourceTree = "<group>"; };
+		5590F2AA1A0B8D4000C5044F /* libQMContactListCache.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libQMContactListCache.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		5590F2AD1A0B8D4000C5044F /* QMContactListCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QMContactListCache.h; sourceTree = "<group>"; };
+		5590F2AF1A0B8D4000C5044F /* QMContactListCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QMContactListCache.m; sourceTree = "<group>"; };
+		5590F2B51A0B8D4000C5044F /* QMContactListCacheTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QMContactListCacheTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		5590F2BB1A0B8D4000C5044F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		55A6211A1A0BE284001BA470 /* QMContactListCache-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QMContactListCache-Prefix.pch"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		554A281E1A0CE22200C4E03C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5590F2A71A0B8D4000C5044F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5590F2B21A0B8D4000C5044F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5590F2B61A0B8D4000C5044F /* libQMContactListCache.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		554A280E1A0CE1A900C4E03C /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				554A280F1A0CE1A900C4E03C /* QMContactListModel.xcdatamodeld */,
+				554A28361A0CE38600C4E03C /* ModelIncludes.h */,
+				554A282C1A0CE38600C4E03C /* Entries */,
+				554A28311A0CE38600C4E03C /* EntriesMachine */,
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
+		554A28221A0CE22200C4E03C /* QMCotactListCacheModel */ = {
+			isa = PBXGroup;
+			children = (
+				554A28231A0CE22200C4E03C /* Supporting Files */,
+			);
+			path = QMCotactListCacheModel;
+			sourceTree = "<group>";
+		};
+		554A28231A0CE22200C4E03C /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				554A28241A0CE22200C4E03C /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		554A282C1A0CE38600C4E03C /* Entries */ = {
+			isa = PBXGroup;
+			children = (
+				554A282D1A0CE38600C4E03C /* CDContactListItem.h */,
+				554A282E1A0CE38600C4E03C /* CDContactListItem.m */,
+				554A282F1A0CE38600C4E03C /* CDUser.h */,
+				554A28301A0CE38600C4E03C /* CDUser.m */,
+			);
+			path = Entries;
+			sourceTree = "<group>";
+		};
+		554A28311A0CE38600C4E03C /* EntriesMachine */ = {
+			isa = PBXGroup;
+			children = (
+				554A28321A0CE38600C4E03C /* _CDContactListItem.h */,
+				554A28331A0CE38600C4E03C /* _CDContactListItem.m */,
+				554A28341A0CE38600C4E03C /* _CDUser.h */,
+				554A28351A0CE38600C4E03C /* _CDUser.m */,
+			);
+			path = EntriesMachine;
+			sourceTree = "<group>";
+		};
+		5590F29C1A0B8D2900C5044F = {
+			isa = PBXGroup;
+			children = (
+				5590F2AC1A0B8D4000C5044F /* QMContactListCache */,
+				554A28221A0CE22200C4E03C /* QMCotactListCacheModel */,
+				5590F2AB1A0B8D4000C5044F /* Products */,
+				55A621191A0BE284001BA470 /* Support */,
+				5590F2B91A0B8D4000C5044F /* QMContactListCacheTests */,
+			);
+			sourceTree = "<group>";
+		};
+		5590F2AB1A0B8D4000C5044F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5590F2AA1A0B8D4000C5044F /* libQMContactListCache.a */,
+				5590F2B51A0B8D4000C5044F /* QMContactListCacheTests.xctest */,
+				554A28211A0CE22200C4E03C /* QMCotactListCacheModel.bundle */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		5590F2AC1A0B8D4000C5044F /* QMContactListCache */ = {
+			isa = PBXGroup;
+			children = (
+				5590F2AD1A0B8D4000C5044F /* QMContactListCache.h */,
+				5590F2AF1A0B8D4000C5044F /* QMContactListCache.m */,
+				554A280E1A0CE1A900C4E03C /* CoreData */,
+			);
+			path = QMContactListCache;
+			sourceTree = "<group>";
+		};
+		5590F2B91A0B8D4000C5044F /* QMContactListCacheTests */ = {
+			isa = PBXGroup;
+			children = (
+				5590F2BA1A0B8D4000C5044F /* Supporting Files */,
+			);
+			path = QMContactListCacheTests;
+			sourceTree = "<group>";
+		};
+		5590F2BA1A0B8D4000C5044F /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				5590F2BB1A0B8D4000C5044F /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		55A621191A0BE284001BA470 /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				55A6211A1A0BE284001BA470 /* QMContactListCache-Prefix.pch */,
+			);
+			path = Support;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		554A28201A0CE22200C4E03C /* QMCotactListCacheModel */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 554A28251A0CE22200C4E03C /* Build configuration list for PBXNativeTarget "QMCotactListCacheModel" */;
+			buildPhases = (
+				554A281D1A0CE22200C4E03C /* Sources */,
+				554A281E1A0CE22200C4E03C /* Frameworks */,
+				554A281F1A0CE22200C4E03C /* Resources */,
+				554A28281A0CE27600C4E03C /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = QMCotactListCacheModel;
+			productName = QMCotactListCacheModel;
+			productReference = 554A28211A0CE22200C4E03C /* QMCotactListCacheModel.bundle */;
+			productType = "com.apple.product-type.bundle";
+		};
+		5590F2A91A0B8D4000C5044F /* QMContactListCache */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5590F2BC1A0B8D4000C5044F /* Build configuration list for PBXNativeTarget "QMContactListCache" */;
+			buildPhases = (
+				5590F2A61A0B8D4000C5044F /* Sources */,
+				5590F2A71A0B8D4000C5044F /* Frameworks */,
+				5590F2A81A0B8D4000C5044F /* CopyFiles */,
+			);
+			buildRules = (
+				55A620CC1A0BBCBD001BA470 /* PBXBuildRule */,
+				55A620CB1A0BBCB3001BA470 /* PBXBuildRule */,
+			);
+			dependencies = (
+				554A282B1A0CE2B400C4E03C /* PBXTargetDependency */,
+			);
+			name = QMContactListCache;
+			productName = QMContactListCache;
+			productReference = 5590F2AA1A0B8D4000C5044F /* libQMContactListCache.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		5590F2B41A0B8D4000C5044F /* QMContactListCacheTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5590F2BF1A0B8D4000C5044F /* Build configuration list for PBXNativeTarget "QMContactListCacheTests" */;
+			buildPhases = (
+				5590F2B11A0B8D4000C5044F /* Sources */,
+				5590F2B21A0B8D4000C5044F /* Frameworks */,
+				5590F2B31A0B8D4000C5044F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5590F2B81A0B8D4000C5044F /* PBXTargetDependency */,
+			);
+			name = QMContactListCacheTests;
+			productName = QMContactListCacheTests;
+			productReference = 5590F2B51A0B8D4000C5044F /* QMContactListCacheTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		5590F29D1A0B8D2900C5044F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0610;
+				TargetAttributes = {
+					554A28201A0CE22200C4E03C = {
+						CreatedOnToolsVersion = 6.1;
+					};
+					5590F2A91A0B8D4000C5044F = {
+						CreatedOnToolsVersion = 6.1;
+					};
+					5590F2B41A0B8D4000C5044F = {
+						CreatedOnToolsVersion = 6.1;
+					};
+				};
+			};
+			buildConfigurationList = 5590F2A01A0B8D2900C5044F /* Build configuration list for PBXProject "QMContactListCache" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 5590F29C1A0B8D2900C5044F;
+			productRefGroup = 5590F2AB1A0B8D4000C5044F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				5590F2A91A0B8D4000C5044F /* QMContactListCache */,
+				554A28201A0CE22200C4E03C /* QMCotactListCacheModel */,
+				5590F2B41A0B8D4000C5044F /* QMContactListCacheTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		554A281F1A0CE22200C4E03C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5590F2B31A0B8D4000C5044F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		554A28281A0CE27600C4E03C /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "echo \"Begin momd\"\n\nCOREDATA_DIR=\"${PROJECT_DIR}/QMContactListCache/CoreData\"\nHUMAN_DIR=\"${PROJECT_DIR}/QMContactListCache/CoreData/Entries\"\nMACHINE_DIR=\"${PROJECT_DIR}/QMContactListCache/CoreData/EntriesMachine\"\nINCLUDE_H=\"${PROJECT_DIR}/QMContactListCache/CoreData/ModelIncludes.h\"\nINPUT_FILE_PATH=\"${PROJECT_DIR}/QMContactListCache/CoreData/QMContactListModel.xcdatamodeld\"\n\ncurVer=`/usr/libexec/PlistBuddy \"${INPUT_FILE_PATH}/.xccurrentversion\" -c 'print _XCCurrentVersionName'`\n\nmogenerator=/usr/local/bin/mogenerator\n\necho $mogenerator --model \\\"$COREDATA_DIR/$curVer\\\" --machine-dir \"$MACHINE_DIR/\" --human-dir \"$HUMAN_DIR/\" --includeh \"$INCLUDE_H\" --template-var arc=true\n$mogenerator --model \"${INPUT_FILE_PATH}/$curVer\" --machine-dir \"$MACHINE_DIR/\" --human-dir \"$HUMAN_DIR/\" --includeh \"$INCLUDE_H\" --template-var arc=true\n\necho ${DEVELOPER_BIN_DIR}/momc -XD_MOMC_TARGET_VERSION=10.6 \\\"${INPUT_FILE_PATH}\\\" \\\"${TARGET_BUILD_DIR}/${EXECUTABLE_FOLDER_PATH}/${INPUT_FILE_BASE}.momd\\\"\n${DEVELOPER_BIN_DIR}/momc -XD_MOMC_TARGET_VERSION=10.6 \"${INPUT_FILE_PATH}\" \"${TARGET_BUILD_DIR}/${EXECUTABLE_FOLDER_PATH}/${INPUT_FILE_BASE}.momd\"\n\necho \"Begin mom\"\n\necho $mogenerator --model \\\"${INPUT_FILE_PATH}\\\" --machine-dir \"$MACHINE_DIR/\" --human-dir \"$HUMAN_DIR/\" --includeh \"$INCLUDE_H\" --template-var arc=true\n$mogenerator --model \\\"${INPUT_FILE_PATH}\\\" --machine-dir \"$MACHINE_DIR/\" --human-dir \"$HUMAN_DIR/\" --includeh \"$INCLUDE_H\" --template-var arc=true\n\necho ${DEVELOPER_BIN_DIR}/momc -XD_MOMC_TARGET_VERSION=10.6 \\\"${INPUT_FILE_PATH}\\\" \\\"${TARGET_BUILD_DIR}/${EXECUTABLE_FOLDER_PATH}/${INPUT_FILE_BASE}.mom\\\"\n${DEVELOPER_BIN_DIR}/momc -XD_MOMC_TARGET_VERSION=10.6 \"${INPUT_FILE_PATH}\" \"${TARGET_BUILD_DIR}/${EXECUTABLE_FOLDER_PATH}/${INPUT_FILE_BASE}.mom\"\n\necho \"that's all folks. mogen.sh is done\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		554A281D1A0CE22200C4E03C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				554A28291A0CE28300C4E03C /* QMContactListModel.xcdatamodeld in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5590F2A61A0B8D4000C5044F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				554A28371A0CE38600C4E03C /* CDContactListItem.m in Sources */,
+				554A283A1A0CE38600C4E03C /* _CDUser.m in Sources */,
+				554A28391A0CE38600C4E03C /* _CDContactListItem.m in Sources */,
+				554A28381A0CE38600C4E03C /* CDUser.m in Sources */,
+				554A28111A0CE1A900C4E03C /* QMContactListModel.xcdatamodeld in Sources */,
+				5590F2B01A0B8D4000C5044F /* QMContactListCache.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5590F2B11A0B8D4000C5044F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		554A282B1A0CE2B400C4E03C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 554A28201A0CE22200C4E03C /* QMCotactListCacheModel */;
+			targetProxy = 554A282A1A0CE2B400C4E03C /* PBXContainerItemProxy */;
+		};
+		5590F2B81A0B8D4000C5044F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5590F2A91A0B8D4000C5044F /* QMContactListCache */;
+			targetProxy = 5590F2B71A0B8D4000C5044F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		554A28261A0CE22200C4E03C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = QMCotactListCacheModel/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Debug;
+		};
+		554A28271A0CE22200C4E03C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = QMCotactListCacheModel/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Release;
+		};
+		5590F2A11A0B8D2900C5044F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		5590F2A21A0B8D2900C5044F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+		5590F2BD1A0B8D4000C5044F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = "~/Documents/Quickblox";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Support/QMContactListCache-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(BUILT_PRODUCTS_DIR)/**",
+					/usr/include/libxml2,
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		5590F2BE1A0B8D4000C5044F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = "~/Documents/Quickblox";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Support/QMContactListCache-Prefix.pch";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(BUILT_PRODUCTS_DIR)/**",
+					/usr/include/libxml2,
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		5590F2C01A0B8D4000C5044F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = QMContactListCacheTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		5590F2C11A0B8D4000C5044F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = QMContactListCacheTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		554A28251A0CE22200C4E03C /* Build configuration list for PBXNativeTarget "QMCotactListCacheModel" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				554A28261A0CE22200C4E03C /* Debug */,
+				554A28271A0CE22200C4E03C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		5590F2A01A0B8D2900C5044F /* Build configuration list for PBXProject "QMContactListCache" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5590F2A11A0B8D2900C5044F /* Debug */,
+				5590F2A21A0B8D2900C5044F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5590F2BC1A0B8D4000C5044F /* Build configuration list for PBXNativeTarget "QMContactListCache" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5590F2BD1A0B8D4000C5044F /* Debug */,
+				5590F2BE1A0B8D4000C5044F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5590F2BF1A0B8D4000C5044F /* Build configuration list for PBXNativeTarget "QMContactListCacheTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5590F2C01A0B8D4000C5044F /* Debug */,
+				5590F2C11A0B8D4000C5044F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		554A280F1A0CE1A900C4E03C /* QMContactListModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				554A28101A0CE1A900C4E03C /* QMModel.xcdatamodel */,
+			);
+			currentVersion = 554A28101A0CE1A900C4E03C /* QMModel.xcdatamodel */;
+			path = QMContactListModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = 5590F29D1A0B8D2900C5044F /* Project object */;
+}

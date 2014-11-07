@@ -26,7 +26,7 @@
 		55B2F0AE1A091C38008C2272 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = "include/$(PRODUCT_NAME)";
+			dstPath = "";
 			dstSubfolderSpec = 16;
 			files = (
 				55B2F0B41A091C38008C2272 /* QMContactListService.h in CopyFiles */,
@@ -36,6 +36,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		55A621221A0BE307001BA470 /* QMContactListService-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QMContactListService-Prefix.pch"; sourceTree = "<group>"; };
 		55B2F0B01A091C38008C2272 /* libQMContactListService.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libQMContactListService.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		55B2F0B31A091C38008C2272 /* QMContactListService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QMContactListService.h; sourceTree = "<group>"; };
 		55B2F0B51A091C38008C2272 /* QMContactListService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QMContactListService.m; sourceTree = "<group>"; };
@@ -62,6 +63,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		55A621211A0BE307001BA470 /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				55A621221A0BE307001BA470 /* QMContactListService-Prefix.pch */,
+			);
+			path = Support;
+			sourceTree = "<group>";
+		};
 		55B2F0B11A091C38008C2272 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -102,6 +111,7 @@
 				55B2F0B21A091C38008C2272 /* QMContactListService */,
 				55B2F0BF1A091C38008C2272 /* QMContactListServiceTests */,
 				55B2F0B11A091C38008C2272 /* Products */,
+				55A621211A0BE307001BA470 /* Support */,
 			);
 			sourceTree = "<group>";
 		};
@@ -240,8 +250,8 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Support/QMContactListService-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -293,8 +303,8 @@
 					"~/Documents/Quickblox",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Support/QMContactListService-Prefix.pch";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;

@@ -1,0 +1,14 @@
+//
+//  QMDBStorage-Prefix.pch
+//  QMDBStorage
+//
+//  Created by Andrey on 06.11.14.
+//
+//
+
+#ifdef __OBJC__
+    #import <UIKit/UIKit.h>
+    #import <Foundation/Foundation.h>
+    #import <CoreData/CoreData.h>
+    #import "CoreData+MagicalRecord.h"
+#endif

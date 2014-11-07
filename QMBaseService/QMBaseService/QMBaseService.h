@@ -7,9 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <Quickblox/Quickblox.h>
-#import <Quickblox/QBMulticastDelegate.h>
-
 
 @protocol QMServiceDataDelegate <NSObject>
 @required

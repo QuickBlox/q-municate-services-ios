@@ -34,7 +34,7 @@
 		55B2F0CA1A091C68008C2272 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = "include/$(PRODUCT_NAME)";
+			dstPath = "";
 			dstSubfolderSpec = 16;
 			files = (
 				55F41EAF1A0A7100008D1C68 /* NSString+GTMNSStringHTMLAdditions.h in CopyFiles */,
@@ -48,6 +48,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		55A6211E1A0BE2F4001BA470 /* QMChatService-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QMChatService-Prefix.pch"; sourceTree = "<group>"; };
 		55B2F0CC1A091C68008C2272 /* libQMChatService.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libQMChatService.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		55B2F0CF1A091C68008C2272 /* QMChatService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QMChatService.h; sourceTree = "<group>"; };
 		55B2F0D11A091C68008C2272 /* QMChatService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QMChatService.m; sourceTree = "<group>"; };
@@ -84,6 +85,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		55A6211D1A0BE2F4001BA470 /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				55A6211E1A0BE2F4001BA470 /* QMChatService-Prefix.pch */,
+			);
+			path = Support;
+			sourceTree = "<group>";
+		};
 		55B2F0CD1A091C68008C2272 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -127,6 +136,7 @@
 				55B2F0CE1A091C68008C2272 /* QMChatService */,
 				55B2F0DB1A091C68008C2272 /* QMChatServiceTests */,
 				55B2F0CD1A091C68008C2272 /* Products */,
+				55A6211D1A0BE2F4001BA470 /* Support */,
 			);
 			sourceTree = "<group>";
 		};
@@ -300,8 +310,8 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Support/QMChatService-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -353,8 +363,8 @@
 					"~/Documents/Quickblox",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Support/QMChatService-Prefix.pch";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;

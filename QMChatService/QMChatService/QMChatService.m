@@ -73,7 +73,7 @@ const NSTimeInterval kQMPresenceTime = 30;
 }
 
 //- (void)chatDidNotLogin {
-//    
+//
 //    if (self.chatSuccessBlock){
 //        self.chatSuccessBlock(NO);
 //        self.chatSuccessBlock = nil;
@@ -124,7 +124,7 @@ const NSTimeInterval kQMPresenceTime = 30;
     }
 }
 
-#pragma mark - Presence 
+#pragma mark - Presence
 
 - (void)startSendPresence {
     
@@ -153,7 +153,7 @@ const NSTimeInterval kQMPresenceTime = 30;
         
         if (message.recipientID != message.senderID) {
             
-//            [self addMessageToHistory:message withDialogID:message.cParamDialogID];
+            //            [self addMessageToHistory:message withDialogID:message.cParamDialogID];
             
             QBChatDialog *chatDialogToUpdate = [self.memoryStorage chatDialogWithID:message.cParamDialogID];
             chatDialogToUpdate.lastMessageText = message.encodedText;
@@ -168,14 +168,14 @@ const NSTimeInterval kQMPresenceTime = 30;
     else if (message.cParamNotificationType == QMMessageNotificationTypeCreateDialog) {
         
         QBChatDialog *newChatDialog = [message chatDialogFromCustomParameters];
-//        [self addDialogsToHistory:@[newChatDialog] joinIfNeeded:YES];
+        //        [self addDialogsToHistory:@[newChatDialog] joinIfNeeded:YES];
         
         [self.multicastDelegate chatServiceDidReceiveNotificationMessage:message createDialog:newChatDialog];
     }
     else if (message.cParamNotificationType == QMMessageNotificationTypeUpdateDialog) {
         
         QBChatDialog *chatDialogToUpdate = [self.memoryStorage chatDialogWithID:message.cParamDialogID];
-
+        
         if (chatDialogToUpdate == nil) {
             NSAssert(!chatDialogToUpdate, @"Dialog you are looking for not found.");
             return;
@@ -183,7 +183,8 @@ const NSTimeInterval kQMPresenceTime = 30;
         
         chatDialogToUpdate.name = message.cParamDialogName;
         
-        [self.multicastDelegate chatServiceDidReceiveNotificationMessage:message updateDialog:chatDialogToUpdate];
+        [self.multicastDelegate chatServiceDidReceiveNotificationMessage:message
+                                                            updateDialog:chatDialogToUpdate];
     }
 }
 
@@ -194,7 +195,7 @@ const NSTimeInterval kQMPresenceTime = 30;
     __weak __typeof(self)weakSelf = self;
     [QBRequest dialogsWithSuccessBlock:^(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs) {
         
-//        [weakSelf addDialogsToHistory:dialogObjects joinIfNeeded:YES];
+        //        [weakSelf addDialogsToHistory:dialogObjects joinIfNeeded:YES];
         
         if (completion) {
             completion(response, dialogObjects, dialogsUsersIDs);
@@ -209,10 +210,10 @@ const NSTimeInterval kQMPresenceTime = 30;
 }
 
 //- (QBChatDialog *)chatDialogWithRoomJID:(NSString *)roomJID {
-//    
+//
 //    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"self.roomJID == %@", roomJID];
 ////    NSArray *allDialogs = [self dialogHistory];
-//    
+//
 //    QBChatDialog *dialog = [allDialogs filteredArrayUsingPredicate:predicate].firstObject;
 //    return dialog;
 //}
@@ -236,7 +237,7 @@ const NSTimeInterval kQMPresenceTime = 30;
         __weak __typeof(self)weakSelf = self;
         [QBRequest createDialog:chatDialog successBlock:^(QBResponse *response, QBChatDialog *createdDialog) {
             
-//            [weakSelf addDialogsToHistory:@[createdDialog] joinIfNeeded:YES];
+            //            [weakSelf addDialogsToHistory:@[createdDialog] joinIfNeeded:YES];
             [weakSelf sendNotificationWithType:QMMessageNotificationTypeCreateDialog
                                           text:@"created new chat"
                                   toRecipients:@[opponent]
@@ -272,7 +273,7 @@ const NSTimeInterval kQMPresenceTime = 30;
     __weak __typeof(self)weakSelf = self;
     [QBRequest createDialog:chatDialog successBlock:^(QBResponse *response, QBChatDialog *createdDialog) {
         
-//        [weakSelf addDialogsToHistory:@[createdDialog] joinIfNeeded:YES];
+        //        [weakSelf addDialogsToHistory:@[createdDialog] joinIfNeeded:YES];
         [weakSelf sendNotificationWithType:QMMessageNotificationTypeCreateDialog
                                       text:@"created new chat"
                               toRecipients:occupants
@@ -326,7 +327,7 @@ const NSTimeInterval kQMPresenceTime = 30;
     
     [QBRequest updateDialog:updateParams successBlock:^(QBResponse *response, QBChatDialog *updatedDialog) {
         
-//        [weakSelf addDialogsToHistory:@[updatedDialog] joinIfNeeded:NO];
+        //        [weakSelf addDialogsToHistory:@[updatedDialog] joinIfNeeded:NO];
         
         [weakSelf sendNotificationWithType:QMMessageNotificationTypeCreateDialog
                                       text:@"Created new dialog"
@@ -337,7 +338,7 @@ const NSTimeInterval kQMPresenceTime = 30;
                                       text:@"Added new users"
                               toRecipients:occupantsToNotify
                                 chatDialog:updatedDialog];
-
+        
         completion(response, updatedDialog);
         
     } errorBlock:^(QBResponse *response) {
@@ -372,26 +373,31 @@ const NSTimeInterval kQMPresenceTime = 30;
     
     for (QBUUser *recipient in recipients) {
         
-        QBChatMessage *notification =
-        [self notification:type recipient:recipient text:notifMessage chatDialog:chatDialog];
-        [self sendMessage:notification withDialogID:chatDialog.ID saveToHistory:NO completion:^(NSError *error){}];
+        QBChatMessage *notification = [self notification:type recipient:recipient
+                                                    text:notifMessage
+                                              chatDialog:chatDialog];
+        
+        [self sendMessage:notification
+             withDialogID:chatDialog.ID
+            saveToHistory:NO
+               completion:^(NSError *error){}];
     }
 }
 
 //- (NSUInteger )occupantIDForPrivateChatDialog:(QBChatDialog *)chatDialog {
-//    
+//
 //    NSAssert(chatDialog.type == QBChatDialogTypePrivate, @"Chat dialog type != QBChatDialogTypePrivate");
 //    NSAssert(chatDialog.occupantIDs.count == 2, @"Array of user ids in chat. For private chat count = 2");
-//    
+//
 //    NSInteger myID = [self.serviceDataDelegate serviceDataCurrentProfile].ID;
-//    
+//
 //    for (NSNumber *ID in chatDialog.occupantIDs) {
-//        
+//
 //        if (ID.integerValue != myID) {
 //            return ID.integerValue;
 //        }
 //    }
-//    
+//
 //    NSAssert(nil, @"Need update this cace");
 //    return 0;
 //}
@@ -401,15 +407,15 @@ const NSTimeInterval kQMPresenceTime = 30;
 - (void)fetchMessageWithDialogID:(NSString *)chatDialogId complete:(void(^)(BOOL success))completion{
     
     __weak __typeof(self)weakSelf = self;
-//    [self.dbStorage cachedQBChatMessagesWithDialogId:chatDialogId qbMessages:^(NSArray *collection) {
-////        [weakSelf setMessages:collection withDialogID:chatDialogId];
-//    }];
+    //    [self.dbStorage cachedQBChatMessagesWithDialogId:chatDialogId qbMessages:^(NSArray *collection) {
+    ////        [weakSelf setMessages:collection withDialogID:chatDialogId];
+    //    }];
     
     [QBRequest messagesWithDialogID:chatDialogId successBlock:^(QBResponse *response, NSArray *messages) {
-//        [weakSelf.dbStorage cacheQBChatMessages:messages withDialogId:chatDialogId finish:^{
-////            [weakSelf setMessages:messages.count ? messages.mutableCopy : @[].mutableCopy withDialogID:chatDialogId];
-//            completion(YES);
-//        }];
+        //        [weakSelf.dbStorage cacheQBChatMessages:messages withDialogId:chatDialogId finish:^{
+        ////            [weakSelf setMessages:messages.count ? messages.mutableCopy : @[].mutableCopy withDialogID:chatDialogId];
+        //            completion(YES);
+        //        }];
         
     } errorBlock:^(QBResponse *response) {
         completion(NO);
@@ -448,7 +454,7 @@ const NSTimeInterval kQMPresenceTime = 30;
     void (^finish)(QBChatMessage *historyMessage) = ^(QBChatMessage *historyMessage){
         
         historyMessage.senderID = currentUser.ID;
-//        [weakSelf addMessageToHistory:historyMessage withDialogID:dialog.ID];
+        //        [weakSelf addMessageToHistory:historyMessage withDialogID:dialog.ID];
         dialog.lastMessageText = historyMessage.encodedText;
         dialog.lastMessageDate = historyMessage.datetime;
         
@@ -479,9 +485,9 @@ const NSTimeInterval kQMPresenceTime = 30;
              withDialogID:dialog.ID
             saveToHistory:YES
                completion:^(NSError *error)
-        {
-            finish(message);
-        }];
+         {
+             finish(message);
+         }];
     }
 }
 

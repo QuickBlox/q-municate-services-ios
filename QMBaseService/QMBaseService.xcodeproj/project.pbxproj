@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		552065151A094123004ED955 /* QMBaseService.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 55B2F11C1A091CE9008C2272 /* QMBaseService.h */; };
+		554A27FD1A0CD53500C4E03C /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 554A27FC1A0CD53500C4E03C /* AVFoundation.framework */; };
 		55B2F1101A091CC9008C2272 /* libQMBaseService.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 55B2F1041A091CC9008C2272 /* libQMBaseService.a */; };
 		55B2F11E1A091CE9008C2272 /* QMBaseService.m in Sources */ = {isa = PBXBuildFile; fileRef = 55B2F11D1A091CE9008C2272 /* QMBaseService.m */; };
 /* End PBXBuildFile section */
@@ -25,8 +26,8 @@
 /* Begin PBXCopyFilesBuildPhase section */
 		552065141A0940E2004ED955 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "include/$(PRODUCT_NAME)";
+			buildActionMask = 12;
+			dstPath = "";
 			dstSubfolderSpec = 16;
 			files = (
 				552065151A094123004ED955 /* QMBaseService.h in CopyFiles */,
@@ -36,6 +37,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		554A27FC1A0CD53500C4E03C /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.1.sdk/System/Library/Frameworks/AVFoundation.framework; sourceTree = DEVELOPER_DIR; };
+		55A6211C1A0BE2EB001BA470 /* QMBaseService-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QMBaseService-Prefix.pch"; sourceTree = "<group>"; };
 		55B2F1041A091CC9008C2272 /* libQMBaseService.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libQMBaseService.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		55B2F10F1A091CC9008C2272 /* QMBaseServiceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QMBaseServiceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		55B2F1151A091CC9008C2272 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -48,6 +51,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				554A27FD1A0CD53500C4E03C /* AVFoundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -62,12 +66,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		55A6211B1A0BE2EB001BA470 /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				55A6211C1A0BE2EB001BA470 /* QMBaseService-Prefix.pch */,
+			);
+			path = Support;
+			sourceTree = "<group>";
+		};
 		55B2F0E41A091CBA008C2272 = {
 			isa = PBXGroup;
 			children = (
+				554A27FC1A0CD53500C4E03C /* AVFoundation.framework */,
 				55B2F1061A091CC9008C2272 /* QMBaseService */,
 				55B2F1131A091CC9008C2272 /* QMBaseServiceTests */,
 				55B2F1051A091CC9008C2272 /* Products */,
+				55A6211B1A0BE2EB001BA470 /* Support */,
 			);
 			sourceTree = "<group>";
 		};
@@ -250,8 +264,8 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Support/QMBaseService-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -300,8 +314,8 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = "~/Documents/Quickblox";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Support/QMBaseService-Prefix.pch";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -311,7 +325,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/include/libxml2,
-					"$(BUILT_PRODUCTS_DIR)/**",
+					"$(BUILT_PRODUCTS_DIR)/include",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				MTL_ENABLE_DEBUG_INFO = NO;

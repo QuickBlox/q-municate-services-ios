@@ -26,7 +26,7 @@
 		55B2F0921A091C17008C2272 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = "include/$(PRODUCT_NAME)";
+			dstPath = "";
 			dstSubfolderSpec = 16;
 			files = (
 				55B2F1911A093851008C2272 /* QMAuthService.h in CopyFiles */,
@@ -36,6 +36,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		55A621201A0BE301001BA470 /* QMAuthService-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QMAuthService-Prefix.pch"; sourceTree = "<group>"; };
 		55B2F0941A091C17008C2272 /* libQMAuthService.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libQMAuthService.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		55B2F09F1A091C17008C2272 /* QMAuthServiceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QMAuthServiceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		55B2F0A51A091C17008C2272 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -62,6 +63,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		55A6211F1A0BE301001BA470 /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				55A621201A0BE301001BA470 /* QMAuthService-Prefix.pch */,
+			);
+			path = Support;
+			sourceTree = "<group>";
+		};
 		55B2F0951A091C17008C2272 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -102,6 +111,7 @@
 				55B2F0961A091C17008C2272 /* QMAuthService */,
 				55B2F0A31A091C17008C2272 /* QMAuthServiceTests */,
 				55B2F0951A091C17008C2272 /* Products */,
+				55A6211F1A0BE301001BA470 /* Support */,
 			);
 			sourceTree = "<group>";
 		};
@@ -240,8 +250,8 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Support/QMAuthService-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -293,8 +303,8 @@
 					"~/Documents/Quickblox",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_PREFIX_HEADER = "";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Support/QMAuthService-Prefix.pch";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -303,7 +313,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					"${BUILT_PRODUCTS_DIR}/**",
+					"$(BUILT_PRODUCTS_DIR)/**",
 					/usr/include/libxml2,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;

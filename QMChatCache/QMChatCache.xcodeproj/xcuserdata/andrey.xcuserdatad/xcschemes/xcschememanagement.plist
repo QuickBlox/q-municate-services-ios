@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>SchemeUserState</key>
+	<dict>
+		<key>QMChatCache.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>14</integer>
+		</dict>
+		<key>model.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>15</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>5590F2711A0B8C4200C5044F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>5590F27C1A0B8C4200C5044F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>55A620DD1A0BC7D6001BA470</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>55A620EF1A0BCA5E001BA470</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+	</dict>
+</dict>
+</plist>
