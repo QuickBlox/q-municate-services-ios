@@ -3,9 +3,25 @@
 <plist version="1.0">
 <dict>
 	<key>SchemeUserState</key>
-	<dict/>
+	<dict>
+		<key>QMServices.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
+	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>553204741A0D343100B4F4F2</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>5532047E1A0D343100B4F4F2</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>554A28791A0CECA000C4E03C</key>
 		<dict>
 			<key>primary</key>
