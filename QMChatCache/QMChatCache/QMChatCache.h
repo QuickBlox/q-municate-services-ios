@@ -11,6 +11,10 @@
 
 @interface QMChatCache : QMDBStorage
 
++ (QMChatCache *)sharedInstance;
+
++ (void)setupDBWithName:(NSString *)name;
+
 - (void)cachedQBChatDialogs:(void(^)(NSArray *dialogs))qbDialogs;
 - (void)cacheQBDialogs:(NSArray *)dialogs finish:(void(^)(void))finish;
 

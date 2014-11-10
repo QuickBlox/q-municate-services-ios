@@ -14,9 +14,23 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "55B2F0551A091A85008C2272"
-               BuildableName = "AllServices"
-               BlueprintName = "AllServices"
+               BlueprintIdentifier = "553204E31A0D37D600B4F4F2"
+               BuildableName = "liblibServicesIOS.a"
+               BlueprintName = "libServicesIOS"
+               ReferencedContainer = "container:QMServices.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "553204ED1A0D37D700B4F4F2"
+               BuildableName = "libServicesIOSTests.xctest"
+               BlueprintName = "libServicesIOSTests"
                ReferencedContainer = "container:QMServices.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -28,7 +42,26 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       buildConfiguration = "Debug">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "553204ED1A0D37D700B4F4F2"
+               BuildableName = "libServicesIOSTests.xctest"
+               BlueprintName = "libServicesIOSTests"
+               ReferencedContainer = "container:QMServices.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "553204E31A0D37D600B4F4F2"
+            BuildableName = "liblibServicesIOS.a"
+            BlueprintName = "libServicesIOS"
+            ReferencedContainer = "container:QMServices.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </TestAction>
    <LaunchAction
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
@@ -42,9 +75,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "55B2F0551A091A85008C2272"
-            BuildableName = "AllServices"
-            BlueprintName = "AllServices"
+            BlueprintIdentifier = "553204E31A0D37D600B4F4F2"
+            BuildableName = "liblibServicesIOS.a"
+            BlueprintName = "libServicesIOS"
             ReferencedContainer = "container:QMServices.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -60,9 +93,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "55B2F0551A091A85008C2272"
-            BuildableName = "AllServices"
-            BlueprintName = "AllServices"
+            BlueprintIdentifier = "553204E31A0D37D600B4F4F2"
+            BuildableName = "liblibServicesIOS.a"
+            BlueprintName = "libServicesIOS"
             ReferencedContainer = "container:QMServices.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

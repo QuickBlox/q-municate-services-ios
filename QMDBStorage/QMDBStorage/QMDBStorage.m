@@ -13,27 +13,22 @@
 @property (strong, nonatomic) dispatch_queue_t queue;
 @property (strong, nonatomic) NSManagedObjectContext *context;
 @property (strong, nonatomic) NSString *storeName;
+@property (strong, nonatomic) NSManagedObjectModel *model;
 
 @end
 
 @implementation QMDBStorage
 
-static QMDBStorage *_storage = nil;
-
 NSString *StoreFileName(NSString *name) {
     
     NSString* fileName = [NSString stringWithFormat:@"%@.sqlite", name];
+    
     return fileName;
 }
 
 + (void)setupDBWithName:(NSString *)name {
-    
-    if (_storage) {
-        NSAssert(nil, @"Need clean old storage before setup new");
-    }
-    _storage = nil;
-    
-    [QMMagicalRecord cleanUp];
+
+    [MagicalRecord cleanUp];
     
 //    MagicalRecordStack *stack = [MagicalRecord setupAutoMigratingStackWithSQLiteStoreNamed:StoreFileName(name)];
 //    _storage = [[QMDBStorage alloc] initWithStack:stack storeName:name];
@@ -41,11 +36,6 @@ NSString *StoreFileName(NSString *name) {
 //    NSManagedObjectModel * model = [NSManagedObjectModel MR_newModelNamed:<#(NSString *)#> inBundle:<#(NSBundle *)#>
 }
 
-+ (QMDBStorage *)shared {
-    
-    NSAssert(_storage, @"You must first perform @selector(setupWithName:)");
-    return _storage;
-}
 
 + (NSURL *)storeUrlWithName:(NSString *)name {
     

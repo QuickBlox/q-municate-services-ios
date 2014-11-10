@@ -14,10 +14,24 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "55B2F0551A091A85008C2272"
-               BuildableName = "AllServices"
-               BlueprintName = "AllServices"
-               ReferencedContainer = "container:QMServices.xcodeproj">
+               BlueprintIdentifier = "553204741A0D343100B4F4F2"
+               BuildableName = "libQMServices.a"
+               BlueprintName = "QMServices"
+               ReferencedContainer = "container:QMChatCache.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "5532047E1A0D343100B4F4F2"
+               BuildableName = "QMServicesTests.xctest"
+               BlueprintName = "QMServicesTests"
+               ReferencedContainer = "container:QMChatCache.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -28,7 +42,26 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       buildConfiguration = "Debug">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "5532047E1A0D343100B4F4F2"
+               BuildableName = "QMServicesTests.xctest"
+               BlueprintName = "QMServicesTests"
+               ReferencedContainer = "container:QMChatCache.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "553204741A0D343100B4F4F2"
+            BuildableName = "libQMServices.a"
+            BlueprintName = "QMServices"
+            ReferencedContainer = "container:QMChatCache.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </TestAction>
    <LaunchAction
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
@@ -42,10 +75,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "55B2F0551A091A85008C2272"
-            BuildableName = "AllServices"
-            BlueprintName = "AllServices"
-            ReferencedContainer = "container:QMServices.xcodeproj">
+            BlueprintIdentifier = "553204741A0D343100B4F4F2"
+            BuildableName = "libQMServices.a"
+            BlueprintName = "QMServices"
+            ReferencedContainer = "container:QMChatCache.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -60,10 +93,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "55B2F0551A091A85008C2272"
-            BuildableName = "AllServices"
-            BlueprintName = "AllServices"
-            ReferencedContainer = "container:QMServices.xcodeproj">
+            BlueprintIdentifier = "553204741A0D343100B4F4F2"
+            BuildableName = "libQMServices.a"
+            BlueprintName = "QMServices"
+            ReferencedContainer = "container:QMChatCache.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>

@@ -9,9 +9,59 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>QMServices.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
+		<key>libServicesIOS.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>4</integer>
+		</dict>
+		<key>libServicesSim.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>3</integer>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>553203F21A0D057000B4F4F2</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>5532048F1A0D346500B4F4F2</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>553204991A0D346500B4F4F2</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>553204C81A0D378C00B4F4F2</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>553204D21A0D378C00B4F4F2</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>553204E31A0D37D600B4F4F2</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>553204ED1A0D37D700B4F4F2</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>554A28001A0CDF2500C4E03C</key>
 		<dict>
 			<key>primary</key>
