@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		554A280C1A0CE16200C4E03C /* QMChatServiceModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 554A280A1A0CE16200C4E03C /* QMChatServiceModel.xcdatamodeld */; };
 		554A28821A0CECC200C4E03C /* QMChatServiceModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 554A280A1A0CE16200C4E03C /* QMChatServiceModel.xcdatamodeld */; };
-		5590F2761A0B8C4200C5044F /* QMChatCache.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5590F2751A0B8C4200C5044F /* QMChatCache.h */; };
 		5590F2781A0B8C4200C5044F /* QMChatCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 5590F2771A0B8C4200C5044F /* QMChatCache.m */; };
 		5590F27E1A0B8C4200C5044F /* libQMChatCache.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5590F2721A0B8C4200C5044F /* libQMChatCache.a */; };
 		55A621131A0BDC5D001BA470 /* CDAttachment.m in Sources */ = {isa = PBXBuildFile; fileRef = 55A621061A0BDC5D001BA470 /* CDAttachment.m */; };
@@ -36,19 +35,6 @@
 			remoteInfo = QMChatCache;
 		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		5590F2701A0B8C4200C5044F /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = include;
-			dstSubfolderSpec = 16;
-			files = (
-				5590F2761A0B8C4200C5044F /* QMChatCache.h in CopyFiles */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		554A280B1A0CE16200C4E03C /* QMModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = QMModel.xcdatamodel; sourceTree = "<group>"; };
@@ -236,7 +222,6 @@
 			buildPhases = (
 				5590F26E1A0B8C4200C5044F /* Sources */,
 				5590F26F1A0B8C4200C5044F /* Frameworks */,
-				5590F2701A0B8C4200C5044F /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -521,7 +506,6 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/include/libxml2,
-					"$(BUILT_PRODUCTS_DIR)/include/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -566,7 +550,6 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/include/libxml2,
-					"$(BUILT_PRODUCTS_DIR)/include/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				MTL_ENABLE_DEBUG_INFO = NO;

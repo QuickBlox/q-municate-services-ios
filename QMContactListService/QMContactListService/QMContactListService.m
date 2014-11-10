@@ -22,9 +22,9 @@
 
 @implementation QMContactListService
 
-- (instancetype)init {
+- (instancetype)initWithServiceDataDelegate:(id<QMServiceDataDelegate>)serviceDataDelegate {
     
-    self = [super init];
+    self = [super initWithServiceDataDelegate:serviceDataDelegate];
     if (self) {
         self.users = [NSMutableDictionary dictionary];
         self.contactList = [NSMutableArray array];
@@ -32,6 +32,7 @@
         self.confirmRequestUsersIDs = [NSMutableSet new];
         
         self.multicastDelegate = (id<QMContactsServiceDelegate>)[[QBMulticastDelegate alloc] init];
+        [[QBChat instance] addDelegate:self];
     }
     return self;
 }
@@ -46,13 +47,8 @@
     [self.multicastDelegate removeDelegate:delegate];
 }
 
-- (void)configure {
-    [super configure];
-    [[QBChat instance] addDelegate:self];
-}
-
-- (void)destroy {
-    [super destroy];
+- (void)cleanData {
+    [super cleanData];
     
     [[QBChat instance] removeDelegate:self];
     [self.users removeAllObjects];
@@ -116,7 +112,7 @@
 
 - (QBUUser *)userWithID:(NSUInteger)userID {
     
-    NSString *stingID = [NSString stringWithFormat:@"%d", userID];
+    NSString *stingID = [NSString stringWithFormat:@"%lu", (unsigned long)userID];
     QBUUser *user = self.users[stingID];
     return user;
 }
@@ -132,7 +128,7 @@
 
 - (void)addUser:(QBUUser *)user {
     
-    NSString *key = [NSString stringWithFormat:@"%d", user.ID];
+    NSString *key = [NSString stringWithFormat:@"%lu", (unsigned long)user.ID];
     self.users[key] = user;
 }
 

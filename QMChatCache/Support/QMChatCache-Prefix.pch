@@ -11,5 +11,5 @@
     #import <Foundation/Foundation.h>
     #import <Quickblox/Quickblox.h>
     #import <CoreData/CoreData.h>
-    #import "CoreData+MagicalRecord.h"
+    #import "CoreData+QMMagicalRecord.h"
 #endif

@@ -33,7 +33,7 @@ NSString *StoreFileName(NSString *name) {
     }
     _storage = nil;
     
-    [MagicalRecord cleanUp];
+    [QMMagicalRecord cleanUp];
     
 //    MagicalRecordStack *stack = [MagicalRecord setupAutoMigratingStackWithSQLiteStoreNamed:StoreFileName(name)];
 //    _storage = [[QMDBStorage alloc] initWithStack:stack storeName:name];
@@ -55,7 +55,7 @@ NSString *StoreFileName(NSString *name) {
 
 + (void)cleanDBWithName:(NSString *)name {
     
-    [MagicalRecord cleanUp];
+    [QMMagicalRecord cleanUp];
     
     NSURL *storeUrl = [self storeUrlWithName:name];
     
@@ -65,7 +65,8 @@ NSString *StoreFileName(NSString *name) {
         if(![[NSFileManager defaultManager] removeItemAtURL:storeUrl error:&error]) {
             NSLog(@"An error has occurred while deleting %@", storeUrl);
             NSLog(@"Error description: %@", error.description);
-        } else {
+        }
+        else {
             NSLog(@"Clear %@ - Done!", storeUrl);
         }
     }
@@ -112,7 +113,7 @@ NSString *StoreFileName(NSString *name) {
     
     [self async:^(NSManagedObjectContext *context) {
         
-        [context MR_saveToPersistentStoreAndWait];
+        [context QM_saveToPersistentStoreAndWait];
         if(completion)
             DO_AT_MAIN(completion());
     }];

@@ -27,15 +27,14 @@ typedef NS_ENUM(NSUInteger, QM_STATUS) {
     self = [super init];
     if (self) {
         self.serviceDataDelegate = serviceDataDelegate;
-        [self configure];
         NSLog(@"Init - %@ service...", NSStringFromClass(self.class));
     }
     return self;
 }
 
-#pragma mark - Configure 
+#pragma mark - Clean data 
 
-- (void)configure {
+- (void)cleanData {
 }
 
 #pragma mark - Destroy service

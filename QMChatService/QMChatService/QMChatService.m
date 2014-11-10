@@ -28,18 +28,21 @@ const NSTimeInterval kQMPresenceTime = 30;
 
 #pragma mark - Configure
 
-- (void)configure {
+- (id)initWithServiceDataDelegate:(id<QMServiceDataDelegate>)serviceDataDelegate {
+    self = [super initWithServiceDataDelegate:serviceDataDelegate];
     
-    [super configure];
+    if (self) {
+        
+        self.memoryStorage = [[QMDialogsMemoryStorage alloc] init];
+        [QBChat.instance addDelegate:self];
+    };
     
-    self.memoryStorage = [[QMDialogsMemoryStorage alloc] init];
-    
-    [QBChat.instance addDelegate:self];
+    return self;
 }
 
-#pragma mark - Destroy
+#pragma mark - Clean data
 
-- (void)destroy {
+- (void)cleanData {
     
     self.memoryStorage = nil;
     
