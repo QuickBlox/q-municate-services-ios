@@ -521,7 +521,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/include/libxml2,
-					"$(BUILT_PRODUCTS_DIR)/**",
+					"$(BUILT_PRODUCTS_DIR)/include/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -566,7 +566,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/include/libxml2,
-					"$(BUILT_PRODUCTS_DIR)/**",
+					"$(BUILT_PRODUCTS_DIR)/include/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -676,6 +676,7 @@
 				554A28801A0CECA000C4E03C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		5590F2681A0B8C0500C5044F /* Build configuration list for PBXProject "QMChatCache" */ = {
 			isa = XCConfigurationList;

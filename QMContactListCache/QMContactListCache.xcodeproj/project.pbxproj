@@ -579,7 +579,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/include/libxml2,
-					"$(BUILT_PRODUCTS_DIR)/**",
+					"$(BUILT_PRODUCTS_DIR)/include/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
