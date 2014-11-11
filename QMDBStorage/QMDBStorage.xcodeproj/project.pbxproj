@@ -7,37 +7,53 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5590F23B1A0B87AB00C5044F /* QMDBStorage.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5590F23A1A0B87AB00C5044F /* QMDBStorage.h */; };
+		558666811A122DBC00927430 /* NSAttributeDescription+QMCDDataImport.m in Sources */ = {isa = PBXBuildFile; fileRef = 558666201A122DBC00927430 /* NSAttributeDescription+QMCDDataImport.m */; };
+		558666821A122DBC00927430 /* NSEntityDescription+QMCDDataImport.m in Sources */ = {isa = PBXBuildFile; fileRef = 558666221A122DBC00927430 /* NSEntityDescription+QMCDDataImport.m */; };
+		558666831A122DBC00927430 /* NSNumber+QMCDDataImport.m in Sources */ = {isa = PBXBuildFile; fileRef = 558666241A122DBC00927430 /* NSNumber+QMCDDataImport.m */; };
+		558666841A122DBC00927430 /* NSObject+QMCDDataImport.m in Sources */ = {isa = PBXBuildFile; fileRef = 558666261A122DBC00927430 /* NSObject+QMCDDataImport.m */; };
+		558666851A122DBC00927430 /* NSRelationshipDescription+QMCDDataImport.m in Sources */ = {isa = PBXBuildFile; fileRef = 558666281A122DBC00927430 /* NSRelationshipDescription+QMCDDataImport.m */; };
+		558666861A122DBC00927430 /* NSString+QMCDDataImport.m in Sources */ = {isa = PBXBuildFile; fileRef = 5586662A1A122DBC00927430 /* NSString+QMCDDataImport.m */; };
+		558666871A122DBC00927430 /* QMCDImportFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5586662C1A122DBC00927430 /* QMCDImportFunctions.m */; };
+		558666881A122DBC00927430 /* NSFetchedResultsController+QMCDFetching.m in Sources */ = {isa = PBXBuildFile; fileRef = 5586662E1A122DBC00927430 /* NSFetchedResultsController+QMCDFetching.m */; };
+		558666891A122DBC00927430 /* NSManagedObject+QMCDAggregation.m in Sources */ = {isa = PBXBuildFile; fileRef = 558666311A122DBC00927430 /* NSManagedObject+QMCDAggregation.m */; };
+		5586668A1A122DBC00927430 /* NSManagedObject+QMCDDataImport.m in Sources */ = {isa = PBXBuildFile; fileRef = 558666331A122DBC00927430 /* NSManagedObject+QMCDDataImport.m */; };
+		5586668B1A122DBC00927430 /* NSManagedObject+QMCDFetching.m in Sources */ = {isa = PBXBuildFile; fileRef = 558666351A122DBC00927430 /* NSManagedObject+QMCDFetching.m */; };
+		5586668C1A122DBC00927430 /* NSManagedObject+QMCDFinders.m in Sources */ = {isa = PBXBuildFile; fileRef = 558666371A122DBC00927430 /* NSManagedObject+QMCDFinders.m */; };
+		5586668D1A122DBC00927430 /* NSManagedObject+QMCDRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = 558666391A122DBC00927430 /* NSManagedObject+QMCDRecord.m */; };
+		5586668E1A122DBC00927430 /* NSManagedObject+QMCDRequests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5586663B1A122DBC00927430 /* NSManagedObject+QMCDRequests.m */; };
+		5586668F1A122DBC00927430 /* NSManagedObjectContext+QMCDObserving.m in Sources */ = {isa = PBXBuildFile; fileRef = 5586663E1A122DBC00927430 /* NSManagedObjectContext+QMCDObserving.m */; };
+		558666901A122DBC00927430 /* NSManagedObjectContext+QMCDRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = 558666401A122DBC00927430 /* NSManagedObjectContext+QMCDRecord.m */; };
+		558666911A122DBC00927430 /* NSManagedObjectContext+QMCDSaves.m in Sources */ = {isa = PBXBuildFile; fileRef = 558666421A122DBC00927430 /* NSManagedObjectContext+QMCDSaves.m */; };
+		558666921A122DBC00927430 /* NSManagedObjectModel+QMCDRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = 558666441A122DBC00927430 /* NSManagedObjectModel+QMCDRecord.m */; };
+		558666931A122DBC00927430 /* NSPersistentStore+QMCDRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = 558666461A122DBC00927430 /* NSPersistentStore+QMCDRecord.m */; };
+		558666941A122DBC00927430 /* NSPersistentStoreCoordinator+QMCDAutoMigrations.m in Sources */ = {isa = PBXBuildFile; fileRef = 5586664A1A122DBC00927430 /* NSPersistentStoreCoordinator+QMCDAutoMigrations.m */; };
+		558666951A122DBC00927430 /* NSPersistentStoreCoordinator+QMCDInMemoryStoreAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5586664C1A122DBC00927430 /* NSPersistentStoreCoordinator+QMCDInMemoryStoreAdditions.m */; };
+		558666961A122DBC00927430 /* NSPersistentStoreCoordinator+QMCDManualMigrations.m in Sources */ = {isa = PBXBuildFile; fileRef = 5586664E1A122DBC00927430 /* NSPersistentStoreCoordinator+QMCDManualMigrations.m */; };
+		558666971A122DBC00927430 /* NSPersistentStoreCoordinator+QMCDRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = 558666501A122DBC00927430 /* NSPersistentStoreCoordinator+QMCDRecord.m */; };
+		558666981A122DBC00927430 /* NSArray+QMCDRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = 558666531A122DBC00927430 /* NSArray+QMCDRecord.m */; };
+		558666991A122DBC00927430 /* NSDictionary+QMCDRecordAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 558666551A122DBC00927430 /* NSDictionary+QMCDRecordAdditions.m */; };
+		5586669A1A122DBC00927430 /* NSError+QMCDRecordErrorHandling.m in Sources */ = {isa = PBXBuildFile; fileRef = 558666571A122DBC00927430 /* NSError+QMCDRecordErrorHandling.m */; };
+		5586669B1A122DBC00927430 /* QMCDMigrationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 558666591A122DBC00927430 /* QMCDMigrationManager.m */; };
+		5586669C1A122DBC00927430 /* QMCDRecord+Actions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5586665C1A122DBC00927430 /* QMCDRecord+Actions.m */; };
+		5586669D1A122DBC00927430 /* QMCDRecord+Options.m in Sources */ = {isa = PBXBuildFile; fileRef = 5586665E1A122DBC00927430 /* QMCDRecord+Options.m */; };
+		5586669E1A122DBC00927430 /* QMCDRecord+Setup.m in Sources */ = {isa = PBXBuildFile; fileRef = 558666601A122DBC00927430 /* QMCDRecord+Setup.m */; };
+		5586669F1A122DBC00927430 /* QMCDRecord+VersionInformation.m in Sources */ = {isa = PBXBuildFile; fileRef = 558666621A122DBC00927430 /* QMCDRecord+VersionInformation.m */; };
+		558666A01A122DBC00927430 /* QMCDRecordInternal.m in Sources */ = {isa = PBXBuildFile; fileRef = 558666651A122DBC00927430 /* QMCDRecordInternal.m */; };
+		558666A11A122DBC00927430 /* QMCDRecordShorthand.m in Sources */ = {isa = PBXBuildFile; fileRef = 558666691A122DBC00927430 /* QMCDRecordShorthand.m */; };
+		558666A21A122DBC00927430 /* AutoMigratingQMCDRecordStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 5586666D1A122DBC00927430 /* AutoMigratingQMCDRecordStack.m */; };
+		558666A31A122DBC00927430 /* AutoMigratingWithSourceAndTargetModelQMCDRecordStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 5586666F1A122DBC00927430 /* AutoMigratingWithSourceAndTargetModelQMCDRecordStack.m */; };
+		558666A41A122DBC00927430 /* ClassicSQLiteQMCDRecordStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 558666711A122DBC00927430 /* ClassicSQLiteQMCDRecordStack.m */; };
+		558666A51A122DBC00927430 /* ClassicWithBackgroundCoordinatorSQLiteQMCDRecordStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 558666731A122DBC00927430 /* ClassicWithBackgroundCoordinatorSQLiteQMCDRecordStack.m */; };
+		558666A61A122DBC00927430 /* InMemoryQMCDRecordStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 558666751A122DBC00927430 /* InMemoryQMCDRecordStack.m */; };
+		558666A71A122DBC00927430 /* ManuallyMigratingQMCDRecordStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 558666771A122DBC00927430 /* ManuallyMigratingQMCDRecordStack.m */; };
+		558666A81A122DBC00927430 /* QMCDRecordStack+Actions.m in Sources */ = {isa = PBXBuildFile; fileRef = 558666791A122DBC00927430 /* QMCDRecordStack+Actions.m */; };
+		558666A91A122DBC00927430 /* QMCDRecordStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 5586667C1A122DBC00927430 /* QMCDRecordStack.m */; };
+		558666AA1A122DBC00927430 /* SQLiteQMCDRecordStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 5586667E1A122DBC00927430 /* SQLiteQMCDRecordStack.m */; };
+		558666AB1A122DBC00927430 /* SQLiteWithSavingContextQMCDRecordStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 558666801A122DBC00927430 /* SQLiteWithSavingContextQMCDRecordStack.m */; };
 		5590F23D1A0B87AB00C5044F /* QMDBStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 5590F23C1A0B87AB00C5044F /* QMDBStorage.m */; };
 		5590F2431A0B87AB00C5044F /* libQMDBStorage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5590F2371A0B87AB00C5044F /* libQMDBStorage.a */; };
 		5590F2FC1A0BA58800C5044F /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5590F2FB1A0BA58800C5044F /* CoreData.framework */; };
 		5590F2FE1A0BA5C000C5044F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5590F2FD1A0BA5C000C5044F /* UIKit.framework */; };
-		55D403121A10D88000C6573E /* NSAttributeDescription+QMMagicalDataImport.m in Sources */ = {isa = PBXBuildFile; fileRef = 55D402D81A10D88000C6573E /* NSAttributeDescription+QMMagicalDataImport.m */; };
-		55D403131A10D88000C6573E /* NSEntityDescription+QMMagicalDataImport.m in Sources */ = {isa = PBXBuildFile; fileRef = 55D402DA1A10D88000C6573E /* NSEntityDescription+QMMagicalDataImport.m */; };
-		55D403141A10D88000C6573E /* NSNumber+QMMagicalDataImport.m in Sources */ = {isa = PBXBuildFile; fileRef = 55D402DC1A10D88000C6573E /* NSNumber+QMMagicalDataImport.m */; };
-		55D403151A10D88000C6573E /* NSObject+QMMagicalDataImport.m in Sources */ = {isa = PBXBuildFile; fileRef = 55D402DE1A10D88000C6573E /* NSObject+QMMagicalDataImport.m */; };
-		55D403161A10D88000C6573E /* NSRelationshipDescription+QMMagicalDataImport.m in Sources */ = {isa = PBXBuildFile; fileRef = 55D402E01A10D88000C6573E /* NSRelationshipDescription+QMMagicalDataImport.m */; };
-		55D403171A10D88000C6573E /* NSString+QMMagicalDataImport.m in Sources */ = {isa = PBXBuildFile; fileRef = 55D402E21A10D88000C6573E /* NSString+QMMagicalDataImport.m */; };
-		55D403181A10D88000C6573E /* QMMagicalImportFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 55D402E41A10D88000C6573E /* QMMagicalImportFunctions.m */; };
-		55D403191A10D88000C6573E /* NSManagedObject+QMMagicalAggregation.m in Sources */ = {isa = PBXBuildFile; fileRef = 55D402E71A10D88000C6573E /* NSManagedObject+QMMagicalAggregation.m */; };
-		55D4031A1A10D88000C6573E /* NSManagedObject+QMMagicalDataImport.m in Sources */ = {isa = PBXBuildFile; fileRef = 55D402E91A10D88000C6573E /* NSManagedObject+QMMagicalDataImport.m */; };
-		55D4031B1A10D88000C6573E /* NSManagedObject+QMMagicalFinders.m in Sources */ = {isa = PBXBuildFile; fileRef = 55D402EB1A10D88000C6573E /* NSManagedObject+QMMagicalFinders.m */; };
-		55D4031C1A10D88000C6573E /* NSManagedObject+QMMagicalRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = 55D402ED1A10D88000C6573E /* NSManagedObject+QMMagicalRecord.m */; };
-		55D4031D1A10D88000C6573E /* NSManagedObject+QMMagicalRequests.m in Sources */ = {isa = PBXBuildFile; fileRef = 55D402EF1A10D88000C6573E /* NSManagedObject+QMMagicalRequests.m */; };
-		55D4031E1A10D88000C6573E /* NSManagedObjectContext+QMMagicalObserving.m in Sources */ = {isa = PBXBuildFile; fileRef = 55D402F21A10D88000C6573E /* NSManagedObjectContext+QMMagicalObserving.m */; };
-		55D4031F1A10D88000C6573E /* NSManagedObjectContext+QMMagicalRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = 55D402F41A10D88000C6573E /* NSManagedObjectContext+QMMagicalRecord.m */; };
-		55D403201A10D88000C6573E /* NSManagedObjectContext+QMMagicalSaves.m in Sources */ = {isa = PBXBuildFile; fileRef = 55D402F61A10D88000C6573E /* NSManagedObjectContext+QMMagicalSaves.m */; };
-		55D403211A10D88000C6573E /* NSManagedObjectContext+QMMagicalThreading.m in Sources */ = {isa = PBXBuildFile; fileRef = 55D402F81A10D88000C6573E /* NSManagedObjectContext+QMMagicalThreading.m */; };
-		55D403221A10D88000C6573E /* NSManagedObjectModel+QMMagicalRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = 55D402FA1A10D88000C6573E /* NSManagedObjectModel+QMMagicalRecord.m */; };
-		55D403231A10D88000C6573E /* NSPersistentStore+QMMagicalRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = 55D402FC1A10D88000C6573E /* NSPersistentStore+QMMagicalRecord.m */; };
-		55D403241A10D88000C6573E /* NSPersistentStoreCoordinator+QMMagicalRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = 55D402FE1A10D88000C6573E /* NSPersistentStoreCoordinator+QMMagicalRecord.m */; };
-		55D403251A10D88000C6573E /* QMMagicalRecord+Actions.m in Sources */ = {isa = PBXBuildFile; fileRef = 55D403011A10D88000C6573E /* QMMagicalRecord+Actions.m */; };
-		55D403261A10D88000C6573E /* QMMagicalRecord+ErrorHandling.m in Sources */ = {isa = PBXBuildFile; fileRef = 55D403031A10D88000C6573E /* QMMagicalRecord+ErrorHandling.m */; };
-		55D403271A10D88000C6573E /* QMMagicalRecord+iCloud.m in Sources */ = {isa = PBXBuildFile; fileRef = 55D403051A10D88000C6573E /* QMMagicalRecord+iCloud.m */; };
-		55D403281A10D88000C6573E /* QMMagicalRecord+Options.m in Sources */ = {isa = PBXBuildFile; fileRef = 55D403071A10D88000C6573E /* QMMagicalRecord+Options.m */; };
-		55D403291A10D88000C6573E /* QMMagicalRecord+Setup.m in Sources */ = {isa = PBXBuildFile; fileRef = 55D403091A10D88000C6573E /* QMMagicalRecord+Setup.m */; };
-		55D4032A1A10D88000C6573E /* QMMagicalRecord+ShorthandSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 55D4030B1A10D88000C6573E /* QMMagicalRecord+ShorthandSupport.m */; };
-		55D4032B1A10D88000C6573E /* QMMagicalRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = 55D4030D1A10D88000C6573E /* QMMagicalRecord.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,20 +66,99 @@
 		};
 /* End PBXContainerItemProxy section */
 
-/* Begin PBXCopyFilesBuildPhase section */
-		5590F2351A0B87AB00C5044F /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = include;
-			dstSubfolderSpec = 16;
-			files = (
-				5590F23B1A0B87AB00C5044F /* QMDBStorage.h in CopyFiles */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
+		5586661F1A122DBC00927430 /* NSAttributeDescription+QMCDDataImport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAttributeDescription+QMCDDataImport.h"; sourceTree = "<group>"; };
+		558666201A122DBC00927430 /* NSAttributeDescription+QMCDDataImport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSAttributeDescription+QMCDDataImport.m"; sourceTree = "<group>"; };
+		558666211A122DBC00927430 /* NSEntityDescription+QMCDDataImport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSEntityDescription+QMCDDataImport.h"; sourceTree = "<group>"; };
+		558666221A122DBC00927430 /* NSEntityDescription+QMCDDataImport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSEntityDescription+QMCDDataImport.m"; sourceTree = "<group>"; };
+		558666231A122DBC00927430 /* NSNumber+QMCDDataImport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+QMCDDataImport.h"; sourceTree = "<group>"; };
+		558666241A122DBC00927430 /* NSNumber+QMCDDataImport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumber+QMCDDataImport.m"; sourceTree = "<group>"; };
+		558666251A122DBC00927430 /* NSObject+QMCDDataImport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+QMCDDataImport.h"; sourceTree = "<group>"; };
+		558666261A122DBC00927430 /* NSObject+QMCDDataImport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+QMCDDataImport.m"; sourceTree = "<group>"; };
+		558666271A122DBC00927430 /* NSRelationshipDescription+QMCDDataImport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSRelationshipDescription+QMCDDataImport.h"; sourceTree = "<group>"; };
+		558666281A122DBC00927430 /* NSRelationshipDescription+QMCDDataImport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSRelationshipDescription+QMCDDataImport.m"; sourceTree = "<group>"; };
+		558666291A122DBC00927430 /* NSString+QMCDDataImport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+QMCDDataImport.h"; sourceTree = "<group>"; };
+		5586662A1A122DBC00927430 /* NSString+QMCDDataImport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+QMCDDataImport.m"; sourceTree = "<group>"; };
+		5586662B1A122DBC00927430 /* QMCDImportFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMCDImportFunctions.h; sourceTree = "<group>"; };
+		5586662C1A122DBC00927430 /* QMCDImportFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMCDImportFunctions.m; sourceTree = "<group>"; };
+		5586662D1A122DBC00927430 /* NSFetchedResultsController+QMCDFetching.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFetchedResultsController+QMCDFetching.h"; sourceTree = "<group>"; };
+		5586662E1A122DBC00927430 /* NSFetchedResultsController+QMCDFetching.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFetchedResultsController+QMCDFetching.m"; sourceTree = "<group>"; };
+		558666301A122DBC00927430 /* NSManagedObject+QMCDAggregation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+QMCDAggregation.h"; sourceTree = "<group>"; };
+		558666311A122DBC00927430 /* NSManagedObject+QMCDAggregation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+QMCDAggregation.m"; sourceTree = "<group>"; };
+		558666321A122DBC00927430 /* NSManagedObject+QMCDDataImport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+QMCDDataImport.h"; sourceTree = "<group>"; };
+		558666331A122DBC00927430 /* NSManagedObject+QMCDDataImport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+QMCDDataImport.m"; sourceTree = "<group>"; };
+		558666341A122DBC00927430 /* NSManagedObject+QMCDFetching.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+QMCDFetching.h"; sourceTree = "<group>"; };
+		558666351A122DBC00927430 /* NSManagedObject+QMCDFetching.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+QMCDFetching.m"; sourceTree = "<group>"; };
+		558666361A122DBC00927430 /* NSManagedObject+QMCDFinders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+QMCDFinders.h"; sourceTree = "<group>"; };
+		558666371A122DBC00927430 /* NSManagedObject+QMCDFinders.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+QMCDFinders.m"; sourceTree = "<group>"; };
+		558666381A122DBC00927430 /* NSManagedObject+QMCDRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+QMCDRecord.h"; sourceTree = "<group>"; };
+		558666391A122DBC00927430 /* NSManagedObject+QMCDRecord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+QMCDRecord.m"; sourceTree = "<group>"; };
+		5586663A1A122DBC00927430 /* NSManagedObject+QMCDRequests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+QMCDRequests.h"; sourceTree = "<group>"; };
+		5586663B1A122DBC00927430 /* NSManagedObject+QMCDRequests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+QMCDRequests.m"; sourceTree = "<group>"; };
+		5586663D1A122DBC00927430 /* NSManagedObjectContext+QMCDObserving.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObjectContext+QMCDObserving.h"; sourceTree = "<group>"; };
+		5586663E1A122DBC00927430 /* NSManagedObjectContext+QMCDObserving.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObjectContext+QMCDObserving.m"; sourceTree = "<group>"; };
+		5586663F1A122DBC00927430 /* NSManagedObjectContext+QMCDRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObjectContext+QMCDRecord.h"; sourceTree = "<group>"; };
+		558666401A122DBC00927430 /* NSManagedObjectContext+QMCDRecord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObjectContext+QMCDRecord.m"; sourceTree = "<group>"; };
+		558666411A122DBC00927430 /* NSManagedObjectContext+QMCDSaves.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObjectContext+QMCDSaves.h"; sourceTree = "<group>"; };
+		558666421A122DBC00927430 /* NSManagedObjectContext+QMCDSaves.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObjectContext+QMCDSaves.m"; sourceTree = "<group>"; };
+		558666431A122DBC00927430 /* NSManagedObjectModel+QMCDRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObjectModel+QMCDRecord.h"; sourceTree = "<group>"; };
+		558666441A122DBC00927430 /* NSManagedObjectModel+QMCDRecord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObjectModel+QMCDRecord.m"; sourceTree = "<group>"; };
+		558666451A122DBC00927430 /* NSPersistentStore+QMCDRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSPersistentStore+QMCDRecord.h"; sourceTree = "<group>"; };
+		558666461A122DBC00927430 /* NSPersistentStore+QMCDRecord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSPersistentStore+QMCDRecord.m"; sourceTree = "<group>"; };
+		558666471A122DBC00927430 /* NSPersistentStore+QMCDRecordPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSPersistentStore+QMCDRecordPrivate.h"; sourceTree = "<group>"; };
+		558666491A122DBC00927430 /* NSPersistentStoreCoordinator+QMCDAutoMigrations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSPersistentStoreCoordinator+QMCDAutoMigrations.h"; sourceTree = "<group>"; };
+		5586664A1A122DBC00927430 /* NSPersistentStoreCoordinator+QMCDAutoMigrations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSPersistentStoreCoordinator+QMCDAutoMigrations.m"; sourceTree = "<group>"; };
+		5586664B1A122DBC00927430 /* NSPersistentStoreCoordinator+QMCDInMemoryStoreAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSPersistentStoreCoordinator+QMCDInMemoryStoreAdditions.h"; sourceTree = "<group>"; };
+		5586664C1A122DBC00927430 /* NSPersistentStoreCoordinator+QMCDInMemoryStoreAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSPersistentStoreCoordinator+QMCDInMemoryStoreAdditions.m"; sourceTree = "<group>"; };
+		5586664D1A122DBC00927430 /* NSPersistentStoreCoordinator+QMCDManualMigrations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSPersistentStoreCoordinator+QMCDManualMigrations.h"; sourceTree = "<group>"; };
+		5586664E1A122DBC00927430 /* NSPersistentStoreCoordinator+QMCDManualMigrations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSPersistentStoreCoordinator+QMCDManualMigrations.m"; sourceTree = "<group>"; };
+		5586664F1A122DBC00927430 /* NSPersistentStoreCoordinator+QMCDRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSPersistentStoreCoordinator+QMCDRecord.h"; sourceTree = "<group>"; };
+		558666501A122DBC00927430 /* NSPersistentStoreCoordinator+QMCDRecord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSPersistentStoreCoordinator+QMCDRecord.m"; sourceTree = "<group>"; };
+		558666521A122DBC00927430 /* NSArray+QMCDRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+QMCDRecord.h"; sourceTree = "<group>"; };
+		558666531A122DBC00927430 /* NSArray+QMCDRecord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+QMCDRecord.m"; sourceTree = "<group>"; };
+		558666541A122DBC00927430 /* NSDictionary+QMCDRecordAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+QMCDRecordAdditions.h"; sourceTree = "<group>"; };
+		558666551A122DBC00927430 /* NSDictionary+QMCDRecordAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+QMCDRecordAdditions.m"; sourceTree = "<group>"; };
+		558666561A122DBC00927430 /* NSError+QMCDRecordErrorHandling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSError+QMCDRecordErrorHandling.h"; sourceTree = "<group>"; };
+		558666571A122DBC00927430 /* NSError+QMCDRecordErrorHandling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSError+QMCDRecordErrorHandling.m"; sourceTree = "<group>"; };
+		558666581A122DBC00927430 /* QMCDMigrationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMCDMigrationManager.h; sourceTree = "<group>"; };
+		558666591A122DBC00927430 /* QMCDMigrationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMCDMigrationManager.m; sourceTree = "<group>"; };
+		5586665B1A122DBC00927430 /* QMCDRecord+Actions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QMCDRecord+Actions.h"; sourceTree = "<group>"; };
+		5586665C1A122DBC00927430 /* QMCDRecord+Actions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "QMCDRecord+Actions.m"; sourceTree = "<group>"; };
+		5586665D1A122DBC00927430 /* QMCDRecord+Options.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QMCDRecord+Options.h"; sourceTree = "<group>"; };
+		5586665E1A122DBC00927430 /* QMCDRecord+Options.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "QMCDRecord+Options.m"; sourceTree = "<group>"; };
+		5586665F1A122DBC00927430 /* QMCDRecord+Setup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QMCDRecord+Setup.h"; sourceTree = "<group>"; };
+		558666601A122DBC00927430 /* QMCDRecord+Setup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "QMCDRecord+Setup.m"; sourceTree = "<group>"; };
+		558666611A122DBC00927430 /* QMCDRecord+VersionInformation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QMCDRecord+VersionInformation.h"; sourceTree = "<group>"; };
+		558666621A122DBC00927430 /* QMCDRecord+VersionInformation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "QMCDRecord+VersionInformation.m"; sourceTree = "<group>"; };
+		558666631A122DBC00927430 /* QMCDRecordDeprecated.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMCDRecordDeprecated.h; sourceTree = "<group>"; };
+		558666641A122DBC00927430 /* QMCDRecordInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMCDRecordInternal.h; sourceTree = "<group>"; };
+		558666651A122DBC00927430 /* QMCDRecordInternal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMCDRecordInternal.m; sourceTree = "<group>"; };
+		558666661A122DBC00927430 /* QMCDRecordLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMCDRecordLogging.h; sourceTree = "<group>"; };
+		558666671A122DBC00927430 /* QMCDRecordMOGeneratorProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMCDRecordMOGeneratorProtocol.h; sourceTree = "<group>"; };
+		558666681A122DBC00927430 /* QMCDRecordShorthand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMCDRecordShorthand.h; sourceTree = "<group>"; };
+		558666691A122DBC00927430 /* QMCDRecordShorthand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMCDRecordShorthand.m; sourceTree = "<group>"; };
+		5586666A1A122DBC00927430 /* QMCDRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMCDRecord.h; sourceTree = "<group>"; };
+		5586666C1A122DBC00927430 /* AutoMigratingQMCDRecordStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutoMigratingQMCDRecordStack.h; sourceTree = "<group>"; };
+		5586666D1A122DBC00927430 /* AutoMigratingQMCDRecordStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutoMigratingQMCDRecordStack.m; sourceTree = "<group>"; };
+		5586666E1A122DBC00927430 /* AutoMigratingWithSourceAndTargetModelQMCDRecordStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutoMigratingWithSourceAndTargetModelQMCDRecordStack.h; sourceTree = "<group>"; };
+		5586666F1A122DBC00927430 /* AutoMigratingWithSourceAndTargetModelQMCDRecordStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutoMigratingWithSourceAndTargetModelQMCDRecordStack.m; sourceTree = "<group>"; };
+		558666701A122DBC00927430 /* ClassicSQLiteQMCDRecordStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClassicSQLiteQMCDRecordStack.h; sourceTree = "<group>"; };
+		558666711A122DBC00927430 /* ClassicSQLiteQMCDRecordStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassicSQLiteQMCDRecordStack.m; sourceTree = "<group>"; };
+		558666721A122DBC00927430 /* ClassicWithBackgroundCoordinatorSQLiteQMCDRecordStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClassicWithBackgroundCoordinatorSQLiteQMCDRecordStack.h; sourceTree = "<group>"; };
+		558666731A122DBC00927430 /* ClassicWithBackgroundCoordinatorSQLiteQMCDRecordStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassicWithBackgroundCoordinatorSQLiteQMCDRecordStack.m; sourceTree = "<group>"; };
+		558666741A122DBC00927430 /* InMemoryQMCDRecordStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InMemoryQMCDRecordStack.h; sourceTree = "<group>"; };
+		558666751A122DBC00927430 /* InMemoryQMCDRecordStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InMemoryQMCDRecordStack.m; sourceTree = "<group>"; };
+		558666761A122DBC00927430 /* ManuallyMigratingQMCDRecordStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ManuallyMigratingQMCDRecordStack.h; sourceTree = "<group>"; };
+		558666771A122DBC00927430 /* ManuallyMigratingQMCDRecordStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ManuallyMigratingQMCDRecordStack.m; sourceTree = "<group>"; };
+		558666781A122DBC00927430 /* QMCDRecordStack+Actions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QMCDRecordStack+Actions.h"; sourceTree = "<group>"; };
+		558666791A122DBC00927430 /* QMCDRecordStack+Actions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "QMCDRecordStack+Actions.m"; sourceTree = "<group>"; };
+		5586667A1A122DBC00927430 /* QMCDRecordStack+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QMCDRecordStack+Private.h"; sourceTree = "<group>"; };
+		5586667B1A122DBC00927430 /* QMCDRecordStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMCDRecordStack.h; sourceTree = "<group>"; };
+		5586667C1A122DBC00927430 /* QMCDRecordStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMCDRecordStack.m; sourceTree = "<group>"; };
+		5586667D1A122DBC00927430 /* SQLiteQMCDRecordStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQLiteQMCDRecordStack.h; sourceTree = "<group>"; };
+		5586667E1A122DBC00927430 /* SQLiteQMCDRecordStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQLiteQMCDRecordStack.m; sourceTree = "<group>"; };
+		5586667F1A122DBC00927430 /* SQLiteWithSavingContextQMCDRecordStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQLiteWithSavingContextQMCDRecordStack.h; sourceTree = "<group>"; };
+		558666801A122DBC00927430 /* SQLiteWithSavingContextQMCDRecordStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQLiteWithSavingContextQMCDRecordStack.m; sourceTree = "<group>"; };
 		5590F2371A0B87AB00C5044F /* libQMDBStorage.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libQMDBStorage.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		5590F23A1A0B87AB00C5044F /* QMDBStorage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QMDBStorage.h; sourceTree = "<group>"; };
 		5590F23C1A0B87AB00C5044F /* QMDBStorage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QMDBStorage.m; sourceTree = "<group>"; };
@@ -72,62 +167,6 @@
 		5590F2FB1A0BA58800C5044F /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.1.sdk/System/Library/Frameworks/CoreData.framework; sourceTree = DEVELOPER_DIR; };
 		5590F2FD1A0BA5C000C5044F /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.1.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		5590F3011A0BA6B200C5044F /* QMDBStorage-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QMDBStorage-Prefix.pch"; sourceTree = "<group>"; };
-		55D402D71A10D88000C6573E /* NSAttributeDescription+QMMagicalDataImport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAttributeDescription+QMMagicalDataImport.h"; sourceTree = "<group>"; };
-		55D402D81A10D88000C6573E /* NSAttributeDescription+QMMagicalDataImport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSAttributeDescription+QMMagicalDataImport.m"; sourceTree = "<group>"; };
-		55D402D91A10D88000C6573E /* NSEntityDescription+QMMagicalDataImport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSEntityDescription+QMMagicalDataImport.h"; sourceTree = "<group>"; };
-		55D402DA1A10D88000C6573E /* NSEntityDescription+QMMagicalDataImport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSEntityDescription+QMMagicalDataImport.m"; sourceTree = "<group>"; };
-		55D402DB1A10D88000C6573E /* NSNumber+QMMagicalDataImport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+QMMagicalDataImport.h"; sourceTree = "<group>"; };
-		55D402DC1A10D88000C6573E /* NSNumber+QMMagicalDataImport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumber+QMMagicalDataImport.m"; sourceTree = "<group>"; };
-		55D402DD1A10D88000C6573E /* NSObject+QMMagicalDataImport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+QMMagicalDataImport.h"; sourceTree = "<group>"; };
-		55D402DE1A10D88000C6573E /* NSObject+QMMagicalDataImport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+QMMagicalDataImport.m"; sourceTree = "<group>"; };
-		55D402DF1A10D88000C6573E /* NSRelationshipDescription+QMMagicalDataImport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSRelationshipDescription+QMMagicalDataImport.h"; sourceTree = "<group>"; };
-		55D402E01A10D88000C6573E /* NSRelationshipDescription+QMMagicalDataImport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSRelationshipDescription+QMMagicalDataImport.m"; sourceTree = "<group>"; };
-		55D402E11A10D88000C6573E /* NSString+QMMagicalDataImport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+QMMagicalDataImport.h"; sourceTree = "<group>"; };
-		55D402E21A10D88000C6573E /* NSString+QMMagicalDataImport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+QMMagicalDataImport.m"; sourceTree = "<group>"; };
-		55D402E31A10D88000C6573E /* QMMagicalImportFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMMagicalImportFunctions.h; sourceTree = "<group>"; };
-		55D402E41A10D88000C6573E /* QMMagicalImportFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMMagicalImportFunctions.m; sourceTree = "<group>"; };
-		55D402E61A10D88000C6573E /* NSManagedObject+QMMagicalAggregation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+QMMagicalAggregation.h"; sourceTree = "<group>"; };
-		55D402E71A10D88000C6573E /* NSManagedObject+QMMagicalAggregation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+QMMagicalAggregation.m"; sourceTree = "<group>"; };
-		55D402E81A10D88000C6573E /* NSManagedObject+QMMagicalDataImport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+QMMagicalDataImport.h"; sourceTree = "<group>"; };
-		55D402E91A10D88000C6573E /* NSManagedObject+QMMagicalDataImport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+QMMagicalDataImport.m"; sourceTree = "<group>"; };
-		55D402EA1A10D88000C6573E /* NSManagedObject+QMMagicalFinders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+QMMagicalFinders.h"; sourceTree = "<group>"; };
-		55D402EB1A10D88000C6573E /* NSManagedObject+QMMagicalFinders.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+QMMagicalFinders.m"; sourceTree = "<group>"; };
-		55D402EC1A10D88000C6573E /* NSManagedObject+QMMagicalRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+QMMagicalRecord.h"; sourceTree = "<group>"; };
-		55D402ED1A10D88000C6573E /* NSManagedObject+QMMagicalRecord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+QMMagicalRecord.m"; sourceTree = "<group>"; };
-		55D402EE1A10D88000C6573E /* NSManagedObject+QMMagicalRequests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+QMMagicalRequests.h"; sourceTree = "<group>"; };
-		55D402EF1A10D88000C6573E /* NSManagedObject+QMMagicalRequests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+QMMagicalRequests.m"; sourceTree = "<group>"; };
-		55D402F11A10D88000C6573E /* NSManagedObjectContext+QMMagicalObserving.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObjectContext+QMMagicalObserving.h"; sourceTree = "<group>"; };
-		55D402F21A10D88000C6573E /* NSManagedObjectContext+QMMagicalObserving.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObjectContext+QMMagicalObserving.m"; sourceTree = "<group>"; };
-		55D402F31A10D88000C6573E /* NSManagedObjectContext+QMMagicalRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObjectContext+QMMagicalRecord.h"; sourceTree = "<group>"; };
-		55D402F41A10D88000C6573E /* NSManagedObjectContext+QMMagicalRecord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObjectContext+QMMagicalRecord.m"; sourceTree = "<group>"; };
-		55D402F51A10D88000C6573E /* NSManagedObjectContext+QMMagicalSaves.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObjectContext+QMMagicalSaves.h"; sourceTree = "<group>"; };
-		55D402F61A10D88000C6573E /* NSManagedObjectContext+QMMagicalSaves.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObjectContext+QMMagicalSaves.m"; sourceTree = "<group>"; };
-		55D402F71A10D88000C6573E /* NSManagedObjectContext+QMMagicalThreading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObjectContext+QMMagicalThreading.h"; sourceTree = "<group>"; };
-		55D402F81A10D88000C6573E /* NSManagedObjectContext+QMMagicalThreading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObjectContext+QMMagicalThreading.m"; sourceTree = "<group>"; };
-		55D402F91A10D88000C6573E /* NSManagedObjectModel+QMMagicalRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObjectModel+QMMagicalRecord.h"; sourceTree = "<group>"; };
-		55D402FA1A10D88000C6573E /* NSManagedObjectModel+QMMagicalRecord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObjectModel+QMMagicalRecord.m"; sourceTree = "<group>"; };
-		55D402FB1A10D88000C6573E /* NSPersistentStore+QMMagicalRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSPersistentStore+QMMagicalRecord.h"; sourceTree = "<group>"; };
-		55D402FC1A10D88000C6573E /* NSPersistentStore+QMMagicalRecord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSPersistentStore+QMMagicalRecord.m"; sourceTree = "<group>"; };
-		55D402FD1A10D88000C6573E /* NSPersistentStoreCoordinator+QMMagicalRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSPersistentStoreCoordinator+QMMagicalRecord.h"; sourceTree = "<group>"; };
-		55D402FE1A10D88000C6573E /* NSPersistentStoreCoordinator+QMMagicalRecord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSPersistentStoreCoordinator+QMMagicalRecord.m"; sourceTree = "<group>"; };
-		55D403001A10D88000C6573E /* QMMagicalRecord+Actions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QMMagicalRecord+Actions.h"; sourceTree = "<group>"; };
-		55D403011A10D88000C6573E /* QMMagicalRecord+Actions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "QMMagicalRecord+Actions.m"; sourceTree = "<group>"; };
-		55D403021A10D88000C6573E /* QMMagicalRecord+ErrorHandling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QMMagicalRecord+ErrorHandling.h"; sourceTree = "<group>"; };
-		55D403031A10D88000C6573E /* QMMagicalRecord+ErrorHandling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "QMMagicalRecord+ErrorHandling.m"; sourceTree = "<group>"; };
-		55D403041A10D88000C6573E /* QMMagicalRecord+iCloud.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QMMagicalRecord+iCloud.h"; sourceTree = "<group>"; };
-		55D403051A10D88000C6573E /* QMMagicalRecord+iCloud.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "QMMagicalRecord+iCloud.m"; sourceTree = "<group>"; };
-		55D403061A10D88000C6573E /* QMMagicalRecord+Options.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QMMagicalRecord+Options.h"; sourceTree = "<group>"; };
-		55D403071A10D88000C6573E /* QMMagicalRecord+Options.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "QMMagicalRecord+Options.m"; sourceTree = "<group>"; };
-		55D403081A10D88000C6573E /* QMMagicalRecord+Setup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QMMagicalRecord+Setup.h"; sourceTree = "<group>"; };
-		55D403091A10D88000C6573E /* QMMagicalRecord+Setup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "QMMagicalRecord+Setup.m"; sourceTree = "<group>"; };
-		55D4030A1A10D88000C6573E /* QMMagicalRecord+ShorthandSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QMMagicalRecord+ShorthandSupport.h"; sourceTree = "<group>"; };
-		55D4030B1A10D88000C6573E /* QMMagicalRecord+ShorthandSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "QMMagicalRecord+ShorthandSupport.m"; sourceTree = "<group>"; };
-		55D4030C1A10D88000C6573E /* QMMagicalRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMMagicalRecord.h; sourceTree = "<group>"; };
-		55D4030D1A10D88000C6573E /* QMMagicalRecord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMMagicalRecord.m; sourceTree = "<group>"; };
-		55D4030E1A10D88000C6573E /* QMMagicalRecordDeprecated.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMMagicalRecordDeprecated.h; sourceTree = "<group>"; };
-		55D4030F1A10D88000C6573E /* QMMagicalRecordLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMMagicalRecordLogging.h; sourceTree = "<group>"; };
-		55D403101A10D88000C6573E /* QMMagicalRecordShorthand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMMagicalRecordShorthand.h; sourceTree = "<group>"; };
-		55D403111A10D88000C6573E /* CoreData+QMMagicalRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CoreData+QMMagicalRecord.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -151,6 +190,177 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5586661B1A122DBB00927430 /* QMCDRecord */ = {
+			isa = PBXGroup;
+			children = (
+				5586666A1A122DBC00927430 /* QMCDRecord.h */,
+				558666581A122DBC00927430 /* QMCDMigrationManager.h */,
+				558666591A122DBC00927430 /* QMCDMigrationManager.m */,
+				5586661C1A122DBC00927430 /* Categories */,
+				5586665A1A122DBC00927430 /* QMCDRecord */,
+				5586666B1A122DBC00927430 /* QMCDRecordStack */,
+			);
+			path = QMCDRecord;
+			sourceTree = "<group>";
+		};
+		5586661C1A122DBC00927430 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				5586661D1A122DBC00927430 /* CoreData */,
+				558666511A122DBC00927430 /* Foundation */,
+			);
+			path = Categories;
+			sourceTree = "<group>";
+		};
+		5586661D1A122DBC00927430 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				5586661E1A122DBC00927430 /* Import */,
+				5586662D1A122DBC00927430 /* NSFetchedResultsController+QMCDFetching.h */,
+				5586662E1A122DBC00927430 /* NSFetchedResultsController+QMCDFetching.m */,
+				5586662F1A122DBC00927430 /* NSManagedObject */,
+				5586663C1A122DBC00927430 /* NSManagedObjectContext */,
+				558666431A122DBC00927430 /* NSManagedObjectModel+QMCDRecord.h */,
+				558666441A122DBC00927430 /* NSManagedObjectModel+QMCDRecord.m */,
+				558666451A122DBC00927430 /* NSPersistentStore+QMCDRecord.h */,
+				558666461A122DBC00927430 /* NSPersistentStore+QMCDRecord.m */,
+				558666471A122DBC00927430 /* NSPersistentStore+QMCDRecordPrivate.h */,
+				558666481A122DBC00927430 /* NSPersistentStoreCoordinator */,
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
+		5586661E1A122DBC00927430 /* Import */ = {
+			isa = PBXGroup;
+			children = (
+				5586661F1A122DBC00927430 /* NSAttributeDescription+QMCDDataImport.h */,
+				558666201A122DBC00927430 /* NSAttributeDescription+QMCDDataImport.m */,
+				558666211A122DBC00927430 /* NSEntityDescription+QMCDDataImport.h */,
+				558666221A122DBC00927430 /* NSEntityDescription+QMCDDataImport.m */,
+				558666231A122DBC00927430 /* NSNumber+QMCDDataImport.h */,
+				558666241A122DBC00927430 /* NSNumber+QMCDDataImport.m */,
+				558666251A122DBC00927430 /* NSObject+QMCDDataImport.h */,
+				558666261A122DBC00927430 /* NSObject+QMCDDataImport.m */,
+				558666271A122DBC00927430 /* NSRelationshipDescription+QMCDDataImport.h */,
+				558666281A122DBC00927430 /* NSRelationshipDescription+QMCDDataImport.m */,
+				558666291A122DBC00927430 /* NSString+QMCDDataImport.h */,
+				5586662A1A122DBC00927430 /* NSString+QMCDDataImport.m */,
+				5586662B1A122DBC00927430 /* QMCDImportFunctions.h */,
+				5586662C1A122DBC00927430 /* QMCDImportFunctions.m */,
+			);
+			path = Import;
+			sourceTree = "<group>";
+		};
+		5586662F1A122DBC00927430 /* NSManagedObject */ = {
+			isa = PBXGroup;
+			children = (
+				558666301A122DBC00927430 /* NSManagedObject+QMCDAggregation.h */,
+				558666311A122DBC00927430 /* NSManagedObject+QMCDAggregation.m */,
+				558666321A122DBC00927430 /* NSManagedObject+QMCDDataImport.h */,
+				558666331A122DBC00927430 /* NSManagedObject+QMCDDataImport.m */,
+				558666341A122DBC00927430 /* NSManagedObject+QMCDFetching.h */,
+				558666351A122DBC00927430 /* NSManagedObject+QMCDFetching.m */,
+				558666361A122DBC00927430 /* NSManagedObject+QMCDFinders.h */,
+				558666371A122DBC00927430 /* NSManagedObject+QMCDFinders.m */,
+				558666381A122DBC00927430 /* NSManagedObject+QMCDRecord.h */,
+				558666391A122DBC00927430 /* NSManagedObject+QMCDRecord.m */,
+				5586663A1A122DBC00927430 /* NSManagedObject+QMCDRequests.h */,
+				5586663B1A122DBC00927430 /* NSManagedObject+QMCDRequests.m */,
+			);
+			path = NSManagedObject;
+			sourceTree = "<group>";
+		};
+		5586663C1A122DBC00927430 /* NSManagedObjectContext */ = {
+			isa = PBXGroup;
+			children = (
+				5586663D1A122DBC00927430 /* NSManagedObjectContext+QMCDObserving.h */,
+				5586663E1A122DBC00927430 /* NSManagedObjectContext+QMCDObserving.m */,
+				5586663F1A122DBC00927430 /* NSManagedObjectContext+QMCDRecord.h */,
+				558666401A122DBC00927430 /* NSManagedObjectContext+QMCDRecord.m */,
+				558666411A122DBC00927430 /* NSManagedObjectContext+QMCDSaves.h */,
+				558666421A122DBC00927430 /* NSManagedObjectContext+QMCDSaves.m */,
+			);
+			path = NSManagedObjectContext;
+			sourceTree = "<group>";
+		};
+		558666481A122DBC00927430 /* NSPersistentStoreCoordinator */ = {
+			isa = PBXGroup;
+			children = (
+				558666491A122DBC00927430 /* NSPersistentStoreCoordinator+QMCDAutoMigrations.h */,
+				5586664A1A122DBC00927430 /* NSPersistentStoreCoordinator+QMCDAutoMigrations.m */,
+				5586664B1A122DBC00927430 /* NSPersistentStoreCoordinator+QMCDInMemoryStoreAdditions.h */,
+				5586664C1A122DBC00927430 /* NSPersistentStoreCoordinator+QMCDInMemoryStoreAdditions.m */,
+				5586664D1A122DBC00927430 /* NSPersistentStoreCoordinator+QMCDManualMigrations.h */,
+				5586664E1A122DBC00927430 /* NSPersistentStoreCoordinator+QMCDManualMigrations.m */,
+				5586664F1A122DBC00927430 /* NSPersistentStoreCoordinator+QMCDRecord.h */,
+				558666501A122DBC00927430 /* NSPersistentStoreCoordinator+QMCDRecord.m */,
+			);
+			path = NSPersistentStoreCoordinator;
+			sourceTree = "<group>";
+		};
+		558666511A122DBC00927430 /* Foundation */ = {
+			isa = PBXGroup;
+			children = (
+				558666521A122DBC00927430 /* NSArray+QMCDRecord.h */,
+				558666531A122DBC00927430 /* NSArray+QMCDRecord.m */,
+				558666541A122DBC00927430 /* NSDictionary+QMCDRecordAdditions.h */,
+				558666551A122DBC00927430 /* NSDictionary+QMCDRecordAdditions.m */,
+				558666561A122DBC00927430 /* NSError+QMCDRecordErrorHandling.h */,
+				558666571A122DBC00927430 /* NSError+QMCDRecordErrorHandling.m */,
+			);
+			path = Foundation;
+			sourceTree = "<group>";
+		};
+		5586665A1A122DBC00927430 /* QMCDRecord */ = {
+			isa = PBXGroup;
+			children = (
+				5586665B1A122DBC00927430 /* QMCDRecord+Actions.h */,
+				5586665C1A122DBC00927430 /* QMCDRecord+Actions.m */,
+				5586665D1A122DBC00927430 /* QMCDRecord+Options.h */,
+				5586665E1A122DBC00927430 /* QMCDRecord+Options.m */,
+				5586665F1A122DBC00927430 /* QMCDRecord+Setup.h */,
+				558666601A122DBC00927430 /* QMCDRecord+Setup.m */,
+				558666611A122DBC00927430 /* QMCDRecord+VersionInformation.h */,
+				558666621A122DBC00927430 /* QMCDRecord+VersionInformation.m */,
+				558666631A122DBC00927430 /* QMCDRecordDeprecated.h */,
+				558666641A122DBC00927430 /* QMCDRecordInternal.h */,
+				558666651A122DBC00927430 /* QMCDRecordInternal.m */,
+				558666661A122DBC00927430 /* QMCDRecordLogging.h */,
+				558666671A122DBC00927430 /* QMCDRecordMOGeneratorProtocol.h */,
+				558666681A122DBC00927430 /* QMCDRecordShorthand.h */,
+				558666691A122DBC00927430 /* QMCDRecordShorthand.m */,
+			);
+			path = QMCDRecord;
+			sourceTree = "<group>";
+		};
+		5586666B1A122DBC00927430 /* QMCDRecordStack */ = {
+			isa = PBXGroup;
+			children = (
+				5586666C1A122DBC00927430 /* AutoMigratingQMCDRecordStack.h */,
+				5586666D1A122DBC00927430 /* AutoMigratingQMCDRecordStack.m */,
+				5586666E1A122DBC00927430 /* AutoMigratingWithSourceAndTargetModelQMCDRecordStack.h */,
+				5586666F1A122DBC00927430 /* AutoMigratingWithSourceAndTargetModelQMCDRecordStack.m */,
+				558666701A122DBC00927430 /* ClassicSQLiteQMCDRecordStack.h */,
+				558666711A122DBC00927430 /* ClassicSQLiteQMCDRecordStack.m */,
+				558666721A122DBC00927430 /* ClassicWithBackgroundCoordinatorSQLiteQMCDRecordStack.h */,
+				558666731A122DBC00927430 /* ClassicWithBackgroundCoordinatorSQLiteQMCDRecordStack.m */,
+				558666741A122DBC00927430 /* InMemoryQMCDRecordStack.h */,
+				558666751A122DBC00927430 /* InMemoryQMCDRecordStack.m */,
+				558666761A122DBC00927430 /* ManuallyMigratingQMCDRecordStack.h */,
+				558666771A122DBC00927430 /* ManuallyMigratingQMCDRecordStack.m */,
+				558666781A122DBC00927430 /* QMCDRecordStack+Actions.h */,
+				558666791A122DBC00927430 /* QMCDRecordStack+Actions.m */,
+				5586667A1A122DBC00927430 /* QMCDRecordStack+Private.h */,
+				5586667B1A122DBC00927430 /* QMCDRecordStack.h */,
+				5586667C1A122DBC00927430 /* QMCDRecordStack.m */,
+				5586667D1A122DBC00927430 /* SQLiteQMCDRecordStack.h */,
+				5586667E1A122DBC00927430 /* SQLiteQMCDRecordStack.m */,
+				5586667F1A122DBC00927430 /* SQLiteWithSavingContextQMCDRecordStack.h */,
+				558666801A122DBC00927430 /* SQLiteWithSavingContextQMCDRecordStack.m */,
+			);
+			path = QMCDRecordStack;
+			sourceTree = "<group>";
+		};
 		5590F2251A0B876F00C5044F = {
 			isa = PBXGroup;
 			children = (
@@ -174,9 +384,9 @@
 		5590F2391A0B87AB00C5044F /* QMDBStorage */ = {
 			isa = PBXGroup;
 			children = (
-				55D402D41A10D88000C6573E /* QMMagicalRecord */,
 				5590F23A1A0B87AB00C5044F /* QMDBStorage.h */,
 				5590F23C1A0B87AB00C5044F /* QMDBStorage.m */,
+				5586661B1A122DBB00927430 /* QMCDRecord */,
 			);
 			path = QMDBStorage;
 			sourceTree = "<group>";
@@ -214,109 +424,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		55D402D41A10D88000C6573E /* QMMagicalRecord */ = {
-			isa = PBXGroup;
-			children = (
-				55D402D51A10D88000C6573E /* Categories */,
-				55D402FF1A10D88000C6573E /* Core */,
-				55D403111A10D88000C6573E /* CoreData+QMMagicalRecord.h */,
-			);
-			path = QMMagicalRecord;
-			sourceTree = "<group>";
-		};
-		55D402D51A10D88000C6573E /* Categories */ = {
-			isa = PBXGroup;
-			children = (
-				55D402D61A10D88000C6573E /* DataImport */,
-				55D402E51A10D88000C6573E /* NSManagedObject */,
-				55D402F01A10D88000C6573E /* NSManagedObjectContext */,
-				55D402F91A10D88000C6573E /* NSManagedObjectModel+QMMagicalRecord.h */,
-				55D402FA1A10D88000C6573E /* NSManagedObjectModel+QMMagicalRecord.m */,
-				55D402FB1A10D88000C6573E /* NSPersistentStore+QMMagicalRecord.h */,
-				55D402FC1A10D88000C6573E /* NSPersistentStore+QMMagicalRecord.m */,
-				55D402FD1A10D88000C6573E /* NSPersistentStoreCoordinator+QMMagicalRecord.h */,
-				55D402FE1A10D88000C6573E /* NSPersistentStoreCoordinator+QMMagicalRecord.m */,
-			);
-			path = Categories;
-			sourceTree = "<group>";
-		};
-		55D402D61A10D88000C6573E /* DataImport */ = {
-			isa = PBXGroup;
-			children = (
-				55D402D71A10D88000C6573E /* NSAttributeDescription+QMMagicalDataImport.h */,
-				55D402D81A10D88000C6573E /* NSAttributeDescription+QMMagicalDataImport.m */,
-				55D402D91A10D88000C6573E /* NSEntityDescription+QMMagicalDataImport.h */,
-				55D402DA1A10D88000C6573E /* NSEntityDescription+QMMagicalDataImport.m */,
-				55D402DB1A10D88000C6573E /* NSNumber+QMMagicalDataImport.h */,
-				55D402DC1A10D88000C6573E /* NSNumber+QMMagicalDataImport.m */,
-				55D402DD1A10D88000C6573E /* NSObject+QMMagicalDataImport.h */,
-				55D402DE1A10D88000C6573E /* NSObject+QMMagicalDataImport.m */,
-				55D402DF1A10D88000C6573E /* NSRelationshipDescription+QMMagicalDataImport.h */,
-				55D402E01A10D88000C6573E /* NSRelationshipDescription+QMMagicalDataImport.m */,
-				55D402E11A10D88000C6573E /* NSString+QMMagicalDataImport.h */,
-				55D402E21A10D88000C6573E /* NSString+QMMagicalDataImport.m */,
-				55D402E31A10D88000C6573E /* QMMagicalImportFunctions.h */,
-				55D402E41A10D88000C6573E /* QMMagicalImportFunctions.m */,
-			);
-			path = DataImport;
-			sourceTree = "<group>";
-		};
-		55D402E51A10D88000C6573E /* NSManagedObject */ = {
-			isa = PBXGroup;
-			children = (
-				55D402E61A10D88000C6573E /* NSManagedObject+QMMagicalAggregation.h */,
-				55D402E71A10D88000C6573E /* NSManagedObject+QMMagicalAggregation.m */,
-				55D402E81A10D88000C6573E /* NSManagedObject+QMMagicalDataImport.h */,
-				55D402E91A10D88000C6573E /* NSManagedObject+QMMagicalDataImport.m */,
-				55D402EA1A10D88000C6573E /* NSManagedObject+QMMagicalFinders.h */,
-				55D402EB1A10D88000C6573E /* NSManagedObject+QMMagicalFinders.m */,
-				55D402EC1A10D88000C6573E /* NSManagedObject+QMMagicalRecord.h */,
-				55D402ED1A10D88000C6573E /* NSManagedObject+QMMagicalRecord.m */,
-				55D402EE1A10D88000C6573E /* NSManagedObject+QMMagicalRequests.h */,
-				55D402EF1A10D88000C6573E /* NSManagedObject+QMMagicalRequests.m */,
-			);
-			path = NSManagedObject;
-			sourceTree = "<group>";
-		};
-		55D402F01A10D88000C6573E /* NSManagedObjectContext */ = {
-			isa = PBXGroup;
-			children = (
-				55D402F11A10D88000C6573E /* NSManagedObjectContext+QMMagicalObserving.h */,
-				55D402F21A10D88000C6573E /* NSManagedObjectContext+QMMagicalObserving.m */,
-				55D402F31A10D88000C6573E /* NSManagedObjectContext+QMMagicalRecord.h */,
-				55D402F41A10D88000C6573E /* NSManagedObjectContext+QMMagicalRecord.m */,
-				55D402F51A10D88000C6573E /* NSManagedObjectContext+QMMagicalSaves.h */,
-				55D402F61A10D88000C6573E /* NSManagedObjectContext+QMMagicalSaves.m */,
-				55D402F71A10D88000C6573E /* NSManagedObjectContext+QMMagicalThreading.h */,
-				55D402F81A10D88000C6573E /* NSManagedObjectContext+QMMagicalThreading.m */,
-			);
-			path = NSManagedObjectContext;
-			sourceTree = "<group>";
-		};
-		55D402FF1A10D88000C6573E /* Core */ = {
-			isa = PBXGroup;
-			children = (
-				55D403001A10D88000C6573E /* QMMagicalRecord+Actions.h */,
-				55D403011A10D88000C6573E /* QMMagicalRecord+Actions.m */,
-				55D403021A10D88000C6573E /* QMMagicalRecord+ErrorHandling.h */,
-				55D403031A10D88000C6573E /* QMMagicalRecord+ErrorHandling.m */,
-				55D403041A10D88000C6573E /* QMMagicalRecord+iCloud.h */,
-				55D403051A10D88000C6573E /* QMMagicalRecord+iCloud.m */,
-				55D403061A10D88000C6573E /* QMMagicalRecord+Options.h */,
-				55D403071A10D88000C6573E /* QMMagicalRecord+Options.m */,
-				55D403081A10D88000C6573E /* QMMagicalRecord+Setup.h */,
-				55D403091A10D88000C6573E /* QMMagicalRecord+Setup.m */,
-				55D4030A1A10D88000C6573E /* QMMagicalRecord+ShorthandSupport.h */,
-				55D4030B1A10D88000C6573E /* QMMagicalRecord+ShorthandSupport.m */,
-				55D4030C1A10D88000C6573E /* QMMagicalRecord.h */,
-				55D4030D1A10D88000C6573E /* QMMagicalRecord.m */,
-				55D4030E1A10D88000C6573E /* QMMagicalRecordDeprecated.h */,
-				55D4030F1A10D88000C6573E /* QMMagicalRecordLogging.h */,
-				55D403101A10D88000C6573E /* QMMagicalRecordShorthand.h */,
-			);
-			path = Core;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -326,9 +433,6 @@
 			buildPhases = (
 				5590F2331A0B87AB00C5044F /* Sources */,
 				5590F2341A0B87AB00C5044F /* Frameworks */,
-				5590F2351A0B87AB00C5044F /* CopyFiles */,
-				5550BC711A0CCC890015965D /* MagicalRecord copy Headers */,
-				553205181A0D3A1400B4F4F2 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -406,33 +510,50 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				55D403191A10D88000C6573E /* NSManagedObject+QMMagicalAggregation.m in Sources */,
-				55D4032B1A10D88000C6573E /* QMMagicalRecord.m in Sources */,
-				55D403131A10D88000C6573E /* NSEntityDescription+QMMagicalDataImport.m in Sources */,
-				55D403251A10D88000C6573E /* QMMagicalRecord+Actions.m in Sources */,
-				55D4031E1A10D88000C6573E /* NSManagedObjectContext+QMMagicalObserving.m in Sources */,
-				55D403161A10D88000C6573E /* NSRelationshipDescription+QMMagicalDataImport.m in Sources */,
-				55D403261A10D88000C6573E /* QMMagicalRecord+ErrorHandling.m in Sources */,
-				55D4031F1A10D88000C6573E /* NSManagedObjectContext+QMMagicalRecord.m in Sources */,
-				55D403201A10D88000C6573E /* NSManagedObjectContext+QMMagicalSaves.m in Sources */,
-				55D403121A10D88000C6573E /* NSAttributeDescription+QMMagicalDataImport.m in Sources */,
-				55D403171A10D88000C6573E /* NSString+QMMagicalDataImport.m in Sources */,
-				55D403231A10D88000C6573E /* NSPersistentStore+QMMagicalRecord.m in Sources */,
-				55D4031A1A10D88000C6573E /* NSManagedObject+QMMagicalDataImport.m in Sources */,
-				55D403241A10D88000C6573E /* NSPersistentStoreCoordinator+QMMagicalRecord.m in Sources */,
-				55D403151A10D88000C6573E /* NSObject+QMMagicalDataImport.m in Sources */,
-				55D403181A10D88000C6573E /* QMMagicalImportFunctions.m in Sources */,
-				55D403291A10D88000C6573E /* QMMagicalRecord+Setup.m in Sources */,
+				5586669D1A122DBC00927430 /* QMCDRecord+Options.m in Sources */,
+				558666821A122DBC00927430 /* NSEntityDescription+QMCDDataImport.m in Sources */,
+				558666871A122DBC00927430 /* QMCDImportFunctions.m in Sources */,
+				5586669A1A122DBC00927430 /* NSError+QMCDRecordErrorHandling.m in Sources */,
+				558666A71A122DBC00927430 /* ManuallyMigratingQMCDRecordStack.m in Sources */,
+				5586668A1A122DBC00927430 /* NSManagedObject+QMCDDataImport.m in Sources */,
+				558666951A122DBC00927430 /* NSPersistentStoreCoordinator+QMCDInMemoryStoreAdditions.m in Sources */,
+				558666A31A122DBC00927430 /* AutoMigratingWithSourceAndTargetModelQMCDRecordStack.m in Sources */,
+				558666A91A122DBC00927430 /* QMCDRecordStack.m in Sources */,
+				5586669E1A122DBC00927430 /* QMCDRecord+Setup.m in Sources */,
+				558666811A122DBC00927430 /* NSAttributeDescription+QMCDDataImport.m in Sources */,
+				558666891A122DBC00927430 /* NSManagedObject+QMCDAggregation.m in Sources */,
+				5586668D1A122DBC00927430 /* NSManagedObject+QMCDRecord.m in Sources */,
+				558666921A122DBC00927430 /* NSManagedObjectModel+QMCDRecord.m in Sources */,
+				558666931A122DBC00927430 /* NSPersistentStore+QMCDRecord.m in Sources */,
+				5586668E1A122DBC00927430 /* NSManagedObject+QMCDRequests.m in Sources */,
+				558666A41A122DBC00927430 /* ClassicSQLiteQMCDRecordStack.m in Sources */,
 				5590F23D1A0B87AB00C5044F /* QMDBStorage.m in Sources */,
-				55D4031D1A10D88000C6573E /* NSManagedObject+QMMagicalRequests.m in Sources */,
-				55D4031C1A10D88000C6573E /* NSManagedObject+QMMagicalRecord.m in Sources */,
-				55D403141A10D88000C6573E /* NSNumber+QMMagicalDataImport.m in Sources */,
-				55D403221A10D88000C6573E /* NSManagedObjectModel+QMMagicalRecord.m in Sources */,
-				55D4032A1A10D88000C6573E /* QMMagicalRecord+ShorthandSupport.m in Sources */,
-				55D403271A10D88000C6573E /* QMMagicalRecord+iCloud.m in Sources */,
-				55D4031B1A10D88000C6573E /* NSManagedObject+QMMagicalFinders.m in Sources */,
-				55D403281A10D88000C6573E /* QMMagicalRecord+Options.m in Sources */,
-				55D403211A10D88000C6573E /* NSManagedObjectContext+QMMagicalThreading.m in Sources */,
+				558666841A122DBC00927430 /* NSObject+QMCDDataImport.m in Sources */,
+				558666881A122DBC00927430 /* NSFetchedResultsController+QMCDFetching.m in Sources */,
+				558666AB1A122DBC00927430 /* SQLiteWithSavingContextQMCDRecordStack.m in Sources */,
+				558666A81A122DBC00927430 /* QMCDRecordStack+Actions.m in Sources */,
+				5586668F1A122DBC00927430 /* NSManagedObjectContext+QMCDObserving.m in Sources */,
+				558666971A122DBC00927430 /* NSPersistentStoreCoordinator+QMCDRecord.m in Sources */,
+				558666981A122DBC00927430 /* NSArray+QMCDRecord.m in Sources */,
+				558666A11A122DBC00927430 /* QMCDRecordShorthand.m in Sources */,
+				558666911A122DBC00927430 /* NSManagedObjectContext+QMCDSaves.m in Sources */,
+				558666861A122DBC00927430 /* NSString+QMCDDataImport.m in Sources */,
+				5586669F1A122DBC00927430 /* QMCDRecord+VersionInformation.m in Sources */,
+				558666A61A122DBC00927430 /* InMemoryQMCDRecordStack.m in Sources */,
+				5586669B1A122DBC00927430 /* QMCDMigrationManager.m in Sources */,
+				558666A01A122DBC00927430 /* QMCDRecordInternal.m in Sources */,
+				558666941A122DBC00927430 /* NSPersistentStoreCoordinator+QMCDAutoMigrations.m in Sources */,
+				558666961A122DBC00927430 /* NSPersistentStoreCoordinator+QMCDManualMigrations.m in Sources */,
+				558666A21A122DBC00927430 /* AutoMigratingQMCDRecordStack.m in Sources */,
+				558666A51A122DBC00927430 /* ClassicWithBackgroundCoordinatorSQLiteQMCDRecordStack.m in Sources */,
+				558666901A122DBC00927430 /* NSManagedObjectContext+QMCDRecord.m in Sources */,
+				558666AA1A122DBC00927430 /* SQLiteQMCDRecordStack.m in Sources */,
+				5586669C1A122DBC00927430 /* QMCDRecord+Actions.m in Sources */,
+				558666831A122DBC00927430 /* NSNumber+QMCDDataImport.m in Sources */,
+				558666991A122DBC00927430 /* NSDictionary+QMCDRecordAdditions.m in Sources */,
+				5586668B1A122DBC00927430 /* NSManagedObject+QMCDFetching.m in Sources */,
+				5586668C1A122DBC00927430 /* NSManagedObject+QMCDFinders.m in Sources */,
+				558666851A122DBC00927430 /* NSRelationshipDescription+QMCDDataImport.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

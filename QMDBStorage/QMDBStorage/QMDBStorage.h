@@ -18,20 +18,29 @@
 
 #define DO_AT_MAIN(x) dispatch_async(dispatch_get_main_queue(), ^{ x; });
 
+#import "QMCDRecord.h"
+
 @interface QMDBStorage : NSObject
 
+@property (strong, nonatomic, readonly) dispatch_queue_t queue;
+@property (strong, nonatomic, readonly) SQLiteQMCDRecordStack *stack;
+
+
+- (instancetype)initWithStoreNamed:(NSString *)storeName
+                             model:(NSManagedObjectModel *)model
+                        queueLabel:(const char *)queueLabel;
 /**
  * @brief Load CoreData(Sqlite) file
  * @param name - filename
  */
 
-+ (void)setupDBWithName:(NSString *)name;
++ (void)setupDBWithStoreNamed:(NSString *)storeName;
 
 /**
  * @brief Clean data base with store name
  */
 
-+ (void)cleanDBWithName:(NSString *)name;
++ (void)cleanDBWithStoreName:(NSString *)name;
 
 /**
  * @brief Perform operation in CoreData thread

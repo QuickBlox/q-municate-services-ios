@@ -11,43 +11,35 @@
 @interface QMDBStorage ()
 
 @property (strong, nonatomic) dispatch_queue_t queue;
-@property (strong, nonatomic) NSManagedObjectContext *context;
-@property (strong, nonatomic) NSString *storeName;
-@property (strong, nonatomic) NSManagedObjectModel *model;
+@property (strong, nonatomic) SQLiteQMCDRecordStack *stack;
+@property (strong, nonatomic) NSManagedObjectContext *bgContex;
 
 @end
 
 @implementation QMDBStorage
 
-NSString *StoreFileName(NSString *name) {
-    
-    NSString* fileName = [NSString stringWithFormat:@"%@.sqlite", name];
-    
-    return fileName;
+- (instancetype)initWithStoreNamed:(NSString *)storeName
+                             model:(NSManagedObjectModel *)model
+                        queueLabel:(const char *)queueLabel
+{
+    self = [super init];
+    if (self) {
+        
+        self.queue = dispatch_queue_create(queueLabel, NULL);
+        //Create Chat coredata stack
+        self.stack = [SQLiteQMCDRecordStack stackWithStoreNamed:storeName
+                                                          model:model];
+    }
+    return self;
 }
 
-+ (void)setupDBWithName:(NSString *)name {
-
-    [MagicalRecord cleanUp];
-    
-//    MagicalRecordStack *stack = [MagicalRecord setupAutoMigratingStackWithSQLiteStoreNamed:StoreFileName(name)];
-//    _storage = [[QMDBStorage alloc] initWithStack:stack storeName:name];
-    
-//    NSManagedObjectModel * model = [NSManagedObjectModel MR_newModelNamed:<#(NSString *)#> inBundle:<#(NSBundle *)#>
++ (void)setupDBWithStoreNamed:(NSString *)storeName {
+    NSAssert(nil, @"must be overloaded");
 }
 
-
-+ (NSURL *)storeUrlWithName:(NSString *)name {
++ (void)cleanDBWithStoreName:(NSString *)name {
     
-//    NSURL *storeUrl = nil[NSPersistentStore MR_fileURLForStoreNameIfExistsOnDisk:StoreFileName(name)];
-    return nil;
-}
-
-+ (void)cleanDBWithName:(NSString *)name {
-    
-    [QMMagicalRecord cleanUp];
-    
-    NSURL *storeUrl = [self storeUrlWithName:name];
+    NSURL *storeUrl = [NSPersistentStore QM_fileURLForStoreName:name];
     
     if (storeUrl) {
         
@@ -62,40 +54,29 @@ NSString *StoreFileName(NSString *name) {
     }
 }
 
-//- (instancetype)initWithStack:(MagicalRecordStack *)stack storeName:(NSString *)storeName {
-//    
-//    self = [super init];
-//    
-//    if (self) {
-//        
-//        self.queue = dispatch_queue_create("com.qmunicate.DBQueue", NULL);
-////        self.stack = stack;
-//        self.storeName = storeName;
-//    }
-//    
-//    return self;
-//}
-
-- (NSManagedObjectContext *)context {
+- (NSManagedObjectContext *)bgContex {
     
-    if (!_context) {
-//        _context = [NSManagedObjectContext MR_confinementContextWithParent:self.stack.context];
+    if (!_bgContex) {
+        
+        _bgContex = [NSManagedObjectContext QM_confinementContextWithParent:self.stack.context];
     }
     
-    return _context;
+    return _bgContex;
 }
 
 - (void)async:(void(^)(NSManagedObjectContext *context))block {
     
     dispatch_async(self.queue, ^{
-        block(self.context);
+        
+        block(self.bgContex);
     });
 }
 
 - (void)sync:(void(^)(NSManagedObjectContext *context))block {
     
     dispatch_sync(self.queue, ^{
-        block(self.context);
+        
+        block(self.bgContex);
     });
 }
 
@@ -104,6 +85,7 @@ NSString *StoreFileName(NSString *name) {
     [self async:^(NSManagedObjectContext *context) {
         
         [context QM_saveToPersistentStoreAndWait];
+        
         if(completion)
             DO_AT_MAIN(completion());
     }];

@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		554A280C1A0CE16200C4E03C /* QMChatServiceModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 554A280A1A0CE16200C4E03C /* QMChatServiceModel.xcdatamodeld */; };
 		554A28821A0CECC200C4E03C /* QMChatServiceModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 554A280A1A0CE16200C4E03C /* QMChatServiceModel.xcdatamodeld */; };
 		5590F2781A0B8C4200C5044F /* QMChatCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 5590F2771A0B8C4200C5044F /* QMChatCache.m */; };
 		5590F27E1A0B8C4200C5044F /* libQMChatCache.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5590F2721A0B8C4200C5044F /* libQMChatCache.a */; };
@@ -59,6 +58,7 @@
 		55A621101A0BDC5D001BA470 /* _CDMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _CDMessage.h; sourceTree = "<group>"; };
 		55A621111A0BDC5D001BA470 /* _CDMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _CDMessage.m; sourceTree = "<group>"; };
 		55A621121A0BDC5D001BA470 /* ModelIncludes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModelIncludes.h; sourceTree = "<group>"; };
+		55F4F1011A1105070021F5EF /* QMChatCacheModel.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = QMChatCacheModel.bundle; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,6 +127,7 @@
 		5590F2741A0B8C4200C5044F /* QMChatCache */ = {
 			isa = PBXGroup;
 			children = (
+				55F4F1011A1105070021F5EF /* QMChatCacheModel.bundle */,
 				5590F2751A0B8C4200C5044F /* QMChatCache.h */,
 				5590F2771A0B8C4200C5044F /* QMChatCache.m */,
 				55A620D61A0BC548001BA470 /* CoreData */,
@@ -222,6 +223,7 @@
 			buildPhases = (
 				5590F26E1A0B8C4200C5044F /* Sources */,
 				5590F26F1A0B8C4200C5044F /* Frameworks */,
+				55F4F1001A10FCAF0021F5EF /* Copy QMChatCacheModel */,
 			);
 			buildRules = (
 			);
@@ -320,6 +322,20 @@
 			shellPath = /bin/sh;
 			shellScript = "echo \"Begin momd\"\n\nCOREDATA_DIR=\"${PROJECT_DIR}/QMChatCache/CoreData\"\nHUMAN_DIR=\"${PROJECT_DIR}/QMChatCache/CoreData/Entries\"\nMACHINE_DIR=\"${PROJECT_DIR}/QMChatCache/CoreData/EntriesMachine\"\nINCLUDE_H=\"${PROJECT_DIR}/QMChatCache/CoreData/ModelIncludes.h\"\nINPUT_FILE_PATH=\"${PROJECT_DIR}/QMChatCache/CoreData/QMChatServiceModel.xcdatamodeld\"\n\ncurVer=`/usr/libexec/PlistBuddy \"${INPUT_FILE_PATH}/.xccurrentversion\" -c 'print _XCCurrentVersionName'`\n\nmogenerator=/usr/local/bin/mogenerator\n\necho $mogenerator --model \\\"$COREDATA_DIR/$curVer\\\" --machine-dir \"$MACHINE_DIR/\" --human-dir \"$HUMAN_DIR/\" --includeh \"$INCLUDE_H\" --template-var arc=true\n$mogenerator --model \"${INPUT_FILE_PATH}/$curVer\" --machine-dir \"$MACHINE_DIR/\" --human-dir \"$HUMAN_DIR/\" --includeh \"$INCLUDE_H\" --template-var arc=true\n\necho ${DEVELOPER_BIN_DIR}/momc -XD_MOMC_TARGET_VERSION=10.6 \\\"${INPUT_FILE_PATH}\\\" \\\"${TARGET_BUILD_DIR}/${EXECUTABLE_FOLDER_PATH}/${INPUT_FILE_BASE}.momd\\\"\n${DEVELOPER_BIN_DIR}/momc -XD_MOMC_TARGET_VERSION=10.6 \"${INPUT_FILE_PATH}\" \"${TARGET_BUILD_DIR}/${EXECUTABLE_FOLDER_PATH}/${INPUT_FILE_BASE}.momd\"\n\necho \"Begin mom\"\n\necho $mogenerator --model \\\"${INPUT_FILE_PATH}\\\" --machine-dir \"$MACHINE_DIR/\" --human-dir \"$HUMAN_DIR/\" --includeh \"$INCLUDE_H\" --template-var arc=true\n$mogenerator --model \\\"${INPUT_FILE_PATH}\\\" --machine-dir \"$MACHINE_DIR/\" --human-dir \"$HUMAN_DIR/\" --includeh \"$INCLUDE_H\" --template-var arc=true\n\necho ${DEVELOPER_BIN_DIR}/momc -XD_MOMC_TARGET_VERSION=10.6 \\\"${INPUT_FILE_PATH}\\\" \\\"${TARGET_BUILD_DIR}/${EXECUTABLE_FOLDER_PATH}/${INPUT_FILE_BASE}.mom\\\"\n${DEVELOPER_BIN_DIR}/momc -XD_MOMC_TARGET_VERSION=10.6 \"${INPUT_FILE_PATH}\" \"${TARGET_BUILD_DIR}/${EXECUTABLE_FOLDER_PATH}/${INPUT_FILE_BASE}.mom\"\n\necho \"that's all folks. mogen.sh is done\"";
 		};
+		55F4F1001A10FCAF0021F5EF /* Copy QMChatCacheModel */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy QMChatCacheModel";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\necho \"Copy $BUILT_PRODUCTS_DIR/QMChatCacheModel.bundle to $SRCROOT/QMChatCache\"\ncp -R $BUILT_PRODUCTS_DIR/QMChatCacheModel.bundle $SRCROOT/QMChatCache\n\necho \"----------SRCROOT DIR----------\"\necho \"$SRCROOT\"\n\n";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -342,7 +358,6 @@
 				55A621131A0BDC5D001BA470 /* CDAttachment.m in Sources */,
 				55A621151A0BDC5D001BA470 /* CDMessage.m in Sources */,
 				55A621171A0BDC5D001BA470 /* _CDDialog.m in Sources */,
-				554A280C1A0CE16200C4E03C /* QMChatServiceModel.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
