@@ -20,14 +20,7 @@
     chatDialog.lastMessageUserID = self.lastMessageUserID.integerValue;
     chatDialog.unreadMessagesCount = self.unreadMessagesCount.integerValue;
     
-    NSArray *ids = [self.occupantsIDs componentsSeparatedByString:@","];
-    NSMutableArray *occupantsIDS = [NSMutableArray arrayWithCapacity:ids.count];
-
-    for (NSString *occupantID in ids) {
-        [occupantsIDS addObject:@(occupantID.integerValue)];
-    }
-    
-    chatDialog.occupantIDs = [occupantsIDS copy];
+    chatDialog.occupantIDs = self.occupantsIDs;
     
     return chatDialog;
 }
@@ -44,7 +37,7 @@
     self.lastMessageUserID = @(dialog.lastMessageUserID);
     self.unreadMessagesCount = @(dialog.unreadMessagesCount);
     
-    self.occupantsIDs = [dialog.occupantIDs componentsJoinedByString:@","];
+    self.occupantsIDs = dialog.occupantIDs;
 }
 
 @end

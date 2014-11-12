@@ -12,7 +12,7 @@ extern const struct CDMessageAttributes {
 	__unsafe_unretained NSString *isRead;
 	__unsafe_unretained NSString *recipientID;
 	__unsafe_unretained NSString *roomId;
-	__unsafe_unretained NSString *senderId;
+	__unsafe_unretained NSString *senderID;
 	__unsafe_unretained NSString *senderNick;
 	__unsafe_unretained NSString *state;
 	__unsafe_unretained NSString *text;
@@ -20,12 +20,14 @@ extern const struct CDMessageAttributes {
 
 extern const struct CDMessageRelationships {
 	__unsafe_unretained NSString *attachments;
+	__unsafe_unretained NSString *dialog;
 } CDMessageRelationships;
 
 extern const struct CDMessageFetchedProperties {
 } CDMessageFetchedProperties;
 
 @class CDAttachment;
+@class CDDialog;
 
 
 
@@ -130,15 +132,15 @@ extern const struct CDMessageFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSNumber* senderId;
+@property (nonatomic, strong) NSNumber* senderID;
 
 
 
-@property int32_t senderIdValue;
-- (int32_t)senderIdValue;
-- (void)setSenderIdValue:(int32_t)value_;
+@property int32_t senderIDValue;
+- (int32_t)senderIDValue;
+- (void)setSenderIDValue:(int32_t)value_;
 
-//- (BOOL)validateSenderId:(id*)value_ error:(NSError**)error_;
+//- (BOOL)validateSenderID:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -181,6 +183,13 @@ extern const struct CDMessageFetchedProperties {
 @property (nonatomic, strong) NSSet *attachments;
 
 - (NSMutableSet*)attachmentsSet;
+
+
+
+
+@property (nonatomic, strong) CDDialog *dialog;
+
+//- (BOOL)validateDialog:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -248,11 +257,11 @@ extern const struct CDMessageFetchedProperties {
 
 
 
-- (NSNumber*)primitiveSenderId;
-- (void)setPrimitiveSenderId:(NSNumber*)value;
+- (NSNumber*)primitiveSenderID;
+- (void)setPrimitiveSenderID:(NSNumber*)value;
 
-- (int32_t)primitiveSenderIdValue;
-- (void)setPrimitiveSenderIdValue:(int32_t)value_;
+- (int32_t)primitiveSenderIDValue;
+- (void)setPrimitiveSenderIDValue:(int32_t)value_;
 
 
 
@@ -281,6 +290,11 @@ extern const struct CDMessageFetchedProperties {
 
 - (NSMutableSet*)primitiveAttachments;
 - (void)setPrimitiveAttachments:(NSMutableSet*)value;
+
+
+
+- (CDDialog*)primitiveDialog;
+- (void)setPrimitiveDialog:(CDDialog*)value;
 
 
 @end

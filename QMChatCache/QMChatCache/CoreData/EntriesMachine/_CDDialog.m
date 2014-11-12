@@ -4,7 +4,6 @@
 #import "_CDDialog.h"
 
 const struct CDDialogAttributes CDDialogAttributes = {
-	.dialogOwnerID = @"dialogOwnerID",
 	.id = @"id",
 	.lastMessageDate = @"lastMessageDate",
 	.lastMessageText = @"lastMessageText",
@@ -12,12 +11,15 @@ const struct CDDialogAttributes CDDialogAttributes = {
 	.name = @"name",
 	.occupantsIDs = @"occupantsIDs",
 	.photo = @"photo",
+	.recipientID = @"recipientID",
 	.roomJID = @"roomJID",
 	.type = @"type",
 	.unreadMessagesCount = @"unreadMessagesCount",
+	.userID = @"userID",
 };
 
 const struct CDDialogRelationships CDDialogRelationships = {
+	.messages = @"messages",
 };
 
 const struct CDDialogFetchedProperties CDDialogFetchedProperties = {
@@ -49,13 +51,13 @@ const struct CDDialogFetchedProperties CDDialogFetchedProperties = {
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
 	
-	if ([key isEqualToString:@"dialogOwnerIDValue"]) {
-		NSSet *affectingKey = [NSSet setWithObject:@"dialogOwnerID"];
+	if ([key isEqualToString:@"lastMessageUserIDValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"lastMessageUserID"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
-	if ([key isEqualToString:@"lastMessageUserIDValue"]) {
-		NSSet *affectingKey = [NSSet setWithObject:@"lastMessageUserID"];
+	if ([key isEqualToString:@"recipientIDValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"recipientID"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
@@ -69,35 +71,14 @@ const struct CDDialogFetchedProperties CDDialogFetchedProperties = {
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
+	if ([key isEqualToString:@"userIDValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"userID"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
 
 	return keyPaths;
 }
-
-
-
-
-@dynamic dialogOwnerID;
-
-
-
-- (int32_t)dialogOwnerIDValue {
-	NSNumber *result = [self dialogOwnerID];
-	return [result intValue];
-}
-
-- (void)setDialogOwnerIDValue:(int32_t)value_ {
-	[self setDialogOwnerID:[NSNumber numberWithInt:value_]];
-}
-
-- (int32_t)primitiveDialogOwnerIDValue {
-	NSNumber *result = [self primitiveDialogOwnerID];
-	return [result intValue];
-}
-
-- (void)setPrimitiveDialogOwnerIDValue:(int32_t)value_ {
-	[self setPrimitiveDialogOwnerID:[NSNumber numberWithInt:value_]];
-}
-
 
 
 
@@ -170,6 +151,32 @@ const struct CDDialogFetchedProperties CDDialogFetchedProperties = {
 
 
 
+@dynamic recipientID;
+
+
+
+- (int32_t)recipientIDValue {
+	NSNumber *result = [self recipientID];
+	return [result intValue];
+}
+
+- (void)setRecipientIDValue:(int32_t)value_ {
+	[self setRecipientID:[NSNumber numberWithInt:value_]];
+}
+
+- (int32_t)primitiveRecipientIDValue {
+	NSNumber *result = [self primitiveRecipientID];
+	return [result intValue];
+}
+
+- (void)setPrimitiveRecipientIDValue:(int32_t)value_ {
+	[self setPrimitiveRecipientID:[NSNumber numberWithInt:value_]];
+}
+
+
+
+
+
 @dynamic roomJID;
 
 
@@ -228,6 +235,45 @@ const struct CDDialogFetchedProperties CDDialogFetchedProperties = {
 
 
 
+
+@dynamic userID;
+
+
+
+- (int32_t)userIDValue {
+	NSNumber *result = [self userID];
+	return [result intValue];
+}
+
+- (void)setUserIDValue:(int32_t)value_ {
+	[self setUserID:[NSNumber numberWithInt:value_]];
+}
+
+- (int32_t)primitiveUserIDValue {
+	NSNumber *result = [self primitiveUserID];
+	return [result intValue];
+}
+
+- (void)setPrimitiveUserIDValue:(int32_t)value_ {
+	[self setPrimitiveUserID:[NSNumber numberWithInt:value_]];
+}
+
+
+
+
+
+@dynamic messages;
+
+	
+- (NSMutableSet*)messagesSet {
+	[self willAccessValueForKey:@"messages"];
+  
+	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"messages"];
+  
+	[self didAccessValueForKey:@"messages"];
+	return result;
+}
+	
 
 
 

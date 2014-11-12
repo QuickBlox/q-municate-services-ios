@@ -11,7 +11,7 @@ const struct CDMessageAttributes CDMessageAttributes = {
 	.isRead = @"isRead",
 	.recipientID = @"recipientID",
 	.roomId = @"roomId",
-	.senderId = @"senderId",
+	.senderID = @"senderID",
 	.senderNick = @"senderNick",
 	.state = @"state",
 	.text = @"text",
@@ -19,6 +19,7 @@ const struct CDMessageAttributes CDMessageAttributes = {
 
 const struct CDMessageRelationships CDMessageRelationships = {
 	.attachments = @"attachments",
+	.dialog = @"dialog",
 };
 
 const struct CDMessageFetchedProperties CDMessageFetchedProperties = {
@@ -60,8 +61,8 @@ const struct CDMessageFetchedProperties CDMessageFetchedProperties = {
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
-	if ([key isEqualToString:@"senderIdValue"]) {
-		NSSet *affectingKey = [NSSet setWithObject:@"senderId"];
+	if ([key isEqualToString:@"senderIDValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"senderID"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
@@ -164,26 +165,26 @@ const struct CDMessageFetchedProperties CDMessageFetchedProperties = {
 
 
 
-@dynamic senderId;
+@dynamic senderID;
 
 
 
-- (int32_t)senderIdValue {
-	NSNumber *result = [self senderId];
+- (int32_t)senderIDValue {
+	NSNumber *result = [self senderID];
 	return [result intValue];
 }
 
-- (void)setSenderIdValue:(int32_t)value_ {
-	[self setSenderId:[NSNumber numberWithInt:value_]];
+- (void)setSenderIDValue:(int32_t)value_ {
+	[self setSenderID:[NSNumber numberWithInt:value_]];
 }
 
-- (int32_t)primitiveSenderIdValue {
-	NSNumber *result = [self primitiveSenderId];
+- (int32_t)primitiveSenderIDValue {
+	NSNumber *result = [self primitiveSenderID];
 	return [result intValue];
 }
 
-- (void)setPrimitiveSenderIdValue:(int32_t)value_ {
-	[self setPrimitiveSenderId:[NSNumber numberWithInt:value_]];
+- (void)setPrimitiveSenderIDValue:(int32_t)value_ {
+	[self setPrimitiveSenderID:[NSNumber numberWithInt:value_]];
 }
 
 
@@ -241,6 +242,10 @@ const struct CDMessageFetchedProperties CDMessageFetchedProperties = {
 	[self didAccessValueForKey:@"attachments"];
 	return result;
 }
+	
+
+@dynamic dialog;
+
 	
 
 

@@ -5,7 +5,6 @@
 
 
 extern const struct CDDialogAttributes {
-	__unsafe_unretained NSString *dialogOwnerID;
 	__unsafe_unretained NSString *id;
 	__unsafe_unretained NSString *lastMessageDate;
 	__unsafe_unretained NSString *lastMessageText;
@@ -13,23 +12,28 @@ extern const struct CDDialogAttributes {
 	__unsafe_unretained NSString *name;
 	__unsafe_unretained NSString *occupantsIDs;
 	__unsafe_unretained NSString *photo;
+	__unsafe_unretained NSString *recipientID;
 	__unsafe_unretained NSString *roomJID;
 	__unsafe_unretained NSString *type;
 	__unsafe_unretained NSString *unreadMessagesCount;
+	__unsafe_unretained NSString *userID;
 } CDDialogAttributes;
 
 extern const struct CDDialogRelationships {
+	__unsafe_unretained NSString *messages;
 } CDDialogRelationships;
 
 extern const struct CDDialogFetchedProperties {
 } CDDialogFetchedProperties;
 
+@class CDMessage;
 
 
 
 
 
 
+@class NSObject;
 
 
 
@@ -45,20 +49,6 @@ extern const struct CDDialogFetchedProperties {
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
 - (CDDialogID*)objectID;
-
-
-
-
-
-@property (nonatomic, strong) NSNumber* dialogOwnerID;
-
-
-
-@property int32_t dialogOwnerIDValue;
-- (int32_t)dialogOwnerIDValue;
-- (void)setDialogOwnerIDValue:(int32_t)value_;
-
-//- (BOOL)validateDialogOwnerID:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -118,7 +108,7 @@ extern const struct CDDialogFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSString* occupantsIDs;
+@property (nonatomic, strong) id occupantsIDs;
 
 
 
@@ -133,6 +123,20 @@ extern const struct CDDialogFetchedProperties {
 
 
 //- (BOOL)validatePhoto:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSNumber* recipientID;
+
+
+
+@property int32_t recipientIDValue;
+- (int32_t)recipientIDValue;
+- (void)setRecipientIDValue:(int32_t)value_;
+
+//- (BOOL)validateRecipientID:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -176,23 +180,40 @@ extern const struct CDDialogFetchedProperties {
 
 
 
+@property (nonatomic, strong) NSNumber* userID;
+
+
+
+@property int32_t userIDValue;
+- (int32_t)userIDValue;
+- (void)setUserIDValue:(int32_t)value_;
+
+//- (BOOL)validateUserID:(id*)value_ error:(NSError**)error_;
+
+
+
+
+
+@property (nonatomic, strong) NSSet *messages;
+
+- (NSMutableSet*)messagesSet;
+
+
+
+
 
 @end
 
 @interface _CDDialog (CoreDataGeneratedAccessors)
 
+- (void)addMessages:(NSSet*)value_;
+- (void)removeMessages:(NSSet*)value_;
+- (void)addMessagesObject:(CDMessage*)value_;
+- (void)removeMessagesObject:(CDMessage*)value_;
+
 @end
 
 @interface _CDDialog (CoreDataGeneratedPrimitiveAccessors)
-
-
-- (NSNumber*)primitiveDialogOwnerID;
-- (void)setPrimitiveDialogOwnerID:(NSNumber*)value;
-
-- (int32_t)primitiveDialogOwnerIDValue;
-- (void)setPrimitiveDialogOwnerIDValue:(int32_t)value_;
-
-
 
 
 - (NSString*)primitiveId;
@@ -228,14 +249,23 @@ extern const struct CDDialogFetchedProperties {
 
 
 
-- (NSString*)primitiveOccupantsIDs;
-- (void)setPrimitiveOccupantsIDs:(NSString*)value;
+- (id)primitiveOccupantsIDs;
+- (void)setPrimitiveOccupantsIDs:(id)value;
 
 
 
 
 - (NSString*)primitivePhoto;
 - (void)setPrimitivePhoto:(NSString*)value;
+
+
+
+
+- (NSNumber*)primitiveRecipientID;
+- (void)setPrimitiveRecipientID:(NSNumber*)value;
+
+- (int32_t)primitiveRecipientIDValue;
+- (void)setPrimitiveRecipientIDValue:(int32_t)value_;
 
 
 
@@ -262,6 +292,20 @@ extern const struct CDDialogFetchedProperties {
 - (void)setPrimitiveUnreadMessagesCountValue:(int32_t)value_;
 
 
+
+
+- (NSNumber*)primitiveUserID;
+- (void)setPrimitiveUserID:(NSNumber*)value;
+
+- (int32_t)primitiveUserIDValue;
+- (void)setPrimitiveUserIDValue:(int32_t)value_;
+
+
+
+
+
+- (NSMutableSet*)primitiveMessages;
+- (void)setPrimitiveMessages:(NSMutableSet*)value;
 
 
 @end
