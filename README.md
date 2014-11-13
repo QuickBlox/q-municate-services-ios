@@ -1,29 +1,27 @@
-# README #
+# Installing QMServices
 
-This README would normally document whatever steps are necessary to get your application up and running.
+**Adding QMServices to your project is simple**: Just choose whichever method you're most comfortable with and follow the instructions below.
 
-### What is this repository for? ###
+## Using an Xcode subproject
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+Xcode sub-projects allow your project to use and build QMServices as an implicit dependency.
 
-### How do I get set up? ###
+Add QMServices to your project as a Git submodule:
+```
+$ cd MyXcodeProjectFolder
+$ git submodule add https://bitbucket.org/quickblox/qmunicate-services-ios.git Vendor/QMServices
+$ git commit -m "Add QMServices submodule"
+```
+Drag `Vendor/QMServices/QMServices ` into your existing Xcode project.
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+Navigate to your project's settings, then select the target you wish to add QMServices to.
 
-### Contribution guidelines ###
+Navigate to **Build Settings**, then search for **Header Search Paths** and double-click it to edit
 
-* Writing tests
-* Code review
-* Other guidelines
+Add a new item using **+**: `"$(SRCROOT)/Vendor/QMServices/QMServices"` and ensure that it is set to *recursive*
 
-### Who do I talk to? ###
+Navigate to **Build Settings**, then search for **Framework Search Paths** and double-click it to edit
 
-* Repo owner or admin
-* Other community or team contact
+Add a new item using **+**: ` Quickblox.framework ` and ensure that it is set to *recursive*
+
+> **Note** Please be aware that if you've set Xcode's **Link Frameworks Automatically** to **No** then you may need to add the Quickblox.framework CoreData.framework to your project on iOS, as UIKit does not include Core Data by default. On OS X, Cocoa includes Core Data.
