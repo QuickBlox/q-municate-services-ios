@@ -7,7 +7,7 @@
 extern const struct CDMessageAttributes {
 	__unsafe_unretained NSString *customParameters;
 	__unsafe_unretained NSString *datetime;
-	__unsafe_unretained NSString *dialogId;
+	__unsafe_unretained NSString *dialogID;
 	__unsafe_unretained NSString *id;
 	__unsafe_unretained NSString *isRead;
 	__unsafe_unretained NSString *recipientID;
@@ -74,11 +74,11 @@ extern const struct CDMessageFetchedProperties {
 
 
 
-@property (nonatomic, strong) NSString* dialogId;
+@property (nonatomic, strong) NSString* dialogID;
 
 
 
-//- (BOOL)validateDialogId:(id*)value_ error:(NSError**)error_;
+//- (BOOL)validateDialogID:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -221,8 +221,8 @@ extern const struct CDMessageFetchedProperties {
 
 
 
-- (NSString*)primitiveDialogId;
-- (void)setPrimitiveDialogId:(NSString*)value;
+- (NSString*)primitiveDialogID;
+- (void)setPrimitiveDialogID:(NSString*)value;
 
 
 

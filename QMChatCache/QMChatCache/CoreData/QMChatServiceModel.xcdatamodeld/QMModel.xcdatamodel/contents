@@ -24,7 +24,7 @@
     <entity name="CDMessage" representedClassName="CDMessage" syncable="YES">
         <attribute name="customParameters" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="datetime" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="dialogId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="dialogID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isRead" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="recipientID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
@@ -39,6 +39,6 @@
     <elements>
         <element name="CDAttachment" positionX="-333" positionY="-96" width="128" height="105"/>
         <element name="CDDialog" positionX="-713" positionY="-217" width="128" height="240"/>
-        <element name="CDMessage" positionX="-567" positionY="-216" width="128" height="238"/>
+        <element name="CDMessage" positionX="-567" positionY="-216" width="128" height="240"/>
     </elements>
 </model>

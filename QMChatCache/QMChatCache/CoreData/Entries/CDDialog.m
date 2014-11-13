@@ -19,7 +19,6 @@
     chatDialog.lastMessageDate = self.lastMessageDate;
     chatDialog.lastMessageUserID = self.lastMessageUserID.integerValue;
     chatDialog.unreadMessagesCount = self.unreadMessagesCount.integerValue;
-    
     chatDialog.occupantIDs = self.occupantsIDs;
     
     return chatDialog;
@@ -36,7 +35,6 @@
     self.lastMessageDate = dialog.lastMessageDate;
     self.lastMessageUserID = @(dialog.lastMessageUserID);
     self.unreadMessagesCount = @(dialog.unreadMessagesCount);
-    
     self.occupantsIDs = dialog.occupantIDs;
 }
 

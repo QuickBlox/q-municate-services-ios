@@ -6,7 +6,7 @@
 const struct CDMessageAttributes CDMessageAttributes = {
 	.customParameters = @"customParameters",
 	.datetime = @"datetime",
-	.dialogId = @"dialogId",
+	.dialogID = @"dialogID",
 	.id = @"id",
 	.isRead = @"isRead",
 	.recipientID = @"recipientID",
@@ -92,7 +92,7 @@ const struct CDMessageFetchedProperties CDMessageFetchedProperties = {
 
 
 
-@dynamic dialogId;
+@dynamic dialogID;
 
 
 

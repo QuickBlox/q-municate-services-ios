@@ -10,6 +10,8 @@
 
 @interface QMDBStorage ()
 
+#define QM_LOGGING_ENABLED 1
+
 @property (strong, nonatomic) dispatch_queue_t queue;
 @property (strong, nonatomic) SQLiteQMCDRecordStack *stack;
 @property (strong, nonatomic) NSManagedObjectContext *bgContex;
@@ -27,6 +29,7 @@
         
         self.queue = dispatch_queue_create(queueLabel, NULL);
         //Create Chat coredata stack
+        
         self.stack = [SQLiteQMCDRecordStack stackWithStoreNamed:storeName
                                                           model:model];
     }

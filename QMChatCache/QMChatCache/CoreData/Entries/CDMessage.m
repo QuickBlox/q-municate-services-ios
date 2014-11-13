@@ -20,7 +20,7 @@
     chatHistoryMessage.recipientID = self.recipientID.intValue;
     chatHistoryMessage.senderID = self.senderID.intValue;
     chatHistoryMessage.datetime = self.datetime;
-    chatHistoryMessage.dialogID = self.dialogId;
+    chatHistoryMessage.dialogID = self.dialogID;
     chatHistoryMessage.customParameters = [self dictionaryWithBinaryData:self.customParameters].mutableCopy;
     chatHistoryMessage.read = self.isRead.boolValue;
     
@@ -44,7 +44,7 @@
     self.datetime = message.datetime;
     self.recipientID = @(message.recipientID);
     self.senderID = @(message.senderID);
-    self.dialogId = message.dialogID;
+    self.dialogID = message.dialogID;
     self.customParameters = [self binaryDataWithDictionary:message.customParameters];
     self.isRead = @(message.isRead);
     //TODO

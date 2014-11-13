@@ -128,7 +128,7 @@
  *  @param completion Finish block
  */
 - (void)insertOrUpdateMessage:(QBChatHistoryMessage *)message
-                 withDialogId:(NSString *)dialogId
+                 withDialogId:(NSString *)dialogID
                    completion:(void(^)(void))completion;
 
 /**
@@ -138,7 +138,7 @@
  *  @param completion Returns an array of QBChatMessages instances
  */
 - (void)mergeMessages:(NSArray *)messages
-         withDialogId:(NSString *)dialogId
+         withDialogId:(NSString *)dialogID
            completion:(void(^)(void))completion;
 
 /**
