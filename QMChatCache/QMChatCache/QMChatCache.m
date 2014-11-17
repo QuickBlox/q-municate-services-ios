@@ -87,15 +87,15 @@ static QMChatCache *_chatCacheInstance = nil;
     __weak __typeof(self)weakSelf = self;
     
     [self async:^(NSManagedObjectContext *context) {
-        
-        NSArray *cdChatDialogs = [CDDialog QM_findAllSortedBy:sortTerm
-                                                    ascending:ascending
-                                                withPredicate:predicate
-                                                    inContext:context];
-        
-        NSArray *allDialogs = [weakSelf convertCDDialogsTOQBChatDialogs:cdChatDialogs];
-        DO_AT_MAIN(completion(allDialogs));
-        
+        @autoreleasepool {
+            NSArray *cdChatDialogs = [CDDialog QM_findAllSortedBy:sortTerm
+                                                        ascending:ascending
+                                                    withPredicate:predicate
+                                                        inContext:context];
+            
+            NSArray *allDialogs = [weakSelf convertCDDialogsTOQBChatDialogs:cdChatDialogs];
+            DO_AT_MAIN(completion(allDialogs));
+        }
     }];
 }
 
@@ -130,28 +130,14 @@ static QMChatCache *_chatCacheInstance = nil;
     }];
 }
 
-- (void)mergeDialogs:(NSArray *)dialogs
-          completion:(void(^)(void))completion {
-    
+- (void)insertOrUpdateDialogs:(NSArray *)dialogs
+                   completion:(void(^)(void))completion
+{
     __weak __typeof(self)weakSelf = self;
     
     [self async:^(NSManagedObjectContext *context) {
-        
-        NSArray *cdAllDialogs =
-        [CDDialog QM_findAllInContext:context];
-        
-        NSArray *allDialogs =
-        [weakSelf convertCDDialogsTOQBChatDialogs:cdAllDialogs];
-        
         NSMutableArray *toInsert = [NSMutableArray array];
         NSMutableArray *toUpdate = [NSMutableArray array];
-        NSMutableArray *toDelete = [NSMutableArray arrayWithArray:allDialogs];
-        
-        // To delete
-        for (QBChatDialog *dialog in dialogs) {
-            
-            [toDelete removeObject:dialog];
-        }
         
         //To Insert / Update
         for (QBChatDialog *dialog in dialogs) {
@@ -159,7 +145,6 @@ static QMChatCache *_chatCacheInstance = nil;
             CDDialog *cdChatDialog = [CDDialog QM_findFirstWithPredicate:IS(@"id", dialog.ID)
                                                                inContext:context];
             if (cdChatDialog) {
-                
                 [toUpdate addObject:dialog];
             }
             else {
@@ -180,20 +165,12 @@ static QMChatCache *_chatCacheInstance = nil;
                                 inContext:context];
         }
         
-        if (toDelete.count > 0) {
-            
-            [weakSelf deleteDialogs:toDelete
-                          inContext:context];
-        }
-        
-        if (toInsert.count + toInsert.count > 0) {
+        if (toInsert.count + toUpdate.count > 0) {
             [weakSelf save:completion];
         }
         
         NSLog(@"Dialogs to insert %lu", (unsigned long)toInsert.count);
         NSLog(@"Dialogs to update %lu", (unsigned long)toUpdate.count);
-        NSLog(@"Dialogs to remove %lu", (unsigned long)toDelete.count);
-        
     }];
 }
 
@@ -258,7 +235,9 @@ static QMChatCache *_chatCacheInstance = nil;
             [dialog QM_deleteEntityInContext:context];
         }
         
-        completion();
+        if (completion) {            
+            completion();
+        }
     }];
 }
 

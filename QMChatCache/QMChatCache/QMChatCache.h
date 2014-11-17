@@ -51,13 +51,13 @@
                   completion:(void(^)(void))completion;
 
 /**
- *  Auto Update / Insert / delete dialogs
+ *  Auto Update / Insert
  *
  *  @param dialogs    QBChatDialog collection
  *  @param completion Completion block is called after update or insert operation is completed
  */
-- (void)mergeDialogs:(NSArray *)dialogs
-          completion:(void(^)(void))completion;
+- (void)insertOrUpdateDialogs:(NSArray *)dialogs
+                   completion:(void(^)(void))completion;
 
 /**
  *  Delete dialog from cache
