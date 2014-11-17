@@ -132,14 +132,15 @@
                    completion:(void(^)(void))completion;
 
 /**
- *  Fetch cached messagese with dialog identifier
+ *  Update or insert messages
  *
- *  @param dialogId   Dialog identifier
+ *  @param messages   Array of messages
+ *  @param dialogID   Dialog identifier
  *  @param completion Returns an array of QBChatMessages instances
  */
-- (void)mergeMessages:(NSArray *)messages
-         withDialogId:(NSString *)dialogID
-           completion:(void(^)(void))completion;
+- (void)insertOrUpdateMessages:(NSArray *)messages
+                  withDialogId:(NSString *)dialogID
+                    completion:(void(^)(void))completion;
 
 /**
  *  Fetch cached messages with dialog id and filtering with predicate

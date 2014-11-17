@@ -321,31 +321,16 @@ static QMChatCache *_chatCacheInstance = nil;
     }];
 }
 
-- (void)mergeMessages:(NSArray *)messages
-         withDialogId:(NSString *)dialogID
-           completion:(void(^)(void))completion {
-    
+- (void)insertOrUpdateMessages:(NSArray *)messages
+                  withDialogId:(NSString *)dialogID
+                    completion:(void(^)(void))completion
+{ 
     __weak __typeof(self)weakSelf = self;
     
     [self async:^(NSManagedObjectContext *context) {
-        
-        NSArray *messagesFromCache =
-        [CDMessage QM_findAllWithPredicate:IS(@"dialogID", dialogID)
-                                 inContext:context];
-        
-        NSArray *qbMessagesFromCache =
-        [weakSelf convertCDMessagesTOQBChatHistoryMesages:messagesFromCache];
-        
         NSMutableArray *toInsert = [NSMutableArray array];
         NSMutableArray *toUpdate = [NSMutableArray array];
-        NSMutableArray *toDelete = [NSMutableArray arrayWithArray:qbMessagesFromCache];
-        
-        // To delete
-        for (QBChatHistoryMessage *dialog in messages) {
-            
-            [toDelete removeObject:dialog];
-        }
-        
+
         //To Insert / Update
         for (QBChatHistoryMessage *message in messages) {
             
@@ -374,19 +359,12 @@ static QMChatCache *_chatCacheInstance = nil;
                            inContext:context];
         }
         
-        if (toDelete.count > 0) {
-            
-            [weakSelf deleteMessages:toDelete
-                           inContext:context];
-        }
-        
-        if (toInsert.count + toInsert.count > 0) {
+        if (toInsert.count + toUpdate.count > 0) {
             [weakSelf save:completion];
         }
         
         NSLog(@"Messages to insert %lu", (unsigned long)toInsert.count);
         NSLog(@"Messages to update %lu", (unsigned long)toUpdate.count);
-        NSLog(@"Messages to remove %lu", (unsigned long)toDelete.count);
         
     }];
 }
