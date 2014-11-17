@@ -90,7 +90,8 @@ static QMChatCache *_chatCacheInstance = nil;
         
         NSArray *cdChatDialogs = [CDDialog QM_findAllSortedBy:sortTerm
                                                     ascending:ascending
-                                                withPredicate:predicate];
+                                                withPredicate:predicate
+                                                    inContext:context];
         
         NSArray *allDialogs = [weakSelf convertCDDialogsTOQBChatDialogs:cdChatDialogs];
         DO_AT_MAIN(completion(allDialogs));
