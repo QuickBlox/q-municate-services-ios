@@ -263,7 +263,7 @@ static QMChatCache *_chatCacheInstance = nil;
                    ascending:(BOOL)ascending
                   completion:(void(^)(NSArray *array))completion {
     
-    [self messagesWithPredicate:IS(@"dialogId", dialogId)
+    [self messagesWithPredicate:IS(@"dialogID", dialogId)
                        sortedBy:sortTerm
                       ascending:ascending
                      completion:completion];
