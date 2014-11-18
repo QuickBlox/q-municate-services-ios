@@ -129,11 +129,12 @@ static QMChatCache *_chatCacheInstance = nil;
 }
 
 - (void)insertOrUpdateDialogs:(NSArray *)dialogs
-                   completion:(void(^)(void))completion
-{
+                   completion:(void(^)(void))completion {
+    
     __weak __typeof(self)weakSelf = self;
     
     [self async:^(NSManagedObjectContext *context) {
+        
         NSMutableArray *toInsert = [NSMutableArray array];
         NSMutableArray *toUpdate = [NSMutableArray array];
         
@@ -218,7 +219,9 @@ static QMChatCache *_chatCacheInstance = nil;
         
         [weakSelf deleteDialogWithID:dialogID inContext:context];
         
-        completion();
+        if (completion) {
+            completion();
+        }
     }];
 }
 
@@ -226,12 +229,7 @@ static QMChatCache *_chatCacheInstance = nil;
     
     [self async:^(NSManagedObjectContext *context) {
         
-        NSArray *cdAllDialogs =
-        [CDDialog QM_findAllInContext:context];
-        
-        for (CDDialog *dialog in cdAllDialogs) {
-            [dialog QM_deleteEntityInContext:context];
-        }
+        [CDDialog QM_truncateAllInContext:context];
         
         if (completion) {            
             completion();
@@ -342,11 +340,12 @@ static QMChatCache *_chatCacheInstance = nil;
 
 - (void)insertOrUpdateMessages:(NSArray *)messages
                   withDialogId:(NSString *)dialogID
-                    completion:(void(^)(void))completion
-{ 
+                    completion:(void(^)(void))completion {
+    
     __weak __typeof(self)weakSelf = self;
     
     [self async:^(NSManagedObjectContext *context) {
+        
         NSMutableArray *toInsert = [NSMutableArray array];
         NSMutableArray *toUpdate = [NSMutableArray array];
 
@@ -435,7 +434,22 @@ static QMChatCache *_chatCacheInstance = nil;
     [self async:^(NSManagedObjectContext *context) {
         
         [weakSelf deleteMessage:message inContext:context];
-        completion();
+       
+        if (completion) {
+            completion();
+        };
+    }];
+}
+
+- (void)deleteAllMessages:(void(^)(void))completion {
+
+    [self async:^(NSManagedObjectContext *context) {
+        
+        [CDMessage QM_truncateAllInContext:context];
+        
+        if (completion) {
+            completion();
+        }
     }];
 }
 
