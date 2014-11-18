@@ -317,7 +317,7 @@ static QMChatCache *_chatCacheInstance = nil;
     
     [self async:^(NSManagedObjectContext *context) {
         
-        CDMessage *cdMessage = [CDMessage QM_findFirstWithPredicate:IS(@"dialogID", dialogID)
+        CDMessage *cdMessage = [CDMessage QM_findFirstWithPredicate:IS(@"id", message.ID)
                                                           inContext:context];
         if (cdMessage) {
             //Update if needed
