@@ -290,6 +290,25 @@ static QMChatCache *_chatCacheInstance = nil;
 
 #pragma mark Insert / Update / Delete
 
+- (void)insertOrUpdateMessage:(QBChatMessage *)message
+                 withDialogId:(NSString *)dialogID
+                         read:(BOOL)isRead
+                   completion:(void(^)(void))completion
+{
+    QBChatHistoryMessage* historyMessage = [QBChatHistoryMessage new];
+    historyMessage.dialogID = dialogID;
+    historyMessage.read = isRead;
+    historyMessage.ID = message.ID;
+    historyMessage.text = message.text;
+    historyMessage.recipientID = message.recipientID;
+    historyMessage.senderID = message.senderID;
+    historyMessage.datetime = message.datetime;
+    historyMessage.customParameters = message.customParameters;
+    historyMessage.attachments = message.attachments;
+
+    [self insertOrUpdateMessage:historyMessage withDialogId:dialogID completion:completion];
+}
+
 - (void)insertOrUpdateMessage:(QBChatHistoryMessage *)message
                  withDialogId:(NSString *)dialogID
                    completion:(void(^)(void))completion {
@@ -343,7 +362,7 @@ static QMChatCache *_chatCacheInstance = nil;
             }
             else {
                 
-                [toInsert addObject:messages];
+                [toInsert addObject:message];
             }
         }
         

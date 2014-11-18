@@ -123,12 +123,24 @@
 /**
  *  Add message to cache
  *
- *  @param message    QBChatMessage instance
+ *  @param message    QBChatHistoryMessage instance
  *  @param dialogId   Dialog identifier
  *  @param completion Finish block
  */
 - (void)insertOrUpdateMessage:(QBChatHistoryMessage *)message
                  withDialogId:(NSString *)dialogID
+                   completion:(void(^)(void))completion;
+
+/**
+ *  Add message to cache
+ *
+ *  @param message    QBChatMessage instance
+ *  @param dialogId   Dialog identifier
+ *  @param completion Finish block
+ */
+- (void)insertOrUpdateMessage:(QBChatMessage *)message
+                 withDialogId:(NSString *)dialogID
+                         read:(BOOL)isRead
                    completion:(void(^)(void))completion;
 
 /**
