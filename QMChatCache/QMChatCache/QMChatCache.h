@@ -181,6 +181,12 @@
  */
 - (void)deleteMessage:(QBChatHistoryMessage *)message
          withDialogID:(NSString *)dialogID
-           completion:(void(^)(void))completion ;
+           completion:(void(^)(void))completion;
+/**
+ *  Delete all messages
+ *
+ *  @param completion Completion block that is called after the delete all messages operation completed.
+ */
+- (void)deleteAllMessages:(void(^)(void))completion;
 
 @end
