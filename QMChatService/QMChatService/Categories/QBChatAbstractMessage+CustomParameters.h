@@ -10,10 +10,14 @@
 
 typedef NS_ENUM(NSUInteger, QMMessageNotificationType) {
     QMMessageNotificationTypeNone,
-    QMMessageNotificationTypeCreateDialog,
-    QMMessageNotificationTypeUpdateDialog,
-    QMMessageNotificationTypeDeliveryMessage
+    QMMessageNotificationTypeCreateGroupDialog,
+    QMMessageNotificationTypeUpdateGroupDialog,
+    QMMessageNotificationTypeDeliveryMessage,
     
+    QMMessageNotificationTypeSendContactRequest,
+    QMMessageNotificationTypeConfirmContactRequest,
+    QMMessageNotificationTypeRejectContactRequest,
+    QMMessageNotificationTypeDeleteContactRequest
 };
 
 @interface QBChatAbstractMessage (CustomParameters)
