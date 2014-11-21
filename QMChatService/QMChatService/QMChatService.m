@@ -195,7 +195,7 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 30;
 
 - (void)fetchAllDialogs:(void(^)(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs))completion {
     
-    __weak __typeof(self)weakSelf = self;
+//    __weak __typeof(self)weakSelf = self;
     [QBRequest dialogsWithSuccessBlock:^(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs) {
         
         //        [weakSelf addDialogsToHistory:dialogObjects joinIfNeeded:YES];

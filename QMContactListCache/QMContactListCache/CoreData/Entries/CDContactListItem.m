@@ -6,7 +6,7 @@
     
     QBContactListItem *contactListItem = [[QBContactListItem alloc] init];
     contactListItem.userID = self.userID.integerValue;
-    contactListItem.subscriptionState = self.subscriptionState.integerValue;
+    contactListItem.subscriptionState = self.subscriptionState.intValue;
     contactListItem.online = NO;
     
     return contactListItem;

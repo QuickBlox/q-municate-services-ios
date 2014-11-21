@@ -171,8 +171,8 @@ static QMContactListCache *_chatCacheInstance = nil;
         [self save:finish];
     }
     
-    NSLog(@"Users to insert %d", toInsert.count);
-    NSLog(@"Users to update %d", toUpdate.count);
+    NSLog(@"Users to insert %lu", toInsert.count);
+    NSLog(@"Users to update %lu", toUpdate.count);
 }
 
 - (void)insertQBUsers:(NSArray *)qbUsers inContext:(NSManagedObjectContext *)context {
