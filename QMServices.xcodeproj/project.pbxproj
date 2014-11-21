@@ -194,11 +194,10 @@
 		55013A331A1F63920030C134 /* QMServices.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QMServices.h; sourceTree = "<group>"; };
 		55013A411A1F63920030C134 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		55013A7F1A1F68280030C134 /* QMServices.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMServices.m; sourceTree = "<group>"; };
-		55013AE81A1F6C3C0030C134 /* QMDBStorage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = QMDBStorage.h; path = QMDBStorage/QMDBStorage/QMDBStorage.h; sourceTree = "<group>"; };
 		55013AEB1A1F72350030C134 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.1.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		55013B141A1F7A940030C134 /* Product */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Product; sourceTree = "<group>"; };
 		55013B2A1A1F84E90030C134 /* libQMServices.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libQMServices.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		55013B2B1A1F84E90030C134 /* QMServicesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QMServicesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		55013B5A1A1FA0880030C134 /* Product */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Product; sourceTree = "<group>"; };
 		5590F22C1A0B876F00C5044F /* QMDBStorage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMDBStorage.xcodeproj; path = QMDBStorage/QMDBStorage.xcodeproj; sourceTree = "<group>"; };
 		5590F26B1A0B8C0500C5044F /* QMChatCache.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMChatCache.xcodeproj; path = QMChatCache/QMChatCache.xcodeproj; sourceTree = "<group>"; };
 		5590F2A31A0B8D2900C5044F /* QMContactListCache.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMContactListCache.xcodeproj; path = QMContactListCache/QMContactListCache.xcodeproj; sourceTree = "<group>"; };
@@ -309,7 +308,7 @@
 			isa = PBXGroup;
 			children = (
 				5590F2C51A0B8D4600C5044F /* libQMContactListCache.a */,
-				554A28731A0CEC4A00C4E03C /* QMCotactListCacheModel.bundle */,
+				554A28731A0CEC4A00C4E03C /* QMContactListCacheModel.bundle */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -326,8 +325,7 @@
 		55C276A81A09162F005A0C38 = {
 			isa = PBXGroup;
 			children = (
-				55013AE81A1F6C3C0030C134 /* QMDBStorage.h */,
-				55013B141A1F7A940030C134 /* Product */,
+				55013B5A1A1FA0880030C134 /* Product */,
 				55013A321A1F63920030C134 /* QMServices */,
 				5590F2911A0B8C7B00C5044F /* Cache */,
 				5590F28A1A0B8C5200C5044F /* Services */,
@@ -477,7 +475,7 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		554A28731A0CEC4A00C4E03C /* QMCotactListCacheModel.bundle */ = {
+		554A28731A0CEC4A00C4E03C /* QMContactListCacheModel.bundle */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = QMContactListCacheModel.bundle;

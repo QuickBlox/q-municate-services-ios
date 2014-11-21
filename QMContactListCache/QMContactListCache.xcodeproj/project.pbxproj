@@ -259,7 +259,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "echo \"Copy $BUILT_PRODUCTS_DIR/QMContactListCache.bundle to $SRCROOT/../Product\"\ncp -R $BUILT_PRODUCTS_DIR/QMContactListCacheModel.bundle $SRCROOT/../Product";
+			shellScript = "echo \"Copy $BUILT_PRODUCTS_DIR/QMContactListCache.bundle to $SRCROOT/Product/\"\ncp -R $BUILT_PRODUCTS_DIR/QMContactListCacheModel.bundle $SRCROOT/QMContactListCacheModel.bundle";
 		};
 		554A28281A0CE27600C4E03C /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
