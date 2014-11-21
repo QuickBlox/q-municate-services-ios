@@ -18,7 +18,7 @@
     __weak __typeof(self)weakSelf = self;
     [self async:^(NSManagedObjectContext *context) {
         
-        NSArray *cdUsers = [CDUser MR_findAllInContext:context];
+        NSArray *cdUsers = [CDUser QM_findAllInContext:context];
         NSArray *allUsers = (cdUsers.count == 0) ? @[] : [weakSelf qbUsersWithCDUsers:cdUsers];
         
         DO_AT_MAIN(users(allUsers));
@@ -49,15 +49,15 @@
     __weak __typeof(self)weakSelf = self;
     [self async:^(NSManagedObjectContext *context) {
         
-        NSArray *allContactListItems = [CDContactListItem MR_findAllInContext:context];
+        NSArray *allContactListItems = [CDContactListItem QM_findAllInContext:context];
         
         for (CDContactListItem *toDelete in allContactListItems) {
-            [toDelete MR_deleteEntityInContext:context];
+            [toDelete QM_deleteEntityInContext:context];
         }
         
         for (QBContactListItem *toAdd in contactListItems) {
             
-            CDContactListItem *listItem = [CDContactListItem MR_createEntityInContext:context];
+            CDContactListItem *listItem = [CDContactListItem QM_createEntityInContext:context];
             [listItem updateWithQBContactListItem:toAdd];
         }
         
@@ -69,7 +69,7 @@
 
 - (NSArray *)allContactListItems:(NSManagedObjectContext *)context {
     
-    NSArray *contactListItems = [CDContactListItem MR_findAllInContext:context];
+    NSArray *contactListItems = [CDContactListItem QM_findAllInContext:context];
     NSArray *result = (contactListItems.count == 0) ? @[] : [self contactListItemsWithCDContactListItems:contactListItems];
     
     return result;
@@ -108,7 +108,7 @@
     
     for (QBUUser *user in qbUsers) {
         
-        CDUser *cdUser = [CDUser MR_findFirstWithPredicate:IS(@"id", @(user.ID)) inContext:context];
+        CDUser *cdUser = [CDUser QM_findFirstWithPredicate:IS(@"id", @(user.ID)) inContext:context];
         
         if (cdUser) {
             
@@ -144,7 +144,7 @@
 - (void)insertQBUsers:(NSArray *)qbUsers inContext:(NSManagedObjectContext *)context {
     
     for (QBUUser *qbUser in qbUsers) {
-        CDUser *user = [CDUser MR_createEntityInContext:context];
+        CDUser *user = [CDUser QM_createEntityInContext:context];
         [user updateWithQBUser:qbUser];
     }
 }
@@ -152,16 +152,16 @@
 - (void)deleteQBUsers:(NSArray *)qbUsers inContext:(NSManagedObjectContext *)context {
     
     for (QBUUser *qbUser in qbUsers) {
-        CDUser *userToDelete = [CDUser MR_findFirstWithPredicate:IS(@"id", @(qbUser.ID))
+        CDUser *userToDelete = [CDUser QM_findFirstWithPredicate:IS(@"id", @(qbUser.ID))
                                                        inContext:context];
-        [userToDelete MR_deleteEntityInContext:context];
+        [userToDelete QM_deleteEntityInContext:context];
     }
 }
 
 - (void)updateQBUsers:(NSArray *)qbUsers inContext:(NSManagedObjectContext *)context {
     
     for (QBUUser *qbUser in qbUsers) {
-        CDUser *userToUpdate = [CDUser MR_findFirstWithPredicate:IS(@"id", @(qbUser.ID))
+        CDUser *userToUpdate = [CDUser QM_findFirstWithPredicate:IS(@"id", @(qbUser.ID))
                                                        inContext:context];
         [userToUpdate updateWithQBUser:qbUser];
     }

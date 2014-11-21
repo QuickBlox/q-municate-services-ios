@@ -5,7 +5,6 @@
 //  Created by Andrey Ivanov on 24.07.14.
 //  Copyright (c) 2014 Quickblox. All rights reserved.
 //
-
 #import "QBChatAbstractMessage+CustomParameters.h"
 
 /*Message keys*/
@@ -136,7 +135,7 @@ NSString const *kQMCustomParameterDialogOccupantsIDs = @"occupants_ids";
     
     NSArray *componets = [strIDs componentsSeparatedByString:@","];
     NSMutableArray *result = [NSMutableArray arrayWithCapacity:componets.count];
-
+    
     for (NSString *occupantID in componets) {
         [result addObject:@(occupantID.integerValue)];
     }
@@ -147,7 +146,7 @@ NSString const *kQMCustomParameterDialogOccupantsIDs = @"occupants_ids";
 #pragma mark - cParamNotificationType
 
 - (void)setCParamNotificationType:(QMMessageNotificationType)cParamNotificationType {
-
+    
     self.context[kQMCustomParameterNotificationType] = @(cParamNotificationType);
 }
 
@@ -181,14 +180,17 @@ NSString const *kQMCustomParameterDialogOccupantsIDs = @"occupants_ids";
 }
 
 - (QBChatDialog *)chatDialogFromCustomParameters {
-
+    
     QBChatDialog *chatDialog = [[QBChatDialog alloc] init];
     chatDialog.ID = self.cParamDialogID;
     chatDialog.roomJID = self.cParamRoomJID;
     chatDialog.name = self.cParamDialogName;
     chatDialog.occupantIDs = self.cParamDialogOccupantsIDs;
-    chatDialog.type = self.cParamDialogType.intValue;
+    chatDialog.type = self.cParamDialogType.integerValue;
     chatDialog.lastMessageDate = [NSDate dateWithTimeIntervalSince1970:self.cParamDateSent.doubleValue];
+    chatDialog.lastMessageText = self.text;
+    chatDialog.unreadMessagesCount++;
+    chatDialog.lastMessageUserID = self.senderID;
     
     return chatDialog;
 }

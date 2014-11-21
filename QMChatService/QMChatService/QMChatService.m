@@ -11,7 +11,7 @@
 #import "NSString+GTMNSStringHTMLAdditions.h"
 #import "QBChatAbstractMessage+CustomParameters.h"
 
-const NSTimeInterval kQMPresenceTime = 30;
+const NSTimeInterval kQMPresenceTimeIntervalInSec = 30;
 
 @interface QMChatService()
 
@@ -134,7 +134,7 @@ const NSTimeInterval kQMPresenceTime = 30;
     NSAssert(!self.presenceTimer, @"Must be nil");
     
     self.presenceTimer =
-    [NSTimer scheduledTimerWithTimeInterval:kQMPresenceTime
+    [NSTimer scheduledTimerWithTimeInterval:kQMPresenceTimeIntervalInSec
                                      target:[QBChat instance]
                                    selector:@selector(sendPresence)
                                    userInfo:nil
@@ -168,14 +168,14 @@ const NSTimeInterval kQMPresenceTime = 30;
             }
         }
     }
-    else if (message.cParamNotificationType == QMMessageNotificationTypeCreateDialog) {
+    else if (message.cParamNotificationType == QMMessageNotificationTypeCreateGroupDialog) {
         
         QBChatDialog *newChatDialog = [message chatDialogFromCustomParameters];
         //        [self addDialogsToHistory:@[newChatDialog] joinIfNeeded:YES];
         
         [self.multicastDelegate chatServiceDidReceiveNotificationMessage:message createDialog:newChatDialog];
     }
-    else if (message.cParamNotificationType == QMMessageNotificationTypeUpdateDialog) {
+    else if (message.cParamNotificationType == QMMessageNotificationTypeUpdateGroupDialog) {
         
         QBChatDialog *chatDialogToUpdate = [self.memoryStorage chatDialogWithID:message.cParamDialogID];
         
@@ -241,7 +241,7 @@ const NSTimeInterval kQMPresenceTime = 30;
         [QBRequest createDialog:chatDialog successBlock:^(QBResponse *response, QBChatDialog *createdDialog) {
             
             //            [weakSelf addDialogsToHistory:@[createdDialog] joinIfNeeded:YES];
-            [weakSelf sendNotificationWithType:QMMessageNotificationTypeCreateDialog
+            [weakSelf sendNotificationWithType:QMMessageNotificationTypeCreateGroupDialog
                                           text:@"created new chat"
                                   toRecipients:@[opponent]
                                     chatDialog:createdDialog];
@@ -277,7 +277,7 @@ const NSTimeInterval kQMPresenceTime = 30;
     [QBRequest createDialog:chatDialog successBlock:^(QBResponse *response, QBChatDialog *createdDialog) {
         
         //        [weakSelf addDialogsToHistory:@[createdDialog] joinIfNeeded:YES];
-        [weakSelf sendNotificationWithType:QMMessageNotificationTypeCreateDialog
+        [weakSelf sendNotificationWithType:QMMessageNotificationTypeCreateGroupDialog
                                       text:@"created new chat"
                               toRecipients:occupants
                                 chatDialog:createdDialog];
@@ -304,7 +304,7 @@ const NSTimeInterval kQMPresenceTime = 30;
     [QBRequest updateDialog:updateParameters successBlock:^(QBResponse *response, QBChatDialog *updatedDialog) {
         
         chatDialog.name = dialogName;
-        [weakSelf sendNotificationWithType:QMMessageNotificationTypeUpdateDialog
+        [weakSelf sendNotificationWithType:QMMessageNotificationTypeUpdateGroupDialog
                                       text:[NSString stringWithFormat:@"New chat name - %@", dialogName]
                               toRecipients:opponentsWithoutMe
                                 chatDialog:chatDialog];
@@ -332,12 +332,12 @@ const NSTimeInterval kQMPresenceTime = 30;
         
         //        [weakSelf addDialogsToHistory:@[updatedDialog] joinIfNeeded:NO];
         
-        [weakSelf sendNotificationWithType:QMMessageNotificationTypeCreateDialog
+        [weakSelf sendNotificationWithType:QMMessageNotificationTypeCreateGroupDialog
                                       text:@"Created new dialog"
                               toRecipients:occupantsToJoinIDs
                                 chatDialog:updatedDialog];
         
-        [weakSelf sendNotificationWithType:QMMessageNotificationTypeUpdateDialog
+        [weakSelf sendNotificationWithType:QMMessageNotificationTypeUpdateGroupDialog
                                       text:@"Added new users"
                               toRecipients:occupantsToNotify
                                 chatDialog:updatedDialog];
