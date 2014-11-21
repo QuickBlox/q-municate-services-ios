@@ -4,10 +4,20 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>QMChatCache.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>30</integer>
+		</dict>
+		<key>QMChatCacheModel.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>31</integer>
+		</dict>
 		<key>QMServices.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>1</integer>
+			<integer>3</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
