@@ -997,6 +997,7 @@
 				5501391D1A1F55870030C134 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		55C276AC1A09162F005A0C38 /* Build configuration list for PBXProject "QMServices" */ = {
 			isa = XCConfigurationList;
