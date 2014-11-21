@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		552065151A094123004ED955 /* QMBaseService.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 55B2F11C1A091CE9008C2272 /* QMBaseService.h */; };
 		554A27FD1A0CD53500C4E03C /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 554A27FC1A0CD53500C4E03C /* AVFoundation.framework */; };
 		55B2F1101A091CC9008C2272 /* libQMBaseService.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 55B2F1041A091CC9008C2272 /* libQMBaseService.a */; };
 		55B2F11E1A091CE9008C2272 /* QMBaseService.m in Sources */ = {isa = PBXBuildFile; fileRef = 55B2F11D1A091CE9008C2272 /* QMBaseService.m */; };
@@ -22,19 +21,6 @@
 			remoteInfo = QMBaseService;
 		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		552065141A0940E2004ED955 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 12;
-			dstPath = include;
-			dstSubfolderSpec = 16;
-			files = (
-				552065151A094123004ED955 /* QMBaseService.h in CopyFiles */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		554A27FC1A0CD53500C4E03C /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.1.sdk/System/Library/Frameworks/AVFoundation.framework; sourceTree = DEVELOPER_DIR; };
@@ -128,7 +114,6 @@
 			buildPhases = (
 				55B2F1001A091CC9008C2272 /* Sources */,
 				55B2F1011A091CC9008C2272 /* Frameworks */,
-				552065141A0940E2004ED955 /* CopyFiles */,
 			);
 			buildRules = (
 			);

@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		55B2F0A01A091C17008C2272 /* libQMAuthService.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 55B2F0941A091C17008C2272 /* libQMAuthService.a */; };
 		55B2F1321A092226008C2272 /* QMAuthService.m in Sources */ = {isa = PBXBuildFile; fileRef = 55B2F1311A092226008C2272 /* QMAuthService.m */; };
-		55B2F1911A093851008C2272 /* QMAuthService.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 55B2F1301A092226008C2272 /* QMAuthService.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -21,19 +20,6 @@
 			remoteInfo = QMAuthService;
 		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		55B2F0921A091C17008C2272 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = include;
-			dstSubfolderSpec = 16;
-			files = (
-				55B2F1911A093851008C2272 /* QMAuthService.h in CopyFiles */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		55A621201A0BE301001BA470 /* QMAuthService-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QMAuthService-Prefix.pch"; sourceTree = "<group>"; };
@@ -124,7 +110,6 @@
 			buildPhases = (
 				55B2F0901A091C17008C2272 /* Sources */,
 				55B2F0911A091C17008C2272 /* Frameworks */,
-				55B2F0921A091C17008C2272 /* CopyFiles */,
 			);
 			buildRules = (
 			);

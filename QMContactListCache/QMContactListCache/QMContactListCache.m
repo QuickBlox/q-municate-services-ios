@@ -11,6 +11,40 @@
 
 @implementation QMContactListCache
 
+static QMContactListCache *_chatCacheInstance = nil;
+
+#pragma mark - Singleton
+
++ (QMContactListCache *)instance {
+    
+    NSAssert(_chatCacheInstance, @"You must first perform @selector(setupDBWithStoreNamed:)");
+    return _chatCacheInstance;
+}
+
+#pragma mark - Configure store
+
++ (void)setupDBWithStoreNamed:(NSString *)storeName {
+    
+    NSManagedObjectModel *model =
+    [NSManagedObjectModel QM_newModelNamed:@"QMContactListModel.momd"
+                             inBundleNamed:@"QMContactListModel.bundle"];
+    
+    _chatCacheInstance =
+    [[QMContactListCache alloc] initWithStoreNamed:storeName
+                                             model:model
+                                        queueLabel:"com.qmunicate.QMContactListCacheBackgroundQueue"];
+}
+
++ (void)cleanDBWithStoreName:(NSString *)name {
+    
+    if (_chatCacheInstance) {
+        _chatCacheInstance = nil;
+    }
+    
+    [super cleanDBWithStoreName:name];
+}
+
+
 #pragma mark - Public methods
 
 - (void)cachedQBUsers:(void(^)(NSArray *array))users {

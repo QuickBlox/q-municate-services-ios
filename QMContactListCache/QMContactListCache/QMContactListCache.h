@@ -11,6 +11,31 @@
 
 @interface QMContactListCache : QMDBStorage
 
+#pragma mark - Singleton
+
+/**
+ *  Chat cache singleton
+ *
+ *  @return QMContactListCache instance
+ */
++ (QMContactListCache *)instance;
+
+#pragma mark - Configure store
+
+/**
+ *  Setup QMContactListCache stake wit store name
+ *
+ *  @param storeName Store name
+ */
++ (void)setupDBWithStoreNamed:(NSString *)storeName;
+
+/**
+ *  Clean clean chat cache with store name
+ *
+ *  @param name Store name
+ */
++ (void)cleanDBWithStoreName:(NSString *)name;
+
 - (void)cacheQBUsers:(NSArray *)users finish:(void(^)(void))finish;
 - (void)cachedQBUsers:(void(^)(NSArray *array))users;
 

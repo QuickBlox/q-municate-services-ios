@@ -9,7 +9,7 @@
 #import "QMChatService.h"
 #import "QBChatAbstractMessage+TextEncoding.h"
 #import "NSString+GTMNSStringHTMLAdditions.h"
-#import "QBChatAbstractMessage+CustomParameters.h"
+#import "QBChatAbstractMessage+QMCustomParameters.h"
 
 const NSTimeInterval kQMPresenceTimeIntervalInSec = 30;
 

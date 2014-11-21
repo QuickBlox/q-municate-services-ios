@@ -5,20 +5,20 @@
 //  Created by Andrey Ivanov on 24.07.14.
 //  Copyright (c) 2014 Quickblox. All rights reserved.
 //
-#import "QBChatAbstractMessage+CustomParameters.h"
+#import "QBChatAbstractMessage+QMCustomParameters.h"
 
 /*Message keys*/
-NSString const *kQMCustomParameterSaveToHistory = @"save_to_history";
-NSString const *kQMCustomParameterNotificationType = @"notification_type";
-NSString const *kQMCustomParameterChatMessageID = @"chat_message_id";
-NSString const *kQMCustomParameterDateSent = @"date_sent";
-NSString const *kQMCustomParameterChatMessageDeliveryStatus = @"message_delivery_status_read";
+NSString const *kQMCustomParameterSaveToHistoryKey = @"save_to_history";
+NSString const *kQMCustomParameterNotificationTypeKey = @"notification_type";
+NSString const *kQMCustomParameterChatMessageIDKey = @"chat_message_id";
+NSString const *kQMCustomParameterDateSentKey = @"date_sent";
+NSString const *kQMCustomParameterChatMessageDeliveryStatusKey = @"message_delivery_status_read";
 /*Dialogs keys*/
-NSString const *kQMCustomParameterDialogID = @"dialog_id";
-NSString const *kQMCustomParameterRoomJID = @"room_jid";
-NSString const *kQMCustomParameterDialogName = @"name";
-NSString const *kQMCustomParameterDialogType = @"type";
-NSString const *kQMCustomParameterDialogOccupantsIDs = @"occupants_ids";
+NSString const *kQMCustomParameterDialogIDKey = @"dialog_id";
+NSString const *kQMCustomParameterRoomJIDKey = @"room_jid";
+NSString const *kQMCustomParameterDialogNameKey = @"name";
+NSString const *kQMCustomParameterDialogTypeKey = @"type";
+NSString const *kQMCustomParameterDialogOccupantsIDsKey = @"occupants_ids";
 
 @interface QBChatAbstractMessage (Context)
 
@@ -26,7 +26,7 @@ NSString const *kQMCustomParameterDialogOccupantsIDs = @"occupants_ids";
 
 @end
 
-@implementation QBChatAbstractMessage (CustomParameters)
+@implementation QBChatAbstractMessage (QM_CustomParameters)
 
 /*Message params*/
 @dynamic cParamSaveToHistory;
@@ -53,72 +53,72 @@ NSString const *kQMCustomParameterDialogOccupantsIDs = @"occupants_ids";
 #pragma mark - cParamChatMessageID
 
 - (void)setCParamChatMessageID:(NSString *)cParamChatMessageID {
-    self.context[kQMCustomParameterChatMessageID] = cParamChatMessageID;
+    self.context[kQMCustomParameterChatMessageIDKey] = cParamChatMessageID;
 }
 
 - (NSString *)cParamChatMessageID {
     
-    return self.context[kQMCustomParameterChatMessageID];
+    return self.context[kQMCustomParameterChatMessageIDKey];
 }
 
 #pragma mark - cParamDateSent
 
 - (void)setCParamDateSent:(NSNumber *)cParamDateSent {
-    self.context[kQMCustomParameterDateSent] = cParamDateSent;
+    self.context[kQMCustomParameterDateSentKey] = cParamDateSent;
 }
 
 - (NSNumber *)cParamDateSent {
-    return self.context[kQMCustomParameterDateSent];
+    return self.context[kQMCustomParameterDateSentKey];
 }
 
 #pragma mark - cParamDialogID
 
 - (void)setCParamDialogID:(NSString *)cParamDialogID {
-    self.context[kQMCustomParameterDialogID] = cParamDialogID;
+    self.context[kQMCustomParameterDialogIDKey] = cParamDialogID;
 }
 
 - (NSString *)cParamDialogID {
-    return self.context[kQMCustomParameterDialogID];
+    return self.context[kQMCustomParameterDialogIDKey];
 }
 
 #pragma mark - cParamSaveToHistory
 
 - (void)setCParamSaveToHistory:(NSString *)cParamSaveToHistory {
-    self.context[kQMCustomParameterSaveToHistory] = cParamSaveToHistory;
+    self.context[kQMCustomParameterSaveToHistoryKey] = cParamSaveToHistory;
 }
 
 - (NSString *)cParamSaveToHistory {
-    return self.context[kQMCustomParameterSaveToHistory];
+    return self.context[kQMCustomParameterSaveToHistoryKey];
 }
 
 #pragma mark - cParamRoomJID
 
 - (void)setCParamRoomJID:(NSString *)cParamRoomJID {
-    self.context[kQMCustomParameterRoomJID] = cParamRoomJID;
+    self.context[kQMCustomParameterRoomJIDKey] = cParamRoomJID;
 }
 
 - (NSString *)cParamRoomJID {
-    return self.context[kQMCustomParameterRoomJID];
+    return self.context[kQMCustomParameterRoomJIDKey];
 }
 
 #pragma mark - cParamDialogType
 
 - (void)setCParamDialogType:(NSNumber *)cParamDialogType {
-    self.context[kQMCustomParameterDialogType] = cParamDialogType;
+    self.context[kQMCustomParameterDialogTypeKey] = cParamDialogType;
 }
 
 - (NSNumber *)cParamDialogType {
-    return self.context[kQMCustomParameterDialogType];
+    return self.context[kQMCustomParameterDialogTypeKey];
 }
 
 #pragma mark - cParamDialogName
 
 - (void)setCParamDialogName:(NSString *)cParamDialogName {
-    self.context[kQMCustomParameterDialogName] = cParamDialogName;
+    self.context[kQMCustomParameterDialogNameKey] = cParamDialogName;
 }
 
 - (NSString *)cParamDialogName {
-    return self.context[kQMCustomParameterDialogName];
+    return self.context[kQMCustomParameterDialogNameKey];
 }
 
 #pragma mark - cParamDialogOccupantsIDs
@@ -126,12 +126,12 @@ NSString const *kQMCustomParameterDialogOccupantsIDs = @"occupants_ids";
 - (void)setCParamDialogOccupantsIDs:(NSArray *)cParamDialogOccupantsIDs {
     
     NSString *strIDs = [cParamDialogOccupantsIDs componentsJoinedByString:@","];
-    self.context[kQMCustomParameterDialogOccupantsIDs] = strIDs;
+    self.context[kQMCustomParameterDialogOccupantsIDsKey] = strIDs;
 }
 
 - (NSArray *)cParamDialogOccupantsIDs {
     
-    NSString * strIDs = self.context[kQMCustomParameterDialogOccupantsIDs];
+    NSString * strIDs = self.context[kQMCustomParameterDialogOccupantsIDsKey];
     
     NSArray *componets = [strIDs componentsSeparatedByString:@","];
     NSMutableArray *result = [NSMutableArray arrayWithCapacity:componets.count];
@@ -147,21 +147,21 @@ NSString const *kQMCustomParameterDialogOccupantsIDs = @"occupants_ids";
 
 - (void)setCParamNotificationType:(QMMessageNotificationType)cParamNotificationType {
     
-    self.context[kQMCustomParameterNotificationType] = @(cParamNotificationType);
+    self.context[kQMCustomParameterNotificationTypeKey] = @(cParamNotificationType);
 }
 
 - (QMMessageNotificationType)cParamNotificationType {
-    return [self.context[kQMCustomParameterNotificationType] integerValue];
+    return [self.context[kQMCustomParameterNotificationTypeKey] integerValue];
 }
 
 #pragma mark - cParamMessageDeliveryStatus
 
 - (void)setCParamMessageDeliveryStatus:(BOOL)cParamMessageDeliveryStatus {
-    self.context[kQMCustomParameterChatMessageDeliveryStatus] = @(cParamMessageDeliveryStatus);
+    self.context[kQMCustomParameterChatMessageDeliveryStatusKey] = @(cParamMessageDeliveryStatus);
 }
 
 - (BOOL)cParamMessageDeliveryStatus {
-    return [self.context[kQMCustomParameterChatMessageDeliveryStatus] boolValue];
+    return [self.context[kQMCustomParameterChatMessageDeliveryStatusKey] boolValue];
 }
 
 #pragma mark - QBChatDialog
@@ -186,7 +186,7 @@ NSString const *kQMCustomParameterDialogOccupantsIDs = @"occupants_ids";
     chatDialog.roomJID = self.cParamRoomJID;
     chatDialog.name = self.cParamDialogName;
     chatDialog.occupantIDs = self.cParamDialogOccupantsIDs;
-    chatDialog.type = self.cParamDialogType.integerValue;
+    chatDialog.type = self.cParamDialogType.intValue;
     chatDialog.lastMessageDate = [NSDate dateWithTimeIntervalSince1970:self.cParamDateSent.doubleValue];
     chatDialog.lastMessageText = self.text;
     chatDialog.unreadMessagesCount++;

@@ -20,7 +20,7 @@ typedef NS_ENUM(NSUInteger, QMMessageNotificationType) {
     QMMessageNotificationTypeDeleteContactRequest
 };
 
-@interface QBChatAbstractMessage (CustomParameters)
+@interface QBChatAbstractMessage (QM_CustomParameters)
 
 @property (strong, nonatomic) NSString *cParamSaveToHistory;
 @property (assign, nonatomic) QMMessageNotificationType cParamNotificationType;

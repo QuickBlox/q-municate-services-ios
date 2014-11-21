@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		55B2F0B41A091C38008C2272 /* QMContactListService.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 55B2F0B31A091C38008C2272 /* QMContactListService.h */; };
 		55B2F0B61A091C38008C2272 /* QMContactListService.m in Sources */ = {isa = PBXBuildFile; fileRef = 55B2F0B51A091C38008C2272 /* QMContactListService.m */; };
 		55B2F0BC1A091C38008C2272 /* libQMContactListService.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 55B2F0B01A091C38008C2272 /* libQMContactListService.a */; };
 /* End PBXBuildFile section */
@@ -21,19 +20,6 @@
 			remoteInfo = QMContactListService;
 		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		55B2F0AE1A091C38008C2272 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = include;
-			dstSubfolderSpec = 16;
-			files = (
-				55B2F0B41A091C38008C2272 /* QMContactListService.h in CopyFiles */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		55A621221A0BE307001BA470 /* QMContactListService-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QMContactListService-Prefix.pch"; sourceTree = "<group>"; };
@@ -124,7 +110,6 @@
 			buildPhases = (
 				55B2F0AC1A091C38008C2272 /* Sources */,
 				55B2F0AD1A091C38008C2272 /* Frameworks */,
-				55B2F0AE1A091C38008C2272 /* CopyFiles */,
 			);
 			buildRules = (
 			);

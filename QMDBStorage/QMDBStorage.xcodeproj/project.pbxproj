@@ -51,20 +51,21 @@
 		558666AA1A122DBC00927430 /* SQLiteQMCDRecordStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 5586667E1A122DBC00927430 /* SQLiteQMCDRecordStack.m */; };
 		558666AB1A122DBC00927430 /* SQLiteWithSavingContextQMCDRecordStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 558666801A122DBC00927430 /* SQLiteWithSavingContextQMCDRecordStack.m */; };
 		5590F23D1A0B87AB00C5044F /* QMDBStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 5590F23C1A0B87AB00C5044F /* QMDBStorage.m */; };
-		5590F2431A0B87AB00C5044F /* libQMDBStorage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5590F2371A0B87AB00C5044F /* libQMDBStorage.a */; };
 		5590F2FC1A0BA58800C5044F /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5590F2FB1A0BA58800C5044F /* CoreData.framework */; };
 		5590F2FE1A0BA5C000C5044F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5590F2FD1A0BA5C000C5044F /* UIKit.framework */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		5590F2441A0B87AB00C5044F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5590F2261A0B876F00C5044F /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 5590F2361A0B87AB00C5044F;
-			remoteInfo = QMDBStorage;
+/* Begin PBXCopyFilesBuildPhase section */
+		55013AEA1A1F6C650030C134 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
 		};
-/* End PBXContainerItemProxy section */
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		5586661F1A122DBC00927430 /* NSAttributeDescription+QMCDDataImport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAttributeDescription+QMCDDataImport.h"; sourceTree = "<group>"; };
@@ -162,8 +163,6 @@
 		5590F2371A0B87AB00C5044F /* libQMDBStorage.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libQMDBStorage.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		5590F23A1A0B87AB00C5044F /* QMDBStorage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QMDBStorage.h; sourceTree = "<group>"; };
 		5590F23C1A0B87AB00C5044F /* QMDBStorage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QMDBStorage.m; sourceTree = "<group>"; };
-		5590F2421A0B87AB00C5044F /* QMDBStorageTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QMDBStorageTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		5590F2481A0B87AB00C5044F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5590F2FB1A0BA58800C5044F /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.1.sdk/System/Library/Frameworks/CoreData.framework; sourceTree = DEVELOPER_DIR; };
 		5590F2FD1A0BA5C000C5044F /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.1.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		5590F3011A0BA6B200C5044F /* QMDBStorage-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QMDBStorage-Prefix.pch"; sourceTree = "<group>"; };
@@ -176,14 +175,6 @@
 			files = (
 				5590F2FE1A0BA5C000C5044F /* UIKit.framework in Frameworks */,
 				5590F2FC1A0BA58800C5044F /* CoreData.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		5590F23F1A0B87AB00C5044F /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				5590F2431A0B87AB00C5044F /* libQMDBStorage.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -366,7 +357,6 @@
 			children = (
 				5590F2391A0B87AB00C5044F /* QMDBStorage */,
 				5590F3001A0BA65800C5044F /* Frameworks */,
-				5590F2461A0B87AB00C5044F /* QMDBStorageTests */,
 				5590F2381A0B87AB00C5044F /* Products */,
 				5590F2FF1A0BA64500C5044F /* Support */,
 			);
@@ -376,7 +366,6 @@
 			isa = PBXGroup;
 			children = (
 				5590F2371A0B87AB00C5044F /* libQMDBStorage.a */,
-				5590F2421A0B87AB00C5044F /* QMDBStorageTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -389,22 +378,6 @@
 				5586661B1A122DBB00927430 /* QMCDRecord */,
 			);
 			path = QMDBStorage;
-			sourceTree = "<group>";
-		};
-		5590F2461A0B87AB00C5044F /* QMDBStorageTests */ = {
-			isa = PBXGroup;
-			children = (
-				5590F2471A0B87AB00C5044F /* Supporting Files */,
-			);
-			path = QMDBStorageTests;
-			sourceTree = "<group>";
-		};
-		5590F2471A0B87AB00C5044F /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				5590F2481A0B87AB00C5044F /* Info.plist */,
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		5590F2FF1A0BA64500C5044F /* Support */ = {
@@ -433,6 +406,7 @@
 			buildPhases = (
 				5590F2331A0B87AB00C5044F /* Sources */,
 				5590F2341A0B87AB00C5044F /* Frameworks */,
+				55013AEA1A1F6C650030C134 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -443,24 +417,6 @@
 			productReference = 5590F2371A0B87AB00C5044F /* libQMDBStorage.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		5590F2411A0B87AB00C5044F /* QMDBStorageTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 5590F24C1A0B87AB00C5044F /* Build configuration list for PBXNativeTarget "QMDBStorageTests" */;
-			buildPhases = (
-				5590F23E1A0B87AB00C5044F /* Sources */,
-				5590F23F1A0B87AB00C5044F /* Frameworks */,
-				5590F2401A0B87AB00C5044F /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				5590F2451A0B87AB00C5044F /* PBXTargetDependency */,
-			);
-			name = QMDBStorageTests;
-			productName = QMDBStorageTests;
-			productReference = 5590F2421A0B87AB00C5044F /* QMDBStorageTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -470,9 +426,6 @@
 				LastUpgradeCheck = 0610;
 				TargetAttributes = {
 					5590F2361A0B87AB00C5044F = {
-						CreatedOnToolsVersion = 6.1;
-					};
-					5590F2411A0B87AB00C5044F = {
 						CreatedOnToolsVersion = 6.1;
 					};
 				};
@@ -490,20 +443,9 @@
 			projectRoot = "";
 			targets = (
 				5590F2361A0B87AB00C5044F /* QMDBStorage */,
-				5590F2411A0B87AB00C5044F /* QMDBStorageTests */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXResourcesBuildPhase section */
-		5590F2401A0B87AB00C5044F /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		5590F2331A0B87AB00C5044F /* Sources */ = {
@@ -557,22 +499,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		5590F23E1A0B87AB00C5044F /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		5590F2451A0B87AB00C5044F /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 5590F2361A0B87AB00C5044F /* QMDBStorage */;
-			targetProxy = 5590F2441A0B87AB00C5044F /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		5590F22A1A0B876F00C5044F /* Debug */ = {
@@ -679,94 +606,6 @@
 			};
 			name = Release;
 		};
-		5590F24D1A0B87AB00C5044F /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = QMDBStorageTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = YES;
-				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-			};
-			name = Debug;
-		};
-		5590F24E1A0B87AB00C5044F /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = YES;
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = QMDBStorageTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -784,15 +623,6 @@
 			buildConfigurations = (
 				5590F24A1A0B87AB00C5044F /* Debug */,
 				5590F24B1A0B87AB00C5044F /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		5590F24C1A0B87AB00C5044F /* Build configuration list for PBXNativeTarget "QMDBStorageTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				5590F24D1A0B87AB00C5044F /* Debug */,
-				5590F24E1A0B87AB00C5044F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -4,29 +4,44 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>AllServices.xcscheme</key>
+		<key>Base.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>0</integer>
+			<integer>25</integer>
+		</dict>
+		<key>Bundles.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>26</integer>
 		</dict>
 		<key>QMServices.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>2</integer>
 		</dict>
-		<key>libServicesIOS.xcscheme</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>4</integer>
-		</dict>
-		<key>libServicesSim.xcscheme</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>3</integer>
-		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>55013A301A1F63910030C134</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>55013A3A1A1F63920030C134</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>55013AFC1A1F754B0030C134</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>55013B1A1A1F7E710030C134</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>553203F21A0D057000B4F4F2</key>
 		<dict>
 			<key>primary</key>
