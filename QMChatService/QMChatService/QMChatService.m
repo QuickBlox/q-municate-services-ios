@@ -184,7 +184,7 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 30;
             return;
         }
         
-        chatDialogToUpdate.name = message.cParamDialogName;
+        chatDialogToUpdate.name = message.cParamDialogRoomName;
         
         [self.multicastDelegate chatServiceDidReceiveNotificationMessage:message
                                                             updateDialog:chatDialogToUpdate];
@@ -409,7 +409,7 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 30;
 
 - (void)fetchMessageWithDialogID:(NSString *)chatDialogId complete:(void(^)(BOOL success))completion{
     
-    __weak __typeof(self)weakSelf = self;
+//    __weak __typeof(self)weakSelf = self;
     //    [self.dbStorage cachedQBChatMessagesWithDialogId:chatDialogId qbMessages:^(NSArray *collection) {
     ////        [weakSelf setMessages:collection withDialogID:chatDialogId];
     //    }];

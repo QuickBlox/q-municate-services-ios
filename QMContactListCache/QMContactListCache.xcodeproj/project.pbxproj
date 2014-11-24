@@ -49,6 +49,7 @@
 
 /* Begin PBXFileReference section */
 		55013B221A1F81530030C134 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		550678C81A237CA700660A12 /* QMContactListCacheModel.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = QMContactListCacheModel.bundle; sourceTree = "<group>"; };
 		554A28101A0CE1A900C4E03C /* QMModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = QMModel.xcdatamodel; sourceTree = "<group>"; };
 		554A28211A0CE22200C4E03C /* QMContactListCacheModel.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QMContactListCacheModel.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		554A282D1A0CE38600C4E03C /* CDContactListItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDContactListItem.h; sourceTree = "<group>"; };
@@ -128,6 +129,7 @@
 		5590F29C1A0B8D2900C5044F = {
 			isa = PBXGroup;
 			children = (
+				550678C81A237CA700660A12 /* QMContactListCacheModel.bundle */,
 				5590F2AC1A0B8D4000C5044F /* QMContactListCache */,
 				55013B211A1F81530030C134 /* QMContactListCacheModel */,
 				5590F2AB1A0B8D4000C5044F /* Products */,
@@ -259,7 +261,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "echo \"Copy $BUILT_PRODUCTS_DIR/QMContactListCache.bundle to $SRCROOT/Product/\"\ncp -R $BUILT_PRODUCTS_DIR/QMContactListCacheModel.bundle $SRCROOT/QMContactListCacheModel.bundle";
+			shellScript = "echo \"Copy $BUILT_PRODUCTS_DIR/QMContactListCache.bundle to $SRCROOT/Product/\"\ncp -R $BUILT_PRODUCTS_DIR/QMContactListCacheModel.bundle $SRCROOT/";
 		};
 		554A28281A0CE27600C4E03C /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;

@@ -21,6 +21,9 @@
 - (void)addDelegate:(id<QMChatServiceDelegate>)delegate;
 - (void)addRemoveDelegate:(id<QMChatServiceDelegate>)delegate;
 
+- (void)logIn:(void(^)(NSError *error))completion;
+- (void)logoutChat;
+
 - (void)createGroupChatDialogWithName:(NSString *)name
                             occupants:(NSArray *)occupants
                            completion:(void(^)(QBResponse *response, QBChatDialog *createdDialog))completion;
@@ -37,10 +40,6 @@
                   completion:(void(^)(QBResponse *response, QBChatDialog *updatedDialog))completion;
 
 - (void)fetchAllDialogs:(void(^)(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs))completion;
-
-- (void)logIn:(void(^)(NSError *error))completion;
-
-- (void)logoutChat;
 
 - (void)fetchMessageWithDialogID:(NSString *)chatDialogId complete:(void(^)(BOOL success))completion;
 

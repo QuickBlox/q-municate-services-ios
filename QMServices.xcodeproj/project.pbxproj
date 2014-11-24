@@ -197,7 +197,6 @@
 		55013AEB1A1F72350030C134 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.1.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		55013B2A1A1F84E90030C134 /* libQMServices.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libQMServices.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		55013B2B1A1F84E90030C134 /* QMServicesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QMServicesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		55013B5A1A1FA0880030C134 /* Product */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Product; sourceTree = "<group>"; };
 		5590F22C1A0B876F00C5044F /* QMDBStorage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMDBStorage.xcodeproj; path = QMDBStorage/QMDBStorage.xcodeproj; sourceTree = "<group>"; };
 		5590F26B1A0B8C0500C5044F /* QMChatCache.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMChatCache.xcodeproj; path = QMChatCache/QMChatCache.xcodeproj; sourceTree = "<group>"; };
 		5590F2A31A0B8D2900C5044F /* QMContactListCache.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMContactListCache.xcodeproj; path = QMContactListCache/QMContactListCache.xcodeproj; sourceTree = "<group>"; };
@@ -325,7 +324,6 @@
 		55C276A81A09162F005A0C38 = {
 			isa = PBXGroup;
 			children = (
-				55013B5A1A1FA0880030C134 /* Product */,
 				55013A321A1F63920030C134 /* QMServices */,
 				5590F2911A0B8C7B00C5044F /* Cache */,
 				5590F28A1A0B8C5200C5044F /* Services */,
@@ -365,6 +363,16 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		55AA62E81A232E7F00D73089 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
 		55013A301A1F63910030C134 /* QMServices */ = {
 			isa = PBXNativeTarget;
@@ -372,6 +380,8 @@
 			buildPhases = (
 				55013A2D1A1F63910030C134 /* Sources */,
 				55013A2E1A1F63910030C134 /* Frameworks */,
+				55AA62E81A232E7F00D73089 /* Headers */,
+				55AA62E91A232E8400D73089 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -578,6 +588,22 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		55AA62E91A232E8400D73089 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "echo \"\"";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		55013A2D1A1F63910030C134 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -680,7 +706,6 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
@@ -722,7 +747,6 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;

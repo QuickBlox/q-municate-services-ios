@@ -25,12 +25,14 @@ static QMChatCache *_chatCacheInstance = nil;
 
 + (void)setupDBWithStoreNamed:(NSString *)storeName {
     
-    NSManagedObjectModel *model = [NSManagedObjectModel QM_newModelNamed:@"QMChatServiceModel.momd"
-                                                           inBundleNamed:@"QMChatCacheModel.bundle"];
+    NSManagedObjectModel *model =
+    [NSManagedObjectModel QM_newModelNamed:@"QMChatServiceModel.momd"
+                             inBundleNamed:@"QMChatCacheModel.bundle"];
     
-    _chatCacheInstance = [[QMChatCache alloc] initWithStoreNamed:storeName
-                                                           model:model
-                                                      queueLabel:"com.qmunicate.QMChatCacheBackgroundQueue"];
+    _chatCacheInstance =
+    [[QMChatCache alloc] initWithStoreNamed:storeName
+                                      model:model
+                                 queueLabel:"com.qmunicate.QMChatCacheBackgroundQueue"];
 }
 
 + (void)cleanDBWithStoreName:(NSString *)name {
@@ -231,7 +233,7 @@ static QMChatCache *_chatCacheInstance = nil;
         
         [CDDialog QM_truncateAllInContext:context];
         
-        if (completion) {            
+        if (completion) {
             completion();
         }
     }];
@@ -303,7 +305,7 @@ static QMChatCache *_chatCacheInstance = nil;
     historyMessage.datetime = message.datetime;
     historyMessage.customParameters = message.customParameters;
     historyMessage.attachments = message.attachments;
-
+    
     [self insertOrUpdateMessage:historyMessage withDialogId:dialogID completion:completion];
 }
 
@@ -348,7 +350,7 @@ static QMChatCache *_chatCacheInstance = nil;
         
         NSMutableArray *toInsert = [NSMutableArray array];
         NSMutableArray *toUpdate = [NSMutableArray array];
-
+        
         //To Insert / Update
         for (QBChatHistoryMessage *message in messages) {
             
@@ -434,7 +436,7 @@ static QMChatCache *_chatCacheInstance = nil;
     [self async:^(NSManagedObjectContext *context) {
         
         [weakSelf deleteMessage:message inContext:context];
-       
+        
         if (completion) {
             completion();
         };
@@ -442,7 +444,7 @@ static QMChatCache *_chatCacheInstance = nil;
 }
 
 - (void)deleteAllMessages:(void(^)(void))completion {
-
+    
     [self async:^(NSManagedObjectContext *context) {
         
         [CDMessage QM_truncateAllInContext:context];

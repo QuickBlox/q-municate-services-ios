@@ -27,7 +27,7 @@ static QMContactListCache *_chatCacheInstance = nil;
     
     NSManagedObjectModel *model =
     [NSManagedObjectModel QM_newModelNamed:@"QMContactListModel.momd"
-                             inBundleNamed:@"QMContactListModel.bundle"];
+                             inBundleNamed:@"QMContactListCacheModel.bundle"];
     
     _chatCacheInstance =
     [[QMContactListCache alloc] initWithStoreNamed:storeName

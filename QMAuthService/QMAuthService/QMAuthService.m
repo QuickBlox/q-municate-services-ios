@@ -45,6 +45,7 @@
              [weakSelf logInWithUser:user
                           completion:^(QBResponse *logInResponse, QBUUser *userProfile) {
                               weakSelf.isAuthorized = YES;
+                              completion(logInResponse, userProfile);
                           }];
              
          } errorBlock:^(QBResponse *response) {
@@ -85,7 +86,7 @@
 #pragma mark - Social auth
 
 - (void)logInWithFacebookSessionToken:(NSString *)sessionToken
-                           completion:(void(^)(QBResponse *response, QBUUser *tUser))completion {
+                           completion:(void(^)(QBResponse *response, QBUUser *userProfile))completion {
     
     __weak __typeof(self)weakSelf = self;
     
