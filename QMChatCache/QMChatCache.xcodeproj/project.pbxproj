@@ -30,9 +30,9 @@
 /* Begin PBXFileReference section */
 		550678C71A237C7B00660A12 /* QMChatCacheModel.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = QMChatCacheModel.bundle; sourceTree = "<group>"; };
 		554A280B1A0CE16200C4E03C /* QMModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = QMModel.xcdatamodel; sourceTree = "<group>"; };
-		554A287A1A0CECA000C4E03C /* QMChatCacheModel.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QMChatCacheModel.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		554A287A1A0CECA000C4E03C /* QMChatCacheModel.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = QMChatCacheModel.bundle; path = "/Users/andrey/Projects/qmunicate-ios/Q-municate/QMServices/QMChatCache/build/Debug-iphoneos/QMChatCacheModel.bundle"; sourceTree = "<absolute>"; };
 		554A287D1A0CECA000C4E03C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		5590F2721A0B8C4200C5044F /* libQMChatCache.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libQMChatCache.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		5590F2721A0B8C4200C5044F /* libQMChatCache.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libQMChatCache.a; path = "/Users/andrey/Projects/qmunicate-ios/Q-municate/QMServices/QMChatCache/build/Debug-iphoneos/libQMChatCache.a"; sourceTree = "<absolute>"; };
 		5590F2751A0B8C4200C5044F /* QMChatCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QMChatCache.h; sourceTree = "<group>"; };
 		5590F2771A0B8C4200C5044F /* QMChatCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QMChatCache.m; sourceTree = "<group>"; };
 		55A620CA1A0BB87F001BA470 /* QMChatCache-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QMChatCache-Prefix.pch"; sourceTree = "<group>"; };
@@ -91,18 +91,8 @@
 				550678C71A237C7B00660A12 /* QMChatCacheModel.bundle */,
 				5590F2741A0B8C4200C5044F /* QMChatCache */,
 				554A287B1A0CECA000C4E03C /* QMChatCacheModel */,
-				5590F2731A0B8C4200C5044F /* Products */,
 				55A620C91A0BB87F001BA470 /* Support */,
 			);
-			sourceTree = "<group>";
-		};
-		5590F2731A0B8C4200C5044F /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				5590F2721A0B8C4200C5044F /* libQMChatCache.a */,
-				554A287A1A0CECA000C4E03C /* QMChatCacheModel.bundle */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		5590F2741A0B8C4200C5044F /* QMChatCache */ = {
@@ -223,7 +213,7 @@
 				en,
 			);
 			mainGroup = 5590F2641A0B8C0500C5044F;
-			productRefGroup = 5590F2731A0B8C4200C5044F /* Products */;
+			productRefGroup = 5590F2641A0B8C0500C5044F;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (

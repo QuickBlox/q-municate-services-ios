@@ -13,27 +13,35 @@
 <QBChatDelegate>
 
 @property (strong, nonatomic) QBMulticastDelegate <QMContactsServiceDelegate> *multicastDelegate;
-@property (strong, nonatomic) NSMutableDictionary *users;
+@property (strong, nonatomic) QMContactListMemoryStorage *contactListMemoryStorage;
+@property (strong, nonatomic) QMUsersMemoryStorage *usersMemoryStorage;
 @property (strong, nonatomic) NSMutableSet *retrivedIds;
 
 @end
 
 @implementation QMContactListService
 
+- (void)dealloc {
+    NSLog(@"%@ - %@",  NSStringFromSelector(_cmd), self);
+    [[QBChat instance] removeDelegate:self];
+    self.contactListMemoryStorage = nil;
+}
+
 - (instancetype)initWithServiceDataDelegate:(id<QMServiceDataDelegate>)serviceDataDelegate {
     
     self = [super initWithServiceDataDelegate:serviceDataDelegate];
     if (self) {
-        self.users = [NSMutableDictionary dictionary];
-        self.contactList = [NSMutableArray array];
-        self.retrivedIds = [NSMutableSet set];
-        self.confirmRequestUsersIDs = [NSMutableSet new];
         
         self.multicastDelegate = (id<QMContactsServiceDelegate>)[[QBMulticastDelegate alloc] init];
+        self.contactListMemoryStorage = [[QMContactListMemoryStorage alloc] init];
+        self.usersMemoryStorage = [[QMUsersMemoryStorage alloc] init];
+        
         [[QBChat instance] addDelegate:self];
     }
     return self;
 }
+
+#pragma mark - Add Remove multicaste delegate
 
 - (void)addDelegate:(id <QMContactsServiceDelegate>)delegate {
     
@@ -45,205 +53,114 @@
     [self.multicastDelegate removeDelegate:delegate];
 }
 
-- (void)cleanData {
-    [super cleanData];
-    
-    [[QBChat instance] removeDelegate:self];
-    [self.users removeAllObjects];
-    [self.contactList removeAllObjects];
-}
-
 #pragma mark - QBChatDelegate
 
+//Called in case of changing contact list
 - (void)chatContactListDidChange:(QBContactList *)contactList {
     
-    [self.contactList removeAllObjects];
-    [self.contactList addObjectsFromArray:contactList.pendingApproval];
-    [self.contactList addObjectsFromArray:contactList.contacts];
+    [self.contactListMemoryStorage updateWithContactList:contactList];
     
     __weak __typeof(self)weakSelf = self;
-    [self retrieveUsersWithIDs:[self idsFromContactListItems]
+    
+    [self retrieveUsersWithIDs:[self.contactListMemoryStorage userIDsFromContactList]
                     completion:^(QBResponse *responce, QBGeneralResponsePage *page, NSArray *users)
-    {
-        if (responce.success) {
-            [weakSelf.multicastDelegate contactsServiceContactListDidUpdate];
-        }
-    }];
+     {
+         if (responce.success) {
+             
+             if ([weakSelf.multicastDelegate respondsToSelector:@selector(contactsServiceContactListDidUpdate)]) {
+                 
+                 [weakSelf.multicastDelegate contactsServiceContactListDidUpdate];
+             }
+         }
+     }];
 }
+
+//Called in case receiving contact request
+//@param userID User ID from which received contact request
 
 - (void)chatDidReceiveContactAddRequestFromUser:(NSUInteger)userID {
     
-    [self.confirmRequestUsersIDs addObject:@(userID)];
+    [self.contactListMemoryStorage addContactRequestWithUserID:userID];
     
-    QBUUser *user = [self userWithID:userID];
+    QBUUser *user = [self.usersMemoryStorage userWithID:userID];
     
     if (user) {
-        [self.multicastDelegate contactsServiceContactRequestUsersListChanged];
+        
+        if ([self.multicastDelegate respondsToSelector:@selector(contactsServiceContactRequestUsersListChanged)]) {
+            
+            [self.multicastDelegate contactsServiceContactRequestUsersListChanged];
+        }
     }
     else {
+        
         __weak __typeof(self)weakSelf = self;
+        
         [self retrieveUsersWithIDs:@[@(userID)]
                         completion:^(QBResponse *responce, QBGeneralResponsePage *page, NSArray *users)
-        {
-            if (responce.success) {
-                [weakSelf.multicastDelegate contactsServiceContactRequestUsersListChanged];
-            }
-        }];
+         {
+             if ([weakSelf.multicastDelegate respondsToSelector:@selector(contactsServiceContactRequestUsersListChanged)]) {
+                 
+                 [weakSelf.multicastDelegate contactsServiceContactRequestUsersListChanged];
+             }
+         }];
     }
 }
 
-- (NSArray *)idsFromContactListItems {
+- (NSMutableSet *)checkExistIds:(NSArray *)ids {
     
-    NSMutableArray *idsToFetch = [NSMutableArray new];
-    NSArray *contactListItems = self.contactList;
-    
-    for (QBContactListItem *item in contactListItems) {
-        [idsToFetch addObject:@(item.userID)];
-    }
-    
-    return idsToFetch;
-}
-
-- (NSArray *)usersHistory {
-    return [self.users allValues];
-}
-
-- (QBUUser *)userWithID:(NSUInteger)userID {
-    
-    NSString *stingID = [NSString stringWithFormat:@"%lu", (unsigned long)userID];
-    QBUUser *user = self.users[stingID];
-    return user;
-}
-
-- (void)addUsers:(NSArray *)users {
-    
-    for (QBUUser *user in users) {
-        [self addUser:user];
-    }
-    
-    [self.multicastDelegate contactsServiceUsersHistoryUpdated];
-}
-
-- (void)addUser:(QBUUser *)user {
-    
-    NSString *key = [NSString stringWithFormat:@"%lu", (unsigned long)user.ID];
-    self.users[key] = user;
-}
-
-- (NSArray *)checkExistIds:(NSArray *)ids {
-    
-    NSMutableSet *idsToFetch = [NSMutableSet setWithArray:ids];
+    NSMutableSet *toFetch = [NSMutableSet setWithArray:ids];
     
     for (NSNumber *userID in ids) {
         
-        QBUUser *user = [self userWithID:userID.integerValue];
+        QBUUser *savedUser = [self.usersMemoryStorage userWithID:userID.unsignedIntegerValue];
         BOOL inProgress = [self.retrivedIds containsObject:userID];
         
-        if (user || inProgress) {
-            [idsToFetch removeObject:userID];
+        if (savedUser || inProgress) {
+            [toFetch removeObject:userID];
         }
     }
     
-    return [idsToFetch allObjects];
+    return toFetch;
 }
 
-- (void)retrieveUsersWithIDs:(NSArray *)idsToFetch
+- (void)retrieveUsersWithIDs:(NSArray *)ids
                   completion:(void(^)(QBResponse *responce, QBGeneralResponsePage *page, NSArray * users))completion {
     
-    NSArray *filteredIDs = [self checkExistIds:idsToFetch];
-    NSLog(@"RetrieveUsers %@", filteredIDs);
+    NSSet *toRetrive = [self checkExistIds:ids].copy;
     
-    if (filteredIDs.count == 0) {
+    NSLog(@"RetrieveUsers %@", toRetrive);
+    
+    if (toRetrive.count == 0) {
         completion(nil, nil, nil);
     }
     else {
         
         QBGeneralResponsePage *pageResponce =
         [QBGeneralResponsePage responsePageWithCurrentPage:1
-                                                   perPage:filteredIDs.count < 100 ? filteredIDs.count : 100];
-        
+                                                   perPage:toRetrive.count < 100 ? toRetrive.count : 100];
         __weak __typeof(self)weakSelf = self;
         
-        [self.retrivedIds addObjectsFromArray:filteredIDs];
+        [self.retrivedIds unionSet:toRetrive];
         
-        [QBRequest usersWithIDs:filteredIDs
+        [QBRequest usersWithIDs:toRetrive.allObjects
                            page:pageResponce
-                   successBlock:
-         //Cache retrived users in memory
-         ^(QBResponse *responce, QBGeneralResponsePage *page, NSArray * users) {
-             //
+                   successBlock:^(QBResponse *responce, QBGeneralResponsePage *page, NSArray * users)
+         {
              for (QBUUser *user in users) {
                  [weakSelf.retrivedIds removeObject:@(user.ID)];
              }
              
-             [weakSelf addUsers:users];
+             [weakSelf.usersMemoryStorage addUsers:users];
              
              if (completion) {
                  completion(responce, page, users);
              }
              
          } errorBlock:^(QBResponse *responce) {
+             
              completion(responce, nil, nil);
          }];
     }
-}
-
-/**
- @param QBUUser ID
- @return QBContactListItem from chaced contactList
- */
-
-- (QBContactListItem *)contactItemWithUserID:(NSUInteger)userID {
-    
-    for (QBContactListItem *item in self.contactList) {
-        
-        if (item.userID == userID) {
-            return item;
-        }
-    }
-    
-    return nil;
-}
-
-- (NSArray *)idsWithUsers:(NSArray *)users {
-    
-    NSMutableSet *ids = [NSMutableSet set];
-    for (QBUUser *user in users) {
-        [ids addObject:@(user.ID)];
-    }
-    return [ids allObjects];
-}
-
-
-- (NSArray *)usersWithIDs:(NSArray *)ids {
-    
-    NSMutableArray *allFriends = [NSMutableArray array];
-   
-    for (NSNumber * friendID in ids) {
-        QBUUser *user = [self userWithID:friendID.integerValue];
-       
-        if (user) {
-            [allFriends addObject:user];
-        }
-    }
-    
-    return allFriends;
-}
-
-- (NSArray *)friends {
-    
-    NSArray *ids = [self idsFromContactListItems];
-    NSArray *allFriends = [self usersWithIDs:ids];
-    
-    return allFriends;
-}
-
-- (NSArray *)contactRequestUsers
-{
-    NSArray *ids = [self.confirmRequestUsersIDs allObjects];
-    NSArray *users = [self usersWithIDs:ids];
-    
-    return users;
 }
 
 #pragma mark - ContactList Request
@@ -253,7 +170,7 @@
     
     BOOL success = [[QBChat instance] addUserToContactListRequest:user.ID];
     if (success) {
-        [self addUser:user];
+        [self.usersMemoryStorage addUser:user];
     }
     
     if (completion) completion(success);
@@ -262,25 +179,38 @@
 - (void)removeUserFromContactListWithUserID:(NSUInteger)userID
                                  completion:(void(^)(BOOL success))completion {
     
-    BOOL success = [[QBChat instance] removeUserFromContactList:userID];
-    
-    completion(success);
+    BOOL success = [[QBChat instance] removeUserFromContactList:userID sentBlock:^(NSError *error) {
+        
+        completion(success);
+    }];
 }
 
 - (void)confirmAddContactRequest:(NSUInteger)userID
                       completion:(void(^)(BOOL success))completion {
     
-    BOOL success = [[QBChat instance]  confirmAddContactRequest:userID];
-    [self.confirmRequestUsersIDs removeObject:@(userID)];
+    __weak __typeof(self)weakSelf = self;
+    BOOL success = [[QBChat instance] confirmAddContactRequest:userID sentBlock:^(NSError *error) {
+        
+        [weakSelf.contactListMemoryStorage confirmOrRejectContactRequestForUserID:userID];
+    }];
     
     completion(success);
 }
 
+//- (NSArray *)friends {
+//    
+//    NSArray *ids = [self idsFromContactListItems];
+//    NSArray *allFriends = [self usersWithIDs:ids];
+//    
+//    return allFriends;
+//}
+
 - (void)rejectAddContactRequest:(NSUInteger)userID
                      completion:(void(^)(BOOL success))completion {
     
-    BOOL success = [[QBChat instance]  rejectAddContactRequest:userID];
-    [self.confirmRequestUsersIDs removeObject:@(userID)];
+    BOOL success = [[QBChat instance]  rejectAddContactRequest:userID sentBlock:^(NSError *error) {
+        [self.contactListMemoryStorage confirmOrRejectContactRequestForUserID:userID];
+    }];
     
     completion(success);
 }

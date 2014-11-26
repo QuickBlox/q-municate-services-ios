@@ -153,13 +153,6 @@
 			remoteGlobalIDString = 55B2F0941A091C17008C2272;
 			remoteInfo = QMAuthService;
 		};
-		55B2F0F21A091CBB008C2272 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 55C276E51A0917AF005A0C38 /* QMAuthService.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 55B2F09F1A091C17008C2272;
-			remoteInfo = QMAuthServiceTests;
-		};
 		55B2F0F61A091CBB008C2272 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 55C276C71A0916BF005A0C38 /* QMChatService.xcodeproj */;
@@ -195,8 +188,8 @@
 		55013A411A1F63920030C134 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		55013A7F1A1F68280030C134 /* QMServices.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMServices.m; sourceTree = "<group>"; };
 		55013AEB1A1F72350030C134 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.1.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		55013B2A1A1F84E90030C134 /* libQMServices.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libQMServices.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		55013B2B1A1F84E90030C134 /* QMServicesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QMServicesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		55013B2A1A1F84E90030C134 /* libQMServices.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libQMServices.a; path = "/Users/andrey/Projects/qmunicate-ios/Q-municate/QMServices/build/Debug-iphoneos/libQMServices.a"; sourceTree = "<absolute>"; };
+		55013B2B1A1F84E90030C134 /* QMServicesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = QMServicesTests.xctest; path = "/Users/andrey/Projects/qmunicate-ios/Q-municate/QMServices/build/Debug-iphoneos/QMServicesTests.xctest"; sourceTree = "<absolute>"; };
 		5590F22C1A0B876F00C5044F /* QMDBStorage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMDBStorage.xcodeproj; path = QMDBStorage/QMDBStorage.xcodeproj; sourceTree = "<group>"; };
 		5590F26B1A0B8C0500C5044F /* QMChatCache.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMChatCache.xcodeproj; path = QMChatCache/QMChatCache.xcodeproj; sourceTree = "<group>"; };
 		5590F2A31A0B8D2900C5044F /* QMContactListCache.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMContactListCache.xcodeproj; path = QMContactListCache/QMContactListCache.xcodeproj; sourceTree = "<group>"; };
@@ -329,8 +322,6 @@
 				5590F28A1A0B8C5200C5044F /* Services */,
 				55013AED1A1F72430030C134 /* Frameworks */,
 				55013A3F1A1F63920030C134 /* QMServicesTests */,
-				55013B2A1A1F84E90030C134 /* libQMServices.a */,
-				55013B2B1A1F84E90030C134 /* QMServicesTests.xctest */,
 			);
 			sourceTree = "<group>";
 		};
@@ -356,7 +347,6 @@
 			isa = PBXGroup;
 			children = (
 				55B2F0F11A091CBB008C2272 /* libQMAuthService.a */,
-				55B2F0F31A091CBB008C2272 /* QMAuthServiceTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -539,13 +529,6 @@
 			fileType = archive.ar;
 			path = libQMAuthService.a;
 			remoteRef = 55B2F0F01A091CBB008C2272 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		55B2F0F31A091CBB008C2272 /* QMAuthServiceTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = QMAuthServiceTests.xctest;
-			remoteRef = 55B2F0F21A091CBB008C2272 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		55B2F0F71A091CBB008C2272 /* libQMChatService.a */ = {

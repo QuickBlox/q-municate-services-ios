@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		55AA61601A23235500D73089 /* QBChatAbstractMessage+QMCustomParameters.m in Sources */ = {isa = PBXBuildFile; fileRef = 55AA615F1A23235500D73089 /* QBChatAbstractMessage+QMCustomParameters.m */; };
 		55B2F0D21A091C68008C2272 /* QMChatService.m in Sources */ = {isa = PBXBuildFile; fileRef = 55B2F0D11A091C68008C2272 /* QMChatService.m */; };
-		55B2F0D81A091C68008C2272 /* libQMChatService.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 55B2F0CC1A091C68008C2272 /* libQMChatService.a */; };
 		55F41E371A0A4C3B008D1C68 /* QMDialogsMemoryStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 55F41E361A0A4C3B008D1C68 /* QMDialogsMemoryStorage.m */; };
 		55F41E421A0A627D008D1C68 /* NSString+GTMNSStringHTMLAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 55F41E3F1A0A627D008D1C68 /* NSString+GTMNSStringHTMLAdditions.m */; };
 		55F41E431A0A627D008D1C68 /* QBChatAbstractMessage+TextEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 55F41E411A0A627D008D1C68 /* QBChatAbstractMessage+TextEncoding.m */; };
@@ -29,10 +28,10 @@
 		55A6211E1A0BE2F4001BA470 /* QMChatService-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QMChatService-Prefix.pch"; sourceTree = "<group>"; };
 		55AA615E1A23235500D73089 /* QBChatAbstractMessage+QMCustomParameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QBChatAbstractMessage+QMCustomParameters.h"; sourceTree = "<group>"; };
 		55AA615F1A23235500D73089 /* QBChatAbstractMessage+QMCustomParameters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "QBChatAbstractMessage+QMCustomParameters.m"; sourceTree = "<group>"; };
-		55B2F0CC1A091C68008C2272 /* libQMChatService.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libQMChatService.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		55B2F0CC1A091C68008C2272 /* libQMChatService.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libQMChatService.a; path = "/Users/andrey/Projects/qmunicate-ios/Q-municate/QMServices/QMChatService/build/Debug-iphoneos/libQMChatService.a"; sourceTree = "<absolute>"; };
 		55B2F0CF1A091C68008C2272 /* QMChatService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QMChatService.h; sourceTree = "<group>"; };
 		55B2F0D11A091C68008C2272 /* QMChatService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QMChatService.m; sourceTree = "<group>"; };
-		55B2F0D71A091C68008C2272 /* QMChatServiceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QMChatServiceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		55B2F0D71A091C68008C2272 /* QMChatServiceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = QMChatServiceTests.xctest; path = "/Users/andrey/Projects/qmunicate-ios/Q-municate/QMServices/QMChatService/build/Debug-iphoneos/QMChatServiceTests.xctest"; sourceTree = "<absolute>"; };
 		55F41E351A0A4C3B008D1C68 /* QMDialogsMemoryStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMDialogsMemoryStorage.h; sourceTree = "<group>"; };
 		55F41E361A0A4C3B008D1C68 /* QMDialogsMemoryStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMDialogsMemoryStorage.m; sourceTree = "<group>"; };
 		55F41E3E1A0A627D008D1C68 /* NSString+GTMNSStringHTMLAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+GTMNSStringHTMLAdditions.h"; sourceTree = "<group>"; };
@@ -53,7 +52,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				55B2F0D81A091C68008C2272 /* libQMChatService.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -66,15 +64,6 @@
 				55A6211E1A0BE2F4001BA470 /* QMChatService-Prefix.pch */,
 			);
 			path = Support;
-			sourceTree = "<group>";
-		};
-		55B2F0CD1A091C68008C2272 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				55B2F0CC1A091C68008C2272 /* libQMChatService.a */,
-				55B2F0D71A091C68008C2272 /* QMChatServiceTests.xctest */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		55B2F0CE1A091C68008C2272 /* QMChatService */ = {
@@ -92,7 +81,6 @@
 			isa = PBXGroup;
 			children = (
 				55B2F0CE1A091C68008C2272 /* QMChatService */,
-				55B2F0CD1A091C68008C2272 /* Products */,
 				55A6211D1A0BE2F4001BA470 /* Support */,
 			);
 			sourceTree = "<group>";
@@ -180,7 +168,7 @@
 				en,
 			);
 			mainGroup = 55C276C01A0916BF005A0C38;
-			productRefGroup = 55B2F0CD1A091C68008C2272 /* Products */;
+			productRefGroup = 55C276C01A0916BF005A0C38;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (

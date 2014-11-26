@@ -160,7 +160,7 @@
 		5586667E1A122DBC00927430 /* SQLiteQMCDRecordStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQLiteQMCDRecordStack.m; sourceTree = "<group>"; };
 		5586667F1A122DBC00927430 /* SQLiteWithSavingContextQMCDRecordStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQLiteWithSavingContextQMCDRecordStack.h; sourceTree = "<group>"; };
 		558666801A122DBC00927430 /* SQLiteWithSavingContextQMCDRecordStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQLiteWithSavingContextQMCDRecordStack.m; sourceTree = "<group>"; };
-		5590F2371A0B87AB00C5044F /* libQMDBStorage.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libQMDBStorage.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		5590F2371A0B87AB00C5044F /* libQMDBStorage.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libQMDBStorage.a; path = "/Users/andrey/Projects/qmunicate-ios/Q-municate/QMServices/QMDBStorage/build/Debug-iphoneos/libQMDBStorage.a"; sourceTree = "<absolute>"; };
 		5590F23A1A0B87AB00C5044F /* QMDBStorage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QMDBStorage.h; sourceTree = "<group>"; };
 		5590F23C1A0B87AB00C5044F /* QMDBStorage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QMDBStorage.m; sourceTree = "<group>"; };
 		5590F2FB1A0BA58800C5044F /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.1.sdk/System/Library/Frameworks/CoreData.framework; sourceTree = DEVELOPER_DIR; };
@@ -357,17 +357,8 @@
 			children = (
 				5590F2391A0B87AB00C5044F /* QMDBStorage */,
 				5590F3001A0BA65800C5044F /* Frameworks */,
-				5590F2381A0B87AB00C5044F /* Products */,
 				5590F2FF1A0BA64500C5044F /* Support */,
 			);
-			sourceTree = "<group>";
-		};
-		5590F2381A0B87AB00C5044F /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				5590F2371A0B87AB00C5044F /* libQMDBStorage.a */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		5590F2391A0B87AB00C5044F /* QMDBStorage */ = {
@@ -438,7 +429,7 @@
 				en,
 			);
 			mainGroup = 5590F2251A0B876F00C5044F;
-			productRefGroup = 5590F2381A0B87AB00C5044F /* Products */;
+			productRefGroup = 5590F2251A0B876F00C5044F;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (

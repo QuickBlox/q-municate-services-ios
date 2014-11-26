@@ -12,7 +12,7 @@
 
 /* Begin PBXFileReference section */
 		55A621201A0BE301001BA470 /* QMAuthService-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QMAuthService-Prefix.pch"; sourceTree = "<group>"; };
-		55B2F0941A091C17008C2272 /* libQMAuthService.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libQMAuthService.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		55B2F0941A091C17008C2272 /* libQMAuthService.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libQMAuthService.a; path = "/Users/andrey/Projects/qmunicate-ios/Q-municate/QMServices/QMAuthService/build/Debug-iphoneos/libQMAuthService.a"; sourceTree = "<absolute>"; };
 		55B2F1301A092226008C2272 /* QMAuthService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMAuthService.h; sourceTree = "<group>"; };
 		55B2F1311A092226008C2272 /* QMAuthService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMAuthService.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -36,14 +36,6 @@
 			path = Support;
 			sourceTree = "<group>";
 		};
-		55B2F0951A091C17008C2272 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				55B2F0941A091C17008C2272 /* libQMAuthService.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		55B2F0961A091C17008C2272 /* QMAuthService */ = {
 			isa = PBXGroup;
 			children = (
@@ -65,7 +57,6 @@
 			children = (
 				55B2F0961A091C17008C2272 /* QMAuthService */,
 				55B2F0A31A091C17008C2272 /* QMAuthServiceTests */,
-				55B2F0951A091C17008C2272 /* Products */,
 				55A6211F1A0BE301001BA470 /* Support */,
 			);
 			sourceTree = "<group>";
@@ -110,7 +101,7 @@
 				en,
 			);
 			mainGroup = 55C276DE1A0917AF005A0C38;
-			productRefGroup = 55B2F0951A091C17008C2272 /* Products */;
+			productRefGroup = 55C276DE1A0917AF005A0C38;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (

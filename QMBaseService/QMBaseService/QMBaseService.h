@@ -19,7 +19,6 @@
 
 - (id)init __attribute__((unavailable("init is not a supported initializer for this class.")));
 - (id)initWithServiceDataDelegate:(id<QMServiceDataDelegate>)serviceDataDelegate;
-- (void)cleanData;
 - (void)showMessageForQBResponce:(QBResponse *)responce;
 
 @end

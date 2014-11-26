@@ -26,6 +26,15 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 30;
 
 @implementation QMChatService
 
+- (void)dealloc {
+    NSLog(@"%@ - %@",  NSStringFromSelector(_cmd), self);
+    self.memoryStorage = nil;
+    
+    NSAssert(![QBChat.instance isLoggedIn], @"Need update this case");
+    [self.presenceTimer invalidate];
+    [QBChat.instance removeDelegate:self];
+}
+
 #pragma mark - Configure
 
 - (id)initWithServiceDataDelegate:(id<QMServiceDataDelegate>)serviceDataDelegate {
@@ -38,17 +47,6 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 30;
     };
     
     return self;
-}
-
-#pragma mark - Clean data
-
-- (void)cleanData {
-    
-    self.memoryStorage = nil;
-    
-    NSAssert(![QBChat.instance isLoggedIn], @"Need update this case");
-    [self.presenceTimer invalidate];
-    [QBChat.instance removeDelegate:self];
 }
 
 #pragma mark - Add / Remove Multicast delegate

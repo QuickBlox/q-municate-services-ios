@@ -32,17 +32,6 @@ typedef NS_ENUM(NSUInteger, QM_STATUS) {
     return self;
 }
 
-#pragma mark - Clean data 
-
-- (void)cleanData {
-}
-
-#pragma mark - Destroy service
-
-- (void)destroy {
-    NSLog(@"Destroy %@ - servcie", NSStringFromClass(self.class));
-}
-
 #pragma mark - error Handler
 
 NSString *const kQBResponceErrorsKey = @"errors";

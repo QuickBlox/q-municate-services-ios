@@ -9,18 +9,21 @@
 #import <Foundation/Foundation.h>
 #import "QMBaseService.h"
 #import "QMContactListMemoryStorage.h"
+#import "QMUsersMemoryStorage.h"
 
 @class QBGeneralResponsePage;
+
 @protocol QMContactsServiceDelegate;
 
 @interface QMContactListService : QMBaseService
 
 @property (strong, nonatomic, readonly) QMContactListMemoryStorage *contactListMemoryStorage;
+@property (strong, nonatomic, readonly) QMUsersMemoryStorage *usersMemoryStorage;
 
 - (void)addDelegate:(id <QMContactsServiceDelegate>)delegate;
 - (void)removeDelegate:(id <QMContactsServiceDelegate>)delegate;
 
-- (void)retrieveUsersWithIDs:(NSArray *)idsToFetch
+- (void)retrieveUsersWithIDs:(NSArray *)ids
                   completion:(void(^)(QBResponse *responce, QBGeneralResponsePage *page, NSArray * users))completion;
 
 - (void)addUserToContactListRequest:(QBUUser *)user
