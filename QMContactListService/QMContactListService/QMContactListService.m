@@ -12,8 +12,6 @@
 
 <QBChatDelegate>
 
-@property (strong, nonatomic) NSMutableArray *contactList;
-@property (strong, nonatomic) NSMutableSet *confirmRequestUsersIDs;
 @property (strong, nonatomic) QBMulticastDelegate <QMContactsServiceDelegate> *multicastDelegate;
 @property (strong, nonatomic) NSMutableDictionary *users;
 @property (strong, nonatomic) NSMutableSet *retrivedIds;

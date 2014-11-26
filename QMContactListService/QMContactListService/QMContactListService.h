@@ -8,40 +8,17 @@
 
 #import <Foundation/Foundation.h>
 #import "QMBaseService.h"
+#import "QMContactListMemoryStorage.h"
 
 @class QBGeneralResponsePage;
 @protocol QMContactsServiceDelegate;
 
-@interface QMContactListService : QMBaseService 
+@interface QMContactListService : QMBaseService
 
-@property (strong, nonatomic, readonly) NSMutableArray *contactList;
-@property (strong, nonatomic, readonly) NSMutableSet *confirmRequestUsersIDs;
+@property (strong, nonatomic, readonly) QMContactListMemoryStorage *contactListMemoryStorage;
 
-/**
- *  <#Description#>
- *
- *  @param delegate <#delegate description#>
- */
 - (void)addDelegate:(id <QMContactsServiceDelegate>)delegate;
-
-/**
- *  <#Description#>
- *
- *  @param delegate <#delegate description#>
- */
 - (void)removeDelegate:(id <QMContactsServiceDelegate>)delegate;
-
-- (NSArray *)friends;
-- (void)addUsers:(NSArray *)users;
-- (NSArray *)idsWithUsers:(NSArray *)users;
-- (NSArray *)usersWithIDs:(NSArray *)ids;
-- (void)addUser:(QBUUser *)user;
-- (QBUUser *)userWithID:(NSUInteger)userID;
-- (NSArray *)checkExistIds:(NSArray *)ids;
-- (NSArray *)idsFromContactListItems;
-- (NSArray *)contactRequestUsers;
-- (QBContactListItem *)contactItemWithUserID:(NSUInteger)userID;
-- (NSArray *)usersHistory;
 
 - (void)retrieveUsersWithIDs:(NSArray *)idsToFetch
                   completion:(void(^)(QBResponse *responce, QBGeneralResponsePage *page, NSArray * users))completion;

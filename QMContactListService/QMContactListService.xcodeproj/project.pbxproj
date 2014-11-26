@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5547E6231A24CB490051F7DF /* QMContactListMemoryStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 5547E6221A24CB490051F7DF /* QMContactListMemoryStorage.m */; };
 		55B2F0B61A091C38008C2272 /* QMContactListService.m in Sources */ = {isa = PBXBuildFile; fileRef = 55B2F0B51A091C38008C2272 /* QMContactListService.m */; };
 		55B2F0BC1A091C38008C2272 /* libQMContactListService.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 55B2F0B01A091C38008C2272 /* libQMContactListService.a */; };
 /* End PBXBuildFile section */
@@ -22,12 +23,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5547E6211A24CB490051F7DF /* QMContactListMemoryStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMContactListMemoryStorage.h; sourceTree = "<group>"; };
+		5547E6221A24CB490051F7DF /* QMContactListMemoryStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMContactListMemoryStorage.m; sourceTree = "<group>"; };
 		55A621221A0BE307001BA470 /* QMContactListService-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QMContactListService-Prefix.pch"; sourceTree = "<group>"; };
 		55B2F0B01A091C38008C2272 /* libQMContactListService.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libQMContactListService.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		55B2F0B31A091C38008C2272 /* QMContactListService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QMContactListService.h; sourceTree = "<group>"; };
 		55B2F0B51A091C38008C2272 /* QMContactListService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QMContactListService.m; sourceTree = "<group>"; };
 		55B2F0BB1A091C38008C2272 /* QMContactListServiceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QMContactListServiceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		55B2F0C11A091C38008C2272 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,6 +51,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5547E6201A24CB0C0051F7DF /* QMContactListMemoryStorage */ = {
+			isa = PBXGroup;
+			children = (
+				5547E6211A24CB490051F7DF /* QMContactListMemoryStorage.h */,
+				5547E6221A24CB490051F7DF /* QMContactListMemoryStorage.m */,
+			);
+			path = QMContactListMemoryStorage;
+			sourceTree = "<group>";
+		};
 		55A621211A0BE307001BA470 /* Support */ = {
 			isa = PBXGroup;
 			children = (
@@ -71,31 +82,15 @@
 			children = (
 				55B2F0B31A091C38008C2272 /* QMContactListService.h */,
 				55B2F0B51A091C38008C2272 /* QMContactListService.m */,
+				5547E6201A24CB0C0051F7DF /* QMContactListMemoryStorage */,
 			);
 			path = QMContactListService;
-			sourceTree = "<group>";
-		};
-		55B2F0BF1A091C38008C2272 /* QMContactListServiceTests */ = {
-			isa = PBXGroup;
-			children = (
-				55B2F0C01A091C38008C2272 /* Supporting Files */,
-			);
-			path = QMContactListServiceTests;
-			sourceTree = "<group>";
-		};
-		55B2F0C01A091C38008C2272 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				55B2F0C11A091C38008C2272 /* Info.plist */,
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		55C276D41A091739005A0C38 = {
 			isa = PBXGroup;
 			children = (
 				55B2F0B21A091C38008C2272 /* QMContactListService */,
-				55B2F0BF1A091C38008C2272 /* QMContactListServiceTests */,
 				55B2F0B11A091C38008C2272 /* Products */,
 				55A621211A0BE307001BA470 /* Support */,
 			);
@@ -188,6 +183,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				55B2F0B61A091C38008C2272 /* QMContactListService.m in Sources */,
+				5547E6231A24CB490051F7DF /* QMContactListMemoryStorage.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
