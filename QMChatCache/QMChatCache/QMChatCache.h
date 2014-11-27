@@ -42,18 +42,18 @@
 #pragma mark Insert / Update / Delete dialog operations
 
 /**
- *  Insert/Update dialog to cache
+ *  Insert/Update dialog in cache
  *
  *  @param dialog QBChatDialog instance
- *  @param completion Completion block is called after fetch is completed
+ *  @param completion Completion block is called after update or insert operation is completed
  */
 - (void)insertOrUpdateDialog:(QBChatDialog *)dialog
                   completion:(void(^)(void))completion;
 
 /**
- *  Auto Update / Insert
+ *  Insert/Update dialogs
  *
- *  @param dialogs    QBChatDialog collection
+ *  @param dialogs    Array of QBChatDialog instances
  *  @param completion Completion block is called after update or insert operation is completed
  */
 - (void)insertOrUpdateDialogs:(NSArray *)dialogs
@@ -125,7 +125,7 @@
  *
  *  @param message    QBChatHistoryMessage instance
  *  @param dialogId   Dialog identifier
- *  @param completion Finish block
+ *  @param completion Completion block is called after update or insert operation is completed
  */
 - (void)insertOrUpdateMessage:(QBChatHistoryMessage *)message
                  withDialogId:(NSString *)dialogID
@@ -136,7 +136,8 @@
  *
  *  @param message    QBChatMessage instance
  *  @param dialogId   Dialog identifier
- *  @param completion Finish block
+ *  @param isRead     mark read
+ *  @param completion Completion block is called after update or insert operation is completed
  */
 - (void)insertOrUpdateMessage:(QBChatMessage *)message
                  withDialogId:(NSString *)dialogID
@@ -146,19 +147,36 @@
 /**
  *  Update or insert messages
  *
- *  @param messages   Array of messages
+ *  @param messages   Array of QBChatMessage instances
  *  @param dialogID   Dialog identifier
- *  @param completion Returns an array of QBChatMessages instances
+ *  @param completion Completion block is called after update or insert operation is completed
  */
 - (void)insertOrUpdateMessages:(NSArray *)messages
                   withDialogId:(NSString *)dialogID
                     completion:(void(^)(void))completion;
 
 /**
+ *  Delete message
+ *
+ *  @param message    QBChatHistoryMessage instance
+ *  @param completion Completion block that is called after the delete operation has completed.
+ */
+- (void)deleteMessage:(QBChatHistoryMessage *)message
+           completion:(void(^)(void))completion;
+/**
+ *  Delete all messages
+ *
+ *  @param completion Completion block that is called after the delete all messages operation  has completed.
+ */
+- (void)deleteAllMessages:(void(^)(void))completion;
+
+#pragma mark Fetch Messages operations
+
+/**
  *  Fetch cached messages with dialog id and filtering with predicate
  *
  *  @param dialogId   Dialog identifier
- *  @param predicate  Filter predicate
+ *  @param predicate  Predicate to evaluate objects against
  *  @param completion returns an array of QBChatMessages instances
  */
 
@@ -167,26 +185,17 @@
                    ascending:(BOOL)ascending
                   completion:(void(^)(NSArray *array))completion;
 
+/**
+ *  Fetch messages
+ *
+ *  @param predicate  Predicate to evaluate objects against
+ *  @param sortTerm   Attribute name to sort by.
+ *  @param ascending  `YES` if the attribute should be sorted ascending, `NO` for descending.
+ *  @param completion Completion block that is called after the fetch has completed. Returns an array of QBChatHistoryMessage instances
+ */
 - (void)messagesWithPredicate:(NSPredicate *)predicate
                      sortedBy:(NSString *)sortTerm
                     ascending:(BOOL)ascending
                    completion:(void(^)(NSArray *messages))completion;
-
-/**
- *  <#Description#>
- *
- *  @param message    <#message description#>
- *  @param dialogID   <#dialogID description#>
- *  @param completion <#completion description#>
- */
-- (void)deleteMessage:(QBChatHistoryMessage *)message
-         withDialogID:(NSString *)dialogID
-           completion:(void(^)(void))completion;
-/**
- *  Delete all messages
- *
- *  @param completion Completion block that is called after the delete all messages operation completed.
- */
-- (void)deleteAllMessages:(void(^)(void))completion;
 
 @end

@@ -146,7 +146,7 @@
 
 - (void)chatDidReceiveContactAddRequestFromUser:(NSUInteger)userID {
     
-    [self.contactListMemoryStorage addContactRequestWithUserID:userID];
+    [self.contactListMemoryStorage addContactRequestFromUserID:userID];
     
     QBUUser *user = [self.usersMemoryStorage userWithID:userID];
     

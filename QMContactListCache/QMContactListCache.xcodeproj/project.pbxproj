@@ -62,8 +62,8 @@
 		554A28361A0CE38600C4E03C /* ModelIncludes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModelIncludes.h; sourceTree = "<group>"; };
 		5590F2AD1A0B8D4000C5044F /* QMContactListCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QMContactListCache.h; sourceTree = "<group>"; };
 		5590F2AF1A0B8D4000C5044F /* QMContactListCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QMContactListCache.m; sourceTree = "<group>"; };
-		55A364DE1A2732A100C792C0 /* libQMContactListCache.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libQMContactListCache.a; path = "/Users/andrey/Projects/qmunicate-ios/Q-municate/QMServices/QMContactListCache/build/Debug-iphoneos/libQMContactListCache.a"; sourceTree = "<absolute>"; };
-		55A364DF1A2732A100C792C0 /* QMContactListCacheModel.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = QMContactListCacheModel.bundle; path = "/Users/andrey/Projects/qmunicate-ios/Q-municate/QMServices/QMContactListCache/build/Debug-iphoneos/QMContactListCacheModel.bundle"; sourceTree = "<absolute>"; };
+		55A365091A27439C00C792C0 /* libQMContactListCache.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libQMContactListCache.a; path = "/Users/andrey/Projects/qmunicate-ios/Q-municate/QMServices/QMContactListCache/build/Debug-iphoneos/libQMContactListCache.a"; sourceTree = "<absolute>"; };
+		55A3650A1A27439C00C792C0 /* QMContactListCacheModel.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = QMContactListCacheModel.bundle; path = "/Users/andrey/Projects/qmunicate-ios/Q-municate/QMServices/QMContactListCache/build/Debug-iphoneos/QMContactListCacheModel.bundle"; sourceTree = "<absolute>"; };
 		55A6211A1A0BE284001BA470 /* QMContactListCache-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QMContactListCache-Prefix.pch"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -172,7 +172,7 @@
 			);
 			name = QMContactListCacheModel;
 			productName = QMCotactListCacheModel;
-			productReference = 55A364DF1A2732A100C792C0 /* QMContactListCacheModel.bundle */;
+			productReference = 55A3650A1A27439C00C792C0 /* QMContactListCacheModel.bundle */;
 			productType = "com.apple.product-type.bundle";
 		};
 		5590F2A91A0B8D4000C5044F /* QMContactListCache */ = {
@@ -192,7 +192,7 @@
 			);
 			name = QMContactListCache;
 			productName = QMContactListCache;
-			productReference = 55A364DE1A2732A100C792C0 /* libQMContactListCache.a */;
+			productReference = 55A365091A27439C00C792C0 /* libQMContactListCache.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */

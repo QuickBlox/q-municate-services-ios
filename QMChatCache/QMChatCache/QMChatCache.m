@@ -429,7 +429,6 @@ static QMChatCache *_chatCacheInstance = nil;
 }
 
 - (void)deleteMessage:(QBChatHistoryMessage *)message
-         withDialogID:(NSString *)dialogID
            completion:(void(^)(void))completion {
     
     __weak __typeof(self)weakSelf = self;
@@ -437,21 +436,28 @@ static QMChatCache *_chatCacheInstance = nil;
         
         [weakSelf deleteMessage:message inContext:context];
         
-        if (completion) {
-            completion();
-        };
+        [weakSelf save:^{
+            
+            if (completion) {
+                completion();
+            }
+        }];
     }];
 }
 
 - (void)deleteAllMessages:(void(^)(void))completion {
     
+    __weak __typeof(self)weakSelf = self;
     [self async:^(NSManagedObjectContext *context) {
         
         [CDMessage QM_truncateAllInContext:context];
-        
-        if (completion) {
-            completion();
-        }
+
+        [weakSelf save:^{
+            
+            if (completion) {
+                completion();
+            }
+        }];
     }];
 }
 

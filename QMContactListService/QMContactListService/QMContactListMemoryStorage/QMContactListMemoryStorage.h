@@ -22,10 +22,10 @@
 - (void)updateWithContactList:(QBContactList *)contactList;
 - (void)updateWithContactListItems:(NSArray *)contactListItems;
 
+- (void)addContactRequestFromUserID:(NSUInteger)userID;
 - (QBContactListItem *)contactListItemWithUserID:(NSUInteger)userID;
 
 - (NSArray *)contactRequestUsersIDs;
-- (void)addContactRequestWithUserID:(NSUInteger)userID;
 - (void)confirmOrRejectContactRequestForUserID:(NSUInteger)userID;
 - (NSArray *)userIDsFromContactList;
 
