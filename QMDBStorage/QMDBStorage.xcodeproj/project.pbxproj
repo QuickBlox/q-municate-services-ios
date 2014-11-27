@@ -160,12 +160,12 @@
 		5586667E1A122DBC00927430 /* SQLiteQMCDRecordStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQLiteQMCDRecordStack.m; sourceTree = "<group>"; };
 		5586667F1A122DBC00927430 /* SQLiteWithSavingContextQMCDRecordStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQLiteWithSavingContextQMCDRecordStack.h; sourceTree = "<group>"; };
 		558666801A122DBC00927430 /* SQLiteWithSavingContextQMCDRecordStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQLiteWithSavingContextQMCDRecordStack.m; sourceTree = "<group>"; };
-		5590F2371A0B87AB00C5044F /* libQMDBStorage.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libQMDBStorage.a; path = "/Users/andrey/Projects/qmunicate-ios/Q-municate/QMServices/QMDBStorage/build/Debug-iphoneos/libQMDBStorage.a"; sourceTree = "<absolute>"; };
 		5590F23A1A0B87AB00C5044F /* QMDBStorage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QMDBStorage.h; sourceTree = "<group>"; };
 		5590F23C1A0B87AB00C5044F /* QMDBStorage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QMDBStorage.m; sourceTree = "<group>"; };
 		5590F2FB1A0BA58800C5044F /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.1.sdk/System/Library/Frameworks/CoreData.framework; sourceTree = DEVELOPER_DIR; };
 		5590F2FD1A0BA5C000C5044F /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.1.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		5590F3011A0BA6B200C5044F /* QMDBStorage-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QMDBStorage-Prefix.pch"; sourceTree = "<group>"; };
+		55A364E11A2732A100C792C0 /* libQMDBStorage.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libQMDBStorage.a; path = "/Users/andrey/Projects/qmunicate-ios/Q-municate/QMServices/QMDBStorage/build/Debug-iphoneos/libQMDBStorage.a"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -405,7 +405,7 @@
 			);
 			name = QMDBStorage;
 			productName = QMDBStorage;
-			productReference = 5590F2371A0B87AB00C5044F /* libQMDBStorage.a */;
+			productReference = 55A364E11A2732A100C792C0 /* libQMDBStorage.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */

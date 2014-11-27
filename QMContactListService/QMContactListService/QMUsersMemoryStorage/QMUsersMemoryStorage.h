@@ -15,5 +15,6 @@
 
 - (NSArray *)unsorterdUsersFromMemoryStorage;
 - (QBUUser *)userWithID:(NSUInteger)userID;
+- (NSArray *)usersWithIDs:(NSArray *)ids;
 
 @end

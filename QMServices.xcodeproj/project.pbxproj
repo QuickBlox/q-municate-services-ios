@@ -24,13 +24,6 @@
 /* Begin PBXBuildFile section */
 		55013A801A1F68280030C134 /* QMServices.m in Sources */ = {isa = PBXBuildFile; fileRef = 55013A7F1A1F68280030C134 /* QMServices.m */; };
 		55013AEC1A1F72350030C134 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55013AEB1A1F72350030C134 /* Foundation.framework */; };
-		55013AF01A1F73EB0030C134 /* libQMChatCache.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5590F28E1A0B8C5200C5044F /* libQMChatCache.a */; };
-		55013B091A1F75B50030C134 /* libQMContactListCache.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5590F2C51A0B8D4600C5044F /* libQMContactListCache.a */; };
-		55013B111A1F79180030C134 /* libQMAuthService.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 55B2F0F11A091CBB008C2272 /* libQMAuthService.a */; };
-		55013B121A1F79180030C134 /* libQMChatService.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 55B2F0F71A091CBB008C2272 /* libQMChatService.a */; };
-		55013B131A1F79180030C134 /* libQMContactListService.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 55B2F0FD1A091CBB008C2272 /* libQMContactListService.a */; };
-		55013B171A1F7BA30030C134 /* libQMBaseService.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5590F2E61A0BA11900C5044F /* libQMBaseService.a */; };
-		55013B181A1F7BA30030C134 /* libQMDBStorage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5590F2521A0B87B900C5044F /* libQMDBStorage.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -97,103 +90,88 @@
 			remoteGlobalIDString = 55B2F0AF1A091C38008C2272;
 			remoteInfo = QMContactListService;
 		};
-		554A28721A0CEC4A00C4E03C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5590F2A31A0B8D2900C5044F /* QMContactListCache.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 554A28211A0CE22200C4E03C;
-			remoteInfo = QMCotactListCacheModel;
-		};
-		554A28891A0CF04200C4E03C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5590F26B1A0B8C0500C5044F /* QMChatCache.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 554A287A1A0CECA000C4E03C;
-			remoteInfo = QMChatCacheModel;
-		};
-		5590F2511A0B87B900C5044F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5590F22C1A0B876F00C5044F /* QMDBStorage.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 5590F2371A0B87AB00C5044F;
-			remoteInfo = QMDBStorage;
-		};
-		5590F28D1A0B8C5200C5044F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5590F26B1A0B8C0500C5044F /* QMChatCache.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 5590F2721A0B8C4200C5044F;
-			remoteInfo = QMChatCache;
-		};
-		5590F2C41A0B8D4600C5044F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5590F2A31A0B8D2900C5044F /* QMContactListCache.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 5590F2AA1A0B8D4000C5044F;
-			remoteInfo = QMContactListCache;
-		};
-		5590F2E51A0BA11900C5044F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5590F2E01A0BA11900C5044F /* QMBaseService.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 55B2F1041A091CC9008C2272;
-			remoteInfo = QMBaseService;
-		};
-		5590F2E71A0BA11900C5044F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5590F2E01A0BA11900C5044F /* QMBaseService.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 55B2F10F1A091CC9008C2272;
-			remoteInfo = QMBaseServiceTests;
-		};
-		55B2F0F01A091CBB008C2272 /* PBXContainerItemProxy */ = {
+		55A364E41A27378F00C792C0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 55C276E51A0917AF005A0C38 /* QMAuthService.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = 55B2F0941A091C17008C2272;
+			remoteGlobalIDString = 55A364D81A2732A100C792C0;
 			remoteInfo = QMAuthService;
 		};
-		55B2F0F61A091CBB008C2272 /* PBXContainerItemProxy */ = {
+		55A364E61A27378F00C792C0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5590F2E01A0BA11900C5044F /* QMBaseService.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 55A364D91A2732A100C792C0;
+			remoteInfo = QMBaseService;
+		};
+		55A364E91A27378F00C792C0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5590F26B1A0B8C0500C5044F /* QMChatCache.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 55A364DA1A2732A100C792C0;
+			remoteInfo = QMChatCache;
+		};
+		55A364EB1A27378F00C792C0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5590F26B1A0B8C0500C5044F /* QMChatCache.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 55A364DB1A2732A100C792C0;
+			remoteInfo = QMChatCacheModel;
+		};
+		55A364EE1A27378F00C792C0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 55C276C71A0916BF005A0C38 /* QMChatService.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = 55B2F0CC1A091C68008C2272;
+			remoteGlobalIDString = 55A364DC1A2732A100C792C0;
 			remoteInfo = QMChatService;
 		};
-		55B2F0F81A091CBB008C2272 /* PBXContainerItemProxy */ = {
+		55A364F01A27378F00C792C0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 55C276C71A0916BF005A0C38 /* QMChatService.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = 55B2F0D71A091C68008C2272;
+			remoteGlobalIDString = 55A364DD1A2732A100C792C0;
 			remoteInfo = QMChatServiceTests;
 		};
-		55B2F0FC1A091CBB008C2272 /* PBXContainerItemProxy */ = {
+		55A364F31A27378F00C792C0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5590F2A31A0B8D2900C5044F /* QMContactListCache.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 55A364DE1A2732A100C792C0;
+			remoteInfo = QMContactListCache;
+		};
+		55A364F51A27378F00C792C0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5590F2A31A0B8D2900C5044F /* QMContactListCache.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 55A364DF1A2732A100C792C0;
+			remoteInfo = QMContactListCacheModel;
+		};
+		55A364F71A27378F00C792C0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 55C276DB1A091739005A0C38 /* QMContactListService.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = 55B2F0B01A091C38008C2272;
+			remoteGlobalIDString = 55A364E01A2732A100C792C0;
 			remoteInfo = QMContactListService;
 		};
-		55B2F0FE1A091CBB008C2272 /* PBXContainerItemProxy */ = {
+		55A364F91A27378F00C792C0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 55C276DB1A091739005A0C38 /* QMContactListService.xcodeproj */;
+			containerPortal = 5590F22C1A0B876F00C5044F /* QMDBStorage.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = 55B2F0BB1A091C38008C2272;
-			remoteInfo = QMContactListServiceTests;
+			remoteGlobalIDString = 55A364E11A2732A100C792C0;
+			remoteInfo = QMDBStorage;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		55013A331A1F63920030C134 /* QMServices.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QMServices.h; sourceTree = "<group>"; };
-		55013A411A1F63920030C134 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		55013A7F1A1F68280030C134 /* QMServices.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMServices.m; sourceTree = "<group>"; };
 		55013AEB1A1F72350030C134 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.1.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		55013B2A1A1F84E90030C134 /* libQMServices.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libQMServices.a; path = "/Users/andrey/Projects/qmunicate-ios/Q-municate/QMServices/build/Debug-iphoneos/libQMServices.a"; sourceTree = "<absolute>"; };
-		55013B2B1A1F84E90030C134 /* QMServicesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = QMServicesTests.xctest; path = "/Users/andrey/Projects/qmunicate-ios/Q-municate/QMServices/build/Debug-iphoneos/QMServicesTests.xctest"; sourceTree = "<absolute>"; };
 		5590F22C1A0B876F00C5044F /* QMDBStorage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMDBStorage.xcodeproj; path = QMDBStorage/QMDBStorage.xcodeproj; sourceTree = "<group>"; };
 		5590F26B1A0B8C0500C5044F /* QMChatCache.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMChatCache.xcodeproj; path = QMChatCache/QMChatCache.xcodeproj; sourceTree = "<group>"; };
 		5590F2A31A0B8D2900C5044F /* QMContactListCache.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMContactListCache.xcodeproj; path = QMContactListCache/QMContactListCache.xcodeproj; sourceTree = "<group>"; };
 		5590F2E01A0BA11900C5044F /* QMBaseService.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMBaseService.xcodeproj; path = QMBaseService/QMBaseService.xcodeproj; sourceTree = "<group>"; };
+		55A364E21A2732A100C792C0 /* libQMServices.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libQMServices.a; path = "/Users/andrey/Projects/qmunicate-ios/Q-municate/QMServices/build/Debug-iphoneos/libQMServices.a"; sourceTree = "<absolute>"; };
+		55A364E31A2732A100C792C0 /* QMServicesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = QMServicesTests.xctest; path = "/Users/andrey/Projects/qmunicate-ios/Q-municate/QMServices/build/Debug-iphoneos/QMServicesTests.xctest"; sourceTree = "<absolute>"; };
 		55C276C71A0916BF005A0C38 /* QMChatService.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMChatService.xcodeproj; path = QMChatService/QMChatService.xcodeproj; sourceTree = "<group>"; };
 		55C276DB1A091739005A0C38 /* QMContactListService.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMContactListService.xcodeproj; path = QMContactListService/QMContactListService.xcodeproj; sourceTree = "<group>"; };
 		55C276E51A0917AF005A0C38 /* QMAuthService.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMAuthService.xcodeproj; path = QMAuthService/QMAuthService.xcodeproj; sourceTree = "<group>"; };
@@ -204,13 +182,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				55013B171A1F7BA30030C134 /* libQMBaseService.a in Frameworks */,
-				55013B181A1F7BA30030C134 /* libQMDBStorage.a in Frameworks */,
-				55013B111A1F79180030C134 /* libQMAuthService.a in Frameworks */,
-				55013B121A1F79180030C134 /* libQMChatService.a in Frameworks */,
-				55013B131A1F79180030C134 /* libQMContactListService.a in Frameworks */,
-				55013B091A1F75B50030C134 /* libQMContactListCache.a in Frameworks */,
-				55013AF01A1F73EB0030C134 /* libQMChatCache.a in Frameworks */,
 				55013AEC1A1F72350030C134 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -234,22 +205,6 @@
 			path = QMServices;
 			sourceTree = "<group>";
 		};
-		55013A3F1A1F63920030C134 /* QMServicesTests */ = {
-			isa = PBXGroup;
-			children = (
-				55013A401A1F63920030C134 /* Supporting Files */,
-			);
-			path = QMServicesTests;
-			sourceTree = "<group>";
-		};
-		55013A401A1F63920030C134 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				55013A411A1F63920030C134 /* Info.plist */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
 		55013AED1A1F72430030C134 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -261,7 +216,7 @@
 		5590F22D1A0B876F00C5044F /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				5590F2521A0B87B900C5044F /* libQMDBStorage.a */,
+				55A364FA1A27378F00C792C0 /* libQMDBStorage.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -269,8 +224,8 @@
 		5590F26C1A0B8C0500C5044F /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				5590F28E1A0B8C5200C5044F /* libQMChatCache.a */,
-				554A288A1A0CF04200C4E03C /* QMChatCacheModel.bundle */,
+				55A364EA1A27378F00C792C0 /* libQMChatCache.a */,
+				55A364EC1A27378F00C792C0 /* QMChatCacheModel.bundle */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -299,8 +254,8 @@
 		5590F2A41A0B8D2900C5044F /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				5590F2C51A0B8D4600C5044F /* libQMContactListCache.a */,
-				554A28731A0CEC4A00C4E03C /* QMContactListCacheModel.bundle */,
+				55A364F41A27378F00C792C0 /* libQMContactListCache.a */,
+				55A364F61A27378F00C792C0 /* QMContactListCacheModel.bundle */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -308,8 +263,7 @@
 		5590F2E11A0BA11900C5044F /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				5590F2E61A0BA11900C5044F /* libQMBaseService.a */,
-				5590F2E81A0BA11900C5044F /* QMBaseServiceTests.xctest */,
+				55A364E71A27378F00C792C0 /* libQMBaseService.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -321,15 +275,14 @@
 				5590F2911A0B8C7B00C5044F /* Cache */,
 				5590F28A1A0B8C5200C5044F /* Services */,
 				55013AED1A1F72430030C134 /* Frameworks */,
-				55013A3F1A1F63920030C134 /* QMServicesTests */,
 			);
 			sourceTree = "<group>";
 		};
 		55C276C81A0916BF005A0C38 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				55B2F0F71A091CBB008C2272 /* libQMChatService.a */,
-				55B2F0F91A091CBB008C2272 /* QMChatServiceTests.xctest */,
+				55A364EF1A27378F00C792C0 /* libQMChatService.a */,
+				55A364F11A27378F00C792C0 /* QMChatServiceTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -337,8 +290,7 @@
 		55C276DC1A091739005A0C38 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				55B2F0FD1A091CBB008C2272 /* libQMContactListService.a */,
-				55B2F0FF1A091CBB008C2272 /* QMContactListServiceTests.xctest */,
+				55A364F81A27378F00C792C0 /* libQMContactListService.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -346,7 +298,7 @@
 		55C276E61A0917AF005A0C38 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				55B2F0F11A091CBB008C2272 /* libQMAuthService.a */,
+				55A364E51A27378F00C792C0 /* libQMAuthService.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -385,7 +337,7 @@
 			);
 			name = QMServices;
 			productName = QMServices;
-			productReference = 55013B2A1A1F84E90030C134 /* libQMServices.a */;
+			productReference = 55A364E21A2732A100C792C0 /* libQMServices.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		55013A3A1A1F63920030C134 /* QMServicesTests */ = {
@@ -403,7 +355,7 @@
 			);
 			name = QMServicesTests;
 			productName = QMServicesTests;
-			productReference = 55013B2B1A1F84E90030C134 /* QMServicesTests.xctest */;
+			productReference = 55A364E31A2732A100C792C0 /* QMServicesTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -475,88 +427,74 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		554A28731A0CEC4A00C4E03C /* QMContactListCacheModel.bundle */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = QMContactListCacheModel.bundle;
-			remoteRef = 554A28721A0CEC4A00C4E03C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		554A288A1A0CF04200C4E03C /* QMChatCacheModel.bundle */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = QMChatCacheModel.bundle;
-			remoteRef = 554A28891A0CF04200C4E03C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		5590F2521A0B87B900C5044F /* libQMDBStorage.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libQMDBStorage.a;
-			remoteRef = 5590F2511A0B87B900C5044F /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		5590F28E1A0B8C5200C5044F /* libQMChatCache.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libQMChatCache.a;
-			remoteRef = 5590F28D1A0B8C5200C5044F /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		5590F2C51A0B8D4600C5044F /* libQMContactListCache.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libQMContactListCache.a;
-			remoteRef = 5590F2C41A0B8D4600C5044F /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		5590F2E61A0BA11900C5044F /* libQMBaseService.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libQMBaseService.a;
-			remoteRef = 5590F2E51A0BA11900C5044F /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		5590F2E81A0BA11900C5044F /* QMBaseServiceTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = QMBaseServiceTests.xctest;
-			remoteRef = 5590F2E71A0BA11900C5044F /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		55B2F0F11A091CBB008C2272 /* libQMAuthService.a */ = {
+		55A364E51A27378F00C792C0 /* libQMAuthService.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libQMAuthService.a;
-			remoteRef = 55B2F0F01A091CBB008C2272 /* PBXContainerItemProxy */;
+			remoteRef = 55A364E41A27378F00C792C0 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		55B2F0F71A091CBB008C2272 /* libQMChatService.a */ = {
+		55A364E71A27378F00C792C0 /* libQMBaseService.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libQMBaseService.a;
+			remoteRef = 55A364E61A27378F00C792C0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		55A364EA1A27378F00C792C0 /* libQMChatCache.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libQMChatCache.a;
+			remoteRef = 55A364E91A27378F00C792C0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		55A364EC1A27378F00C792C0 /* QMChatCacheModel.bundle */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = QMChatCacheModel.bundle;
+			remoteRef = 55A364EB1A27378F00C792C0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		55A364EF1A27378F00C792C0 /* libQMChatService.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libQMChatService.a;
-			remoteRef = 55B2F0F61A091CBB008C2272 /* PBXContainerItemProxy */;
+			remoteRef = 55A364EE1A27378F00C792C0 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		55B2F0F91A091CBB008C2272 /* QMChatServiceTests.xctest */ = {
+		55A364F11A27378F00C792C0 /* QMChatServiceTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = QMChatServiceTests.xctest;
-			remoteRef = 55B2F0F81A091CBB008C2272 /* PBXContainerItemProxy */;
+			remoteRef = 55A364F01A27378F00C792C0 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		55B2F0FD1A091CBB008C2272 /* libQMContactListService.a */ = {
+		55A364F41A27378F00C792C0 /* libQMContactListCache.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libQMContactListCache.a;
+			remoteRef = 55A364F31A27378F00C792C0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		55A364F61A27378F00C792C0 /* QMContactListCacheModel.bundle */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = QMContactListCacheModel.bundle;
+			remoteRef = 55A364F51A27378F00C792C0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		55A364F81A27378F00C792C0 /* libQMContactListService.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libQMContactListService.a;
-			remoteRef = 55B2F0FC1A091CBB008C2272 /* PBXContainerItemProxy */;
+			remoteRef = 55A364F71A27378F00C792C0 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		55B2F0FF1A091CBB008C2272 /* QMContactListServiceTests.xctest */ = {
+		55A364FA1A27378F00C792C0 /* libQMDBStorage.a */ = {
 			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = QMContactListServiceTests.xctest;
-			remoteRef = 55B2F0FE1A091CBB008C2272 /* PBXContainerItemProxy */;
+			fileType = archive.ar;
+			path = libQMDBStorage.a;
+			remoteRef = 55A364F91A27378F00C792C0 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */

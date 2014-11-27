@@ -42,6 +42,14 @@
     }];
 }
 
+- (void)updateWithContactListItems:(NSArray *)contactListItems {
+    
+    [self.contactList removeAllObjects];
+    [contactListItems enumerateObjectsUsingBlock:^(QBContactListItem *obj, NSUInteger idx, BOOL *stop) {
+        [self addContactListItem:obj];
+    }];
+}
+
 - (void)addContactListItem:(QBContactListItem *)contactListItem {
     
     self.contactList[@(contactListItem.userID)] = contactListItem;

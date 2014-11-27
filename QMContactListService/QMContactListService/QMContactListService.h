@@ -13,19 +13,65 @@
 
 @class QBGeneralResponsePage;
 
-@protocol QMContactsServiceDelegate;
+typedef void(^QMCacheCollection)(NSArray *collection);
+
+@protocol QMContactListServiceDelegate;
+@protocol QMContactListServiceCacheDelegate;
 
 @interface QMContactListService : QMBaseService
 
 @property (strong, nonatomic, readonly) QMContactListMemoryStorage *contactListMemoryStorage;
 @property (strong, nonatomic, readonly) QMUsersMemoryStorage *usersMemoryStorage;
 
-- (void)addDelegate:(id <QMContactsServiceDelegate>)delegate;
-- (void)removeDelegate:(id <QMContactsServiceDelegate>)delegate;
+/**
+ *  Default init with service data delegate
+ *
+ *  @param serviceDataDelegate instance that confirms id<QMServiceDataDelegate> protocol
+ *
+ *  @return QMContactListService instance
+ */
+- (instancetype)initWithServiceDataDelegate:(id<QMServiceDataDelegate>)serviceDataDelegate;
 
+/**
+ *  Init with service data delegate and contact list cache protocol.
+ *
+ *  @param serviceDataDelegate instance confirmed id<QMServiceDataDelegate> protocol
+ *  @param cacheDelegate       instance confirmed id<QMContactListServiceCacheDelegate> protocol
+ *
+ *  @return QMContactListService instance
+ */
+- (instancetype)initWithServiceDataDelegate:(id<QMServiceDataDelegate>)serviceDataDelegate
+                              cacheDelegate:(id<QMContactListServiceCacheDelegate>)cacheDelegate;
+
+/**
+ *  Add instance that confirms contact list service multicaste protocol
+ *
+ *  @param delegate instance that confirms id<QMContactListServiceDelegate> protocol
+ */
+- (void)addDelegate:(id <QMContactListServiceDelegate>)delegate;
+
+/**
+ *  Remove instance that confirms contact list service multicaste protocol
+ *
+ *  @param delegate instance that confirms id<QMContactListServiceDelegate> protocol
+ */
+- (void)removeDelegate:(id <QMContactListServiceDelegate>)delegate;
+
+/**
+ *  Retrieve users with ids (with extended set of pagination parameters)
+ *
+ *  @param ids        ids of users which you want to retrieve
+ *  @param completion Block with response, page and users instances if request succeded
+ */
 - (void)retrieveUsersWithIDs:(NSArray *)ids
                   completion:(void(^)(QBResponse *responce, QBGeneralResponsePage *page, NSArray * users))completion;
 
+/**
+ *  Add user to contact list request
+ *
+ *  @param user       user which you would like to add to contact list
+ *  @param completion completion block
+ */
 - (void)addUserToContactListRequest:(QBUUser *)user
                          completion:(void(^)(BOOL success))completion;
 
@@ -40,9 +86,24 @@
 
 @end
 
-@protocol QMContactsServiceDelegate <NSObject>
+#pragma mark - Protocols
+
+@protocol QMContactListServiceCacheDelegate <NSObject>
+@required
+
+- (void)cachedUsers:(QMCacheCollection)block;
+- (void)cachedContactListItems:(QMCacheCollection)block;
+
+@end
+
+@protocol QMContactListServiceDelegate <NSObject>
 @optional
-- (void)contactsServiceContactListDidUpdate;
-- (void)contactsServiceContactRequestUsersListChanged;
-- (void)contactsServiceUsersHistoryUpdated;
+
+- (void)contactListServiceDidLoadCache;
+- (void)contactListService:(QMContactListService *)contactListService contactListDidChange:(QBContactList *)contactList;
+- (void)contactListService:(QMContactListService *)contactListService addRequestFromUser:(QBUUser *)user;
+- (void)contactListService:(QMContactListService *)contactListService didAddUser:(QBUUser *)user;
+- (void)contactListService:(QMContactListService *)contactListService didAddUsers:(NSArray *)users;
+- (void)contactListService:(QMContactListService *)contactListService didUpdateUser:(QBUUser *)user;
+
 @end
