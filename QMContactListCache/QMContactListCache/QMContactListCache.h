@@ -55,8 +55,17 @@
  *  @param contactListItems Array of QBContactListItem instances
  *  @param completion       Completion block is called after update or insert operation is completed
  */
-- (void)insertOrUpdateContactListItems:(NSArray *)contactListItems
+- (void)insertOrUpdateContactListWithItems:(NSArray *)contactListItems
                             completion:(void(^)(void))completion;
+
+/**
+ *  Insert/Update QBContactListItem's in cache
+ *
+ *  @param contactList QBContactList instance
+ *  @param completion  Completion block is called after update or insert operation is completed
+ */
+- (void)insertOrUpdateContactListItemsWithContactList:(QBContactList *)contactList
+                                           completion:(void(^)(void))completion;
 /**
  *  Delete ContactListItem from cache
  *

@@ -79,8 +79,8 @@ static QMContactListCache *_chatCacheInstance = nil;
     }];
 }
 
-- (void)insertOrUpdateContactListItems:(NSArray *)contactListItems
-                            completion:(void(^)(void))completion {
+- (void)insertOrUpdateContactListWithItems:(NSArray *)contactListItems
+                                completion:(void(^)(void))completion {
     
     __weak __typeof(self)weakSelf = self;
     [self async:^(NSManagedObjectContext *context) {
@@ -122,6 +122,18 @@ static QMContactListCache *_chatCacheInstance = nil;
         NSLog(@"ContactListItems to insert %lu", (unsigned long)toInsert.count);
         NSLog(@"ContactListItems to update %lu", (unsigned long)toUpdate.count);
     }];
+}
+
+- (void)insertOrUpdateContactListItemsWithContactList:(QBContactList *)contactList
+                                           completion:(void(^)(void))completion {
+    NSMutableArray *items =
+    [NSMutableArray arrayWithCapacity:contactList.contacts.count + contactList.pendingApproval.count];
+    
+    [items addObjectsFromArray:contactList.contacts];
+    [items addObjectsFromArray:contactList.pendingApproval];
+    
+    [self insertOrUpdateContactListWithItems:items
+                                  completion:completion];
 }
 
 - (void)insertContactListItems:(NSArray *)contactListItems
@@ -399,7 +411,7 @@ static QMContactListCache *_chatCacheInstance = nil;
 #pragma mark Fetch users operations
 
 - (void)userWithPredicate:(NSPredicate *)predicate
-          completion:(void(^)(QBUUser *user))completion {
+               completion:(void(^)(QBUUser *user))completion {
     
     [self async:^(NSManagedObjectContext *context) {
         
