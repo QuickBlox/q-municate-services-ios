@@ -35,7 +35,32 @@
     return self;
 }
 
+#pragma mark - Add / Join / Remove
+
+- (void)addChatDialog:(QBChatDialog *)chatDialog
+              andJoin:(BOOL)join {
+    
+    self.dialogs[chatDialog.ID] = chatDialog;
+    
+    if (join) {
+        
+        if (!chatDialog.chatRoom.isJoined) {
+            [chatDialog.chatRoom joinRoomWithHistoryAttribute:@{@"maxstanzas": @"0"}];
+        }
+    }
+}
+
+- (void)addChatDialogs:(NSArray *)dialogs andJoin:(BOOL)join {
+    
+    for (QBChatDialog *chatDialog in dialogs) {
+        
+        [self addChatDialog:chatDialog
+                    andJoin:join];
+    }
+}
+
 - (QBChatDialog *)chatDialogWithID:(NSString *)dialogID {
+    
     return self.dialogs[dialogID];
 }
 
@@ -44,8 +69,7 @@
     NSArray *allDialogs = [self unreadDialogs];
     
     NSPredicate *predicate =
-    [NSPredicate predicateWithFormat:@"SELF.type == %d AND SUBQUERY(SELF.occupantIDs, $userID, $userID == %@).@count > 0",
-     QBChatDialogTypePrivate, @(opponentID)];
+    [NSPredicate predicateWithFormat:@"SELF.type == %d AND SUBQUERY(SELF.occupantIDs, $userID, $userID == %@).@count > 0", QBChatDialogTypePrivate, @(opponentID)];
     
     NSArray *result = [allDialogs filteredArrayUsingPredicate:predicate];
     QBChatDialog *dialog = result.firstObject;
@@ -61,28 +85,6 @@
     NSAssert(filtered.count == 1, @"Array count must be 1");
     
     return filtered.firstObject;
-}
-
-- (void)addDialogsToHistory:(NSArray *)dialogs joinIfNeeded:(BOOL)join {
-    
-    if (dialogs.count > 0) {
-        
-        for (QBChatDialog *chatDialog in dialogs) {
-            
-            self.dialogs[chatDialog.ID] = chatDialog;
-            
-            if (join) {
-                
-                if (!chatDialog.chatRoom.isJoined) {
-                    [chatDialog.chatRoom joinRoomWithHistoryAttribute:@{@"maxstanzas": @"0"}];
-                }
-            }
-        }
-        
-//        if ([self.multicastDelegate respondsToSelector:@selector(chatServiceDidDialogsHistoryUpdated)]) {
-//            [self.multicastDelegate chatServiceDidDialogsHistoryUpdated];
-//        }
-    }
 }
 
 - (void)leaveFromRooms {

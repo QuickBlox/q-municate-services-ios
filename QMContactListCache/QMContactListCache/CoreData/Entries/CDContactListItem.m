@@ -18,7 +18,7 @@
     self.subscriptionState = @(contactListItem.subscriptionState);
 }
 
-- (BOOL)isEqual:(QBContactListItem *)other {
+- (BOOL)isEqualQBContactListItem:(QBContactListItem *)other {
     
     if (self.userID.integerValue != other.userID) {
         return NO;

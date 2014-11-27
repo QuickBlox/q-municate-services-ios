@@ -4,6 +4,6 @@
 
 - (QBContactListItem *)toQBContactListItem;
 - (void)updateWithQBContactListItem:(QBContactListItem *)contactListItem;
-- (BOOL)isEqual:(QBContactListItem *)other;
+- (BOOL)isEqualQBContactListItem:(QBContactListItem *)other;
 
 @end

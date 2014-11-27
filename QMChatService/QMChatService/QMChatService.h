@@ -16,7 +16,7 @@
  */
 @interface QMChatService : QMBaseService
 
-@property (strong, nonatomic, readonly) QMDialogsMemoryStorage *memoryStorage;
+@property (strong, nonatomic, readonly) QMDialogsMemoryStorage *dialogsMemoryStorage;
     
 - (void)addDelegate:(id<QMChatServiceDelegate>)delegate;
 - (void)addRemoveDelegate:(id<QMChatServiceDelegate>)delegate;
@@ -29,7 +29,7 @@
                            completion:(void(^)(QBResponse *response, QBChatDialog *createdDialog))completion;
 
 - (void)createPrivateChatDialogIfNeededWithOpponent:(QBUUser *)opponent
-                                         completion:(void(^)(QBResponse *response, QBChatDialog *createdDialo))completion;
+                                         completion:(void(^)(QBResponse *response, QBChatDialog *createdDialog))completion;
 
 - (void)changeChatName:(NSString *)dialogName
          forChatDialog:(QBChatDialog *)chatDialog
@@ -41,7 +41,8 @@
 
 - (void)fetchAllDialogs:(void(^)(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs))completion;
 
-- (void)fetchMessageWithDialogID:(NSString *)chatDialogId complete:(void(^)(BOOL success))completion;
+- (void)fetchMessageWithDialogID:(NSString *)chatDialogId
+                        complete:(void(^)(BOOL success))completion;
 
 - (void)sendText:(NSString *)text
         toDialog:(QBChatDialog *)dialog
@@ -57,8 +58,9 @@
 
 @optional
 
-- (void)chatServiceDidDialogsHistoryUpdated;
-- (void)chatServiceDidMessagesHistoryUpdated;
+- (void)chatService:(QMChatService *)chatService didAddChatDialog:(QBChatDialog *)chatDialog;
+- (void)chatService:(QMChatService *)chatService didAddChatDialogs:(NSArray *)chatDialogs;
+
 - (void)chatServiceDidAddMessageToHistory:(QBChatMessage *)message forDialog:(QBChatDialog *)dialog;
 - (void)chatServiceDidReceiveNotificationMessage:(QBChatMessage *)message createDialog:(QBChatDialog *)dialog;
 - (void)chatServiceDidReceiveNotificationMessage:(QBChatMessage *)message updateDialog:(QBChatDialog *)dialog;

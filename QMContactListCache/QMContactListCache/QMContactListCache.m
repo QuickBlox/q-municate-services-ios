@@ -60,10 +60,13 @@ static QMContactListCache *_chatCacheInstance = nil;
                                            inContext:context];
         if (cachedContactListItem) {
             //Update if needed
-            if (![cachedContactListItem isEqual:contactListItem]) {
+            if (![cachedContactListItem isEqualQBContactListItem:contactListItem]) {
                 
                 [cachedContactListItem updateWithQBContactListItem:contactListItem];
                 NSLog(@"Update contactListItem (userID - %ul)", contactListItem.userID);
+                
+            } else {
+                NSLog(@"ContactListItem (userID - %ul) - in cache", contactListItem.userID);
             }
         }
         else {
@@ -299,7 +302,7 @@ static QMContactListCache *_chatCacheInstance = nil;
         for (QBUUser *user in users) {
             
             CDUser *cachedUser =
-            [CDUser QM_findFirstWithPredicate:IS(@"id", user.ID)
+            [CDUser QM_findFirstWithPredicate:IS(@"id", @(user.ID))
                                     inContext:context];
             if (cachedUser) {
                 

@@ -351,4 +351,14 @@
      }];
 }
 
+#pragma mark - Memory storage 
+
+- (NSArray *)contactListUsers {
+    
+    NSArray *friendsIDS = [self.contactListMemoryStorage userIDsFromContactList];
+    NSArray *friends = [self.usersMemoryStorage usersWithIDs:friendsIDS];
+    
+    return friends;
+}
+
 @end

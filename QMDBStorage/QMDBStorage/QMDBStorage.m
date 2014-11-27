@@ -88,8 +88,10 @@
         
         [context QM_saveToPersistentStoreAndWait];
         
-        if(completion)
+        if(completion) {
+            
             DO_AT_MAIN(completion());
+        }
     }];
 }
 

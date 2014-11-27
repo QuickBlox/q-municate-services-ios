@@ -24,6 +24,14 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 @property (strong, nonatomic, readonly) QMUsersMemoryStorage *usersMemoryStorage;
 
 /**
+ *  Users frome contact list
+ *
+ *  @return Array of QBUUser instances
+ */
+
+- (NSArray *)contactListUsers;
+
+/**
  *  Default init with service data delegate
  *
  *  @param serviceDataDelegate instance that confirms id<QMServiceDataDelegate> protocol
@@ -74,13 +82,28 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  */
 - (void)addUserToContactListRequest:(QBUUser *)user
                          completion:(void(^)(BOOL success))completion;
-
+/**
+ *  <#Description#>
+ *
+ *  @param userID     <#userID description#>
+ *  @param completion <#completion description#>
+ */
 - (void)removeUserFromContactListWithUserID:(NSUInteger)userID
                                  completion:(void(^)(BOOL success))completion;
-
+/**
+ *  <#Description#>
+ *
+ *  @param userID     <#userID description#>
+ *  @param completion <#completion description#>
+ */
 - (void)confirmAddContactRequest:(NSUInteger)userID
                       completion:(void (^)(BOOL success))completion;
-
+/**
+ *  <#Description#>
+ *
+ *  @param userID     <#userID description#>
+ *  @param completion <#completion description#>
+ */
 - (void)rejectAddContactRequest:(NSUInteger)userID
                      completion:(void(^)(BOOL success))completion;
 
