@@ -173,14 +173,12 @@
                    completion:(void(^)(NSArray *messages))completion;
 
 /**
- *  <#Description#>
+ *  Delete message
  *
- *  @param message    <#message description#>
- *  @param dialogID   <#dialogID description#>
- *  @param completion <#completion description#>
+ *  @param message    QBChatHistoryMessage message
+ *  @param completion Finish block
  */
 - (void)deleteMessage:(QBChatHistoryMessage *)message
-         withDialogID:(NSString *)dialogID
            completion:(void(^)(void))completion;
 /**
  *  Delete all messages
