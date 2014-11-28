@@ -18,6 +18,7 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 30;
 <QBChatDelegate>
 
 @property (strong, nonatomic) QBMulticastDelegate <QMChatServiceDelegate> *multicastDelegate;
+@property (weak, nonatomic) id<QMChatServiceCacheDelegate> cahceDelegate;
 @property (strong, nonatomic) QMDialogsMemoryStorage *dialogsMemoryStorage;
 @property (copy, nonatomic) void(^chatSuccessBlock)(NSError *error);
 @property (strong, nonatomic) NSTimer *presenceTimer;
@@ -42,12 +43,69 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 30;
     self = [super initWithServiceDataDelegate:serviceDataDelegate];
     
     if (self) {
-        self.multicastDelegate = (id<QMChatServiceDelegate>)[[QBMulticastDelegate alloc] init];
-        self.dialogsMemoryStorage = [[QMDialogsMemoryStorage alloc] init];
-        [QBChat.instance addDelegate:self];
+        
+        [self defaultInit];
     };
     
     return self;
+}
+
+- (instancetype)initWithServiceDataDelegate:(id<QMServiceDataDelegate>)serviceDataDelegate
+                              cacheDelegate:(id<QMChatServiceCacheDelegate>)cacheDelegate {
+    
+    self = [super initWithServiceDataDelegate:serviceDataDelegate];
+    if (self) {
+        
+        self.cahceDelegate = cacheDelegate;
+        
+        [self defaultInit];
+        [self loadCachedData];
+        
+    }
+    return self;
+}
+
+- (void)defaultInit {
+    
+    self.multicastDelegate = (id<QMChatServiceDelegate>)[[QBMulticastDelegate alloc] init];
+    self.dialogsMemoryStorage = [[QMDialogsMemoryStorage alloc] init];
+    [QBChat.instance addDelegate:self];
+}
+
+#pragma mark - Load cached data
+
+- (void)loadCachedData {
+    
+    __weak __typeof(self)weakSelf = self;
+    
+    dispatch_queue_t queue = dispatch_queue_create("com.q-municate.loadChatCacheQueue", DISPATCH_QUEUE_SERIAL);
+    // Load dialogs from cahce
+    dispatch_async(queue, ^{
+        
+        if ([self.cahceDelegate respondsToSelector:@selector(cachedDialogs:)]) {
+            
+            dispatch_semaphore_t sem = dispatch_semaphore_create(0);
+            
+            [self.cahceDelegate cachedDialogs:^(NSArray *collection) {
+                
+                [weakSelf.dialogsMemoryStorage addChatDialogs:collection andJoin:NO];
+                dispatch_semaphore_signal(sem);
+            }];
+            
+            dispatch_semaphore_wait(sem, DISPATCH_TIME_FOREVER);
+            
+        }
+    });
+    // Notifiy about load data from cahce
+    dispatch_async(queue, ^{
+        
+        if ([self.multicastDelegate respondsToSelector:@selector(chatServiceDidLoadCache)]) {
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.multicastDelegate chatServiceDidLoadCache];
+            });
+        }
+    });
 }
 
 #pragma mark - Add / Remove Multicast delegate

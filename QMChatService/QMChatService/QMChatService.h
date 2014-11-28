@@ -11,12 +11,21 @@
 #import "QMDialogsMemoryStorage.h"
 
 @protocol QMChatServiceDelegate;
+@protocol QMChatServiceCacheDelegate;
+
+typedef void(^QMCacheCollection)(NSArray *collection);
+
 /**
  *  Chat dialog service
  */
 @interface QMChatService : QMBaseService
 
 @property (strong, nonatomic, readonly) QMDialogsMemoryStorage *dialogsMemoryStorage;
+
+- (instancetype)initWithServiceDataDelegate:(id<QMServiceDataDelegate>)serviceDataDelegate
+                              cacheDelegate:(id<QMChatServiceCacheDelegate>)cacheDelegate;
+
+- (id)initWithServiceDataDelegate:(id<QMServiceDataDelegate>)serviceDataDelegate;
     
 - (void)addDelegate:(id<QMChatServiceDelegate>)delegate;
 - (void)addRemoveDelegate:(id<QMChatServiceDelegate>)delegate;
@@ -54,9 +63,18 @@
 
 @end
 
-@protocol QMChatServiceDelegate <NSObject>
+@protocol QMChatServiceCacheDelegate <NSObject>
+@required
 
+- (void)cachedDialogs:(QMCacheCollection)block;
+- (void)cachedMessagesWithDialogID:(NSString *)dialogID block:(QMCacheCollection)block;
+
+@end
+
+@protocol QMChatServiceDelegate <NSObject>
 @optional
+
+- (void)chatServiceDidLoadCache;
 
 - (void)chatService:(QMChatService *)chatService didAddChatDialog:(QBChatDialog *)chatDialog;
 - (void)chatService:(QMChatService *)chatService didAddChatDialogs:(NSArray *)chatDialogs;
