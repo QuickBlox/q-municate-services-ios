@@ -24,12 +24,20 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 @property (strong, nonatomic, readonly) QMUsersMemoryStorage *usersMemoryStorage;
 
 /**
- *  Users frome contact list
+ *  Users from contact list
  *
  *  @return Array of QBUUser instances
  */
 
-- (NSArray *)contactListUsers;
+- (NSArray *)usersFromContactList;
+
+/**
+ *  Users from contact list sorted by fullName
+ *
+ *  @return Sorted by fullName array of QBUUser instances
+ */
+
+- (NSArray *)usersFromContactListSortedByFullName;
 
 /**
  *  Default init with service data delegate
@@ -73,6 +81,15 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  */
 - (void)retrieveUsersWithIDs:(NSArray *)ids
                   completion:(void(^)(QBResponse *responce, QBGeneralResponsePage *page, NSArray * users))completion;
+
+/**
+ *  Retrive users with ids (with extended set of pagination parameters)
+ *
+ *  @param cahatDialog QBChatDialog instance
+ *  @param completion Block with response, page and users instances if request succeded
+ */
+- (void)retriveUsersForChatDialog:(QBChatDialog *)cahtDialog
+                       completion:(void(^)(QBResponse *responce, QBGeneralResponsePage *page, NSArray * users))completion;
 
 /**
  *  Add user to contact list request
@@ -128,5 +145,5 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 - (void)contactListService:(QMContactListService *)contactListService didAddUser:(QBUUser *)user;
 - (void)contactListService:(QMContactListService *)contactListService didAddUsers:(NSArray *)users;
 - (void)contactListService:(QMContactListService *)contactListService didUpdateUser:(QBUUser *)user;
-
+- (void)contactListService:(QMContactListService *)contactListService didFinishRetriveUsersForChatDialog:(QBChatDialog *)dialog;
 @end

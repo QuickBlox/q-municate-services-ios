@@ -28,7 +28,7 @@
 
 - (void)addUser:(QBUUser *)user {
     
-    NSString *key = [NSString stringWithFormat:@"%lu", user.ID];
+    NSString *key = [NSString stringWithFormat:@"%u", user.ID];
     self.users[key] = user;
 }
 
@@ -40,7 +40,7 @@
 }
 - (QBUUser *)userWithID:(NSUInteger)userID {
     
-    NSString *stingID = [NSString stringWithFormat:@"%lu", userID];
+    NSString *stingID = [NSString stringWithFormat:@"%u", userID];
     QBUUser *user = self.users[stingID];
     return user;
 }

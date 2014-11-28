@@ -101,7 +101,7 @@ NSString *const kQBResponceErrorsKey = @"errors";
 //    }
 //    
 //return result.success;
-    return nil;
+    return YES;
 }
 
 @end

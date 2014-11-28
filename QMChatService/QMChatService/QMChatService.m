@@ -19,7 +19,10 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 30;
 
 @property (strong, nonatomic) QBMulticastDelegate <QMChatServiceDelegate> *multicastDelegate;
 @property (weak, nonatomic) id<QMChatServiceCacheDelegate> cahceDelegate;
+
 @property (strong, nonatomic) QMDialogsMemoryStorage *dialogsMemoryStorage;
+@property (strong, nonatomic) QMMessagesMemoryStorage *messagesMemoryStorage;
+
 @property (copy, nonatomic) void(^chatSuccessBlock)(NSError *error);
 @property (strong, nonatomic) NSTimer *presenceTimer;
 
@@ -59,7 +62,7 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 30;
         self.cahceDelegate = cacheDelegate;
         
         [self defaultInit];
-        [self loadCachedData];
+        [self loadCachedDialogs];
         
     }
     return self;
@@ -69,15 +72,15 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 30;
     
     self.multicastDelegate = (id<QMChatServiceDelegate>)[[QBMulticastDelegate alloc] init];
     self.dialogsMemoryStorage = [[QMDialogsMemoryStorage alloc] init];
+    
     [QBChat.instance addDelegate:self];
 }
 
 #pragma mark - Load cached data
 
-- (void)loadCachedData {
+- (void)loadCachedDialogs {
     
     __weak __typeof(self)weakSelf = self;
-    
     dispatch_queue_t queue = dispatch_queue_create("com.q-municate.loadChatCacheQueue", DISPATCH_QUEUE_SERIAL);
     // Load dialogs from cahce
     dispatch_async(queue, ^{
@@ -96,13 +99,48 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 30;
             
         }
     });
-    // Notifiy about load data from cahce
+    // Notifiy about load dialogs from cahce
     dispatch_async(queue, ^{
         
-        if ([self.multicastDelegate respondsToSelector:@selector(chatServiceDidLoadCache)]) {
+        if ([self.multicastDelegate respondsToSelector:@selector(chatServiceDidLoadDialogsFromCache)]) {
             
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self.multicastDelegate chatServiceDidLoadCache];
+                [self.multicastDelegate chatServiceDidLoadDialogsFromCache];
+            });
+        }
+    });
+}
+
+- (void)loadCahcedMessagesWithDialogID:(NSString *)dialogID {
+    
+    __weak __typeof(self)weakSelf = self;
+    dispatch_queue_t queue = dispatch_queue_create("com.q-municate.loadChatCacheQueue", DISPATCH_QUEUE_SERIAL);
+    // Load messages from cahce
+    dispatch_async(queue, ^{
+        
+        if ([self.cahceDelegate respondsToSelector:@selector(cachedMessagesWithDialogID:block:)]) {
+            
+            dispatch_semaphore_t sem = dispatch_semaphore_create(0);
+            
+            [self.cahceDelegate cachedMessagesWithDialogID:dialogID block:^(NSArray *collection) {
+                
+                [weakSelf.messagesMemoryStorage replaceMessages:collection
+                                                    forDialogID:dialogID];
+                dispatch_semaphore_signal(sem);
+            }];
+            
+            dispatch_semaphore_wait(sem, DISPATCH_TIME_FOREVER);
+            
+        }
+    });
+    
+    // Notifiy about load messages from cahce
+    dispatch_async(queue, ^{
+        
+        if ([self.multicastDelegate respondsToSelector:@selector(chatServiceDidLoadMessagesFromCacheForDialogID:)]) {
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.multicastDelegate chatServiceDidLoadMessagesFromCacheForDialogID:dialogID];
             });
         }
     });
@@ -208,33 +246,40 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 30;
         
         if (message.recipientID != message.senderID) {
             
-            //            [self addMessageToHistory:message withDialogID:message.cParamDialogID];
-            
+            //Update chat dialog from memroy storage
             QBChatDialog *chatDialogToUpdate = [self.dialogsMemoryStorage chatDialogWithID:message.cParamDialogID];
             chatDialogToUpdate.lastMessageText = message.encodedText;
             chatDialogToUpdate.lastMessageDate = [NSDate dateWithTimeIntervalSince1970:message.cParamDateSent.doubleValue];
             chatDialogToUpdate.unreadMessagesCount++;
+            //Add message in memory storage
+            [self.messagesMemoryStorage addMessage:message
+                                       forDialogID:message.cParamDialogID];
             
-            if ([self.multicastDelegate respondsToSelector:@selector(chatServiceDidReceiveNotificationMessage:updateDialog:)]) {
-                [self.multicastDelegate chatServiceDidReceiveNotificationMessage:message updateDialog:chatDialogToUpdate];
+            if ([self.multicastDelegate respondsToSelector:@selector(chatServiceDidAddMessageToHistory:forDialog:)]) {
+                
+                [self.multicastDelegate chatServiceDidAddMessageToHistory:message
+                                                                forDialog:chatDialogToUpdate];
             }
         }
     }
     else if (message.cParamNotificationType == QMMessageNotificationTypeCreateGroupDialog) {
         
-        QBChatDialog *newChatDialog = [message chatDialogFromCustomParameters];
-        //        [self addDialogsToHistory:@[newChatDialog] joinIfNeeded:YES];
+        QBChatDialog *newChatDialog =
+        [message chatDialogFromCustomParameters];
         
-        [self.multicastDelegate chatServiceDidReceiveNotificationMessage:message createDialog:newChatDialog];
+        [self.dialogsMemoryStorage addChatDialog:newChatDialog
+                                         andJoin:YES];
+        
+        if ([self.multicastDelegate respondsToSelector:@selector(chatServiceDidReceiveNotificationMessage:createDialog:)]) {
+            
+            [self.multicastDelegate chatServiceDidReceiveNotificationMessage:message
+                                                                createDialog:newChatDialog];
+        }
     }
     else if (message.cParamNotificationType == QMMessageNotificationTypeUpdateGroupDialog) {
         
-        QBChatDialog *chatDialogToUpdate = [self.dialogsMemoryStorage chatDialogWithID:message.cParamDialogID];
-        
-        if (chatDialogToUpdate == nil) {
-            NSAssert(!chatDialogToUpdate, @"Dialog you are looking for not found.");
-            return;
-        }
+        QBChatDialog *chatDialogToUpdate =
+        [self.dialogsMemoryStorage chatDialogWithID:message.cParamDialogID];
         
         chatDialogToUpdate.name = message.cParamDialogRoomName;
         
@@ -249,7 +294,7 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 30;
     
     __weak __typeof(self)weakSelf = self;
     [QBRequest dialogsWithSuccessBlock:^(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs) {
-
+        
         [weakSelf.dialogsMemoryStorage addChatDialogs:dialogObjects
                                               andJoin:YES];
         
@@ -297,7 +342,9 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 30;
         chatDialog.occupantIDs = @[@(opponent.ID)];
         
         __weak __typeof(self)weakSelf = self;
-        [QBRequest createDialog:chatDialog successBlock:^(QBResponse *response, QBChatDialog *createdDialog) {
+        
+        [QBRequest createDialog:chatDialog
+                   successBlock:^(QBResponse *response, QBChatDialog *createdDialog) {
             
             [self.dialogsMemoryStorage addChatDialog:createdDialog
                                              andJoin:YES];
@@ -325,6 +372,7 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 30;
                            completion:(void(^)(QBResponse *response, QBChatDialog *createdDialog))completion {
     
     NSMutableSet *occupantIDs = [NSMutableSet set];
+    
     for (QBUUser *user in occupants) {
         [occupantIDs addObject:@(user.ID)];
     }
@@ -335,20 +383,21 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 30;
     chatDialog.type = QBChatDialogTypeGroup;
     
     __weak __typeof(self)weakSelf = self;
-    [QBRequest createDialog:chatDialog successBlock:^(QBResponse *response, QBChatDialog *createdDialog) {
-        
-        //        [weakSelf addDialogsToHistory:@[createdDialog] joinIfNeeded:YES];
-        [weakSelf sendNotificationWithType:QMMessageNotificationTypeCreateGroupDialog
-                                      text:@"created new chat"
-                              toRecipients:occupants
-                                chatDialog:createdDialog];
-        
-        completion(response, createdDialog);
-        
-    } errorBlock:^(QBResponse *response) {
-        
-        completion(response, nil);
-    }];
+    [QBRequest createDialog:chatDialog
+               successBlock:^(QBResponse *response, QBChatDialog *createdDialog)
+     {
+         //        [weakSelf addDialogsToHistory:@[createdDialog] joinIfNeeded:YES];
+         [weakSelf sendNotificationWithType:QMMessageNotificationTypeCreateGroupDialog
+                                       text:@"created new chat"
+                               toRecipients:occupants
+                                 chatDialog:createdDialog];
+         
+         completion(response, createdDialog);
+         
+     } errorBlock:^(QBResponse *response) {
+         
+         completion(response, nil);
+     }];
 }
 
 #pragma mark - Edit dialog methods
@@ -359,22 +408,26 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 30;
     
     __weak __typeof(self)weakSelf = self;
     NSArray *opponentsWithoutMe = nil;
-    QBUpdateDialogParameters *updateParameters = [QBUpdateDialogParameters updateDialogWithDialogID:chatDialog.ID
-                                                                                      dialogNewName:dialogName];
     
-    [QBRequest updateDialog:updateParameters successBlock:^(QBResponse *response, QBChatDialog *updatedDialog) {
-        
-        chatDialog.name = dialogName;
-        [weakSelf sendNotificationWithType:QMMessageNotificationTypeUpdateGroupDialog
-                                      text:[NSString stringWithFormat:@"New chat name - %@", dialogName]
-                              toRecipients:opponentsWithoutMe
-                                chatDialog:chatDialog];
-        
-        completion(response, updatedDialog);
-        
-    } errorBlock:^(QBResponse *response) {
-        completion(response, nil);
-    }];
+    QBUpdateDialogParameters *updateParameters =
+    [QBUpdateDialogParameters updateDialogWithDialogID:chatDialog.ID
+                                         dialogNewName:dialogName];
+    
+    [QBRequest updateDialog:updateParameters
+               successBlock:^(QBResponse *response, QBChatDialog *updatedDialog)
+     {
+         
+         chatDialog.name = dialogName;
+         [weakSelf sendNotificationWithType:QMMessageNotificationTypeUpdateGroupDialog
+                                       text:[NSString stringWithFormat:@"New chat name - %@", dialogName]
+                               toRecipients:opponentsWithoutMe
+                                 chatDialog:chatDialog];
+         
+         completion(response, updatedDialog);
+         
+     } errorBlock:^(QBResponse *response) {
+         completion(response, nil);
+     }];
 }
 
 - (void)joinOccupantsWithIDs:(NSArray *)ids
@@ -385,30 +438,34 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 30;
     NSArray *occupantsToNotify = @[];
     
     __weak __typeof(self)weakSelf = self;
-    QBUpdateDialogParameters *updateParams = [QBUpdateDialogParameters updateDialogWithDialogID:chatDialog.ID
-                                                                                 addedOccupants:occupantsToJoinIDs
-                                                                               removedOccupants:nil];
     
-    [QBRequest updateDialog:updateParams successBlock:^(QBResponse *response, QBChatDialog *updatedDialog) {
-        
-        //        [weakSelf addDialogsToHistory:@[updatedDialog] joinIfNeeded:NO];
-        
-        [weakSelf sendNotificationWithType:QMMessageNotificationTypeCreateGroupDialog
-                                      text:@"Created new dialog"
-                              toRecipients:occupantsToJoinIDs
-                                chatDialog:updatedDialog];
-        
-        [weakSelf sendNotificationWithType:QMMessageNotificationTypeUpdateGroupDialog
-                                      text:@"Added new users"
-                              toRecipients:occupantsToNotify
-                                chatDialog:updatedDialog];
-        
-        completion(response, updatedDialog);
-        
-    } errorBlock:^(QBResponse *response) {
-        
-        completion(response, nil);
-    }];
+    QBUpdateDialogParameters *updateParams =
+    [QBUpdateDialogParameters updateDialogWithDialogID:chatDialog.ID
+                                        addedOccupants:occupantsToJoinIDs
+                                      removedOccupants:nil];
+    
+    [QBRequest updateDialog:updateParams
+               successBlock:^(QBResponse *response, QBChatDialog *updatedDialog)
+     {
+         
+         //        [weakSelf addDialogsToHistory:@[updatedDialog] joinIfNeeded:NO];
+         
+         [weakSelf sendNotificationWithType:QMMessageNotificationTypeCreateGroupDialog
+                                       text:@"Created new dialog"
+                               toRecipients:occupantsToJoinIDs
+                                 chatDialog:updatedDialog];
+         
+         [weakSelf sendNotificationWithType:QMMessageNotificationTypeUpdateGroupDialog
+                                       text:@"Added new users"
+                               toRecipients:occupantsToNotify
+                                 chatDialog:updatedDialog];
+         
+         completion(response, updatedDialog);
+         
+     } errorBlock:^(QBResponse *response) {
+         
+         completion(response, nil);
+     }];
 }
 
 #pragma mark - Notifications
@@ -468,22 +525,20 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 30;
 
 #pragma mark - Messages histroy
 
-- (void)fetchMessageWithDialogID:(NSString *)chatDialogId complete:(void(^)(BOOL success))completion{
+- (void)fetchMessageWithChatDialogID:(NSString *)chatDialogID
+                        complete:(void(^)(QBResponse *response, NSArray *messages))completion {
     
-//    __weak __typeof(self)weakSelf = self;
-    //    [self.dbStorage cachedQBChatMessagesWithDialogId:chatDialogId qbMessages:^(NSArray *collection) {
-    ////        [weakSelf setMessages:collection withDialogID:chatDialogId];
-    //    }];
+    [self loadCahcedMessagesWithDialogID:chatDialogID];
     
-    [QBRequest messagesWithDialogID:chatDialogId successBlock:^(QBResponse *response, NSArray *messages) {
-        //        [weakSelf.dbStorage cacheQBChatMessages:messages withDialogId:chatDialogId finish:^{
-        ////            [weakSelf setMessages:messages.count ? messages.mutableCopy : @[].mutableCopy withDialogID:chatDialogId];
-        //            completion(YES);
-        //        }];
-        
-    } errorBlock:^(QBResponse *response) {
-        completion(NO);
-    }];
+    [QBRequest messagesWithDialogID:chatDialogID
+                       successBlock:^(QBResponse *response, NSArray *messages)
+     {
+         [self.messagesMemoryStorage replaceMessages:messages forDialogID:chatDialogID];
+         
+     } errorBlock:^(QBResponse *response) {
+         
+         completion(response, nil);
+     }];
 }
 
 
@@ -522,7 +577,7 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 30;
         dialog.lastMessageText = historyMessage.encodedText;
         dialog.lastMessageDate = historyMessage.datetime;
         
-//        [weakSelf.multicastDelegate chatServiceDidDialogsHistoryUpdated];
+        //        [weakSelf.multicastDelegate chatServiceDidDialogsHistoryUpdated];
         
         completion(message);
     };

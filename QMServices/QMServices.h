@@ -11,10 +11,14 @@
 #import <QMDBStorage.h>
 #import <QMChatCache.h>
 #import <QMContactListCache.h>
+
 #import <QMContactListService.h>
 #import <QMChatService.h>
 #import <QMAuthService.h>
+
 #import <QBChatAbstractMessage+QMCustomParameters.h>
 #import <QBChatAbstractMessage+TextEncoding.h>
+
 #import <QMUsersMemoryStorage.h>
 #import <QMContactListMemoryStorage.h>
+#import <QMMessagesMemoryStorage.h>

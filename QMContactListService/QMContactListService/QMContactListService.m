@@ -251,6 +251,30 @@
     }
 }
 
+- (void)retriveUsersForChatDialog:(QBChatDialog *)chatDialog
+                       completion:(void(^)(QBResponse *responce, QBGeneralResponsePage *page, NSArray * users))completion {
+    
+    __weak __typeof(self)weakSelf = self;
+    
+    [self retrieveUsersWithIDs:chatDialog.occupantIDs
+                    completion:^(QBResponse *responce, QBGeneralResponsePage *page, NSArray *users)
+    {
+        if (users.count > 0 ) {
+            
+            if ([weakSelf.multicastDelegate respondsToSelector:@selector(contactListService:didFinishRetriveUsersForChatDialog:)]) {
+                
+                [weakSelf.multicastDelegate contactListService:weakSelf
+                            didFinishRetriveUsersForChatDialog:chatDialog];
+            }
+            
+        }
+    
+        if (completion) {
+            completion(responce, page, users);
+        }
+    }];
+}
+
 #pragma mark - ContactList Request
 
 - (void)addUserToContactListRequest:(QBUUser *)user
@@ -351,9 +375,21 @@
      }];
 }
 
+- (NSArray *)usersFromContactListSortedByFullName {
+    
+    NSSortDescriptor *sorter = [[NSSortDescriptor alloc]
+                                initWithKey:@"fullName"
+                                ascending:YES
+                                selector:@selector(localizedCaseInsensitiveCompare:)];
+    
+    NSArray *sortedUsers = [self.usersFromContactList sortedArrayUsingDescriptors:@[sorter]];
+    
+    return sortedUsers;
+}
+
 #pragma mark - Memory storage 
 
-- (NSArray *)contactListUsers {
+- (NSArray *)usersFromContactList {
     
     NSArray *friendsIDS = [self.contactListMemoryStorage userIDsFromContactList];
     NSArray *friends = [self.usersMemoryStorage usersWithIDs:friendsIDS];
