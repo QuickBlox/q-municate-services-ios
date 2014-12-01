@@ -62,9 +62,9 @@
 		554A28361A0CE38600C4E03C /* ModelIncludes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModelIncludes.h; sourceTree = "<group>"; };
 		5590F2AD1A0B8D4000C5044F /* QMContactListCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QMContactListCache.h; sourceTree = "<group>"; };
 		5590F2AF1A0B8D4000C5044F /* QMContactListCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QMContactListCache.m; sourceTree = "<group>"; };
-		55A365091A27439C00C792C0 /* libQMContactListCache.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libQMContactListCache.a; path = "/Users/andrey/Projects/qmunicate-ios/Q-municate/QMServices/QMContactListCache/build/Debug-iphoneos/libQMContactListCache.a"; sourceTree = "<absolute>"; };
-		55A3650A1A27439C00C792C0 /* QMContactListCacheModel.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = QMContactListCacheModel.bundle; path = "/Users/andrey/Projects/qmunicate-ios/Q-municate/QMServices/QMContactListCache/build/Debug-iphoneos/QMContactListCacheModel.bundle"; sourceTree = "<absolute>"; };
 		55A6211A1A0BE284001BA470 /* QMContactListCache-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QMContactListCache-Prefix.pch"; sourceTree = "<group>"; };
+		55B2201E1A2C0C9E00668086 /* libQMContactListCache.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libQMContactListCache.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		55B2201F1A2C0C9E00668086 /* QMContactListCacheModel.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QMContactListCacheModel.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,6 +133,8 @@
 				5590F2AC1A0B8D4000C5044F /* QMContactListCache */,
 				55013B211A1F81530030C134 /* QMContactListCacheModel */,
 				55A621191A0BE284001BA470 /* Support */,
+				55B2201E1A2C0C9E00668086 /* libQMContactListCache.a */,
+				55B2201F1A2C0C9E00668086 /* QMContactListCacheModel.bundle */,
 			);
 			sourceTree = "<group>";
 		};
@@ -172,7 +174,7 @@
 			);
 			name = QMContactListCacheModel;
 			productName = QMCotactListCacheModel;
-			productReference = 55A3650A1A27439C00C792C0 /* QMContactListCacheModel.bundle */;
+			productReference = 55B2201F1A2C0C9E00668086 /* QMContactListCacheModel.bundle */;
 			productType = "com.apple.product-type.bundle";
 		};
 		5590F2A91A0B8D4000C5044F /* QMContactListCache */ = {
@@ -192,7 +194,7 @@
 			);
 			name = QMContactListCache;
 			productName = QMContactListCache;
-			productReference = 55A365091A27439C00C792C0 /* libQMContactListCache.a */;
+			productReference = 55B2201E1A2C0C9E00668086 /* libQMContactListCache.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -444,11 +446,12 @@
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				VALID_ARCHS = armv7;
 			};
 			name = Debug;
 		};
@@ -494,6 +497,7 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				VALIDATE_PRODUCT = YES;
+				VALID_ARCHS = armv7;
 			};
 			name = Release;
 		};

@@ -13,8 +13,8 @@
 
 /* Begin PBXFileReference section */
 		554A27FC1A0CD53500C4E03C /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.1.sdk/System/Library/Frameworks/AVFoundation.framework; sourceTree = DEVELOPER_DIR; };
-		55A365041A27439C00C792C0 /* libQMBaseService.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libQMBaseService.a; path = "/Users/andrey/Projects/qmunicate-ios/Q-municate/QMServices/QMBaseService/build/Debug-iphoneos/libQMBaseService.a"; sourceTree = "<absolute>"; };
 		55A6211C1A0BE2EB001BA470 /* QMBaseService-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QMBaseService-Prefix.pch"; sourceTree = "<group>"; };
+		55B2201B1A2C0C9D00668086 /* libQMBaseService.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libQMBaseService.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		55B2F11C1A091CE9008C2272 /* QMBaseService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMBaseService.h; sourceTree = "<group>"; };
 		55B2F11D1A091CE9008C2272 /* QMBaseService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMBaseService.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -45,6 +45,7 @@
 				554A27FC1A0CD53500C4E03C /* AVFoundation.framework */,
 				55B2F1061A091CC9008C2272 /* QMBaseService */,
 				55A6211B1A0BE2EB001BA470 /* Support */,
+				55B2201B1A2C0C9D00668086 /* libQMBaseService.a */,
 			);
 			sourceTree = "<group>";
 		};
@@ -73,7 +74,7 @@
 			);
 			name = QMBaseService;
 			productName = QMBaseService;
-			productReference = 55A365041A27439C00C792C0 /* libQMBaseService.a */;
+			productReference = 55B2201B1A2C0C9D00668086 /* libQMBaseService.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -174,11 +175,12 @@
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				VALID_ARCHS = armv7;
 			};
 			name = Debug;
 		};
@@ -219,11 +221,13 @@
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				VALIDATE_PRODUCT = YES;
+				VALID_ARCHS = armv7;
 			};
 			name = Release;
 		};

@@ -12,7 +12,7 @@
 
 /* Begin PBXFileReference section */
 		55A621201A0BE301001BA470 /* QMAuthService-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QMAuthService-Prefix.pch"; sourceTree = "<group>"; };
-		55B2F0941A091C17008C2272 /* libQMAuthService.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libQMAuthService.a; path = "/Users/andrey/Projects/qmunicate-ios/Q-municate/QMServices/QMAuthService/build/Debug-iphoneos/libQMAuthService.a"; sourceTree = "<absolute>"; };
+		55B2201A1A2C0C9C00668086 /* libQMAuthService.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libQMAuthService.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		55B2F1301A092226008C2272 /* QMAuthService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMAuthService.h; sourceTree = "<group>"; };
 		55B2F1311A092226008C2272 /* QMAuthService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMAuthService.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -58,6 +58,7 @@
 				55B2F0961A091C17008C2272 /* QMAuthService */,
 				55B2F0A31A091C17008C2272 /* QMAuthServiceTests */,
 				55A6211F1A0BE301001BA470 /* Support */,
+				55B2201A1A2C0C9C00668086 /* libQMAuthService.a */,
 			);
 			sourceTree = "<group>";
 		};
@@ -77,7 +78,7 @@
 			);
 			name = QMAuthService;
 			productName = QMAuthService;
-			productReference = 55B2F0941A091C17008C2272 /* libQMAuthService.a */;
+			productReference = 55B2201A1A2C0C9C00668086 /* libQMAuthService.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -168,11 +169,12 @@
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				VALID_ARCHS = armv7;
 			};
 			name = Debug;
 		};
@@ -221,6 +223,7 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				VALIDATE_PRODUCT = YES;
+				VALID_ARCHS = armv7;
 			};
 			name = Release;
 		};

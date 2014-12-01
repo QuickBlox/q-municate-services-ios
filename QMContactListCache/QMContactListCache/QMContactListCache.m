@@ -63,10 +63,10 @@ static QMContactListCache *_chatCacheInstance = nil;
             if (![cachedContactListItem isEqualQBContactListItem:contactListItem]) {
                 
                 [cachedContactListItem updateWithQBContactListItem:contactListItem];
-                NSLog(@"Update contactListItem (userID - %ul)", contactListItem.userID);
+                NSLog(@"Update contactListItem (userID - %lu)", (unsigned long)contactListItem.userID);
                 
             } else {
-                NSLog(@"ContactListItem (userID - %ul) - in cache", contactListItem.userID);
+                NSLog(@"ContactListItem (userID - %lu) - in cache", (unsigned long)contactListItem.userID);
             }
         }
         else {
@@ -75,7 +75,7 @@ static QMContactListCache *_chatCacheInstance = nil;
             [CDContactListItem QM_createEntityInContext:context];
             
             [contactListItemToInsert updateWithQBContactListItem:contactListItem];
-            NSLog(@"Insert New contactListItem (userID - %ul)", contactListItem.userID);
+            NSLog(@"Insert New contactListItem (userID - %lu)", contactListItem.userID);
         }
         
         [weakSelf save:completion];
@@ -272,7 +272,7 @@ static QMContactListCache *_chatCacheInstance = nil;
             if (![user isEqual:qbUser]) {
                 
                 [cachedUser updateWithQBUser:qbUser];
-                NSLog(@"Update user in cache (user id - %ul)", user.ID);
+                NSLog(@"Update user in cache (user id - %lu)", (unsigned long)user.ID);
             }
         }
         else {
@@ -281,7 +281,7 @@ static QMContactListCache *_chatCacheInstance = nil;
             [CDUser QM_createEntityInContext:context];
             
             [userToUpdate updateWithQBUser:user];
-            NSLog(@"Insert new user in cache (user id - %ul)", user.ID);
+            NSLog(@"Insert new user in cache (user id - %u)", user.ID);
         }
         
         [weakSelf save:completion];

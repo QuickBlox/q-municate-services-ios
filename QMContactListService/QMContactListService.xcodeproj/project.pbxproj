@@ -18,7 +18,7 @@
 		55A364CD1A25E41B00C792C0 /* QMUsersMemoryStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMUsersMemoryStorage.h; sourceTree = "<group>"; };
 		55A364CE1A25E41B00C792C0 /* QMUsersMemoryStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMUsersMemoryStorage.m; sourceTree = "<group>"; };
 		55A621221A0BE307001BA470 /* QMContactListService-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QMContactListService-Prefix.pch"; sourceTree = "<group>"; };
-		55B2F0B01A091C38008C2272 /* libQMContactListService.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libQMContactListService.a; path = "/Users/andrey/Projects/qmunicate-ios/Q-municate/QMServices/QMContactListService/build/Debug-iphoneos/libQMContactListService.a"; sourceTree = "<absolute>"; };
+		55B220201A2C0C9E00668086 /* libQMContactListService.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libQMContactListService.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		55B2F0B31A091C38008C2272 /* QMContactListService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QMContactListService.h; sourceTree = "<group>"; };
 		55B2F0B51A091C38008C2272 /* QMContactListService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QMContactListService.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -76,6 +76,7 @@
 			children = (
 				55B2F0B21A091C38008C2272 /* QMContactListService */,
 				55A621211A0BE307001BA470 /* Support */,
+				55B220201A2C0C9E00668086 /* libQMContactListService.a */,
 			);
 			sourceTree = "<group>";
 		};
@@ -95,7 +96,7 @@
 			);
 			name = QMContactListService;
 			productName = QMContactListService;
-			productReference = 55B2F0B01A091C38008C2272 /* libQMContactListService.a */;
+			productReference = 55B220201A2C0C9E00668086 /* libQMContactListService.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -188,11 +189,12 @@
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				VALID_ARCHS = armv7;
 			};
 			name = Debug;
 		};
@@ -241,6 +243,7 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				VALIDATE_PRODUCT = YES;
+				VALID_ARCHS = armv7;
 			};
 			name = Release;
 		};

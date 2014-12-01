@@ -283,8 +283,11 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 30;
         
         chatDialogToUpdate.name = message.cParamDialogRoomName;
         
-        [self.multicastDelegate chatServiceDidReceiveNotificationMessage:message
-                                                            updateDialog:chatDialogToUpdate];
+        if ([self.multicastDelegate respondsToSelector:@selector(chatServiceDidReceiveNotificationMessage:updateDialog:)]) {
+            
+            [self.multicastDelegate chatServiceDidReceiveNotificationMessage:message
+                                                                updateDialog:chatDialogToUpdate];
+        }
     }
 }
 
@@ -316,16 +319,6 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 30;
     }];
 }
 
-//- (QBChatDialog *)chatDialogWithRoomJID:(NSString *)roomJID {
-//
-//    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"self.roomJID == %@", roomJID];
-////    NSArray *allDialogs = [self dialogHistory];
-//
-//    QBChatDialog *dialog = [allDialogs filteredArrayUsingPredicate:predicate].firstObject;
-//    return dialog;
-//}
-//
-
 #pragma mark - Create Private/Group dialog
 
 - (void)createPrivateChatDialogIfNeededWithOpponent:(QBUUser *)opponent
@@ -353,6 +346,7 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 30;
                                           text:@"created new chat"
                                   toRecipients:@[opponent]
                                     chatDialog:createdDialog];
+                       
             completion(response, createdDialog);
             
         } errorBlock:^(QBResponse *response) {
@@ -386,7 +380,9 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 30;
     [QBRequest createDialog:chatDialog
                successBlock:^(QBResponse *response, QBChatDialog *createdDialog)
      {
-         //        [weakSelf addDialogsToHistory:@[createdDialog] joinIfNeeded:YES];
+         [self.dialogsMemoryStorage addChatDialog:createdDialog
+                                          andJoin:YES];
+
          [weakSelf sendNotificationWithType:QMMessageNotificationTypeCreateGroupDialog
                                        text:@"created new chat"
                                toRecipients:occupants
@@ -416,6 +412,9 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 30;
     [QBRequest updateDialog:updateParameters
                successBlock:^(QBResponse *response, QBChatDialog *updatedDialog)
      {
+      
+         [self.dialogsMemoryStorage addChatDialog:updatedDialog
+                                          andJoin:NO];
          
          chatDialog.name = dialogName;
          [weakSelf sendNotificationWithType:QMMessageNotificationTypeUpdateGroupDialog
@@ -448,12 +447,8 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 30;
                successBlock:^(QBResponse *response, QBChatDialog *updatedDialog)
      {
          
-         //        [weakSelf addDialogsToHistory:@[updatedDialog] joinIfNeeded:NO];
-         
-         [weakSelf sendNotificationWithType:QMMessageNotificationTypeCreateGroupDialog
-                                       text:@"Created new dialog"
-                               toRecipients:occupantsToJoinIDs
-                                 chatDialog:updatedDialog];
+         [self.dialogsMemoryStorage addChatDialog:updatedDialog
+                                          andJoin:NO];
          
          [weakSelf sendNotificationWithType:QMMessageNotificationTypeUpdateGroupDialog
                                        text:@"Added new users"
@@ -505,24 +500,6 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 30;
     }
 }
 
-//- (NSUInteger )occupantIDForPrivateChatDialog:(QBChatDialog *)chatDialog {
-//
-//    NSAssert(chatDialog.type == QBChatDialogTypePrivate, @"Chat dialog type != QBChatDialogTypePrivate");
-//    NSAssert(chatDialog.occupantIDs.count == 2, @"Array of user ids in chat. For private chat count = 2");
-//
-//    NSInteger myID = [self.serviceDataDelegate serviceDataCurrentProfile].ID;
-//
-//    for (NSNumber *ID in chatDialog.occupantIDs) {
-//
-//        if (ID.integerValue != myID) {
-//            return ID.integerValue;
-//        }
-//    }
-//
-//    NSAssert(nil, @"Need update this cace");
-//    return 0;
-//}
-
 #pragma mark - Messages histroy
 
 - (void)fetchMessageWithChatDialogID:(NSString *)chatDialogID
@@ -533,7 +510,8 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 30;
     [QBRequest messagesWithDialogID:chatDialogID
                        successBlock:^(QBResponse *response, NSArray *messages)
      {
-         [self.messagesMemoryStorage replaceMessages:messages forDialogID:chatDialogID];
+         [self.messagesMemoryStorage replaceMessages:messages
+                                         forDialogID:chatDialogID];
          
      } errorBlock:^(QBResponse *response) {
          
@@ -546,7 +524,8 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 30;
 
 - (void)sendMessage:(QBChatMessage *)message
        withDialogID:(NSString *)dialogID
-      saveToHistory:(BOOL)save completion:(void(^)(NSError *error))completion {
+      saveToHistory:(BOOL)save
+         completion:(void(^)(NSError *error))completion {
     
     message.cParamDialogID = dialogID;
     message.cParamDateSent = @((NSInteger)CFAbsoluteTimeGetCurrent() + kCFAbsoluteTimeIntervalSince1970);
@@ -566,13 +545,12 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 30;
            toDialog:(QBChatDialog *)dialog
          completion:(void(^)(QBChatMessage *message))completion {
     
-    __weak __typeof(self)weakSelf = self;
-    
     QBUUser *currentUser = [self.serviceDataDelegate serviceDataCurrentProfile];
     
     void (^finish)(QBChatMessage *historyMessage) = ^(QBChatMessage *historyMessage){
         
         historyMessage.senderID = currentUser.ID;
+        
         //        [weakSelf addMessageToHistory:historyMessage withDialogID:dialog.ID];
         dialog.lastMessageText = historyMessage.encodedText;
         dialog.lastMessageDate = historyMessage.datetime;

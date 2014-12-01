@@ -21,14 +21,40 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  */
 @interface QMChatService : QMBaseService
 
+/**
+ *  Dialogs datasoruce
+ */
 @property (strong, nonatomic, readonly) QMDialogsMemoryStorage *dialogsMemoryStorage;
+
+/**
+ *  Messages datasource
+ */
 @property (strong, nonatomic, readonly) QMMessagesMemoryStorage *messagesMemoryStorage;
 
+/**
+ *  Init chat service
+ *
+ *  @param serviceDataDelegate delegate confirmed QMServiceDataDelegate protocol
+ *  @param cacheDelegate       delegate confirmed QMChatServiceCacheDelegate
+ *
+ *  @return Return QMChatService instance
+ */
 - (instancetype)initWithServiceDataDelegate:(id<QMServiceDataDelegate>)serviceDataDelegate
                               cacheDelegate:(id<QMChatServiceCacheDelegate>)cacheDelegate;
-
+/**
+ *  Init chat service
+ *
+ *  @param serviceDataDelegate instance confirmed QMServiceDataDelegate
+ *
+ *  @return QMChatService instance
+ */
 - (id)initWithServiceDataDelegate:(id<QMServiceDataDelegate>)serviceDataDelegate;
-    
+
+/**
+ *  Add delegate (Multicast)
+ *
+ *  @param delegate delegate confirmed QMChatServiceDelegate protocol
+ */
 - (void)addDelegate:(id<QMChatServiceDelegate>)delegate;
 - (void)addRemoveDelegate:(id<QMChatServiceDelegate>)delegate;
 

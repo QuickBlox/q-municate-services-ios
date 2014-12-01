@@ -165,7 +165,7 @@
 		5590F2FB1A0BA58800C5044F /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.1.sdk/System/Library/Frameworks/CoreData.framework; sourceTree = DEVELOPER_DIR; };
 		5590F2FD1A0BA5C000C5044F /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.1.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		5590F3011A0BA6B200C5044F /* QMDBStorage-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QMDBStorage-Prefix.pch"; sourceTree = "<group>"; };
-		55A364E11A2732A100C792C0 /* libQMDBStorage.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libQMDBStorage.a; path = "/Users/andrey/Projects/qmunicate-ios/Q-municate/QMServices/QMDBStorage/build/Debug-iphoneos/libQMDBStorage.a"; sourceTree = "<absolute>"; };
+		55B220211A2C0C9E00668086 /* libQMDBStorage.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libQMDBStorage.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -358,6 +358,7 @@
 				5590F2391A0B87AB00C5044F /* QMDBStorage */,
 				5590F3001A0BA65800C5044F /* Frameworks */,
 				5590F2FF1A0BA64500C5044F /* Support */,
+				55B220211A2C0C9E00668086 /* libQMDBStorage.a */,
 			);
 			sourceTree = "<group>";
 		};
@@ -405,7 +406,7 @@
 			);
 			name = QMDBStorage;
 			productName = QMDBStorage;
-			productReference = 55A364E11A2732A100C792C0 /* libQMDBStorage.a */;
+			productReference = 55B220211A2C0C9E00668086 /* libQMDBStorage.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -546,11 +547,12 @@
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				VALID_ARCHS = armv7;
 			};
 			name = Debug;
 		};
@@ -594,6 +596,7 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				VALIDATE_PRODUCT = YES;
+				VALID_ARCHS = armv7;
 			};
 			name = Release;
 		};
