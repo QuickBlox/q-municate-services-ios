@@ -4,6 +4,7 @@
 #import "_CDDialog.h"
 
 const struct CDDialogAttributes CDDialogAttributes = {
+	.createdAt = @"createdAt",
 	.id = @"id",
 	.lastMessageDate = @"lastMessageDate",
 	.lastMessageText = @"lastMessageText",
@@ -79,6 +80,13 @@ const struct CDDialogFetchedProperties CDDialogFetchedProperties = {
 
 	return keyPaths;
 }
+
+
+
+
+@dynamic createdAt;
+
+
 
 
 

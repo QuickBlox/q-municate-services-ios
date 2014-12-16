@@ -5,6 +5,7 @@
 
 
 extern const struct CDDialogAttributes {
+	__unsafe_unretained NSString *createdAt;
 	__unsafe_unretained NSString *id;
 	__unsafe_unretained NSString *lastMessageDate;
 	__unsafe_unretained NSString *lastMessageText;
@@ -33,6 +34,7 @@ extern const struct CDDialogFetchedProperties {
 
 
 
+
 @class NSObject;
 
 
@@ -49,6 +51,16 @@ extern const struct CDDialogFetchedProperties {
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
 - (CDDialogID*)objectID;
+
+
+
+
+
+@property (nonatomic, strong) NSDate* createdAt;
+
+
+
+//- (BOOL)validateCreatedAt:(id*)value_ error:(NSError**)error_;
 
 
 
@@ -214,6 +226,12 @@ extern const struct CDDialogFetchedProperties {
 @end
 
 @interface _CDDialog (CoreDataGeneratedPrimitiveAccessors)
+
+
+- (NSDate*)primitiveCreatedAt;
+- (void)setPrimitiveCreatedAt:(NSDate*)value;
+
+
 
 
 - (NSString*)primitiveId;
