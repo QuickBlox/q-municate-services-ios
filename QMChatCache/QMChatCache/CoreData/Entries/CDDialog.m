@@ -11,6 +11,7 @@
     QBChatDialog *chatDialog = [[QBChatDialog alloc] init];
     
     chatDialog.ID = self.id;
+    chatDialog.createdAt = self.createdAt;
     chatDialog.roomJID = self.roomJID;
     chatDialog.type = self.type.intValue;
     chatDialog.name = self.name;
@@ -28,6 +29,7 @@
 - (void)updateWithQBChatDialog:(QBChatDialog *)dialog {
 
     self.id = dialog.ID;
+    self.createdAt = dialog.createdAt;
     self.roomJID = dialog.roomJID;
     self.type = @(dialog.type);
     self.name = dialog.name;
