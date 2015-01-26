@@ -13,7 +13,7 @@
     chatDialog.ID = self.id;
     chatDialog.createdAt = self.createdAt;
     chatDialog.roomJID = self.roomJID;
-    chatDialog.type = self.type.intValue;
+    chatDialog.type = self.dialogType.intValue;
     chatDialog.name = self.name;
     chatDialog.photo = self.photo;
     chatDialog.lastMessageText = self.lastMessageText;
@@ -31,7 +31,7 @@
     self.id = dialog.ID;
     self.createdAt = dialog.createdAt;
     self.roomJID = dialog.roomJID;
-    self.type = @(dialog.type);
+    self.dialogType = @(dialog.type);
     self.name = dialog.name;
     self.photo = dialog.photo;
     self.lastMessageText = dialog.lastMessageText;

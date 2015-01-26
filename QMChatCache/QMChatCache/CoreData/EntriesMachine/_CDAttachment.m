@@ -13,9 +13,6 @@ const struct CDAttachmentRelationships CDAttachmentRelationships = {
 	.message = @"message",
 };
 
-const struct CDAttachmentFetchedProperties CDAttachmentFetchedProperties = {
-};
-
 @implementation CDAttachmentID
 @end
 
@@ -41,42 +38,17 @@ const struct CDAttachmentFetchedProperties CDAttachmentFetchedProperties = {
 
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
-	
 
 	return keyPaths;
 }
 
-
-
-
 @dynamic id;
-
-
-
-
-
 
 @dynamic mimeType;
 
-
-
-
-
-
 @dynamic url;
-
-
-
-
-
 
 @dynamic message;
 
-	
-
-
-
-
-
-
 @end
+
