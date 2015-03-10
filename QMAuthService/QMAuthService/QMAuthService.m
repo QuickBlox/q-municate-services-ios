@@ -61,8 +61,9 @@
 
 - (void)logInWithUser:(QBUUser *)user
            completion:(void(^)(QBResponse *response, QBUUser *userProfile))completion {
-    
+    //Common error block
     void (^errorBlock)(id) = ^(QBResponse *response){
+        
         [self showMessageForQBResponce:response];
         completion(response, nil);
     };

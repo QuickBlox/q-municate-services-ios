@@ -94,7 +94,7 @@ NSString *const kQBResponceErrorsKey = @"errors";
 //    [REAlertView showErrorAlertWithTitle:errorTitle message:resultErrorMessageString];
 }
 
-- (BOOL)checkResult:(Result *)result {
+- (BOOL)checkResult:(QBResult *)result {
 //    
 //    if (!result.success) {
 //        [REAlertView showAlertWithMessage:result.errors.lastObject actionSuccess:NO];

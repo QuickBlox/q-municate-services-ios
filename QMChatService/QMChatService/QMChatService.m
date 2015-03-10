@@ -1,6 +1,6 @@
 //
 //  QMChatDialogsService.m
-//  Qmunicate
+//  Q-municate
 //
 //  Created by Andrey Ivanov on 02.07.14.
 //  Copyright (c) 2014 Quickblox. All rights reserved.
@@ -518,7 +518,6 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 30;
          completion(response, nil);
      }];
 }
-
 
 #pragma mark - Send messages
 

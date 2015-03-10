@@ -1,6 +1,6 @@
 //
 //  QMChatGroupService.h
-//  Qmunicate
+//  Q-municate
 //
 //  Created by Andrey Ivanov on 02.07.14.
 //  Copyright (c) 2014 Quickblox. All rights reserved.
@@ -53,12 +53,27 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 /**
  *  Add delegate (Multicast)
  *
- *  @param delegate delegate confirmed QMChatServiceDelegate protocol
+ *  @param delegate Instance confirmed QMChatServiceDelegate protocol
  */
 - (void)addDelegate:(id<QMChatServiceDelegate>)delegate;
+
+/**
+ *  Remove delegate from observed list
+ *
+ *  @param delegate Instance confirmed QMChatServiceDelegate protocol
+ */
 - (void)addRemoveDelegate:(id<QMChatServiceDelegate>)delegate;
 
+/**
+ *  Login to chant
+ *
+ *  @param completion <#completion description#>
+ */
 - (void)logIn:(void(^)(NSError *error))completion;
+
+/**
+ *  Logout from chat
+ */
 - (void)logoutChat;
 
 - (void)createGroupChatDialogWithName:(NSString *)name

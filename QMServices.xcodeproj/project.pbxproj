@@ -166,6 +166,7 @@
 		55013A331A1F63920030C134 /* QMServices.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QMServices.h; sourceTree = "<group>"; };
 		55013A7F1A1F68280030C134 /* QMServices.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMServices.m; sourceTree = "<group>"; };
 		55013AEB1A1F72350030C134 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.1.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		553E72861AAF060A00449EFB /* LICENSE.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		5590F22C1A0B876F00C5044F /* QMDBStorage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMDBStorage.xcodeproj; path = QMDBStorage/QMDBStorage.xcodeproj; sourceTree = "<group>"; };
 		5590F26B1A0B8C0500C5044F /* QMChatCache.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMChatCache.xcodeproj; path = QMChatCache/QMChatCache.xcodeproj; sourceTree = "<group>"; };
 		5590F2A31A0B8D2900C5044F /* QMContactListCache.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMContactListCache.xcodeproj; path = QMContactListCache/QMContactListCache.xcodeproj; sourceTree = "<group>"; };
@@ -278,6 +279,7 @@
 		55C276A81A09162F005A0C38 = {
 			isa = PBXGroup;
 			children = (
+				553E72861AAF060A00449EFB /* LICENSE.txt */,
 				55013A321A1F63920030C134 /* QMServices */,
 				5590F2911A0B8C7B00C5044F /* Cache */,
 				5590F28A1A0B8C5200C5044F /* Services */,
