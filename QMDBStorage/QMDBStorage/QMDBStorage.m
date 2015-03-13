@@ -82,7 +82,7 @@
     });
 }
 
-- (void)save:(void(^)(void))completion {
+- (void)save:(dispatch_block_t)completion {
     
     [self async:^(NSManagedObjectContext *context) {
         

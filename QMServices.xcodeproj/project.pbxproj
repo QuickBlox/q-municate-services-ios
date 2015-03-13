@@ -374,7 +374,7 @@
 		55C276A91A09162F005A0C38 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0610;
+				LastUpgradeCheck = 0620;
 				TargetAttributes = {
 					55013A301A1F63910030C134 = {
 						CreatedOnToolsVersion = 6.1;
@@ -791,6 +791,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = "~/Documents/Quickblox";
+				ONLY_ACTIVE_ARCH = YES;
 			};
 			name = Debug;
 		};

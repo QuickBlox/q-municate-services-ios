@@ -48,7 +48,7 @@
  *  @param completion Completion block is called after update or insert operation is completed
  */
 - (void)insertOrUpdateDialog:(QBChatDialog *)dialog
-                  completion:(void(^)(void))completion;
+                  completion:(dispatch_block_t)completion;
 
 /**
  *  Insert/Update dialogs
@@ -57,7 +57,7 @@
  *  @param completion Completion block is called after update or insert operation is completed
  */
 - (void)insertOrUpdateDialogs:(NSArray *)dialogs
-                   completion:(void(^)(void))completion;
+                   completion:(dispatch_block_t)completion;
 
 /**
  *  Delete dialog from cache
@@ -66,14 +66,14 @@
  *  @param completion Completion block is called after delete operation is completed
  */
 - (void)deleteDialogWithID:(NSString *)dialog
-                completion:(void(^)(void))completion;
+                completion:(dispatch_block_t)completion;
 
 /**
  *  Delete all dialogs
  *
  *  @param completion Completion block is called after delete all dialogs operation is completed
  */
-- (void)deleteAllDialogs:(void(^)(void))completion;
+- (void)deleteAllDialogs:(dispatch_block_t)completion;
 
 #pragma mark Fetch dialog operations
 

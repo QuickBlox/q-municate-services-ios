@@ -50,7 +50,7 @@ static QMContactListCache *_chatCacheInstance = nil;
 #pragma mark Insert / Update / Delete contact items
 
 - (void)insertOrUpdateContactListItem:(QBContactListItem *)contactListItem
-                           completion:(void(^)(void))completion {
+                           completion:(dispatch_block_t)completion {
     
     __weak __typeof(self)weakSelf = self;
     [self async:^(NSManagedObjectContext *context) {
@@ -75,7 +75,7 @@ static QMContactListCache *_chatCacheInstance = nil;
             [CDContactListItem QM_createEntityInContext:context];
             
             [contactListItemToInsert updateWithQBContactListItem:contactListItem];
-            NSLog(@"Insert New contactListItem (userID - %lu)", contactListItem.userID);
+            NSLog(@"Insert New contactListItem (userID - %lu)", (unsigned long)contactListItem.userID);
         }
         
         [weakSelf save:completion];
@@ -83,7 +83,7 @@ static QMContactListCache *_chatCacheInstance = nil;
 }
 
 - (void)insertOrUpdateContactListWithItems:(NSArray *)contactListItems
-                                completion:(void(^)(void))completion {
+                                completion:(dispatch_block_t)completion {
     
     __weak __typeof(self)weakSelf = self;
     [self async:^(NSManagedObjectContext *context) {
@@ -128,7 +128,7 @@ static QMContactListCache *_chatCacheInstance = nil;
 }
 
 - (void)insertOrUpdateContactListItemsWithContactList:(QBContactList *)contactList
-                                           completion:(void(^)(void))completion {
+                                           completion:(dispatch_block_t)completion {
     NSMutableArray *items =
     [NSMutableArray arrayWithCapacity:contactList.contacts.count + contactList.pendingApproval.count];
     
@@ -165,7 +165,7 @@ static QMContactListCache *_chatCacheInstance = nil;
 }
 
 - (void)deleteContactListItem:(QBContactListItem *)contactListItem
-                   completion:(void(^)(void))completion {
+                   completion:(dispatch_block_t)completion {
     
     __weak __typeof(self)weakSelf = self;
     
@@ -186,7 +186,7 @@ static QMContactListCache *_chatCacheInstance = nil;
     }];
 }
 
-- (void)deleteContactList:(void(^)(void))completion {
+- (void)deleteContactList:(dispatch_block_t)completion {
     
     __weak __typeof(self)weakSelf = self;
     [self async:^(NSManagedObjectContext *context) {
@@ -256,7 +256,7 @@ static QMContactListCache *_chatCacheInstance = nil;
 #pragma mark Insert / Update / Delete users
 
 - (void)insertOrUpdateUser:(QBUUser *)user
-                completion:(void(^)(void))completion {
+                completion:(dispatch_block_t)completion {
     
     __weak __typeof(self)weakSelf = self;
     
@@ -289,7 +289,7 @@ static QMContactListCache *_chatCacheInstance = nil;
 }
 
 - (void)insertOrUpdateUsers:(NSArray *)users
-                 completion:(void(^)(void))completion {
+                 completion:(dispatch_block_t)completion {
     
     __weak __typeof(self)weakSelf = self;
     
@@ -374,7 +374,7 @@ static QMContactListCache *_chatCacheInstance = nil;
 }
 
 - (void)deleteUser:(QBUUser *)user
-        completion:(void(^)(void))completion {
+        completion:(dispatch_block_t)completion {
     
     __weak __typeof(self)weakSelf = self;
     
@@ -395,7 +395,7 @@ static QMContactListCache *_chatCacheInstance = nil;
     }];
 }
 
-- (void)deleteAllUsers:(void(^)(void))completion {
+- (void)deleteAllUsers:(dispatch_block_t)completion {
     
     __weak __typeof(self)weakSelf = self;
     [self async:^(NSManagedObjectContext *context) {

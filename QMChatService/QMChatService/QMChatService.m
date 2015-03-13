@@ -319,6 +319,11 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 30;
     }];
 }
 
+- (void)fetchMessageWithDialogID:(NSString *)chatDialogId
+                        complete:(void(^)(QBResponse *response, NSArray *messages))completion {
+    
+}
+
 #pragma mark - Create Private/Group dialog
 
 - (void)createPrivateChatDialogIfNeededWithOpponent:(QBUUser *)opponent

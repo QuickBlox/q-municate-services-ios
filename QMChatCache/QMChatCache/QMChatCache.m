@@ -109,7 +109,7 @@ static QMChatCache *_chatCacheInstance = nil;
 #pragma mark Insert / Update / Delete
 
 - (void)insertOrUpdateDialog:(QBChatDialog *)dialog
-                  completion:(void(^)(void))completion {
+                  completion:(dispatch_block_t)completion {
     
     __weak __typeof(self)weakSelf = self;
     
@@ -140,7 +140,7 @@ static QMChatCache *_chatCacheInstance = nil;
 }
 
 - (void)insertOrUpdateDialogs:(NSArray *)dialogs
-                   completion:(void(^)(void))completion {
+                   completion:(dispatch_block_t)completion {
     
     __weak __typeof(self)weakSelf = self;
     
@@ -229,7 +229,7 @@ static QMChatCache *_chatCacheInstance = nil;
 }
 
 - (void)deleteDialogWithID:(NSString *)dialogID
-                completion:(void(^)(void))completion {
+                completion:(dispatch_block_t)completion {
     
     __weak __typeof(self)weakSelf = self;
     [self async:^(NSManagedObjectContext *context) {
@@ -242,7 +242,7 @@ static QMChatCache *_chatCacheInstance = nil;
     }];
 }
 
-- (void)deleteAllDialogs:(void(^)(void))completion {
+- (void)deleteAllDialogs:(dispatch_block_t)completion {
     
     [self async:^(NSManagedObjectContext *context) {
         
@@ -309,7 +309,7 @@ static QMChatCache *_chatCacheInstance = nil;
 - (void)insertOrUpdateMessage:(QBChatMessage *)message
                  withDialogId:(NSString *)dialogID
                          read:(BOOL)isRead
-                   completion:(void(^)(void))completion
+                   completion:(dispatch_block_t)completion
 {
     QBChatHistoryMessage* historyMessage = [QBChatHistoryMessage new];
     historyMessage.dialogID = dialogID;
@@ -329,7 +329,7 @@ static QMChatCache *_chatCacheInstance = nil;
 
 - (void)insertOrUpdateMessage:(QBChatHistoryMessage *)message
                  withDialogId:(NSString *)dialogID
-                   completion:(void(^)(void))completion {
+                   completion:(dispatch_block_t)completion {
     
     __weak __typeof(self)weakSelf = self;
     
@@ -364,7 +364,7 @@ static QMChatCache *_chatCacheInstance = nil;
 
 - (void)insertOrUpdateMessages:(NSArray *)messages
                   withDialogId:(NSString *)dialogID
-                    completion:(void(^)(void))completion {
+                    completion:(dispatch_block_t)completion {
     
     __weak __typeof(self)weakSelf = self;
     
@@ -455,7 +455,7 @@ static QMChatCache *_chatCacheInstance = nil;
 }
 
 - (void)deleteMessage:(QBChatHistoryMessage *)message
-           completion:(void(^)(void))completion {
+           completion:(dispatch_block_t)completion {
     
     __weak __typeof(self)weakSelf = self;
     
@@ -473,7 +473,7 @@ static QMChatCache *_chatCacheInstance = nil;
     }];
 }
 
-- (void)deleteAllMessages:(void(^)(void))completion {
+- (void)deleteAllMessages:(dispatch_block_t)completion {
     
     __weak __typeof(self)weakSelf = self;
     

@@ -53,6 +53,6 @@
  * @brief Save to persistent store (async)
  */
 
-- (void)save:(void(^)(void))completion;
+- (void)save:(dispatch_block_t)completion;
 
 @end

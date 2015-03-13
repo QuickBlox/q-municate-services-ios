@@ -48,7 +48,7 @@
  *  @param completion       Completion block is called after update or insert operation is completed
  */
 - (void)insertOrUpdateContactListItem:(QBContactListItem *)contactListItems
-                           completion:(void(^)(void))completion;
+                           completion:(dispatch_block_t)completion;
 /**
  *  Insert/Update QBContactListItem's in cache
  *
@@ -56,7 +56,7 @@
  *  @param completion       Completion block is called after update or insert operation is completed
  */
 - (void)insertOrUpdateContactListWithItems:(NSArray *)contactListItems
-                            completion:(void(^)(void))completion;
+                                completion:(dispatch_block_t)completion;
 
 /**
  *  Insert/Update QBContactListItem's in cache
@@ -65,7 +65,7 @@
  *  @param completion  Completion block is called after update or insert operation is completed
  */
 - (void)insertOrUpdateContactListItemsWithContactList:(QBContactList *)contactList
-                                           completion:(void(^)(void))completion;
+                                           completion:(dispatch_block_t)completion;
 /**
  *  Delete ContactListItem from cache
  *
@@ -73,14 +73,14 @@
  *  @param completion       Completion block is called after delete operation is completed
  */
 - (void)deleteContactListItem:(QBContactListItem *)contactListItem
-                   completion:(void(^)(void))completion;
+                   completion:(dispatch_block_t)completion;
 
 /**
  *  Delete all contact list items
  *
  *  @param completion Completion block is called after delete contact list items operation is completed
  */
-- (void)deleteContactList:(void(^)(void))completion;
+- (void)deleteContactList:(dispatch_block_t)completion;
 
 #pragma mark Fetch ContactList operations
 
@@ -112,7 +112,7 @@
  *  @param completion Completion block is called after update or insert operation is completed
  */
 - (void)insertOrUpdateUser:(QBUUser *)user
-                completion:(void(^)(void))completion;
+                completion:(dispatch_block_t)completion;
 /**
  *  Insert/Update users in cache
  *
@@ -120,7 +120,7 @@
  *  @param completion Completion block is called after update or insert operation is completed
  */
 - (void)insertOrUpdateUsers:(NSArray *)users
-                 completion:(void(^)(void))completion;
+                 completion:(dispatch_block_t)completion;
 /**
  *  Delete user from cahce
  *
@@ -128,13 +128,13 @@
  *  @param completion  Completion block that is called after the delete operation has completed.
  */
 - (void)deleteUser:(QBUUser *)user
-        completion:(void(^)(void))completion;
+        completion:(dispatch_block_t)completion;
 /**
  *  Delete all users
  *
  *  @param completion Completion block that is called after the delete operation has completed.
  */
-- (void)deleteAllUsers:(void(^)(void))completion;
+- (void)deleteAllUsers:(dispatch_block_t)completion;
 
 #pragma mark Fetch users operations
 
