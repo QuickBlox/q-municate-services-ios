@@ -410,18 +410,14 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 30;
     __weak __typeof(self)weakSelf = self;
     NSArray *opponentsWithoutMe = nil;
     
-    QBUpdateDialogParameters *updateParameters =
-    [QBUpdateDialogParameters updateDialogWithDialogID:chatDialog.ID
-                                         dialogNewName:dialogName];
-    
-    [QBRequest updateDialog:updateParameters
+    chatDialog.name = dialogName;
+    [QBRequest updateDialog:chatDialog
                successBlock:^(QBResponse *response, QBChatDialog *updatedDialog)
      {
       
          [self.dialogsMemoryStorage addChatDialog:updatedDialog
                                           andJoin:NO];
          
-         chatDialog.name = dialogName;
          [weakSelf sendNotificationWithType:QMMessageNotificationTypeUpdateGroupDialog
                                        text:[NSString stringWithFormat:@"New chat name - %@", dialogName]
                                toRecipients:opponentsWithoutMe
@@ -438,17 +434,10 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 30;
                 toChatDialog:(QBChatDialog *)chatDialog
                   completion:(void(^)(QBResponse *response, QBChatDialog *updatedDialog))completion {
     
-    NSArray *occupantsToJoinIDs = ids;
-    NSArray *occupantsToNotify = @[];
-    
     __weak __typeof(self)weakSelf = self;
-    
-    QBUpdateDialogParameters *updateParams =
-    [QBUpdateDialogParameters updateDialogWithDialogID:chatDialog.ID
-                                        addedOccupants:occupantsToJoinIDs
-                                      removedOccupants:nil];
-    
-    [QBRequest updateDialog:updateParams
+    [chatDialog setPushOccupantsIDs:ids];
+
+    [QBRequest updateDialog:chatDialog
                successBlock:^(QBResponse *response, QBChatDialog *updatedDialog)
      {
          
@@ -457,7 +446,7 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 30;
          
          [weakSelf sendNotificationWithType:QMMessageNotificationTypeUpdateGroupDialog
                                        text:@"Added new users"
-                               toRecipients:occupantsToNotify
+                               toRecipients:ids
                                  chatDialog:updatedDialog];
          
          completion(response, updatedDialog);
