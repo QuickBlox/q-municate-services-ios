@@ -281,16 +281,17 @@
                          completion:(void(^)(BOOL success))completion {
     
     
+    __weak __typeof(self)weakSelf = self;
     [[QBChat instance] addUserToContactListRequest:user.ID
                                          sentBlock:^(NSError *error)
      {
          if (!error) {
              
-             [self.usersMemoryStorage addUser:user];
+             [weakSelf.usersMemoryStorage addUser:user];
              
-             if ([self.multicastDelegate respondsToSelector:@selector(contactListService:didAddUser:)]) {
+             if ([weakSelf.multicastDelegate respondsToSelector:@selector(contactListService:didAddUser:)]) {
                  
-                 [self.multicastDelegate contactListService:self
+                 [weakSelf.multicastDelegate contactListService:weakSelf
                                                  didAddUser:user];
              }
              
