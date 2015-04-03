@@ -28,14 +28,13 @@
     self.contactListMemoryStorage = nil;
 }
 
-- (instancetype)initWithServiceDataDelegate:(id<QMServiceDataDelegate>)serviceDataDelegate
-                              cacheDelegate:(id<QMContactListServiceCacheDelegate>)cacheDelegate {
+- (instancetype)initWithUserProfileDataSource:(id<QMUserProfileProtocol>)userProfileDataSource
+                                cacheDelegate:(id<QMContactListServiceCacheDelegate>)cacheDelegate {
     
-    self = [super initWithServiceDataDelegate:serviceDataDelegate];
+    self = [super initWithUserProfileDataSource:userProfileDataSource];
     if (self) {
         
         self.cahceDelegate = cacheDelegate;
-        [self defaultInit];
         [self loadCachedData];
         
     }
@@ -51,7 +50,7 @@
     dispatch_async(queue, ^{
         
         if ([self.cahceDelegate respondsToSelector:@selector(cachedContactListItems:)]) {
-        
+            
             dispatch_semaphore_t sem = dispatch_semaphore_create(0);
             
             [self.cahceDelegate cachedContactListItems:^(NSArray *collection) {
@@ -61,7 +60,7 @@
             }];
             
             dispatch_semaphore_wait(sem, DISPATCH_TIME_FOREVER);
-
+            
         }
     });
     
@@ -75,13 +74,13 @@
                 
                 [weakSelf.usersMemoryStorage addUsers:collection];
                 dispatch_semaphore_signal(sem);
-
+                
             }];
             dispatch_semaphore_wait(sem, DISPATCH_TIME_FOREVER);
-
+            
         }
     });
-
+    
     dispatch_async(queue, ^{
         
         if ([self.multicastDelegate respondsToSelector:@selector(contactListServiceDidLoadCache)]) {
@@ -93,16 +92,9 @@
     });
 }
 
-- (instancetype)initWithServiceDataDelegate:(id<QMServiceDataDelegate>)serviceDataDelegate {
-    
-    self = [super initWithServiceDataDelegate:serviceDataDelegate];
-    if (self) {
-        [self defaultInit];
-    }
-    return self;
-}
 
-- (void)defaultInit {
+- (void)willStart {
+    [super willStart];
     
     self.multicastDelegate = (id<QMContactListServiceDelegate>)[[QBMulticastDelegate alloc] init];
     self.contactListMemoryStorage = [[QMContactListMemoryStorage alloc] init];
@@ -257,22 +249,24 @@
     __weak __typeof(self)weakSelf = self;
     
     [self retrieveUsersWithIDs:chatDialog.occupantIDs
-                    completion:^(QBResponse *responce, QBGeneralResponsePage *page, NSArray *users)
-    {
-        if (users.count > 0 ) {
-            
-            if ([weakSelf.multicastDelegate respondsToSelector:@selector(contactListService:didFinishRetriveUsersForChatDialog:)]) {
-                
-                [weakSelf.multicastDelegate contactListService:weakSelf
-                            didFinishRetriveUsersForChatDialog:chatDialog];
-            }
-            
-        }
-    
-        if (completion) {
-            completion(responce, page, users);
-        }
-    }];
+                    completion:^(QBResponse *responce,
+                                 QBGeneralResponsePage *page,
+                                 NSArray *users)
+     {
+         if (users.count > 0 ) {
+             
+             if ([weakSelf.multicastDelegate respondsToSelector:@selector(contactListService:didFinishRetriveUsersForChatDialog:)]) {
+                 
+                 [weakSelf.multicastDelegate contactListService:weakSelf
+                             didFinishRetriveUsersForChatDialog:chatDialog];
+             }
+             
+         }
+         
+         if (completion) {
+             completion(responce, page, users);
+         }
+     }];
 }
 
 #pragma mark - ContactList Request
@@ -292,7 +286,7 @@
              if ([weakSelf.multicastDelegate respondsToSelector:@selector(contactListService:didAddUser:)]) {
                  
                  [weakSelf.multicastDelegate contactListService:weakSelf
-                                                 didAddUser:user];
+                                                     didAddUser:user];
              }
              
              if (completion) {
@@ -388,7 +382,7 @@
     return sortedUsers;
 }
 
-#pragma mark - Memory storage 
+#pragma mark - Memory storage
 
 - (NSArray *)usersFromContactList {
     

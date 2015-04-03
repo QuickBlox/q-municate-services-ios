@@ -16,9 +16,10 @@
 
 @implementation QMAuthService
 
-- (void)logOut:(void(^)(QBResponse *response))completion {
+- (QBRequest *)logOut:(void(^)(QBResponse *response))completion {
     
     __weak __typeof(self)weakSelf = self;
+    QBRequest *request =
     [QBRequest logOutWithSuccessBlock:^(QBResponse *response) {
         
         weakSelf.isAuthorized = NO;
@@ -33,17 +34,24 @@
         if (completion)
             completion(response);
     }];
+    
+    return request;
 }
 
-- (void)signUpAndLoginWithUser:(QBUUser *)user
-                    completion:(void(^)(QBResponse *response, QBUUser *userProfile))completion {
+- (QBRequest *)signUpAndLoginWithUser:(QBUUser *)user
+                           completion:(void(^)(QBResponse *response, QBUUser *userProfile))completion {
     
     __weak __typeof(self)weakSelf = self;
+    
+    QBRequest *request =
+    
     [QBRequest signUp:user
          successBlock:^(QBResponse *response, QBUUser *newUser) {
              
              [weakSelf logInWithUser:user
-                          completion:^(QBResponse *logInResponse, QBUUser *userProfile) {
+                          completion:^(QBResponse *logInResponse,
+                                       QBUUser *userProfile) {
+                              
                               weakSelf.isAuthorized = YES;
                               completion(logInResponse, userProfile);
                           }];
@@ -55,48 +63,65 @@
              if (completion)
                  completion(response, nil);
          }];
+    
+    return request;
 }
 
 #pragma mark - Private methods
 
-- (void)logInWithUser:(QBUUser *)user
-           completion:(void(^)(QBResponse *response, QBUUser *userProfile))completion {
+- (QBRequest *)logInWithUser:(QBUUser *)user
+                  completion:(void(^)(QBResponse *response, QBUUser *userProfile))completion {
+    
+    __weak __typeof(self)weakSelf = self;
     //Common error block
     void (^errorBlock)(id) = ^(QBResponse *response){
         
-        [self showMessageForQBResponce:response];
+        [weakSelf showMessageForQBResponce:response];
         completion(response, nil);
     };
     
+    void (^successBlock)(id, id) = ^(QBResponse *response, QBUUser *userProfile){
+        
+        weakSelf.isAuthorized = YES;
+        completion(response, userProfile);
+    };
+    
+    QBRequest *request = nil;
+    
     if (user.email) {
         
+        request =
         [QBRequest logInWithUserEmail:user.email
                              password:user.password
-                         successBlock:completion
+                         successBlock:successBlock
                            errorBlock:errorBlock];
     }
     else if (user.login) {
         
+        request =
         [QBRequest logInWithUserLogin:user.login
                              password:user.password
-                         successBlock:completion
+                         successBlock:successBlock
                            errorBlock:errorBlock];
     }
+    
+    return request;
 }
 
 #pragma mark - Social auth
 
-- (void)logInWithFacebookSessionToken:(NSString *)sessionToken
-                           completion:(void(^)(QBResponse *response, QBUUser *userProfile))completion {
+- (QBRequest *)logInWithFacebookSessionToken:(NSString *)sessionToken
+                                  completion:(void(^)(QBResponse *response, QBUUser *userProfile))completion {
     
     __weak __typeof(self)weakSelf = self;
     
+    QBRequest *request =
     [QBRequest logInWithSocialProvider:@"facebook"
                            accessToken:sessionToken
                      accessTokenSecret:nil
-                          successBlock:^(QBResponse *response, QBUUser *tUser)
+                          successBlock:^(QBResponse *response,
+                                         QBUUser *tUser)
      {
-      
          weakSelf.isAuthorized = YES;
          
          tUser.password = [QBBaseModule sharedModule].token;
@@ -109,6 +134,8 @@
          if (completion)
              completion(response, nil);
      }];
+    
+    return request;
 }
 
 @end

@@ -12,15 +12,15 @@
 
 @property (assign, nonatomic, readonly) BOOL isAuthorized;
 
-- (void)signUpAndLoginWithUser:(QBUUser *)user
-                    completion:(void(^)(QBResponse *response, QBUUser *userProfile))completion;
-
-- (void)logInWithUser:(QBUUser *)user
-           completion:(void(^)(QBResponse *response, QBUUser *userProfile))completion;
-
-- (void)logInWithFacebookSessionToken:(NSString *)sessionToken
+- (QBRequest *)signUpAndLoginWithUser:(QBUUser *)user
                            completion:(void(^)(QBResponse *response, QBUUser *userProfile))completion;
 
-- (void)logOut:(void(^)(QBResponse *response))completion;
+- (QBRequest *)logInWithUser:(QBUUser *)user
+                  completion:(void(^)(QBResponse *response, QBUUser *userProfile))completion;
+
+- (QBRequest *)logInWithFacebookSessionToken:(NSString *)sessionToken
+                                  completion:(void(^)(QBResponse *response, QBUUser *userProfile))completion;
+
+- (QBRequest *)logOut:(void(^)(QBResponse *response))completion;
 
 @end

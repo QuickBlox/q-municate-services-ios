@@ -16,20 +16,26 @@ typedef NS_ENUM(NSUInteger, QM_STATUS) {
 
 @interface QMBaseService()
 
-@property (weak, nonatomic) id <QMServiceDataDelegate> serviceDataDelegate;
+@property (weak, nonatomic) id <QMUserProfileProtocol> userProfileDataSource;
 
 @end
 
 @implementation QMBaseService
 
-- (id)initWithServiceDataDelegate:(id<QMServiceDataDelegate>)serviceDataDelegate {
+- (instancetype)initWithUserProfileDataSource:(id<QMUserProfileProtocol>)userProfileDataSource{ 
     
     self = [super init];
     if (self) {
-        self.serviceDataDelegate = serviceDataDelegate;
+        
+        self.userProfileDataSource = userProfileDataSource;
         NSLog(@"Init - %@ service...", NSStringFromClass(self.class));
+        [self willStart];
     }
     return self;
+}
+
+- (void)willStart {
+    
 }
 
 #pragma mark - error Handler

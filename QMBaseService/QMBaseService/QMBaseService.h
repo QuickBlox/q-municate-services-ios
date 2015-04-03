@@ -8,17 +8,20 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol QMServiceDataDelegate <NSObject>
+@protocol QMUserProfileProtocol <NSObject>
 @required
-- (QBUUser *)serviceDataCurrentProfile;
+- (QBUUser *)currentUser;
+- (BOOL)userIsAutorized;
 @end
 
 @interface QMBaseService : NSObject
 
-@property (weak, nonatomic, readonly) id <QMServiceDataDelegate> serviceDataDelegate;
+@property (weak, nonatomic, readonly) id <QMUserProfileProtocol> userProfileDataSource;
 
 - (id)init __attribute__((unavailable("init is not a supported initializer for this class.")));
-- (id)initWithServiceDataDelegate:(id<QMServiceDataDelegate>)serviceDataDelegate;
+- (instancetype)initWithUserProfileDataSource:(id<QMUserProfileProtocol>)userProfileDataSource;
+
+- (void)willStart;
 - (void)showMessageForQBResponce:(QBResponse *)responce;
 
 @end

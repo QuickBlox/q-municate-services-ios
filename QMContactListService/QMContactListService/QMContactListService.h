@@ -40,15 +40,6 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 - (NSArray *)usersFromContactListSortedByFullName;
 
 /**
- *  Default init with service data delegate
- *
- *  @param serviceDataDelegate instance that confirms id<QMServiceDataDelegate> protocol
- *
- *  @return QMContactListService instance
- */
-- (instancetype)initWithServiceDataDelegate:(id<QMServiceDataDelegate>)serviceDataDelegate;
-
-/**
  *  Init with service data delegate and contact list cache protocol.
  *
  *  @param serviceDataDelegate instance confirmed id<QMServiceDataDelegate> protocol
@@ -56,8 +47,8 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  *
  *  @return QMContactListService instance
  */
-- (instancetype)initWithServiceDataDelegate:(id<QMServiceDataDelegate>)serviceDataDelegate
-                              cacheDelegate:(id<QMContactListServiceCacheDelegate>)cacheDelegate;
+- (instancetype)initWithUserProfileDataSource:(id<QMUserProfileProtocol>)userProfileDataSource
+                                cacheDelegate:(id<QMContactListServiceCacheDelegate>)cacheDelegate;
 
 /**
  *  Add instance that confirms contact list service multicaste protocol

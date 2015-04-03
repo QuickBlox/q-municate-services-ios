@@ -39,17 +39,8 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  *
  *  @return Return QMChatService instance
  */
-- (instancetype)initWithServiceDataDelegate:(id<QMServiceDataDelegate>)serviceDataDelegate
-                              cacheDelegate:(id<QMChatServiceCacheDelegate>)cacheDelegate;
-/**
- *  Init chat service
- *
- *  @param serviceDataDelegate instance confirmed QMServiceDataDelegate
- *
- *  @return QMChatService instance
- */
-- (id)initWithServiceDataDelegate:(id<QMServiceDataDelegate>)serviceDataDelegate;
-
+- (instancetype)initWithUserProfileDataSource:(id<QMUserProfileProtocol>)userProfileDataSource
+                                cacheDelegate:(id<QMChatServiceCacheDelegate>)cacheDelegate;
 /**
  *  Add delegate (Multicast)
  *
