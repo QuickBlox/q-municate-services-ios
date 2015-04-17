@@ -9,7 +9,7 @@ Xcode sub-projects allow your project to use and build QMServices as an implicit
 Add QMServices to your project as a Git submodule:
 ```
 $ cd MyXcodeProjectFolder
-$ git submodule add https://bitbucket.org/quickblox/qmunicate-services-ios.git Vendor/QMServices
+$ git submodule add https://github.com/QuickBlox/q-municate-services-ios.git Vendor/QMServices
 $ git commit -m "Add QMServices submodule"
 ```
 Drag `Vendor/QMServices/QMServices ` into your existing Xcode project.
