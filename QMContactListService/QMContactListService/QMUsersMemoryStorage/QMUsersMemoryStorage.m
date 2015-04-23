@@ -45,20 +45,16 @@
     return user;
 }
 
-- (NSArray *)unsorterdUsersFromMemoryStorage {
-    
-    NSArray *allUsers = self.users.allValues;
-    return allUsers;
-}
-
 - (NSArray *)usersWithIDs:(NSArray *)ids {
     
     NSMutableArray *allFriends = [NSMutableArray array];
     
     for (NSNumber * friendID in ids) {
+        
         QBUUser *user = [self userWithID:friendID.integerValue];
         
         if (user) {
+            
             [allFriends addObject:user];
         }
     }
@@ -70,9 +66,25 @@
 
     NSMutableSet *ids = [NSMutableSet set];
     for (QBUUser *user in users) {
+        
         [ids addObject:@(user.ID)];
     }
+    
     return [ids allObjects];
+}
+
+#pragma mark - Sorting
+
+- (NSArray *)unsorterd {
+    
+    NSArray *allUsers = self.users.allValues;
+    return allUsers;
+}
+
+- (NSArray *)sortedByName:(BOOL)ascending {
+    
+    NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"fullName" ascending:ascending];
+    return [self.unsorterd sortedArrayUsingDescriptors:@[sort]];
 }
 
 @end

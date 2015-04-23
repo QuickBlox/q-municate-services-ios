@@ -13,8 +13,12 @@
 - (void)addUser:(QBUUser *)user;
 - (void)addUsers:(NSArray *)users;
 
-- (NSArray *)unsorterdUsersFromMemoryStorage;
 - (QBUUser *)userWithID:(NSUInteger)userID;
 - (NSArray *)usersWithIDs:(NSArray *)ids;
+
+#pragma mark - Sorting
+
+- (NSArray *)unsorterd;
+- (NSArray *)sortedByName:(BOOL)ascending;
 
 @end
