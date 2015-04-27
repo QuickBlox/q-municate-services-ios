@@ -179,7 +179,7 @@
 			buildPhases = (
 				5590F26E1A0B8C4200C5044F /* Sources */,
 				5590F26F1A0B8C4200C5044F /* Frameworks */,
-				55013B1F1A1F7ED40030C134 /* ShellScript */,
+				FB6FE65E1AEE8F6F002E3F8A /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -236,19 +236,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		55013B1F1A1F7ED40030C134 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "echo \"Copy $BUILT_PRODUCTS_DIR/QMChatCacheModel.bundle to $SRCROOT/Product\"\ncp -R $BUILT_PRODUCTS_DIR/QMChatCacheModel.bundle $SRCROOT/";
-		};
 		554A28811A0CECA400C4E03C /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -261,6 +248,19 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "echo \"Begin momd\"\n\nCOREDATA_DIR=\"${PROJECT_DIR}/QMChatCache/CoreData\"\nHUMAN_DIR=\"${PROJECT_DIR}/QMChatCache/CoreData/Entries\"\nMACHINE_DIR=\"${PROJECT_DIR}/QMChatCache/CoreData/EntriesMachine\"\nINCLUDE_H=\"${PROJECT_DIR}/QMChatCache/CoreData/ModelIncludes.h\"\nINPUT_FILE_PATH=\"${PROJECT_DIR}/QMChatCache/CoreData/QMChatServiceModel.xcdatamodeld\"\n\ncurVer=`/usr/libexec/PlistBuddy \"${INPUT_FILE_PATH}/.xccurrentversion\" -c 'print _XCCurrentVersionName'`\n\nmogenerator\n\necho $mogenerator --model \\\"$COREDATA_DIR/$curVer\\\" --machine-dir \"$MACHINE_DIR/\" --human-dir \"$HUMAN_DIR/\" --includeh \"$INCLUDE_H\" --template-var arc=true\n$mogenerator --model \"${INPUT_FILE_PATH}/$curVer\" --machine-dir \"$MACHINE_DIR/\" --human-dir \"$HUMAN_DIR/\" --includeh \"$INCLUDE_H\" --template-var arc=true\n\necho ${DEVELOPER_BIN_DIR}/momc -XD_MOMC_TARGET_VERSION=10.6 \\\"${INPUT_FILE_PATH}\\\" \\\"${TARGET_BUILD_DIR}/${EXECUTABLE_FOLDER_PATH}/${INPUT_FILE_BASE}.momd\\\"\n${DEVELOPER_BIN_DIR}/momc -XD_MOMC_TARGET_VERSION=10.6 \"${INPUT_FILE_PATH}\" \"${TARGET_BUILD_DIR}/${EXECUTABLE_FOLDER_PATH}/${INPUT_FILE_BASE}.momd\"\n\necho \"Begin mom\"\n\necho $mogenerator --model \\\"${INPUT_FILE_PATH}\\\" --machine-dir \"$MACHINE_DIR/\" --human-dir \"$HUMAN_DIR/\" --includeh \"$INCLUDE_H\" --template-var arc=true\n$mogenerator --model \\\"${INPUT_FILE_PATH}\\\" --machine-dir \"$MACHINE_DIR/\" --human-dir \"$HUMAN_DIR/\" --includeh \"$INCLUDE_H\" --template-var arc=true\n\necho ${DEVELOPER_BIN_DIR}/momc -XD_MOMC_TARGET_VERSION=10.6 \\\"${INPUT_FILE_PATH}\\\" \\\"${TARGET_BUILD_DIR}/${EXECUTABLE_FOLDER_PATH}/${INPUT_FILE_BASE}.mom\\\"\n${DEVELOPER_BIN_DIR}/momc -XD_MOMC_TARGET_VERSION=10.6 \"${INPUT_FILE_PATH}\" \"${TARGET_BUILD_DIR}/${EXECUTABLE_FOLDER_PATH}/${INPUT_FILE_BASE}.mom\"\n\necho \"that's all folks. mogen.sh is done\"";
+		};
+		FB6FE65E1AEE8F6F002E3F8A /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ $CONFIGURATION == Release ]; then\n    echo \"skip for release\"\nelse\n    echo \"Copy $BUILT_PRODUCTS_DIR/QMChatCacheModel.bundle to $SRCROOT/Product\"\n    cp -a \"$BUILT_PRODUCTS_DIR/QMChatCacheModel.bundle\" $SRCROOT/\nfi";
 		};
 /* End PBXShellScriptBuildPhase section */
 
