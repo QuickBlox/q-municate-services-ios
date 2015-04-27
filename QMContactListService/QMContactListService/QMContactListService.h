@@ -37,6 +37,8 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  */
 - (NSArray *)usersFromContactListSortedByFullName;
 
+- (NSArray *)usersWithoutMeWithIDs:(NSArray *)IDs;
+
 /**
  *  Init with service data delegate and contact list cache protocol.
  *

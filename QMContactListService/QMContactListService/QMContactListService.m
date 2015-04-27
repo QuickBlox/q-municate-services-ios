@@ -368,6 +368,17 @@
      }];
 }
 
+- (NSArray *)usersWithoutMeWithIDs:(NSArray *)IDs {
+    
+    QBUUser *user = [self.userProfileDataSource currentUser];
+    NSParameterAssert(user);
+    
+    NSMutableArray *withoutMeIDs = IDs.mutableCopy;
+    [withoutMeIDs removeObject:@(user.ID)];
+    
+    return [self.usersMemoryStorage usersWithIDs:withoutMeIDs];
+}
+
 - (NSArray *)usersFromContactListSortedByFullName {
     
     NSSortDescriptor *sorter = [[NSSortDescriptor alloc]
