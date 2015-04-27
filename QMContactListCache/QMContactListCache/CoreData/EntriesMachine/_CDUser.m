@@ -20,12 +20,6 @@ const struct CDUserAttributes CDUserAttributes = {
 	.website = @"website",
 };
 
-const struct CDUserRelationships CDUserRelationships = {
-};
-
-const struct CDUserFetchedProperties CDUserFetchedProperties = {
-};
-
 @implementation CDUserID
 @end
 
@@ -51,7 +45,7 @@ const struct CDUserFetchedProperties CDUserFetchedProperties = {
 
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
-	
+
 	if ([key isEqualToString:@"blobIDValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"blobID"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
@@ -71,12 +65,7 @@ const struct CDUserFetchedProperties CDUserFetchedProperties = {
 	return keyPaths;
 }
 
-
-
-
 @dynamic blobID;
-
-
 
 - (int32_t)blobIDValue {
 	NSNumber *result = [self blobID];
@@ -96,34 +85,13 @@ const struct CDUserFetchedProperties CDUserFetchedProperties = {
 	[self setPrimitiveBlobID:[NSNumber numberWithInt:value_]];
 }
 
-
-
-
-
 @dynamic createdAt;
-
-
-
-
-
 
 @dynamic customData;
 
-
-
-
-
-
 @dynamic email;
 
-
-
-
-
-
 @dynamic externalUserID;
-
-
 
 - (int32_t)externalUserIDValue {
 	NSNumber *result = [self externalUserID];
@@ -143,27 +111,11 @@ const struct CDUserFetchedProperties CDUserFetchedProperties = {
 	[self setPrimitiveExternalUserID:[NSNumber numberWithInt:value_]];
 }
 
-
-
-
-
 @dynamic facebookID;
-
-
-
-
-
 
 @dynamic fullName;
 
-
-
-
-
-
 @dynamic id;
-
-
 
 - (int32_t)idValue {
 	NSNumber *result = [self id];
@@ -183,55 +135,17 @@ const struct CDUserFetchedProperties CDUserFetchedProperties = {
 	[self setPrimitiveId:[NSNumber numberWithInt:value_]];
 }
 
-
-
-
-
 @dynamic login;
-
-
-
-
-
 
 @dynamic phone;
 
-
-
-
-
-
 @dynamic tags;
-
-
-
-
-
 
 @dynamic twitterID;
 
-
-
-
-
-
 @dynamic updatedAt;
-
-
-
-
-
 
 @dynamic website;
 
-
-
-
-
-
-
-
-
-
-
 @end
+

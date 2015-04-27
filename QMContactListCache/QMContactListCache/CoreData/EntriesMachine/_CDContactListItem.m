@@ -8,12 +8,6 @@ const struct CDContactListItemAttributes CDContactListItemAttributes = {
 	.userID = @"userID",
 };
 
-const struct CDContactListItemRelationships CDContactListItemRelationships = {
-};
-
-const struct CDContactListItemFetchedProperties CDContactListItemFetchedProperties = {
-};
-
 @implementation CDContactListItemID
 @end
 
@@ -39,7 +33,7 @@ const struct CDContactListItemFetchedProperties CDContactListItemFetchedProperti
 
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
-	
+
 	if ([key isEqualToString:@"subscriptionStateValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"subscriptionState"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
@@ -54,12 +48,7 @@ const struct CDContactListItemFetchedProperties CDContactListItemFetchedProperti
 	return keyPaths;
 }
 
-
-
-
 @dynamic subscriptionState;
-
-
 
 - (int16_t)subscriptionStateValue {
 	NSNumber *result = [self subscriptionState];
@@ -79,13 +68,7 @@ const struct CDContactListItemFetchedProperties CDContactListItemFetchedProperti
 	[self setPrimitiveSubscriptionState:[NSNumber numberWithShort:value_]];
 }
 
-
-
-
-
 @dynamic userID;
-
-
 
 - (int32_t)userIDValue {
 	NSNumber *result = [self userID];
@@ -105,13 +88,5 @@ const struct CDContactListItemFetchedProperties CDContactListItemFetchedProperti
 	[self setPrimitiveUserID:[NSNumber numberWithInt:value_]];
 }
 
-
-
-
-
-
-
-
-
-
 @end
+

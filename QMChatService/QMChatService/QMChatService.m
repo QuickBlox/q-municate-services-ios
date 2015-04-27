@@ -11,7 +11,7 @@
 #import "NSString+GTMNSStringHTMLAdditions.h"
 #import "QBChatAbstractMessage+QMCustomParameters.h"
 
-const NSTimeInterval kQMPresenceTimeIntervalInSec = 30;
+const NSTimeInterval kQMPresenceTimeIntervalInSec = 45;
 
 @interface QMChatService()
 
@@ -136,16 +136,20 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 30;
 #pragma mark - Add / Remove Multicast delegate
 
 - (void)addDelegate:(id<QMChatServiceDelegate>)delegate {
+    
     [self.multicastDelegate addDelegate:delegate];
 }
 
 - (void)addRemoveDelegate:(id<QMChatServiceDelegate>)delegate{
+    
     [self.multicastDelegate removeDelegate:delegate];
 }
 
 #pragma mark - QBChatDelegate
 
 - (void)chatDidLogin {
+    
+    [self sendPresence:nil];
     
     if (self.chatSuccessBlock) {
         self.chatSuccessBlock(nil);
@@ -193,6 +197,7 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 30;
         [QBChat instance].useMutualSubscriptionForContactList = YES;
         [QBChat instance].autoReconnectEnabled = YES;
         [QBChat instance].streamManagementEnabled = YES;
+        
         [[QBChat instance] loginWithUser:user];
     }
 }
@@ -212,10 +217,15 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 30;
     
     self.presenceTimer =
     [NSTimer scheduledTimerWithTimeInterval:kQMPresenceTimeIntervalInSec
-                                     target:[QBChat instance]
-                                   selector:@selector(sendPresence)
+                                     target:self
+                                   selector:@selector(sendPresence:)
                                    userInfo:nil
                                     repeats:YES];
+}
+
+- (void)sendPresence:(NSTimer *)timer {
+    
+    [[QBChat instance] sendPresence];
 }
 
 - (void)stopSendPresence {
@@ -240,13 +250,10 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 30;
             chatDialogToUpdate.lastMessageDate = [NSDate dateWithTimeIntervalSince1970:message.cParamDateSent.doubleValue];
             chatDialogToUpdate.unreadMessagesCount++;
             //Add message in memory storage
-            [self.messagesMemoryStorage addMessage:message
-                                       forDialogID:message.cParamDialogID];
+            [self.messagesMemoryStorage addMessage:message forDialogID:message.cParamDialogID];
             
             if ([self.multicastDelegate respondsToSelector:@selector(chatServiceDidAddMessageToHistory:forDialog:)]) {
-                
-                [self.multicastDelegate chatServiceDidAddMessageToHistory:message
-                                                                forDialog:chatDialogToUpdate];
+                [self.multicastDelegate chatServiceDidAddMessageToHistory:message forDialog:chatDialogToUpdate];
             }
         }
     }
@@ -255,26 +262,26 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 30;
         QBChatDialog *newChatDialog =
         [message chatDialogFromCustomParameters];
         
-        [self.dialogsMemoryStorage addChatDialog:newChatDialog
-                                         andJoin:YES];
+        [self.dialogsMemoryStorage addChatDialog:newChatDialog andJoin:YES];
         
         if ([self.multicastDelegate respondsToSelector:@selector(chatServiceDidReceiveNotificationMessage:createDialog:)]) {
-            [self.multicastDelegate chatServiceDidReceiveNotificationMessage:message
-                                                                createDialog:newChatDialog];
+            [self.multicastDelegate chatServiceDidReceiveNotificationMessage:message createDialog:newChatDialog];
         }
     }
     else if (message.cParamNotificationType == QMMessageNotificationTypeUpdateGroupDialog) {
         
-        QBChatDialog *chatDialogToUpdate =
-        [self.dialogsMemoryStorage chatDialogWithID:message.cParamDialogID];
+        QBChatDialog *chatDialogToUpdate = [self.dialogsMemoryStorage chatDialogWithID:message.cParamDialogID];
         
         chatDialogToUpdate.name = message.cParamDialogRoomName;
         
         if ([self.multicastDelegate respondsToSelector:@selector(chatServiceDidReceiveNotificationMessage:updateDialog:)]) {
-            [self.multicastDelegate chatServiceDidReceiveNotificationMessage:message
-                                                                updateDialog:chatDialogToUpdate];
+            [self.multicastDelegate chatServiceDidReceiveNotificationMessage:message updateDialog:chatDialogToUpdate];
         }
     }
+}
+
+- (void)addDialog:(QBChatDialog *)dialog {
+
 }
 
 #pragma mark - Dialog history
@@ -292,9 +299,7 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 30;
                                               andJoin:YES];
         
         if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddChatDialogs:)]) {
-            
-            [weakSelf.multicastDelegate chatService:weakSelf
-                                  didAddChatDialogs:dialogObjects];
+            [weakSelf.multicastDelegate chatService:weakSelf didAddChatDialogs:dialogObjects];
         }
         
         if (completion) {
@@ -338,6 +343,11 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 30;
              
              [weakSelf.dialogsMemoryStorage addChatDialog:createdDialog
                                                   andJoin:YES];
+             
+             //Notify about create new dialog
+             if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddChatDialog:)]) {
+                 [weakSelf.multicastDelegate chatService:weakSelf didAddChatDialog:createdDialog];
+             }
              
              [weakSelf sendNotificationWithType:QMMessageNotificationTypeCreateGroupDialog
                                            text:@"created new chat"
