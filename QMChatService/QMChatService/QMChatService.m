@@ -281,7 +281,7 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 45;
 }
 
 - (void)addDialog:(QBChatDialog *)dialog {
-
+    
 }
 
 #pragma mark - Dialog history
@@ -295,8 +295,7 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 45;
                                          NSArray *dialogObjects,
                                          NSSet *dialogsUsersIDs) {
         
-        [weakSelf.dialogsMemoryStorage addChatDialogs:dialogObjects
-                                              andJoin:YES];
+        [weakSelf.dialogsMemoryStorage addChatDialogs:dialogObjects andJoin:YES];
         
         if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddChatDialogs:)]) {
             [weakSelf.multicastDelegate chatService:weakSelf didAddChatDialogs:dialogObjects];
@@ -315,15 +314,16 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 45;
 }
 
 - (void)fetchMessageWithDialogID:(NSString *)chatDialogId
-                        complete:(void(^)(QBResponse *response, NSArray *messages))completion {
+                        complete:(void(^)(QBResponse *response,
+                                          NSArray *messages))completion {
     
 }
 
 #pragma mark - Create Private/Group dialog
 
-- (void)createPrivateChatDialogIfNeededWithOpponent:(QBUUser *)opponent
-                                         completion:(void(^)(QBResponse *response,
-                                                             QBChatDialog *createdDialo))completion {
+- (void)createPrivateChatDialogWithOpponent:(QBUUser *)opponent
+                                 completion:(void(^)(QBResponse *response,
+                                                     QBChatDialog *createdDialo))completion {
     
     QBChatDialog *dialog = [self.dialogsMemoryStorage privateChatDialogWithOpponentID:opponent.ID];
     
@@ -338,12 +338,11 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 45;
         __weak __typeof(self)weakSelf = self;
         
         [QBRequest createDialog:chatDialog
-                   successBlock:^(QBResponse *response, QBChatDialog *createdDialog)
+                   successBlock:^(QBResponse *response,
+                                  QBChatDialog *createdDialog)
          {
-             
              [weakSelf.dialogsMemoryStorage addChatDialog:createdDialog
                                                   andJoin:YES];
-             
              //Notify about create new dialog
              if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddChatDialog:)]) {
                  [weakSelf.multicastDelegate chatService:weakSelf didAddChatDialog:createdDialog];

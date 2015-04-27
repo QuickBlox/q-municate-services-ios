@@ -28,7 +28,6 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  *
  *  @return Array of QBUUser instances
  */
-
 - (NSArray *)usersFromContactList;
 
 /**
@@ -36,7 +35,6 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  *
  *  @return Sorted by fullName array of QBUUser instances
  */
-
 - (NSArray *)usersFromContactListSortedByFullName;
 
 /**
@@ -137,4 +135,5 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 - (void)contactListService:(QMContactListService *)contactListService didAddUsers:(NSArray *)users;
 - (void)contactListService:(QMContactListService *)contactListService didUpdateUser:(QBUUser *)user;
 - (void)contactListService:(QMContactListService *)contactListService didFinishRetriveUsersForChatDialog:(QBChatDialog *)dialog;
+
 @end

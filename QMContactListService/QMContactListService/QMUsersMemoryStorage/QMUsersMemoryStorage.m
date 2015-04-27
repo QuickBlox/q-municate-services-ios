@@ -28,20 +28,24 @@
 
 - (void)addUser:(QBUUser *)user {
     
-    NSString *key = [NSString stringWithFormat:@"%lu", (unsigned long)user.ID];
+    NSString *key = [NSString stringWithFormat:@"%tu", user.ID];
     self.users[key] = user;
 }
 
 - (void)addUsers:(NSArray *)users {
     
-    [users enumerateObjectsUsingBlock:^(QBUUser *obj, NSUInteger idx, BOOL *stop) {
-        [self addUser:obj];
+    [users enumerateObjectsUsingBlock:^(QBUUser *user,
+                                        NSUInteger idx,
+                                        BOOL *stop) {
+        [self addUser:user];
     }];
 }
+
 - (QBUUser *)userWithID:(NSUInteger)userID {
     
-    NSString *stingID = [NSString stringWithFormat:@"%lu", (unsigned long)userID];
+    NSString *stingID = [NSString stringWithFormat:@"%tu", userID];
     QBUUser *user = self.users[stingID];
+    
     return user;
 }
 

@@ -46,7 +46,7 @@
     __weak __typeof(self)weakSelf = self;
     
     dispatch_queue_t queue = dispatch_queue_create("com.qm.loadCacheQueue", DISPATCH_QUEUE_SERIAL);
-    
+    //Step 1. Load contact list (Roster)
     dispatch_async(queue, ^{
         
         if ([self.cahceDelegate respondsToSelector:@selector(cachedContactListItems:)]) {
@@ -60,10 +60,9 @@
             }];
             
             dispatch_semaphore_wait(sem, DISPATCH_TIME_FOREVER);
-            
         }
     });
-    
+    //Step 2. Load users for conatc list
     dispatch_async(queue, ^{
         
         if ([self.cahceDelegate respondsToSelector:@selector(cachedUsers:)]) {
@@ -74,24 +73,21 @@
                 
                 [weakSelf.usersMemoryStorage addUsers:collection];
                 dispatch_semaphore_signal(sem);
-                
             }];
-            dispatch_semaphore_wait(sem, DISPATCH_TIME_FOREVER);
             
+            dispatch_semaphore_wait(sem, DISPATCH_TIME_FOREVER);
         }
     });
-    
+    //Step 3. Notify about load cache
     dispatch_async(queue, ^{
         
-        if ([self.multicastDelegate respondsToSelector:@selector(contactListServiceDidLoadCache)]) {
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if ([self.multicastDelegate respondsToSelector:@selector(contactListServiceDidLoadCache)]) {
                 [self.multicastDelegate contactListServiceDidLoadCache];
-            });
-        }
+            }
+        });
     });
 }
-
 
 - (void)willStart {
     [super willStart];
@@ -198,7 +194,9 @@
 }
 
 - (void)retrieveUsersWithIDs:(NSArray *)ids
-                  completion:(void(^)(QBResponse *responce, QBGeneralResponsePage *page, NSArray * users))completion {
+                  completion:(void(^)(QBResponse *responce,
+                                      QBGeneralResponsePage *page,
+                                      NSArray * users))completion {
     
     NSSet *toRetrive = [self checkExistIds:ids].copy;
     

@@ -156,6 +156,7 @@ static QMChatCache *_chatCacheInstance = nil;
             [CDDialog QM_findFirstWithPredicate:IS(@"id", dialog.ID)
                                       inContext:context];
             if (cdChatDialog) {
+                
                 [toUpdate addObject:dialog];
             }
             else {

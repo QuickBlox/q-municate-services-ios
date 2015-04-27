@@ -69,20 +69,26 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 
 - (void)createGroupChatDialogWithName:(NSString *)name
                             occupants:(NSArray *)occupants
-                           completion:(void(^)(QBResponse *response, QBChatDialog *createdDialog))completion;
+                           completion:(void(^)(QBResponse *response,
+                                               QBChatDialog *createdDialog))completion;
 
-- (void)createPrivateChatDialogIfNeededWithOpponent:(QBUUser *)opponent
-                                         completion:(void(^)(QBResponse *response, QBChatDialog *createdDialog))completion;
+- (void)createPrivateChatDialogWithOpponent:(QBUUser *)opponent
+                                 completion:(void(^)(QBResponse *response,
+                                                     QBChatDialog *createdDialog))completion;
 
 - (void)changeChatName:(NSString *)dialogName
          forChatDialog:(QBChatDialog *)chatDialog
-            completion:(void(^)(QBResponse *response, QBChatDialog *updatedDialog))completion;
+            completion:(void(^)(QBResponse *response,
+                                QBChatDialog *updatedDialog))completion;
 
 - (void)joinOccupantsWithIDs:(NSArray *)ids
                 toChatDialog:(QBChatDialog *)chatDialog
-                  completion:(void(^)(QBResponse *response, QBChatDialog *updatedDialog))completion;
+                  completion:(void(^)(QBResponse *response,
+                                      QBChatDialog *updatedDialog))completion;
 
-- (void)fetchAllDialogs:(void(^)(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs))completion;
+- (void)fetchAllDialogs:(void(^)(QBResponse *response,
+                                 NSArray *dialogObjects,
+                                 NSSet *dialogsUsersIDs))completion;
 
 - (void)fetchMessageWithDialogID:(NSString *)chatDialogId
                         complete:(void(^)(QBResponse *response, NSArray *messages))completion;
