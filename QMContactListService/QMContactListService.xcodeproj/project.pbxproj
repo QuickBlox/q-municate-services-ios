@@ -10,6 +10,7 @@
 		5547E6231A24CB490051F7DF /* QMContactListMemoryStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 5547E6221A24CB490051F7DF /* QMContactListMemoryStorage.m */; };
 		55A364CF1A25E41B00C792C0 /* QMUsersMemoryStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 55A364CE1A25E41B00C792C0 /* QMUsersMemoryStorage.m */; };
 		55B2F0B61A091C38008C2272 /* QMContactListService.m in Sources */ = {isa = PBXBuildFile; fileRef = 55B2F0B51A091C38008C2272 /* QMContactListService.m */; };
+		FB6FE6461AEE74E4002E3F8A /* QBUUser+CustomData.m in Sources */ = {isa = PBXBuildFile; fileRef = FB6FE6451AEE74E4002E3F8A /* QBUUser+CustomData.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,6 +22,8 @@
 		55B220201A2C0C9E00668086 /* libQMContactListService.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libQMContactListService.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		55B2F0B31A091C38008C2272 /* QMContactListService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QMContactListService.h; sourceTree = "<group>"; };
 		55B2F0B51A091C38008C2272 /* QMContactListService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QMContactListService.m; sourceTree = "<group>"; };
+		FB6FE6441AEE74E4002E3F8A /* QBUUser+CustomData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QBUUser+CustomData.h"; sourceTree = "<group>"; };
+		FB6FE6451AEE74E4002E3F8A /* QBUUser+CustomData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "QBUUser+CustomData.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +66,7 @@
 		55B2F0B21A091C38008C2272 /* QMContactListService */ = {
 			isa = PBXGroup;
 			children = (
+				FB6FE6431AEE74C8002E3F8A /* Categories */,
 				55B2F0B31A091C38008C2272 /* QMContactListService.h */,
 				55B2F0B51A091C38008C2272 /* QMContactListService.m */,
 				55A364CC1A25E3F100C792C0 /* QMUsersMemoryStorage */,
@@ -78,6 +82,15 @@
 				55A621211A0BE307001BA470 /* Support */,
 				55B220201A2C0C9E00668086 /* libQMContactListService.a */,
 			);
+			sourceTree = "<group>";
+		};
+		FB6FE6431AEE74C8002E3F8A /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				FB6FE6441AEE74E4002E3F8A /* QBUUser+CustomData.h */,
+				FB6FE6451AEE74E4002E3F8A /* QBUUser+CustomData.m */,
+			);
+			path = Categories;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -136,6 +149,7 @@
 			files = (
 				55B2F0B61A091C38008C2272 /* QMContactListService.m in Sources */,
 				5547E6231A24CB490051F7DF /* QMContactListMemoryStorage.m in Sources */,
+				FB6FE6461AEE74E4002E3F8A /* QBUUser+CustomData.m in Sources */,
 				55A364CF1A25E41B00C792C0 /* QMUsersMemoryStorage.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

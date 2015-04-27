@@ -10,6 +10,7 @@
 #import "QMBaseService.h"
 #import "QMContactListMemoryStorage.h"
 #import "QMUsersMemoryStorage.h"
+#import "QBUUser+CustomData.h"
 
 @class QBGeneralResponsePage;
 
