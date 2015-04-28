@@ -66,9 +66,9 @@
 		55B2F0B21A091C38008C2272 /* QMContactListService */ = {
 			isa = PBXGroup;
 			children = (
-				FB6FE6431AEE74C8002E3F8A /* Categories */,
 				55B2F0B31A091C38008C2272 /* QMContactListService.h */,
 				55B2F0B51A091C38008C2272 /* QMContactListService.m */,
+				FB6FE6431AEE74C8002E3F8A /* Categories */,
 				55A364CC1A25E3F100C792C0 /* QMUsersMemoryStorage */,
 				5547E6201A24CB0C0051F7DF /* QMContactListMemoryStorage */,
 			);

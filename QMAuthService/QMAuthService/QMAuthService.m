@@ -18,6 +18,11 @@
 
 @implementation QMAuthService
 
+- (void)dealloc {
+    
+    NSLog(@"%@ - %@",  NSStringFromSelector(_cmd), self);
+}
+
 #pragma  mark Add / Remove multicast delegate
 
 - (void)addDelegate:(id <QMAuthServiceDelegate>)delegate {

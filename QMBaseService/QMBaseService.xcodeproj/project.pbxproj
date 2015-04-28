@@ -18,6 +18,7 @@
 		55B2F11C1A091CE9008C2272 /* QMBaseService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMBaseService.h; sourceTree = "<group>"; };
 		55B2F11D1A091CE9008C2272 /* QMBaseService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMBaseService.m; sourceTree = "<group>"; };
 		FBBBDBE41AEF98DA00841288 /* QMMemoryStorageProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMMemoryStorageProtocol.h; sourceTree = "<group>"; };
+		FBBBDBEF1AEF9DA300841288 /* QMUserProfileProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMUserProfileProtocol.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +55,7 @@
 			isa = PBXGroup;
 			children = (
 				55B2F11C1A091CE9008C2272 /* QMBaseService.h */,
+				FBBBDBEF1AEF9DA300841288 /* QMUserProfileProtocol.h */,
 				55B2F11D1A091CE9008C2272 /* QMBaseService.m */,
 				FBBBDBE41AEF98DA00841288 /* QMMemoryStorageProtocol.h */,
 			);

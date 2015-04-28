@@ -25,6 +25,11 @@ static QMChatCache *_chatCacheInstance = nil;
 
 + (void)setupDBWithStoreNamed:(NSString *)storeName {
     
+    if (_chatCacheInstance) {
+        
+        
+    }
+    
     NSManagedObjectModel *model =
     [NSManagedObjectModel QM_newModelNamed:@"QMChatServiceModel.momd"
                              inBundleNamed:@"QMChatCacheModel.bundle"];

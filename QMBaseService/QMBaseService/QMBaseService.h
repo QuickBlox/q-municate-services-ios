@@ -8,14 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "QMMemoryStorageProtocol.h"
+#import "QMUserProfileProtocol.h"
 
-@protocol QMUserProfileProtocol <NSObject>
-@required
-- (QBUUser *)currentUser;
-- (BOOL)userIsAutorized;
-@end
-
-@interface QMBaseService : NSObject
+@interface QMBaseService : NSObject <QMMemoryStorageProtocol>
 
 @property (weak, nonatomic, readonly) id <QMUserProfileProtocol> userProfileDataSource;
 

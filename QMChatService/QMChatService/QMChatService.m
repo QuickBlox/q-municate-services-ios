@@ -31,9 +31,10 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 45;
 @implementation QMChatService
 
 - (void)dealloc {
-    self.dialogsMemoryStorage = nil;
     
-    NSAssert(![QBChat.instance isLoggedIn], @"Need update this case");
+    NSLog(@"%@ - %@",  NSStringFromSelector(_cmd), self);
+    
+    self.dialogsMemoryStorage = nil;
     [self.presenceTimer invalidate];
     [QBChat.instance removeDelegate:self];
 }
@@ -614,6 +615,14 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 45;
     [self sendMessage:message
              toDialog:dialog
            completion:completion];
+}
+
+#pragma mark - QMMemoryStorageProtocol
+
+- (void)free {
+    
+    [self.messagesMemoryStorage free];
+    [self.dialogsMemoryStorage free];
 }
 
 @end

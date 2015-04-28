@@ -23,6 +23,7 @@
 @implementation QMContactListService
 
 - (void)dealloc {
+    
     NSLog(@"%@ - %@",  NSStringFromSelector(_cmd), self);
     [[QBChat instance] removeDelegate:self];
     self.contactListMemoryStorage = nil;
@@ -399,6 +400,14 @@
     NSArray *friends = [self.usersMemoryStorage usersWithIDs:friendsIDS];
     
     return friends;
+}
+
+#pragma QMMemoryStorageProtocol
+
+- (void)free {
+    
+    [self.contactListMemoryStorage free];
+    [self.usersMemoryStorage free];
 }
 
 @end

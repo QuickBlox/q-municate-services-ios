@@ -110,4 +110,10 @@ NSString *const kQBResponceErrorsKey = @"errors";
     return YES;
 }
 
+#pragma mark - QMMemoryStorageProtocol
+
+- (void)free {
+    
+}
+
 @end
