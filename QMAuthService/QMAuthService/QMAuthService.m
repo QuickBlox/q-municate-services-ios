@@ -10,17 +10,44 @@
 
 @interface QMAuthService()
 
+@property (strong, nonatomic) QBMulticastDelegate <QMAuthServiceDelegate> *multicastDelegate;
+
 @property (assign, nonatomic) BOOL isAuthorized;
 
 @end
 
 @implementation QMAuthService
 
+#pragma  mark Add / Remove multicast delegate
+
+- (void)addDelegate:(id <QMAuthServiceDelegate>)delegate {
+    
+    [self.multicastDelegate addDelegate:delegate];
+}
+
+- (void)removeDelegate:(id <QMAuthServiceDelegate>)delegate {
+    
+    [self.multicastDelegate addDelegate:delegate];
+}
+
+#pragma mark - Will Start
+
+- (void)willStart {
+    [super willStart];
+    
+    self.multicastDelegate = (id<QMAuthServiceDelegate>)[[QBMulticastDelegate alloc] init];
+}
+
 - (QBRequest *)logOut:(void(^)(QBResponse *response))completion {
     
     __weak __typeof(self)weakSelf = self;
+    
     QBRequest *request =
     [QBRequest logOutWithSuccessBlock:^(QBResponse *response) {
+        //Notify subscribes abot logout
+        if ([weakSelf.multicastDelegate respondsToSelector:@selector(authServiceDidLogOut)]) {
+            [weakSelf.multicastDelegate authServiceDidLogOut];
+        }
         
         weakSelf.isAuthorized = NO;
         
@@ -39,15 +66,17 @@
 }
 
 - (QBRequest *)signUpAndLoginWithUser:(QBUUser *)user
-                           completion:(void(^)(QBResponse *response, QBUUser *userProfile))completion {
+                           completion:(void(^)(QBResponse *response,
+                                               QBUUser *userProfile))completion {
     
     __weak __typeof(self)weakSelf = self;
     
     QBRequest *request =
-    
+    //1. Signup
     [QBRequest signUp:user
-         successBlock:^(QBResponse *response, QBUUser *newUser) {
-             
+         successBlock:^(QBResponse *response,
+                        QBUUser *newUser) {
+             //2. Login
              [weakSelf logInWithUser:user
                           completion:^(QBResponse *logInResponse,
                                        QBUUser *userProfile) {
@@ -70,7 +99,8 @@
 #pragma mark - Private methods
 
 - (QBRequest *)logInWithUser:(QBUUser *)user
-                  completion:(void(^)(QBResponse *response, QBUUser *userProfile))completion {
+                  completion:(void(^)(QBResponse *response,
+                                      QBUUser *userProfile))completion {
     
     __weak __typeof(self)weakSelf = self;
     //Common error block
@@ -80,7 +110,8 @@
         completion(response, nil);
     };
     
-    void (^successBlock)(id, id) = ^(QBResponse *response, QBUUser *userProfile){
+    void (^successBlock)(id, id) = ^(QBResponse *response,
+                                     QBUUser *userProfile){
         
         weakSelf.isAuthorized = YES;
         completion(response, userProfile);
@@ -111,8 +142,8 @@
 #pragma mark - Social auth
 
 - (QBRequest *)logInWithFacebookSessionToken:(NSString *)sessionToken
-                                  completion:(void(^)(QBResponse *response, QBUUser *userProfile))completion {
-    
+                                  completion:(void(^)(QBResponse *response,
+                                                      QBUUser *userProfile))completion {
     __weak __typeof(self)weakSelf = self;
     
     QBRequest *request =
@@ -123,7 +154,7 @@
                                          QBUUser *tUser)
      {
          weakSelf.isAuthorized = YES;
-         
+         //set password
          tUser.password = [QBBaseModule sharedModule].token;
          completion(response, tUser);
          

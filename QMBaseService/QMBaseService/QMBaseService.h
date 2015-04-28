@@ -19,9 +19,19 @@
 @property (weak, nonatomic, readonly) id <QMUserProfileProtocol> userProfileDataSource;
 
 - (id)init __attribute__((unavailable("init is not a supported initializer for this class.")));
+
 - (instancetype)initWithUserProfileDataSource:(id<QMUserProfileProtocol>)userProfileDataSource;
 
+/**
+ *  Called when the servise is will begin start
+ */
 - (void)willStart;
+
+/**
+ *  Handle QBResponce
+ *
+ *  @param responce QBResponse instanse
+ */
 - (void)showMessageForQBResponce:(QBResponse *)responce;
 
 @end
