@@ -65,9 +65,9 @@
     return [messages copy];
 }
 
-#pragma mark - Clean up
+#pragma mark - QMMemeoryStorageProtocol
 
-- (void)cleanUp {
+- (void)free {
     
     [self.datasources removeAllObjects];
 }

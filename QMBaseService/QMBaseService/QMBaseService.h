@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "QMMemoryStorageProtocol.h"
 
 @protocol QMUserProfileProtocol <NSObject>
 @required

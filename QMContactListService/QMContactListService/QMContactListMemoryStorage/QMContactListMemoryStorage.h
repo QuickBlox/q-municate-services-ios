@@ -7,10 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "QMMemoryStorageProtocol.h"
+
 /**
  *  Contact list memory storage
  */
-@interface QMContactListMemoryStorage : NSObject
+@interface QMContactListMemoryStorage : NSObject <QMMemoryStorageProtocol>
 
 /**
  *  Update memory storage with QBContactList instance
@@ -18,7 +20,6 @@
  *  @param contactList QBContactList instance
  *
  */
-
 - (void)updateWithContactList:(QBContactList *)contactList;
 - (void)updateWithContactListItems:(NSArray *)contactListItems;
 

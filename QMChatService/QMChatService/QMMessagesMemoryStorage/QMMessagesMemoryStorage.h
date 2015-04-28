@@ -7,8 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "QMMemoryStorageProtocol.h"
 
-@interface QMMessagesMemoryStorage : NSObject
+@interface QMMessagesMemoryStorage : NSObject <QMMemoryStorageProtocol>
 
 /**
  *  Add message to memory storage
@@ -37,9 +38,5 @@
  *  @return return array of QBChatMessage instances
  */
 - (NSArray *)messagesWithDialogID:(NSString *)dialogID;
-
-#pragma mark - Clean up
-
-- (void)cleanUp;
 
 @end

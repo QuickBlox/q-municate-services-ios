@@ -8,8 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import <Quickblox/Quickblox.h>
+#import "QMMemoryStorageProtocol.h"
 
-@interface QMDialogsMemoryStorage : NSObject
+@interface QMDialogsMemoryStorage : NSObject <QMMemoryStorageProtocol>
 
 - (void)addChatDialog:(QBChatDialog *)chatDialog
               andJoin:(BOOL)join;

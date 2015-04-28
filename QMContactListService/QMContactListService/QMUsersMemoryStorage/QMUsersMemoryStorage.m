@@ -91,4 +91,11 @@
     return [self.unsorterd sortedArrayUsingDescriptors:@[sort]];
 }
 
+#pragma mark - QMMemoryStorageProtocol
+
+- (void)free {
+    
+    [self.users removeAllObjects];
+}
+
 @end

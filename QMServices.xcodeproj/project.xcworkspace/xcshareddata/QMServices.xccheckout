@@ -16,6 +16,8 @@
 		<string>https://github.com/specta/expecta.git</string>
 		<key>958932E9D08E4465709D54DB1E7CECF23B0F442E</key>
 		<string>https://github.com/magicalpanda/MagicalRecord.git</string>
+		<key>A670EF64B516360FDFADDE04B3B3446E684984BD</key>
+		<string>github.com:QuickBlox/q-municate-ios.git</string>
 		<key>CD485F9DBB514108FD41E7D5D6331AFE39B74C24</key>
 		<string>https://bitbucket.org/quickblox/qmunicate-ios.git</string>
 		<key>D160C3FE7B115E6635EB21EBE93000EBA4B81BC8</key>
@@ -31,8 +33,10 @@
 		<string>../../../qmunicate-services-ios/Submodules/MagicalRecord/Tests/Vendor/Expecta</string>
 		<key>958932E9D08E4465709D54DB1E7CECF23B0F442E</key>
 		<string>../../../qmunicate-services-ios/Submodules/MagicalRecord</string>
-		<key>CD485F9DBB514108FD41E7D5D6331AFE39B74C24</key>
+		<key>A670EF64B516360FDFADDE04B3B3446E684984BD</key>
 		<string>../../../..</string>
+		<key>CD485F9DBB514108FD41E7D5D6331AFE39B74C24</key>
+		<string>../../..</string>
 		<key>D160C3FE7B115E6635EB21EBE93000EBA4B81BC8</key>
 		<string>../..</string>
 	</dict>
@@ -48,6 +52,14 @@
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>CD485F9DBB514108FD41E7D5D6331AFE39B74C24</string>
+			<key>IDESourceControlWCCName</key>
+			<string></string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
 			<string>021121D9121EF5076592E191A1310C26B12E0377</string>
 			<key>IDESourceControlWCCName</key>
 			<string></string>
@@ -56,7 +68,7 @@
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>CD485F9DBB514108FD41E7D5D6331AFE39B74C24</string>
+			<string>A670EF64B516360FDFADDE04B3B3446E684984BD</string>
 			<key>IDESourceControlWCCName</key>
 			<string>..</string>
 		</dict>

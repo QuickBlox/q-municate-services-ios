@@ -33,11 +33,15 @@
     
     [self.contactList removeAllObjects];
     
-    [contactList.contacts enumerateObjectsUsingBlock:^(QBContactListItem *obj, NSUInteger idx, BOOL *stop) {
+    [contactList.contacts enumerateObjectsUsingBlock:^(QBContactListItem *obj,
+                                                       NSUInteger idx,
+                                                       BOOL *stop) {
         [self addContactListItem:obj];
     }];
     
-    [contactList.pendingApproval enumerateObjectsUsingBlock:^(QBContactListItem *obj, NSUInteger idx, BOOL *stop) {
+    [contactList.pendingApproval enumerateObjectsUsingBlock:^(QBContactListItem *obj,
+                                                              NSUInteger idx,
+                                                              BOOL *stop) {
         [self addContactListItem:obj];
     }];
 }
@@ -45,7 +49,9 @@
 - (void)updateWithContactListItems:(NSArray *)contactListItems {
     
     [self.contactList removeAllObjects];
-    [contactListItems enumerateObjectsUsingBlock:^(QBContactListItem *obj, NSUInteger idx, BOOL *stop) {
+    [contactListItems enumerateObjectsUsingBlock:^(QBContactListItem *obj,
+                                                   NSUInteger idx,
+                                                   BOOL *stop) {
         [self addContactListItem:obj];
     }];
 }
@@ -68,6 +74,7 @@
 #pragma mark - contact request
 
 - (void)addContactRequestFromUserID:(NSUInteger)userID {
+    
     [self.contactRequestsUsersIDs addObject:@(userID)];
 }
 
@@ -79,6 +86,14 @@
 - (void)confirmOrRejectContactRequestForUserID:(NSUInteger)userID {
     
     [self.contactRequestsUsersIDs removeObject:@(userID)];
+}
+
+#pragma mark - QMMemoryStorageProtocol
+
+- (void)free {
+    
+    [self.contactList removeAllObjects];
+    [self.contactRequestsUsersIDs removeAllObjects];
 }
 
 @end

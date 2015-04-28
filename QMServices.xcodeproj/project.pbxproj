@@ -34,13 +34,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		55013A3D1A1F63920030C134 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 55C276A91A09162F005A0C38 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 55013A301A1F63910030C134;
-			remoteInfo = QMServices;
-		};
 		55013A711A1F64F40030C134 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5590F26B1A0B8C0500C5044F /* QMChatCache.xcodeproj */;
@@ -172,7 +165,6 @@
 		5590F2A31A0B8D2900C5044F /* QMContactListCache.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMContactListCache.xcodeproj; path = QMContactListCache/QMContactListCache.xcodeproj; sourceTree = "<group>"; };
 		5590F2E01A0BA11900C5044F /* QMBaseService.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMBaseService.xcodeproj; path = QMBaseService/QMBaseService.xcodeproj; sourceTree = "<group>"; };
 		55A365301A2744D300C792C0 /* libQMServices.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libQMServices.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		55A365311A2744D300C792C0 /* QMServicesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QMServicesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		55C276C71A0916BF005A0C38 /* QMChatService.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMChatService.xcodeproj; path = QMChatService/QMChatService.xcodeproj; sourceTree = "<group>"; };
 		55C276DB1A091739005A0C38 /* QMContactListService.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMContactListService.xcodeproj; path = QMContactListService/QMContactListService.xcodeproj; sourceTree = "<group>"; };
 		55C276E51A0917AF005A0C38 /* QMAuthService.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMAuthService.xcodeproj; path = QMAuthService/QMAuthService.xcodeproj; sourceTree = "<group>"; };
@@ -191,13 +183,6 @@
 				55A3651D1A2744A800C792C0 /* libQMContactListService.a in Frameworks */,
 				55A3651E1A2744A800C792C0 /* libQMDBStorage.a in Frameworks */,
 				55013AEC1A1F72350030C134 /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		55013A381A1F63920030C134 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -285,7 +270,6 @@
 				5590F28A1A0B8C5200C5044F /* Services */,
 				55013AED1A1F72430030C134 /* Frameworks */,
 				55A365301A2744D300C792C0 /* libQMServices.a */,
-				55A365311A2744D300C792C0 /* QMServicesTests.xctest */,
 			);
 			sourceTree = "<group>";
 		};
@@ -350,24 +334,6 @@
 			productReference = 55A365301A2744D300C792C0 /* libQMServices.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		55013A3A1A1F63920030C134 /* QMServicesTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 55013A501A1F63920030C134 /* Build configuration list for PBXNativeTarget "QMServicesTests" */;
-			buildPhases = (
-				55013A371A1F63920030C134 /* Sources */,
-				55013A381A1F63920030C134 /* Frameworks */,
-				55013A391A1F63920030C134 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				55013A3E1A1F63920030C134 /* PBXTargetDependency */,
-			);
-			name = QMServicesTests;
-			productName = QMServicesTests;
-			productReference = 55A365311A2744D300C792C0 /* QMServicesTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -377,9 +343,6 @@
 				LastUpgradeCheck = 0620;
 				TargetAttributes = {
 					55013A301A1F63910030C134 = {
-						CreatedOnToolsVersion = 6.1;
-					};
-					55013A3A1A1F63920030C134 = {
 						CreatedOnToolsVersion = 6.1;
 					};
 					55013AFC1A1F754B0030C134 = {
@@ -431,7 +394,6 @@
 			targets = (
 				55013A301A1F63910030C134 /* QMServices */,
 				55013AFC1A1F754B0030C134 /* Base */,
-				55013A3A1A1F63920030C134 /* QMServicesTests */,
 			);
 		};
 /* End PBXProject section */
@@ -502,16 +464,6 @@
 		};
 /* End PBXReferenceProxy section */
 
-/* Begin PBXResourcesBuildPhase section */
-		55013A391A1F63920030C134 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXResourcesBuildPhase section */
-
 /* Begin PBXShellScriptBuildPhase section */
 		55AA62E91A232E8400D73089 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -537,21 +489,9 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		55013A371A1F63920030C134 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		55013A3E1A1F63920030C134 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 55013A301A1F63910030C134 /* QMServices */;
-			targetProxy = 55013A3D1A1F63920030C134 /* PBXContainerItemProxy */;
-		};
 		55013A721A1F64F40030C134 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = QMChatCache;
@@ -685,94 +625,6 @@
 			};
 			name = Release;
 		};
-		55013A441A1F63920030C134 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = QMServicesTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = YES;
-				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-			};
-			name = Debug;
-		};
-		55013A451A1F63920030C134 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = YES;
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = QMServicesTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
 		55013AFF1A1F754B0030C134 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -810,15 +662,6 @@
 			buildConfigurations = (
 				55013A421A1F63920030C134 /* Debug */,
 				55013A431A1F63920030C134 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		55013A501A1F63920030C134 /* Build configuration list for PBXNativeTarget "QMServicesTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				55013A441A1F63920030C134 /* Debug */,
-				55013A451A1F63920030C134 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -92,9 +92,11 @@
     for (QBChatDialog *chatDialog in self.dialogs.allValues) {
         
         if (chatDialog.chatRoom.isJoined) {
+            
             [chatDialog .chatRoom leaveRoom];
         }
         else {
+            
             NSLog(@"Check this case");
         }
     }
@@ -155,7 +157,6 @@
        withDialogID:(NSString *)dialogID {
     
     self.messages[dialogID] = messages.mutableCopy;
-//    [self.multicastDelegate chatServiceDidMessagesHistoryUpdated];
 }
 
 - (void)addMessageToHistory:(QBChatMessage *)message
@@ -164,8 +165,6 @@
     NSAssert(message.cParamDialogID == dialogID, @"Check this case");
     NSMutableArray *history = self.messages[dialogID];
     [history addObject:message];
-    
-//    [self.multicastDelegate chatServiceDidMessagesHistoryUpdated];
 }
 
 - (NSArray *)messageHistoryWithDialogID:(NSString *)dialogID {
@@ -194,7 +193,16 @@
     if (dialog.type == QBChatDialogTypePrivate) {
         
     }
+    
     return 0;
+}
+
+#pragma mark - QMMemoryStorageProtocol
+
+- (void)free {
+    
+    [self.dialogs removeAllObjects];
+    [self.messages removeAllObjects];
 }
 
 @end

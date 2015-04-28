@@ -7,8 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "QMMemoryStorageProtocol.h"
 
-@interface QMUsersMemoryStorage : NSObject
+@interface QMUsersMemoryStorage : NSObject <QMMemoryStorageProtocol>
 
 - (void)addUser:(QBUUser *)user;
 - (void)addUsers:(NSArray *)users;
