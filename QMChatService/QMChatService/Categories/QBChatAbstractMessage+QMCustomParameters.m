@@ -10,7 +10,7 @@
 
 /*Message keys*/
 NSString const *kQMCustomParameterSaveToHistory = @"save_to_history";
-NSString const *kQMCustomParameterNotificationType = @"notification_type";
+NSString const *kQMCustomParameterMessageType = @"notification_type";
 NSString const *kQMCustomParameterChatMessageID = @"chat_message_id";
 NSString const *kQMCustomParameterDateSent = @"date_sent";
 NSString const *kQMCustomParameterChatMessageDeliveryStatus = @"message_delivery_status_read";
@@ -33,7 +33,7 @@ NSString const *kQMCustomParameterDialogDeletedID = @"deleted_id";
 
 /*Message params*/
 @dynamic cParamSaveToHistory;
-@dynamic cParamNotificationType;
+@dynamic cParamMessageType;
 @dynamic cParamChatMessageID;
 @dynamic cParamDateSent;
 @dynamic cParamMessageDeliveryStatus;
@@ -174,13 +174,13 @@ NSString const *kQMCustomParameterDialogDeletedID = @"deleted_id";
 
 #pragma mark - cParamNotificationType
 
-- (void)setCParamNotificationType:(QMMessageNotificationType)cParamNotificationType {
+- (void)setCParamMessageType:(QMMessageType)cParamMessageType {
     
-    self.context[kQMCustomParameterNotificationType] = @(cParamNotificationType);
+    self.context[kQMCustomParameterMessageType] = @(cParamMessageType);
 }
 
-- (QMMessageNotificationType)cParamNotificationType {
-    return [self.context[kQMCustomParameterNotificationType] integerValue];
+- (QMMessageType)cParamMessageType {
+    return [self.context[kQMCustomParameterMessageType] integerValue];
 }
 
 #pragma mark - cParamMessageDeliveryStatus

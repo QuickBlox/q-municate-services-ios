@@ -7,23 +7,12 @@
 //
 
 #import <Quickblox/Quickblox.h>
-
-typedef NS_ENUM(NSUInteger, QMMessageNotificationType) {
-    QMMessageNotificationTypeNone,
-    QMMessageNotificationTypeCreateGroupDialog,
-    QMMessageNotificationTypeUpdateGroupDialog,
-    QMMessageNotificationTypeDeliveryMessage,
-    
-    QMMessageNotificationTypeSendContactRequest,
-    QMMessageNotificationTypeConfirmContactRequest,
-    QMMessageNotificationTypeRejectContactRequest,
-    QMMessageNotificationTypeDeleteContactRequest
-};
+#import "QMChatTypes.h"
 
 @interface QBChatAbstractMessage (QM_CustomParameters)
 
 @property (strong, nonatomic) NSString *cParamSaveToHistory;
-@property (assign, nonatomic) QMMessageNotificationType cParamNotificationType;
+@property (assign, nonatomic) QMMessageType cParamMessageType;
 @property (strong, nonatomic) NSString *cParamChatMessageID;
 @property (strong, nonatomic) NSNumber *cParamDateSent;
 @property (assign, nonatomic) BOOL cParamMessageDeliveryStatus;
@@ -36,6 +25,17 @@ typedef NS_ENUM(NSUInteger, QMMessageNotificationType) {
 @property (strong, nonatomic) NSArray *cParamDialogOccupantsIDs;
 @property (strong, nonatomic) NSNumber *cParamDialogDeletedID;
 
+/**
+ *  Set custom parameters with chat dialogs
+
+ */
 - (void)setCustomParametersWithChatDialog:(QBChatDialog *)chatDialog;
+
+/**
+ *  Convert custom parameters to QBChatDialog
+ *
+ *  @return QBChatDialog instance
+ */
 - (QBChatDialog *)chatDialogFromCustomParameters;
+
 @end

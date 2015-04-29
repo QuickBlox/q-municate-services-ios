@@ -10,6 +10,7 @@
 #import "QMBaseService.h"
 #import "QMDialogsMemoryStorage.h"
 #import "QMMessagesMemoryStorage.h"
+#import "QMChatTypes.h"
 
 @protocol QMChatServiceDelegate;
 @protocol QMChatServiceCacheDelegate;
@@ -66,40 +67,52 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  *  Logout from chat
  */
 - (void)logoutChat;
-
-- (void)createGroupChatDialogWithName:(NSString *)name
-                            occupants:(NSArray *)occupants
-                           completion:(void(^)(QBResponse *response,
-                                               QBChatDialog *createdDialog))completion;
-
+/**
+ *  <#Description#>
+ *
+ *  @param name       <#name description#>
+ *  @param occupants  <#occupants description#>
+ *  @param completion <#completion description#>
+ */
+- (void)createGroupChatDialogWithName:(NSString *)name occupants:(NSArray *)occupants
+                           completion:(void(^)(QBResponse *response, QBChatDialog *createdDialog))completion;
+/**
+ *  <#Description#>
+ *
+ *  @param opponent   <#opponent description#>
+ *  @param completion <#completion description#>
+ */
 - (void)createPrivateChatDialogWithOpponent:(QBUUser *)opponent
-                                 completion:(void(^)(QBResponse *response,
-                                                     QBChatDialog *createdDialog))completion;
+                                 completion:(void(^)(QBResponse *response, QBChatDialog *createdDialog))completion;
+/**
+ *  <#Description#>
+ *
+ *  @param dialogName <#dialogName description#>
+ *  @param chatDialog <#chatDialog description#>
+ *  @param completion <#completion description#>
+ */
+- (void)changeChatName:(NSString *)dialogName forChatDialog:(QBChatDialog *)chatDialog
+            completion:(void(^)(QBResponse *response, QBChatDialog *updatedDialog))completion;
+/**
+ *  <#Description#>
+ *
+ *  @param ids        <#ids description#>
+ *  @param chatDialog <#chatDialog description#>
+ *  @param completion <#completion description#>
+ */
+- (void)joinOccupantsWithIDs:(NSArray *)ids toChatDialog:(QBChatDialog *)chatDialog
+                  completion:(void(^)(QBResponse *response, QBChatDialog *updatedDialog))completion;
+/**
+ *  <#Description#>
+ *
+ *  @param completion <#completion description#>
+ */
+- (void)dialogs:(void(^)(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs))completion;
 
-- (void)changeChatName:(NSString *)dialogName
-         forChatDialog:(QBChatDialog *)chatDialog
-            completion:(void(^)(QBResponse *response,
-                                QBChatDialog *updatedDialog))completion;
+#pragma mark Send message
 
-- (void)joinOccupantsWithIDs:(NSArray *)ids
-                toChatDialog:(QBChatDialog *)chatDialog
-                  completion:(void(^)(QBResponse *response,
-                                      QBChatDialog *updatedDialog))completion;
-
-- (void)fetchAllDialogs:(void(^)(QBResponse *response,
-                                 NSArray *dialogObjects,
-                                 NSSet *dialogsUsersIDs))completion;
-
-- (void)fetchMessageWithDialogID:(NSString *)chatDialogId
-                        complete:(void(^)(QBResponse *response, NSArray *messages))completion;
-
-- (void)sendText:(NSString *)text
-        toDialog:(QBChatDialog *)dialog
-      completion:(void(^)(QBChatMessage *message))completion;
-
-- (void)sendAttachment:(NSString *)attachmentUrl
-              toDialog:(QBChatDialog *)dialog
-            completion:(void(^)(QBChatMessage *message))completion;
+- (void)sendMessage:(QBChatMessage *)message
+           toDialog:(QBChatDialog *)dialog type:(QMMessageType)type save:(BOOL)save completion:(void(^)(NSError *error))completion;
 
 @end
 
