@@ -70,42 +70,30 @@
     return request;
 }
 
-- (QBRequest *)signUpAndLoginWithUser:(QBUUser *)user
-                           completion:(void(^)(QBResponse *response,
-                                               QBUUser *userProfile))completion {
+- (QBRequest *)signUpAndLoginWithUser:(QBUUser *)user completion:(void(^)(QBResponse *response, QBUUser *userProfile))completion {
     
     __weak __typeof(self)weakSelf = self;
     
     QBRequest *request =
     //1. Signup
-    [QBRequest signUp:user
-         successBlock:^(QBResponse *response,
-                        QBUUser *newUser) {
-             //2. Login
-             [weakSelf logInWithUser:user
-                          completion:^(QBResponse *logInResponse,
-                                       QBUUser *userProfile) {
-                              
-                              weakSelf.isAuthorized = YES;
-                              completion(logInResponse, userProfile);
-                          }];
-             
-         } errorBlock:^(QBResponse *response) {
-             
-             [weakSelf showMessageForQBResponce:response];
-             
-             if (completion)
-                 completion(response, nil);
-         }];
+    [QBRequest signUp:user successBlock:^(QBResponse *response, QBUUser *newUser) {
+        //2. Login
+        [weakSelf logInWithUser:user completion:completion];
+        
+    } errorBlock:^(QBResponse *response) {
+        
+        [weakSelf showMessageForQBResponce:response];
+        
+        if (completion)
+            completion(response, nil);
+    }];
     
     return request;
 }
 
 #pragma mark - Private methods
 
-- (QBRequest *)logInWithUser:(QBUUser *)user
-                  completion:(void(^)(QBResponse *response,
-                                      QBUUser *userProfile))completion {
+- (QBRequest *)logInWithUser:(QBUUser *)user completion:(void(^)(QBResponse *response, QBUUser *userProfile))completion {
     
     __weak __typeof(self)weakSelf = self;
     //Common error block
@@ -115,8 +103,7 @@
         completion(response, nil);
     };
     
-    void (^successBlock)(id, id) = ^(QBResponse *response,
-                                     QBUUser *userProfile){
+    void (^successBlock)(id, id) = ^(QBResponse *response, QBUUser *userProfile){
         
         weakSelf.isAuthorized = YES;
         completion(response, userProfile);
@@ -127,18 +114,12 @@
     if (user.email) {
         
         request =
-        [QBRequest logInWithUserEmail:user.email
-                             password:user.password
-                         successBlock:successBlock
-                           errorBlock:errorBlock];
+        [QBRequest logInWithUserEmail:user.email password:user.password successBlock:successBlock errorBlock:errorBlock];
     }
     else if (user.login) {
         
         request =
-        [QBRequest logInWithUserLogin:user.login
-                             password:user.password
-                         successBlock:successBlock
-                           errorBlock:errorBlock];
+        [QBRequest logInWithUserLogin:user.login password:user.password successBlock:successBlock errorBlock:errorBlock];
     }
     
     return request;
@@ -147,16 +128,13 @@
 #pragma mark - Social auth
 
 - (QBRequest *)logInWithFacebookSessionToken:(NSString *)sessionToken
-                                  completion:(void(^)(QBResponse *response,
-                                                      QBUUser *userProfile))completion {
+                                  completion:(void(^)(QBResponse *response, QBUUser *userProfile))completion {
+    
     __weak __typeof(self)weakSelf = self;
     
     QBRequest *request =
-    [QBRequest logInWithSocialProvider:@"facebook"
-                           accessToken:sessionToken
-                     accessTokenSecret:nil
-                          successBlock:^(QBResponse *response,
-                                         QBUUser *tUser)
+    [QBRequest logInWithSocialProvider:@"facebook" accessToken:sessionToken accessTokenSecret:nil
+                          successBlock:^(QBResponse *response, QBUUser *tUser)
      {
          weakSelf.isAuthorized = YES;
          //set password

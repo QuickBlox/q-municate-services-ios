@@ -13,6 +13,7 @@
 
 @property (strong, nonatomic) NSMutableDictionary *dialogs;
 @property (strong, nonatomic) NSMutableDictionary *messages;
+@property (strong, nonatomic) NSMutableArray *blocks;
 
 @end
 
@@ -37,8 +38,7 @@
 
 #pragma mark - Add / Join / Remove
 
-- (void)addChatDialog:(QBChatDialog *)chatDialog
-              andJoin:(BOOL)join {
+- (void)addChatDialog:(QBChatDialog *)chatDialog andJoin:(BOOL)join {
     
     self.dialogs[chatDialog.ID] = chatDialog;
     
@@ -54,8 +54,7 @@
     
     for (QBChatDialog *chatDialog in dialogs) {
         
-        [self addChatDialog:chatDialog
-                    andJoin:join];
+        [self addChatDialog:chatDialog andJoin:join];
     }
 }
 

@@ -12,19 +12,15 @@
 
 @interface QMDialogsMemoryStorage : NSObject <QMMemoryStorageProtocol>
 
-- (void)addChatDialog:(QBChatDialog *)chatDialog
-              andJoin:(BOOL)join;
-
-- (void)addChatDialogs:(NSArray *)dialogs
-               andJoin:(BOOL)join;
+- (void)addChatDialog:(QBChatDialog *)chatDialog andJoin:(BOOL)join;
+- (void)addChatDialogs:(NSArray *)dialogs andJoin:(BOOL)join;
 
 - (QBChatDialog *)chatDialogWithID:(NSString *)dialogID;
 - (QBChatDialog *)chatDialogWithRoomName:(NSString *)roomName;
 - (QBChatDialog *)chatDialogWithChatRoom:(QBChatRoom *)chatRoom;
 - (QBChatDialog *)privateChatDialogWithOpponentID:(NSUInteger)opponentID;
 
-- (void)setMessages:(NSArray *)messages
-       withDialogID:(NSString *)dialogID;
+- (void)setMessages:(NSArray *)messages withDialogID:(NSString *)dialogID;
 
 - (NSArray *)unreadDialogs;
 - (NSArray *)unsortedDialogs;

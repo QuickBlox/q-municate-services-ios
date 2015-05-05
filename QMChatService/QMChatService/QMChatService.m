@@ -173,7 +173,7 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 45;
     }
 }
 
-#pragma mark Handle messadges (QBChatDelegate)
+#pragma mark Handle messages (QBChatDelegate)
 
 - (void)chatRoomDidReceiveMessage:(QBChatMessage *)message fromRoomJID:(NSString *)roomJID {
     
@@ -183,6 +183,14 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 45;
 - (void)chatDidReceiveMessage:(QBChatMessage *)message {
     
     [self handleChatMessage:message];
+}
+
+- (void)chatRoomDidEnter:(QBChatRoom *)room {
+    
+}
+
+- (void)chatRoomDidNotEnter:(NSString *)roomName error:(NSError *)error {
+    
 }
 
 #pragma mark - Chat Login/Logout
@@ -288,12 +296,12 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 45;
 
 #pragma mark - Dialog history
 
-- (void)dialogs:(void(^)(QBResponse *response,NSArray *dialogObjects, NSSet *dialogsUsersIDs))completion {
+- (void)dialogs:(void(^)(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs))completion {
     
     __weak __typeof(self)weakSelf = self;
     [QBRequest dialogsWithSuccessBlock:^(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs) {
         
-        [weakSelf.dialogsMemoryStorage addChatDialogs:dialogObjects andJoin:YES];
+        [weakSelf.dialogsMemoryStorage addChatDialogs:dialogObjects andJoin:NO];
         
         if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddChatDialogs:)]) {
             [weakSelf.multicastDelegate chatService:weakSelf didAddChatDialogs:dialogObjects];
@@ -371,6 +379,10 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 45;
     [QBRequest createDialog:chatDialog successBlock:^(QBResponse *response, QBChatDialog *createdDialog) {
         
         [weakSelf.dialogsMemoryStorage addChatDialog:createdDialog andJoin:YES];
+        
+        if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddChatDialogs:)]) {
+            [weakSelf.multicastDelegate chatService:weakSelf didAddChatDialog:chatDialog];
+        }
         
 //        [weakSelf sendNotificationWithType:QMNotificationTypeCreateGroupDialog
 //                                      text:@"created new chat"
@@ -489,7 +501,6 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 45;
                     
                     finish(message);
                 }
-                
             }];
             
         }

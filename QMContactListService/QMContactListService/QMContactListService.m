@@ -36,6 +36,7 @@
     if (self) {
         
         self.cahceDelegate = cacheDelegate;
+        self.retrivedIds = [NSMutableSet set];
         [self loadCachedData];
         
     }
@@ -143,35 +144,31 @@
         
         if ([self.multicastDelegate respondsToSelector:@selector(contactListService:addRequestFromUser:)]) {
             
-            [self.multicastDelegate contactListService:self
-                                    addRequestFromUser:user];
+            [self.multicastDelegate contactListService:self addRequestFromUser:user];
         }
     }
     else {
         
         __weak __typeof(self)weakSelf = self;
         
-        [self retrieveUsersWithIDs:@[@(userID)]
-                        completion:^(QBResponse *responce, QBGeneralResponsePage *page, NSArray *users)
-         {
-             NSAssert(users.count == 1, @"Need check this case");
-             
-             QBUUser *newUser = users.firstObject;
-             
-             [weakSelf.usersMemoryStorage addUser:newUser];
-             
-             if ([weakSelf.multicastDelegate respondsToSelector:@selector(contactListService:addRequestFromUser:)]) {
-                 
-                 [weakSelf.multicastDelegate contactListService:weakSelf
-                                             addRequestFromUser:newUser];
-             }
-             
-             if ([weakSelf.multicastDelegate respondsToSelector:@selector(contactListService:didAddUser:)]) {
-                 
-                 [weakSelf.multicastDelegate contactListService:weakSelf
-                                                     didAddUser:newUser];
-             }
-         }];
+        [self retrieveUsersWithIDs:@[@(userID)] completion:^(QBResponse *responce, QBGeneralResponsePage *page, NSArray *users){
+            
+            if (users.count == 0) {
+                return;
+            }
+            
+            QBUUser *newUser = users.firstObject;
+            
+            [weakSelf.usersMemoryStorage addUser:newUser];
+            
+            if ([weakSelf.multicastDelegate respondsToSelector:@selector(contactListService:addRequestFromUser:)]) {
+                [weakSelf.multicastDelegate contactListService:weakSelf addRequestFromUser:newUser];
+            }
+            
+            if ([weakSelf.multicastDelegate respondsToSelector:@selector(contactListService:didAddUser:)]) {
+                [weakSelf.multicastDelegate contactListService:weakSelf didAddUser:newUser];
+            }
+        }];
     }
 }
 
@@ -382,10 +379,9 @@
 
 - (NSArray *)usersFromContactListSortedByFullName {
     
-    NSSortDescriptor *sorter = [[NSSortDescriptor alloc]
-                                initWithKey:@"fullName"
-                                ascending:YES
-                                selector:@selector(localizedCaseInsensitiveCompare:)];
+    NSSortDescriptor *sorter =
+    [[NSSortDescriptor alloc] initWithKey:@"fullName" ascending:YES
+                                 selector:@selector(localizedCaseInsensitiveCompare:)];
     
     NSArray *sortedUsers = [self.usersFromContactList sortedArrayUsingDescriptors:@[sorter]];
     
