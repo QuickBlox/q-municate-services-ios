@@ -9,25 +9,30 @@
 #import <Quickblox/Quickblox.h>
 #import "QMChatTypes.h"
 
-@interface QBChatAbstractMessage (QM_CustomParameters)
+@interface QBChatAbstractMessage (QMCustomParameters)
 
-@property (strong, nonatomic) NSString *cParamSaveToHistory;
-@property (assign, nonatomic) QMMessageType cParamMessageType;
-@property (strong, nonatomic) NSString *cParamChatMessageID;
-@property (strong, nonatomic) NSNumber *cParamDateSent;
-@property (assign, nonatomic) BOOL cParamMessageDeliveryStatus;
+/**
+ *  Message
+ */
+@property (strong, nonatomic) NSString *saveToHistory;
+@property (assign, nonatomic) QMMessageType messageType;
+@property (strong, nonatomic) NSString *chatMessageID;
+@property (strong, nonatomic) NSNumber *dateSent;
+@property (assign, nonatomic) BOOL messageDeliveryStatus;
 
-@property (strong, nonatomic) NSString *cParamDialogID;
-@property (strong, nonatomic) NSString *cParamRoomJID;
-@property (strong, nonatomic) NSString *cParamDialogRoomName;
-@property (strong, nonatomic) NSString *cParamDialogRoomPhoto;
-@property (strong, nonatomic) NSNumber *cParamDialogType;
-@property (strong, nonatomic) NSArray *cParamDialogOccupantsIDs;
-@property (strong, nonatomic) NSNumber *cParamDialogDeletedID;
+/**
+ *  Dialog
+ */
+@property (strong, nonatomic) NSString *dialogID;
+@property (strong, nonatomic) NSString *roomJID;
+@property (strong, nonatomic) NSString *roomName;
+@property (strong, nonatomic) NSString *roomPhoto;
+@property (strong, nonatomic) NSNumber *dialogType;
+@property (strong, nonatomic) NSArray *dialogOccupantsIDs;
+@property (strong, nonatomic) NSNumber *dialogDeletedID;
 
 /**
  *  Set custom parameters with chat dialogs
-
  */
 - (void)setCustomParametersWithChatDialog:(QBChatDialog *)chatDialog;
 

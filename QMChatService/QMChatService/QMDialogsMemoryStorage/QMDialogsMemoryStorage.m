@@ -117,32 +117,6 @@
 }
 
 #pragma mark - Dialogs toos
-//
-//- (NSArray *)allOccupantIDsFromDialogsHistory {
-//    
-////    NSArray *allDialogs = self.dialogHistory;
-//    NSMutableSet *ids = [NSMutableSet set];
-//    
-//    for (QBChatDialog *dialog in allDialogs) {
-//        [ids addObjectsFromArray:dialog.occupantIDs];
-//    }
-//    
-//    return ids.allObjects;
-//}
-
-//- (NSArray *)occupantsWithoutMe:(NSArray *)occupants
-//{
-//    NSMutableSet *occupantsSet = [NSMutableSet setWithArray:occupants];
-//    
-////    QBUUser *currentUser = [self.serviceDataDelegate serviceDataCurrentProfile];
-//    for (QBUUser *opponent in occupants) {
-//        if (![opponent isEqual:currentUser]) {
-//            [occupantsSet addObject:opponent];
-//        }
-//    }
-//    
-//    return [occupantsSet copy];
-//}
 
 - (NSArray *)unreadDialogs {
     
@@ -161,7 +135,7 @@
 - (void)addMessageToHistory:(QBChatMessage *)message
                withDialogID:(NSString *)dialogID {
     
-    NSAssert(message.cParamDialogID == dialogID, @"Check this case");
+    NSAssert(message.dialogID == dialogID, @"Check this case");
     NSMutableArray *history = self.messages[dialogID];
     [history addObject:message];
 }
@@ -186,15 +160,6 @@
 
     return sortedDialogs;
 };
-
-- (NSUInteger)oponentIDForPrivateChatdDialog:(QBChatDialog *)dialog {
-    
-    if (dialog.type == QBChatDialogTypePrivate) {
-        
-    }
-    
-    return 0;
-}
 
 #pragma mark - QMMemoryStorageProtocol
 

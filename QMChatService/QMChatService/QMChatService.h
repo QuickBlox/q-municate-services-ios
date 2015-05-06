@@ -74,7 +74,7 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  *  @param occupants  <#occupants description#>
  *  @param completion <#completion description#>
  */
-- (void)createGroupChatDialogWithName:(NSString *)name occupants:(NSArray *)occupants
+- (void)createGroupChatDialogWithName:(NSString *)name photo:(NSString *)photo occupants:(NSArray *)occupants
                            completion:(void(^)(QBResponse *response, QBChatDialog *createdDialog))completion;
 /**
  *  <#Description#>
@@ -108,6 +108,10 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  *  @param completion <#completion description#>
  */
 - (void)dialogs:(void(^)(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs))completion;
+
+#pragma mark - Fetch messages
+
+- (void)messageWithChatDialogID:(NSString *)chatDialogID completion:(void(^)(QBResponse *response, NSArray *messages))completion;
 
 #pragma mark Send message
 

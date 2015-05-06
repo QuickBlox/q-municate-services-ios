@@ -253,26 +253,26 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 45;
 
 - (void)handleChatMessage:(QBChatMessage *)message {
     
-    NSAssert(message.cParamDialogID, @"Need update this case");
+    NSAssert(message.dialogID, @"Need update this case");
     
-    if (message.cParamMessageType == QMMessageTypeDefault) {
+    if (message.messageType == QMMessageTypeDefault) {
         
         if (message.recipientID != message.senderID) {
             
             //Update chat dialog from memroy storage
-            QBChatDialog *chatDialogToUpdate = [self.dialogsMemoryStorage chatDialogWithID:message.cParamDialogID];
+            QBChatDialog *chatDialogToUpdate = [self.dialogsMemoryStorage chatDialogWithID:message.dialogID];
             chatDialogToUpdate.lastMessageText = message.encodedText;
-            chatDialogToUpdate.lastMessageDate = [NSDate dateWithTimeIntervalSince1970:message.cParamDateSent.doubleValue];
+            chatDialogToUpdate.lastMessageDate = [NSDate dateWithTimeIntervalSince1970:message.dateSent.doubleValue];
             chatDialogToUpdate.unreadMessagesCount++;
             //Add message in memory storage
-            [self.messagesMemoryStorage addMessage:message forDialogID:message.cParamDialogID];
+            [self.messagesMemoryStorage addMessage:message forDialogID:message.dialogID];
             
             if ([self.multicastDelegate respondsToSelector:@selector(chatServiceDidAddMessageToHistory:forDialog:)]) {
                 [self.multicastDelegate chatServiceDidAddMessageToHistory:message forDialog:chatDialogToUpdate];
             }
         }
     }
-    else if (message.cParamMessageType == QMMessageTypeNotificationAboutCreateGroupDialog) {
+    else if (message.messageType == QMMessageTypeNotificationAboutCreateGroupDialog) {
         
         QBChatDialog *newChatDialog = [message chatDialogFromCustomParameters];
         
@@ -282,11 +282,12 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 45;
             [self.multicastDelegate chatServiceDidReceiveNotificationMessage:message createDialog:newChatDialog];
         }
     }
-    else if (message.cParamMessageType == QMMessageTypeNotificationAboutUpdateGroupDialog) {
+    else if (message.messageType == QMMessageTypeNotificationAboutUpdateGroupDialog) {
         
-        QBChatDialog *chatDialogToUpdate = [self.dialogsMemoryStorage chatDialogWithID:message.cParamDialogID];
+        QBChatDialog *chatDialogToUpdate = [self.dialogsMemoryStorage chatDialogWithID:message.dialogID];
         
-        chatDialogToUpdate.name = message.cParamDialogRoomName;
+        chatDialogToUpdate.name = message.roomName;
+        chatDialogToUpdate.photo = message.roomPhoto;
         
         if ([self.multicastDelegate respondsToSelector:@selector(chatServiceDidReceiveNotificationMessage:updateDialog:)]) {
             [self.multicastDelegate chatServiceDidReceiveNotificationMessage:message updateDialog:chatDialogToUpdate];
@@ -361,7 +362,9 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 45;
     }
 }
 
-- (void)createGroupChatDialogWithName:(NSString *)name occupants:(NSArray *)occupants
+- (void)createGroupChatDialogWithName:(NSString *)name
+                                photo:(NSString *)photo
+                            occupants:(NSArray *)occupants
                            completion:(void(^)(QBResponse *response, QBChatDialog *createdDialog))completion {
     
     NSMutableSet *occupantIDs = [NSMutableSet set];
@@ -372,6 +375,7 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 45;
     
     QBChatDialog *chatDialog = [[QBChatDialog alloc] init];
     chatDialog.name = name;
+    chatDialog.photo = photo;
     chatDialog.occupantIDs = occupantIDs.allObjects;
     chatDialog.type = QBChatDialogTypeGroup;
     
@@ -448,8 +452,7 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 45;
 
 #pragma mark - Messages histroy
 
-- (void)fetchMessageWithChatDialogID:(NSString *)chatDialogID
-                            complete:(void(^)(QBResponse *response, NSArray *messages))completion {
+- (void)messageWithChatDialogID:(NSString *)chatDialogID completion:(void(^)(QBResponse *response, NSArray *messages))completion {
     
     [self loadCahcedMessagesWithDialogID:chatDialogID];
     
@@ -457,6 +460,7 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 45;
     [QBRequest messagesWithDialogID:chatDialogID successBlock:^(QBResponse *response, NSArray *messages) {
         
         [weakSelf.messagesMemoryStorage replaceMessages:messages forDialogID:chatDialogID];
+        completion(response, messages);
         
     } errorBlock:^(QBResponse *response) {
         
@@ -466,15 +470,16 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 45;
 
 #pragma mark - Send messages
 
-- (void)sendMessage:(QBChatMessage *)message toDialog:(QBChatDialog *)dialog type:(QMMessageType)type save:(BOOL)save completion:(void(^)(NSError *error))completion {
+- (void)sendMessage:(QBChatMessage *)message toDialog:(QBChatDialog *)dialog type:(QMMessageType)type save:(BOOL)save
+         completion:(void(^)(NSError *error))completion {
     
-    message.cParamDialogID = dialog.ID;
-    message.cParamDateSent = self.dateSendTimeInterval;
+    message.dialogID = dialog.ID;
+    message.dateSent = self.dateSendTimeInterval;
     message.text = [message.text gtm_stringByEscapingForHTML];
     
     if (save) {
         
-        message.cParamSaveToHistory = @"1";
+        message.saveToHistory = @"1";
     }
     
     QBUUser *currentUser = self.userProfileDataSource.currentUser;
