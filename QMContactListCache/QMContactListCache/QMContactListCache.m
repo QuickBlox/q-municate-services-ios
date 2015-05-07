@@ -9,6 +9,7 @@
 #import "QMContactListCache.h"
 #import "ModelIncludes.h"
 #import "CDContactListItem.h"
+#import "CDUser.h"
 
 @implementation QMContactListCache
 

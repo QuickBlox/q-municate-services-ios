@@ -126,14 +126,12 @@
     return result;
 }
 
-- (void)setMessages:(NSArray *)messages
-       withDialogID:(NSString *)dialogID {
+- (void)setMessages:(NSArray *)messages withDialogID:(NSString *)dialogID {
     
     self.messages[dialogID] = messages.mutableCopy;
 }
 
-- (void)addMessageToHistory:(QBChatMessage *)message
-               withDialogID:(NSString *)dialogID {
+- (void)addMessageToHistory:(QBChatMessage *)message withDialogID:(NSString *)dialogID {
     
     NSAssert(message.dialogID == dialogID, @"Check this case");
     NSMutableArray *history = self.messages[dialogID];
@@ -153,8 +151,7 @@
 
 - (NSArray *)dialogsSortByLastMessageDateWithAscending:(BOOL)ascending {
     
-    NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"lastMessageDate"
-                                                           ascending:ascending];
+    NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"lastMessageDate" ascending:ascending];
     
     NSArray *sortedDialogs =  [self.dialogs.allValues sortedArrayUsingDescriptors:@[sort]];
 

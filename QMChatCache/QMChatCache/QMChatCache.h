@@ -47,8 +47,7 @@
  *  @param dialog QBChatDialog instance
  *  @param completion Completion block is called after update or insert operation is completed
  */
-- (void)insertOrUpdateDialog:(QBChatDialog *)dialog
-                  completion:(dispatch_block_t)completion;
+- (void)insertOrUpdateDialog:(QBChatDialog *)dialog completion:(dispatch_block_t)completion;
 
 /**
  *  Insert/Update dialogs
@@ -56,8 +55,7 @@
  *  @param dialogs    Array of QBChatDialog instances
  *  @param completion Completion block is called after update or insert operation is completed
  */
-- (void)insertOrUpdateDialogs:(NSArray *)dialogs
-                   completion:(dispatch_block_t)completion;
+- (void)insertOrUpdateDialogs:(NSArray *)dialogs completion:(dispatch_block_t)completion;
 
 /**
  *  Delete dialog from cache
@@ -65,8 +63,7 @@
  *  @param dialog
  *  @param completion Completion block is called after delete operation is completed
  */
-- (void)deleteDialogWithID:(NSString *)dialog
-                completion:(dispatch_block_t)completion;
+- (void)deleteDialogWithID:(NSString *)dialog completion:(dispatch_block_t)completion;
 
 /**
  *  Delete all dialogs
@@ -84,9 +81,7 @@
  *  @param ascending  `YES` if the attribute should be sorted ascending, `NO` for descending.
  *  @param completion Completion block that is called after the fetch has completed. Returns an array of QBChatDialog instances
  */
-- (void)dialogsSortedBy:(NSString *)sortTerm
-              ascending:(BOOL)ascending
-             completion:(void(^)(NSArray *dialogs))completion;
+- (void)dialogsSortedBy:(NSString *)sortTerm ascending:(BOOL)ascending completion:(void(^)(NSArray *dialogs))completion;
 
 /**
  *  Fetch cached dialogs with predicate
@@ -111,10 +106,7 @@
  *  @param predicate  Predicate to evaluate objects against
  *  @param completion Completion block that is called after the fetch has completed. Returns an array of QBChatDialog instances
  */
-- (void)dialogsSortedBy:(NSString *)sortTerm
-              ascending:(BOOL)ascending
-          withPredicate:(NSPredicate *)predicate
-             completion:(void(^)(NSArray *dialogs))completion;
+- (void)dialogsSortedBy:(NSString *)sortTerm ascending:(BOOL)ascending withPredicate:(NSPredicate *)predicate completion:(void(^)(NSArray *dialogs))completion;
 
 #pragma mark -
 #pragma mark  Messages
@@ -127,9 +119,7 @@
  *  @param dialogId   Dialog identifier
  *  @param completion Completion block is called after update or insert operation is completed
  */
-- (void)insertOrUpdateMessage:(QBChatHistoryMessage *)message
-                 withDialogId:(NSString *)dialogID
-                   completion:(void(^)(void))completion;
+- (void)insertOrUpdateMessage:(QBChatHistoryMessage *)message withDialogId:(NSString *)dialogID completion:(void(^)(void))completion;
 
 /**
  *  Add message to cache
@@ -139,10 +129,7 @@
  *  @param isRead     mark read
  *  @param completion Completion block is called after update or insert operation is completed
  */
-- (void)insertOrUpdateMessage:(QBChatMessage *)message
-                 withDialogId:(NSString *)dialogID
-                         read:(BOOL)isRead
-                   completion:(void(^)(void))completion;
+- (void)insertOrUpdateMessage:(QBChatMessage *)message withDialogId:(NSString *)dialogID read:(BOOL)isRead completion:(void(^)(void))completion;
 
 /**
  *  Update or insert messages
@@ -151,9 +138,7 @@
  *  @param dialogID   Dialog identifier
  *  @param completion Completion block is called after update or insert operation is completed
  */
-- (void)insertOrUpdateMessages:(NSArray *)messages
-                  withDialogId:(NSString *)dialogID
-                    completion:(void(^)(void))completion;
+- (void)insertOrUpdateMessages:(NSArray *)messages withDialogId:(NSString *)dialogID completion:(void(^)(void))completion;
 
 /**
  *  Delete message
@@ -161,8 +146,8 @@
  *  @param message    QBChatHistoryMessage instance
  *  @param completion Completion block that is called after the delete operation has completed.
  */
-- (void)deleteMessage:(QBChatHistoryMessage *)message
-           completion:(void(^)(void))completion;
+- (void)deleteMessage:(QBChatHistoryMessage *)message completion:(void(^)(void))completion;
+
 /**
  *  Delete all messages
  *
@@ -180,10 +165,7 @@
  *  @param completion returns an array of QBChatMessages instances
  */
 
-- (void)messagesWithDialogId:(NSString *)dialogId
-                    sortedBy:(NSString *)sortTerm
-                   ascending:(BOOL)ascending
-                  completion:(void(^)(NSArray *array))completion;
+- (void)messagesWithDialogId:(NSString *)dialogId sortedBy:(NSString *)sortTerm ascending:(BOOL)ascending completion:(void(^)(NSArray *array))completion;
 
 /**
  *  Fetch messages
@@ -193,9 +175,6 @@
  *  @param ascending  `YES` if the attribute should be sorted ascending, `NO` for descending.
  *  @param completion Completion block that is called after the fetch has completed. Returns an array of QBChatHistoryMessage instances
  */
-- (void)messagesWithPredicate:(NSPredicate *)predicate
-                     sortedBy:(NSString *)sortTerm
-                    ascending:(BOOL)ascending
-                   completion:(void(^)(NSArray *messages))completion;
+- (void)messagesWithPredicate:(NSPredicate *)predicate  sortedBy:(NSString *)sortTerm ascending:(BOOL)ascending completion:(void(^)(NSArray *messages))completion;
 
 @end
