@@ -494,6 +494,8 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
         
         dialog.lastMessageText = historyMessage.encodedText;
         dialog.lastMessageDate = historyMessage.datetime;
+        
+        completion(nil);
     };
     
     switch (dialog.type) {
