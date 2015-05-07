@@ -12,6 +12,7 @@
 #import "QBChatAbstractMessage+QMCustomParameters.h"
 
 const NSTimeInterval kQMPresenceTimeIntervalInSec = 45;
+const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 
 @interface QMChatService() <QBChatDelegate>
 
@@ -109,7 +110,7 @@ const NSTimeInterval kQMPresenceTimeIntervalInSec = 45;
 - (void)loadCahcedMessagesWithDialogID:(NSString *)dialogID {
     
     __weak __typeof(self)weakSelf = self;
-    dispatch_queue_t queue = dispatch_queue_create("com.q-municate.loadChatCacheQueue", DISPATCH_QUEUE_SERIAL);
+    dispatch_queue_t queue = dispatch_queue_create(kChatCacheQueue, DISPATCH_QUEUE_SERIAL);
     // Load messages from cahce
     dispatch_async(queue, ^{
         

@@ -240,4 +240,8 @@ NSString const *kQMCustomParameterDialogDeletedID = @"deleted_id";
     return chatDialog;
 }
 
+- (BOOL)isMediaMessage {
+   return self.attachments.count > 0;
+}
+
 @end
