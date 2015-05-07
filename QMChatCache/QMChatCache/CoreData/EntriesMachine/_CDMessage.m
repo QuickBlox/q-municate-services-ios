@@ -4,6 +4,7 @@
 #import "_CDMessage.h"
 
 const struct CDMessageAttributes CDMessageAttributes = {
+	.createAt = @"createAt",
 	.customParameters = @"customParameters",
 	.datetime = @"datetime",
 	.dialogID = @"dialogID",
@@ -15,14 +16,12 @@ const struct CDMessageAttributes CDMessageAttributes = {
 	.senderNick = @"senderNick",
 	.state = @"state",
 	.text = @"text",
+	.updateAt = @"updateAt",
 };
 
 const struct CDMessageRelationships CDMessageRelationships = {
 	.attachments = @"attachments",
 	.dialog = @"dialog",
-};
-
-const struct CDMessageFetchedProperties CDMessageFetchedProperties = {
 };
 
 @implementation CDMessageID
@@ -50,7 +49,7 @@ const struct CDMessageFetchedProperties CDMessageFetchedProperties = {
 
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
-	
+
 	if ([key isEqualToString:@"isReadValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"isRead"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
@@ -75,40 +74,17 @@ const struct CDMessageFetchedProperties CDMessageFetchedProperties = {
 	return keyPaths;
 }
 
-
-
+@dynamic createAt;
 
 @dynamic customParameters;
 
-
-
-
-
-
 @dynamic datetime;
-
-
-
-
-
 
 @dynamic dialogID;
 
-
-
-
-
-
 @dynamic id;
 
-
-
-
-
-
 @dynamic isRead;
-
-
 
 - (BOOL)isReadValue {
 	NSNumber *result = [self isRead];
@@ -128,13 +104,7 @@ const struct CDMessageFetchedProperties CDMessageFetchedProperties = {
 	[self setPrimitiveIsRead:[NSNumber numberWithBool:value_]];
 }
 
-
-
-
-
 @dynamic recipientID;
-
-
 
 - (int32_t)recipientIDValue {
 	NSNumber *result = [self recipientID];
@@ -154,20 +124,9 @@ const struct CDMessageFetchedProperties CDMessageFetchedProperties = {
 	[self setPrimitiveRecipientID:[NSNumber numberWithInt:value_]];
 }
 
-
-
-
-
 @dynamic roomId;
 
-
-
-
-
-
 @dynamic senderID;
-
-
 
 - (int32_t)senderIDValue {
 	NSNumber *result = [self senderID];
@@ -187,20 +146,9 @@ const struct CDMessageFetchedProperties CDMessageFetchedProperties = {
 	[self setPrimitiveSenderID:[NSNumber numberWithInt:value_]];
 }
 
-
-
-
-
 @dynamic senderNick;
 
-
-
-
-
-
 @dynamic state;
-
-
 
 - (int16_t)stateValue {
 	NSNumber *result = [self state];
@@ -220,37 +168,22 @@ const struct CDMessageFetchedProperties CDMessageFetchedProperties = {
 	[self setPrimitiveState:[NSNumber numberWithShort:value_]];
 }
 
-
-
-
-
 @dynamic text;
 
-
-
-
-
+@dynamic updateAt;
 
 @dynamic attachments;
 
-	
 - (NSMutableSet*)attachmentsSet {
 	[self willAccessValueForKey:@"attachments"];
-  
+
 	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"attachments"];
-  
+
 	[self didAccessValueForKey:@"attachments"];
 	return result;
 }
-	
 
 @dynamic dialog;
 
-	
-
-
-
-
-
-
 @end
+

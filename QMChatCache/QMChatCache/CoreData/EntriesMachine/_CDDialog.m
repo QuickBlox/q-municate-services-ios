@@ -22,9 +22,6 @@ const struct CDDialogRelationships CDDialogRelationships = {
 	.messages = @"messages",
 };
 
-const struct CDDialogFetchedProperties CDDialogFetchedProperties = {
-};
-
 @implementation CDDialogID
 @end
 
@@ -50,7 +47,7 @@ const struct CDDialogFetchedProperties CDDialogFetchedProperties = {
 
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
-	
+
 	if ([key isEqualToString:@"lastMessageUserIDValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"lastMessageUserID"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
@@ -80,33 +77,13 @@ const struct CDDialogFetchedProperties CDDialogFetchedProperties = {
 	return keyPaths;
 }
 
-
-
-
 @dynamic id;
-
-
-
-
-
 
 @dynamic lastMessageDate;
 
-
-
-
-
-
 @dynamic lastMessageText;
 
-
-
-
-
-
 @dynamic lastMessageUserID;
-
-
 
 - (int32_t)lastMessageUserIDValue {
 	NSNumber *result = [self lastMessageUserID];
@@ -126,34 +103,13 @@ const struct CDDialogFetchedProperties CDDialogFetchedProperties = {
 	[self setPrimitiveLastMessageUserID:[NSNumber numberWithInt:value_]];
 }
 
-
-
-
-
 @dynamic name;
-
-
-
-
-
 
 @dynamic occupantsIDs;
 
-
-
-
-
-
 @dynamic photo;
 
-
-
-
-
-
 @dynamic recipientID;
-
-
 
 - (int32_t)recipientIDValue {
 	NSNumber *result = [self recipientID];
@@ -173,20 +129,9 @@ const struct CDDialogFetchedProperties CDDialogFetchedProperties = {
 	[self setPrimitiveRecipientID:[NSNumber numberWithInt:value_]];
 }
 
-
-
-
-
 @dynamic roomJID;
 
-
-
-
-
-
 @dynamic type;
-
-
 
 - (int16_t)typeValue {
 	NSNumber *result = [self type];
@@ -197,22 +142,7 @@ const struct CDDialogFetchedProperties CDDialogFetchedProperties = {
 	[self setType:[NSNumber numberWithShort:value_]];
 }
 
-- (int16_t)primitiveTypeValue {
-	NSNumber *result = [self primitiveType];
-	return [result shortValue];
-}
-
-- (void)setPrimitiveTypeValue:(int16_t)value_ {
-	[self setPrimitiveType:[NSNumber numberWithShort:value_]];
-}
-
-
-
-
-
 @dynamic unreadMessagesCount;
-
-
 
 - (int32_t)unreadMessagesCountValue {
 	NSNumber *result = [self unreadMessagesCount];
@@ -232,13 +162,7 @@ const struct CDDialogFetchedProperties CDDialogFetchedProperties = {
 	[self setPrimitiveUnreadMessagesCount:[NSNumber numberWithInt:value_]];
 }
 
-
-
-
-
 @dynamic userID;
-
-
 
 - (int32_t)userIDValue {
 	NSNumber *result = [self userID];
@@ -258,26 +182,16 @@ const struct CDDialogFetchedProperties CDDialogFetchedProperties = {
 	[self setPrimitiveUserID:[NSNumber numberWithInt:value_]];
 }
 
-
-
-
-
 @dynamic messages;
 
-	
 - (NSMutableSet*)messagesSet {
 	[self willAccessValueForKey:@"messages"];
-  
+
 	NSMutableSet *result = (NSMutableSet*)[self mutableSetValueForKey:@"messages"];
-  
+
 	[self didAccessValueForKey:@"messages"];
 	return result;
 }
-	
-
-
-
-
-
 
 @end
+

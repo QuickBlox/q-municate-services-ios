@@ -38,8 +38,8 @@
         self.cahceDelegate = cacheDelegate;
         self.retrivedIds = [NSMutableSet set];
         [self loadCachedData];
-        
     }
+    
     return self;
 }
 
@@ -84,6 +84,7 @@
     dispatch_async(queue, ^{
         
         dispatch_async(dispatch_get_main_queue(), ^{
+            
             if ([self.multicastDelegate respondsToSelector:@selector(contactListServiceDidLoadCache)]) {
                 [self.multicastDelegate contactListServiceDidLoadCache];
             }
@@ -151,7 +152,7 @@
         
         __weak __typeof(self)weakSelf = self;
         
-        [self retrieveUsersWithIDs:@[@(userID)] completion:^(QBResponse *responce, QBGeneralResponsePage *page, NSArray *users){
+        [self retrieveUsersWithIDs:@[@(userID)] completion:^(QBResponse *responce, QBGeneralResponsePage *page, NSArray *users) {
             
             if (users.count == 0) {
                 return;
@@ -267,22 +268,16 @@
 
 #pragma mark - ContactList Request
 
-- (void)addUserToContactListRequest:(QBUUser *)user
-                         completion:(void(^)(BOOL success))completion {
-    
+- (void)addUserToContactListRequest:(QBUUser *)user completion:(void(^)(BOOL success))completion {
     
     __weak __typeof(self)weakSelf = self;
-    [[QBChat instance] addUserToContactListRequest:user.ID
-                                         sentBlock:^(NSError *error)
-     {
+    [[QBChat instance] addUserToContactListRequest:user.ID sentBlock:^(NSError *error) {
          if (!error) {
              
              [weakSelf.usersMemoryStorage addUser:user];
              
              if ([weakSelf.multicastDelegate respondsToSelector:@selector(contactListService:didAddUser:)]) {
-                 
-                 [weakSelf.multicastDelegate contactListService:weakSelf
-                                                     didAddUser:user];
+                 [weakSelf.multicastDelegate contactListService:weakSelf didAddUser:user];
              }
              
              if (completion) {

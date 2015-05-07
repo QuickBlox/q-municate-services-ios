@@ -115,8 +115,7 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 
 #pragma mark Send message
 
-- (void)sendMessage:(QBChatMessage *)message
-           toDialog:(QBChatDialog *)dialog type:(QMMessageType)type save:(BOOL)save completion:(void(^)(NSError *error))completion;
+- (void)sendMessage:(QBChatMessage *)message toDialog:(QBChatDialog *)dialog type:(QMMessageType)type save:(BOOL)save completion:(void(^)(NSError *error))completion;
 
 @end
 
@@ -137,7 +136,9 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 - (void)chatService:(QMChatService *)chatService didAddChatDialog:(QBChatDialog *)chatDialog;
 - (void)chatService:(QMChatService *)chatService didAddChatDialogs:(NSArray *)chatDialogs;
 
-- (void)chatServiceDidAddMessageToHistory:(QBChatMessage *)message forDialog:(QBChatDialog *)dialog;
+- (void)chatServiceDidAddMessageToHistory:(QBChatMessage *)message forDialogID:(NSString *)dialogID;
+- (void)chatServiceDidAddMessagesToHistroy:(NSArray *)messages forDialogID:(NSString *)dialogID;
+
 - (void)chatServiceDidReceiveNotificationMessage:(QBChatMessage *)message createDialog:(QBChatDialog *)dialog;
 - (void)chatServiceDidReceiveNotificationMessage:(QBChatMessage *)message updateDialog:(QBChatDialog *)dialog;
 

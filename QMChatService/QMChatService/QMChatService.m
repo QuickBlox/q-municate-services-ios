@@ -61,6 +61,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     
     self.multicastDelegate = (id<QMChatServiceDelegate>)[[QBMulticastDelegate alloc] init];
     self.dialogsMemoryStorage = [[QMDialogsMemoryStorage alloc] init];
+    self.messagesMemoryStorage = [[QMMessagesMemoryStorage alloc] init];
     
     [QBChat.instance addDelegate:self];
 }
@@ -120,13 +121,11 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
             
             [self.cahceDelegate cachedMessagesWithDialogID:dialogID block:^(NSArray *collection) {
                 
-                [weakSelf.messagesMemoryStorage replaceMessages:collection
-                                                    forDialogID:dialogID];
+                [weakSelf.messagesMemoryStorage replaceMessages:collection forDialogID:dialogID];
                 dispatch_semaphore_signal(sem);
             }];
             
             dispatch_semaphore_wait(sem, DISPATCH_TIME_FOREVER);
-            
         }
     });
     
@@ -268,8 +267,8 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
             //Add message in memory storage
             [self.messagesMemoryStorage addMessage:message forDialogID:message.dialogID];
             
-            if ([self.multicastDelegate respondsToSelector:@selector(chatServiceDidAddMessageToHistory:forDialog:)]) {
-                [self.multicastDelegate chatServiceDidAddMessageToHistory:message forDialog:chatDialogToUpdate];
+            if ([self.multicastDelegate respondsToSelector:@selector(chatServiceDidAddMessageToHistory:forDialogID:)]) {
+                [self.multicastDelegate chatServiceDidAddMessageToHistory:message forDialogID:message.dialogID];
             }
         }
     }
@@ -461,6 +460,10 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     [QBRequest messagesWithDialogID:chatDialogID successBlock:^(QBResponse *response, NSArray *messages) {
         
         [weakSelf.messagesMemoryStorage replaceMessages:messages forDialogID:chatDialogID];
+        
+        if ([self.multicastDelegate respondsToSelector:@selector(chatServiceDidAddMessagesToHistroy:forDialogID:)]) {
+            [self.multicastDelegate chatServiceDidAddMessagesToHistroy:messages forDialogID:chatDialogID];
+        }
         completion(response, messages);
         
     } errorBlock:^(QBResponse *response) {

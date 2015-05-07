@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6252" systemVersion="14A388a" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7549" systemVersion="14D136" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="CDAttachment" representedClassName="CDAttachment" syncable="YES">
         <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="mimeType" optional="YES" attributeType="String" syncable="YES"/>
@@ -22,6 +22,7 @@
         <relationship name="messages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDMessage" inverseName="dialog" inverseEntity="CDMessage" syncable="YES"/>
     </entity>
     <entity name="CDMessage" representedClassName="CDMessage" syncable="YES">
+        <attribute name="createAt" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="customParameters" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="datetime" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="dialogID" optional="YES" attributeType="String" syncable="YES"/>
@@ -33,12 +34,13 @@
         <attribute name="senderNick" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="state" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="updateAt" optional="YES" attributeType="Date" syncable="YES"/>
         <relationship name="attachments" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDAttachment" inverseName="message" inverseEntity="CDAttachment" syncable="YES"/>
         <relationship name="dialog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDDialog" inverseName="messages" inverseEntity="CDDialog" syncable="YES"/>
     </entity>
     <elements>
         <element name="CDAttachment" positionX="-333" positionY="-96" width="128" height="105"/>
         <element name="CDDialog" positionX="-713" positionY="-217" width="128" height="240"/>
-        <element name="CDMessage" positionX="-567" positionY="-216" width="128" height="240"/>
+        <element name="CDMessage" positionX="-567" positionY="-216" width="128" height="270"/>
     </elements>
 </model>

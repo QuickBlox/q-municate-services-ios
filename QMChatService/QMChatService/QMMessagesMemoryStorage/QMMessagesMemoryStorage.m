@@ -27,32 +27,31 @@
 
 #pragma mark - Setters
 
-- (void)addMessage:(QBChatMessage *)message
-       forDialogID:(NSString *)dialogID {
+- (void)addMessage:(QBChatMessage *)message forDialogID:(NSString *)dialogID {
     
-    NSMutableArray *datasource = [self datasourceWithDialogID:dialogID];
+    NSMutableArray *datasource = [self dataSourceWithDialogID:dialogID];
 
     [datasource addObject:message];
 }
 
 #pragma mark - replace
 
-- (void)replaceMessages:(NSArray *)messages
-            forDialogID:(NSString *)dialogID {
+- (void)replaceMessages:(NSArray *)messages forDialogID:(NSString *)dialogID {
     
-    NSMutableArray *datasource = [self datasourceWithDialogID:dialogID];
+    NSMutableArray *datasource = [self dataSourceWithDialogID:dialogID];
     [datasource removeAllObjects];
     [datasource addObjectsFromArray:messages];
 }
 
 #pragma mark - Getters
 
-- (NSMutableArray *)datasourceWithDialogID:(NSString *)dialogID {
+- (NSMutableArray *)dataSourceWithDialogID:(NSString *)dialogID {
     
     NSMutableArray *messages = self.datasources[dialogID];
     
     if (!messages) {
         messages = [NSMutableArray array];
+        self.datasources[dialogID] = messages;
     }
     
     return messages;

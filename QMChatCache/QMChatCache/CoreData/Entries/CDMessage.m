@@ -3,13 +3,9 @@
 
 @interface CDMessage ()
 
-// Private interface goes here.
-
 @end
 
-
 @implementation CDMessage
-
 
 - (QBChatHistoryMessage *)toQBChatHistoryMessage {
     
@@ -23,7 +19,9 @@
     chatHistoryMessage.dialogID = self.dialogID;
     chatHistoryMessage.customParameters = [self dictionaryWithBinaryData:self.customParameters].mutableCopy;
     chatHistoryMessage.read = self.isRead.boolValue;
-    
+    chatHistoryMessage.updatedAt = self.updateAt;
+    chatHistoryMessage.createdAt = self.createAt;
+
     NSMutableArray *attachments = [NSMutableArray arrayWithCapacity:self.attachments.count];
     
     for (CDAttachment *cdAttachment in self.attachments) {
@@ -40,6 +38,8 @@
 - (void)updateWithQBChatHistoryMessage:(QBChatHistoryMessage *)message {
     
     self.id = message.ID;
+    self.createAt = message.createdAt;
+    self.updateAt = message.updatedAt;
     self.text = message.text;
     self.datetime = message.datetime;
     self.recipientID = @(message.recipientID);
@@ -78,6 +78,7 @@
 }
 
 - (Class)objectClass {
+    
     return [CDMessage class];
 }
 

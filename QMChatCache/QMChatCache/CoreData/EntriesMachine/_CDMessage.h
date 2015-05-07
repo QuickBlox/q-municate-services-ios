@@ -3,8 +3,8 @@
 
 #import <CoreData/CoreData.h>
 
-
 extern const struct CDMessageAttributes {
+	__unsafe_unretained NSString *createAt;
 	__unsafe_unretained NSString *customParameters;
 	__unsafe_unretained NSString *datetime;
 	__unsafe_unretained NSString *dialogID;
@@ -16,6 +16,7 @@ extern const struct CDMessageAttributes {
 	__unsafe_unretained NSString *senderNick;
 	__unsafe_unretained NSString *state;
 	__unsafe_unretained NSString *text;
+	__unsafe_unretained NSString *updateAt;
 } CDMessageAttributes;
 
 extern const struct CDMessageRelationships {
@@ -23,23 +24,8 @@ extern const struct CDMessageRelationships {
 	__unsafe_unretained NSString *dialog;
 } CDMessageRelationships;
 
-extern const struct CDMessageFetchedProperties {
-} CDMessageFetchedProperties;
-
 @class CDAttachment;
 @class CDDialog;
-
-
-
-
-
-
-
-
-
-
-
-
 
 @interface CDMessageID : NSManagedObjectID {}
 @end
@@ -48,157 +34,87 @@ extern const struct CDMessageFetchedProperties {
 + (id)insertInManagedObjectContext:(NSManagedObjectContext*)moc_;
 + (NSString*)entityName;
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
-- (CDMessageID*)objectID;
+@property (nonatomic, readonly, strong) CDMessageID* objectID;
 
+@property (nonatomic, strong) NSDate* createAt;
 
-
-
+//- (BOOL)validateCreateAt:(id*)value_ error:(NSError**)error_;
 
 @property (nonatomic, strong) NSData* customParameters;
 
-
-
 //- (BOOL)validateCustomParameters:(id*)value_ error:(NSError**)error_;
-
-
-
-
 
 @property (nonatomic, strong) NSDate* datetime;
 
-
-
 //- (BOOL)validateDatetime:(id*)value_ error:(NSError**)error_;
-
-
-
-
 
 @property (nonatomic, strong) NSString* dialogID;
 
-
-
 //- (BOOL)validateDialogID:(id*)value_ error:(NSError**)error_;
-
-
-
-
 
 @property (nonatomic, strong) NSString* id;
 
-
-
 //- (BOOL)validateId:(id*)value_ error:(NSError**)error_;
-
-
-
-
 
 @property (nonatomic, strong) NSNumber* isRead;
 
-
-
-@property BOOL isReadValue;
+@property (atomic) BOOL isReadValue;
 - (BOOL)isReadValue;
 - (void)setIsReadValue:(BOOL)value_;
 
 //- (BOOL)validateIsRead:(id*)value_ error:(NSError**)error_;
 
-
-
-
-
 @property (nonatomic, strong) NSNumber* recipientID;
 
-
-
-@property int32_t recipientIDValue;
+@property (atomic) int32_t recipientIDValue;
 - (int32_t)recipientIDValue;
 - (void)setRecipientIDValue:(int32_t)value_;
 
 //- (BOOL)validateRecipientID:(id*)value_ error:(NSError**)error_;
 
-
-
-
-
 @property (nonatomic, strong) NSString* roomId;
-
-
 
 //- (BOOL)validateRoomId:(id*)value_ error:(NSError**)error_;
 
-
-
-
-
 @property (nonatomic, strong) NSNumber* senderID;
 
-
-
-@property int32_t senderIDValue;
+@property (atomic) int32_t senderIDValue;
 - (int32_t)senderIDValue;
 - (void)setSenderIDValue:(int32_t)value_;
 
 //- (BOOL)validateSenderID:(id*)value_ error:(NSError**)error_;
 
-
-
-
-
 @property (nonatomic, strong) NSString* senderNick;
-
-
 
 //- (BOOL)validateSenderNick:(id*)value_ error:(NSError**)error_;
 
-
-
-
-
 @property (nonatomic, strong) NSNumber* state;
 
-
-
-@property int16_t stateValue;
+@property (atomic) int16_t stateValue;
 - (int16_t)stateValue;
 - (void)setStateValue:(int16_t)value_;
 
 //- (BOOL)validateState:(id*)value_ error:(NSError**)error_;
 
-
-
-
-
 @property (nonatomic, strong) NSString* text;
-
-
 
 //- (BOOL)validateText:(id*)value_ error:(NSError**)error_;
 
+@property (nonatomic, strong) NSDate* updateAt;
 
-
-
+//- (BOOL)validateUpdateAt:(id*)value_ error:(NSError**)error_;
 
 @property (nonatomic, strong) NSSet *attachments;
 
 - (NSMutableSet*)attachmentsSet;
 
-
-
-
 @property (nonatomic, strong) CDDialog *dialog;
 
 //- (BOOL)validateDialog:(id*)value_ error:(NSError**)error_;
 
-
-
-
-
 @end
 
-@interface _CDMessage (CoreDataGeneratedAccessors)
-
+@interface _CDMessage (AttachmentsCoreDataGeneratedAccessors)
 - (void)addAttachments:(NSSet*)value_;
 - (void)removeAttachments:(NSSet*)value_;
 - (void)addAttachmentsObject:(CDAttachment*)value_;
@@ -208,30 +124,20 @@ extern const struct CDMessageFetchedProperties {
 
 @interface _CDMessage (CoreDataGeneratedPrimitiveAccessors)
 
+- (NSDate*)primitiveCreateAt;
+- (void)setPrimitiveCreateAt:(NSDate*)value;
 
 - (NSData*)primitiveCustomParameters;
 - (void)setPrimitiveCustomParameters:(NSData*)value;
 
-
-
-
 - (NSDate*)primitiveDatetime;
 - (void)setPrimitiveDatetime:(NSDate*)value;
-
-
-
 
 - (NSString*)primitiveDialogID;
 - (void)setPrimitiveDialogID:(NSString*)value;
 
-
-
-
 - (NSString*)primitiveId;
 - (void)setPrimitiveId:(NSString*)value;
-
-
-
 
 - (NSNumber*)primitiveIsRead;
 - (void)setPrimitiveIsRead:(NSNumber*)value;
@@ -239,23 +145,14 @@ extern const struct CDMessageFetchedProperties {
 - (BOOL)primitiveIsReadValue;
 - (void)setPrimitiveIsReadValue:(BOOL)value_;
 
-
-
-
 - (NSNumber*)primitiveRecipientID;
 - (void)setPrimitiveRecipientID:(NSNumber*)value;
 
 - (int32_t)primitiveRecipientIDValue;
 - (void)setPrimitiveRecipientIDValue:(int32_t)value_;
 
-
-
-
 - (NSString*)primitiveRoomId;
 - (void)setPrimitiveRoomId:(NSString*)value;
-
-
-
 
 - (NSNumber*)primitiveSenderID;
 - (void)setPrimitiveSenderID:(NSNumber*)value;
@@ -263,14 +160,8 @@ extern const struct CDMessageFetchedProperties {
 - (int32_t)primitiveSenderIDValue;
 - (void)setPrimitiveSenderIDValue:(int32_t)value_;
 
-
-
-
 - (NSString*)primitiveSenderNick;
 - (void)setPrimitiveSenderNick:(NSString*)value;
-
-
-
 
 - (NSNumber*)primitiveState;
 - (void)setPrimitiveState:(NSNumber*)value;
@@ -278,23 +169,16 @@ extern const struct CDMessageFetchedProperties {
 - (int16_t)primitiveStateValue;
 - (void)setPrimitiveStateValue:(int16_t)value_;
 
-
-
-
 - (NSString*)primitiveText;
 - (void)setPrimitiveText:(NSString*)value;
 
-
-
-
+- (NSDate*)primitiveUpdateAt;
+- (void)setPrimitiveUpdateAt:(NSDate*)value;
 
 - (NSMutableSet*)primitiveAttachments;
 - (void)setPrimitiveAttachments:(NSMutableSet*)value;
 
-
-
 - (CDDialog*)primitiveDialog;
 - (void)setPrimitiveDialog:(CDDialog*)value;
-
 
 @end
