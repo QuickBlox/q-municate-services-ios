@@ -1,3 +1,4 @@
+
 //
 //  QMBaseAuthService.m
 //  Q-municate
@@ -37,8 +38,7 @@
 
 #pragma mark - Will Start
 
-- (void)willStart {
-    [super willStart];
+- (void)serviceWillStart {
     
     self.multicastDelegate = (id<QMAuthServiceDelegate>)[[QBMulticastDelegate alloc] init];
 }
@@ -49,9 +49,9 @@
     
     QBRequest *request =
     [QBRequest logOutWithSuccessBlock:^(QBResponse *response) {
-        //Notify subscribes abot logout
-        if ([weakSelf.multicastDelegate respondsToSelector:@selector(authServiceDidLogOut)]) {
-            [weakSelf.multicastDelegate authServiceDidLogOut];
+        //Notify subscribes about logout
+        if ([weakSelf.multicastDelegate respondsToSelector:@selector(authServiceDidLogOut:)]) {
+            [weakSelf.multicastDelegate authServiceDidLogOut:self];
         }
         
         weakSelf.isAuthorized = NO;
@@ -61,7 +61,7 @@
         
     } errorBlock:^(QBResponse *response) {
         
-        [weakSelf showMessageForQBResponce:response];
+        [weakSelf.serviceManager handleErrorResponse:response];
         
         if (completion)
             completion(response);
@@ -82,7 +82,7 @@
         
     } errorBlock:^(QBResponse *response) {
         
-        [weakSelf showMessageForQBResponce:response];
+        [weakSelf.serviceManager handleErrorResponse:response];
         
         if (completion)
             completion(response, nil);
@@ -97,16 +97,27 @@
     
     __weak __typeof(self)weakSelf = self;
     //Common error block
-    void (^errorBlock)(id) = ^(QBResponse *response){
+    void (^errorBlock)(id) = ^(QBResponse *response) {
         
-        [weakSelf showMessageForQBResponce:response];
-        completion(response, nil);
+        [weakSelf.serviceManager handleErrorResponse:response];
+        
+        if (completion) {
+            completion(response, nil);
+        }
     };
     
     void (^successBlock)(id, id) = ^(QBResponse *response, QBUUser *userProfile){
         
         weakSelf.isAuthorized = YES;
-        completion(response, userProfile);
+        userProfile.password = user.password;
+        
+        if ([weakSelf.multicastDelegate respondsToSelector:@selector(authService:didLoginWithUser:)]) {
+            [weakSelf.multicastDelegate authService:weakSelf didLoginWithUser:userProfile];
+        }
+        
+        if (completion) {
+            completion(response, userProfile);
+        }
     };
     
     QBRequest *request = nil;
@@ -127,26 +138,32 @@
 
 #pragma mark - Social auth
 
-- (QBRequest *)logInWithFacebookSessionToken:(NSString *)sessionToken
-                                  completion:(void(^)(QBResponse *response, QBUUser *userProfile))completion {
+- (QBRequest *)logInWithFacebookSessionToken:(NSString *)sessionToken completion:(void(^)(QBResponse *response, QBUUser *userProfile))completion {
     
     __weak __typeof(self)weakSelf = self;
     
     QBRequest *request =
-    [QBRequest logInWithSocialProvider:@"facebook" accessToken:sessionToken accessTokenSecret:nil
-                          successBlock:^(QBResponse *response, QBUUser *tUser)
-     {
+    [QBRequest logInWithSocialProvider:@"facebook" accessToken:sessionToken accessTokenSecret:nil successBlock:^(QBResponse *response, QBUUser *tUser) {
          //set password
-         self.isAuthorized = YES;
          tUser.password = [QBBaseModule sharedModule].token;
-         completion(response, tUser);
-         
+        
+        self.isAuthorized = YES;
+        
+        if ([weakSelf.multicastDelegate respondsToSelector:@selector(authService:didLoginWithUser:)]) {
+            [weakSelf.multicastDelegate authService:weakSelf didLoginWithUser:tUser];
+        }
+        
+        if (completion) {
+            completion(response, tUser);
+        }
+        
      } errorBlock:^(QBResponse *response) {
          
-         [weakSelf showMessageForQBResponce:response];
+         [weakSelf.serviceManager handleErrorResponse:response];
          
-         if (completion)
+         if (completion) {
              completion(response, nil);
+         }
      }];
     
     return request;

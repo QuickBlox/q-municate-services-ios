@@ -8,26 +8,19 @@
 
 #import <Foundation/Foundation.h>
 #import "QMMemoryStorageProtocol.h"
-#import "QMUserProfileProtocol.h"
+#import "QMServiceManagerProtocol.h"
 
 @interface QMBaseService : NSObject <QMMemoryStorageProtocol>
 
-@property (weak, nonatomic, readonly) id <QMUserProfileProtocol> userProfileDataSource;
+@property (weak, nonatomic, readonly) id <QMServiceManagerProtocol> serviceManager;
 
 - (id)init __attribute__((unavailable("init is not a supported initializer for this class.")));
 
-- (instancetype)initWithUserProfileDataSource:(id<QMUserProfileProtocol>)userProfileDataSource;
+- (instancetype)initWithServiceManager:(id<QMServiceManagerProtocol>)serviceManager;
 
 /**
  *  Called when the servise is will begin start
  */
-- (void)willStart;
-
-/**
- *  Handle QBResponce
- *
- *  @param responce QBResponse instanse
- */
-- (void)showMessageForQBResponce:(QBResponse *)responce;
+- (void)serviceWillStart;
 
 @end

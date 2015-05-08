@@ -48,8 +48,8 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  *
  *  @return QMContactListService instance
  */
-- (instancetype)initWithUserProfileDataSource:(id<QMUserProfileProtocol>)userProfileDataSource
-                                cacheDelegate:(id<QMContactListServiceCacheDelegate>)cacheDelegate;
+- (instancetype)initWithServiceManager:(id<QMServiceManagerProtocol>)serviceManager
+                         cacheDelegate:(id<QMContactListServiceCacheDelegate>)cacheDelegate;
 
 /**
  *  Add instance that confirms contact list service multicaste protocol

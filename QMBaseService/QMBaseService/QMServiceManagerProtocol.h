@@ -8,9 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol QMUserProfileProtocol <NSObject>
+@protocol QMServiceManagerProtocol <NSObject>
 
 - (QBUUser *)currentUser;
-- (BOOL)userIsAutorized;
+- (BOOL)isAutorized;
+- (void)handleErrorResponse:(QBResponse *)response;
 
 @end

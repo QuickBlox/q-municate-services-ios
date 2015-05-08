@@ -40,8 +40,8 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  *
  *  @return Return QMChatService instance
  */
-- (instancetype)initWithUserProfileDataSource:(id<QMUserProfileProtocol>)userProfileDataSource
-                                cacheDelegate:(id<QMChatServiceCacheDelegate>)cacheDelegate;
+- (instancetype)initWithServiceManager:(id<QMServiceManagerProtocol>)serviceManager
+                         cacheDelegate:(id<QMChatServiceCacheDelegate>)cacheDelegate;
 /**
  *  Add delegate (Multicast)
  *
@@ -131,7 +131,7 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 @optional
 
 - (void)chatServiceDidLoadDialogsFromCache;
-- (void)chatServiceDidLoadMessagesFromCacheForDialogID:(NSString *)dilaogID;
+- (void)chatServiceDidLoadMessagesFromCacheForDialogID:(NSString *)dialogID;
 
 - (void)chatService:(QMChatService *)chatService didAddChatDialog:(QBChatDialog *)chatDialog;
 - (void)chatService:(QMChatService *)chatService didAddChatDialogs:(NSArray *)chatDialogs;

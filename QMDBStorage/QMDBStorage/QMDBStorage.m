@@ -22,20 +22,21 @@
 
 - (instancetype)initWithStoreNamed:(NSString *)storeName
                              model:(NSManagedObjectModel *)model
-                        queueLabel:(const char *)queueLabel
-{
+                        queueLabel:(const char *)queueLabel {
+    
     self = [super init];
     if (self) {
         
         self.queue = dispatch_queue_create(queueLabel, NULL);
         //Create Chat coredata stack
-        self.stack = [SQLiteQMCDRecordStack stackWithStoreNamed:storeName
-                                                          model:model];
+        self.stack = [SQLiteQMCDRecordStack stackWithStoreNamed:storeName model:model];
     }
+    
     return self;
 }
 
 + (void)setupDBWithStoreNamed:(NSString *)storeName {
+    
     NSAssert(nil, @"must be overloaded");
 }
 
@@ -52,7 +53,6 @@
             NSLog(@"Error description: %@", error.description);
         }
         else {
-            
             NSLog(@"Clear %@ - Done!", storeUrl);
         }
     }
@@ -61,7 +61,6 @@
 - (NSManagedObjectContext *)bgContex {
     
     if (!_bgContex) {
-        
         _bgContex = [NSManagedObjectContext QM_confinementContextWithParent:self.stack.context];
     }
     
@@ -71,7 +70,6 @@
 - (void)async:(void(^)(NSManagedObjectContext *context))block {
     
     dispatch_async(self.queue, ^{
-        
         block(self.bgContex);
     });
 }
@@ -79,7 +77,6 @@
 - (void)sync:(void(^)(NSManagedObjectContext *context))block {
     
     dispatch_sync(self.queue, ^{
-        
         block(self.bgContex);
     });
 }
@@ -91,7 +88,6 @@
         [context QM_saveToPersistentStoreAndWait];
         
         if(completion) {
-            
             DO_AT_MAIN(completion());
         }
     }];

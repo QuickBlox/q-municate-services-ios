@@ -36,9 +36,8 @@
  *
  *  @return Canceble request
  */
-- (QBRequest *)signUpAndLoginWithUser:(QBUUser *)user
-                           completion:(void(^)(QBResponse *response,
-                                               QBUUser *userProfile))completion;
+- (QBRequest *)signUpAndLoginWithUser:(QBUUser *)user completion:(void(^)(QBResponse *response, QBUUser *userProfile))completion;
+
 /**
  *  User login
  *
@@ -47,14 +46,25 @@
  *
  *  @return Canceble request
  */
-- (QBRequest *)logInWithUser:(QBUUser *)user
-                  completion:(void(^)(QBResponse *response,
-                                      QBUUser *userProfile))completion;
+- (QBRequest *)logInWithUser:(QBUUser *)user completion:(void(^)(QBResponse *response, QBUUser *userProfile))completion;
 
-- (QBRequest *)logInWithFacebookSessionToken:(NSString *)sessionToken
-                                  completion:(void(^)(QBResponse *response,
-                                                      QBUUser *userProfile))completion;
+/**
+ *  Login with facebook
+ *
+ *  @param sessionToken Facebook session token
+ *  @param completion   Completion block
+ *
+ *  @return Canceble request
+ */
+- (QBRequest *)logInWithFacebookSessionToken:(NSString *)sessionToken completion:(void(^)(QBResponse *response, QBUUser *userProfile))completion;
 
+/**
+ *  Logout
+ *
+ *  @param completion completion block
+ *
+ *  @return Cancable request
+ */
 - (QBRequest *)logOut:(void(^)(QBResponse *response))completion;
 
 @end
@@ -62,6 +72,7 @@
 @protocol QMAuthServiceDelegate <NSObject>
 @optional
 
-- (void)authServiceDidLogOut;
+- (void)authServiceDidLogOut:(QMAuthService *)authService;
+- (void)authService:(QMAuthService *)authService didLoginWithUser:(QBUUser *)user;
 
 @end
