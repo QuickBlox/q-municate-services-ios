@@ -9,7 +9,7 @@
 typedef NS_ENUM(NSUInteger, QMMessageType) {
 
     /** Default message type*/
-    QMMessageTypeDefault,
+    QMMessageTypeText,
     QMMessageTypeNotificationAboutCreateGroupDialog,
     QMMessageTypeNotificationAboutUpdateGroupDialog,
     

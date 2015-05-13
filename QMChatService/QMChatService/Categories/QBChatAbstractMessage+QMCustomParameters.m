@@ -199,6 +199,11 @@ NSString const *kQMCustomParameterDialogDeletedID = @"deleted_id";
     return [self.context[kQMCustomParameterMessageType] integerValue];
 }
 
+- (BOOL)isNotificatonMessage {
+    
+    return self.messageType != QMMessageTypeText;
+}
+
 #pragma mark - messageDeliveryStatus
 
 - (void)setMessageDeliveryStatus:(BOOL)messageDeliveryStatus {

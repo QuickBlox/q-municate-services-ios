@@ -42,6 +42,8 @@
  *  Return `YES` if this item is a media message, and `NO` if it is a text message.
  */
 - (BOOL)isMediaMessage;
+
+- (BOOL)isNotificatonMessage;
 /**
  *  Set custom parameters with chat dialogs
  */

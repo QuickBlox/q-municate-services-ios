@@ -254,7 +254,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     
     NSAssert(message.dialogID, @"Need update this case");
     
-    if (message.messageType == QMMessageTypeDefault) {
+    if (message.messageType == QMMessageTypeText) {
         
         if (message.recipientID != message.senderID) {
             
