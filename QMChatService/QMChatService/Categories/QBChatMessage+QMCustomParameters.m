@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Quickblox. All rights reserved.
 //
 
-#import "QBChatAbstractMessage+QMCustomParameters.h"
+#import "QBChatMessage+QMCustomParameters.h"
 #import <objc/runtime.h>
 
 /*Message keys*/
@@ -24,20 +24,20 @@ NSString const *kQMCustomParameterDialogType = @"type";
 NSString const *kQMCustomParameterDialogOccupantsIDs = @"occupants_ids";
 NSString const *kQMCustomParameterDialogDeletedID = @"deleted_id";
 
-@interface QBChatAbstractMessage (Context)
+@interface QBChatMessage (Context)
 
 @property (strong, nonatomic) NSMutableDictionary *context;
 @property (strong, nonatomic) QBChatDialog *tDialog;
 
 @end
 
-@implementation QBChatAbstractMessage (QMCustomParameters)
+@implementation QBChatMessage (QMCustomParameters)
 
 /*Message params*/
 @dynamic saveToHistory;
 @dynamic messageType;
 @dynamic chatMessageID;
-@dynamic dateSent;
+@dynamic customDateSent;
 @dynamic messageDeliveryStatus;
 @dynamic dialog;
 
@@ -130,12 +130,12 @@ NSString const *kQMCustomParameterDialogDeletedID = @"deleted_id";
 
 #pragma mark - dateSent
 
-- (void)setDateSent:(NSNumber *)dateSent {
+- (void)setCustomDateSent:(NSNumber *)dateSent {
     
     self.context[kQMCustomParameterDateSent] = dateSent;
 }
 
-- (NSNumber *)dateSent {
+- (NSNumber *)customDateSent {
     
     return self.context[kQMCustomParameterDateSent];
 }

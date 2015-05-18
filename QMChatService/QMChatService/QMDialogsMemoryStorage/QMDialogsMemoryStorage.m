@@ -7,7 +7,7 @@
 //
 
 #import "QMDialogsMemoryStorage.h"
-#import "QBChatAbstractMessage+QMCustomParameters.h"
+#import "QBChatMessage+QMCustomParameters.h"
 
 @interface QMDialogsMemoryStorage()
 

@@ -34,7 +34,7 @@
 		<key>958932E9D08E4465709D54DB1E7CECF23B0F442E</key>
 		<string>../../../qmunicate-services-ios/Submodules/MagicalRecord</string>
 		<key>A670EF64B516360FDFADDE04B3B3446E684984BD</key>
-		<string>../../../..</string>
+		<string>../../..</string>
 		<key>CD485F9DBB514108FD41E7D5D6331AFE39B74C24</key>
 		<string>../../..</string>
 		<key>D160C3FE7B115E6635EB21EBE93000EBA4B81BC8</key>
@@ -52,7 +52,7 @@
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>CD485F9DBB514108FD41E7D5D6331AFE39B74C24</string>
+			<string>A670EF64B516360FDFADDE04B3B3446E684984BD</string>
 			<key>IDESourceControlWCCName</key>
 			<string></string>
 		</dict>
@@ -68,9 +68,9 @@
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>A670EF64B516360FDFADDE04B3B3446E684984BD</string>
+			<string>CD485F9DBB514108FD41E7D5D6331AFE39B74C24</string>
 			<key>IDESourceControlWCCName</key>
-			<string>..</string>
+			<string></string>
 		</dict>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>

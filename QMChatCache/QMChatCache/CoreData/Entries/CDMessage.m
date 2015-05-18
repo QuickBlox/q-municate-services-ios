@@ -7,15 +7,15 @@
 
 @implementation CDMessage
 
-- (QBChatHistoryMessage *)toQBChatHistoryMessage {
+- (QBChatMessage *)toQBChatHistoryMessage {
     
-    QBChatHistoryMessage *chatHistoryMessage = [[QBChatHistoryMessage alloc] init];
+    QBChatMessage *chatHistoryMessage = [[QBChatMessage alloc] init];
     
     chatHistoryMessage.ID = self.id;
     chatHistoryMessage.text = self.text;
     chatHistoryMessage.recipientID = self.recipientID.intValue;
     chatHistoryMessage.senderID = self.senderID.intValue;
-    chatHistoryMessage.datetime = self.datetime;
+    chatHistoryMessage.dateSent = self.datetime;
     chatHistoryMessage.dialogID = self.dialogID;
     chatHistoryMessage.customParameters = [self dictionaryWithBinaryData:self.customParameters].mutableCopy;
     chatHistoryMessage.read = self.isRead.boolValue;
@@ -35,13 +35,13 @@
     return chatHistoryMessage;
 }
 
-- (void)updateWithQBChatHistoryMessage:(QBChatHistoryMessage *)message {
+- (void)updateWithQBChatMessage:(QBChatMessage *)message {
     
     self.id = message.ID;
     self.createAt = message.createdAt;
     self.updateAt = message.updatedAt;
     self.text = message.text;
-    self.datetime = message.datetime;
+    self.datetime = message.dateSent;
     self.recipientID = @(message.recipientID);
     self.senderID = @(message.senderID);
     self.dialogID = message.dialogID;

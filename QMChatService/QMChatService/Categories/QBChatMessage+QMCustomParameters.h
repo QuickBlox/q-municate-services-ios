@@ -6,17 +6,17 @@
 //  Copyright (c) 2014 Quickblox. All rights reserved.
 //
 
-#import <Quickblox/Quickblox.h>
+#import <Quickblox/QBChatMessage.h>
 #import "QMChatTypes.h"
 
-@interface QBChatAbstractMessage (QMCustomParameters)
+@interface QBChatMessage (QMCustomParameters)
 /**
  *  Message
  */
 @property (strong, nonatomic) NSString *saveToHistory;
 @property (assign, nonatomic) QMMessageType messageType;
 @property (strong, nonatomic) NSString *chatMessageID;
-@property (strong, nonatomic) NSNumber *dateSent;
+@property (strong, nonatomic) NSNumber *customDateSent;
 @property (assign, nonatomic) BOOL messageDeliveryStatus;
 /**
  *  Dialog

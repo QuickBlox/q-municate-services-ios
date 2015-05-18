@@ -7,9 +7,9 @@
 //
 
 #import "QMChatService.h"
-#import "QBChatAbstractMessage+TextEncoding.h"
+#import "QBChatMessage+TextEncoding.h"
 #import "NSString+GTMNSStringHTMLAdditions.h"
-#import "QBChatAbstractMessage+QMCustomParameters.h"
+#import "QBChatMessage+QMCustomParameters.h"
 
 const NSTimeInterval kQMPresenceTimeIntervalInSec = 45;
 const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
@@ -210,7 +210,6 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
         
         [QBChat.instance loginWithUser:user];
         
-        QBChat.instance.useMutualSubscriptionForContactList = YES;
         QBChat.instance.autoReconnectEnabled = YES;
         QBChat.instance.streamManagementEnabled = YES;
     }
@@ -264,7 +263,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
             
             QBChatDialog *chatDialogToUpdate = [self.dialogsMemoryStorage chatDialogWithID:dialogID];
             chatDialogToUpdate.lastMessageText = message.encodedText;
-            chatDialogToUpdate.lastMessageDate = [NSDate dateWithTimeIntervalSince1970:message.dateSent.doubleValue];
+            chatDialogToUpdate.lastMessageDate = [NSDate dateWithTimeIntervalSince1970:message.customDateSent.doubleValue];
             chatDialogToUpdate.unreadMessagesCount++;
             //Add message in memory storage
             [self.messagesMemoryStorage addMessage:message forDialogID:dialogID];
@@ -420,7 +419,8 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     chatDialog.name = dialogName;
     
     __weak __typeof(self)weakSelf = self;
-    [QBRequest updateDialog:chatDialog successBlock:^(QBResponse *response, QBChatDialog *updatedDialog) {
+    [QBRequest updateDialog:chatDialog
+               successBlock:^(QBResponse *response, QBChatDialog *updatedDialog) {
         
         [weakSelf.dialogsMemoryStorage addChatDialog:updatedDialog andJoin:NO];
         
@@ -442,8 +442,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
                   completion:(void(^)(QBResponse *response, QBChatDialog *updatedDialog))completion {
     
     __weak __typeof(self)weakSelf = self;
-    [chatDialog setPushOccupantsIDs:ids];
-    
+
     [QBRequest updateDialog:chatDialog successBlock:^(QBResponse *response, QBChatDialog *updatedDialog) {
         
         [weakSelf.dialogsMemoryStorage addChatDialog:updatedDialog andJoin:NO];
@@ -502,7 +501,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     //Set custom parametes @see 
     [message updateCustomParametersWithDialog:dialog];
     message.messageType = type;
-    message.dateSent = self.dateSendTimeInterval;
+    message.customDateSent = self.dateSendTimeInterval;
     message.text = [message.text gtm_stringByEscapingForHTML];
     
     if (save) {
@@ -517,7 +516,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
         historyMessage.senderID = currentUser.ID;
         
         dialog.lastMessageText = historyMessage.encodedText;
-        dialog.lastMessageDate = historyMessage.datetime;
+        dialog.lastMessageDate = historyMessage.dateSent;
         
         [self.messagesMemoryStorage addMessage:historyMessage forDialogID:dialog.ID];
         

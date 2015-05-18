@@ -213,7 +213,7 @@ static QMChatCache *_chatCacheInstance = nil;
     
     for (CDMessage *message in cdMessages) {
         
-        QBChatHistoryMessage *qbChatHistoryMessage = [message toQBChatHistoryMessage];
+        QBChatMessage *qbChatHistoryMessage = [message toQBChatMessage];
         [messages addObject:qbChatHistoryMessage];
     }
     
@@ -242,23 +242,14 @@ static QMChatCache *_chatCacheInstance = nil;
 
 #pragma mark Insert / Update / Delete
 
-- (void)insertOrUpdateMessage:(QBChatMessage *)message withDialogId:(NSString *)dialogID read:(BOOL)isRead completion:(dispatch_block_t)completion {
+- (void)insertOrUpdateMessage:(QBChatMessage *)message withDialogId:(NSString *)dialogID read:(BOOL)isRead completion:(dispatch_block_t)completion {    
+    message.dialogID = dialogID;
+    message.read = isRead;
     
-    QBChatHistoryMessage* historyMessage = [QBChatHistoryMessage new];
-    historyMessage.dialogID = dialogID;
-    historyMessage.read = isRead;
-    historyMessage.ID = message.ID;
-    historyMessage.text = message.text;
-    historyMessage.recipientID = message.recipientID;
-    historyMessage.senderID = message.senderID;
-    historyMessage.datetime = message.datetime;
-    historyMessage.customParameters = message.customParameters;
-    historyMessage.attachments = message.attachments;
-    
-    [self insertOrUpdateMessage:historyMessage withDialogId:dialogID completion:completion];
+    [self insertOrUpdateMessage:message withDialogId:dialogID completion:completion];
 }
 
-- (void)insertOrUpdateMessage:(QBChatHistoryMessage *)message withDialogId:(NSString *)dialogID completion:(dispatch_block_t)completion {
+- (void)insertOrUpdateMessage:(QBChatMessage *)message withDialogId:(NSString *)dialogID completion:(dispatch_block_t)completion {
     
     __weak __typeof(self)weakSelf = self;
     
@@ -269,11 +260,11 @@ static QMChatCache *_chatCacheInstance = nil;
                                    inContext:context];
         if (cdMessage) {
             //Update if needed
-            QBChatHistoryMessage *qmMessage = [cdMessage toQBChatHistoryMessage];
+            QBChatMessage *qmMessage = [cdMessage toQBChatMessage];
             
             if (![message isEqual:qmMessage]) {
                 
-                [cdMessage updateWithQBChatHistoryMessage:message];
+                [cdMessage updateWithQBChatMessage:message];
                 NSLog(@"Update new QBChatHistoryMessage -  %@ with dialogID - %@",message.ID, dialogID);
             }
         }
@@ -281,7 +272,7 @@ static QMChatCache *_chatCacheInstance = nil;
             //Insert new message
             CDMessage *messageToInsert = [CDMessage QM_createEntityInContext:context];
             
-            [messageToInsert updateWithQBChatHistoryMessage:message];
+            [messageToInsert updateWithQBChatMessage:message];
             NSLog(@"Insert new QBChatHistoryMessage -  %@ with dialogID - %@",message.ID, dialogID);
         }
         
@@ -299,10 +290,10 @@ static QMChatCache *_chatCacheInstance = nil;
         NSMutableArray *toUpdate = [NSMutableArray array];
         
         //To Insert / Update
-        for (QBChatHistoryMessage *message in messages) {
+        for (QBChatMessage *message in messages) {
             
             CDMessage *cdMessage = [CDMessage QM_findFirstWithPredicate:IS(@"id", message.ID) inContext:context];
-            QBChatHistoryMessage *cachedMessage = [cdMessage toQBChatHistoryMessage];
+            QBChatMessage *cachedMessage = [cdMessage toQBChatMessage];
             
             if (cdMessage) {
                 
@@ -340,17 +331,15 @@ static QMChatCache *_chatCacheInstance = nil;
 }
 
 - (void)insertMessages:(NSArray *)messages inContext:(NSManagedObjectContext *)context {
-    
-    for (QBChatHistoryMessage *message in messages) {
-        
+    for (QBChatMessage *message in messages) {
         CDMessage *messageToInsert = [CDMessage QM_createEntityInContext:context];
-        [messageToInsert updateWithQBChatHistoryMessage:message];
+        [messageToInsert updateWithQBChatMessage:message];
     }
 }
 
 - (void)deleteMessages:(NSArray *)messages inContext:(NSManagedObjectContext *)context {
     
-    for (QBChatHistoryMessage *qbChatHistoryMessage in messages) {
+    for (QBChatMessage *qbChatHistoryMessage in messages) {
         
         [self deleteMessage:qbChatHistoryMessage inContext:context];
     }
@@ -358,20 +347,20 @@ static QMChatCache *_chatCacheInstance = nil;
 
 - (void)updateMessages:(NSArray *)messages inContext:(NSManagedObjectContext *)context {
     
-    for (QBChatHistoryMessage *message in messages) {
+    for (QBChatMessage *message in messages) {
         
         CDMessage *messageToUpdate = [CDMessage QM_findFirstWithPredicate:IS(@"id", message.ID) inContext:context];
-        [messageToUpdate updateWithQBChatHistoryMessage:message];
+        [messageToUpdate updateWithQBChatMessage:message];
     }
 }
 
-- (void)deleteMessage:(QBChatHistoryMessage *)message inContext:(NSManagedObjectContext *)context {
+- (void)deleteMessage:(QBChatMessage *)message inContext:(NSManagedObjectContext *)context {
     
     CDMessage *messageToDelete = [CDMessage QM_findFirstWithPredicate:IS(@"id", message.ID) inContext:context];
     [messageToDelete QM_deleteEntityInContext:context];
 }
 
-- (void)deleteMessage:(QBChatHistoryMessage *)message completion:(dispatch_block_t)completion {
+- (void)deleteMessage:(QBChatMessage *)message completion:(dispatch_block_t)completion {
     
     __weak __typeof(self)weakSelf = self;
     

@@ -6,13 +6,13 @@
 //  Copyright (c) 2014 Quickblox. All rights reserved.
 //
 
-#import "QBChatAbstractMessage+TextEncoding.h"
+#import "QBChatMessage+TextEncoding.h"
 #import "NSString+GTMNSStringHTMLAdditions.h"
 #import <objc/runtime.h>
 
 static const char encodedTextKey;
 
-@implementation QBChatAbstractMessage (TextEncoding)
+@implementation QBChatMessage (TextEncoding)
 
 -(NSString *)encodedText {
 

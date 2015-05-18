@@ -145,7 +145,7 @@
     QBRequest *request =
     [QBRequest logInWithSocialProvider:@"facebook" accessToken:sessionToken accessTokenSecret:nil successBlock:^(QBResponse *response, QBUUser *tUser) {
          //set password
-         tUser.password = [QBBaseModule sharedModule].token;
+         tUser.password = [QBSession currentSession].socialProviderToken;
         
         self.isAuthorized = YES;
         

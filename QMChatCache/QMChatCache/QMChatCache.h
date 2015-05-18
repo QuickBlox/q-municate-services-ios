@@ -119,7 +119,7 @@
  *  @param dialogId   Dialog identifier
  *  @param completion Completion block is called after update or insert operation is completed
  */
-- (void)insertOrUpdateMessage:(QBChatHistoryMessage *)message withDialogId:(NSString *)dialogID completion:(void(^)(void))completion;
+- (void)insertOrUpdateMessage:(QBChatMessage *)message withDialogId:(NSString *)dialogID completion:(void(^)(void))completion;
 
 /**
  *  Add message to cache

@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Quickblox. All rights reserved.
 //
 
-#import <Quickblox/QBChatAbstractMessage.h>
+#import <Quickblox/QBChatMessage.h>
 
-@interface QBChatAbstractMessage (TextEncoding)
+@interface QBChatMessage (TextEncoding)
 
 @property (strong, nonatomic, readonly) NSString *encodedText;
 
