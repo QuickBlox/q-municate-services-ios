@@ -9,7 +9,19 @@
 #import <Foundation/Foundation.h>
 #import "QMMemoryStorageProtocol.h"
 
+@protocol QMUsersMemoryStorageDelegate <NSObject>
+
+- (NSArray *)contactsIDS;
+
+@end
+
 @interface QMUsersMemoryStorage : NSObject <QMMemoryStorageProtocol>
+
+@property (weak, nonatomic) id <QMUsersMemoryStorageDelegate> delegate;
+/**
+ *  Array of QBUUser's 
+ */
+@property (strong, nonatomic, readonly) NSArray *conatcts;
 
 - (void)addUser:(QBUUser *)user;
 - (void)addUsers:(NSArray *)users;
@@ -19,7 +31,16 @@
 
 #pragma mark - Sorting
 
-- (NSArray *)unsorterd;
-- (NSArray *)sortedByName:(BOOL)ascending;
+- (NSArray *)unsorterdUsers;
+- (NSArray *)usersSortedByKey:(NSString *)key ascending:(BOOL)ascending;
+
+#pragma mark Contacts
+
+- (NSArray *)contactsSortedByKey:(NSString *)key ascending:(BOOL)ascending;
+
+#pragma mark Utils
+
+- (NSArray *)usersWithIDs:(NSArray *)IDs withoutID:(NSUInteger)ID;
+- (NSString *)joinedNamesbyUsers:(NSArray *)users;
 
 @end

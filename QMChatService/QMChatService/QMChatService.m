@@ -252,28 +252,31 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 
 - (void)handleChatMessage:(QBChatMessage *)message {
     
-    NSAssert(message.dialogID, @"Need update this case");
+    NSString *dialogID = message.dialog.ID;
+    
+    NSAssert(dialogID, @"Need update this case");
     
     if (message.messageType == QMMessageTypeText) {
         
         if (message.recipientID != message.senderID) {
             
             //Update chat dialog from memroy storage
-            QBChatDialog *chatDialogToUpdate = [self.dialogsMemoryStorage chatDialogWithID:message.dialogID];
+            
+            QBChatDialog *chatDialogToUpdate = [self.dialogsMemoryStorage chatDialogWithID:dialogID];
             chatDialogToUpdate.lastMessageText = message.encodedText;
             chatDialogToUpdate.lastMessageDate = [NSDate dateWithTimeIntervalSince1970:message.dateSent.doubleValue];
             chatDialogToUpdate.unreadMessagesCount++;
             //Add message in memory storage
-            [self.messagesMemoryStorage addMessage:message forDialogID:message.dialogID];
+            [self.messagesMemoryStorage addMessage:message forDialogID:dialogID];
             
             if ([self.multicastDelegate respondsToSelector:@selector(chatServiceDidAddMessageToHistory:forDialogID:)]) {
-                [self.multicastDelegate chatServiceDidAddMessageToHistory:message forDialogID:message.dialogID];
+                [self.multicastDelegate chatServiceDidAddMessageToHistory:message forDialogID:dialogID];
             }
         }
     }
-    else if (message.messageType == QMMessageTypeNotificationAboutCreateGroupDialog) {
+    else if (message.messageType == QMMessageTypeCreateGroupDialog) {
         
-        QBChatDialog *newChatDialog = [message chatDialogFromCustomParameters];
+        QBChatDialog *newChatDialog = [message dialog];
         
         [self.dialogsMemoryStorage addChatDialog:newChatDialog andJoin:YES];
         
@@ -281,12 +284,12 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
             [self.multicastDelegate chatServiceDidReceiveNotificationMessage:message createDialog:newChatDialog];
         }
     }
-    else if (message.messageType == QMMessageTypeNotificationAboutUpdateGroupDialog) {
+    else if (message.messageType == QMMessageTypeUpdateGroupDialog) {
         
-        QBChatDialog *chatDialogToUpdate = [self.dialogsMemoryStorage chatDialogWithID:message.dialogID];
+        QBChatDialog *chatDialogToUpdate = [self.dialogsMemoryStorage chatDialogWithID:dialogID];
         
-        chatDialogToUpdate.name = message.roomName;
-        chatDialogToUpdate.photo = message.roomPhoto;
+        chatDialogToUpdate.name = message.dialog.name;
+        chatDialogToUpdate.photo = message.dialog.photo;
         
         if ([self.multicastDelegate respondsToSelector:@selector(chatServiceDidReceiveNotificationMessage:updateDialog:)]) {
             [self.multicastDelegate chatServiceDidReceiveNotificationMessage:message updateDialog:chatDialogToUpdate];
@@ -371,9 +374,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     }
 }
 
-- (void)createGroupChatDialogWithName:(NSString *)name
-                                photo:(NSString *)photo
-                            occupants:(NSArray *)occupants
+- (void)createGroupChatDialogWithName:(NSString *)name photo:(NSString *)photo occupants:(NSArray *)occupants
                            completion:(void(^)(QBResponse *response, QBChatDialog *createdDialog))completion {
     
     NSMutableSet *occupantIDs = [NSMutableSet set];
@@ -498,8 +499,9 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 #pragma mark - Send messages
 
 - (void)sendMessage:(QBChatMessage *)message toDialog:(QBChatDialog *)dialog type:(QMMessageType)type save:(BOOL)save completion:(void(^)(NSError *error))completion {
-    
-    message.dialogID = dialog.ID;
+    //Set custom parametes @see 
+    [message updateCustomParametersWithDialog:dialog];
+    message.messageType = type;
     message.dateSent = self.dateSendTimeInterval;
     message.text = [message.text gtm_stringByEscapingForHTML];
     

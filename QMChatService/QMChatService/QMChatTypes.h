@@ -9,13 +9,13 @@
 typedef NS_ENUM(NSUInteger, QMMessageType) {
 
     /** Default message type*/
-    QMMessageTypeText,
-    QMMessageTypeNotificationAboutCreateGroupDialog,
-    QMMessageTypeNotificationAboutUpdateGroupDialog,
+    QMMessageTypeText = 0,
+    QMMessageTypeCreateGroupDialog = 1,
+    QMMessageTypeUpdateGroupDialog = 2,
     
-    QMMessageTypeNotificationAboutSendContactRequest,
-    QMMessageTypeNotificationAboutConfirmContactRequest,
-    QMMessageTypeNotificationAboutRejectContactRequest,
-    QMMessageTypeNotificationAboutDeleteContactRequest
+    QMMessageTypeContactRequest = 4,
+    QMMessageTypeConfirmContactRequest,
+    QMMessageTypeRejectContactRequest,
+    QMMessageTypeDeleteContactRequest
 };
 

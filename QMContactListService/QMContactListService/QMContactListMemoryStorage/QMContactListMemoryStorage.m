@@ -11,7 +11,6 @@
 @interface QMContactListMemoryStorage()
 
 @property (strong, nonatomic) NSMutableDictionary *contactList;
-
 @property (strong, nonatomic) NSMutableSet *contactRequestsUsersIDs;
 
 @end
@@ -33,32 +32,21 @@
     
     [self.contactList removeAllObjects];
     
-    [contactList.contacts enumerateObjectsUsingBlock:^(QBContactListItem *obj,
-                                                       NSUInteger idx,
-                                                       BOOL *stop) {
-        [self addContactListItem:obj];
+    [contactList.contacts enumerateObjectsUsingBlock:^(QBContactListItem *contactListItem, NSUInteger idx, BOOL *stop) {
+        self.contactList[@(contactListItem.userID)] = contactListItem;
     }];
     
-    [contactList.pendingApproval enumerateObjectsUsingBlock:^(QBContactListItem *obj,
-                                                              NSUInteger idx,
-                                                              BOOL *stop) {
-        [self addContactListItem:obj];
+    [contactList.pendingApproval enumerateObjectsUsingBlock:^(QBContactListItem *contactListItem, NSUInteger idx, BOOL *stop) {
+        self.contactList[@(contactListItem.userID)] = contactListItem;
     }];
 }
 
 - (void)updateWithContactListItems:(NSArray *)contactListItems {
     
     [self.contactList removeAllObjects];
-    [contactListItems enumerateObjectsUsingBlock:^(QBContactListItem *obj,
-                                                   NSUInteger idx,
-                                                   BOOL *stop) {
-        [self addContactListItem:obj];
+    [contactListItems enumerateObjectsUsingBlock:^(QBContactListItem *contactListItem, NSUInteger idx, BOOL *stop) {
+        self.contactList[@(contactListItem.userID)] = contactListItem;
     }];
-}
-
-- (void)addContactListItem:(QBContactListItem *)contactListItem {
-    
-    self.contactList[@(contactListItem.userID)] = contactListItem;
 }
 
 - (NSArray *)userIDsFromContactList {
@@ -71,7 +59,7 @@
     return self.contactList[@(userID)];
 }
 
-#pragma mark - contact request
+#pragma mark - Contact request
 
 - (void)addContactRequestFromUserID:(NSUInteger)userID {
     

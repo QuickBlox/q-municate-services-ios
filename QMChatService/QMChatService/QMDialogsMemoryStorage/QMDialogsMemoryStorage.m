@@ -133,7 +133,7 @@
 
 - (void)addMessageToHistory:(QBChatMessage *)message withDialogID:(NSString *)dialogID {
     
-    NSAssert(message.dialogID == dialogID, @"Check this case");
+    NSAssert(message.dialog.ID == dialogID, @"Check this case");
     NSMutableArray *history = self.messages[dialogID];
     [history addObject:message];
 }

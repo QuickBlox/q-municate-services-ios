@@ -10,7 +10,7 @@
 
 @interface QMContactListService()
 
-<QBChatDelegate>
+<QBChatDelegate, QMUsersMemoryStorageDelegate>
 
 @property (strong, nonatomic) QBMulticastDelegate <QMContactListServiceDelegate> *multicastDelegate;
 @property (weak, nonatomic) id<QMContactListServiceCacheDelegate> cahceDelegate;
@@ -41,6 +41,18 @@
     }
     
     return self;
+}
+
+#pragma mark - Service will start
+
+- (void)serviceWillStart {
+    
+    self.multicastDelegate = (id<QMContactListServiceDelegate>)[[QBMulticastDelegate alloc] init];
+    self.contactListMemoryStorage = [[QMContactListMemoryStorage alloc] init];
+    self.usersMemoryStorage = [[QMUsersMemoryStorage alloc] init];
+    self.usersMemoryStorage.delegate = self;
+    
+    [[QBChat instance] addDelegate:self];
 }
 
 - (void)loadCachedData {
@@ -90,16 +102,6 @@
             }
         });
     });
-}
-
-#pragma mark - Service will start
-
-- (void)serviceWillStart {
-    
-    self.multicastDelegate = (id<QMContactListServiceDelegate>)[[QBMulticastDelegate alloc] init];
-    self.contactListMemoryStorage = [[QMContactListMemoryStorage alloc] init];
-    self.usersMemoryStorage = [[QMUsersMemoryStorage alloc] init];
-    [[QBChat instance] addDelegate:self];
 }
 
 #pragma mark - Add Remove multicaste delegate
@@ -339,36 +341,11 @@
     }];
 }
 
-- (NSArray *)usersWithoutMeWithIDs:(NSArray *)IDs {
-    
-    QBUUser *user = [self.serviceManager currentUser];
-    NSParameterAssert(user);
-    
-    NSMutableArray *withoutMeIDs = IDs.mutableCopy;
-    [withoutMeIDs removeObject:@(user.ID)];
-    
-    return [self.usersMemoryStorage usersWithIDs:withoutMeIDs];
-}
+#pragma mark - QMUsersMemoryStorageDelegate
 
-- (NSArray *)usersFromContactListSortedByFullName {
+- (NSArray *)contactsIDS {
     
-    NSSortDescriptor *sorter =
-    [[NSSortDescriptor alloc] initWithKey:@"fullName" ascending:YES
-                                 selector:@selector(localizedCaseInsensitiveCompare:)];
-    
-    NSArray *sortedUsers = [self.usersFromContactList sortedArrayUsingDescriptors:@[sorter]];
-    
-    return sortedUsers;
-}
-
-#pragma mark - Memory storage
-
-- (NSArray *)usersFromContactList {
-    
-    NSArray *friendsIDS = [self.contactListMemoryStorage userIDsFromContactList];
-    NSArray *friends = [self.usersMemoryStorage usersWithIDs:friendsIDS];
-    
-    return friends;
+    return [self.contactListMemoryStorage userIDsFromContactList];
 }
 
 #pragma QMMemoryStorageProtocol

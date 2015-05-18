@@ -1,5 +1,5 @@
 //
-//  QBChatAbstractMessage+CustomParameters.h
+//  QBChatAbstractMessage+QMCustomParameters.h
 //  Q-municate
 //
 //  Created by Andrey Ivanov on 24.07.14.
@@ -21,13 +21,9 @@
 /**
  *  Dialog
  */
-@property (strong, nonatomic) NSString *dialogID;
-@property (strong, nonatomic) NSString *roomJID;
-@property (strong, nonatomic) NSString *roomName;
-@property (strong, nonatomic) NSString *roomPhoto;
-@property (strong, nonatomic) NSNumber *dialogType;
-@property (strong, nonatomic) NSArray *dialogOccupantsIDs;
-@property (strong, nonatomic) NSNumber *dialogDeletedID;
+@property (strong, nonatomic, readonly) QBChatDialog *dialog;
+
+- (void)updateCustomParametersWithDialog:(QBChatDialog *)dialog;
 
 /**
  *  This method is used to determine if the message data item contains text or media.
@@ -44,16 +40,5 @@
 - (BOOL)isMediaMessage;
 
 - (BOOL)isNotificatonMessage;
-/**
- *  Set custom parameters with chat dialogs
- */
-- (void)setCustomParametersWithChatDialog:(QBChatDialog *)chatDialog;
-
-/**
- *  Convert custom parameters to QBChatDialog
- *
- *  @return QBChatDialog instance
- */
-- (QBChatDialog *)chatDialogFromCustomParameters;
 
 @end

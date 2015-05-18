@@ -34,9 +34,8 @@
 
 - (void)addUsers:(NSArray *)users {
     
-    [users enumerateObjectsUsingBlock:^(QBUUser *user,
-                                        NSUInteger idx,
-                                        BOOL *stop) {
+    [users enumerateObjectsUsingBlock:^(QBUUser *user, NSUInteger idx, BOOL *stop) {
+        
         [self addUser:user];
     }];
 }
@@ -77,20 +76,60 @@
     return [ids allObjects];
 }
 
-#pragma mark - Sorting
-
-- (NSArray *)unsorterd {
+- (NSArray *)unsorterdUsers {
     
     NSArray *allUsers = self.users.allValues;
     return allUsers;
 }
 
-- (NSArray *)sortedByName:(BOOL)ascending {
+- (NSArray *)usersSortedByKey:(NSString *)key ascending:(BOOL)ascending {
     
-    NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"fullName" ascending:ascending];
-    return [self.unsorterd sortedArrayUsingDescriptors:@[sort]];
+    NSArray *allUsers = self.users.allValues;
+    
+    NSSortDescriptor *sorter =
+    [[NSSortDescriptor alloc] initWithKey:key ascending:ascending selector:@selector(localizedCaseInsensitiveCompare:)];
+    
+    NSArray *sortedUsers = [allUsers sortedArrayUsingDescriptors:@[sorter]];
+    
+    return sortedUsers;
 }
 
+- (NSArray *)contactsSortedByKey:(NSString *)key ascending:(BOOL)ascending {
+    
+    NSArray *conatctsIDs = [self.delegate contactsIDS];
+    NSArray *contacts = [self usersWithIDs:conatctsIDs];
+    
+    NSSortDescriptor *sorter =
+    [[NSSortDescriptor alloc] initWithKey:key ascending:ascending selector:@selector(localizedCaseInsensitiveCompare:)];
+
+    NSArray *sortedContacts = [contacts sortedArrayUsingDescriptors:@[sorter]];
+    
+    return sortedContacts;
+}
+
+#pragma mark - Utils
+
+- (NSArray *)usersWithIDs:(NSArray *)IDs withoutID:(NSUInteger)ID {
+    
+    NSMutableArray *withoutMeIDs = IDs.mutableCopy;
+    [withoutMeIDs removeObject:@(ID)];
+    
+    NSArray *result = [self usersWithIDs:withoutMeIDs];
+    return result;
+}
+
+- (NSString *)joinedNamesbyUsers:(NSArray *)users {
+    
+    NSMutableArray *components = [NSMutableArray arrayWithCapacity:users.count];
+    
+    for (QBUUser *user in users) {
+        [components addObject:user.fullName];
+    }
+    
+    NSString *result = [components componentsJoinedByString:@", "];
+    return result;
+    
+}
 #pragma mark - QMMemoryStorageProtocol
 
 - (void)free {

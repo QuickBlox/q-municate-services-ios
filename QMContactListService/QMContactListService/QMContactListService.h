@@ -24,21 +24,6 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 @property (strong, nonatomic, readonly) QMContactListMemoryStorage *contactListMemoryStorage;
 @property (strong, nonatomic, readonly) QMUsersMemoryStorage *usersMemoryStorage;
 
-/**
- *  Users from contact list
- *
- *  @return Array of QBUUser instances
- */
-- (NSArray *)usersFromContactList;
-
-/**
- *  Users from contact list sorted by fullName
- *
- *  @return Sorted by fullName array of QBUUser instances
- */
-- (NSArray *)usersFromContactListSortedByFullName;
-
-- (NSArray *)usersWithoutMeWithIDs:(NSArray *)IDs;
 
 /**
  *  Init with service data delegate and contact list cache protocol.
