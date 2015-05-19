@@ -537,7 +537,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
             message.recipientID = dialog.recipientID;
             message.markable = YES;
             
-            [QBChat.instance sendMessage:message sentBlock:^(NSError *error) {
+            [dialog sendMessage:message sentBlock:^(NSError *error) {
                 
                 if (!error) {
                     
@@ -550,7 +550,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
             
         case QBChatDialogTypeGroup: {
             
-            [[QBChat instance] sendChatMessage:message toRoom:dialog.chatRoom];
+            [dialog sendMessage:message];
         }
             break;
             

@@ -283,7 +283,7 @@ static QMContactListCache *_chatCacheInstance = nil;
             [CDUser QM_createEntityInContext:context];
             
             [userToUpdate updateWithQBUser:user];
-            NSLog(@"Insert new user in cache (user id - %u)", user.ID);
+            NSLog(@"Insert new user in cache (user id - %lu)", (unsigned long)user.ID);
         }
         
         [weakSelf save:completion];
