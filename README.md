@@ -27,3 +27,5 @@ Navigate to **Build Settings**, then search for **Framework Search Paths** and d
 Add a new item using **+**: `~/Documents/Quickblox` and ensure that it is set to *recursive*
 
 > ** NOTE** Please be aware that if you've set Xcode's **Link Frameworks Automatically** to **No** then you may need to add the Quickblox.framework CoreData.framework to your project on iOS, as UIKit does not include Core Data by default. On OS X, Cocoa includes Core Data.
+
+Remember, that you have to link *QMServices* in **Target Dependencies** and in **Link Binary with Libraries**.
