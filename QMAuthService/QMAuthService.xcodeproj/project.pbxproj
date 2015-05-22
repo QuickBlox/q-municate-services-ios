@@ -15,6 +15,7 @@
 		55B2201A1A2C0C9C00668086 /* libQMAuthService.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libQMAuthService.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		55B2F1301A092226008C2272 /* QMAuthService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMAuthService.h; sourceTree = "<group>"; };
 		55B2F1311A092226008C2272 /* QMAuthService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMAuthService.m; sourceTree = "<group>"; };
+		8620BC5B1B0F7E3F005ED359 /* Quickblox.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Quickblox.xcconfig; path = ../Quickblox.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +56,7 @@
 		55C276DE1A0917AF005A0C38 = {
 			isa = PBXGroup;
 			children = (
+				8620BC5B1B0F7E3F005ED359 /* Quickblox.xcconfig */,
 				55B2F0961A091C17008C2272 /* QMAuthService */,
 				55B2F0A31A091C17008C2272 /* QMAuthServiceTests */,
 				55A6211F1A0BE301001BA470 /* Support */,

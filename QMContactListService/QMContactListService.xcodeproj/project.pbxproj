@@ -22,6 +22,7 @@
 		55B220201A2C0C9E00668086 /* libQMContactListService.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libQMContactListService.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		55B2F0B31A091C38008C2272 /* QMContactListService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QMContactListService.h; sourceTree = "<group>"; };
 		55B2F0B51A091C38008C2272 /* QMContactListService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QMContactListService.m; sourceTree = "<group>"; };
+		8620BC5C1B0F7F0D005ED359 /* Quickblox.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Quickblox.xcconfig; path = ../Quickblox.xcconfig; sourceTree = "<group>"; };
 		FB6FE6441AEE74E4002E3F8A /* QBUUser+CustomData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QBUUser+CustomData.h"; sourceTree = "<group>"; };
 		FB6FE6451AEE74E4002E3F8A /* QBUUser+CustomData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "QBUUser+CustomData.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -78,6 +79,7 @@
 		55C276D41A091739005A0C38 = {
 			isa = PBXGroup;
 			children = (
+				8620BC5C1B0F7F0D005ED359 /* Quickblox.xcconfig */,
 				55B2F0B21A091C38008C2272 /* QMContactListService */,
 				55A621211A0BE307001BA470 /* Support */,
 				55B220201A2C0C9E00668086 /* libQMContactListService.a */,
@@ -159,6 +161,7 @@
 /* Begin XCBuildConfiguration section */
 		55B2F0C31A091C38008C2272 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8620BC5C1B0F7F0D005ED359 /* Quickblox.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -176,10 +179,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"~/Documents/Quickblox",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -214,6 +214,7 @@
 		};
 		55B2F0C41A091C38008C2272 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8620BC5C1B0F7F0D005ED359 /* Quickblox.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -232,10 +233,7 @@
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"~/Documents/Quickblox",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Support/QMContactListService-Prefix.pch";
@@ -263,6 +261,7 @@
 		};
 		55C276D91A091739005A0C38 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8620BC5C1B0F7F0D005ED359 /* Quickblox.xcconfig */;
 			buildSettings = {
 				ONLY_ACTIVE_ARCH = YES;
 			};
@@ -270,6 +269,7 @@
 		};
 		55C276DA1A091739005A0C38 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8620BC5C1B0F7F0D005ED359 /* Quickblox.xcconfig */;
 			buildSettings = {
 			};
 			name = Release;

@@ -642,7 +642,7 @@
 		55C276AD1A09162F005A0C38 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = "~/Documents/Quickblox";
+				FRAMEWORK_SEARCH_PATHS = "";
 				ONLY_ACTIVE_ARCH = YES;
 			};
 			name = Debug;
@@ -650,7 +650,7 @@
 		55C276AE1A09162F005A0C38 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = "~/Documents/Quickblox";
+				FRAMEWORK_SEARCH_PATHS = "";
 			};
 			name = Release;
 		};
