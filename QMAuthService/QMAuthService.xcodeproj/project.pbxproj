@@ -127,6 +127,7 @@
 /* Begin XCBuildConfiguration section */
 		55B2F0A71A091C17008C2272 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8620BC5B1B0F7E3F005ED359 /* Quickblox.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -144,10 +145,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"~/Documents/Quickblox",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -182,6 +180,7 @@
 		};
 		55B2F0A81A091C17008C2272 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8620BC5B1B0F7E3F005ED359 /* Quickblox.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -200,10 +199,7 @@
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"~/Documents/Quickblox",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Support/QMAuthService-Prefix.pch";
@@ -232,6 +228,7 @@
 		};
 		55C276E31A0917AF005A0C38 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8620BC5B1B0F7E3F005ED359 /* Quickblox.xcconfig */;
 			buildSettings = {
 				ONLY_ACTIVE_ARCH = YES;
 			};
@@ -239,6 +236,7 @@
 		};
 		55C276E41A0917AF005A0C38 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8620BC5B1B0F7E3F005ED359 /* Quickblox.xcconfig */;
 			buildSettings = {
 			};
 			name = Release;
