@@ -27,3 +27,11 @@ Navigate to **Build Settings**, then search for **Framework Search Paths** and d
 Add a new item using **+**: `~/Documents/Quickblox` and ensure that it is set to *recursive*
 
 > ** NOTE** Please be aware that if you've set Xcode's **Link Frameworks Automatically** to **No** then you may need to add the Quickblox.framework CoreData.framework to your project on iOS, as UIKit does not include Core Data by default. On OS X, Cocoa includes Core Data.
+
+# mogenerator
+generates ***Objective-C*** code for your ***Core Data*** custom classes
+Unlike Xcode, ***mogenerator*** manages two classes per entity: one for machines, one for humans
+
+The machine class can always be overwritten to match the data model, with humans’ work effortlessly preserved
+##install via [homebrew](http://brew.sh):
+$ brew install mogenerator
