@@ -197,7 +197,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 - (void)logIn:(void(^)(NSError *error))completion {
     
     BOOL isAutorized = self.serviceManager.isAutorized;
-    NSAssert(isAutorized, @"User muste be autorized");
+    NSAssert(isAutorized, @"User must be autorized");
     
     self.chatSuccessBlock = completion;
     QBUUser *user = self.serviceManager.currentUser;
@@ -537,7 +537,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
             message.recipientID = dialog.recipientID;
             message.markable = YES;
             
-            [QBChat.instance sendMessage:message sentBlock:^(NSError *error) {
+            [dialog sendMessage:message sentBlock:^(NSError *error) {
                 
                 if (!error) {
                     
@@ -550,7 +550,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
             
         case QBChatDialogTypeGroup: {
             
-            [[QBChat instance] sendChatMessage:message toRoom:dialog.chatRoom];
+            [dialog sendMessage:message];
         }
             break;
             
