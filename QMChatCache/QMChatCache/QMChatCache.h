@@ -115,7 +115,7 @@
 /**
  *  Add message to cache
  *
- *  @param message    QBChatHistoryMessage instance
+ *  @param message    QBChatMessage instance
  *  @param dialogId   Dialog identifier
  *  @param completion Completion block is called after update or insert operation is completed
  */
@@ -143,10 +143,10 @@
 /**
  *  Delete message
  *
- *  @param message    QBChatHistoryMessage instance
+ *  @param message    QBChatMessage instance
  *  @param completion Completion block that is called after the delete operation has completed.
  */
-- (void)deleteMessage:(QBChatHistoryMessage *)message completion:(void(^)(void))completion;
+- (void)deleteMessage:(QBChatMessage *)message completion:(void(^)(void))completion;
 
 /**
  *  Delete all messages
@@ -173,7 +173,7 @@
  *  @param predicate  Predicate to evaluate objects against
  *  @param sortTerm   Attribute name to sort by.
  *  @param ascending  `YES` if the attribute should be sorted ascending, `NO` for descending.
- *  @param completion Completion block that is called after the fetch has completed. Returns an array of QBChatHistoryMessage instances
+ *  @param completion Completion block that is called after the fetch has completed. Returns an array of QBChatMessage instances
  */
 - (void)messagesWithPredicate:(NSPredicate *)predicate  sortedBy:(NSString *)sortTerm ascending:(BOOL)ascending completion:(void(^)(NSArray *messages))completion;
 
