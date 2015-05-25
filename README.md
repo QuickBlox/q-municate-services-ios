@@ -22,7 +22,7 @@ Add a new item using **+**: `"$(SRCROOT)/Vendor/QMServices/QMServices"` and ensu
 
 Navigate to **Build Settings**, then search for **Framework Search Paths** and double-click it to edit
 
-> ** NOTE**: By default, the Quickblox framework for iOS is installed in `~/Documents/Quickblox`.
+> ** NOTE**: By default, the Quickblox framework is set to `~/Documents/Quickblox`.
 > To change the path to Quickblox.framework, you need to open Quickblox.xcconfig file and replace `~/Documents/Quickblox` with your path to the Quickblox.framework.
 
 Add a new item using **+**: `~/Documents/Quickblox` and ensure that it is set to *recursive*
