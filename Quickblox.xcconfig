@@ -6,4 +6,4 @@
 //
 //
 
-FRAMEWORK_SEARCH_PATHS="~/Documents/Quickblox"
+FRAMEWORK_SEARCH_PATHS="../../../Framework"
