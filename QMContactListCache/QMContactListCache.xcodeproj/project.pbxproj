@@ -6,6 +6,22 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		1402B64D1B1384430069E3A4 /* QMChatContactListCacheMogenerator */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 1402B6501B1384430069E3A4 /* Build configuration list for PBXAggregateTarget "QMChatContactListCacheMogenerator" */;
+			buildPhases = (
+				1402B6551B13844B0069E3A4 /* ShellScript */,
+			);
+			dependencies = (
+				1402B6521B13844A0069E3A4 /* PBXTargetDependency */,
+				1402B6541B13844A0069E3A4 /* PBXTargetDependency */,
+			);
+			name = QMChatContactListCacheMogenerator;
+			productName = QMChatContactListCacheMogenerator;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		554A28111A0CE1A900C4E03C /* QMContactListModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 554A280F1A0CE1A900C4E03C /* QMContactListModel.xcdatamodeld */; };
 		554A28291A0CE28300C4E03C /* QMContactListModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 554A280F1A0CE1A900C4E03C /* QMContactListModel.xcdatamodeld */; };
@@ -38,6 +54,20 @@
 /* End PBXBuildRule section */
 
 /* Begin PBXContainerItemProxy section */
+		1402B6511B13844A0069E3A4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5590F29D1A0B8D2900C5044F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5590F2A91A0B8D4000C5044F;
+			remoteInfo = QMContactListCache;
+		};
+		1402B6531B13844A0069E3A4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5590F29D1A0B8D2900C5044F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 554A28201A0CE22200C4E03C;
+			remoteInfo = QMContactListCacheModel;
+		};
 		554A282A1A0CE2B400C4E03C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5590F29D1A0B8D2900C5044F /* Project object */;
@@ -205,6 +235,9 @@
 			attributes = {
 				LastUpgradeCheck = 0620;
 				TargetAttributes = {
+					1402B64D1B1384430069E3A4 = {
+						CreatedOnToolsVersion = 6.3.2;
+					};
 					554A28201A0CE22200C4E03C = {
 						CreatedOnToolsVersion = 6.1;
 					};
@@ -227,6 +260,7 @@
 			targets = (
 				5590F2A91A0B8D4000C5044F /* QMContactListCache */,
 				554A28201A0CE22200C4E03C /* QMContactListCacheModel */,
+				1402B64D1B1384430069E3A4 /* QMChatContactListCacheMogenerator */,
 			);
 		};
 /* End PBXProject section */
@@ -242,6 +276,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		1402B6551B13844B0069E3A4 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "echo \"Begin momd for ContactListCache\"\n\nCOREDATA_DIR=\"${PROJECT_DIR}/QMContactListCache/CoreData\"\nHUMAN_DIR=\"${PROJECT_DIR}/QMContactListCache/CoreData/Entries\"\nMACHINE_DIR=\"${PROJECT_DIR}/QMContactListCache/CoreData/EntriesMachine\"\nINCLUDE_H=\"${PROJECT_DIR}/QMContactListCache/CoreData/ModelIncludes.h\"\nINPUT_FILE_PATH=\"${PROJECT_DIR}/QMContactListCache/CoreData/QMContactListModel.xcdatamodeld\"\n\ncurVer=`/usr/libexec/PlistBuddy \"${INPUT_FILE_PATH}/.xccurrentversion\" -c 'print _XCCurrentVersionName'`\n\nmogenerator=/usr/bin/mogenerator\n\necho $mogenerator --model \\\"$COREDATA_DIR/$curVer\\\" --machine-dir \"$MACHINE_DIR/\" --human-dir \"$HUMAN_DIR/\" --includeh \"$INCLUDE_H\" --template-var arc=true\n$mogenerator --model \"${INPUT_FILE_PATH}/$curVer\" --machine-dir \"$MACHINE_DIR/\" --human-dir \"$HUMAN_DIR/\" --includeh \"$INCLUDE_H\" --template-var arc=true\n\necho \"Begin mom for ContactListCache\"\n\necho $mogenerator --model \\\"${INPUT_FILE_PATH}\\\" --machine-dir \"$MACHINE_DIR/\" --human-dir \"$HUMAN_DIR/\" --includeh \"$INCLUDE_H\" --template-var arc=true\n$mogenerator --model \\\"${INPUT_FILE_PATH}\\\" --machine-dir \"$MACHINE_DIR/\" --human-dir \"$HUMAN_DIR/\" --includeh \"$INCLUDE_H\" --template-var arc=true\n\necho \"that's all folks. mogen.sh is done\"\n";
+		};
 		55013B0A1A1F76630030C134 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -266,7 +313,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "echo \"Begin momd\"\n\nCOREDATA_DIR=\"${PROJECT_DIR}/QMContactListCache/CoreData\"\nHUMAN_DIR=\"${PROJECT_DIR}/QMContactListCache/CoreData/Entries\"\nMACHINE_DIR=\"${PROJECT_DIR}/QMContactListCache/CoreData/EntriesMachine\"\nINCLUDE_H=\"${PROJECT_DIR}/QMContactListCache/CoreData/ModelIncludes.h\"\nINPUT_FILE_PATH=\"${PROJECT_DIR}/QMContactListCache/CoreData/QMContactListModel.xcdatamodeld\"\n\ncurVer=`/usr/libexec/PlistBuddy \"${INPUT_FILE_PATH}/.xccurrentversion\" -c 'print _XCCurrentVersionName'`\n\nmogenerator=/usr/bin/mogenerator\n\necho $mogenerator --model \\\"$COREDATA_DIR/$curVer\\\" --machine-dir \"$MACHINE_DIR/\" --human-dir \"$HUMAN_DIR/\" --includeh \"$INCLUDE_H\" --template-var arc=true\n$mogenerator --model \"${INPUT_FILE_PATH}/$curVer\" --machine-dir \"$MACHINE_DIR/\" --human-dir \"$HUMAN_DIR/\" --includeh \"$INCLUDE_H\" --template-var arc=true\n\necho ${DEVELOPER_BIN_DIR}/momc -XD_MOMC_TARGET_VERSION=10.6 \\\"${INPUT_FILE_PATH}\\\" \\\"${TARGET_BUILD_DIR}/${EXECUTABLE_FOLDER_PATH}/${INPUT_FILE_BASE}.momd\\\"\n${DEVELOPER_BIN_DIR}/momc -XD_MOMC_TARGET_VERSION=10.6 \"${INPUT_FILE_PATH}\" \"${TARGET_BUILD_DIR}/${EXECUTABLE_FOLDER_PATH}/${INPUT_FILE_BASE}.momd\"\n\necho \"Begin mom\"\n\necho $mogenerator --model \\\"${INPUT_FILE_PATH}\\\" --machine-dir \"$MACHINE_DIR/\" --human-dir \"$HUMAN_DIR/\" --includeh \"$INCLUDE_H\" --template-var arc=true\n$mogenerator --model \\\"${INPUT_FILE_PATH}\\\" --machine-dir \"$MACHINE_DIR/\" --human-dir \"$HUMAN_DIR/\" --includeh \"$INCLUDE_H\" --template-var arc=true\n\necho ${DEVELOPER_BIN_DIR}/momc -XD_MOMC_TARGET_VERSION=10.6 \\\"${INPUT_FILE_PATH}\\\" \\\"${TARGET_BUILD_DIR}/${EXECUTABLE_FOLDER_PATH}/${INPUT_FILE_BASE}.mom\\\"\n${DEVELOPER_BIN_DIR}/momc -XD_MOMC_TARGET_VERSION=10.6 \"${INPUT_FILE_PATH}\" \"${TARGET_BUILD_DIR}/${EXECUTABLE_FOLDER_PATH}/${INPUT_FILE_BASE}.mom\"\n\necho \"that's all folks. mogen.sh is done\"\n";
+			shellScript = "echo \"Begin momd\"\n\nCOREDATA_DIR=\"${PROJECT_DIR}/QMContactListCache/CoreData\"\nHUMAN_DIR=\"${PROJECT_DIR}/QMContactListCache/CoreData/Entries\"\nMACHINE_DIR=\"${PROJECT_DIR}/QMContactListCache/CoreData/EntriesMachine\"\nINCLUDE_H=\"${PROJECT_DIR}/QMContactListCache/CoreData/ModelIncludes.h\"\nINPUT_FILE_PATH=\"${PROJECT_DIR}/QMContactListCache/CoreData/QMContactListModel.xcdatamodeld\"\n\ncurVer=`/usr/libexec/PlistBuddy \"${INPUT_FILE_PATH}/.xccurrentversion\" -c 'print _XCCurrentVersionName'`\n\n\necho ${DEVELOPER_BIN_DIR}/momc -XD_MOMC_TARGET_VERSION=10.6 \\\"${INPUT_FILE_PATH}\\\" \\\"${TARGET_BUILD_DIR}/${EXECUTABLE_FOLDER_PATH}/${INPUT_FILE_BASE}.momd\\\"\n${DEVELOPER_BIN_DIR}/momc -XD_MOMC_TARGET_VERSION=10.6 \"${INPUT_FILE_PATH}\" \"${TARGET_BUILD_DIR}/${EXECUTABLE_FOLDER_PATH}/${INPUT_FILE_BASE}.momd\"\n\necho \"Begin mom\"\n\necho ${DEVELOPER_BIN_DIR}/momc -XD_MOMC_TARGET_VERSION=10.6 \\\"${INPUT_FILE_PATH}\\\" \\\"${TARGET_BUILD_DIR}/${EXECUTABLE_FOLDER_PATH}/${INPUT_FILE_BASE}.mom\\\"\n${DEVELOPER_BIN_DIR}/momc -XD_MOMC_TARGET_VERSION=10.6 \"${INPUT_FILE_PATH}\" \"${TARGET_BUILD_DIR}/${EXECUTABLE_FOLDER_PATH}/${INPUT_FILE_BASE}.mom\"\n\necho \"that's all folks. mogen.sh is done\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -295,6 +342,16 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		1402B6521B13844A0069E3A4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5590F2A91A0B8D4000C5044F /* QMContactListCache */;
+			targetProxy = 1402B6511B13844A0069E3A4 /* PBXContainerItemProxy */;
+		};
+		1402B6541B13844A0069E3A4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 554A28201A0CE22200C4E03C /* QMContactListCacheModel */;
+			targetProxy = 1402B6531B13844A0069E3A4 /* PBXContainerItemProxy */;
+		};
 		554A282B1A0CE2B400C4E03C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 554A28201A0CE22200C4E03C /* QMContactListCacheModel */;
@@ -303,6 +360,20 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		1402B64E1B1384430069E3A4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		1402B64F1B1384430069E3A4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		554A28261A0CE22200C4E03C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -505,6 +576,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		1402B6501B1384430069E3A4 /* Build configuration list for PBXAggregateTarget "QMChatContactListCacheMogenerator" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1402B64E1B1384430069E3A4 /* Debug */,
+				1402B64F1B1384430069E3A4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		554A28251A0CE22200C4E03C /* Build configuration list for PBXNativeTarget "QMContactListCacheModel" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
