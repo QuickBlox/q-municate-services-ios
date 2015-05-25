@@ -184,9 +184,9 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     [self handleChatMessage:message];
 }
 
-- (void)chatRoomDidEnter:(QBChatRoom *)room {
-    
-}
+//- (void)chatRoomDidEnter:(QBChatRoom *)room {
+//    
+//}
 
 - (void)chatRoomDidNotEnter:(NSString *)roomName error:(NSError *)error {
     
