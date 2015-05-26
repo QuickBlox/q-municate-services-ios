@@ -9,10 +9,11 @@
 
 #import "QMAuthService.h"
 
+NSString *const kQMAuthSocialProvider = @"facebook";
+
 @interface QMAuthService()
 
 @property (strong, nonatomic) QBMulticastDelegate <QMAuthServiceDelegate> *multicastDelegate;
-
 @property (assign, nonatomic) BOOL isAuthorized;
 
 @end
@@ -46,9 +47,7 @@
 - (QBRequest *)logOut:(void(^)(QBResponse *response))completion {
     
     __weak __typeof(self)weakSelf = self;
-    
-    QBRequest *request =
-    [QBRequest logOutWithSuccessBlock:^(QBResponse *response) {
+    QBRequest *request = [QBRequest logOutWithSuccessBlock:^(QBResponse *response) {
         //Notify subscribes about logout
         if ([weakSelf.multicastDelegate respondsToSelector:@selector(authServiceDidLogOut:)]) {
             [weakSelf.multicastDelegate authServiceDidLogOut:self];
@@ -56,15 +55,17 @@
         
         weakSelf.isAuthorized = NO;
         
-        if (completion)
+        if (completion) {
             completion(response);
+        }
         
     } errorBlock:^(QBResponse *response) {
         
         [weakSelf.serviceManager handleErrorResponse:response];
         
-        if (completion)
+        if (completion) {
             completion(response);
+        }
     }];
     
     return request;
@@ -74,9 +75,8 @@
     
     __weak __typeof(self)weakSelf = self;
     
-    QBRequest *request =
     //1. Signup
-    [QBRequest signUp:user successBlock:^(QBResponse *response, QBUUser *newUser) {
+    QBRequest *request = [QBRequest signUp:user successBlock:^(QBResponse *response, QBUUser *newUser) {
         //2. Login
         [weakSelf logInWithUser:user completion:completion];
         
@@ -84,8 +84,9 @@
         
         [weakSelf.serviceManager handleErrorResponse:response];
         
-        if (completion)
+        if (completion) {
             completion(response, nil);
+        }
     }];
     
     return request;
@@ -124,13 +125,11 @@
     
     if (user.email) {
         
-        request =
-        [QBRequest logInWithUserEmail:user.email password:user.password successBlock:successBlock errorBlock:errorBlock];
+        request = [QBRequest logInWithUserEmail:user.email password:user.password successBlock:successBlock errorBlock:errorBlock];
     }
     else if (user.login) {
         
-        request =
-        [QBRequest logInWithUserLogin:user.login password:user.password successBlock:successBlock errorBlock:errorBlock];
+        request = [QBRequest logInWithUserLogin:user.login password:user.password successBlock:successBlock errorBlock:errorBlock];
     }
     
     return request;
@@ -141,11 +140,9 @@
 - (QBRequest *)logInWithFacebookSessionToken:(NSString *)sessionToken completion:(void(^)(QBResponse *response, QBUUser *userProfile))completion {
     
     __weak __typeof(self)weakSelf = self;
-    
-    QBRequest *request =
-    [QBRequest logInWithSocialProvider:@"facebook" accessToken:sessionToken accessTokenSecret:nil successBlock:^(QBResponse *response, QBUUser *tUser) {
-         //set password
-         tUser.password = [QBSession currentSession].sessionDetails.token;
+    QBRequest *request = [QBRequest logInWithSocialProvider:kQMAuthSocialProvider accessToken:sessionToken accessTokenSecret:nil successBlock:^(QBResponse *response, QBUUser *tUser) {
+        //set password
+        tUser.password = [QBSession currentSession].sessionDetails.token;
         
         self.isAuthorized = YES;
         
@@ -157,14 +154,14 @@
             completion(response, tUser);
         }
         
-     } errorBlock:^(QBResponse *response) {
-         
-         [weakSelf.serviceManager handleErrorResponse:response];
-         
-         if (completion) {
-             completion(response, nil);
-         }
-     }];
+    } errorBlock:^(QBResponse *response) {
+        
+        [weakSelf.serviceManager handleErrorResponse:response];
+        
+        if (completion) {
+            completion(response, nil);
+        }
+    }];
     
     return request;
 }

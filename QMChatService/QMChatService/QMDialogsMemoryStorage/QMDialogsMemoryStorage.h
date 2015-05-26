@@ -17,10 +17,7 @@
 
 - (QBChatDialog *)chatDialogWithID:(NSString *)dialogID;
 - (QBChatDialog *)chatDialogWithRoomName:(NSString *)roomName;
-- (QBChatDialog *)chatDialogWithChatRoom:(QBChatRoom *)chatRoom;
 - (QBChatDialog *)privateChatDialogWithOpponentID:(NSUInteger)opponentID;
-
-- (void)setMessages:(NSArray *)messages withDialogID:(NSString *)dialogID;
 
 - (NSArray *)unreadDialogs;
 - (NSArray *)unsortedDialogs;

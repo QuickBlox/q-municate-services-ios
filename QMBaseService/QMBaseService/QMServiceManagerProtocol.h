@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @protocol QMServiceManagerProtocol <NSObject>
+@required
 
 - (QBUUser *)currentUser;
 - (BOOL)isAutorized;
