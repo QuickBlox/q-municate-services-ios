@@ -56,6 +56,9 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  */
 - (void)removeDelegate:(id<QMChatServiceDelegate>)delegate;
 
+- (void)startSendPresenceWithTimeInterval:(NSTimeInterval)timeInterval;
+- (void)stopSendPresence;
+
 /**
  *  Login to chant
  *
