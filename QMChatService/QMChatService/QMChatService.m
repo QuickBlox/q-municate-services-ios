@@ -167,10 +167,10 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     }
     else {
         
-        [QBChat.instance loginWithUser:user];
-        
         QBChat.instance.autoReconnectEnabled = YES;
         QBChat.instance.streamManagementEnabled = YES;
+        [QBChat.instance loginWithUser:user];
+        
     }
 }
 
