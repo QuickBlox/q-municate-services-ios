@@ -108,16 +108,16 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 /**
  *  Join occupants
  *
- *  @param ids        <#ids description#>
- *  @param chatDialog <#chatDialog description#>
- *  @param completion <#completion description#>
+ *  @param ids        Occupants ids
+ *  @param chatDialog QBChatDialog instance
+ *  @param completion Block with response and updated chat dialog instances
  */
 - (void)joinOccupantsWithIDs:(NSArray *)ids toChatDialog:(QBChatDialog *)chatDialog
                   completion:(void(^)(QBResponse *response, QBChatDialog *updatedDialog))completion;
 /**
- *  <#Description#>
+ *  Retrieve chat dialogs
  *
- *  @param completion <#completion description#>
+ *  @param completion Block with response dialogs instances
  */
 - (void)allDialogsWithPageLimit:(NSUInteger)limit
                 interationBlock:(void(^)(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, BOOL *stop))interationBlock

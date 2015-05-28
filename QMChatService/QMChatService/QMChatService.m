@@ -1,5 +1,5 @@
 //
-//  QMChatDialogsService.m
+//  QMChatService.m
 //  Q-municate
 //
 //  Created by Andrey Ivanov on 02.07.14.
@@ -41,8 +41,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 
 #pragma mark - Configure
 
-- (instancetype)initWithServiceManager:(id<QMServiceManagerProtocol>)serviceManager
-                         cacheDelegate:(id<QMChatServiceCacheDelegate>)cacheDelegate {
+- (instancetype)initWithServiceManager:(id<QMServiceManagerProtocol>)serviceManager cacheDelegate:(id<QMChatServiceCacheDelegate>)cacheDelegate {
     
     self = [super initWithServiceManager:serviceManager];
     
