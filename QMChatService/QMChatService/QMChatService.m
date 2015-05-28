@@ -260,11 +260,10 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     
     __block QBResponsePage *responsePage = [QBResponsePage responsePageWithLimit:limit];
     __block BOOL cancel = NO;
+
+     __block dispatch_block_t t_request;
     
-    dispatch_block_t request;
-    __block __strong dispatch_block_t weakRequest;
-    
-    weakRequest = request = ^{
+    dispatch_block_t request = [^{
         
         [QBRequest dialogsForPage:responsePage extendedRequest:nil successBlock:^(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, QBResponsePage *page) {
             
@@ -284,7 +283,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
             
             if (!cancel) {
                 
-                weakRequest();
+                t_request();
             }
             else {
                 
@@ -301,8 +300,10 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
                 completion(response);
             }
         }];
-    };
+        
+    } copy];
     
+    t_request = request;
     request();
 }
 
