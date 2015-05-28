@@ -69,6 +69,16 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 - (void)logoutChat;
 
 /**
+ *  Automatically send chat presences when logged in
+ */
+@property (nonatomic, assign) BOOL automaticallySendPresences;
+
+/**
+ *  Default value: 45 seconds
+ */
+@property (nonatomic, assign) NSTimeInterval presenceTimerInterval;
+
+/**
  *  Create group dilog
  *
  *  @param name       Dialog name
