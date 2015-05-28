@@ -11,7 +11,6 @@
 #import "NSString+GTMNSStringHTMLAdditions.h"
 #import "QBChatMessage+QMCustomParameters.h"
 
-const NSTimeInterval kQMPresenceTimeIntervalInSec = 45;
 const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 
 @interface QMChatService() <QBChatDelegate>
@@ -51,6 +50,9 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
         
         self.cahceDelegate = cacheDelegate;
         [self loadCachedDialogs];
+		
+		self.presenceTimerInterval = 45.0;
+		self.automaticallySendPresences = YES;
     }
     
     return self;
@@ -122,9 +124,10 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 #pragma mark - QBChatDelegate
 
 - (void)chatDidLogin {
-    
-    [self sendPresence:nil];
-    
+	if (self.automaticallySendPresences){
+		[self startSendPresence];
+	}
+	
     if (self.chatSuccessBlock) {
         self.chatSuccessBlock(nil);
         self.chatSuccessBlock = nil;
@@ -137,6 +140,8 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
         self.chatSuccessBlock(error);
         self.chatSuccessBlock = nil;
     }
+	
+	[self stopSendPresence];
 }
 
 #pragma mark Handle messages (QBChatDelegate)
@@ -175,7 +180,9 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 }
 
 - (void)logoutChat {
-    
+
+	[self stopSendPresence];
+	
     if (QBChat.instance.isLoggedIn) {
         [QBChat.instance logout];
     }
@@ -184,11 +191,11 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 #pragma mark - Presence
 
 - (void)startSendPresence {
-    
-    NSAssert(!self.presenceTimer, @"Must be nil");
-    
+	
+	[self sendPresence:nil];
+	
     self.presenceTimer =
-    [NSTimer scheduledTimerWithTimeInterval:kQMPresenceTimeIntervalInSec
+    [NSTimer scheduledTimerWithTimeInterval:self.presenceTimerInterval
                                      target:self
                                    selector:@selector(sendPresence:)
                                    userInfo:nil
