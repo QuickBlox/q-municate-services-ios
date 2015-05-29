@@ -118,7 +118,7 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 /**
  *  Retrieve chat dialogs
  *
- *  @param extendedParameters Set of request parameters
+ *  @param extendedRequest Set of request parameters. http://quickblox.com/developers/SimpleSample-chat_users-ios#Filters
  *  @param completion Block with response dialogs instances
  */
 - (void)allDialogsWithPageLimit:(NSUInteger)limit
