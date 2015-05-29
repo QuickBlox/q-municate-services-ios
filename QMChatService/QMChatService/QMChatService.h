@@ -118,6 +118,7 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 /**
  *  Retrieve chat dialogs
  *
+ *  @param extendedParameters Set of request parameters
  *  @param completion Block with response dialogs instances
  */
 - (void)allDialogsWithPageLimit:(NSUInteger)limit
