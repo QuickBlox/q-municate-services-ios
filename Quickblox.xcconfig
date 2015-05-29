@@ -1,0 +1,9 @@
+//
+//  Quickblox.xcconfig
+//  QMServices
+//
+//  Created by Andrey Moskvin on 5/22/15.
+//
+//
+
+FRAMEWORK_SEARCH_PATHS="../../../Framework"

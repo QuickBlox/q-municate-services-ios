@@ -17,6 +17,7 @@
 		55B2201B1A2C0C9D00668086 /* libQMBaseService.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libQMBaseService.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		55B2F11C1A091CE9008C2272 /* QMBaseService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMBaseService.h; sourceTree = "<group>"; };
 		55B2F11D1A091CE9008C2272 /* QMBaseService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMBaseService.m; sourceTree = "<group>"; };
+		8620BC591B0F7DCB005ED359 /* Quickblox.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Quickblox.xcconfig; path = ../Quickblox.xcconfig; sourceTree = "<group>"; };
 		FBBBDBE41AEF98DA00841288 /* QMMemoryStorageProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMMemoryStorageProtocol.h; sourceTree = "<group>"; };
 		FBBBDBEF1AEF9DA300841288 /* QMServiceManagerProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMServiceManagerProtocol.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -44,6 +45,7 @@
 		55B2F0E41A091CBA008C2272 = {
 			isa = PBXGroup;
 			children = (
+				8620BC591B0F7DCB005ED359 /* Quickblox.xcconfig */,
 				554A27FC1A0CD53500C4E03C /* AVFoundation.framework */,
 				55B2F1061A091CC9008C2272 /* QMBaseService */,
 				55A6211B1A0BE2EB001BA470 /* Support */,
@@ -125,6 +127,7 @@
 /* Begin XCBuildConfiguration section */
 		55B2F0E91A091CBA008C2272 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8620BC591B0F7DCB005ED359 /* Quickblox.xcconfig */;
 			buildSettings = {
 				ONLY_ACTIVE_ARCH = YES;
 			};
@@ -132,12 +135,14 @@
 		};
 		55B2F0EA1A091CBA008C2272 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8620BC591B0F7DCB005ED359 /* Quickblox.xcconfig */;
 			buildSettings = {
 			};
 			name = Release;
 		};
 		55B2F1171A091CCA008C2272 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8620BC591B0F7DCB005ED359 /* Quickblox.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -155,7 +160,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = "~/Documents/Quickblox";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -190,6 +195,7 @@
 		};
 		55B2F1181A091CCA008C2272 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8620BC591B0F7DCB005ED359 /* Quickblox.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -208,7 +214,7 @@
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = "~/Documents/Quickblox";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Support/QMBaseService-Prefix.pch";

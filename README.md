@@ -22,9 +22,8 @@ Add a new item using **+**: `"$(SRCROOT)/Vendor/QMServices/QMServices"` and ensu
 
 Navigate to **Build Settings**, then search for **Framework Search Paths** and double-click it to edit
 
-> ** NOTE**: By default, the Quickblox framework for iOS is installed in `~/Documents/Quickblox`
-
-Add a new item using **+**: `~/Documents/Quickblox` and ensure that it is set to *recursive*
+> ** NOTE**: By default, the Quickblox framework is set to `~/Documents/Quickblox`.
+> To change the path to Quickblox.framework, you need to open Quickblox.xcconfig file and replace `~/Documents/Quickblox` with your path to the Quickblox.framework.
 
 > ** NOTE** Please be aware that if you've set Xcode's **Link Frameworks Automatically** to **No** then you may need to add the Quickblox.framework CoreData.framework to your project on iOS, as UIKit does not include Core Data by default. On OS X, Cocoa includes Core Data.
 

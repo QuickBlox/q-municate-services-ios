@@ -7,7 +7,7 @@
 
 @implementation CDMessage
 
-- (QBChatMessage *)toQBChatHistoryMessage {
+- (QBChatMessage *)toQBChatMessage {
     
     QBChatMessage *chatHistoryMessage = [[QBChatMessage alloc] init];
     

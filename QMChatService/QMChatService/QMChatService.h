@@ -54,7 +54,7 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  *
  *  @param delegate Instance confirmed QMChatServiceDelegate protocol
  */
-- (void)addRemoveDelegate:(id<QMChatServiceDelegate>)delegate;
+- (void)removeDelegate:(id<QMChatServiceDelegate>)delegate;
 
 /**
  *  Login to chant
@@ -67,47 +67,62 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  *  Logout from chat
  */
 - (void)logoutChat;
+
 /**
- *  <#Description#>
+ *  Automatically send chat presences when logged in
+ *  Default value: YES
+ */
+@property (nonatomic, assign) BOOL automaticallySendPresences;
+
+/**
+ *  Default value: 45 seconds
+ */
+@property (nonatomic, assign) NSTimeInterval presenceTimerInterval;
+
+/**
+ *  Create group dilog
  *
- *  @param name       <#name description#>
- *  @param occupants  <#occupants description#>
- *  @param completion <#completion description#>
+ *  @param name       Dialog name
+ *  @param occupants  QBUUser collection
+ *  @param completion Block with response and created chat dialog instances
  */
 - (void)createGroupChatDialogWithName:(NSString *)name photo:(NSString *)photo occupants:(NSArray *)occupants
                            completion:(void(^)(QBResponse *response, QBChatDialog *createdDialog))completion;
 /**
- *  <#Description#>
+ *  Create p2p dialog
  *
- *  @param opponent   <#opponent description#>
- *  @param completion <#completion description#>
+ *  @param opponent   QBUUser opponent
+ *  @param completion Block with response and created chat dialog instances
  */
 - (void)createPrivateChatDialogWithOpponent:(QBUUser *)opponent
                                  completion:(void(^)(QBResponse *response, QBChatDialog *createdDialog))completion;
 /**
- *  <#Description#>
+ *  Change dialog name
  *
- *  @param dialogName <#dialogName description#>
- *  @param chatDialog <#chatDialog description#>
- *  @param completion <#completion description#>
+ *  @param dialogName Dialog name
+ *  @param chatDialog QBChatDialog instane
+ *  @param completion Block with response and updated chat dialog instances
  */
-- (void)changeChatName:(NSString *)dialogName forChatDialog:(QBChatDialog *)chatDialog
+- (void)changeDialogName:(NSString *)dialogName forChatDialog:(QBChatDialog *)chatDialog
             completion:(void(^)(QBResponse *response, QBChatDialog *updatedDialog))completion;
+
 /**
- *  <#Description#>
+ *  Join occupants
  *
- *  @param ids        <#ids description#>
- *  @param chatDialog <#chatDialog description#>
- *  @param completion <#completion description#>
+ *  @param ids        Occupants ids
+ *  @param chatDialog QBChatDialog instance
+ *  @param completion Block with response and updated chat dialog instances
  */
 - (void)joinOccupantsWithIDs:(NSArray *)ids toChatDialog:(QBChatDialog *)chatDialog
                   completion:(void(^)(QBResponse *response, QBChatDialog *updatedDialog))completion;
 /**
- *  <#Description#>
+ *  Retrieve chat dialogs
  *
- *  @param completion <#completion description#>
+ *  @param completion Block with response dialogs instances
  */
-- (void)dialogs:(void(^)(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs))completion;
+- (void)allDialogsWithPageLimit:(NSUInteger)limit
+                interationBlock:(void(^)(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, BOOL *stop))interationBlock
+                         completion:(void(^)(QBResponse *response))completion;
 
 #pragma mark - Fetch messages
 
@@ -130,16 +145,12 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 @protocol QMChatServiceDelegate <NSObject>
 @optional
 
-- (void)chatServiceDidLoadDialogsFromCache;
-- (void)chatServiceDidLoadMessagesFromCacheForDialogID:(NSString *)dialogID;
+- (void)chatService:(QMChatService *)chatService didAddChatDialogToMemoryStorage:(QBChatDialog *)chatDialog;
+- (void)chatService:(QMChatService *)chatService didAddChatDialogsToMemoryStorage:(NSArray *)chatDialogs;
 
-- (void)chatService:(QMChatService *)chatService didAddChatDialog:(QBChatDialog *)chatDialog;
-- (void)chatService:(QMChatService *)chatService didAddChatDialogs:(NSArray *)chatDialogs;
+- (void)chatService:(QMChatService *)chatService didAddMessageToMemoryStorage:(QBChatMessage *)message forDialogID:(NSString *)dialogID;
+- (void)chatService:(QMChatService *)chatService didAddMessagesToMemoryStorage:(NSArray *)messages forDialogID:(NSString *)dialogID;
 
-- (void)chatServiceDidAddMessageToHistory:(QBChatMessage *)message forDialogID:(NSString *)dialogID;
-- (void)chatServiceDidAddMessagesToHistroy:(NSArray *)messages forDialogID:(NSString *)dialogID;
-
-- (void)chatServiceDidReceiveNotificationMessage:(QBChatMessage *)message createDialog:(QBChatDialog *)dialog;
-- (void)chatServiceDidReceiveNotificationMessage:(QBChatMessage *)message updateDialog:(QBChatDialog *)dialog;
+- (void)chatService:(QMChatService *)chatService  didReceiveNotificationMessage:(QBChatMessage *)message createDialog:(QBChatDialog *)dialog;
 
 @end

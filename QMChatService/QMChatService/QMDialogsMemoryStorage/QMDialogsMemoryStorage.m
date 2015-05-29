@@ -12,7 +12,6 @@
 @interface QMDialogsMemoryStorage()
 
 @property (strong, nonatomic) NSMutableDictionary *dialogs;
-@property (strong, nonatomic) NSMutableDictionary *messages;
 @property (strong, nonatomic) NSMutableArray *blocks;
 
 @end
@@ -21,7 +20,6 @@
 
 - (void)dealloc {
     
-    [self.messages removeAllObjects];
     [self.dialogs removeAllObjects];
 }
 
@@ -31,7 +29,6 @@
     if (self) {
         
         self.dialogs = [NSMutableDictionary dictionary];
-        self.messages = [NSMutableDictionary dictionary];
     }
     return self;
 }
@@ -76,16 +73,6 @@
     return dialog;
 }
 
-- (QBChatDialog *)chatDialogWithChatRoom:(QBChatRoom *)chatRoom {
-    
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"self.chatRoom == %@", chatRoom];
-    NSArray *filtered = [self.dialogs.allValues filteredArrayUsingPredicate:predicate];
-
-    NSAssert(filtered.count == 1, @"Array count must be 1");
-    
-    return filtered.firstObject;
-}
-
 - (void)leaveFromRooms {
     
     for (QBChatDialog *chatDialog in self.dialogs.allValues) {
@@ -126,29 +113,6 @@
     return result;
 }
 
-- (void)setMessages:(NSArray *)messages withDialogID:(NSString *)dialogID {
-    
-    self.messages[dialogID] = messages.mutableCopy;
-}
-
-- (void)addMessageToHistory:(QBChatMessage *)message withDialogID:(NSString *)dialogID {
-    
-    NSAssert(message.dialog.ID == dialogID, @"Check this case");
-    NSMutableArray *history = self.messages[dialogID];
-    [history addObject:message];
-}
-
-- (NSArray *)messageHistoryWithDialogID:(NSString *)dialogID {
-    
-    NSArray *messages = self.messages[dialogID];
-    return messages;
-}
-
-- (NSArray *)messagesHistoryWithDialog:(QBChatDialog *)chatDialog {
-    
-    return [self messageHistoryWithDialogID:chatDialog.ID];
-}
-
 - (NSArray *)dialogsSortByLastMessageDateWithAscending:(BOOL)ascending {
     
     NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"lastMessageDate" ascending:ascending];
@@ -163,7 +127,6 @@
 - (void)free {
     
     [self.dialogs removeAllObjects];
-    [self.messages removeAllObjects];
 }
 
 @end

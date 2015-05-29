@@ -79,6 +79,7 @@
 		55A621121A0BDC5D001BA470 /* ModelIncludes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModelIncludes.h; sourceTree = "<group>"; };
 		55B2201C1A2C0C9D00668086 /* libQMChatCache.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libQMChatCache.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		55B2201D1A2C0C9D00668086 /* QMChatCacheModel.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QMChatCacheModel.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		8620BC581B0F7D5A005ED359 /* Quickblox.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Quickblox.xcconfig; path = ../Quickblox.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +119,7 @@
 		5590F2641A0B8C0500C5044F = {
 			isa = PBXGroup;
 			children = (
+				8620BC581B0F7D5A005ED359 /* Quickblox.xcconfig */,
 				550678C71A237C7B00660A12 /* QMChatCacheModel.bundle */,
 				5590F2741A0B8C4200C5044F /* QMChatCache */,
 				554A287B1A0CECA000C4E03C /* QMChatCacheModel */,
@@ -371,6 +373,7 @@
 		};
 		554A287F1A0CECA000C4E03C /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8620BC581B0F7D5A005ED359 /* Quickblox.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -417,6 +420,7 @@
 		};
 		554A28801A0CECA000C4E03C /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8620BC581B0F7D5A005ED359 /* Quickblox.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -457,6 +461,7 @@
 		};
 		5590F2691A0B8C0500C5044F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8620BC581B0F7D5A005ED359 /* Quickblox.xcconfig */;
 			buildSettings = {
 				ONLY_ACTIVE_ARCH = YES;
 			};
@@ -464,12 +469,14 @@
 		};
 		5590F26A1A0B8C0500C5044F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8620BC581B0F7D5A005ED359 /* Quickblox.xcconfig */;
 			buildSettings = {
 			};
 			name = Release;
 		};
 		5590F2851A0B8C4200C5044F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8620BC581B0F7D5A005ED359 /* Quickblox.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -487,7 +494,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = "~/Documents/Quickblox";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -522,6 +529,7 @@
 		};
 		5590F2861A0B8C4200C5044F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8620BC581B0F7D5A005ED359 /* Quickblox.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -540,7 +548,7 @@
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = "~/Documents/Quickblox";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Support/QMChatCache-Prefix.pch";

@@ -77,6 +77,16 @@ NSString const *kQMCustomParameterDialogDeletedID = @"deleted_id";
     return self.tDialog;
 }
 
+- (QBChatDialog *)tDialog {
+    
+    return objc_getAssociatedObject(self, @selector(tDialog));
+}
+
+- (void)setTDialog:(QBChatDialog *)tDialog {
+    
+    objc_setAssociatedObject(self, @selector(tDialog), tDialog, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
 - (void)updateCustomParametersWithDialog:(QBChatDialog *)dialog {
     
     self.tDialog = nil;
@@ -185,6 +195,7 @@ NSString const *kQMCustomParameterDialogDeletedID = @"deleted_id";
 }
 
 - (BOOL)isMediaMessage {
+    
    return self.attachments.count > 0;
 }
 
