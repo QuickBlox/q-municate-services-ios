@@ -121,6 +121,7 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  *  @param completion Block with response dialogs instances
  */
 - (void)allDialogsWithPageLimit:(NSUInteger)limit
+                extendedRequest:(NSDictionary *)extendedRequest
                 interationBlock:(void(^)(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, BOOL *stop))interationBlock
                          completion:(void(^)(QBResponse *response))completion;
 
