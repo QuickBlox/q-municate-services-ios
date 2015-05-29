@@ -379,6 +379,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     NSMutableSet *occupantIDs = [NSMutableSet set];
     
     for (QBUUser *user in occupants) {
+		NSAssert([user isKindOfClass:[QBUUser class]], @"occupants must be an array of QBUUser instances");
         [occupantIDs addObject:@(user.ID)];
     }
     
