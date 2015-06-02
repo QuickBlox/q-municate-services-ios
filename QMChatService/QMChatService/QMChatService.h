@@ -70,6 +70,7 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 
 /**
  *  Automatically send chat presences when logged in
+ *  Default value: YES
  */
 @property (nonatomic, assign) BOOL automaticallySendPresences;
 
