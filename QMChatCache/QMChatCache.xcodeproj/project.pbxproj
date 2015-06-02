@@ -14,8 +14,7 @@
 				1402B6481B1383F50069E3A4 /* ShellScript */,
 			);
 			dependencies = (
-				1402B64A1B1384160069E3A4 /* PBXTargetDependency */,
-				1402B64C1B1384160069E3A4 /* PBXTargetDependency */,
+				FB09C0C91B1D404200D00158 /* PBXTargetDependency */,
 			);
 			name = QMChatCacheMogenerator;
 			productName = QMChatCacheMogenerator;
@@ -34,21 +33,14 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		1402B6491B1384160069E3A4 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5590F2651A0B8C0500C5044F /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 5590F2711A0B8C4200C5044F;
-			remoteInfo = QMChatCache;
-		};
-		1402B64B1B1384160069E3A4 /* PBXContainerItemProxy */ = {
+		554A28831A0CECD700C4E03C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5590F2651A0B8C0500C5044F /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 554A28791A0CECA000C4E03C;
 			remoteInfo = QMChatCacheModel;
 		};
-		554A28831A0CECD700C4E03C /* PBXContainerItemProxy */ = {
+		FB09C0C81B1D404200D00158 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5590F2651A0B8C0500C5044F /* Project object */;
 			proxyType = 1;
@@ -194,7 +186,7 @@
 				554A28761A0CECA000C4E03C /* Sources */,
 				554A28771A0CECA000C4E03C /* Frameworks */,
 				554A28781A0CECA000C4E03C /* Resources */,
-				554A28811A0CECA400C4E03C /* ShellScript */,
+				FB09C0D91B1DA8A100D00158 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -283,9 +275,9 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "echo \"Begin momd for ChatCache\"\n\nCOREDATA_DIR=\"${PROJECT_DIR}/QMChatCache/CoreData\"\nHUMAN_DIR=\"${PROJECT_DIR}/QMChatCache/CoreData/Entries\"\nMACHINE_DIR=\"${PROJECT_DIR}/QMChatCache/CoreData/EntriesMachine\"\nINCLUDE_H=\"${PROJECT_DIR}/QMChatCache/CoreData/ModelIncludes.h\"\nINPUT_FILE_PATH=\"${PROJECT_DIR}/QMChatCache/CoreData/QMChatServiceModel.xcdatamodeld\"\n\ncurVer=`/usr/libexec/PlistBuddy \"${INPUT_FILE_PATH}/.xccurrentversion\" -c 'print _XCCurrentVersionName'`\n\nmogenerator=/usr/bin/mogenerator\n\necho $mogenerator --model \\\"$COREDATA_DIR/$curVer\\\" --machine-dir \"$MACHINE_DIR/\" --human-dir \"$HUMAN_DIR/\" --includeh \"$INCLUDE_H\" --template-var arc=true\n$mogenerator --model \"${INPUT_FILE_PATH}/$curVer\" --machine-dir \"$MACHINE_DIR/\" --human-dir \"$HUMAN_DIR/\" --includeh \"$INCLUDE_H\" --template-var arc=true\n\necho \"Begin mom for ChatCache\"\n\necho $mogenerator --model \\\"${INPUT_FILE_PATH}\\\" --machine-dir \"$MACHINE_DIR/\" --human-dir \"$HUMAN_DIR/\" --includeh \"$INCLUDE_H\" --template-var arc=true\nmogenerator --model \\\"${INPUT_FILE_PATH}\\\" --machine-dir \"$MACHINE_DIR/\" --human-dir \"$HUMAN_DIR/\" --includeh \"$INCLUDE_H\" --template-var arc=true\n\necho \"that's all folks. mogen.sh is done\"";
+			shellScript = "echo \"Begin momd for ChatCache\"\n\nCOREDATA_DIR=\"${PROJECT_DIR}/QMChatCache/CoreData\"\nHUMAN_DIR=\"${PROJECT_DIR}/QMChatCache/CoreData/Entries\"\nMACHINE_DIR=\"${PROJECT_DIR}/QMChatCache/CoreData/EntriesMachine\"\nINCLUDE_H=\"${PROJECT_DIR}/QMChatCache/CoreData/ModelIncludes.h\"\nINPUT_FILE_PATH=\"${PROJECT_DIR}/QMChatCache/CoreData/QMChatServiceModel.xcdatamodeld\"\n\ncurVer=`/usr/libexec/PlistBuddy \"${INPUT_FILE_PATH}/.xccurrentversion\" -c 'print _XCCurrentVersionName'`\n\nFILE=/usr/local/bin/mogenerator\n\nmogenerator=/usr/bin/mogenerator\n\nif [ ! -f $mogenerator ]; then\nmogenerator=/usr/local/bin/mogenerator\nfi\n\necho `which mogenerator`\n\n\n#echo $mogenerator --model \\\"$COREDATA_DIR/$curVer\\\" --machine-dir \"$MACHINE_DIR/\" --human-dir \"$HUMAN_DIR/\" --includeh \"$INCLUDE_H\" --template-var arc=true\n$mogenerator \"--model ${INPUT_FILE_PATH}/$curVer --machine-dir $MACHINE_DIR/ --human-dir $HUMAN_DIR/ --includeh $INCLUDE_H --template-var arc=true\"\n\necho \"Begin mom for ChatCache\"\n\n#echo $mogenerator --model \\\"${INPUT_FILE_PATH}\\\" --machine-dir \"$MACHINE_DIR/\" --human-dir \"$HUMAN_DIR/\" --includeh \"$INCLUDE_H\" --template-var arc=true\n$mogenerator --model \"${INPUT_FILE_PATH}\" --machine-dir \"$MACHINE_DIR/\" --human-dir \"$HUMAN_DIR/\" --includeh \"$INCLUDE_H\" --template-var arc=true\n\necho \"that's all folks. mogen.sh is done\"";
 		};
-		554A28811A0CECA400C4E03C /* ShellScript */ = {
+		FB09C0D91B1DA8A100D00158 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -339,20 +331,15 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		1402B64A1B1384160069E3A4 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 5590F2711A0B8C4200C5044F /* QMChatCache */;
-			targetProxy = 1402B6491B1384160069E3A4 /* PBXContainerItemProxy */;
-		};
-		1402B64C1B1384160069E3A4 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 554A28791A0CECA000C4E03C /* QMChatCacheModel */;
-			targetProxy = 1402B64B1B1384160069E3A4 /* PBXContainerItemProxy */;
-		};
 		554A28841A0CECD700C4E03C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 554A28791A0CECA000C4E03C /* QMChatCacheModel */;
 			targetProxy = 554A28831A0CECD700C4E03C /* PBXContainerItemProxy */;
+		};
+		FB09C0C91B1D404200D00158 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 554A28791A0CECA000C4E03C /* QMChatCacheModel */;
+			targetProxy = FB09C0C81B1D404200D00158 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -584,6 +571,7 @@
 				1402B6461B1383DA0069E3A4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		554A287E1A0CECA000C4E03C /* Build configuration list for PBXNativeTarget "QMChatCacheModel" */ = {
 			isa = XCConfigurationList;

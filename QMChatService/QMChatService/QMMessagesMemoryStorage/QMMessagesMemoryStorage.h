@@ -17,8 +17,7 @@
  *  @param message  QBChatMessage instnace
  *  @param dialogID Chat dialog identifier
  */
-- (void)addMessage:(QBChatMessage *)message
-       forDialogID:(NSString *)dialogID;
+- (void)addMessage:(QBChatMessage *)message forDialogID:(NSString *)dialogID;
 
 /**
  *  Replace messages in memory storage for dialog identifier
@@ -26,8 +25,7 @@
  *  @param messages Array of QBChatMessage instances to replace
  *  @param dialogID Chat dialog identifier
  */
-- (void)replaceMessages:(NSArray *)messages
-            forDialogID:(NSString *)dialogID;
+- (void)replaceMessages:(NSArray *)messages forDialogID:(NSString *)dialogID;
 
 #pragma mark - Getters
 /**

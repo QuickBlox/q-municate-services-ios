@@ -90,7 +90,7 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  *  @param userID     <#userID description#>
  *  @param completion <#completion description#>
  */
-- (void)confirmAddContactRequest:(NSUInteger)userID
+- (void)acceptContactRequest:(NSUInteger)userID
                       completion:(void (^)(BOOL success))completion;
 /**
  *  <#Description#>
@@ -98,7 +98,7 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  *  @param userID     <#userID description#>
  *  @param completion <#completion description#>
  */
-- (void)rejectAddContactRequest:(NSUInteger)userID
+- (void)rejectContactRequest:(NSUInteger)userID
                      completion:(void(^)(BOOL success))completion;
 
 @end

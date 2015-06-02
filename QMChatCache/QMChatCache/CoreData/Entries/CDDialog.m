@@ -8,28 +8,28 @@
 
 - (QBChatDialog *)toQBChatDialog {
     
-    QBChatDialog *chatDialog = [[QBChatDialog alloc] init];
+    QBChatDialog *dialog = [[QBChatDialog alloc] init];
     
-    chatDialog.ID = self.id;
-    chatDialog.roomJID = self.roomJID;
-    chatDialog.type = self.type.intValue;
-    chatDialog.name = self.name;
-    chatDialog.photo = self.photo;
-    chatDialog.lastMessageText = self.lastMessageText;
-    chatDialog.lastMessageDate = self.lastMessageDate;
-    chatDialog.lastMessageUserID = self.lastMessageUserID.integerValue;
-    chatDialog.unreadMessagesCount = self.unreadMessagesCount.integerValue;
-    chatDialog.occupantIDs = self.occupantsIDs;
-    chatDialog.userID = self.userID.unsignedIntegerValue;
+    dialog.ID = self.dialogID;
+    dialog.roomJID = self.roomJID;
+    dialog.type = self.dialogType.intValue;
+    dialog.name = self.name;
+    dialog.photo = self.photo;
+    dialog.lastMessageText = self.lastMessageText;
+    dialog.lastMessageDate = self.lastMessageDate;
+    dialog.lastMessageUserID = self.lastMessageUserID.integerValue;
+    dialog.unreadMessagesCount = self.unreadMessagesCount.integerValue;
+    dialog.occupantIDs = self.occupantsIDs;
+    dialog.userID = self.userID.unsignedIntegerValue;
     
-    return chatDialog;
+    return dialog;
 }
 
 - (void)updateWithQBChatDialog:(QBChatDialog *)dialog {
 
-    self.id = dialog.ID;
+    self.dialogID = dialog.ID;
     self.roomJID = dialog.roomJID;
-    self.type = @(dialog.type);
+    self.dialogType = @(dialog.type);
     self.name = dialog.name;
     self.photo = dialog.photo;
     self.lastMessageText = dialog.lastMessageText;

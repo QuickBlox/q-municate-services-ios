@@ -6,15 +6,14 @@
 extern const struct CDMessageAttributes {
 	__unsafe_unretained NSString *createAt;
 	__unsafe_unretained NSString *customParameters;
-	__unsafe_unretained NSString *datetime;
+	__unsafe_unretained NSString *dateSend;
+	__unsafe_unretained NSString *delayed;
 	__unsafe_unretained NSString *dialogID;
-	__unsafe_unretained NSString *id;
 	__unsafe_unretained NSString *isRead;
+	__unsafe_unretained NSString *messageID;
 	__unsafe_unretained NSString *recipientID;
-	__unsafe_unretained NSString *roomId;
 	__unsafe_unretained NSString *senderID;
 	__unsafe_unretained NSString *senderNick;
-	__unsafe_unretained NSString *state;
 	__unsafe_unretained NSString *text;
 	__unsafe_unretained NSString *updateAt;
 } CDMessageAttributes;
@@ -44,17 +43,21 @@ extern const struct CDMessageRelationships {
 
 //- (BOOL)validateCustomParameters:(id*)value_ error:(NSError**)error_;
 
-@property (nonatomic, strong) NSDate* datetime;
+@property (nonatomic, strong) NSDate* dateSend;
 
-//- (BOOL)validateDatetime:(id*)value_ error:(NSError**)error_;
+//- (BOOL)validateDateSend:(id*)value_ error:(NSError**)error_;
+
+@property (nonatomic, strong) NSNumber* delayed;
+
+@property (atomic) BOOL delayedValue;
+- (BOOL)delayedValue;
+- (void)setDelayedValue:(BOOL)value_;
+
+//- (BOOL)validateDelayed:(id*)value_ error:(NSError**)error_;
 
 @property (nonatomic, strong) NSString* dialogID;
 
 //- (BOOL)validateDialogID:(id*)value_ error:(NSError**)error_;
-
-@property (nonatomic, strong) NSString* id;
-
-//- (BOOL)validateId:(id*)value_ error:(NSError**)error_;
 
 @property (nonatomic, strong) NSNumber* isRead;
 
@@ -64,6 +67,10 @@ extern const struct CDMessageRelationships {
 
 //- (BOOL)validateIsRead:(id*)value_ error:(NSError**)error_;
 
+@property (nonatomic, strong) NSString* messageID;
+
+//- (BOOL)validateMessageID:(id*)value_ error:(NSError**)error_;
+
 @property (nonatomic, strong) NSNumber* recipientID;
 
 @property (atomic) int32_t recipientIDValue;
@@ -71,10 +78,6 @@ extern const struct CDMessageRelationships {
 - (void)setRecipientIDValue:(int32_t)value_;
 
 //- (BOOL)validateRecipientID:(id*)value_ error:(NSError**)error_;
-
-@property (nonatomic, strong) NSString* roomId;
-
-//- (BOOL)validateRoomId:(id*)value_ error:(NSError**)error_;
 
 @property (nonatomic, strong) NSNumber* senderID;
 
@@ -87,14 +90,6 @@ extern const struct CDMessageRelationships {
 @property (nonatomic, strong) NSString* senderNick;
 
 //- (BOOL)validateSenderNick:(id*)value_ error:(NSError**)error_;
-
-@property (nonatomic, strong) NSNumber* state;
-
-@property (atomic) int16_t stateValue;
-- (int16_t)stateValue;
-- (void)setStateValue:(int16_t)value_;
-
-//- (BOOL)validateState:(id*)value_ error:(NSError**)error_;
 
 @property (nonatomic, strong) NSString* text;
 
@@ -130,14 +125,17 @@ extern const struct CDMessageRelationships {
 - (NSData*)primitiveCustomParameters;
 - (void)setPrimitiveCustomParameters:(NSData*)value;
 
-- (NSDate*)primitiveDatetime;
-- (void)setPrimitiveDatetime:(NSDate*)value;
+- (NSDate*)primitiveDateSend;
+- (void)setPrimitiveDateSend:(NSDate*)value;
+
+- (NSNumber*)primitiveDelayed;
+- (void)setPrimitiveDelayed:(NSNumber*)value;
+
+- (BOOL)primitiveDelayedValue;
+- (void)setPrimitiveDelayedValue:(BOOL)value_;
 
 - (NSString*)primitiveDialogID;
 - (void)setPrimitiveDialogID:(NSString*)value;
-
-- (NSString*)primitiveId;
-- (void)setPrimitiveId:(NSString*)value;
 
 - (NSNumber*)primitiveIsRead;
 - (void)setPrimitiveIsRead:(NSNumber*)value;
@@ -145,14 +143,14 @@ extern const struct CDMessageRelationships {
 - (BOOL)primitiveIsReadValue;
 - (void)setPrimitiveIsReadValue:(BOOL)value_;
 
+- (NSString*)primitiveMessageID;
+- (void)setPrimitiveMessageID:(NSString*)value;
+
 - (NSNumber*)primitiveRecipientID;
 - (void)setPrimitiveRecipientID:(NSNumber*)value;
 
 - (int32_t)primitiveRecipientIDValue;
 - (void)setPrimitiveRecipientIDValue:(int32_t)value_;
-
-- (NSString*)primitiveRoomId;
-- (void)setPrimitiveRoomId:(NSString*)value;
 
 - (NSNumber*)primitiveSenderID;
 - (void)setPrimitiveSenderID:(NSNumber*)value;
@@ -162,12 +160,6 @@ extern const struct CDMessageRelationships {
 
 - (NSString*)primitiveSenderNick;
 - (void)setPrimitiveSenderNick:(NSString*)value;
-
-- (NSNumber*)primitiveState;
-- (void)setPrimitiveState:(NSNumber*)value;
-
-- (int16_t)primitiveStateValue;
-- (void)setPrimitiveStateValue:(int16_t)value_;
 
 - (NSString*)primitiveText;
 - (void)setPrimitiveText:(NSString*)value;
