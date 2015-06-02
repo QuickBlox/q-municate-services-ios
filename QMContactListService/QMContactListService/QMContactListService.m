@@ -298,7 +298,7 @@
     }];
 }
 
-- (void)confirmAddContactRequest:(NSUInteger)userID completion:(void(^)(BOOL success))completion {
+- (void)acceptContactRequest:(NSUInteger)userID completion:(void(^)(BOOL success))completion {
     
     __weak __typeof(self)weakSelf = self;
     [[QBChat instance] confirmAddContactRequest:userID sentBlock:^(NSError *error) {
@@ -320,9 +320,9 @@
     }];
 }
 
-- (void)rejectAddContactRequest:(NSUInteger)userID completion:(void(^)(BOOL success))completion {
+- (void)rejectContactRequest:(NSUInteger)userID completion:(void(^)(BOOL success))completion {
     
-    [[QBChat instance]  rejectAddContactRequest:userID sentBlock:^(NSError *error) {
+    [[QBChat instance] rejectAddContactRequest:userID sentBlock:^(NSError *error) {
         
         if (!error) {
             

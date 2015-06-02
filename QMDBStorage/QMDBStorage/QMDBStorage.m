@@ -20,14 +20,12 @@
 
 @implementation QMDBStorage
 
-- (instancetype)initWithStoreNamed:(NSString *)storeName
-                             model:(NSManagedObjectModel *)model
-                        queueLabel:(const char *)queueLabel {
+- (instancetype)initWithStoreNamed:(NSString *)storeName model:(NSManagedObjectModel *)model queueLabel:(const char *)queueLabel {
     
     self = [super init];
     if (self) {
         
-        self.queue = dispatch_queue_create(queueLabel, NULL);
+        self.queue = dispatch_queue_create(queueLabel, DISPATCH_QUEUE_SERIAL);
         //Create Chat coredata stack
         self.stack = [SQLiteQMCDRecordStack stackWithStoreNamed:storeName model:model];
     }
@@ -53,6 +51,7 @@
             NSLog(@"Error description: %@", error.description);
         }
         else {
+            
             NSLog(@"Clear %@ - Done!", storeUrl);
         }
     }
@@ -87,7 +86,7 @@
         
         [context QM_saveToPersistentStoreAndWait];
         
-        if(completion) {
+        if (completion) {
             DO_AT_MAIN(completion());
         }
     }];

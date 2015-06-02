@@ -1,6 +1,7 @@
 #import "CDMessage.h"
 #import "CDAttachment.h"
 
+
 @interface CDMessage ()
 
 @end
@@ -9,18 +10,19 @@
 
 - (QBChatMessage *)toQBChatMessage {
     
-    QBChatMessage *chatHistoryMessage = [[QBChatMessage alloc] init];
+    QBChatMessage *message = [[QBChatMessage alloc] init];
     
-    chatHistoryMessage.ID = self.id;
-    chatHistoryMessage.text = self.text;
-    chatHistoryMessage.recipientID = self.recipientID.intValue;
-    chatHistoryMessage.senderID = self.senderID.intValue;
-    chatHistoryMessage.dateSent = self.datetime;
-    chatHistoryMessage.dialogID = self.dialogID;
-    chatHistoryMessage.customParameters = [self dictionaryWithBinaryData:self.customParameters].mutableCopy;
-    chatHistoryMessage.read = self.isRead.boolValue;
-    chatHistoryMessage.updatedAt = self.updateAt;
-    chatHistoryMessage.createdAt = self.createAt;
+    message.ID = self.messageID;
+    message.text = self.text;
+    message.recipientID = self.recipientID.intValue;
+    message.senderID = self.senderID.intValue;
+    message.dateSent = self.dateSend;
+    message.dialogID = self.dialogID;
+    message.customParameters = [self dictionaryWithBinaryData:self.customParameters].mutableCopy;
+    message.read = self.isRead.boolValue;
+    message.updatedAt = self.updateAt;
+    message.createdAt = self.createAt;
+    message.delayed = self.delayed.boolValue;
 
     NSMutableArray *attachments = [NSMutableArray arrayWithCapacity:self.attachments.count];
     
@@ -30,39 +32,43 @@
         [attachments addObject:attachment];
     }
     
-    chatHistoryMessage.attachments = attachments;
+    message.attachments = attachments;
     
-    return chatHistoryMessage;
+    return message;
 }
 
 - (void)updateWithQBChatMessage:(QBChatMessage *)message {
     
-    self.id = message.ID;
+    self.messageID = message.ID;
     self.createAt = message.createdAt;
     self.updateAt = message.updatedAt;
+    self.delayed = @(message.delayed);
     self.text = message.text;
-    self.datetime = message.dateSent;
+    self.dateSend = message.dateSent;
     self.recipientID = @(message.recipientID);
     self.senderID = @(message.senderID);
     self.dialogID = message.dialogID;
     self.customParameters = [self binaryDataWithDictionary:message.customParameters];
     self.isRead = @(message.isRead);
-    //TODO
-//    if (message.attachments.count > 0) {
-//        
-//        NSMutableSet *attachments = [NSMutableSet setWithCapacity:message.attachments.count];
-//        
-//        NSManagedObjectContext *context = [self managedObjectContext];
-//        
-//        for (QBChatAttachment *qbChatAttachment in message.attachments) {
-//            
-//            CDAttachment *attachment = [CDAttachment MR_createEntityInContext:context];
-//            [attachment updateWithQBChatAttachment:qbChatAttachment];
-//            [attachments addObject:attachment];
-//        }
-//        
-//        [self setAttachments:attachments];
-//    }
+
+    if (message.attachments.count > 0) {
+        
+        NSMutableSet *attachments = [NSMutableSet setWithCapacity:message.attachments.count];
+        
+        NSManagedObjectContext *context = [self managedObjectContext];
+        
+        for (QBChatAttachment *qbChatAttachment in message.attachments) {
+            
+            CDAttachment *attachment = [CDAttachment QM_createEntityInContext:context];
+            [attachment updateWithQBChatAttachment:qbChatAttachment];
+            [attachments addObject:attachment];
+        }
+        
+        [self setAttachments:attachments];
+    }
+    else {
+        message.attachments = @[];
+    }
 }
 
 - (NSData *)binaryDataWithDictionary:(NSDictionary *)dictionary {
@@ -75,11 +81,6 @@
     
     NSDictionary *dictionary = (NSDictionary*) [NSKeyedUnarchiver unarchiveObjectWithData:data];
     return dictionary;
-}
-
-- (Class)objectClass {
-    
-    return [CDMessage class];
 }
 
 @end

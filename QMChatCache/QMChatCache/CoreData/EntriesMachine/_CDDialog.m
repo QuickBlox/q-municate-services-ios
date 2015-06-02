@@ -4,7 +4,8 @@
 #import "_CDDialog.h"
 
 const struct CDDialogAttributes CDDialogAttributes = {
-	.id = @"id",
+	.dialogID = @"dialogID",
+	.dialogType = @"dialogType",
 	.lastMessageDate = @"lastMessageDate",
 	.lastMessageText = @"lastMessageText",
 	.lastMessageUserID = @"lastMessageUserID",
@@ -13,7 +14,6 @@ const struct CDDialogAttributes CDDialogAttributes = {
 	.photo = @"photo",
 	.recipientID = @"recipientID",
 	.roomJID = @"roomJID",
-	.type = @"type",
 	.unreadMessagesCount = @"unreadMessagesCount",
 	.userID = @"userID",
 };
@@ -48,6 +48,11 @@ const struct CDDialogRelationships CDDialogRelationships = {
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
 
+	if ([key isEqualToString:@"dialogTypeValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"dialogType"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
 	if ([key isEqualToString:@"lastMessageUserIDValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"lastMessageUserID"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
@@ -55,11 +60,6 @@ const struct CDDialogRelationships CDDialogRelationships = {
 	}
 	if ([key isEqualToString:@"recipientIDValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"recipientID"];
-		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
-		return keyPaths;
-	}
-	if ([key isEqualToString:@"typeValue"]) {
-		NSSet *affectingKey = [NSSet setWithObject:@"type"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
@@ -77,7 +77,27 @@ const struct CDDialogRelationships CDDialogRelationships = {
 	return keyPaths;
 }
 
-@dynamic id;
+@dynamic dialogID;
+
+@dynamic dialogType;
+
+- (int16_t)dialogTypeValue {
+	NSNumber *result = [self dialogType];
+	return [result shortValue];
+}
+
+- (void)setDialogTypeValue:(int16_t)value_ {
+	[self setDialogType:[NSNumber numberWithShort:value_]];
+}
+
+- (int16_t)primitiveDialogTypeValue {
+	NSNumber *result = [self primitiveDialogType];
+	return [result shortValue];
+}
+
+- (void)setPrimitiveDialogTypeValue:(int16_t)value_ {
+	[self setPrimitiveDialogType:[NSNumber numberWithShort:value_]];
+}
 
 @dynamic lastMessageDate;
 
@@ -130,17 +150,6 @@ const struct CDDialogRelationships CDDialogRelationships = {
 }
 
 @dynamic roomJID;
-
-@dynamic type;
-
-- (int16_t)typeValue {
-	NSNumber *result = [self type];
-	return [result shortValue];
-}
-
-- (void)setTypeValue:(int16_t)value_ {
-	[self setType:[NSNumber numberWithShort:value_]];
-}
 
 @dynamic unreadMessagesCount;
 

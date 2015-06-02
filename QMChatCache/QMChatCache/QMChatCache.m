@@ -70,7 +70,8 @@ static QMChatCache *_chatCacheInstance = nil;
     [self dialogsSortedBy:sortTerm ascending:ascending withPredicate:nil completion:completion];
 }
 
-- (void)dialogsSortedBy:(NSString *)sortTerm ascending:(BOOL)ascending withPredicate:(NSPredicate *)predicate completion:(void(^)(NSArray *dialogs))completion {
+- (void)dialogsSortedBy:(NSString *)sortTerm ascending:(BOOL)ascending withPredicate:(NSPredicate *)predicate
+             completion:(void(^)(NSArray *dialogs))completion {
     
     __weak __typeof(self)weakSelf = self;
     
@@ -104,7 +105,7 @@ static QMChatCache *_chatCacheInstance = nil;
             
             NSParameterAssert(dialog.ID);
             
-            CDDialog *cachedDialog = [CDDialog QM_findFirstWithPredicate:IS(@"id", dialog.ID) inContext:context];
+            CDDialog *cachedDialog = [CDDialog QM_findFirstWithPredicate:IS(@"dialogID", dialog.ID) inContext:context];
             
             if (cachedDialog) {
                 
@@ -159,13 +160,12 @@ static QMChatCache *_chatCacheInstance = nil;
     }
 }
 
-- (void)updateQBChatDialogs:(NSArray *)qbChatDialogs
-                  inContext:(NSManagedObjectContext *)context {
+- (void)updateQBChatDialogs:(NSArray *)qbChatDialogs inContext:(NSManagedObjectContext *)context {
     
     for (QBChatDialog *qbChatDialog in qbChatDialogs) {
         
         CDDialog *dialogToUpdate =
-        [CDDialog QM_findFirstWithPredicate:IS(@"id", qbChatDialog.ID) inContext:context];
+        [CDDialog QM_findFirstWithPredicate:IS(@"dialogID", qbChatDialog.ID) inContext:context];
         [dialogToUpdate updateWithQBChatDialog:qbChatDialog];
     }
 }
@@ -173,7 +173,7 @@ static QMChatCache *_chatCacheInstance = nil;
 - (void)deleteDialogWithID:(NSString *)dialogID inContext:(NSManagedObjectContext *)context {
     
     CDDialog *dialogToDelete =
-    [CDDialog QM_findFirstWithPredicate:IS(@"id", dialogID) inContext:context];
+    [CDDialog QM_findFirstWithPredicate:IS(@"dialogID", dialogID) inContext:context];
     [dialogToDelete QM_deleteEntityInContext:context];
 }
 
@@ -250,34 +250,8 @@ static QMChatCache *_chatCacheInstance = nil;
 }
 
 - (void)insertOrUpdateMessage:(QBChatMessage *)message withDialogId:(NSString *)dialogID completion:(dispatch_block_t)completion {
-    
-    __weak __typeof(self)weakSelf = self;
-    
-    [self async:^(NSManagedObjectContext *context) {
-        
-        CDMessage *cdMessage =
-        [CDMessage QM_findFirstWithPredicate:IS(@"id", message.ID)
-                                   inContext:context];
-        if (cdMessage) {
-            //Update if needed
-            QBChatMessage *qmMessage = [cdMessage toQBChatMessage];
-            
-            if (![message isEqual:qmMessage]) {
-                
-                [cdMessage updateWithQBChatMessage:message];
-                NSLog(@"Update new QBChatMessage -  %@ with dialogID - %@",message.ID, dialogID);
-            }
-        }
-        else {
-            //Insert new message
-            CDMessage *messageToInsert = [CDMessage QM_createEntityInContext:context];
-            
-            [messageToInsert updateWithQBChatMessage:message];
-            NSLog(@"Insert new QBChatMessage -  %@ with dialogID - %@",message.ID, dialogID);
-        }
-        
-        [weakSelf save:completion];
-    }];
+ 
+    [self insertOrUpdateMessages:@[message] withDialogId:dialogID completion:completion];
 }
 
 - (void)insertOrUpdateMessages:(NSArray *)messages withDialogId:(NSString *)dialogID completion:(dispatch_block_t)completion {
@@ -292,16 +266,16 @@ static QMChatCache *_chatCacheInstance = nil;
         //To Insert / Update
         for (QBChatMessage *message in messages) {
             
-            CDMessage *cdMessage = [CDMessage QM_findFirstWithPredicate:IS(@"id", message.ID) inContext:context];
+            CDMessage *cdMessage = [CDMessage QM_findFirstWithPredicate:IS(@"messageID", message.ID) inContext:context];
             QBChatMessage *cachedMessage = [cdMessage toQBChatMessage];
             
             if (cdMessage) {
                 
-                if ([cachedMessage isEqual:message]) {
-                    continue;
+                if (![cachedMessage isEqual:message]) {
+                    
+                    [toUpdate addObject:message];
                 }
                 
-                [toUpdate addObject:message];
             }
             else {
                 
@@ -326,12 +300,13 @@ static QMChatCache *_chatCacheInstance = nil;
         
         NSLog(@"Messages to insert %lu", (unsigned long)toInsert.count);
         NSLog(@"Messages to update %lu", (unsigned long)toUpdate.count);
-        
     }];
 }
 
 - (void)insertMessages:(NSArray *)messages inContext:(NSManagedObjectContext *)context {
+    
     for (QBChatMessage *message in messages) {
+        
         CDMessage *messageToInsert = [CDMessage QM_createEntityInContext:context];
         [messageToInsert updateWithQBChatMessage:message];
     }
@@ -349,14 +324,14 @@ static QMChatCache *_chatCacheInstance = nil;
     
     for (QBChatMessage *message in messages) {
         
-        CDMessage *messageToUpdate = [CDMessage QM_findFirstWithPredicate:IS(@"id", message.ID) inContext:context];
+        CDMessage *messageToUpdate = [CDMessage QM_findFirstWithPredicate:IS(@"messageID", message.ID) inContext:context];
         [messageToUpdate updateWithQBChatMessage:message];
     }
 }
 
 - (void)deleteMessage:(QBChatMessage *)message inContext:(NSManagedObjectContext *)context {
     
-    CDMessage *messageToDelete = [CDMessage QM_findFirstWithPredicate:IS(@"id", message.ID) inContext:context];
+    CDMessage *messageToDelete = [CDMessage QM_findFirstWithPredicate:IS(@"messageID", message.ID) inContext:context];
     [messageToDelete QM_deleteEntityInContext:context];
 }
 
