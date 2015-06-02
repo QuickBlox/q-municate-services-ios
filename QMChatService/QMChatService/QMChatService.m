@@ -99,10 +99,13 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
         __weak __typeof(self)weakSelf = self;
         [self.cahceDelegate cachedMessagesWithDialogID:dialogID block:^(NSArray *collection) {
             
-            [weakSelf.messagesMemoryStorage replaceMessages:collection forDialogID:dialogID];
-            
-            if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddMessagesToMemoryStorage:forDialogID:)]) {
-                [weakSelf.multicastDelegate chatService:weakSelf didAddMessagesToMemoryStorage:collection forDialogID:dialogID];
+            if (collection.count > 0) {
+                
+                [weakSelf.messagesMemoryStorage replaceMessages:collection forDialogID:dialogID];
+                
+                if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddMessagesToMemoryStorage:forDialogID:)]) {
+                    [weakSelf.multicastDelegate chatService:weakSelf didLoadMessagesFromCache:collection forDialogID:dialogID];
+                }
             }
         }];
     }
@@ -478,13 +481,17 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 
 - (void)sendMessage:(QBChatMessage *)message toDialog:(QBChatDialog *)dialog type:(QMMessageType)type save:(BOOL)save completion:(void(^)(NSError *error))completion {
     
-    [message updateCustomParametersWithDialog:dialog];
-    message.messageType = type;
     message.customDateSent = self.dateSendTimeInterval;
     message.text = [message.text gtm_stringByEscapingForHTML];
     
     if (save) {
         message.saveToHistory = @"1";
+    }
+    
+    if (message.messageType != QMMessageTypeText) {
+        
+        [message updateCustomParametersWithDialog:dialog];
+        message.messageType = type;
     }
     
     QBUUser *currentUser = self.serviceManager.currentUser;
@@ -495,6 +502,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
         message.recipientID = dialog.recipientID;
         message.markable = YES;
     }
+    
     
     [dialog sendMessage:message sentBlock:^(NSError *error) {
         

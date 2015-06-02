@@ -97,7 +97,7 @@
  *  @param userID     userID which you would like to Fetch from cache
  *  @param completion Completion block that is called after the fetch has completed. Returns an instance of QBContactListItem
  */
-- (void)contactListItemsWithUserID:(NSUInteger)userID
+- (void)contactListItemWithUserID:(NSUInteger)userID
                         completion:(void(^)(QBContactListItem *))completion;
 
 #pragma mark -
