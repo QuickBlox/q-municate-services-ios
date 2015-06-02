@@ -445,6 +445,25 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     }];
 }
 
+- (void)deleteDialogWithID:(NSString *)dialogId
+                completion:(void (^)(QBResponse *))completion
+{
+    __weak __typeof(self)weakSelf = self;
+    
+    [QBRequest deleteDialogWithID:dialogId successBlock:^(QBResponse *responce) {
+        
+        
+        
+    } errorBlock:^(QBResponse *response) {
+        
+        [weakSelf.serviceManager handleErrorResponse:response];
+        
+        if (completion) {
+            completion(response);
+        }
+    }];
+}
+
 #pragma mark - Messages histroy
 
 - (void)messageWithChatDialogID:(NSString *)chatDialogID completion:(void(^)(QBResponse *response, NSArray *messages))completion {
