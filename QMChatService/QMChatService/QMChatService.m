@@ -222,7 +222,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
         
         if (message.recipientID != message.senderID) {
             
-            //Update chat dialog in memroy storage
+            //Update chat dialog in memory storage
             QBChatDialog *chatDialogToUpdate = [self.dialogsMemoryStorage chatDialogWithID:message.dialogID];
             chatDialogToUpdate.lastMessageText = message.encodedText;
             chatDialogToUpdate.lastMessageDate = [NSDate dateWithTimeIntervalSince1970:message.customDateSent.doubleValue];
@@ -477,10 +477,10 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 
 #pragma mark - Send messages
 
-- (void)sendMessage:(QBChatMessage *)message toDialog:(QBChatDialog *)dialog type:(QMMessageType)type save:(BOOL)save completion:(void(^)(NSError *error))completion {
+- (void)sendMessage:(QBChatMessage *)message toDialog:(QBChatDialog *)dialog save:(BOOL)save completion:(void(^)(NSError *error))completion {
     
     [message updateCustomParametersWithDialog:dialog];
-    message.messageType = type;
+    message.messageType = QMMessageTypeText;
     message.customDateSent = self.dateSendTimeInterval;
     message.text = [message.text gtm_stringByEscapingForHTML];
     

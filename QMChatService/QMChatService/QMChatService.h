@@ -130,7 +130,14 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 
 #pragma mark Send message
 
-- (void)sendMessage:(QBChatMessage *)message toDialog:(QBChatDialog *)dialog type:(QMMessageType)type save:(BOOL)save completion:(void(^)(NSError *error))completion;
+/**
+ *  Send message to dialog
+ *
+ *  @param message    QBChatMessage instance
+ *  @param dialog     QBChatDialog instance
+ *  @param save       save mssage to history on server
+ */
+- (void)sendMessage:(QBChatMessage *)message toDialog:(QBChatDialog *)dialog save:(BOOL)save completion:(void(^)(NSError *error))completion;
 
 @end
 
