@@ -113,7 +113,7 @@ NSString const *kQMCustomParameterDialogDeletedID = @"deleted_id";
 
 - (NSArray *)dialogOccupantsIDs {
     
-    NSString * strIDs = self.context[kQMCustomParameterDialogOccupantsIDs];
+    NSString *strIDs = self.context[kQMCustomParameterDialogOccupantsIDs];
     
     NSArray *componets = [strIDs componentsSeparatedByString:@","];
     NSMutableArray *result = [NSMutableArray arrayWithCapacity:componets.count];

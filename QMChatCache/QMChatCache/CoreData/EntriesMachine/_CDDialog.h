@@ -4,7 +4,8 @@
 #import <CoreData/CoreData.h>
 
 extern const struct CDDialogAttributes {
-	__unsafe_unretained NSString *id;
+	__unsafe_unretained NSString *dialogID;
+	__unsafe_unretained NSString *dialogType;
 	__unsafe_unretained NSString *lastMessageDate;
 	__unsafe_unretained NSString *lastMessageText;
 	__unsafe_unretained NSString *lastMessageUserID;
@@ -13,7 +14,6 @@ extern const struct CDDialogAttributes {
 	__unsafe_unretained NSString *photo;
 	__unsafe_unretained NSString *recipientID;
 	__unsafe_unretained NSString *roomJID;
-	__unsafe_unretained NSString *type;
 	__unsafe_unretained NSString *unreadMessagesCount;
 	__unsafe_unretained NSString *userID;
 } CDDialogAttributes;
@@ -35,9 +35,17 @@ extern const struct CDDialogRelationships {
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
 @property (nonatomic, readonly, strong) CDDialogID* objectID;
 
-@property (nonatomic, strong) NSString* id;
+@property (nonatomic, strong) NSString* dialogID;
 
-//- (BOOL)validateId:(id*)value_ error:(NSError**)error_;
+//- (BOOL)validateDialogID:(id*)value_ error:(NSError**)error_;
+
+@property (nonatomic, strong) NSNumber* dialogType;
+
+@property (atomic) int16_t dialogTypeValue;
+- (int16_t)dialogTypeValue;
+- (void)setDialogTypeValue:(int16_t)value_;
+
+//- (BOOL)validateDialogType:(id*)value_ error:(NSError**)error_;
 
 @property (nonatomic, strong) NSDate* lastMessageDate;
 
@@ -79,14 +87,6 @@ extern const struct CDDialogRelationships {
 
 //- (BOOL)validateRoomJID:(id*)value_ error:(NSError**)error_;
 
-@property (nonatomic, strong) NSNumber* type;
-
-@property (atomic) int16_t typeValue;
-- (int16_t)typeValue;
-- (void)setTypeValue:(int16_t)value_;
-
-//- (BOOL)validateType:(id*)value_ error:(NSError**)error_;
-
 @property (nonatomic, strong) NSNumber* unreadMessagesCount;
 
 @property (atomic) int32_t unreadMessagesCountValue;
@@ -119,8 +119,14 @@ extern const struct CDDialogRelationships {
 
 @interface _CDDialog (CoreDataGeneratedPrimitiveAccessors)
 
-- (NSString*)primitiveId;
-- (void)setPrimitiveId:(NSString*)value;
+- (NSString*)primitiveDialogID;
+- (void)setPrimitiveDialogID:(NSString*)value;
+
+- (NSNumber*)primitiveDialogType;
+- (void)setPrimitiveDialogType:(NSNumber*)value;
+
+- (int16_t)primitiveDialogTypeValue;
+- (void)setPrimitiveDialogTypeValue:(int16_t)value_;
 
 - (NSDate*)primitiveLastMessageDate;
 - (void)setPrimitiveLastMessageDate:(NSDate*)value;

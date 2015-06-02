@@ -1,5 +1,5 @@
 //
-//  QMChatGroupService.h
+//  QMChatService.h
 //  Q-municate
 //
 //  Created by Andrey Ivanov on 02.07.14.
@@ -151,6 +151,8 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 
 @protocol QMChatServiceDelegate <NSObject>
 @optional
+
+- (void)chatService:(QMChatService *)chatService didLoadMessagesFromCache:(NSArray *)messages forDialogID:(NSString *)dialogID;
 
 - (void)chatService:(QMChatService *)chatService didAddChatDialogToMemoryStorage:(QBChatDialog *)chatDialog;
 - (void)chatService:(QMChatService *)chatService didAddChatDialogsToMemoryStorage:(NSArray *)chatDialogs;

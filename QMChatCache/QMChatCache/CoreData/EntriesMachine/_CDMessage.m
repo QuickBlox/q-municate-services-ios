@@ -6,15 +6,14 @@
 const struct CDMessageAttributes CDMessageAttributes = {
 	.createAt = @"createAt",
 	.customParameters = @"customParameters",
-	.datetime = @"datetime",
+	.dateSend = @"dateSend",
+	.delayed = @"delayed",
 	.dialogID = @"dialogID",
-	.id = @"id",
 	.isRead = @"isRead",
+	.messageID = @"messageID",
 	.recipientID = @"recipientID",
-	.roomId = @"roomId",
 	.senderID = @"senderID",
 	.senderNick = @"senderNick",
-	.state = @"state",
 	.text = @"text",
 	.updateAt = @"updateAt",
 };
@@ -50,6 +49,11 @@ const struct CDMessageRelationships CDMessageRelationships = {
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
 	NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
 
+	if ([key isEqualToString:@"delayedValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"delayed"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
 	if ([key isEqualToString:@"isReadValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"isRead"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
@@ -65,11 +69,6 @@ const struct CDMessageRelationships CDMessageRelationships = {
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
-	if ([key isEqualToString:@"stateValue"]) {
-		NSSet *affectingKey = [NSSet setWithObject:@"state"];
-		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
-		return keyPaths;
-	}
 
 	return keyPaths;
 }
@@ -78,11 +77,29 @@ const struct CDMessageRelationships CDMessageRelationships = {
 
 @dynamic customParameters;
 
-@dynamic datetime;
+@dynamic dateSend;
+
+@dynamic delayed;
+
+- (BOOL)delayedValue {
+	NSNumber *result = [self delayed];
+	return [result boolValue];
+}
+
+- (void)setDelayedValue:(BOOL)value_ {
+	[self setDelayed:[NSNumber numberWithBool:value_]];
+}
+
+- (BOOL)primitiveDelayedValue {
+	NSNumber *result = [self primitiveDelayed];
+	return [result boolValue];
+}
+
+- (void)setPrimitiveDelayedValue:(BOOL)value_ {
+	[self setPrimitiveDelayed:[NSNumber numberWithBool:value_]];
+}
 
 @dynamic dialogID;
-
-@dynamic id;
 
 @dynamic isRead;
 
@@ -104,6 +121,8 @@ const struct CDMessageRelationships CDMessageRelationships = {
 	[self setPrimitiveIsRead:[NSNumber numberWithBool:value_]];
 }
 
+@dynamic messageID;
+
 @dynamic recipientID;
 
 - (int32_t)recipientIDValue {
@@ -123,8 +142,6 @@ const struct CDMessageRelationships CDMessageRelationships = {
 - (void)setPrimitiveRecipientIDValue:(int32_t)value_ {
 	[self setPrimitiveRecipientID:[NSNumber numberWithInt:value_]];
 }
-
-@dynamic roomId;
 
 @dynamic senderID;
 
@@ -147,26 +164,6 @@ const struct CDMessageRelationships CDMessageRelationships = {
 }
 
 @dynamic senderNick;
-
-@dynamic state;
-
-- (int16_t)stateValue {
-	NSNumber *result = [self state];
-	return [result shortValue];
-}
-
-- (void)setStateValue:(int16_t)value_ {
-	[self setState:[NSNumber numberWithShort:value_]];
-}
-
-- (int16_t)primitiveStateValue {
-	NSNumber *result = [self primitiveState];
-	return [result shortValue];
-}
-
-- (void)setPrimitiveStateValue:(int16_t)value_ {
-	[self setPrimitiveState:[NSNumber numberWithShort:value_]];
-}
 
 @dynamic text;
 
