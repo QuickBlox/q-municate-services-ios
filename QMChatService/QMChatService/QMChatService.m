@@ -600,6 +600,10 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
             
             [p2pDialog sendMessage:message sentBlock:nil];
         }
+		
+		if(completion) {
+			completion(error);
+		}
     }];
 }
 
@@ -622,6 +626,10 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
             
             [p2pDialog sendMessage:message sentBlock:nil];
         }
+		
+		if(completion) {
+			completion(error);
+		}
     }];
 }
 

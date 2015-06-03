@@ -96,8 +96,12 @@ NSString const *kQMCustomParameterDialogDeletedID = @"deleted_id";
     if (dialog.type == QBChatDialogTypeGroup) {
         
         self.context[kQMCustomParameterDialogType] = @(dialog.type);
-        self.context[kQMCustomParameterDialogRoomPhoto] = dialog.photo;
-        self.context[kQMCustomParameterDialogRoomName] = dialog.name;
+		if (dialog.photo != nil) {
+			self.context[kQMCustomParameterDialogRoomPhoto] = dialog.photo;
+		}
+		if (dialog.name != nil) {
+			self.context[kQMCustomParameterDialogRoomName] = dialog.name;
+		}
         self.context[kQMCustomParameterRoomJID] = dialog.roomJID;
         
         NSString *strIDs = [dialog.occupantIDs componentsJoinedByString:@","];
