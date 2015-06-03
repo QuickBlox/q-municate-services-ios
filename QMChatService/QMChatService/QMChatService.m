@@ -281,6 +281,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 #pragma mark - Dialog history
 
 - (void)allDialogsWithPageLimit:(NSUInteger)limit
+                extendedRequest:(NSDictionary *)extendedRequest
                 interationBlock:(void(^)(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, BOOL *stop))interationBlock
                      completion:(void(^)(QBResponse *response))completion {
     
@@ -293,7 +294,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     
     dispatch_block_t request = [^{
         
-        [QBRequest dialogsForPage:responsePage extendedRequest:nil successBlock:^(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, QBResponsePage *page) {
+        [QBRequest dialogsForPage:responsePage extendedRequest:extendedRequest successBlock:^(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, QBResponsePage *page) {
             
             [weakSelf.dialogsMemoryStorage addChatDialogs:dialogObjects andJoin:NO];
             
@@ -463,6 +464,33 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
         
         if (completion) {
             completion(response, nil);
+        }
+    }];
+}
+
+- (void)deleteDialogWithID:(NSString *)dialogId
+                completion:(void (^)(QBResponse *))completion
+{
+    __weak __typeof(self)weakSelf = self;
+    
+    [QBRequest deleteDialogWithID:dialogId successBlock:^(QBResponse *response) {
+        
+        [weakSelf.dialogsMemoryStorage deleteChatDialogWithID:dialogId];
+        
+        if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didDeleteChatDialogWithIDFromMemoryStorage:)]) {
+            [weakSelf.multicastDelegate chatService:weakSelf didDeleteChatDialogWithIDFromMemoryStorage:dialogId];
+        }
+        
+        if (completion) {
+            completion(response);
+        }
+        
+    } errorBlock:^(QBResponse *response) {
+        
+        [weakSelf.serviceManager handleErrorResponse:response];
+        
+        if (completion) {
+            completion(response);
         }
     }];
 }
