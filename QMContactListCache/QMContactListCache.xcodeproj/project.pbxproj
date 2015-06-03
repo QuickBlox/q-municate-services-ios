@@ -591,6 +591,7 @@
 				1402B64F1B1384430069E3A4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		554A28251A0CE22200C4E03C /* Build configuration list for PBXNativeTarget "QMContactListCacheModel" */ = {
 			isa = XCConfigurationList;

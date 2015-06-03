@@ -124,6 +124,10 @@ typedef void(^QMCacheCollection)(NSArray *collection);
                 interationBlock:(void(^)(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, BOOL *stop))interationBlock
                          completion:(void(^)(QBResponse *response))completion;
 
+#pragma mark - system notifications
+
+- (void)notifyOponentAboutRejectContactRequest:(NSUInteger)opponent save:(BOOL)save completion:(void(^)(NSError *error))completion;
+
 #pragma mark - Fetch messages
 
 - (void)messageWithChatDialogID:(NSString *)chatDialogID completion:(void(^)(QBResponse *response, NSArray *messages))completion;

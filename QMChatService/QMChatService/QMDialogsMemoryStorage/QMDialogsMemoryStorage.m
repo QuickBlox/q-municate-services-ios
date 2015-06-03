@@ -41,8 +41,8 @@
     
     if (join) {
         
-        if (!chatDialog.chatRoom.isJoined) {
-            [chatDialog.chatRoom joinRoomWithHistoryAttribute:@{@"maxstanzas": @"0"}];
+        if (!chatDialog.isJoined) {
+            [chatDialog join];
         }
     }
 }
@@ -62,7 +62,7 @@
 
 - (QBChatDialog *)privateChatDialogWithOpponentID:(NSUInteger)opponentID {
     
-    NSArray *allDialogs = [self unreadDialogs];
+    NSArray *allDialogs = [self unsortedDialogs];
     
     NSPredicate *predicate =
     [NSPredicate predicateWithFormat:@"SELF.type == %d AND SUBQUERY(SELF.occupantIDs, $userID, $userID == %@).@count > 0", QBChatDialogTypePrivate, @(opponentID)];

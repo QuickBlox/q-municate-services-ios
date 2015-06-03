@@ -126,6 +126,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 #pragma mark - QBChatDelegate
 
 - (void)chatDidLogin {
+    
 	if (self.automaticallySendPresences){
 		[self startSendPresence];
 	}
@@ -153,7 +154,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     [self handleChatMessage:message];
 }
 
-- (void)chatDidReceiveMessage:(QBChatMessage *)message {
+- (void)chatDidReceiveMessage:(QBChatMessage *)message  {
     
     [self handleChatMessage:message];
 }
@@ -237,14 +238,12 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
                 [self.multicastDelegate chatService:self didAddMessageToMemoryStorage:message forDialogID:message.dialogID];
             }
         }
+        
+        return;
     }
     else if (message.messageType == QMMessageTypeCreateGroupDialog) {
         
         [self.dialogsMemoryStorage addChatDialog:message.dialog andJoin:YES];
-        
-        if ([self.multicastDelegate respondsToSelector:@selector(chatService:didReceiveNotificationMessage:createDialog:)]) {
-            [self.multicastDelegate chatService:self didReceiveNotificationMessage:message createDialog:message.dialog];
-        }
     }
     else if (message.messageType == QMMessageTypeUpdateGroupDialog) {
         
@@ -253,9 +252,29 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
         chatDialogToUpdate.name = message.dialog.name;
         chatDialogToUpdate.photo = message.dialog.photo;
         
-        if ([self.multicastDelegate respondsToSelector:@selector(chatService:didReceiveNotificationMessage:createDialog:)]) {
-            [self.multicastDelegate chatService:self didReceiveNotificationMessage:message createDialog:message.dialog];
+    }
+    else if (message.messageType == QMMessageTypeContactRequest) {
+        
+         [self.dialogsMemoryStorage addChatDialog:message.dialog andJoin:NO];
+        
+        if ([self.multicastDelegate respondsToSelector:@selector(chatService:didAddMessageToMemoryStorage:forDialogID:)]) {
+            [self.multicastDelegate chatService:self didAddChatDialogToMemoryStorage:message.dialog];
         }
+    }
+    
+    QBChatDialog *dialog = message.dialog;
+    
+    if ([message.saveToHistory isEqualToString:@"1"]) {
+
+        [self.messagesMemoryStorage addMessage:message forDialogID:dialog.ID];
+        
+        if ([self.multicastDelegate respondsToSelector:@selector(chatService:didAddMessageToMemoryStorage:forDialogID:)]) {
+            [self.multicastDelegate chatService:self didAddMessageToMemoryStorage:message forDialogID:message.dialogID];
+        }
+    }
+    
+    if ([self.multicastDelegate respondsToSelector:@selector(chatService:didReceiveNotificationMessage:createDialog:)]) {
+        [self.multicastDelegate chatService:self didReceiveNotificationMessage:message createDialog:message.dialog];
     }
 }
 
@@ -351,7 +370,6 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
                 completion(response, nil);
             }
         }];
-        
     }
     else {
         
@@ -480,20 +498,21 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 
 #pragma mark - Send messages
 
-- (void)sendMessage:(QBChatMessage *)message toDialog:(QBChatDialog *)dialog save:(BOOL)save completion:(void(^)(NSError *error))completion {
+- (void)sendMessage:(QBChatMessage *)message
+               type:(QMMessageType)type
+           toDialog:(QBChatDialog *)dialog
+               save:(BOOL)save
+         completion:(void(^)(NSError *error))completion {
     
-    [message updateCustomParametersWithDialog:dialog];
-    message.messageType = QMMessageTypeText;
     message.customDateSent = self.dateSendTimeInterval;
     message.text = [message.text gtm_stringByEscapingForHTML];
     
+    //Save to history
     if (save) {
         message.saveToHistory = @"1";
     }
-    
-    if (message.messageType != QMMessageTypeText) {
-        
-        [message updateCustomParametersWithDialog:dialog];
+    //Set message type
+    if (type != QMMessageTypeText) {
         message.messageType = type;
     }
     
@@ -505,7 +524,6 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
         message.recipientID = dialog.recipientID;
         message.markable = YES;
     }
-    
     
     [dialog sendMessage:message sentBlock:^(NSError *error) {
         
@@ -529,12 +547,76 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     }];
 }
 
+- (void)sendMessage:(QBChatMessage *)message toDialog:(QBChatDialog *)dialog save:(BOOL)save completion:(void(^)(NSError *error))completion {
+    
+    [self sendMessage:message type:QMMessageTypeText toDialog:dialog save:save completion:completion];
+}
+
 #pragma mark - QMMemoryStorageProtocol
 
 - (void)free {
     
     [self.messagesMemoryStorage free];
     [self.dialogsMemoryStorage free];
+}
+
+#pragma mark - System notifications
+
+- (void)notifyAboutCreateDialog:(QBChatDialog *)dialog opponents:(NSArray *)opponents save:(BOOL)save completion:(void(^)(NSError *error))completion {
+    
+    QBChatMessage *message = [QBChatMessage message];
+    message.messageType = QMMessageTypeCreateGroupDialog;
+    [message updateCustomParametersWithDialog:dialog];
+    
+    for (QBUUser *user in opponents) {
+        
+        QBChatDialog *p2pDialog = [self.dialogsMemoryStorage privateChatDialogWithOpponentID:user.ID];
+        NSParameterAssert(p2pDialog);
+        
+        [p2pDialog sendMessage:message sentBlock:nil];
+    }
+    
+    [dialog sendMessage:message];
+}
+
+//- (void)notifyAboutUpdateDialog:(QBChatDialog *)dialog opponents:(NSArray *)opponents save:(BOOL)save completion
+
+- (void)notifyAboutUpdateDialog:(QBChatDialog *)dialog opponents:(NSArray *)opponents save:(BOOL)save completion:(void(^)(NSError *error))completion {
+    
+    QBChatMessage *message = [QBChatMessage message];
+    message.messageType = QMMessageTypeUpdateGroupDialog;
+    [message updateCustomParametersWithDialog:dialog];
+    
+    for (QBUUser *user in opponents) {
+        
+        QBChatDialog *p2pDialog = [self.dialogsMemoryStorage privateChatDialogWithOpponentID:user.ID];
+        NSParameterAssert(p2pDialog);
+        
+        [p2pDialog sendMessage:message sentBlock:nil];
+    }
+    
+    [dialog sendMessage:message];
+}
+
+- (void)notifyOponentAboutRejectContactRequest:(NSUInteger)opponent save:(BOOL)save completion:(void(^)(NSError *error))completion {
+    
+    QBChatMessage *message = [QBChatMessage message];
+    
+    message.messageType = QMMessageTypeRejectContactRequest;
+    message.recipientID = opponent;
+    message.senderID = self.serviceManager.currentUser.ID;
+    message.customDateSent = self.dateSendTimeInterval;
+    message.text = @"Contact Request";
+    
+    if (save) {
+        message.saveToHistory = @"1";
+    }
+    
+    QBChatDialog *p2pDialog = [self.dialogsMemoryStorage privateChatDialogWithOpponentID:opponent];
+    NSParameterAssert(p2pDialog);
+    
+    [message updateCustomParametersWithDialog:p2pDialog];
+    [p2pDialog sendMessage:message sentBlock:completion];
 }
 
 @end
