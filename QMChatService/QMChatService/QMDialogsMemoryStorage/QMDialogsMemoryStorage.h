@@ -15,6 +15,8 @@
 - (void)addChatDialog:(QBChatDialog *)chatDialog andJoin:(BOOL)join;
 - (void)addChatDialogs:(NSArray *)dialogs andJoin:(BOOL)join;
 
+- (void)deleteChatDialogWithID:(NSString *)chatDialogID;
+
 - (QBChatDialog *)chatDialogWithID:(NSString *)dialogID;
 - (QBChatDialog *)chatDialogWithRoomName:(NSString *)roomName;
 - (QBChatDialog *)privateChatDialogWithOpponentID:(NSUInteger)opponentID;

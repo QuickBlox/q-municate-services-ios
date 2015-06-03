@@ -115,6 +115,15 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  */
 - (void)joinOccupantsWithIDs:(NSArray *)ids toChatDialog:(QBChatDialog *)chatDialog
                   completion:(void(^)(QBResponse *response, QBChatDialog *updatedDialog))completion;
+
+/**
+ *  Delete dialog by id on server and chat cache
+ *
+ *  @param completion Block with response dialogs instances
+ */
+- (void)deleteDialogWithID:(NSString *)dialogId
+                completion:(void(^)(QBResponse *response))completion;
+
 /**
  *  Retrieve chat dialogs
  *
@@ -151,6 +160,8 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 
 - (void)chatService:(QMChatService *)chatService didAddChatDialogToMemoryStorage:(QBChatDialog *)chatDialog;
 - (void)chatService:(QMChatService *)chatService didAddChatDialogsToMemoryStorage:(NSArray *)chatDialogs;
+
+- (void)chatService:(QMChatService *)chatService didDeleteChatDialogWithIDFromMemoryStorage:(NSString *)chatDialogID;
 
 - (void)chatService:(QMChatService *)chatService didAddMessageToMemoryStorage:(QBChatMessage *)message forDialogID:(NSString *)dialogID;
 - (void)chatService:(QMChatService *)chatService didAddMessagesToMemoryStorage:(NSArray *)messages forDialogID:(NSString *)dialogID;

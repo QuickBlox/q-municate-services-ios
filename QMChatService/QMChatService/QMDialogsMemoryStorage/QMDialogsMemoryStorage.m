@@ -55,6 +55,11 @@
     }
 }
 
+- (void)deleteChatDialogWithID:(NSString *)chatDialogID
+{
+    [self.dialogs removeObjectForKey:chatDialogID];
+}
+
 - (QBChatDialog *)chatDialogWithID:(NSString *)dialogID {
     
     return self.dialogs[dialogID];
