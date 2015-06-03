@@ -32,7 +32,7 @@
 		<key>021121D9121EF5076592E191A1310C26B12E0377</key>
 		<string>../../..</string>
 		<key>43E48969AB834C98133F4F66DEBB455ACE272805</key>
-		<string>../../../..</string>
+		<string>../../..</string>
 		<key>8884BD3B878631A1500EC9895E6A3CF4CB0AB3DB</key>
 		<string>../../../qmunicate-services-ios/Submodules/MagicalRecord/Tests/Vendor/Expecta</string>
 		<key>958932E9D08E4465709D54DB1E7CECF23B0F442E</key>
@@ -56,15 +56,7 @@
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>CD485F9DBB514108FD41E7D5D6331AFE39B74C24</string>
-			<key>IDESourceControlWCCName</key>
-			<string></string>
-		</dict>
-		<dict>
-			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
-			<string>public.vcs.git</string>
-			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>021121D9121EF5076592E191A1310C26B12E0377</string>
+			<string>43E48969AB834C98133F4F66DEBB455ACE272805</string>
 			<key>IDESourceControlWCCName</key>
 			<string></string>
 		</dict>
@@ -80,9 +72,17 @@
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>43E48969AB834C98133F4F66DEBB455ACE272805</string>
+			<string>CD485F9DBB514108FD41E7D5D6331AFE39B74C24</string>
 			<key>IDESourceControlWCCName</key>
-			<string>..</string>
+			<string></string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>021121D9121EF5076592E191A1310C26B12E0377</string>
+			<key>IDESourceControlWCCName</key>
+			<string></string>
 		</dict>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
