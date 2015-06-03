@@ -468,9 +468,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     }];
 }
 
-- (void)deleteDialogWithID:(NSString *)dialogId
-                completion:(void (^)(QBResponse *))completion
-{
+- (void)deleteDialogWithID:(NSString *)dialogId completion:(void (^)(QBResponse *))completion {
     __weak __typeof(self)weakSelf = self;
     
     [QBRequest deleteDialogWithID:dialogId successBlock:^(QBResponse *response) {
@@ -526,11 +524,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 
 #pragma mark - Send messages
 
-- (void)sendMessage:(QBChatMessage *)message
-               type:(QMMessageType)type
-           toDialog:(QBChatDialog *)dialog
-               save:(BOOL)save
-         completion:(void(^)(NSError *error))completion {
+- (void)sendMessage:(QBChatMessage *)message type:(QMMessageType)type toDialog:(QBChatDialog *)dialog save:(BOOL)save completion:(void(^)(NSError *error))completion {
     
     message.customDateSent = self.dateSendTimeInterval;
     message.text = [message.text gtm_stringByEscapingForHTML];
@@ -590,61 +584,73 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 
 #pragma mark - System notifications
 
-- (void)notifyAboutCreateDialog:(QBChatDialog *)dialog opponents:(NSArray *)opponents save:(BOOL)save completion:(void(^)(NSError *error))completion {
+- (void)notifyAboutCreateDialog:(QBChatDialog *)createDialog opponents:(NSArray *)opponents completion:(void(^)(NSError *error))completion {
     
     QBChatMessage *message = [QBChatMessage message];
     message.messageType = QMMessageTypeCreateGroupDialog;
-    [message updateCustomParametersWithDialog:dialog];
+    [message updateCustomParametersWithDialog:createDialog];
     
-    for (QBUUser *user in opponents) {
+    [createDialog sendMessage:message sentBlock:^(NSError *error) {
         
-        QBChatDialog *p2pDialog = [self.dialogsMemoryStorage privateChatDialogWithOpponentID:user.ID];
-        NSParameterAssert(p2pDialog);
-        
-        [p2pDialog sendMessage:message sentBlock:nil];
-    }
-    
-    [dialog sendMessage:message];
+        for (QBUUser *user in opponents) {
+            
+            QBChatDialog *p2pDialog = [self.dialogsMemoryStorage privateChatDialogWithOpponentID:user.ID];
+            NSParameterAssert(p2pDialog);
+            
+            [p2pDialog sendMessage:message sentBlock:nil];
+        }
+    }];
 }
 
-//- (void)notifyAboutUpdateDialog:(QBChatDialog *)dialog opponents:(NSArray *)opponents save:(BOOL)save completion
-
-- (void)notifyAboutUpdateDialog:(QBChatDialog *)dialog opponents:(NSArray *)opponents save:(BOOL)save completion:(void(^)(NSError *error))completion {
+- (void)notifyAboutUpdateDialog:(QBChatDialog *)updateDialog recipients:(NSArray *)recipients completion:(void(^)(NSError *error))completion {
     
     QBChatMessage *message = [QBChatMessage message];
     message.messageType = QMMessageTypeUpdateGroupDialog;
-    [message updateCustomParametersWithDialog:dialog];
-    
-    for (QBUUser *user in opponents) {
+    message.saveToHistory = @"1";
+
+    [updateDialog sendMessage:message sentBlock:^(NSError *error) {
         
-        QBChatDialog *p2pDialog = [self.dialogsMemoryStorage privateChatDialogWithOpponentID:user.ID];
-        NSParameterAssert(p2pDialog);
-        
-        [p2pDialog sendMessage:message sentBlock:nil];
-    }
-    
-    [dialog sendMessage:message];
+        for (QBUUser *recipient in recipients) {
+            
+            QBChatMessage *privateMessage = [self privateMessageWithRecipientID:recipient.ID text:nil save:NO];
+            privateMessage.messageType = QMMessageTypeUpdateGroupDialog;
+            [privateMessage updateCustomParametersWithDialog:updateDialog];
+            
+            QBChatDialog *p2pDialog = [self.dialogsMemoryStorage privateChatDialogWithOpponentID:recipient.ID];
+            NSParameterAssert(p2pDialog);
+            
+            [p2pDialog sendMessage:message sentBlock:nil];
+        }
+    }];
 }
 
-- (void)notifyOponentAboutRejectContactRequest:(NSUInteger)opponent save:(BOOL)save completion:(void(^)(NSError *error))completion {
+- (void)notifyOponentAboutAcceptContactRequest:(BOOL)accept opponent:(NSUInteger)opponent save:(BOOL)save completion:(void(^)(NSError *error))completion {
     
-    QBChatMessage *message = [QBChatMessage message];
+    QBChatMessage *message = [self privateMessageWithRecipientID:opponent text:accept ? @"Accept contact request" : @"Reject contact request" save:YES];
     
-    message.messageType = QMMessageTypeRejectContactRequest;
-    message.recipientID = opponent;
-    message.senderID = self.serviceManager.currentUser.ID;
-    message.customDateSent = self.dateSendTimeInterval;
-    message.text = @"Contact Request";
-    
-    if (save) {
-        message.saveToHistory = @"1";
-    }
+    message.messageType = accept ? QMMessageTypeAcceptContactRequest : QMMessageTypeRejectContactRequest;
     
     QBChatDialog *p2pDialog = [self.dialogsMemoryStorage privateChatDialogWithOpponentID:opponent];
     NSParameterAssert(p2pDialog);
     
     [message updateCustomParametersWithDialog:p2pDialog];
     [p2pDialog sendMessage:message sentBlock:completion];
+}
+
+#pragma mark System messages utilites
+
+- (QBChatMessage *)privateMessageWithRecipientID:(NSUInteger)recipientID text:(NSString *)text save:(BOOL)save {
+    
+    QBChatMessage *message = [QBChatMessage message];
+    message.recipientID = recipientID;
+    message.senderID = self.serviceManager.currentUser.ID;
+    message.customDateSent = self.dateSendTimeInterval;
+    
+    if (save) {
+        message.saveToHistory = @"1";
+    }
+    
+    return message;
 }
 
 @end

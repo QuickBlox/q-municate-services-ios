@@ -14,7 +14,7 @@ typedef NS_ENUM(NSUInteger, QMMessageType) {
     QMMessageTypeUpdateGroupDialog = 2,
     
     QMMessageTypeContactRequest = 4,
-    QMMessageTypeConfirmContactRequest,
+    QMMessageTypeAcceptContactRequest,
     QMMessageTypeRejectContactRequest,
     QMMessageTypeDeleteContactRequest
 };
