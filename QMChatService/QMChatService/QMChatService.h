@@ -137,7 +137,7 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 
 #pragma mark - System Messages
 
-- (void)notifyOponentAboutAcceptContactRequest:(BOOL)accept opponent:(NSUInteger)opponent save:(BOOL)save completion:(void(^)(NSError *error))completion;
+- (void)notifyOponentAboutAcceptContactRequest:(BOOL)accept opponent:(NSUInteger)opponent completion:(void(^)(NSError *error))completion;
 
 #pragma mark - Fetch messages
 
