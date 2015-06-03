@@ -35,8 +35,8 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 /**
  *  Init chat service
  *
- *  @param serviceDataDelegate delegate confirmed QMServiceDataDelegate protocol
- *  @param cacheDelegate       delegate confirmed QMChatServiceCacheDelegate
+ *  @param serviceManager   delegate confirmed QMServiceManagerProtocol protocol
+ *  @param cacheDataSource  delegate confirmed QMChatServiceCacheDataSource
  *
  *  @return Return QMChatService instance
  */
@@ -59,7 +59,7 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 /**
  *  Login to chant
  *
- *  @param completion <#completion description#>
+ *  @param completion The block which informs whether a chat did login or not. nil if no errors.
  */
 - (void)logIn:(void(^)(NSError *error))completion;
 
@@ -148,7 +148,14 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 
 #pragma mark - Fetch messages
 
-- (void)messageWithChatDialogID:(NSString *)chatDialogID completion:(void(^)(QBResponse *response, NSArray *messages))completion;
+/**
+ *  Fetch messages with chat dialog id
+ *
+ *  @param chatDialogID Chat dialog id
+ *  @param completion   Block with response instance and array of chat messages if request succeded or nil if filed
+ */
+
+- (void)messagesWithChatDialogID:(NSString *)chatDialogID completion:(void(^)(QBResponse *response, NSArray *messages))completion;
 
 #pragma mark Send message
 
@@ -166,7 +173,20 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 @protocol QMChatServiceCacheDataSource <NSObject>
 @required
 
+/**
+ * Is called when chat service will start. Need to use for inserting initial data QMDialogsMemoryStorage
+ *
+ *  @param block Block for provide QBChatDialogs collection
+ */
 - (void)cachedDialogs:(QMCacheCollection)block;
+
+/**
+ *  Is called when begin fetch messages. @see -messagesWithChatDialogID:completion:
+ *  Need to use for inserting initial data QMMessagesMemoryStorage by dialogID
+ *
+ *  @param dialogID Dialog ID
+ *  @param block    Block for provide QBChatMessages collection
+ */
 - (void)cachedMessagesWithDialogID:(NSString *)dialogID block:(QMCacheCollection)block;
 
 @end
