@@ -16,7 +16,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 @interface QMChatService() <QBChatDelegate>
 
 @property (strong, nonatomic) QBMulticastDelegate <QMChatServiceDelegate> *multicastDelegate;
-@property (weak, nonatomic) id <QMChatServiceCacheDelegate> cahceDelegate;
+@property (weak, nonatomic) id <QMChatServiceCacheDataSource> cacheDataSource;
 @property (strong, nonatomic) QMDialogsMemoryStorage *dialogsMemoryStorage;
 @property (strong, nonatomic) QMMessagesMemoryStorage *messagesMemoryStorage;
 @property (strong, nonatomic, readonly) NSNumber *dateSendTimeInterval;
@@ -41,13 +41,13 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 
 #pragma mark - Configure
 
-- (instancetype)initWithServiceManager:(id<QMServiceManagerProtocol>)serviceManager cacheDelegate:(id<QMChatServiceCacheDelegate>)cacheDelegate {
+- (instancetype)initWithServiceManager:(id<QMServiceManagerProtocol>)serviceManager cacheDataSource:(id<QMChatServiceCacheDataSource>)cacheDataSource {
     
     self = [super initWithServiceManager:serviceManager];
     
     if (self) {
         
-        self.cahceDelegate = cacheDelegate;
+        self.cacheDataSource = cacheDataSource;
         [self loadCachedDialogs];
 		
 		self.presenceTimerInterval = 45.0;
@@ -79,9 +79,9 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     
     __weak __typeof(self)weakSelf = self;
     
-    if ([self.cahceDelegate respondsToSelector:@selector(cachedDialogs:)]) {
+    if ([self.cacheDataSource respondsToSelector:@selector(cachedDialogs:)]) {
         
-        [self.cahceDelegate cachedDialogs:^(NSArray *collection) {
+        [self.cacheDataSource cachedDialogs:^(NSArray *collection) {
             
             [weakSelf.dialogsMemoryStorage addChatDialogs:collection andJoin:NO];
             
@@ -94,10 +94,10 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 
 - (void)loadCahcedMessagesWithDialogID:(NSString *)dialogID {
     
-    if ([self.cahceDelegate respondsToSelector:@selector(cachedMessagesWithDialogID:block:)]) {
+    if ([self.cacheDataSource respondsToSelector:@selector(cachedMessagesWithDialogID:block:)]) {
         
         __weak __typeof(self)weakSelf = self;
-        [self.cahceDelegate cachedMessagesWithDialogID:dialogID block:^(NSArray *collection) {
+        [self.cacheDataSource cachedMessagesWithDialogID:dialogID block:^(NSArray *collection) {
             
             if (collection.count > 0) {
                 
