@@ -137,6 +137,13 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 
 #pragma mark - System Messages
 
+/**
+ *  Notify opponent about accept or reject contact request
+ *
+ *  @param accept     YES - accept, NO reject
+ *  @param opponent   opponent ID
+ *  @param completion Block 
+ */
 - (void)notifyOponentAboutAcceptContactRequest:(BOOL)accept opponent:(NSUInteger)opponent completion:(void(^)(NSError *error))completion;
 
 #pragma mark - Fetch messages
