@@ -455,9 +455,17 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 {
     __weak __typeof(self)weakSelf = self;
     
-    [QBRequest deleteDialogWithID:dialogId successBlock:^(QBResponse *responce) {
+    [QBRequest deleteDialogWithID:dialogId successBlock:^(QBResponse *response) {
         
+        [weakSelf.dialogsMemoryStorage deleteChatDialogWithID:dialogId];
         
+        if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didDeleteChatDialogWithIDFromMemoryStorage:)]) {
+            [weakSelf.multicastDelegate chatService:weakSelf didDeleteChatDialogWithIDFromMemoryStorage:dialogId];
+        }
+        
+        if (completion) {
+            completion(response);
+        }
         
     } errorBlock:^(QBResponse *response) {
         
