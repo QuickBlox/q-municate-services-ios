@@ -13,7 +13,7 @@
 #import "QMChatTypes.h"
 
 @protocol QMChatServiceDelegate;
-@protocol QMChatServiceCacheDelegate;
+@protocol QMChatServiceCacheDataSource;
 
 typedef void(^QMCacheCollection)(NSArray *collection);
 
@@ -41,7 +41,7 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  *  @return Return QMChatService instance
  */
 - (instancetype)initWithServiceManager:(id<QMServiceManagerProtocol>)serviceManager
-                         cacheDelegate:(id<QMChatServiceCacheDelegate>)cacheDelegate;
+                         cacheDataSource:(id<QMChatServiceCacheDataSource>)cacheDataSource;
 /**
  *  Add delegate (Multicast)
  *
@@ -104,7 +104,7 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  *  @param completion Block with response and updated chat dialog instances
  */
 - (void)changeDialogName:(NSString *)dialogName forChatDialog:(QBChatDialog *)chatDialog
-            completion:(void(^)(QBResponse *response, QBChatDialog *updatedDialog))completion;
+              completion:(void(^)(QBResponse *response, QBChatDialog *updatedDialog))completion;
 
 /**
  *  Join occupants
@@ -133,7 +133,7 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 - (void)allDialogsWithPageLimit:(NSUInteger)limit
                 extendedRequest:(NSDictionary *)extendedRequest
                 interationBlock:(void(^)(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, BOOL *stop))interationBlock
-                         completion:(void(^)(QBResponse *response))completion;
+                     completion:(void(^)(QBResponse *response))completion;
 
 #pragma mark - System Messages
 
@@ -163,7 +163,7 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 
 @end
 
-@protocol QMChatServiceCacheDelegate <NSObject>
+@protocol QMChatServiceCacheDataSource <NSObject>
 @required
 
 - (void)cachedDialogs:(QMCacheCollection)block;
