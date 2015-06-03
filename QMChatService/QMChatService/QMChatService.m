@@ -527,6 +527,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 - (void)sendMessage:(QBChatMessage *)message type:(QMMessageType)type toDialog:(QBChatDialog *)dialog save:(BOOL)save completion:(void(^)(NSError *error))completion {
     
     message.customDateSent = self.dateSendTimeInterval;
+    
     message.text = [message.text gtm_stringByEscapingForHTML];
     
     //Save to history
@@ -582,7 +583,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     [self.dialogsMemoryStorage free];
 }
 
-#pragma mark - System notifications
+#pragma mark - System messages
 
 - (void)notifyAboutCreateDialog:(QBChatDialog *)createDialog opponents:(NSArray *)opponents completion:(void(^)(NSError *error))completion {
     
@@ -637,7 +638,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     [p2pDialog sendMessage:message sentBlock:completion];
 }
 
-#pragma mark System messages utilites
+#pragma mark System messages Utilites
 
 - (QBChatMessage *)privateMessageWithRecipientID:(NSUInteger)recipientID text:(NSString *)text save:(BOOL)save {
     

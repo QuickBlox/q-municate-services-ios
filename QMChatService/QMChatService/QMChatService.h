@@ -135,9 +135,9 @@ typedef void(^QMCacheCollection)(NSArray *collection);
                 interationBlock:(void(^)(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, BOOL *stop))interationBlock
                          completion:(void(^)(QBResponse *response))completion;
 
-#pragma mark - system notifications
+#pragma mark - System Messages
 
-- (void)notifyOponentAboutRejectContactRequest:(NSUInteger)opponent save:(BOOL)save completion:(void(^)(NSError *error))completion;
+- (void)notifyOponentAboutAcceptContactRequest:(BOOL)accept opponent:(NSUInteger)opponent save:(BOOL)save completion:(void(^)(NSError *error))completion;
 
 #pragma mark - Fetch messages
 
