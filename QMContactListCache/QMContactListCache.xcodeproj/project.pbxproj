@@ -14,8 +14,6 @@
 				1402B6551B13844B0069E3A4 /* ShellScript */,
 			);
 			dependencies = (
-				1402B6521B13844A0069E3A4 /* PBXTargetDependency */,
-				1402B6541B13844A0069E3A4 /* PBXTargetDependency */,
 			);
 			name = QMChatContactListCacheMogenerator;
 			productName = QMChatContactListCacheMogenerator;
@@ -54,26 +52,12 @@
 /* End PBXBuildRule section */
 
 /* Begin PBXContainerItemProxy section */
-		1402B6511B13844A0069E3A4 /* PBXContainerItemProxy */ = {
+		865A687A1B1F2795003AC969 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5590F29D1A0B8D2900C5044F /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 5590F2A91A0B8D4000C5044F;
-			remoteInfo = QMContactListCache;
-		};
-		1402B6531B13844A0069E3A4 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5590F29D1A0B8D2900C5044F /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 554A28201A0CE22200C4E03C;
-			remoteInfo = QMContactListCacheModel;
-		};
-		554A282A1A0CE2B400C4E03C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5590F29D1A0B8D2900C5044F /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 554A28201A0CE22200C4E03C;
-			remoteInfo = QMCotactListCacheModel;
+			remoteGlobalIDString = 1402B64D1B1384430069E3A4;
+			remoteInfo = QMChatContactListCacheMogenerator;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -203,6 +187,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				865A687B1B1F2795003AC969 /* PBXTargetDependency */,
 			);
 			name = QMContactListCacheModel;
 			productName = QMCotactListCacheModel;
@@ -222,7 +207,6 @@
 				55A620CB1A0BBCB3001BA470 /* PBXBuildRule */,
 			);
 			dependencies = (
-				554A282B1A0CE2B400C4E03C /* PBXTargetDependency */,
 			);
 			name = QMContactListCache;
 			productName = QMContactListCache;
@@ -344,20 +328,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		1402B6521B13844A0069E3A4 /* PBXTargetDependency */ = {
+		865A687B1B1F2795003AC969 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 5590F2A91A0B8D4000C5044F /* QMContactListCache */;
-			targetProxy = 1402B6511B13844A0069E3A4 /* PBXContainerItemProxy */;
-		};
-		1402B6541B13844A0069E3A4 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 554A28201A0CE22200C4E03C /* QMContactListCacheModel */;
-			targetProxy = 1402B6531B13844A0069E3A4 /* PBXContainerItemProxy */;
-		};
-		554A282B1A0CE2B400C4E03C /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 554A28201A0CE22200C4E03C /* QMContactListCacheModel */;
-			targetProxy = 554A282A1A0CE2B400C4E03C /* PBXContainerItemProxy */;
+			target = 1402B64D1B1384430069E3A4 /* QMChatContactListCacheMogenerator */;
+			targetProxy = 865A687A1B1F2795003AC969 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
