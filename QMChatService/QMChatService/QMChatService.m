@@ -585,7 +585,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 
 #pragma mark - System messages
 
-- (void)notifyAboutDialogCreate:(QBChatDialog *)createdDialog opponents:(NSArray *)opponents completion:(void(^)(NSError *error))completion {
+- (void)notifyAboutCreatedDialog:(QBChatDialog *)createdDialog opponents:(NSArray *)opponents completion:(void(^)(NSError *error))completion {
     
     QBChatMessage *message = [QBChatMessage message];
     message.messageType = QMMessageTypeCreateGroupDialog;
@@ -603,7 +603,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     }];
 }
 
-- (void)notifyAboutDialogUpdate:(QBChatDialog *)updatedDialog opponents:(NSArray *)opponents completion:(void(^)(NSError *error))completion {
+- (void)notifyAboutUpdatedDialog:(QBChatDialog *)updatedDialog opponents:(NSArray *)opponents completion:(void(^)(NSError *error))completion {
     
     QBChatMessage *message = [QBChatMessage message];
     message.messageType = QMMessageTypeUpdateGroupDialog;

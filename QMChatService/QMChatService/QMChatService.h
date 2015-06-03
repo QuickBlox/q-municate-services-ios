@@ -143,7 +143,7 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  *  @param opponents array of QBUUser instances
  *  @param completion completion block
  */
-- (void)notifyAboutDialogCreate:(QBChatDialog *)createdDialog opponents:(NSArray *)opponents completion:(void(^)(NSError *error))completion;
+- (void)notifyAboutCreatedDialog:(QBChatDialog *)createdDialog opponents:(NSArray *)opponents completion:(void(^)(NSError *error))completion;
 
 /**
  *  Notify opponents about updating the dialog
@@ -152,7 +152,7 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  *  @param opponents array of QBUUser instances
  *  @param completion completion block
  */
-- (void)notifyAboutDialogUpdate:(QBChatDialog *)updatedDialog opponents:(NSArray *)opponents completion:(void(^)(NSError *error))completion;
+- (void)notifyAboutUpdatedDialog:(QBChatDialog *)updatedDialog opponents:(NSArray *)opponents completion:(void(^)(NSError *error))completion;
 /**
  *  Notify opponent about accept or reject contact request
  *
