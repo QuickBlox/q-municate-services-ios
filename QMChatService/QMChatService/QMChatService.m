@@ -633,7 +633,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     }];
 }
 
-- (void)notifyOponentAboutAcceptContactRequest:(BOOL)accept opponent:(NSUInteger)opponent completion:(void(^)(NSError *error))completion {
+- (void)notifyOponentAboutAcceptingContactRequest:(BOOL)accept opponent:(NSUInteger)opponent completion:(void(^)(NSError *error))completion {
     
     QBChatMessage *message = [self privateMessageWithRecipientID:opponent text:accept ? @"Accept contact request" : @"Reject contact request" save:YES];
     

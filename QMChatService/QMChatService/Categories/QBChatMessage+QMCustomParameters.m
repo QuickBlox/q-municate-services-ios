@@ -102,8 +102,10 @@ NSString const *kQMCustomParameterDialogDeletedID = @"deleted_id";
 		if (dialog.name != nil) {
 			self.context[kQMCustomParameterDialogRoomName] = dialog.name;
 		}
-        self.context[kQMCustomParameterRoomJID] = dialog.roomJID;
-        
+		if (dialog.roomJID != nil ){
+			self.context[kQMCustomParameterRoomJID] = dialog.roomJID;
+		}
+		
         NSString *strIDs = [dialog.occupantIDs componentsJoinedByString:@","];
         self.context[kQMCustomParameterDialogOccupantsIDs] = strIDs;
     }
