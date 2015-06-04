@@ -17,7 +17,7 @@
 typedef void(^QMCacheCollection)(NSArray *collection);
 
 @protocol QMContactListServiceDelegate;
-@protocol QMContactListServiceCacheDelegate;
+@protocol QMContactListServiceCacheDataSource;
 
 @interface QMContactListService : QMBaseService
 
@@ -29,12 +29,12 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  *  Init with service data delegate and contact list cache protocol.
  *
  *  @param serviceDataDelegate instance confirmed id<QMServiceDataDelegate> protocol
- *  @param cacheDelegate       instance confirmed id<QMContactListServiceCacheDelegate> protocol
+ *  @param cacheDataSource       instance confirmed id<QMContactListServiceCacheDataSource> protocol
  *
  *  @return QMContactListService instance
  */
 - (instancetype)initWithServiceManager:(id<QMServiceManagerProtocol>)serviceManager
-                         cacheDelegate:(id<QMContactListServiceCacheDelegate>)cacheDelegate;
+                       cacheDataSource:(id<QMContactListServiceCacheDataSource>)cacheDataSource;
 
 /**
  *  Add instance that confirms contact list service multicaste protocol
@@ -77,35 +77,35 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 - (void)addUserToContactListRequest:(QBUUser *)user
                          completion:(void(^)(BOOL success))completion;
 /**
- *  <#Description#>
+ *  Remove user from contact list request
  *
- *  @param userID     <#userID description#>
- *  @param completion <#completion description#>
+ *  @param userID     user ID which you would like to remove from contact list
+ *  @param completion completion block
  */
 - (void)removeUserFromContactListWithUserID:(NSUInteger)userID
                                  completion:(void(^)(BOOL success))completion;
 /**
- *  <#Description#>
+ *  Accept contact request
  *
- *  @param userID     <#userID description#>
- *  @param completion <#completion description#>
+ *  @param userID     user ID from which you would like to accept contact request
+ *  @param completion completion block
  */
 - (void)acceptContactRequest:(NSUInteger)userID
-                      completion:(void (^)(BOOL success))completion;
+                  completion:(void (^)(BOOL success))completion;
 /**
- *  <#Description#>
+ *  Reject contact request
  *
- *  @param userID     <#userID description#>
- *  @param completion <#completion description#>
+ *  @param userID     user ID from which you would like to reject contact request
+ *  @param completion completion block
  */
 - (void)rejectContactRequest:(NSUInteger)userID
-                     completion:(void(^)(BOOL success))completion;
+                  completion:(void(^)(BOOL success))completion;
 
 @end
 
 #pragma mark - Protocols
 
-@protocol QMContactListServiceCacheDelegate <NSObject>
+@protocol QMContactListServiceCacheDataSource <NSObject>
 @required
 
 - (void)cachedUsers:(QMCacheCollection)block;
