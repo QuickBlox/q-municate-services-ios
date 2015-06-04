@@ -645,17 +645,17 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 	}];
 }
 
-- (void)notifyOponentAboutAcceptingContactRequest:(BOOL)accept opponent:(NSUInteger)opponent completion:(void(^)(NSError *error))completion {
-	
-	QBChatMessage *message = [self privateMessageWithRecipientID:opponent text:accept ? @"Accept contact request" : @"Reject contact request" save:YES];
-	
-	message.messageType = accept ? QMMessageTypeAcceptContactRequest : QMMessageTypeRejectContactRequest;
-	
-	QBChatDialog *p2pDialog = [self.dialogsMemoryStorage privateChatDialogWithOpponentID:opponent];
-	NSParameterAssert(p2pDialog);
-	
-	[message updateCustomParametersWithDialog:p2pDialog];
-	[p2pDialog sendMessage:message sentBlock:completion];
+- (void)notifyOponentAboutAcceptingContactRequest:(BOOL)accept opponentID:(NSUInteger)opponentID completion:(void(^)(NSError *error))completion {
+    
+    QBChatMessage *message = [self privateMessageWithRecipientID:opponentID text:accept ? @"Accept contact request" : @"Reject contact request" save:YES];
+    
+    message.messageType = accept ? QMMessageTypeAcceptContactRequest : QMMessageTypeRejectContactRequest;
+    
+    QBChatDialog *p2pDialog = [self.dialogsMemoryStorage privateChatDialogWithOpponentID:opponentID];
+    NSParameterAssert(p2pDialog);
+    
+    [message updateCustomParametersWithDialog:p2pDialog];
+    [p2pDialog sendMessage:message sentBlock:completion];
 }
 
 #pragma mark System messages Utilites
