@@ -53,11 +53,11 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 /**
  *  Retrieve users with ids (with extended set of pagination parameters)
  *
- *  @param ids        ids of users which you want to retrieve
- *  @param completion Block with response, page and users instances if request succeded
+ *  @param ids						ids of users which you want to retrieve
+ *  @param forceDownload	force download users even if users are already downloaded and exists in cache
+ *  @param completion			Block with response, page and users instances if request succeded
  */
-- (void)retrieveUsersWithIDs:(NSArray *)ids
-                  completion:(void(^)(QBResponse *responce, QBGeneralResponsePage *page, NSArray * users))completion;
+- (void)retrieveUsersWithIDs:(NSArray *)ids forceDownload:(BOOL)forceDownload completion:(void(^)(QBResponse *response, QBGeneralResponsePage *page, NSArray * users))completion;
 
 /**
  *  Retrive users with ids (with extended set of pagination parameters)
