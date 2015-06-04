@@ -633,13 +633,13 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     }];
 }
 
-- (void)notifyOponentAboutAcceptingContactRequest:(BOOL)accept opponent:(NSUInteger)opponent completion:(void(^)(NSError *error))completion {
+- (void)notifyOponentAboutAcceptingContactRequest:(BOOL)accept opponentID:(NSUInteger)opponentID completion:(void(^)(NSError *error))completion {
     
-    QBChatMessage *message = [self privateMessageWithRecipientID:opponent text:accept ? @"Accept contact request" : @"Reject contact request" save:YES];
+    QBChatMessage *message = [self privateMessageWithRecipientID:opponentID text:accept ? @"Accept contact request" : @"Reject contact request" save:YES];
     
     message.messageType = accept ? QMMessageTypeAcceptContactRequest : QMMessageTypeRejectContactRequest;
     
-    QBChatDialog *p2pDialog = [self.dialogsMemoryStorage privateChatDialogWithOpponentID:opponent];
+    QBChatDialog *p2pDialog = [self.dialogsMemoryStorage privateChatDialogWithOpponentID:opponentID];
     NSParameterAssert(p2pDialog);
     
     [message updateCustomParametersWithDialog:p2pDialog];
