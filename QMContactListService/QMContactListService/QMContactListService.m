@@ -192,7 +192,7 @@
     return toFetch;
 }
 
-- (void)retrieveUsersWithIDs:(NSArray *)ids completion:(void(^)(QBResponse *responce, QBGeneralResponsePage *page, NSArray * users))completion {
+- (void)retrieveUsersWithIDs:(NSArray *)ids completion:(void(^)(QBResponse *response, QBGeneralResponsePage *page, NSArray * users))completion {
     
     NSSet *toRetrive = [self checkExistIds:ids].copy;
     
@@ -203,13 +203,13 @@
     }
     else {
         
-        QBGeneralResponsePage *pageResponce =
+        QBGeneralResponsePage *pageResponse =
         [QBGeneralResponsePage responsePageWithCurrentPage:1 perPage:toRetrive.count < 100 ? toRetrive.count : 100];
         __weak __typeof(self)weakSelf = self;
         
         [self.retrivedIds unionSet:toRetrive];
         
-        [QBRequest usersWithIDs:toRetrive.allObjects  page:pageResponce successBlock:^(QBResponse *responce, QBGeneralResponsePage *page, NSArray * users) {
+        [QBRequest usersWithIDs:toRetrive.allObjects  page:pageResponse successBlock:^(QBResponse *response, QBGeneralResponsePage *page, NSArray * users) {
             
             for (QBUUser *user in users) {
                 [weakSelf.retrivedIds removeObject:@(user.ID)];
@@ -222,12 +222,12 @@
             }
             
             if (completion) {
-                completion(responce, page, users);
+                completion(response, page, users);
             }
             
-        } errorBlock:^(QBResponse *responce) {
+        } errorBlock:^(QBResponse *response) {
             
-            completion(responce, nil, nil);
+            completion(response, nil, nil);
         }];
     }
 }

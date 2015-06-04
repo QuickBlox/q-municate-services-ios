@@ -136,7 +136,23 @@ typedef void(^QMCacheCollection)(NSArray *collection);
                      completion:(void(^)(QBResponse *response))completion;
 
 #pragma mark - System Messages
+/**
+ *  Notify opponents about creating the dialog
+ *
+ *  @param createdDialog created dialog we notificate about
+ *  @param opponents array of QBUUser instances
+ *  @param completion completion block
+ */
+- (void)notifyAboutCreatedDialog:(QBChatDialog *)createdDialog opponents:(NSArray *)opponents completion:(void(^)(NSError *error))completion;
 
+/**
+ *  Notify opponents about updating the dialog
+ *
+ *  @param updatedDialog updated dialog we notificate about
+ *  @param opponents array of QBUUser instances
+ *  @param completion completion block
+ */
+- (void)notifyAboutUpdatedDialog:(QBChatDialog *)updatedDialog opponents:(NSArray *)opponents completion:(void(^)(NSError *error))completion;
 /**
  *  Notify opponent about accept or reject contact request
  *
@@ -144,7 +160,7 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  *  @param opponent   opponent ID
  *  @param completion Block 
  */
-- (void)notifyOponentAboutAcceptContactRequest:(BOOL)accept opponent:(NSUInteger)opponent completion:(void(^)(NSError *error))completion;
+- (void)notifyOponentAboutAcceptingContactRequest:(BOOL)accept opponentID:(NSUInteger)opponentID completion:(void(^)(NSError *error))completion;
 
 #pragma mark - Fetch messages
 

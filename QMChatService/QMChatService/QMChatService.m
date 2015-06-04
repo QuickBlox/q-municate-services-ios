@@ -585,13 +585,13 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 
 #pragma mark - System messages
 
-- (void)notifyAboutCreateDialog:(QBChatDialog *)createDialog opponents:(NSArray *)opponents completion:(void(^)(NSError *error))completion {
+- (void)notifyAboutCreatedDialog:(QBChatDialog *)createdDialog opponents:(NSArray *)opponents completion:(void(^)(NSError *error))completion {
     
     QBChatMessage *message = [QBChatMessage message];
     message.messageType = QMMessageTypeCreateGroupDialog;
-    [message updateCustomParametersWithDialog:createDialog];
+    [message updateCustomParametersWithDialog:createdDialog];
     
-    [createDialog sendMessage:message sentBlock:^(NSError *error) {
+    [createdDialog sendMessage:message sentBlock:^(NSError *error) {
         
         for (QBUUser *user in opponents) {
             
@@ -600,28 +600,36 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
             
             [p2pDialog sendMessage:message sentBlock:nil];
         }
+		
+		if(completion) {
+			completion(error);
+		}
     }];
 }
 
-- (void)notifyAboutUpdateDialog:(QBChatDialog *)updateDialog recipients:(NSArray *)recipients completion:(void(^)(NSError *error))completion {
+- (void)notifyAboutUpdatedDialog:(QBChatDialog *)updatedDialog opponents:(NSArray *)opponents completion:(void(^)(NSError *error))completion {
     
     QBChatMessage *message = [QBChatMessage message];
     message.messageType = QMMessageTypeUpdateGroupDialog;
     message.saveToHistory = @"1";
 
-    [updateDialog sendMessage:message sentBlock:^(NSError *error) {
+    [updatedDialog sendMessage:message sentBlock:^(NSError *error) {
         
-        for (QBUUser *recipient in recipients) {
+        for (QBUUser *recipient in opponents) {
             
             QBChatMessage *privateMessage = [self privateMessageWithRecipientID:recipient.ID text:nil save:NO];
             privateMessage.messageType = QMMessageTypeUpdateGroupDialog;
-            [privateMessage updateCustomParametersWithDialog:updateDialog];
+            [privateMessage updateCustomParametersWithDialog:updatedDialog];
             
             QBChatDialog *p2pDialog = [self.dialogsMemoryStorage privateChatDialogWithOpponentID:recipient.ID];
             NSParameterAssert(p2pDialog);
             
             [p2pDialog sendMessage:message sentBlock:nil];
         }
+		
+		if(completion) {
+			completion(error);
+		}
     }];
 }
 
