@@ -150,8 +150,6 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 #pragma mark Handle messages (QBChatDelegate)
 
 - (void)chatRoomDidReceiveMessage:(QBChatMessage *)message fromRoomJID:(NSString *)roomJID {
-	
-	message.dialog.roomJID = roomJID;
 	[self handleChatMessage:message];
 }
 
@@ -225,27 +223,35 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 	
 	if (message.messageType == QMMessageTypeText) {
 		
-		if (message.recipientID != message.senderID) {
-			
-			//Update chat dialog in memory storage
-			QBChatDialog *chatDialogToUpdate = [self.dialogsMemoryStorage chatDialogWithID:message.dialogID];
-			chatDialogToUpdate.lastMessageText = message.encodedText;
-			chatDialogToUpdate.lastMessageDate = [NSDate dateWithTimeIntervalSince1970:message.customDateSent.doubleValue];
-			chatDialogToUpdate.unreadMessagesCount++;
-			//Add message in memory storage
-			[self.messagesMemoryStorage addMessage:message forDialogID:message.dialogID];
-			
-			if ([self.multicastDelegate respondsToSelector:@selector(chatService:didAddMessageToMemoryStorage:forDialogID:)]) {
-				[self.multicastDelegate chatService:self didAddMessageToMemoryStorage:message forDialogID:message.dialogID];
-			}
+		if (message.recipientID == message.senderID) {
+			return;
+		}
+		//Update chat dialog in memory storage
+		QBChatDialog *chatDialogToUpdate = [self.dialogsMemoryStorage chatDialogWithID:message.dialogID];
+		chatDialogToUpdate.lastMessageText = message.encodedText;
+		chatDialogToUpdate.lastMessageDate = [NSDate dateWithTimeIntervalSince1970:message.customDateSent.doubleValue];
+		chatDialogToUpdate.unreadMessagesCount++;
+		//Add message in memory storage
+		[self.messagesMemoryStorage addMessage:message forDialogID:message.dialogID];
+		
+		if ([self.multicastDelegate respondsToSelector:@selector(chatService:didAddMessageToMemoryStorage:forDialogID:)]) {
+			[self.multicastDelegate chatService:self didAddMessageToMemoryStorage:message forDialogID:message.dialogID];
 		}
 		
 		return;
 	}
 	else if (message.messageType == QMMessageTypeCreateGroupDialog) {
 		if (message.senderID != [QBSession currentSession].currentUser.ID) {
-			[self.dialogsMemoryStorage addChatDialog:message.dialog andJoin:YES onJoin:nil];
+			__weak __typeof(self)weakSelf = self;
+			
+			[self.dialogsMemoryStorage addChatDialog:message.dialog andJoin:YES onJoin:^{
+				
+				if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddChatDialogToMemoryStorage:)]) {
+					[weakSelf.multicastDelegate chatService:weakSelf didAddChatDialogToMemoryStorage:message.dialog];
+				}
+			}];
 		}
+		
 	}
 	else if (message.messageType == QMMessageTypeUpdateGroupDialog) {
 		
@@ -608,7 +614,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 			
 			// if the dialog already exists, it will not be created again
 			[self createPrivateChatDialogWithOpponent:user completion:^(QBResponse *response, QBChatDialog *createdDialog) {
-				[self sendMessage:privateMessage toDialog:createdDialog save:NO completion:nil];
+				[self sendMessage:privateMessage type:QMMessageTypeCreateGroupDialog toDialog:createdDialog save:NO completion:nil];
 			}];
 			
 		}
