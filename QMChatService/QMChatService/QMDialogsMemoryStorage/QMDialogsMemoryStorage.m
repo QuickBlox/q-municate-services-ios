@@ -35,15 +35,16 @@
 
 #pragma mark - Add / Join / Remove
 
-- (void)addChatDialog:(QBChatDialog *)chatDialog andJoin:(BOOL)join {
+- (void)addChatDialog:(QBChatDialog *)chatDialog andJoin:(BOOL)join  onJoin:(dispatch_block_t)onJoin {
     
     self.dialogs[chatDialog.ID] = chatDialog;
     
     if (join) {
-        
-        if (!chatDialog.isJoined) {
-            [chatDialog join];
-        }
+		
+		NSAssert(!chatDialog.isJoined, @"Need update this case");
+        [chatDialog setOnJoin:onJoin];
+
+		[chatDialog join];
     }
 }
 
@@ -51,7 +52,7 @@
     
     for (QBChatDialog *chatDialog in dialogs) {
         
-        [self addChatDialog:chatDialog andJoin:join];
+        [self addChatDialog:chatDialog andJoin:join onJoin:nil];
     }
 }
 

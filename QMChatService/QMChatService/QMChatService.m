@@ -32,117 +32,117 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 @dynamic dateSendTimeInterval;
 
 - (void)dealloc {
-    
-    NSLog(@"%@ - %@",  NSStringFromSelector(_cmd), self);
-    
-    [self.presenceTimer invalidate];
-    [QBChat.instance removeDelegate:self];
+	
+	NSLog(@"%@ - %@",  NSStringFromSelector(_cmd), self);
+	
+	[self.presenceTimer invalidate];
+	[QBChat.instance removeDelegate:self];
 }
 
 #pragma mark - Configure
 
 - (instancetype)initWithServiceManager:(id<QMServiceManagerProtocol>)serviceManager cacheDataSource:(id<QMChatServiceCacheDataSource>)cacheDataSource {
-    
-    self = [super initWithServiceManager:serviceManager];
-    
-    if (self) {
-        
-        self.cacheDataSource = cacheDataSource;
-        [self loadCachedDialogs];
+	
+	self = [super initWithServiceManager:serviceManager];
+	
+	if (self) {
+		
+		self.cacheDataSource = cacheDataSource;
+		[self loadCachedDialogs];
 		
 		self.presenceTimerInterval = 45.0;
 		self.automaticallySendPresences = YES;
-    }
-    
-    return self;
+	}
+	
+	return self;
 }
 
 - (void)serviceWillStart {
-    
-    self.multicastDelegate = (id<QMChatServiceDelegate>)[[QBMulticastDelegate alloc] init];
-    self.dialogsMemoryStorage = [[QMDialogsMemoryStorage alloc] init];
-    self.messagesMemoryStorage = [[QMMessagesMemoryStorage alloc] init];
-    
-    [QBChat.instance addDelegate:self];
+	
+	self.multicastDelegate = (id<QMChatServiceDelegate>)[[QBMulticastDelegate alloc] init];
+	self.dialogsMemoryStorage = [[QMDialogsMemoryStorage alloc] init];
+	self.messagesMemoryStorage = [[QMMessagesMemoryStorage alloc] init];
+	
+	[QBChat.instance addDelegate:self];
 }
 
 #pragma mark - Getters
 
 - (NSNumber *)dateSendTimeInterval {
-    
-    return @((NSInteger)CFAbsoluteTimeGetCurrent() + kCFAbsoluteTimeIntervalSince1970);
+	
+	return @((NSInteger)CFAbsoluteTimeGetCurrent() + kCFAbsoluteTimeIntervalSince1970);
 }
 
 #pragma mark - Load cached data
 
 - (void)loadCachedDialogs {
-    
-    __weak __typeof(self)weakSelf = self;
-    
-    if ([self.cacheDataSource respondsToSelector:@selector(cachedDialogs:)]) {
-        
-        [self.cacheDataSource cachedDialogs:^(NSArray *collection) {
-            
-            [weakSelf.dialogsMemoryStorage addChatDialogs:collection andJoin:NO];
-            
-            if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddChatDialogsToMemoryStorage:)]) {
-                [weakSelf.multicastDelegate chatService:weakSelf didAddChatDialogsToMemoryStorage:collection];
-            }
-        }];
-    }
+	
+	__weak __typeof(self)weakSelf = self;
+	
+	if ([self.cacheDataSource respondsToSelector:@selector(cachedDialogs:)]) {
+		
+		[self.cacheDataSource cachedDialogs:^(NSArray *collection) {
+			
+			[weakSelf.dialogsMemoryStorage addChatDialogs:collection andJoin:NO];
+			
+			if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddChatDialogsToMemoryStorage:)]) {
+				[weakSelf.multicastDelegate chatService:weakSelf didAddChatDialogsToMemoryStorage:collection];
+			}
+		}];
+	}
 }
 
 - (void)loadCahcedMessagesWithDialogID:(NSString *)dialogID {
-    
-    if ([self.cacheDataSource respondsToSelector:@selector(cachedMessagesWithDialogID:block:)]) {
-        
-        __weak __typeof(self)weakSelf = self;
-        [self.cacheDataSource cachedMessagesWithDialogID:dialogID block:^(NSArray *collection) {
-            
-            if (collection.count > 0) {
-                
-                [weakSelf.messagesMemoryStorage replaceMessages:collection forDialogID:dialogID];
-                
-                if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddMessagesToMemoryStorage:forDialogID:)]) {
-                    [weakSelf.multicastDelegate chatService:weakSelf didLoadMessagesFromCache:collection forDialogID:dialogID];
-                }
-            }
-        }];
-    }
+	
+	if ([self.cacheDataSource respondsToSelector:@selector(cachedMessagesWithDialogID:block:)]) {
+		
+		__weak __typeof(self)weakSelf = self;
+		[self.cacheDataSource cachedMessagesWithDialogID:dialogID block:^(NSArray *collection) {
+			
+			if (collection.count > 0) {
+				
+				[weakSelf.messagesMemoryStorage replaceMessages:collection forDialogID:dialogID];
+				
+				if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddMessagesToMemoryStorage:forDialogID:)]) {
+					[weakSelf.multicastDelegate chatService:weakSelf didLoadMessagesFromCache:collection forDialogID:dialogID];
+				}
+			}
+		}];
+	}
 }
 
 #pragma mark - Add / Remove Multicast delegate
 
 - (void)addDelegate:(id<QMChatServiceDelegate>)delegate {
-    
-    [self.multicastDelegate addDelegate:delegate];
+	
+	[self.multicastDelegate addDelegate:delegate];
 }
 
 - (void)removeDelegate:(id<QMChatServiceDelegate>)delegate{
-    
-    [self.multicastDelegate removeDelegate:delegate];
+	
+	[self.multicastDelegate removeDelegate:delegate];
 }
 
 #pragma mark - QBChatDelegate
 
 - (void)chatDidLogin {
-    
+	
 	if (self.automaticallySendPresences){
 		[self startSendPresence];
 	}
 	
-    if (self.chatSuccessBlock) {
-        self.chatSuccessBlock(nil);
-        self.chatSuccessBlock = nil;
-    }
+	if (self.chatSuccessBlock) {
+		self.chatSuccessBlock(nil);
+		self.chatSuccessBlock = nil;
+	}
 }
 
 - (void)chatDidFailWithStreamError:(NSError *)error {
-    
-    if (self.chatSuccessBlock){
-        self.chatSuccessBlock(error);
-        self.chatSuccessBlock = nil;
-    }
+	
+	if (self.chatSuccessBlock){
+		self.chatSuccessBlock(error);
+		self.chatSuccessBlock = nil;
+	}
 	
 	[self stopSendPresence];
 }
@@ -150,45 +150,46 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 #pragma mark Handle messages (QBChatDelegate)
 
 - (void)chatRoomDidReceiveMessage:(QBChatMessage *)message fromRoomJID:(NSString *)roomJID {
-    
-    [self handleChatMessage:message];
+	
+	message.dialog.roomJID = roomJID;
+	[self handleChatMessage:message];
 }
 
 - (void)chatDidReceiveMessage:(QBChatMessage *)message  {
-    
-    [self handleChatMessage:message];
+	
+	[self handleChatMessage:message];
 }
 
 #pragma mark - Chat Login/Logout
 
 - (void)logIn:(void(^)(NSError *error))completion {
-    
-    BOOL isAutorized = self.serviceManager.isAutorized;
-    NSAssert(isAutorized, @"User must be autorized");
-    
-    self.chatSuccessBlock = completion;
-    QBUUser *user = self.serviceManager.currentUser;
-    
-    if (QBChat.instance.isLoggedIn) {
-        
-        self.chatSuccessBlock(nil);
-    }
-    else {
-        
-        QBChat.instance.autoReconnectEnabled = YES;
-        QBChat.instance.streamManagementEnabled = YES;
-        [QBChat.instance loginWithUser:user];
-        
-    }
+	
+	BOOL isAutorized = self.serviceManager.isAutorized;
+	NSAssert(isAutorized, @"User must be autorized");
+	
+	self.chatSuccessBlock = completion;
+	QBUUser *user = self.serviceManager.currentUser;
+	
+	if (QBChat.instance.isLoggedIn) {
+		
+		self.chatSuccessBlock(nil);
+	}
+	else {
+		
+		QBChat.instance.autoReconnectEnabled = YES;
+		QBChat.instance.streamManagementEnabled = YES;
+		[QBChat.instance loginWithUser:user];
+		
+	}
 }
 
 - (void)logoutChat {
-
+	
 	[self stopSendPresence];
 	
-    if (QBChat.instance.isLoggedIn) {
-        [QBChat.instance logout];
-    }
+	if (QBChat.instance.isLoggedIn) {
+		[QBChat.instance logout];
+	}
 }
 
 #pragma mark - Presence
@@ -197,469 +198,480 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 	
 	[self sendPresence:nil];
 	
-    self.presenceTimer =
-    [NSTimer scheduledTimerWithTimeInterval:self.presenceTimerInterval
-                                     target:self
-                                   selector:@selector(sendPresence:)
-                                   userInfo:nil
-                                    repeats:YES];
+	self.presenceTimer =
+	[NSTimer scheduledTimerWithTimeInterval:self.presenceTimerInterval
+									 target:self
+								   selector:@selector(sendPresence:)
+								   userInfo:nil
+									repeats:YES];
 }
 
 - (void)sendPresence:(NSTimer *)timer {
-    
-    [QBChat.instance sendPresence];
+	
+	[QBChat.instance sendPresence];
 }
 
 - (void)stopSendPresence {
-    
-    [self.presenceTimer invalidate];
-    self.presenceTimer = nil;
+	
+	[self.presenceTimer invalidate];
+	self.presenceTimer = nil;
 }
 
 #pragma mark - Handle Chat messages
 
 - (void)handleChatMessage:(QBChatMessage *)message {
-    
-    NSAssert(message.dialogID, @"Need update this case");
-    
-    if (message.messageType == QMMessageTypeText) {
-        
-        if (message.recipientID != message.senderID) {
-            
-            //Update chat dialog in memory storage
-            QBChatDialog *chatDialogToUpdate = [self.dialogsMemoryStorage chatDialogWithID:message.dialogID];
-            chatDialogToUpdate.lastMessageText = message.encodedText;
-            chatDialogToUpdate.lastMessageDate = [NSDate dateWithTimeIntervalSince1970:message.customDateSent.doubleValue];
-            chatDialogToUpdate.unreadMessagesCount++;
-            //Add message in memory storage
-            [self.messagesMemoryStorage addMessage:message forDialogID:message.dialogID];
-            
-            if ([self.multicastDelegate respondsToSelector:@selector(chatService:didAddMessageToMemoryStorage:forDialogID:)]) {
-                [self.multicastDelegate chatService:self didAddMessageToMemoryStorage:message forDialogID:message.dialogID];
-            }
-        }
-        
-        return;
-    }
-    else if (message.messageType == QMMessageTypeCreateGroupDialog) {
-        
-        [self.dialogsMemoryStorage addChatDialog:message.dialog andJoin:YES];
-    }
-    else if (message.messageType == QMMessageTypeUpdateGroupDialog) {
-        
-        QBChatDialog *chatDialogToUpdate = [self.dialogsMemoryStorage chatDialogWithID:message.dialogID];
-        
-        chatDialogToUpdate.name = message.dialog.name;
-        chatDialogToUpdate.photo = message.dialog.photo;
-        
-    }
-    else if (message.messageType == QMMessageTypeContactRequest) {
-        
-         [self.dialogsMemoryStorage addChatDialog:message.dialog andJoin:NO];
-        
-        if ([self.multicastDelegate respondsToSelector:@selector(chatService:didAddMessageToMemoryStorage:forDialogID:)]) {
-            [self.multicastDelegate chatService:self didAddChatDialogToMemoryStorage:message.dialog];
-        }
-    }
-    
-    QBChatDialog *dialog = message.dialog;
-    
-    if ([message.saveToHistory isEqualToString:@"1"]) {
-
-        [self.messagesMemoryStorage addMessage:message forDialogID:dialog.ID];
-        
-        if ([self.multicastDelegate respondsToSelector:@selector(chatService:didAddMessageToMemoryStorage:forDialogID:)]) {
-            [self.multicastDelegate chatService:self didAddMessageToMemoryStorage:message forDialogID:message.dialogID];
-        }
-    }
-    
-    if ([self.multicastDelegate respondsToSelector:@selector(chatService:didReceiveNotificationMessage:createDialog:)]) {
-        [self.multicastDelegate chatService:self didReceiveNotificationMessage:message createDialog:message.dialog];
-    }
+	
+	NSAssert(message.dialogID, @"Need update this case");
+	
+	if (message.messageType == QMMessageTypeText) {
+		
+		if (message.recipientID != message.senderID) {
+			
+			//Update chat dialog in memory storage
+			QBChatDialog *chatDialogToUpdate = [self.dialogsMemoryStorage chatDialogWithID:message.dialogID];
+			chatDialogToUpdate.lastMessageText = message.encodedText;
+			chatDialogToUpdate.lastMessageDate = [NSDate dateWithTimeIntervalSince1970:message.customDateSent.doubleValue];
+			chatDialogToUpdate.unreadMessagesCount++;
+			//Add message in memory storage
+			[self.messagesMemoryStorage addMessage:message forDialogID:message.dialogID];
+			
+			if ([self.multicastDelegate respondsToSelector:@selector(chatService:didAddMessageToMemoryStorage:forDialogID:)]) {
+				[self.multicastDelegate chatService:self didAddMessageToMemoryStorage:message forDialogID:message.dialogID];
+			}
+		}
+		
+		return;
+	}
+	else if (message.messageType == QMMessageTypeCreateGroupDialog) {
+		if (message.senderID != [QBSession currentSession].currentUser.ID) {
+			[self.dialogsMemoryStorage addChatDialog:message.dialog andJoin:YES onJoin:nil];
+		}
+	}
+	else if (message.messageType == QMMessageTypeUpdateGroupDialog) {
+		
+		QBChatDialog *chatDialogToUpdate = [self.dialogsMemoryStorage chatDialogWithID:message.dialogID];
+		
+		chatDialogToUpdate.name = message.dialog.name;
+		chatDialogToUpdate.photo = message.dialog.photo;
+		
+	}
+	else if (message.messageType == QMMessageTypeContactRequest) {
+		
+		
+		if ([self.multicastDelegate respondsToSelector:@selector(chatService:didAddMessageToMemoryStorage:forDialogID:)]) {
+			[self.multicastDelegate chatService:self didAddChatDialogToMemoryStorage:message.dialog];
+		}
+	}
+	
+	QBChatDialog *dialog = message.dialog;
+	
+	if ([message.saveToHistory isEqualToString:@"1"]) {
+		
+		[self.messagesMemoryStorage addMessage:message forDialogID:dialog.ID];
+		
+		if ([self.multicastDelegate respondsToSelector:@selector(chatService:didAddMessageToMemoryStorage:forDialogID:)]) {
+			[self.multicastDelegate chatService:self didAddMessageToMemoryStorage:message forDialogID:message.dialogID];
+		}
+	}
+	
+	if ([self.multicastDelegate respondsToSelector:@selector(chatService:didReceiveNotificationMessage:createDialog:)]) {
+		[self.multicastDelegate chatService:self didReceiveNotificationMessage:message createDialog:message.dialog];
+	}
 }
 
 #pragma mark - Dialog history
 
 - (void)allDialogsWithPageLimit:(NSUInteger)limit
-                extendedRequest:(NSDictionary *)extendedRequest
-                interationBlock:(void(^)(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, BOOL *stop))interationBlock
-                     completion:(void(^)(QBResponse *response))completion {
-    
-    __weak __typeof(self)weakSelf = self;
-    
-    __block QBResponsePage *responsePage = [QBResponsePage responsePageWithLimit:limit];
-    __block BOOL cancel = NO;
-
-     __block dispatch_block_t t_request;
-    
-    dispatch_block_t request = [^{
-        
-        [QBRequest dialogsForPage:responsePage extendedRequest:extendedRequest successBlock:^(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, QBResponsePage *page) {
-            
-            [weakSelf.dialogsMemoryStorage addChatDialogs:dialogObjects andJoin:NO];
-            
-            if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddChatDialogsToMemoryStorage:)]) {
-                [weakSelf.multicastDelegate chatService:weakSelf didAddChatDialogsToMemoryStorage:dialogObjects];
-            }
-            
-            responsePage.skip += dialogObjects.count;
-            
-            if (page.totalEntries <= responsePage.skip) {
-                cancel = YES;
-            }
-            
-            interationBlock(response, dialogObjects, dialogsUsersIDs, &cancel);
-            
-            if (!cancel) {
-                
-                t_request();
-            }
-            else {
-                
-                if (completion) {
-                    completion(response);
-                }
-            }
-            
-        } errorBlock:^(QBResponse *response) {
-            
-            [weakSelf.serviceManager handleErrorResponse:response];
-            
-            if (completion) {
-                completion(response);
-            }
-        }];
-        
-    } copy];
-    
-    t_request = request;
-    request();
+				extendedRequest:(NSDictionary *)extendedRequest
+				interationBlock:(void(^)(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, BOOL *stop))interationBlock
+					 completion:(void(^)(QBResponse *response))completion {
+	
+	__weak __typeof(self)weakSelf = self;
+	
+	__block QBResponsePage *responsePage = [QBResponsePage responsePageWithLimit:limit];
+	__block BOOL cancel = NO;
+	
+	__block dispatch_block_t t_request;
+	
+	dispatch_block_t request = [^{
+		
+		[QBRequest dialogsForPage:responsePage extendedRequest:extendedRequest successBlock:^(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, QBResponsePage *page) {
+			
+			[weakSelf.dialogsMemoryStorage addChatDialogs:dialogObjects andJoin:NO];
+			
+			if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddChatDialogsToMemoryStorage:)]) {
+				[weakSelf.multicastDelegate chatService:weakSelf didAddChatDialogsToMemoryStorage:dialogObjects];
+			}
+			
+			responsePage.skip += dialogObjects.count;
+			
+			if (page.totalEntries <= responsePage.skip) {
+				cancel = YES;
+			}
+			
+			interationBlock(response, dialogObjects, dialogsUsersIDs, &cancel);
+			
+			if (!cancel) {
+				
+				t_request();
+			}
+			else {
+				
+				if (completion) {
+					completion(response);
+				}
+			}
+			
+		} errorBlock:^(QBResponse *response) {
+			
+			[weakSelf.serviceManager handleErrorResponse:response];
+			
+			if (completion) {
+				completion(response);
+			}
+		}];
+		
+	} copy];
+	
+	t_request = request;
+	request();
 }
 
 #pragma mark - Create Private/Group dialog
 
 - (void)createPrivateChatDialogWithOpponent:(QBUUser *)opponent
-                                 completion:(void(^)(QBResponse *response, QBChatDialog *createdDialo))completion {
-    
-    QBChatDialog *dialog = [self.dialogsMemoryStorage privateChatDialogWithOpponentID:opponent.ID];
-    
-    if (!dialog) {
-        
-        QBChatDialog *chatDialog = [[QBChatDialog alloc] init];
-        chatDialog.type = QBChatDialogTypePrivate;
-        chatDialog.occupantIDs = @[@(opponent.ID)];
-        
-        __weak __typeof(self)weakSelf = self;
-        
-        [QBRequest createDialog:chatDialog successBlock:^(QBResponse *response, QBChatDialog *createdDialog) {
-            
-            [weakSelf.dialogsMemoryStorage addChatDialog:createdDialog andJoin:YES];
-            //Notify about create new dialog
-            if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddChatDialogToMemoryStorage:)]) {
-                [weakSelf.multicastDelegate chatService:weakSelf didAddChatDialogToMemoryStorage:createdDialog];
-            }
-            
-            if (completion) {
-                completion(response, createdDialog);
-            }
-            
-        } errorBlock:^(QBResponse *response) {
-            
-            [weakSelf.serviceManager handleErrorResponse:response];
-            
-            if (completion) {
-                completion(response, nil);
-            }
-        }];
-    }
-    else {
-        
-        if (completion) {
-            completion(nil, dialog);
-        }
-    }
+								 completion:(void(^)(QBResponse *response, QBChatDialog *createdDialo))completion {
+	
+	QBChatDialog *dialog = [self.dialogsMemoryStorage privateChatDialogWithOpponentID:opponent.ID];
+	
+	if (!dialog) {
+		
+		QBChatDialog *chatDialog = [[QBChatDialog alloc] init];
+		chatDialog.type = QBChatDialogTypePrivate;
+		chatDialog.occupantIDs = @[@(opponent.ID)];
+		
+		__weak __typeof(self)weakSelf = self;
+		
+		[QBRequest createDialog:chatDialog successBlock:^(QBResponse *response, QBChatDialog *createdDialog) {
+			
+			[weakSelf.dialogsMemoryStorage addChatDialog:createdDialog andJoin:NO onJoin:nil];
+				
+			//Notify about create new dialog
+			
+			if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddChatDialogToMemoryStorage:)]) {
+				[weakSelf.multicastDelegate chatService:weakSelf didAddChatDialogToMemoryStorage:createdDialog];
+			}
+			
+			if (completion) {
+				completion(response, createdDialog);
+			}
+
+			
+		} errorBlock:^(QBResponse *response) {
+			
+			[weakSelf.serviceManager handleErrorResponse:response];
+			
+			if (completion) {
+				completion(response, nil);
+			}
+		}];
+	}
+	else {
+		
+		if (completion) {
+			completion(nil, dialog);
+		}
+	}
 }
 
 - (void)createGroupChatDialogWithName:(NSString *)name photo:(NSString *)photo occupants:(NSArray *)occupants
-                           completion:(void(^)(QBResponse *response, QBChatDialog *createdDialog))completion {
-    
-    NSMutableSet *occupantIDs = [NSMutableSet set];
-    
-    for (QBUUser *user in occupants) {
+						   completion:(void(^)(QBResponse *response, QBChatDialog *createdDialog))completion {
+	
+	NSMutableSet *occupantIDs = [NSMutableSet set];
+	
+	for (QBUUser *user in occupants) {
 		NSAssert([user isKindOfClass:[QBUUser class]], @"occupants must be an array of QBUUser instances");
-        [occupantIDs addObject:@(user.ID)];
-    }
-    
-    QBChatDialog *chatDialog = [[QBChatDialog alloc] init];
-    chatDialog.name = name;
-    chatDialog.photo = photo;
-    chatDialog.occupantIDs = occupantIDs.allObjects;
-    chatDialog.type = QBChatDialogTypeGroup;
-    
-    __weak __typeof(self)weakSelf = self;
-    [QBRequest createDialog:chatDialog successBlock:^(QBResponse *response, QBChatDialog *createdDialog) {
-        
-        [weakSelf.dialogsMemoryStorage addChatDialog:createdDialog andJoin:YES];
-        
-        if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddChatDialogToMemoryStorage:)]) {
-            [weakSelf.multicastDelegate chatService:weakSelf didAddChatDialogToMemoryStorage:createdDialog];
-        }
-        
-        if (completion) {
-            completion(response, createdDialog);
-        }
-        
-    } errorBlock:^(QBResponse *response) {
-        
-        [weakSelf.serviceManager handleErrorResponse:response];
-        
-        if (completion) {
-            completion(response, nil);
-        }
-    }];
+		[occupantIDs addObject:@(user.ID)];
+	}
+	
+	QBChatDialog *chatDialog = [[QBChatDialog alloc] init];
+	chatDialog.name = name;
+	chatDialog.photo = photo;
+	chatDialog.occupantIDs = occupantIDs.allObjects;
+	chatDialog.type = QBChatDialogTypeGroup;
+	
+	__weak __typeof(self)weakSelf = self;
+	[QBRequest createDialog:chatDialog successBlock:^(QBResponse *response, QBChatDialog *createdDialog) {
+		
+		[weakSelf.dialogsMemoryStorage addChatDialog:createdDialog andJoin:YES onJoin:^{
+			
+			if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddChatDialogToMemoryStorage:)]) {
+				[weakSelf.multicastDelegate chatService:weakSelf didAddChatDialogToMemoryStorage:createdDialog];
+			}
+			
+			if (completion) {
+				completion(response, createdDialog);
+			}
+		}];
+		
+	} errorBlock:^(QBResponse *response) {
+		
+		[weakSelf.serviceManager handleErrorResponse:response];
+		
+		if (completion) {
+			completion(response, nil);
+		}
+	}];
 }
 
 #pragma mark - Edit dialog methods
 
 - (void)changeDialogName:(NSString *)dialogName forChatDialog:(QBChatDialog *)chatDialog
-              completion:(void(^)(QBResponse *response, QBChatDialog *updatedDialog))completion {
-    
-    chatDialog.name = dialogName;
-    
-    __weak __typeof(self)weakSelf = self;
-    [QBRequest updateDialog:chatDialog successBlock:^(QBResponse *response, QBChatDialog *updatedDialog) {
-        
-        [weakSelf.dialogsMemoryStorage addChatDialog:updatedDialog andJoin:NO];
-        
-        if (completion) {
-            completion(response, updatedDialog);
-        }
-        
-    } errorBlock:^(QBResponse *response) {
-        
-        [weakSelf.serviceManager handleErrorResponse:response];
-        
-        if (completion) {
-            completion(response, nil);
-        }
-    }];
+			  completion:(void(^)(QBResponse *response, QBChatDialog *updatedDialog))completion {
+	
+	chatDialog.name = dialogName;
+	
+	__weak __typeof(self)weakSelf = self;
+	[QBRequest updateDialog:chatDialog successBlock:^(QBResponse *response, QBChatDialog *updatedDialog) {
+		
+		[weakSelf.dialogsMemoryStorage addChatDialog:updatedDialog andJoin:NO onJoin:nil];
+		
+		if (completion) {
+			completion(response, updatedDialog);
+		}
+		
+	} errorBlock:^(QBResponse *response) {
+		
+		[weakSelf.serviceManager handleErrorResponse:response];
+		
+		if (completion) {
+			completion(response, nil);
+		}
+	}];
 }
 
 - (void)joinOccupantsWithIDs:(NSArray *)ids toChatDialog:(QBChatDialog *)chatDialog
-                  completion:(void(^)(QBResponse *response, QBChatDialog *updatedDialog))completion {
-    
-    __weak __typeof(self)weakSelf = self;
-    
-    [QBRequest updateDialog:chatDialog successBlock:^(QBResponse *response, QBChatDialog *updatedDialog) {
-        
-        [weakSelf.dialogsMemoryStorage addChatDialog:updatedDialog andJoin:NO];
-        
-        if (completion) {
-            completion(response, updatedDialog);
-        }
-        
-    } errorBlock:^(QBResponse *response) {
-        
-        [weakSelf.serviceManager handleErrorResponse:response];
-        
-        if (completion) {
-            completion(response, nil);
-        }
-    }];
+				  completion:(void(^)(QBResponse *response, QBChatDialog *updatedDialog))completion {
+	
+	__weak __typeof(self)weakSelf = self;
+	
+	[QBRequest updateDialog:chatDialog successBlock:^(QBResponse *response, QBChatDialog *updatedDialog) {
+		
+		[weakSelf.dialogsMemoryStorage addChatDialog:updatedDialog andJoin:NO onJoin:nil];
+		
+		if (completion) {
+			completion(response, updatedDialog);
+		}
+		
+	} errorBlock:^(QBResponse *response) {
+		
+		[weakSelf.serviceManager handleErrorResponse:response];
+		
+		if (completion) {
+			completion(response, nil);
+		}
+	}];
 }
 
 - (void)deleteDialogWithID:(NSString *)dialogId completion:(void (^)(QBResponse *))completion {
-    __weak __typeof(self)weakSelf = self;
-    
-    [QBRequest deleteDialogWithID:dialogId successBlock:^(QBResponse *response) {
-        
-        [weakSelf.dialogsMemoryStorage deleteChatDialogWithID:dialogId];
-        
-        if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didDeleteChatDialogWithIDFromMemoryStorage:)]) {
-            [weakSelf.multicastDelegate chatService:weakSelf didDeleteChatDialogWithIDFromMemoryStorage:dialogId];
-        }
-        
-        if (completion) {
-            completion(response);
-        }
-        
-    } errorBlock:^(QBResponse *response) {
-        
-        [weakSelf.serviceManager handleErrorResponse:response];
-        
-        if (completion) {
-            completion(response);
-        }
-    }];
+	__weak __typeof(self)weakSelf = self;
+	
+	[QBRequest deleteDialogWithID:dialogId successBlock:^(QBResponse *response) {
+		
+		[weakSelf.dialogsMemoryStorage deleteChatDialogWithID:dialogId];
+		
+		if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didDeleteChatDialogWithIDFromMemoryStorage:)]) {
+			[weakSelf.multicastDelegate chatService:weakSelf didDeleteChatDialogWithIDFromMemoryStorage:dialogId];
+		}
+		
+		if (completion) {
+			completion(response);
+		}
+		
+	} errorBlock:^(QBResponse *response) {
+		
+		[weakSelf.serviceManager handleErrorResponse:response];
+		
+		if (completion) {
+			completion(response);
+		}
+	}];
 }
 
 #pragma mark - Messages histroy
 
 - (void)messagesWithChatDialogID:(NSString *)chatDialogID completion:(void(^)(QBResponse *response, NSArray *messages))completion {
-    
-    [self loadCahcedMessagesWithDialogID:chatDialogID];
-    
-    __weak __typeof(self) weakSelf = self;
-    [QBRequest messagesWithDialogID:chatDialogID successBlock:^(QBResponse *response, NSArray *messages) {
-        
-        [weakSelf.messagesMemoryStorage replaceMessages:messages forDialogID:chatDialogID];
-        
-        if ([self.multicastDelegate respondsToSelector:@selector(chatService:didAddMessagesToMemoryStorage:forDialogID:)]) {
-            [self.multicastDelegate chatService:weakSelf didAddMessagesToMemoryStorage:messages forDialogID:chatDialogID];
-        }
-        
-        if (completion) {
-            completion(response, messages);
-        }
-        
-    } errorBlock:^(QBResponse *response) {
-        
-        [weakSelf.serviceManager handleErrorResponse:response];
-        
-        if (completion) {
-            completion(response, nil);
-        }
-    }];
+	
+	[self loadCahcedMessagesWithDialogID:chatDialogID];
+	
+	__weak __typeof(self) weakSelf = self;
+	[QBRequest messagesWithDialogID:chatDialogID successBlock:^(QBResponse *response, NSArray *messages) {
+		
+		[weakSelf.messagesMemoryStorage replaceMessages:messages forDialogID:chatDialogID];
+		
+		if ([self.multicastDelegate respondsToSelector:@selector(chatService:didAddMessagesToMemoryStorage:forDialogID:)]) {
+			[self.multicastDelegate chatService:weakSelf didAddMessagesToMemoryStorage:messages forDialogID:chatDialogID];
+		}
+		
+		if (completion) {
+			completion(response, messages);
+		}
+		
+	} errorBlock:^(QBResponse *response) {
+		
+		[weakSelf.serviceManager handleErrorResponse:response];
+		
+		if (completion) {
+			completion(response, nil);
+		}
+	}];
 }
 
 #pragma mark - Send messages
 
 - (void)sendMessage:(QBChatMessage *)message type:(QMMessageType)type toDialog:(QBChatDialog *)dialog save:(BOOL)save completion:(void(^)(NSError *error))completion {
-    
-    message.customDateSent = self.dateSendTimeInterval;
-    
-    message.text = [message.text gtm_stringByEscapingForHTML];
-    
-    //Save to history
-    if (save) {
-        message.saveToHistory = @"1";
-    }
-    //Set message type
-    if (type != QMMessageTypeText) {
-        message.messageType = type;
-    }
-    
-    QBUUser *currentUser = self.serviceManager.currentUser;
-    
-    if (dialog.type == QBChatDialogTypePrivate) {
-        
-        message.senderID = currentUser.ID;
-        message.recipientID = dialog.recipientID;
-        message.markable = YES;
-    }
-    
-    [dialog sendMessage:message sentBlock:^(NSError *error) {
-        
-        if (!error) {
-            
-            message.senderID = currentUser.ID;
-            
-            dialog.lastMessageText = message.encodedText;
-            dialog.lastMessageDate = message.dateSent;
-            
-            [self.messagesMemoryStorage addMessage:message forDialogID:dialog.ID];
-            
-            if ([self.multicastDelegate respondsToSelector:@selector(chatService:didAddMessageToMemoryStorage:forDialogID:)]) {
-                [self.multicastDelegate chatService:self didAddMessageToMemoryStorage:message forDialogID:dialog.ID];
-            }
-        }
-        
-        if (completion) {
-            completion(error);
-        }
-    }];
+	
+	message.customDateSent = self.dateSendTimeInterval;
+	
+	message.text = [message.text gtm_stringByEscapingForHTML];
+	
+	//Save to history
+	if (save) {
+		message.saveToHistory = @"1";
+	}
+	//Set message type
+	if (type != QMMessageTypeText) {
+		message.messageType = type;
+	}
+	
+	QBUUser *currentUser = self.serviceManager.currentUser;
+	
+	if (dialog.type == QBChatDialogTypePrivate) {
+		
+		message.senderID = currentUser.ID;
+		message.recipientID = dialog.recipientID;
+		message.markable = YES;
+	}
+	
+	[dialog sendMessage:message sentBlock:^(NSError *error) {
+		
+		if (!error) {
+			
+			message.senderID = currentUser.ID;
+			
+			dialog.lastMessageText = message.encodedText;
+			dialog.lastMessageDate = message.dateSent;
+			
+			[self.messagesMemoryStorage addMessage:message forDialogID:dialog.ID];
+			
+			if ([self.multicastDelegate respondsToSelector:@selector(chatService:didAddMessageToMemoryStorage:forDialogID:)]) {
+				[self.multicastDelegate chatService:self didAddMessageToMemoryStorage:message forDialogID:dialog.ID];
+			}
+		}
+		
+		if (completion) {
+			completion(error);
+		}
+	}];
 }
 
 - (void)sendMessage:(QBChatMessage *)message toDialog:(QBChatDialog *)dialog save:(BOOL)save completion:(void(^)(NSError *error))completion {
-    
-    [self sendMessage:message type:QMMessageTypeText toDialog:dialog save:save completion:completion];
+	
+	[self sendMessage:message type:QMMessageTypeText toDialog:dialog save:save completion:completion];
 }
 
 #pragma mark - QMMemoryStorageProtocol
 
 - (void)free {
-    
-    [self.messagesMemoryStorage free];
-    [self.dialogsMemoryStorage free];
+	
+	[self.messagesMemoryStorage free];
+	[self.dialogsMemoryStorage free];
 }
 
 #pragma mark - System messages
 
 - (void)notifyAboutCreatedDialog:(QBChatDialog *)createdDialog opponents:(NSArray *)opponents completion:(void(^)(NSError *error))completion {
-    
-    QBChatMessage *message = [QBChatMessage message];
-    message.messageType = QMMessageTypeCreateGroupDialog;
-    [message updateCustomParametersWithDialog:createdDialog];
-    
-    [createdDialog sendMessage:message sentBlock:^(NSError *error) {
-        
-        for (QBUUser *user in opponents) {
-            
-            QBChatDialog *p2pDialog = [self.dialogsMemoryStorage privateChatDialogWithOpponentID:user.ID];
-            NSParameterAssert(p2pDialog);
-            
-            [p2pDialog sendMessage:message sentBlock:nil];
-        }
+	
+	QBChatMessage *message = [QBChatMessage message];
+	message.messageType = QMMessageTypeCreateGroupDialog;
+	message.saveToHistory = @"1";
+	message.text = @"Create dialog";
+	
+	__weak __typeof(createdDialog)weakDialog = createdDialog;
+	
+	[createdDialog sendMessage:message sentBlock:^(NSError *error) {
+		
+		for (QBUUser *user in opponents) {
+			
+			QBChatMessage *privateMessage = [self privateMessageWithRecipientID:user.ID text:@"CreatedDialog" save:NO];
+			[privateMessage updateCustomParametersWithDialog:weakDialog];
+			
+			// if the dialog already exists, it will not be created again
+			[self createPrivateChatDialogWithOpponent:user completion:^(QBResponse *response, QBChatDialog *createdDialog) {
+				[self sendMessage:privateMessage toDialog:createdDialog save:NO completion:nil];
+			}];
+			
+		}
 		
 		if(completion) {
 			completion(error);
 		}
-    }];
+	}];
 }
 
 - (void)notifyAboutUpdatedDialog:(QBChatDialog *)updatedDialog opponents:(NSArray *)opponents completion:(void(^)(NSError *error))completion {
-    
-    QBChatMessage *message = [QBChatMessage message];
-    message.messageType = QMMessageTypeUpdateGroupDialog;
-    message.saveToHistory = @"1";
-
-    [updatedDialog sendMessage:message sentBlock:^(NSError *error) {
-        
-        for (QBUUser *recipient in opponents) {
-            
-            QBChatMessage *privateMessage = [self privateMessageWithRecipientID:recipient.ID text:nil save:NO];
-            privateMessage.messageType = QMMessageTypeUpdateGroupDialog;
-            [privateMessage updateCustomParametersWithDialog:updatedDialog];
-            
-            QBChatDialog *p2pDialog = [self.dialogsMemoryStorage privateChatDialogWithOpponentID:recipient.ID];
-            NSParameterAssert(p2pDialog);
-            
-            [p2pDialog sendMessage:message sentBlock:nil];
-        }
+	
+	QBChatMessage *message = [QBChatMessage message];
+	message.messageType = QMMessageTypeUpdateGroupDialog;
+	message.saveToHistory = @"1";
+	
+	[updatedDialog sendMessage:message sentBlock:^(NSError *error) {
+		
+		for (QBUUser *recipient in opponents) {
+			
+			QBChatMessage *privateMessage = [self privateMessageWithRecipientID:recipient.ID text:nil save:NO];
+			privateMessage.messageType = QMMessageTypeUpdateGroupDialog;
+			[privateMessage updateCustomParametersWithDialog:updatedDialog];
+			
+			QBChatDialog *p2pDialog = [self.dialogsMemoryStorage privateChatDialogWithOpponentID:recipient.ID];
+			NSParameterAssert(p2pDialog);
+			
+			[p2pDialog sendMessage:message sentBlock:nil];
+		}
 		
 		if(completion) {
 			completion(error);
 		}
-    }];
+	}];
 }
 
 - (void)notifyOponentAboutAcceptingContactRequest:(BOOL)accept opponent:(NSUInteger)opponent completion:(void(^)(NSError *error))completion {
-    
-    QBChatMessage *message = [self privateMessageWithRecipientID:opponent text:accept ? @"Accept contact request" : @"Reject contact request" save:YES];
-    
-    message.messageType = accept ? QMMessageTypeAcceptContactRequest : QMMessageTypeRejectContactRequest;
-    
-    QBChatDialog *p2pDialog = [self.dialogsMemoryStorage privateChatDialogWithOpponentID:opponent];
-    NSParameterAssert(p2pDialog);
-    
-    [message updateCustomParametersWithDialog:p2pDialog];
-    [p2pDialog sendMessage:message sentBlock:completion];
+	
+	QBChatMessage *message = [self privateMessageWithRecipientID:opponent text:accept ? @"Accept contact request" : @"Reject contact request" save:YES];
+	
+	message.messageType = accept ? QMMessageTypeAcceptContactRequest : QMMessageTypeRejectContactRequest;
+	
+	QBChatDialog *p2pDialog = [self.dialogsMemoryStorage privateChatDialogWithOpponentID:opponent];
+	NSParameterAssert(p2pDialog);
+	
+	[message updateCustomParametersWithDialog:p2pDialog];
+	[p2pDialog sendMessage:message sentBlock:completion];
 }
 
 #pragma mark System messages Utilites
 
 - (QBChatMessage *)privateMessageWithRecipientID:(NSUInteger)recipientID text:(NSString *)text save:(BOOL)save {
-    
-    QBChatMessage *message = [QBChatMessage message];
-    message.recipientID = recipientID;
-    message.senderID = self.serviceManager.currentUser.ID;
-    message.customDateSent = self.dateSendTimeInterval;
-    
-    if (save) {
-        message.saveToHistory = @"1";
-    }
-    
-    return message;
+	
+	QBChatMessage *message = [QBChatMessage message];
+	message.recipientID = recipientID;
+	message.senderID = self.serviceManager.currentUser.ID;
+	message.customDateSent = self.dateSendTimeInterval;
+	
+	if (save) {
+		message.saveToHistory = @"1";
+	}
+	
+	return message;
 }
 
 @end
