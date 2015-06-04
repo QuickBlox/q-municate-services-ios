@@ -13,7 +13,7 @@
 <QBChatDelegate, QMUsersMemoryStorageDelegate>
 
 @property (strong, nonatomic) QBMulticastDelegate <QMContactListServiceDelegate> *multicastDelegate;
-@property (weak, nonatomic) id<QMContactListServiceCacheDelegate> cahceDelegate;
+@property (weak, nonatomic) id<QMContactListServiceCacheDataSource> cacheDataSource;
 @property (strong, nonatomic) QMContactListMemoryStorage *contactListMemoryStorage;
 @property (strong, nonatomic) QMUsersMemoryStorage *usersMemoryStorage;
 @property (strong, nonatomic) NSMutableSet *retrivedIds;
@@ -30,12 +30,12 @@
 }
 
 - (instancetype)initWithServiceManager:(id<QMServiceManagerProtocol>)serviceManager
-                         cacheDelegate:(id<QMContactListServiceCacheDelegate>)cacheDelegate {
+                         cacheDataSource:(id<QMContactListServiceCacheDataSource>)cacheDataSource {
     
     self = [super initWithServiceManager:serviceManager];
     if (self) {
         
-        self.cahceDelegate = cacheDelegate;
+        self.cacheDataSource = cacheDataSource;
         self.retrivedIds = [NSMutableSet set];
         [self loadCachedData];
     }
@@ -63,11 +63,11 @@
     //Step 1. Load contact list (Roster)
     dispatch_async(queue, ^{
         
-        if ([self.cahceDelegate respondsToSelector:@selector(cachedContactListItems:)]) {
+        if ([self.cacheDataSource respondsToSelector:@selector(cachedContactListItems:)]) {
             
             dispatch_semaphore_t sem = dispatch_semaphore_create(0);
             
-            [self.cahceDelegate cachedContactListItems:^(NSArray *collection) {
+            [self.cacheDataSource cachedContactListItems:^(NSArray *collection) {
                 
                 [weakSelf.contactListMemoryStorage updateWithContactListItems:collection];
                 dispatch_semaphore_signal(sem);
@@ -79,11 +79,11 @@
     //Step 2. Load users for conatc list
     dispatch_async(queue, ^{
         
-        if ([self.cahceDelegate respondsToSelector:@selector(cachedUsers:)]) {
+        if ([self.cacheDataSource respondsToSelector:@selector(cachedUsers:)]) {
             
             dispatch_semaphore_t sem = dispatch_semaphore_create(0);
             
-            [self.cahceDelegate cachedUsers:^(NSArray *collection) {
+            [self.cacheDataSource cachedUsers:^(NSArray *collection) {
                 
                 [weakSelf.usersMemoryStorage addUsers:collection];
                 dispatch_semaphore_signal(sem);
