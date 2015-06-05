@@ -96,6 +96,16 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  */
 - (void)createPrivateChatDialogWithOpponent:(QBUUser *)opponent
                                  completion:(void(^)(QBResponse *response, QBChatDialog *createdDialog))completion;
+
+/**
+ *  Create p2p dialog
+ *
+ *  @param opponentID Opponent ID
+ *  @param completion Block with response and created chat dialog instances
+ */
+- (void)createPrivateChatDialogWithOpponentID:(NSUInteger)opponentID
+                                   completion:(void(^)(QBResponse *response, QBChatDialog *createdDialo))completion;
+
 /**
  *  Change dialog name
  *
@@ -140,10 +150,14 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  *  Notify opponents about creating the dialog
  *
  *  @param createdDialog created dialog we notificate about
- *  @param opponents array of QBUUser instances
+ *  @param excludedOccupantIDs [NSNumber] array of OccupantIDs which not be notified
+ *  @param occupantsCustomParameters {NSNumber : NSDictionary} dictionary of custom parameters for each ccupant
  *  @param completion completion block
  */
-- (void)notifyAboutCreatedDialog:(QBChatDialog *)createdDialog opponents:(NSArray *)opponents completion:(void(^)(NSError *error))completion;
+- (void)notifyAboutCreatedDialog:(QBChatDialog *)createdDialog
+             excludedOccupantIDs:(NSArray *)excludedOccupantIDs
+       occupantsCustomParameters:(NSDictionary *)occupantsCustomParameters
+                      completion:(void (^)(NSError *))completion;
 
 /**
  *  Notify opponents about updating the dialog
@@ -188,7 +202,7 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 
 @protocol QMChatServiceCacheDataSource <NSObject>
 @required
-
+ 
 /**
  * Is called when chat service will start. Need to use for inserting initial data QMDialogsMemoryStorage
  *

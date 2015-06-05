@@ -345,49 +345,55 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 
 #pragma mark - Create Private/Group dialog
 
+- (void)createPrivateChatDialogWithOpponentID:(NSUInteger)opponentID
+                                 completion:(void(^)(QBResponse *response, QBChatDialog *createdDialo))completion {
+    
+    QBChatDialog *dialog = [self.dialogsMemoryStorage privateChatDialogWithOpponentID:opponentID];
+    
+    if (!dialog) {
+        
+        QBChatDialog *chatDialog = [[QBChatDialog alloc] init];
+        chatDialog.type = QBChatDialogTypePrivate;
+        chatDialog.occupantIDs = @[@(opponentID)];
+        
+        __weak __typeof(self)weakSelf = self;
+        
+        [QBRequest createDialog:chatDialog successBlock:^(QBResponse *response, QBChatDialog *createdDialog) {
+            
+            [weakSelf.dialogsMemoryStorage addChatDialog:createdDialog andJoin:NO onJoin:nil];
+            
+            //Notify about create new dialog
+            
+            if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddChatDialogToMemoryStorage:)]) {
+                [weakSelf.multicastDelegate chatService:weakSelf didAddChatDialogToMemoryStorage:createdDialog];
+            }
+            
+            if (completion) {
+                completion(response, createdDialog);
+            }
+            
+            
+        } errorBlock:^(QBResponse *response) {
+            
+            [weakSelf.serviceManager handleErrorResponse:response];
+            
+            if (completion) {
+                completion(response, nil);
+            }
+        }];
+    }
+    else {
+        
+        if (completion) {
+            completion(nil, dialog);
+        }
+    }
+}
+
 - (void)createPrivateChatDialogWithOpponent:(QBUUser *)opponent
 								 completion:(void(^)(QBResponse *response, QBChatDialog *createdDialo))completion {
 	
-	QBChatDialog *dialog = [self.dialogsMemoryStorage privateChatDialogWithOpponentID:opponent.ID];
-	
-	if (!dialog) {
-		
-		QBChatDialog *chatDialog = [[QBChatDialog alloc] init];
-		chatDialog.type = QBChatDialogTypePrivate;
-		chatDialog.occupantIDs = @[@(opponent.ID)];
-		
-		__weak __typeof(self)weakSelf = self;
-		
-		[QBRequest createDialog:chatDialog successBlock:^(QBResponse *response, QBChatDialog *createdDialog) {
-			
-			[weakSelf.dialogsMemoryStorage addChatDialog:createdDialog andJoin:NO onJoin:nil];
-				
-			//Notify about create new dialog
-			
-			if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddChatDialogToMemoryStorage:)]) {
-				[weakSelf.multicastDelegate chatService:weakSelf didAddChatDialogToMemoryStorage:createdDialog];
-			}
-			
-			if (completion) {
-				completion(response, createdDialog);
-			}
-
-			
-		} errorBlock:^(QBResponse *response) {
-			
-			[weakSelf.serviceManager handleErrorResponse:response];
-			
-			if (completion) {
-				completion(response, nil);
-			}
-		}];
-	}
-	else {
-		
-		if (completion) {
-			completion(nil, dialog);
-		}
-	}
+    [self createPrivateChatDialogWithOpponentID:opponent.ID completion:completion];
 }
 
 - (void)createGroupChatDialogWithName:(NSString *)name photo:(NSString *)photo occupants:(NSArray *)occupants
@@ -596,7 +602,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 
 #pragma mark - System messages
 
-- (void)notifyAboutCreatedDialog:(QBChatDialog *)createdDialog opponents:(NSArray *)opponents completion:(void(^)(NSError *error))completion {
+- (void)notifyAboutCreatedDialog:(QBChatDialog *)createdDialog excludedOccupantIDs:(NSArray *)excludedOccupantIDs occupantsCustomParameters:(NSDictionary *)occupantsCustomParameters completion:(void (^)(NSError *))completion {
 	
 	QBChatMessage *message = [QBChatMessage message];
 	message.messageType = QMMessageTypeCreateGroupDialog;
@@ -607,13 +613,24 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 	
 	[createdDialog sendMessage:message sentBlock:^(NSError *error) {
 		
-		for (QBUUser *user in opponents) {
+		for (NSNumber *occupantID in createdDialog.occupantIDs) {
 			
-			QBChatMessage *privateMessage = [self privateMessageWithRecipientID:user.ID text:@"CreatedDialog" save:NO];
+            if ([excludedOccupantIDs containsObject:occupantID]) {
+                continue;
+            }
+            
+			QBChatMessage *privateMessage = [self privateMessageWithRecipientID:[occupantID integerValue] text:@"CreatedDialog" save:NO];
 			[privateMessage updateCustomParametersWithDialog:weakDialog];
-			
+            
+            NSDictionary *customParameters = [occupantsCustomParameters objectForKey:occupantID];
+            
+            if (customParameters)
+            {
+                [privateMessage.customParameters addEntriesFromDictionary:customParameters];
+            }
+
 			// if the dialog already exists, it will not be created again
-			[self createPrivateChatDialogWithOpponent:user completion:^(QBResponse *response, QBChatDialog *createdDialog) {
+			[self createPrivateChatDialogWithOpponentID:[occupantID integerValue] completion:^(QBResponse *response, QBChatDialog *createdDialog) {
 				[self sendMessage:privateMessage type:QMMessageTypeCreateGroupDialog toDialog:createdDialog save:NO completion:nil];
 			}];
 			
