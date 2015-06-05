@@ -12,7 +12,8 @@
 
 @interface QMDialogsMemoryStorage : NSObject <QMMemoryStorageProtocol>
 
-- (void)addChatDialog:(QBChatDialog *)chatDialog andJoin:(BOOL)join;
+- (void)addChatDialog:(QBChatDialog *)chatDialog andJoin:(BOOL)join  onJoin:(dispatch_block_t)onJoin;
+
 - (void)addChatDialogs:(NSArray *)dialogs andJoin:(BOOL)join;
 
 - (void)deleteChatDialogWithID:(NSString *)chatDialogID;
