@@ -602,25 +602,56 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 
 #pragma mark - System messages
 
-- (void)notifyAboutCreatedDialog:(QBChatDialog *)createdDialog excludedOccupantIDs:(NSArray *)excludedOccupantIDs occupantsCustomParameters:(NSDictionary *)occupantsCustomParameters completion:(void (^)(NSError *))completion {
-	
-	QBChatMessage *message = [QBChatMessage message];
-	message.messageType = QMMessageTypeCreateGroupDialog;
-	message.saveToHistory = @"1";
-	message.text = @"Create dialog";
-	
-	__weak __typeof(createdDialog)weakDialog = createdDialog;
-	
-	[createdDialog sendMessage:message sentBlock:^(NSError *error) {
-		
-		for (NSNumber *occupantID in createdDialog.occupantIDs) {
-			
+- (void)notifyAboutCreatedDialog:(QBChatDialog *)createdDialog
+             excludedOccupantIDs:(NSArray *)excludedOccupantIDs
+       occupantsCustomParameters:(NSDictionary *)occupantsCustomParameters
+                      completion:(void (^)(NSError *))completion
+{
+    [self notifyDialog:createdDialog
+   excludedOccupantIDs:excludedOccupantIDs
+occupantsCustomParameters:occupantsCustomParameters
+           messageText:@"Did create dialog"
+           messageType:QMMessageTypeCreateGroupDialog
+            completion:completion];
+}
+
+- (void)notifyAboutUpdatedDialog:(QBChatDialog *)updatedDialog
+             excludedOccupantIDs:(NSArray *)excludedOccupantIDs
+       occupantsCustomParameters:(NSDictionary *)occupantsCustomParameters
+                      completion:(void (^)(NSError *))completion {
+    
+    [self notifyDialog:updatedDialog
+   excludedOccupantIDs:excludedOccupantIDs
+occupantsCustomParameters:occupantsCustomParameters
+           messageText:nil
+           messageType:QMMessageTypeUpdateGroupDialog
+            completion:completion];
+}
+
+- (void)notifyDialog:(QBChatDialog *)createdDialog
+ excludedOccupantIDs:(NSArray *)excludedOccupantIDs
+occupantsCustomParameters:(NSDictionary *)occupantsCustomParameters
+         messageText:(NSString *)messageText
+         messageType:(QMMessageType)messageType
+          completion:(void (^)(NSError *))completion {
+    
+    QBChatMessage *message = [QBChatMessage message];
+    message.messageType = messageType;
+    message.saveToHistory = @"1";
+    message.text = messageText;
+    
+    __weak __typeof(createdDialog)weakDialog = createdDialog;
+    
+    [createdDialog sendMessage:message sentBlock:^(NSError *error) {
+        
+        for (NSNumber *occupantID in createdDialog.occupantIDs) {
+            
             if ([excludedOccupantIDs containsObject:occupantID]) {
                 continue;
             }
             
-			QBChatMessage *privateMessage = [self privateMessageWithRecipientID:[occupantID integerValue] text:@"CreatedDialog" save:NO];
-			[privateMessage updateCustomParametersWithDialog:weakDialog];
+            QBChatMessage *privateMessage = [self privateMessageWithRecipientID:[occupantID integerValue] text:messageText save:NO];
+            [privateMessage updateCustomParametersWithDialog:weakDialog];
             
             NSDictionary *customParameters = [occupantsCustomParameters objectForKey:occupantID];
             
@@ -628,44 +659,18 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
             {
                 [privateMessage.customParameters addEntriesFromDictionary:customParameters];
             }
-
-			// if the dialog already exists, it will not be created again
-			[self createPrivateChatDialogWithOpponentID:[occupantID integerValue] completion:^(QBResponse *response, QBChatDialog *createdDialog) {
-				[self sendMessage:privateMessage type:QMMessageTypeCreateGroupDialog toDialog:createdDialog save:NO completion:nil];
-			}];
-			
-		}
-		
-		if(completion) {
-			completion(error);
-		}
-	}];
-}
-
-- (void)notifyAboutUpdatedDialog:(QBChatDialog *)updatedDialog opponents:(NSArray *)opponents completion:(void(^)(NSError *error))completion {
-	
-	QBChatMessage *message = [QBChatMessage message];
-	message.messageType = QMMessageTypeUpdateGroupDialog;
-	message.saveToHistory = @"1";
-	
-	[updatedDialog sendMessage:message sentBlock:^(NSError *error) {
-		
-		for (QBUUser *recipient in opponents) {
-			
-			QBChatMessage *privateMessage = [self privateMessageWithRecipientID:recipient.ID text:nil save:NO];
-			privateMessage.messageType = QMMessageTypeUpdateGroupDialog;
-			[privateMessage updateCustomParametersWithDialog:updatedDialog];
-			
-			QBChatDialog *p2pDialog = [self.dialogsMemoryStorage privateChatDialogWithOpponentID:recipient.ID];
-			NSParameterAssert(p2pDialog);
-			
-			[p2pDialog sendMessage:message sentBlock:nil];
-		}
-		
-		if(completion) {
-			completion(error);
-		}
-	}];
+            
+            // if the dialog already exists, it will not be created again
+            [self createPrivateChatDialogWithOpponentID:[occupantID integerValue] completion:^(QBResponse *response, QBChatDialog *privateCreatedDialog) {
+                [self sendMessage:privateMessage type:messageType toDialog:privateCreatedDialog save:NO completion:nil];
+            }];
+            
+        }
+        
+        if(completion) {
+            completion(error);
+        }
+    }];
 }
 
 - (void)notifyOponentAboutAcceptingContactRequest:(BOOL)accept opponentID:(NSUInteger)opponentID completion:(void(^)(NSError *error))completion {
