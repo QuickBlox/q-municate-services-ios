@@ -141,6 +141,32 @@ static QMChatCache *_chatCacheInstance = nil;
     }];
 }
 
+- (void)deleteDialogWithID:(NSString *)dialogID
+                completion:(dispatch_block_t)completion {
+    
+    __weak __typeof(self)weakSelf = self;
+    [self async:^(NSManagedObjectContext *context) {
+        
+        [weakSelf deleteDialogWithID:dialogID inContext:context];
+        
+        [weakSelf save:completion];
+        
+    }];
+}
+
+- (void)deleteAllDialogs:(dispatch_block_t)completion {
+    
+    __weak __typeof(self)weakSelf = self;
+    [self async:^(NSManagedObjectContext *context) {
+        
+        [CDDialog QM_truncateAllInContext:context];
+        
+        [weakSelf save:completion];
+    }];
+}
+
+#pragma mark Utils
+
 - (void)insertQBChatDialogs:(NSArray *)qbChatDialogs inContext:(NSManagedObjectContext *)context {
     
     for (QBChatDialog *qbChatDialog in qbChatDialogs) {
@@ -174,33 +200,8 @@ static QMChatCache *_chatCacheInstance = nil;
     
     CDDialog *dialogToDelete =
     [CDDialog QM_findFirstWithPredicate:IS(@"dialogID", dialogID) inContext:context];
+    
     [dialogToDelete QM_deleteEntityInContext:context];
-}
-
-- (void)deleteDialogWithID:(NSString *)dialogID
-                completion:(dispatch_block_t)completion {
-    
-    __weak __typeof(self)weakSelf = self;
-    [self async:^(NSManagedObjectContext *context) {
-        
-        [weakSelf deleteDialogWithID:dialogID inContext:context];
-        
-        if (completion) {
-            completion();
-        }
-    }];
-}
-
-- (void)deleteAllDialogs:(dispatch_block_t)completion {
-    
-    [self async:^(NSManagedObjectContext *context) {
-        
-        [CDDialog QM_truncateAllInContext:context];
-        
-        if (completion) {
-            completion();
-        }
-    }];
 }
 
 #pragma mark -
