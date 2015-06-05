@@ -151,7 +151,7 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  *
  *  @param createdDialog created dialog we notificate about
  *  @param excludedOccupantIDs [NSNumber] array of OccupantIDs which not be notified
- *  @param occupantsCustomParameters {NSNumber : NSDictionary} dictionary of custom parameters for each ccupant
+ *  @param occupantsCustomParameters {NSNumber : NSDictionary} dictionary of custom parameters for each occupant
  *  @param completion completion block
  */
 - (void)notifyAboutCreatedDialog:(QBChatDialog *)createdDialog
@@ -163,10 +163,14 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  *  Notify opponents about updating the dialog
  *
  *  @param updatedDialog updated dialog we notificate about
- *  @param opponents array of QBUUser instances
+ *  @param excludedOccupantIDs [NSNumber] array of OccupantIDs which not be notified
+ *  @param occupantsCustomParameters {NSNumber : NSDictionary} dictionary of custom parameters for each ccupant
  *  @param completion completion block
  */
-- (void)notifyAboutUpdatedDialog:(QBChatDialog *)updatedDialog opponents:(NSArray *)opponents completion:(void(^)(NSError *error))completion;
+- (void)notifyAboutUpdatedDialog:(QBChatDialog *)updatedDialog
+             excludedOccupantIDs:(NSArray *)excludedOccupantIDs
+       occupantsCustomParameters:(NSDictionary *)occupantsCustomParameters
+                      completion:(void (^)(NSError *))completion;
 /**
  *  Notify opponent about accept or reject contact request
  *
@@ -174,7 +178,9 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  *  @param opponent   opponent ID
  *  @param completion Block 
  */
-- (void)notifyOponentAboutAcceptingContactRequest:(BOOL)accept opponentID:(NSUInteger)opponentID completion:(void(^)(NSError *error))completion;
+- (void)notifyOponentAboutAcceptingContactRequest:(BOOL)accept
+                                       opponentID:(NSUInteger)opponentID
+                                       completion:(void(^)(NSError *error))completion;
 
 #pragma mark - Fetch messages
 
