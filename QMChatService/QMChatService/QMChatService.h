@@ -157,20 +157,23 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 - (void)notifyAboutCreatedDialog:(QBChatDialog *)createdDialog
              excludedOccupantIDs:(NSArray *)excludedOccupantIDs
        occupantsCustomParameters:(NSDictionary *)occupantsCustomParameters
+                notificationText:(NSString *)notificationText
                       completion:(void (^)(NSError *))completion;
 
 /**
- *  Notify opponents about updating the dialog
+ *  Notify opponents about update the dialog
  *
- *  @param updatedDialog updated dialog we notificate about
- *  @param excludedOccupantIDs [NSNumber] array of OccupantIDs which not be notified
- *  @param occupantsCustomParameters {NSNumber : NSDictionary} dictionary of custom parameters for each ccupant
+ *  @param leaveDialog leave dialog
+ *  @param occupantsCustomParameters {NSNumber : NSDictionary} dictionary of custom parameters for each occupant
+ *  @param notificationText notification text
  *  @param completion completion block
  */
-- (void)notifyAboutUpdatedDialog:(QBChatDialog *)updatedDialog
-             excludedOccupantIDs:(NSArray *)excludedOccupantIDs
-       occupantsCustomParameters:(NSDictionary *)occupantsCustomParameters
-                      completion:(void (^)(NSError *))completion;
+
+- (void)notifyAboutUpdateDialog:(QBChatDialog *)updatedDialog
+  occupantsCustomParameters:(NSDictionary *)occupantsCustomParameters
+           notificationText:(NSString *)notificationText
+                 completion:(void (^)(NSError *))completion;
+
 /**
  *  Notify opponent about accept or reject contact request
  *
