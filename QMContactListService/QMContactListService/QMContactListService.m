@@ -134,43 +134,6 @@
      }];
 }
 
-- (void)chatDidReceiveContactAddRequestFromUser:(NSUInteger)userID {
-    
-    [self.contactListMemoryStorage addContactRequestFromUserID:userID];
-    
-    QBUUser *user = [self.usersMemoryStorage userWithID:userID];
-    
-    if (user) {
-        
-        if ([self.multicastDelegate respondsToSelector:@selector(contactListService:addRequestFromUser:)]) {
-            [self.multicastDelegate contactListService:self addRequestFromUser:user];
-        }
-    }
-    else {
-        
-        __weak __typeof(self)weakSelf = self;
-        
-		[self retrieveUsersWithIDs:@[@(userID)] forceDownload:NO completion:^(QBResponse *responce, QBGeneralResponsePage *page, NSArray *users) {
-            
-            if (users.count == 0) {
-                return;
-            }
-            
-            QBUUser *newUser = users.firstObject;
-            
-            [weakSelf.usersMemoryStorage addUser:newUser];
-            
-            if ([weakSelf.multicastDelegate respondsToSelector:@selector(contactListService:addRequestFromUser:)]) {
-                [weakSelf.multicastDelegate contactListService:weakSelf addRequestFromUser:newUser];
-            }
-            
-            if ([weakSelf.multicastDelegate respondsToSelector:@selector(contactListService:didAddUser:)]) {
-                [weakSelf.multicastDelegate contactListService:weakSelf didAddUser:newUser];
-            }
-        }];
-    }
-}
-
 #pragma mark - Retrive users
 
 - (void)retrieveUsersWithIDs:(NSArray *)ids forceDownload:(BOOL)forceDownload completion:(void(^)(QBResponse *response, QBGeneralResponsePage *page, NSArray * users))completion {
@@ -226,25 +189,6 @@
 	
 }
 
-- (void)retriveUsersForChatDialog:(QBChatDialog *)chatDialog
-                       completion:(void(^)(QBResponse *responce, QBGeneralResponsePage *page, NSArray * users))completion {
-    
-    __weak __typeof(self)weakSelf = self;
-    
-	[self retrieveUsersWithIDs:chatDialog.occupantIDs forceDownload:NO completion:^(QBResponse *responce, QBGeneralResponsePage *page, NSArray *users) {
-        if (users.count > 0 ) {
-            
-            if ([weakSelf.multicastDelegate respondsToSelector:@selector(contactListService:didFinishRetriveUsersForChatDialog:)]) {
-                [weakSelf.multicastDelegate contactListService:weakSelf didFinishRetriveUsersForChatDialog:chatDialog];
-            }
-        }
-        
-        if (completion) {
-            completion(responce, page, users);
-        }
-    }];
-}
-
 #pragma mark - ContactList Request
 
 - (void)addUserToContactListRequest:(QBUUser *)user completion:(void(^)(BOOL success))completion {
@@ -294,12 +238,9 @@
 
 - (void)acceptContactRequest:(NSUInteger)userID completion:(void(^)(BOOL success))completion {
     
-    __weak __typeof(self)weakSelf = self;
     [[QBChat instance] confirmAddContactRequest:userID sentBlock:^(NSError *error) {
         
         if (!error) {
-            
-            [weakSelf.contactListMemoryStorage confirmOrRejectContactRequestForUserID:userID];
             
             if (completion) {
                 completion(YES);
@@ -319,8 +260,6 @@
     [[QBChat instance] rejectAddContactRequest:userID sentBlock:^(NSError *error) {
         
         if (!error) {
-            
-            [self.contactListMemoryStorage confirmOrRejectContactRequestForUserID:userID];
             
             if (completion) {
                 completion(YES);
