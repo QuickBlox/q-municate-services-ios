@@ -57,16 +57,9 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  *  @param forceDownload	force download users even if users are already downloaded and exists in cache
  *  @param completion			Block with response, page and users instances if request succeded
  */
-- (void)retrieveUsersWithIDs:(NSArray *)ids forceDownload:(BOOL)forceDownload completion:(void(^)(QBResponse *response, QBGeneralResponsePage *page, NSArray * users))completion;
+- (void)retrieveUsersWithIDs:(NSArray *)ids forceDownload:(BOOL)forceDownload
+                  completion:(void(^)(QBResponse *response, QBGeneralResponsePage *page, NSArray * users))completion;
 
-/**
- *  Retrive users with ids (with extended set of pagination parameters)
- *
- *  @param cahatDialog QBChatDialog instance
- *  @param completion Block with response, page and users instances if request succeded
- */
-- (void)retriveUsersForChatDialog:(QBChatDialog *)cahtDialog
-                       completion:(void(^)(QBResponse *responce, QBGeneralResponsePage *page, NSArray * users))completion;
 
 /**
  *  Add user to contact list request
@@ -74,32 +67,31 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  *  @param user       user which you would like to add to contact list
  *  @param completion completion block
  */
-- (void)addUserToContactListRequest:(QBUUser *)user
-                         completion:(void(^)(BOOL success))completion;
+- (void)addUserToContactListRequest:(QBUUser *)user completion:(void(^)(BOOL success))completion;
+
 /**
  *  Remove user from contact list request
  *
  *  @param userID     user ID which you would like to remove from contact list
  *  @param completion completion block
  */
-- (void)removeUserFromContactListWithUserID:(NSUInteger)userID
-                                 completion:(void(^)(BOOL success))completion;
+- (void)removeUserFromContactListWithUserID:(NSUInteger)userID completion:(void(^)(BOOL success))completion;
+
 /**
  *  Accept contact request
  *
  *  @param userID     user ID from which you would like to accept contact request
  *  @param completion completion block
  */
-- (void)acceptContactRequest:(NSUInteger)userID
-                  completion:(void (^)(BOOL success))completion;
+- (void)acceptContactRequest:(NSUInteger)userID completion:(void (^)(BOOL success))completion;
+
 /**
  *  Reject contact request
  *
  *  @param userID     user ID from which you would like to reject contact request
  *  @param completion completion block
  */
-- (void)rejectContactRequest:(NSUInteger)userID
-                  completion:(void(^)(BOOL success))completion;
+- (void)rejectContactRequest:(NSUInteger)userID completion:(void(^)(BOOL success))completion;
 
 @end
 
@@ -118,10 +110,8 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 
 - (void)contactListServiceDidLoadCache;
 - (void)contactListService:(QMContactListService *)contactListService contactListDidChange:(QBContactList *)contactList;
-- (void)contactListService:(QMContactListService *)contactListService addRequestFromUser:(QBUUser *)user;
 - (void)contactListService:(QMContactListService *)contactListService didAddUser:(QBUUser *)user;
 - (void)contactListService:(QMContactListService *)contactListService didAddUsers:(NSArray *)users;
 - (void)contactListService:(QMContactListService *)contactListService didUpdateUser:(QBUUser *)user;
-- (void)contactListService:(QMContactListService *)contactListService didFinishRetriveUsersForChatDialog:(QBChatDialog *)dialog;
 
 @end
