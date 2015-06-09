@@ -234,6 +234,7 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 
 - (void)chatService:(QMChatService *)chatService didAddChatDialogToMemoryStorage:(QBChatDialog *)chatDialog;
 - (void)chatService:(QMChatService *)chatService didAddChatDialogsToMemoryStorage:(NSArray *)chatDialogs;
+- (void)chatService:(QMChatService *)chatService didUpdateChatDialogsInMemoryStorage:(QBChatDialog *)chatDialog;
 
 - (void)chatService:(QMChatService *)chatService didDeleteChatDialogWithIDFromMemoryStorage:(NSString *)chatDialogID;
 
