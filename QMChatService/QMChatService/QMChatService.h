@@ -149,15 +149,11 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 /**
  *  Notify opponents about creating the dialog
  *
- *  @param createdDialog created dialog we notificate about
- *  @param excludedOccupantIDs [NSNumber] array of OccupantIDs which not be notified
- *  @param occupantsCustomParameters {NSNumber : NSDictionary} dictionary of custom parameters for each occupant
- *  @param completion completion block
+ *  @param dialog created dialog we notificate about
+ *  @param usersIDs [NSNumber] array of OccupantIDs which not be notified
  */
-- (void)notifyAboutCreatedDialog:(QBChatDialog *)createdDialog
-             excludedOccupantIDs:(NSArray *)excludedOccupantIDs
-       occupantsCustomParameters:(NSDictionary *)occupantsCustomParameters
-                      completion:(void (^)(NSError *))completion;
+- (void)notifyUsersWithIDs:(NSArray *)usersIDs aboutAddingToDialog:(QBChatDialog *)dialog;
+
 
 /**
  *  Notify opponents about updating the dialog
@@ -167,10 +163,10 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  *  @param occupantsCustomParameters {NSNumber : NSDictionary} dictionary of custom parameters for each ccupant
  *  @param completion completion block
  */
-- (void)notifyAboutUpdatedDialog:(QBChatDialog *)updatedDialog
-             excludedOccupantIDs:(NSArray *)excludedOccupantIDs
-       occupantsCustomParameters:(NSDictionary *)occupantsCustomParameters
-                      completion:(void (^)(NSError *))completion;
+- (void)notifyAboutUpdateDialog:(QBChatDialog *)updatedDialog
+      occupantsCustomParameters:(NSDictionary *)occupantsCustomParameters
+               notificationText:(NSString *)notificationText
+                     completion:(void (^)(NSError *))completion;
 /**
  *  Notify opponent about accept or reject contact request
  *

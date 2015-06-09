@@ -13,6 +13,8 @@
 
 const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 
+#define kChatServiceSaveToHistoryTrue @"1"
+
 @interface QMChatService() <QBChatDelegate>
 
 @property (strong, nonatomic) QBMulticastDelegate <QMChatServiceDelegate> *multicastDelegate;
@@ -150,12 +152,19 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 #pragma mark Handle messages (QBChatDelegate)
 
 - (void)chatRoomDidReceiveMessage:(QBChatMessage *)message fromRoomJID:(NSString *)roomJID {
+    
 	[self handleChatMessage:message];
+    
 }
 
 - (void)chatDidReceiveMessage:(QBChatMessage *)message  {
 	
 	[self handleChatMessage:message];
+}
+
+- (void)chatDidReceiveSystemMessage:(QBChatMessage *)message
+{
+    [self handleSystemMessage:message];
 }
 
 #pragma mark - Chat Login/Logout
@@ -217,6 +226,22 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 
 #pragma mark - Handle Chat messages
 
+- (void)handleSystemMessage:(QBChatMessage *)message {
+    
+    if (message.messageType == QMMessageTypeCreateGroupDialog) {
+        if (message.senderID != [QBSession currentSession].currentUser.ID) {
+            __weak __typeof(self)weakSelf = self;
+            
+            [self.dialogsMemoryStorage addChatDialog:message.dialog andJoin:YES onJoin:^{
+                
+                if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddChatDialogToMemoryStorage:)]) {
+                    [weakSelf.multicastDelegate chatService:weakSelf didAddChatDialogToMemoryStorage:message.dialog];
+                }
+            }];
+        }
+    }
+}
+
 - (void)handleChatMessage:(QBChatMessage *)message {
 	
 	NSAssert(message.dialogID, @"Need update this case");
@@ -240,19 +265,6 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 		
 		return;
 	}
-	else if (message.messageType == QMMessageTypeCreateGroupDialog) {
-		if (message.senderID != [QBSession currentSession].currentUser.ID) {
-			__weak __typeof(self)weakSelf = self;
-			
-			[self.dialogsMemoryStorage addChatDialog:message.dialog andJoin:YES onJoin:^{
-				
-				if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddChatDialogToMemoryStorage:)]) {
-					[weakSelf.multicastDelegate chatService:weakSelf didAddChatDialogToMemoryStorage:message.dialog];
-				}
-			}];
-		}
-		
-	}
 	else if (message.messageType == QMMessageTypeUpdateGroupDialog) {
 		
 		QBChatDialog *chatDialogToUpdate = [self.dialogsMemoryStorage chatDialogWithID:message.dialogID];
@@ -264,7 +276,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 	else if (message.messageType == QMMessageTypeContactRequest) {
 		
 		
-		if ([self.multicastDelegate respondsToSelector:@selector(chatService:didAddMessageToMemoryStorage:forDialogID:)]) {
+        if ([self.multicastDelegate respondsToSelector:@selector(chatService:didAddChatDialogToMemoryStorage:)]) {
 			[self.multicastDelegate chatService:self didAddChatDialogToMemoryStorage:message.dialog];
 		}
 	}
@@ -602,75 +614,50 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 
 #pragma mark - System messages
 
-- (void)notifyAboutCreatedDialog:(QBChatDialog *)createdDialog
-             excludedOccupantIDs:(NSArray *)excludedOccupantIDs
-       occupantsCustomParameters:(NSDictionary *)occupantsCustomParameters
-                      completion:(void (^)(NSError *))completion
-{
-    [self notifyDialog:createdDialog
-   excludedOccupantIDs:excludedOccupantIDs
-occupantsCustomParameters:occupantsCustomParameters
-           messageText:@"Did create dialog"
-           messageType:QMMessageTypeCreateGroupDialog
-            completion:completion];
-}
-
-- (void)notifyAboutUpdatedDialog:(QBChatDialog *)updatedDialog
-             excludedOccupantIDs:(NSArray *)excludedOccupantIDs
-       occupantsCustomParameters:(NSDictionary *)occupantsCustomParameters
-                      completion:(void (^)(NSError *))completion {
+- (void)notifyUsersWithIDs:(NSArray *)usersIDs aboutAddingToDialog:(QBChatDialog *)dialog {
     
-    [self notifyDialog:updatedDialog
-   excludedOccupantIDs:excludedOccupantIDs
-occupantsCustomParameters:occupantsCustomParameters
-           messageText:nil
-           messageType:QMMessageTypeUpdateGroupDialog
-            completion:completion];
+    for (NSNumber *occupantID in usersIDs) {
+        
+        if (self.serviceManager.currentUser.ID == [occupantID integerValue]) {
+            continue;
+        }
+        
+        QBChatMessage *privateMessage = [self systemMessageWithRecipientID:[occupantID integerValue] parameters:nil];
+        privateMessage.messageType = QMMessageTypeCreateGroupDialog;
+        [privateMessage updateCustomParametersWithDialog:dialog];
+        
+        [[QBChat instance] sendSystemMessage:privateMessage];
+    }
 }
 
-- (void)notifyDialog:(QBChatDialog *)createdDialog
- excludedOccupantIDs:(NSArray *)excludedOccupantIDs
-occupantsCustomParameters:(NSDictionary *)occupantsCustomParameters
-         messageText:(NSString *)messageText
-         messageType:(QMMessageType)messageType
-          completion:(void (^)(NSError *))completion {
+- (void)notifyAboutUpdateDialog:(QBChatDialog *)updatedDialog
+      occupantsCustomParameters:(NSDictionary *)occupantsCustomParameters
+               notificationText:(NSString *)notificationText
+                     completion:(void (^)(NSError *))completion {
+    
+    NSParameterAssert(updatedDialog);
     
     QBChatMessage *message = [QBChatMessage message];
-    message.messageType = messageType;
-    message.saveToHistory = @"1";
-    message.text = messageText;
+    message.messageType = QMMessageTypeUpdateGroupDialog;
+    message.text = notificationText;
+    message.saveToHistory = kChatServiceSaveToHistoryTrue;
     
-    __weak __typeof(createdDialog)weakDialog = createdDialog;
+    [message updateCustomParametersWithDialog:updatedDialog];
     
-    [createdDialog sendMessage:message sentBlock:^(NSError *error) {
+    if (occupantsCustomParameters)
+    {
+        [message.customParameters addEntriesFromDictionary:occupantsCustomParameters];
+    }
+    
+    BOOL sendMessage = [updatedDialog sendMessage:message sentBlock:completion];
+    
+    if (!sendMessage) {
         
-        for (NSNumber *occupantID in createdDialog.occupantIDs) {
-            
-            if ([excludedOccupantIDs containsObject:occupantID]) {
-                continue;
-            }
-            
-            QBChatMessage *privateMessage = [self privateMessageWithRecipientID:[occupantID integerValue] text:messageText save:NO];
-            [privateMessage updateCustomParametersWithDialog:weakDialog];
-            
-            NSDictionary *customParameters = [occupantsCustomParameters objectForKey:occupantID];
-            
-            if (customParameters)
-            {
-                [privateMessage.customParameters addEntriesFromDictionary:customParameters];
-            }
-            
-            // if the dialog already exists, it will not be created again
-            [self createPrivateChatDialogWithOpponentID:[occupantID integerValue] completion:^(QBResponse *response, QBChatDialog *privateCreatedDialog) {
-                [self sendMessage:privateMessage type:messageType toDialog:privateCreatedDialog save:NO completion:nil];
-            }];
-            
+        if (completion) {
+            completion(nil);
         }
         
-        if(completion) {
-            completion(error);
-        }
-    }];
+    }
 }
 
 - (void)notifyOponentAboutAcceptingContactRequest:(BOOL)accept opponentID:(NSUInteger)opponentID completion:(void(^)(NSError *error))completion {
@@ -700,6 +687,19 @@ occupantsCustomParameters:(NSDictionary *)occupantsCustomParameters
 	}
 	
 	return message;
+}
+
+- (QBChatMessage *)systemMessageWithRecipientID:(NSUInteger)recipientID parameters:(NSDictionary *)paramters {
+    
+    QBChatMessage *message = [QBChatMessage message];
+    message.recipientID = recipientID;
+    message.senderID = self.serviceManager.currentUser.ID;
+    
+    if (paramters) {
+        [message.customParameters addEntriesFromDictionary:paramters];
+    }
+    
+    return message;
 }
 
 @end
