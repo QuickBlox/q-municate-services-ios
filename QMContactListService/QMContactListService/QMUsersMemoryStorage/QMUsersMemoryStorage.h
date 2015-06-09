@@ -18,10 +18,6 @@
 @interface QMUsersMemoryStorage : NSObject <QMMemoryStorageProtocol>
 
 @property (weak, nonatomic) id <QMUsersMemoryStorageDelegate> delegate;
-/**
- *  Array of QBUUser's 
- */
-@property (strong, nonatomic, readonly) NSArray *conatcts;
 
 - (void)addUser:(QBUUser *)user;
 - (void)addUsers:(NSArray *)users;
