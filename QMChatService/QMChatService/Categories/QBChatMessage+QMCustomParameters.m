@@ -21,6 +21,7 @@ NSString const *kQMCustomParameterRoomJID = @"room_jid";
 NSString const *kQMCustomParameterDialogRoomName = @"room_name";
 NSString const *kQMCustomParameterDialogRoomPhoto = @"room_photo";
 NSString const *kQMCustomParameterDialogRoomLastMessageDate = @"room_last_message_date";
+NSString const *kQMCustomParameterDialogUpdatedDate = @"dialog_updated_date";
 NSString const *kQMCustomParameterDialogType = @"type";
 NSString const *kQMCustomParameterDialogOccupantsIDs = @"occupants_ids";
 NSString const *kQMCustomParameterDialogDeletedID = @"deleted_id";
@@ -62,11 +63,17 @@ NSString const *kQMCustomParameterDialogRoomUpdatedDate = @"room_updated_date";
         self.tDialog.roomJID = self.context[kQMCustomParameterRoomJID];
         self.tDialog.type = [self.context[kQMCustomParameterDialogType] intValue];
         self.tDialog.name = self.context[kQMCustomParameterDialogRoomName];
+    
         NSString *lastMessageDateTimeInterval = self.context[kQMCustomParameterDialogRoomLastMessageDate];
         
-        if (lastMessageDateTimeInterval)
-        {
+        if (lastMessageDateTimeInterval) {
             self.tDialog.lastMessageDate = [NSDate dateWithTimeIntervalSince1970:[lastMessageDateTimeInterval floatValue]];
+        }
+        
+        NSString *updatedDateTimeInterval = self.context[kQMCustomParameterDialogUpdatedDate];
+        
+        if (updatedDateTimeInterval) {
+            self.tDialog.updatedAt = [NSDate dateWithTimeIntervalSince1970:[updatedDateTimeInterval floatValue]];
         }
         
         NSString * strIDs = self.context[kQMCustomParameterDialogOccupantsIDs];
@@ -116,6 +123,10 @@ NSString const *kQMCustomParameterDialogRoomUpdatedDate = @"room_updated_date";
         if (dialog.lastMessageDate != nil){
             NSTimeInterval lastMessageDateTimeInterval = [dialog.lastMessageDate timeIntervalSince1970];
             self.context[kQMCustomParameterDialogRoomLastMessageDate] = [@(lastMessageDateTimeInterval) stringValue];
+        }
+        if (dialog.updatedAt != nil) {
+            NSTimeInterval updatedAtTimeInterval = [dialog.updatedAt timeIntervalSince1970];
+            self.context[kQMCustomParameterDialogUpdatedDate] = [@(updatedAtTimeInterval) stringValue];
         }
         
         NSTimeInterval nowDateTimeInterval = [[NSDate date] timeIntervalSince1970];

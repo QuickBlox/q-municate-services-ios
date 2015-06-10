@@ -654,6 +654,8 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     message.text = notificationText;
     message.saveToHistory = kChatServiceSaveToHistoryTrue;
     
+    updatedDialog.updatedAt = [NSDate date];
+    
     [message updateCustomParametersWithDialog:updatedDialog];
     
     if (occupantsCustomParameters)
