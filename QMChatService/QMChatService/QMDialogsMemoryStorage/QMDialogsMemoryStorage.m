@@ -38,9 +38,13 @@
 - (void)addChatDialog:(QBChatDialog *)chatDialog andJoin:(BOOL)join  onJoin:(dispatch_block_t)onJoin {
     
     self.dialogs[chatDialog.ID] = chatDialog;
-    
+	
+	NSAssert(chatDialog.type != 0, @"Chat type is not defined");
+	if( chatDialog.type == QBChatDialogTypeGroup || chatDialog.type == QBChatDialogTypePublicGroup ){
+		NSAssert(chatDialog.roomJID != nil, @"Chat JID must exists for group chat");
+	}
+	
     if (join) {
-		
 		NSAssert(!chatDialog.isJoined, @"Need update this case");
         [chatDialog setOnJoin:onJoin];
 

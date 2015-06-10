@@ -24,6 +24,7 @@ NSString const *kQMCustomParameterDialogRoomLastMessageDate = @"room_last_messag
 NSString const *kQMCustomParameterDialogType = @"type";
 NSString const *kQMCustomParameterDialogOccupantsIDs = @"occupants_ids";
 NSString const *kQMCustomParameterDialogDeletedID = @"deleted_id";
+NSString const *kQMCustomParameterDialogRoomUpdatedDate = @"room_updated_date";
 
 @interface QBChatMessage (Context)
 
@@ -116,6 +117,9 @@ NSString const *kQMCustomParameterDialogDeletedID = @"deleted_id";
             NSTimeInterval lastMessageDateTimeInterval = [dialog.lastMessageDate timeIntervalSince1970];
             self.context[kQMCustomParameterDialogRoomLastMessageDate] = [@(lastMessageDateTimeInterval) stringValue];
         }
+        
+        NSTimeInterval nowDateTimeInterval = [[NSDate date] timeIntervalSince1970];
+        self.context[kQMCustomParameterDialogRoomUpdatedDate] = [@(nowDateTimeInterval) stringValue];
 		
         NSString *strIDs = [dialog.occupantIDs componentsJoinedByString:@","];
         self.context[kQMCustomParameterDialogOccupantsIDs] = strIDs;

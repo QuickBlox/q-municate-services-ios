@@ -11,7 +11,6 @@
 @interface QMContactListMemoryStorage()
 
 @property (strong, nonatomic) NSMutableDictionary *contactList;
-@property (strong, nonatomic) NSMutableSet *contactRequestsUsersIDs;
 
 @end
 
@@ -23,8 +22,8 @@
     if (self) {
         
         self.contactList = [NSMutableDictionary dictionary];
-        self.contactRequestsUsersIDs = [NSMutableSet set];
     }
+    
     return self;
 }
 
@@ -59,29 +58,11 @@
     return self.contactList[@(userID)];
 }
 
-#pragma mark - Contact request
-
-- (void)addContactRequestFromUserID:(NSUInteger)userID {
-    
-    [self.contactRequestsUsersIDs addObject:@(userID)];
-}
-
-- (NSArray *)contactRequestUsersIDs {
-    
-    return self.contactRequestsUsersIDs.allObjects;
-}
-
-- (void)confirmOrRejectContactRequestForUserID:(NSUInteger)userID {
-    
-    [self.contactRequestsUsersIDs removeObject:@(userID)];
-}
-
 #pragma mark - QMMemoryStorageProtocol
 
 - (void)free {
     
     [self.contactList removeAllObjects];
-    [self.contactRequestsUsersIDs removeAllObjects];
 }
 
 @end
