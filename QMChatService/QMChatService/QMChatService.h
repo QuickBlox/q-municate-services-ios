@@ -154,19 +154,19 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  */
 - (void)notifyUsersWithIDs:(NSArray *)usersIDs aboutAddingToDialog:(QBChatDialog *)dialog;
 
-
 /**
- *  Notify opponents about updating the dialog
+ *  Notify opponents about update the dialog
  *
- *  @param updatedDialog updated dialog we notificate about
- *  @param excludedOccupantIDs [NSNumber] array of OccupantIDs which not be notified
- *  @param occupantsCustomParameters {NSNumber : NSDictionary} dictionary of custom parameters for each ccupant
+ *  @param leaveDialog leave dialog
+ *  @param occupantsCustomParameters {NSNumber : NSDictionary} dictionary of custom parameters for each occupant
+ *  @param notificationText notification text
  *  @param completion completion block
  */
 - (void)notifyAboutUpdateDialog:(QBChatDialog *)updatedDialog
       occupantsCustomParameters:(NSDictionary *)occupantsCustomParameters
                notificationText:(NSString *)notificationText
                      completion:(void (^)(NSError *))completion;
+
 /**
  *  Notify opponent about accept or reject contact request
  *
@@ -230,7 +230,7 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 
 - (void)chatService:(QMChatService *)chatService didAddChatDialogToMemoryStorage:(QBChatDialog *)chatDialog;
 - (void)chatService:(QMChatService *)chatService didAddChatDialogsToMemoryStorage:(NSArray *)chatDialogs;
-- (void)chatService:(QMChatService *)chatService didUpdateChatDialogsInMemoryStorage:(QBChatDialog *)chatDialog;
+- (void)chatService:(QMChatService *)chatService didUpdateChatDialogInMemoryStorage:(QBChatDialog *)chatDialog;
 
 - (void)chatService:(QMChatService *)chatService didDeleteChatDialogWithIDFromMemoryStorage:(NSString *)chatDialogID;
 
