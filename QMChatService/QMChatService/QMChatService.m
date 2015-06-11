@@ -269,7 +269,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
         
 		QBChatDialog *chatDialogToUpdate = [self.dialogsMemoryStorage chatDialogWithID:message.dialogID];
 		
-        if (!chatDialogToUpdate.lastMessageDate || [chatDialogToUpdate.lastMessageDate compare:message.dialog.lastMessageDate] == NSOrderedDescending) {
+//        if (!chatDialogToUpdate.updatedAt || [chatDialogToUpdate.updatedAt compare:message.dialog.updatedAt] == NSOrderedAscending) {
             chatDialogToUpdate.name = message.dialog.name;
             chatDialogToUpdate.photo = message.dialog.photo;
             chatDialogToUpdate.occupantIDs = message.dialog.occupantIDs;
@@ -278,7 +278,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
             if ([self.multicastDelegate respondsToSelector:@selector(chatService:didAddChatDialogToMemoryStorage:)]) {
                 [self.multicastDelegate chatService:self didAddChatDialogToMemoryStorage:chatDialogToUpdate];
             }
-        }
+//        }
 	}
 	else if (message.messageType == QMMessageTypeContactRequest) {
 		
@@ -321,7 +321,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 	dispatch_block_t request = [^{
 		
 		[QBRequest dialogsForPage:responsePage extendedRequest:extendedRequest successBlock:^(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, QBResponsePage *page) {
-			
+            
 			[weakSelf.dialogsMemoryStorage addChatDialogs:dialogObjects andJoin:NO];
 			
 			if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddChatDialogsToMemoryStorage:)]) {
@@ -433,7 +433,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 	
 	__weak __typeof(self)weakSelf = self;
 	[QBRequest createDialog:chatDialog successBlock:^(QBResponse *response, QBChatDialog *createdDialog) {
-		
+        
 		[weakSelf.dialogsMemoryStorage addChatDialog:createdDialog andJoin:YES onJoin:^{
 			
 			if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddChatDialogToMemoryStorage:)]) {
@@ -464,7 +464,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 	
 	__weak __typeof(self)weakSelf = self;
 	[QBRequest updateDialog:chatDialog successBlock:^(QBResponse *response, QBChatDialog *updatedDialog) {
-		
+        
 		[weakSelf.dialogsMemoryStorage addChatDialog:updatedDialog andJoin:NO onJoin:nil];
 		
 		if (completion) {
@@ -489,7 +489,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     chatDialog.pushOccupantsIDs = ids;
 	
 	[QBRequest updateDialog:chatDialog successBlock:^(QBResponse *response, QBChatDialog *updatedDialog) {
-		
+
 		[weakSelf.dialogsMemoryStorage addChatDialog:updatedDialog andJoin:NO onJoin:nil];
 		
 		if (completion) {
@@ -513,7 +513,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     __weak __typeof(self)weakSelf = self;
     
 	[QBRequest deleteDialogWithID:dialogId successBlock:^(QBResponse *response) {
-		
+        
 		[weakSelf.dialogsMemoryStorage deleteChatDialogWithID:dialogId];
 		
 		if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didDeleteChatDialogWithIDFromMemoryStorage:)]) {
@@ -653,8 +653,6 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     message.messageType = QMMessageTypeUpdateGroupDialog;
     message.text = notificationText;
     message.saveToHistory = kChatServiceSaveToHistoryTrue;
-    
-    updatedDialog.updatedAt = [NSDate date];
     
     [message updateCustomParametersWithDialog:updatedDialog];
     

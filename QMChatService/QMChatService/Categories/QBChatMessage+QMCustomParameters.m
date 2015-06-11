@@ -70,12 +70,6 @@ NSString const *kQMCustomParameterDialogRoomUpdatedDate = @"room_updated_date";
             self.tDialog.lastMessageDate = [NSDate dateWithTimeIntervalSince1970:[lastMessageDateTimeInterval floatValue]];
         }
         
-        NSString *updatedDateTimeInterval = self.context[kQMCustomParameterDialogUpdatedDate];
-        
-        if (updatedDateTimeInterval) {
-            self.tDialog.updatedAt = [NSDate dateWithTimeIntervalSince1970:[updatedDateTimeInterval floatValue]];
-        }
-        
         NSString * strIDs = self.context[kQMCustomParameterDialogOccupantsIDs];
         
         NSArray *componets = [strIDs componentsSeparatedByString:@","];
@@ -123,10 +117,6 @@ NSString const *kQMCustomParameterDialogRoomUpdatedDate = @"room_updated_date";
         if (dialog.lastMessageDate != nil){
             NSTimeInterval lastMessageDateTimeInterval = [dialog.lastMessageDate timeIntervalSince1970];
             self.context[kQMCustomParameterDialogRoomLastMessageDate] = [@(lastMessageDateTimeInterval) stringValue];
-        }
-        if (dialog.updatedAt != nil) {
-            NSTimeInterval updatedAtTimeInterval = [dialog.updatedAt timeIntervalSince1970];
-            self.context[kQMCustomParameterDialogUpdatedDate] = [@(updatedAtTimeInterval) stringValue];
         }
         
         NSTimeInterval nowDateTimeInterval = [[NSDate date] timeIntervalSince1970];
