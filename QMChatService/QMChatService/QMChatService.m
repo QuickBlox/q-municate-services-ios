@@ -304,6 +304,34 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 	}
 }
 
+- (void)joinToGroupDialog:(QBChatDialog *)dialog
+               completion:(void (^)(NSError *))completion {
+    
+    NSParameterAssert(dialog.type != QBChatDialogTypePrivate);
+    
+    NSString *dialogID = dialog.ID;
+    
+    [dialog setOnJoinFailed:^(NSError *error) {
+        
+        if (error.code == 201 || error.code == 404) {
+            
+            [self.dialogsMemoryStorage deleteChatDialogWithID:dialogID];
+            
+            if ([self.multicastDelegate respondsToSelector:@selector(chatService:didDeleteChatDialogWithIDFromMemoryStorage:)]) {
+                [self.multicastDelegate chatService:self didDeleteChatDialogWithIDFromMemoryStorage:dialogID];
+            }
+        }
+        
+        if (completion) {
+            completion(error);
+        }
+        
+    }];
+    
+    [dialog join];
+}
+
+
 #pragma mark - Dialog history
 
 - (void)allDialogsWithPageLimit:(NSUInteger)limit
