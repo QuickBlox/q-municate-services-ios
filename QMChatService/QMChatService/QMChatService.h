@@ -196,9 +196,19 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  *
  *  @param message    QBChatMessage instance
  *  @param dialog     QBChatDialog instance
- *  @param save       save mssage to history on server
+ *  @param save       completion Send message result
  */
 - (void)sendMessage:(QBChatMessage *)message toDialog:(QBChatDialog *)dialog save:(BOOL)save completion:(void(^)(NSError *error))completion;
+
+/**
+ *  Send message to dialog with identifier
+ *
+ *  @param message    QBChatMessage instance
+ *  @param dialogID   NSString dialog
+ *  @param save       BOOL save
+ *  @param completion completion Send message result
+ */
+- (void)sendMessage:(QBChatMessage *)message toDialogId:(NSString *)dialogID save:(BOOL)save completion:(void (^)(NSError *))completion;
 
 @end
 

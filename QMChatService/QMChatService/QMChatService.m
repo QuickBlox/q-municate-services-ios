@@ -1,4 +1,4 @@
-//
+123//
 //  QMChatService.m
 //  Q-municate
 //
@@ -614,6 +614,15 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 - (void)sendMessage:(QBChatMessage *)message toDialog:(QBChatDialog *)dialog save:(BOOL)save completion:(void(^)(NSError *error))completion {
 	
 	[self sendMessage:message type:QMMessageTypeText toDialog:dialog save:save completion:completion];
+}
+
+- (void)sendMessage:(QBChatMessage *)message toDialogId:(NSString *)dialogID save:(BOOL)save completion:(void (^)(NSError *))completion
+{
+    NSCParameterAssert(dialogID);
+    QBChatDialog *dialog = [self.dialogsMemoryStorage chatDialogWithID:dialogID];
+    NSAssert(dialog != nil, @"Dialog have to be in memory cache!");
+    
+    [self sendMessage:message toDialog:dialog save:YES completion:completion];
 }
 
 #pragma mark - QMMemoryStorageProtocol
