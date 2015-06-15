@@ -106,7 +106,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 				[weakSelf.messagesMemoryStorage replaceMessages:collection forDialogID:dialogID];
 				
 				if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddMessagesToMemoryStorage:forDialogID:)]) {
-					[weakSelf.multicastDelegate chatService:weakSelf didLoadMessagesFromCache:collection forDialogID:dialogID];
+					[weakSelf.multicastDelegate chatService:weakSelf didAddMessagesToMemoryStorage:collection forDialogID:dialogID];
 				}
 			}
 		}];
@@ -316,7 +316,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     
     [dialog setOnJoinFailed:^(NSError *error) {
         
-        if (error.code == 201 || error.code == 404) {
+        if (error.code == 201 || error.code == 404 || error.code == 407) {
             
             [self.dialogsMemoryStorage deleteChatDialogWithID:dialogID];
             
