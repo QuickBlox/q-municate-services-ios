@@ -176,6 +176,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 	
 	self.chatSuccessBlock = completion;
 	QBUUser *user = self.serviceManager.currentUser;
+    NSAssert(user != nil, @"User must be already allocated!");
 	
 	if (QBChat.instance.isLoggedIn) {
 		
