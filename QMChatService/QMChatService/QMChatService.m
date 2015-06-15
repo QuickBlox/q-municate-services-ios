@@ -270,6 +270,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
         
 		QBChatDialog *chatDialogToUpdate = [self.dialogsMemoryStorage chatDialogWithID:message.dialogID];
 		
+        if (chatDialogToUpdate) {
 //        if (!chatDialogToUpdate.updatedAt || [chatDialogToUpdate.updatedAt compare:message.dialog.updatedAt] == NSOrderedAscending) {
             chatDialogToUpdate.name = message.dialog.name;
             chatDialogToUpdate.photo = message.dialog.photo;
@@ -280,6 +281,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
                 [self.multicastDelegate chatService:self didAddChatDialogToMemoryStorage:chatDialogToUpdate];
             }
 //        }
+        }
 	}
 	else if (message.messageType == QMMessageTypeContactRequest) {
 		
