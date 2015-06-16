@@ -168,7 +168,7 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 - (void)notifyAboutUpdateDialog:(QBChatDialog *)updatedDialog
       occupantsCustomParameters:(NSDictionary *)occupantsCustomParameters
                notificationText:(NSString *)notificationText
-                     completion:(void (^)(NSError *))completion;
+                     completion:(void (^)(NSError *error))completion;
 
 /**
  *  Notify opponent about accept or reject contact request
