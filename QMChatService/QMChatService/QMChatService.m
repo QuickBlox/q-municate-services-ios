@@ -277,8 +277,8 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
             chatDialogToUpdate.occupantIDs = message.dialog.occupantIDs;
             chatDialogToUpdate.lastMessageDate = message.dialog.lastMessageDate;
             
-            if ([self.multicastDelegate respondsToSelector:@selector(chatService:didAddChatDialogToMemoryStorage:)]) {
-                [self.multicastDelegate chatService:self didAddChatDialogToMemoryStorage:chatDialogToUpdate];
+            if ([self.multicastDelegate respondsToSelector:@selector(chatService:didUpdateChatDialogInMemoryStorage:)]) {
+                [self.multicastDelegate chatService:self didUpdateChatDialogInMemoryStorage:chatDialogToUpdate];
             }
 //        }
         }
