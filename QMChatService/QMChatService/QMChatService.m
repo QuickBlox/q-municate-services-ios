@@ -252,11 +252,33 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 		if (message.recipientID == message.senderID) {
 			return;
 		}
+        
+        BOOL shouldSaveDialog = NO;
+        
 		//Update chat dialog in memory storage
 		QBChatDialog *chatDialogToUpdate = [self.dialogsMemoryStorage chatDialogWithID:message.dialogID];
+        
+        if (!chatDialogToUpdate)
+        {
+            chatDialogToUpdate = [[QBChatDialog alloc] initWithDialogID:message.dialogID];
+            chatDialogToUpdate.occupantIDs = @[@([self.serviceManager currentUser].ID), @(message.senderID)];
+            chatDialogToUpdate.type = QBChatDialogTypePrivate;
+            
+            shouldSaveDialog = YES;
+        }
+        
 		chatDialogToUpdate.lastMessageText = message.encodedText;
 		chatDialogToUpdate.lastMessageDate = [NSDate dateWithTimeIntervalSince1970:message.customDateSent.doubleValue];
 		chatDialogToUpdate.unreadMessagesCount++;
+        
+        if (shouldSaveDialog) {
+            [self.dialogsMemoryStorage addChatDialog:chatDialogToUpdate andJoin:NO onJoin:nil];
+            
+            if ([self.multicastDelegate respondsToSelector:@selector(chatService:didAddChatDialogToMemoryStorage:)]) {
+                [self.multicastDelegate chatService:self didAddChatDialogToMemoryStorage:chatDialogToUpdate];
+            }
+        }
+        
 		//Add message in memory storage
 		[self.messagesMemoryStorage addMessage:message forDialogID:message.dialogID];
 		
