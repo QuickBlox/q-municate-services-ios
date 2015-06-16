@@ -106,7 +106,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 				[weakSelf.messagesMemoryStorage replaceMessages:collection forDialogID:dialogID];
 				
 				if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddMessagesToMemoryStorage:forDialogID:)]) {
-					[weakSelf.multicastDelegate chatService:weakSelf didLoadMessagesFromCache:collection forDialogID:dialogID];
+					[weakSelf.multicastDelegate chatService:weakSelf didAddMessagesToMemoryStorage:collection forDialogID:dialogID];
 				}
 			}
 		}];
@@ -176,6 +176,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 	
 	self.chatSuccessBlock = completion;
 	QBUUser *user = self.serviceManager.currentUser;
+    NSAssert(user != nil, @"User must be already allocated!");
 	
 	if (QBChat.instance.isLoggedIn) {
 		
@@ -269,6 +270,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
         
 		QBChatDialog *chatDialogToUpdate = [self.dialogsMemoryStorage chatDialogWithID:message.dialogID];
 		
+        if (chatDialogToUpdate) {
 //        if (!chatDialogToUpdate.updatedAt || [chatDialogToUpdate.updatedAt compare:message.dialog.updatedAt] == NSOrderedAscending) {
             chatDialogToUpdate.name = message.dialog.name;
             chatDialogToUpdate.photo = message.dialog.photo;
@@ -279,6 +281,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
                 [self.multicastDelegate chatService:self didAddChatDialogToMemoryStorage:chatDialogToUpdate];
             }
 //        }
+        }
 	}
 	else if (message.messageType == QMMessageTypeContactRequest) {
 		
@@ -313,7 +316,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     
     [dialog setOnJoinFailed:^(NSError *error) {
         
-        if (error.code == 201 || error.code == 404) {
+        if (error.code == 201 || error.code == 404 || error.code == 407) {
             
             [self.dialogsMemoryStorage deleteChatDialogWithID:dialogID];
             
