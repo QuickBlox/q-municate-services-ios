@@ -102,10 +102,10 @@ NSString const *kQMCustomParameterDialogRoomUpdatedDate = @"room_updated_date";
     self.tDialog = nil;
     
     self.context[kQMCustomParameterDialogID] = dialog.ID;
-    
+    self.context[kQMCustomParameterDialogType] = @(dialog.type);
+	
     if (dialog.type == QBChatDialogTypeGroup) {
-        
-        self.context[kQMCustomParameterDialogType] = @(dialog.type);
+		
 		if (dialog.photo != nil) {
 			self.context[kQMCustomParameterDialogRoomPhoto] = dialog.photo;
 		}
