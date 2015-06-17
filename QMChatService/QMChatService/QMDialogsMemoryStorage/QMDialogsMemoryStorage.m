@@ -45,10 +45,18 @@
 	}
 	
     if (join) {
-		NSAssert(!chatDialog.isJoined, @"Need update this case");
-        [chatDialog setOnJoin:onJoin];
+        
+        if (chatDialog.isJoined) {
+            
+            if (onJoin) {
+                onJoin();
+            }
+        } else {
+            NSAssert(!chatDialog.isJoined, @"Need update this case");
+            [chatDialog setOnJoin:onJoin];
 
-		[chatDialog join];
+            [chatDialog join];
+        }
     }
 }
 
