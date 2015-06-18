@@ -579,7 +579,16 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 		
 	} errorBlock:^(QBResponse *response) {
 		
-		[weakSelf.serviceManager handleErrorResponse:response];
+		if (response.status == QBResponseStatusCodeNotFound) {
+			[weakSelf.dialogsMemoryStorage deleteChatDialogWithID:dialogId];
+			
+			if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didDeleteChatDialogWithIDFromMemoryStorage:)]) {
+				[weakSelf.multicastDelegate chatService:weakSelf didDeleteChatDialogWithIDFromMemoryStorage:dialogId];
+			}
+		}
+		else {
+			[weakSelf.serviceManager handleErrorResponse:response];
+		}
 		
 		if (completion) {
 			completion(response);
