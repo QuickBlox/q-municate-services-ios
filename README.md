@@ -36,3 +36,69 @@ Unlike Xcode, ***mogenerator*** manages two classes per entity: one for machines
 The machine class can always be overwritten to match the data model, with humans’ work effortlessly preserved
 ##install via [homebrew](http://brew.sh):
 $ brew install mogenerator
+
+
+# Screenshots
+
+# Requirements
+
+# Getting started
+QMServices consists from <br>
+ – **QMAuthService** <br>
+ – **QMChatService** <br>
+– **QMContactListService** <br>
+They all inherited from **QMBaseService** <br>
+To support CoreData caching you can use **QMContactListCache** and **QMChatCache**, they all inherited from **QMDBStorage** so you can write your own cache manager.  <br> <br>
+To show you how to use all services together we start from creating **QBServicesManager** <br>
+In the interface our properties will be readonly.
+```objective-c
+@interface QBServicesManager : NSObject
+@property (nonatomic, readonly) QMAuthService* authService; 
+@property (nonatomic, readonly) QMChatService* chatService;
+@property (nonatomic, readonly) UsersService* usersService;
+@end
+```
+Then we should adopt **QMServiceManagerProtocol**, **QMChatServiceCacheDataSource**, **QMContactListServiceCacheDataSource**, **QMChatServiceDelegate** protocols
+
+```objective-c
+@interface QBServicesManager () <QMServiceManagerProtocol, QMChatServiceCacheDataSource, QMContactListServiceCacheDataSource, QMChatServiceDelegate>
+
+@property (nonatomic, strong) QMAuthService* authService;
+@property (nonatomic, strong) QMChatService* chatService;
+@property (nonatomic, strong) QMContactListService* contactListService;
+
+@end
+```
+
+Then in ``init`` method we will init our managers.
+```objective-c
+@implementation QBServicesManager
+
+- (instancetype)init {
+	self = [super init];
+	if (self) {
+		[QMChatCache setupDBWithStoreNamed:@"sample-cache"];
+		[QMContactListCache setupDBWithStoreNamed:@"sample-cache-contacts"];
+		_authService = [[QMAuthService alloc] initWithServiceManager:self];
+		_chatService = [[QMChatService alloc] initWithServiceManager:self cacheDataSource:self];
+		_contactListService = [[QMContactListService alloc] initWithServiceManager:self cacheDataSource:self];
+	}
+	return self;
+}
+```
+In the next step 
+
+# Quick tips
+
+# Questions & Help
+
+# Documentation
+
+# Dependencies
+- TTTAttributedLabel
+- Quickblox
+- SVProgressHUD
+
+#About
+
+#License
