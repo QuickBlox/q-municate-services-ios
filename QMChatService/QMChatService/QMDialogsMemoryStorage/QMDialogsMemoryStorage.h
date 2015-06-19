@@ -25,5 +25,6 @@
 - (NSArray *)unreadDialogs;
 - (NSArray *)unsortedDialogs;
 - (NSArray *)dialogsSortByLastMessageDateWithAscending:(BOOL)ascending;
+- (NSArray *)dialogsWithSortDescriptors:(NSArray *)descriptors;
 
 @end
