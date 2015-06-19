@@ -140,6 +140,13 @@
     return sortedDialogs;
 };
 
+- (NSArray *)dialogsWithSortDescriptors:(NSArray *)descriptors {
+    
+    NSArray *sortedDialogs =  [self.dialogs.allValues sortedArrayUsingDescriptors:descriptors];
+    
+    return sortedDialogs;
+}
+
 #pragma mark - QMMemoryStorageProtocol
 
 - (void)free {
