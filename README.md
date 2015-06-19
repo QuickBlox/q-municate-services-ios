@@ -6,7 +6,7 @@ Easy-to-use services for Quickblox SDK, for speeding up development of iOS chat 
 
 # Requirements
 
-- XCode 6+
+- Xcode 6+
 - ARC
 - Quickblox
 - Mogenerator
@@ -65,7 +65,12 @@ They all inherited from **QMBaseService** <br>
 To support CoreData caching you can use **QMContactListCache** and **QMChatCache**, they all inherited from **QMDBStorage** so you can write your own cache manager.  <br> <br>
 
 # Getting started
+Add **#import <QMServices.h>** to your apps *.pch* file.
+
+## Service Manager
+
 To start using services you should create **QBServicesManager** <br>
+
 Here is **QBServicesManager.h**:
 
 ```objective-c
@@ -141,9 +146,93 @@ In ``init`` method, services and cache are initialised.
 	```objective-c
 	_contactListService = [[QMContactListService alloc] initWithServiceManager:self cacheDataSource:self];
 	```
+	
+Also you have to implement **QMServiceManagerProtocol** methods:
 
+```objective-c
+- (void)handleErrorResponse:(QBResponse *)response {
+	// handle error response from services here
+}
 
-In the next step 
+- (BOOL)isAutorized {
+	return self.authService.isAuthorized;
+}
+
+- (QBUUser *)currentUser {
+	return [QBSession currentSession].currentUser;
+}
+```
+
+To implement chat messages and dialogs caching you should implement following methods from **QMChatServiceDelegate** protocol:
+
+```objective-c
+- (void)chatService:(QMChatService *)chatService didAddChatDialogToMemoryStorage:(QBChatDialog *)chatDialog {
+	[QMChatCache.instance insertOrUpdateDialog:chatDialog completion:nil];
+}
+
+- (void)chatService:(QMChatService *)chatService didAddChatDialogsToMemoryStorage:(NSArray *)chatDialogs {
+	[QMChatCache.instance insertOrUpdateDialogs:chatDialogs completion:nil];
+}
+
+- (void)chatService:(QMChatService *)chatService didAddMessageToMemoryStorage:(QBChatMessage *)message forDialogID:(NSString *)dialogID {
+	[QMChatCache.instance insertOrUpdateMessage:message withDialogId:dialogID completion:nil];
+}
+
+- (void)chatService:(QMChatService *)chatService didAddMessagesToMemoryStorage:(NSArray *)messages forDialogID:(NSString *)dialogID {
+	[QMChatCache.instance insertOrUpdateMessages:messages withDialogId:dialogID completion:nil];
+}
+
+- (void)chatService:(QMChatService *)chatService didDeleteChatDialogWithIDFromMemoryStorage:(NSString *)chatDialogID {
+    [QMChatCache.instance deleteDialogWithID:chatDialogID completion:nil];
+}
+
+- (void)chatService:(QMChatService *)chatService  didReceiveNotificationMessage:(QBChatMessage *)message createDialog:(QBChatDialog *)dialog {
+	NSAssert(message.dialogID == dialog.ID, @"must be equal");
+	
+	[QMChatCache.instance insertOrUpdateMessage:message withDialogId:dialog.ID completion:nil];
+	[QMChatCache.instance insertOrUpdateDialog:dialog completion:nil];
+}
+```
+
+Also for prefetching initial dialogs and messages you have to implement **QMChatServiceCacheDataSource** protocol:
+
+```objective-c
+- (void)cachedDialogs:(QMCacheCollection)block {
+	[QMChatCache.instance dialogsSortedBy:@"lastMessageDate" ascending:YES completion:^(NSArray *dialogs) {
+		block(dialogs);
+	}];
+}
+
+- (void)cachedMessagesWithDialogID:(NSString *)dialogID block:(QMCacheCollection)block {
+	[QMChatCache.instance messagesWithDialogId:dialogID sortedBy:CDMessageAttributes.messageID ascending:YES completion:^(NSArray *array) {
+		block(array);
+	}];
+}
+```
+
+And for contact list service cache (**QMContactListServiceCacheDataSource**):
+
+```objective-c
+- (void)cachedUsers:(QMCacheCollection)block {
+	[QMContactListCache.instance usersSortedBy:@"id" ascending:YES completion:^(NSArray *users) {
+		block(users);
+	}];
+}
+
+- (void)cachedContactListItems:(QMCacheCollection)block {
+	[QMContactListCache.instance contactListItems:block];
+}
+```
+
+## Authentication
+### Login
+### Logout
+
+## Fetching dialogs
+
+## Fetching messages
+
+## Fetching users
 
 # Quick tips
 
