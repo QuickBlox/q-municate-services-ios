@@ -104,6 +104,11 @@ NSString const *kQMCustomParameterDialogRoomUpdatedDate = @"room_updated_date";
     self.context[kQMCustomParameterDialogID] = dialog.ID;
     self.context[kQMCustomParameterDialogType] = @(dialog.type);
 	
+	if (dialog.lastMessageDate != nil){
+		NSTimeInterval lastMessageDateTimeInterval = [dialog.lastMessageDate timeIntervalSince1970];
+		self.context[kQMCustomParameterDialogRoomLastMessageDate] = [@(lastMessageDateTimeInterval) stringValue];
+	}
+	
     if (dialog.type == QBChatDialogTypeGroup) {
 		
 		if (dialog.photo != nil) {
@@ -115,11 +120,7 @@ NSString const *kQMCustomParameterDialogRoomUpdatedDate = @"room_updated_date";
 		if (dialog.roomJID != nil ){
 			self.context[kQMCustomParameterRoomJID] = dialog.roomJID;
 		}
-        if (dialog.lastMessageDate != nil){
-            NSTimeInterval lastMessageDateTimeInterval = [dialog.lastMessageDate timeIntervalSince1970];
-            self.context[kQMCustomParameterDialogRoomLastMessageDate] = [@(lastMessageDateTimeInterval) stringValue];
-        }
-        
+		
         NSTimeInterval nowDateTimeInterval = [[NSDate date] timeIntervalSince1970];
         self.context[kQMCustomParameterDialogRoomUpdatedDate] = [@(nowDateTimeInterval) stringValue];
 		
