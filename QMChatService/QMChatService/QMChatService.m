@@ -621,8 +621,11 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 		}
 		
 	} errorBlock:^(QBResponse *response) {
+		// case where we may have deleted dialog from another device
+		if( response.status != QBResponseStatusCodeNotFound ) {
+			[weakSelf.serviceManager handleErrorResponse:response];
+		}
 		
-		[weakSelf.serviceManager handleErrorResponse:response];
 		
 		if (completion) {
 			completion(response, nil);
