@@ -573,6 +573,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 	[QBRequest deleteDialogWithID:dialogId successBlock:^(QBResponse *response) {
         
 		[weakSelf.dialogsMemoryStorage deleteChatDialogWithID:dialogId];
+		[weakSelf.messagesMemoryStorage deleteMessagesWithDialogID:dialogId];
 		
 		if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didDeleteChatDialogWithIDFromMemoryStorage:)]) {
 			[weakSelf.multicastDelegate chatService:weakSelf didDeleteChatDialogWithIDFromMemoryStorage:dialogId];

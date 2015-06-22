@@ -64,6 +64,11 @@
     return [messages copy];
 }
 
+- (void)deleteMessagesWithDialogID:(NSString *)dialogID {
+	
+	[self.datasources removeObjectForKey:dialogID];
+}
+
 #pragma mark - QMMemeoryStorageProtocol
 
 - (void)free {
