@@ -331,9 +331,13 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 }
 
 - (void)joinToGroupDialog:(QBChatDialog *)dialog
-               completion:(void (^)(NSError *))completion {
+               failed:(void (^)(NSError *))failed {
     
     NSParameterAssert(dialog.type != QBChatDialogTypePrivate);
+    
+    if (dialog.isJoined) {
+        return;
+    }
     
     NSString *dialogID = dialog.ID;
     
@@ -348,8 +352,8 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
             }
         }
         
-        if (completion) {
-            completion(error);
+        if (failed) {
+            failed(error);
         }
         
     }];

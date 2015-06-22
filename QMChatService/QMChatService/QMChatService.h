@@ -80,7 +80,7 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 @property (nonatomic, assign) NSTimeInterval presenceTimerInterval;
 
 - (void)joinToGroupDialog:(QBChatDialog *)dialog
-               completion:(void(^)(NSError *error))completion;
+               failed:(void(^)(NSError *error))failed;
 
 /**
  *  Create group dilog
