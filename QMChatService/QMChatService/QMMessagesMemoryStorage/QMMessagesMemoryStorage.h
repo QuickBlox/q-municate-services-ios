@@ -28,6 +28,7 @@
 - (void)replaceMessages:(NSArray *)messages forDialogID:(NSString *)dialogID;
 
 #pragma mark - Getters
+
 /**
  *  Messages with chat dialog identifier
  *
@@ -36,5 +37,12 @@
  *  @return return array of QBChatMessage instances
  */
 - (NSArray *)messagesWithDialogID:(NSString *)dialogID;
+
+/**
+ *  Delete messages with dialog indetifier
+ *
+ *  @param dialogID Chat dialog identifier
+ */
+- (void)deleteMessagesWithDialogID:(NSString *)dialogID;
 
 @end

@@ -295,6 +295,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 		
         if (chatDialogToUpdate) {
 //        if (!chatDialogToUpdate.updatedAt || [chatDialogToUpdate.updatedAt compare:message.dialog.updatedAt] == NSOrderedAscending) {
+			chatDialogToUpdate.lastMessageText = message.encodedText;
             chatDialogToUpdate.name = message.dialog.name;
             chatDialogToUpdate.photo = message.dialog.photo;
             chatDialogToUpdate.occupantIDs = message.dialog.occupantIDs;
@@ -573,6 +574,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 	[QBRequest deleteDialogWithID:dialogId successBlock:^(QBResponse *response) {
         
 		[weakSelf.dialogsMemoryStorage deleteChatDialogWithID:dialogId];
+		[weakSelf.messagesMemoryStorage deleteMessagesWithDialogID:dialogId];
 		
 		if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didDeleteChatDialogWithIDFromMemoryStorage:)]) {
 			[weakSelf.multicastDelegate chatService:weakSelf didDeleteChatDialogWithIDFromMemoryStorage:dialogId];
