@@ -4,6 +4,10 @@ Easy-to-use services for Quickblox SDK, for speeding up development of iOS chat 
 
 # Features
 
+* Simplified way to develop apps that communicate with Quickblox mBaaS
+* Inbox persistent storage for messages, dialogs and users
+* 
+
 # Requirements
 
 - Xcode 6+
@@ -65,7 +69,7 @@ QMServices contains:
 
 
 They all inherited from **QMBaseService**.
-To support CoreData caching you can use **QMContactListCache** and **QMChatCache**, they all inherited from **QMDBStorage**. Of course you could use your own database storage - just need to implement **QMChatServiceDelegate**.
+To support CoreData caching you can use **QMContactListCache** and **QMChatCache**, which are inherited from **QMDBStorage**. Of course you could use your own database storage - just need to implement **QMChatServiceDelegate**.
 
 # Getting started
 Add **#import <QMServices.h>** to your apps *.pch* file.
