@@ -284,21 +284,51 @@ Usually you will implement following method in **QBServiceManager** class:
 }
 ```
 
-## Fetching dialogs
+## Fetching chat dialogs
 
-Dialogs are loaded with paginated requests:
+Load all dialogs from REST API:
 
 ```objective-c
-[QBServicesManager.instance.chatService allDialogsWithPageLimit:kDialogsPageLimit extendedRequest:nil iterationBlock:^(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, BOOL *stop) {
+[QBServicesManager.instance.chatService allDialogsWithPageLimit:<your_page_limit> extendedRequest:nil iterationBlock:^(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, BOOL *stop) {
 	// reload UI, this block is called when page is loaded
 } completion:^(QBResponse *response) {
 	// loading finished, all dialogs fetched
 }];
 ```
 
-## Fetching messages
+These dialogs are automatically stored in **QMDialogsMemoryStorage** class.
+
+## Fetching chat messages
+
+Fetching messages from REST history:
+
+```objective-c
+[QBServicesManager instance].chatService messagesWithChatDialogID:<your_dialog_id> completion:^(QBResponse *response, NSArray *messages) {
+	// update UI, handle messages}];
+```
+
+These message are automatically stored in **QMMessagesMemoryStorage** class.
+
+## Sending message
+
+Send message to dialog:
+
+```objective-c
+[[QBServicesManager instance].chatService sendMessage:<your_message> toDialogId:<your_dialog_id> save:YES completion:nil];
+```
+
+Message is automatically added to **QMMessagesMemoryStorage** class.
 
 ## Fetching users
+
+
+```objective-c
+[QBServicesManager.instance.contactListService retrieveUsersWithIDs:<array_of_user_ids> completion:^(QBResponse *response, QBGeneralResponsePage *page, NSArray *users) {
+	// handle users
+}];
+```
+
+Users are automatically stored in **QMUsersMemoryStorage** class.
 
 # Quick tips
 
