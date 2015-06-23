@@ -295,6 +295,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 		
         if (chatDialogToUpdate) {
 //        if (!chatDialogToUpdate.updatedAt || [chatDialogToUpdate.updatedAt compare:message.dialog.updatedAt] == NSOrderedAscending) {
+			chatDialogToUpdate.lastMessageText = message.encodedText;
             chatDialogToUpdate.name = message.dialog.name;
             chatDialogToUpdate.photo = message.dialog.photo;
             chatDialogToUpdate.occupantIDs = message.dialog.occupantIDs;
@@ -331,9 +332,13 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 }
 
 - (void)joinToGroupDialog:(QBChatDialog *)dialog
-               completion:(void (^)(NSError *))completion {
+               failed:(void (^)(NSError *))failed {
     
     NSParameterAssert(dialog.type != QBChatDialogTypePrivate);
+    
+    if (dialog.isJoined) {
+        return;
+    }
     
     NSString *dialogID = dialog.ID;
     
@@ -348,8 +353,8 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
             }
         }
         
-        if (completion) {
-            completion(error);
+        if (failed) {
+            failed(error);
         }
         
     }];
@@ -569,6 +574,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 	[QBRequest deleteDialogWithID:dialogId successBlock:^(QBResponse *response) {
         
 		[weakSelf.dialogsMemoryStorage deleteChatDialogWithID:dialogId];
+		[weakSelf.messagesMemoryStorage deleteMessagesWithDialogID:dialogId];
 		
 		if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didDeleteChatDialogWithIDFromMemoryStorage:)]) {
 			[weakSelf.multicastDelegate chatService:weakSelf didDeleteChatDialogWithIDFromMemoryStorage:dialogId];
@@ -617,8 +623,11 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 		}
 		
 	} errorBlock:^(QBResponse *response) {
+		// case where we may have deleted dialog from another device
+		if( response.status != QBResponseStatusCodeNotFound ) {
+			[weakSelf.serviceManager handleErrorResponse:response];
+		}
 		
-		[weakSelf.serviceManager handleErrorResponse:response];
 		
 		if (completion) {
 			completion(response, nil);
