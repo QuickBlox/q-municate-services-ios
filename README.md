@@ -336,6 +336,8 @@ Users are automatically stored in **QMUsersMemoryStorage** class.
 
 # Documentation
 
+Inline code documentation.
+
 # About
 
 # License
