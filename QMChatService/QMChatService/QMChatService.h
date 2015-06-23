@@ -200,8 +200,10 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  *  @param message    QBChatMessage instance
  *  @param dialog     QBChatDialog instance
  *  @param save       completion Send message result
+ *
+ *  @return YES if the message was sent. If not - see log.
  */
-- (void)sendMessage:(QBChatMessage *)message toDialog:(QBChatDialog *)dialog save:(BOOL)save completion:(void(^)(NSError *error))completion;
+- (BOOL)sendMessage:(QBChatMessage *)message toDialog:(QBChatDialog *)dialog save:(BOOL)save completion:(void(^)(NSError *error))completion;
 
 /**
  *  Send message to dialog with identifier
@@ -210,8 +212,10 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  *  @param dialogID   NSString dialog
  *  @param save       BOOL save
  *  @param completion completion Send message result
+ *
+ *  @return YES if the message was sent. If not - see log.
  */
-- (void)sendMessage:(QBChatMessage *)message toDialogId:(NSString *)dialogID save:(BOOL)save completion:(void (^)(NSError *))completion;
+- (BOOL)sendMessage:(QBChatMessage *)message toDialogId:(NSString *)dialogID save:(BOOL)save completion:(void (^)(NSError *))completion;
 
 @end
 
