@@ -145,7 +145,7 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  */
 - (void)allDialogsWithPageLimit:(NSUInteger)limit
                 extendedRequest:(NSDictionary *)extendedRequest
-                interationBlock:(void(^)(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, BOOL *stop))interationBlock
+                iterationBlock:(void(^)(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, BOOL *stop))interationBlock
                      completion:(void(^)(QBResponse *response))completion;
 
 #pragma mark - System Messages
