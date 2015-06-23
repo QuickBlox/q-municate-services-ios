@@ -57,19 +57,22 @@ $ brew install mogenerator
 
 # Architecture
 
-QMServices consists from <br>
- – **QMAuthService** <br>
- – **QMChatService** <br>
-– **QMContactListService** <br>
-They all inherited from **QMBaseService** <br>
-To support CoreData caching you can use **QMContactListCache** and **QMChatCache**, they all inherited from **QMDBStorage** so you can write your own cache manager.  <br> <br>
+QMServices contains:
+
+* **QMAuthService**
+* **QMChatService**
+* **QMContactListService**
+
+
+They all inherited from **QMBaseService**.
+To support CoreData caching you can use **QMContactListCache** and **QMChatCache**, they all inherited from **QMDBStorage**. Of course you could use your own database storage - just need to implement **QMChatServiceDelegate**.
 
 # Getting started
 Add **#import <QMServices.h>** to your apps *.pch* file.
 
 ## Service Manager
 
-To start using services you should create **QBServicesManager** <br>
+To start using services you should create **QBServicesManager** class.
 
 Here is **QBServicesManager.h**:
 
@@ -225,8 +228,61 @@ And for contact list service cache (**QMContactListServiceCacheDataSource**):
 ```
 
 ## Authentication
+
+We encourage to use automatic session creation, to simplify communication with backend:
+
+```objective-c
+[QBConnection setAutoCreateSessionEnabled:YES];
+```
+
 ### Login
+
+Usually you will implement following method in **QBServiceManager** class:
+
+```objective-c
+- (void)logInWithUser:(QBUUser *)user
+		   completion:(void (^)(BOOL success, NSString *errorMessage))completion
+{
+	[self.authService logInWithUser:user completion:^(QBResponse *response, QBUUser *userProfile) {
+		if (response.error != nil) {
+			if (completion != nil) {
+				completion(NO, response.error.error.localizedDescription);
+			}
+			return;
+		}		
+		
+        __weak typeof(self) weakSelf = self;
+		[self.chatService logIn:^(NSError *error) {
+            __typeof(self) strongSelf = weakSelf;
+			if (completion != nil) {
+				completion(error == nil, error.localizedDescription);
+			}
+ 		}];
+	}];
+}
+```
+
 ### Logout
+
+```objective-c
+- (void)logoutWithCompletion:(void(^)())completion
+{
+	if ([QBSession currentSession].currentUser != nil) {
+		__weak typeof(self)weakSelf = self;           
+		[self.authService logOut:^(QBResponse *response) {
+			__typeof(self) strongSelf = weakSelf;
+			[strongSelf.chatService logoutChat];
+			if (completion) {
+				completion();
+			}
+		}];        
+   } else {
+        if (completion) {
+            completion();
+        }
+    }
+}
+```
 
 ## Fetching dialogs
 
