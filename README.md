@@ -308,7 +308,8 @@ Fetching messages from REST history:
 
 ```objective-c
 [QBServicesManager instance].chatService messagesWithChatDialogID:<your_dialog_id> completion:^(QBResponse *response, NSArray *messages) {
-	// update UI, handle messages}];
+	// update UI, handle messages
+}];
 ```
 
 These message are automatically stored in **QMMessagesMemoryStorage** class.
@@ -345,3 +346,5 @@ Inline code documentation.
 # About
 
 # License
+
+See License.txt.
