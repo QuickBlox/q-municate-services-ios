@@ -71,7 +71,7 @@ They all inherited from **QMBaseService**.
 To support CoreData caching you can use **QMContactListCache** and **QMChatCache**, which are inherited from **QMDBStorage**. Of course you could use your own database storage - just need to implement **QMChatServiceDelegate**.
 
 # Getting started
-Add **#import <QMServices.h>** to your apps *.pch* file.
+Add **#import \<QMServices.h\>** to your apps *.pch* file.
 
 ## Service Manager
 
@@ -331,16 +331,10 @@ Message is automatically added to **QMMessagesMemoryStorage** class.
 
 Users are automatically stored in **QMUsersMemoryStorage** class.
 
-# Quick tips
-
-# Questions & Help
-
 # Documentation
 
 Inline code documentation.
 
-# About
-
 # License
 
-See License.txt
+See ![LICENTSE.txt](/LICENTSE.txt)
