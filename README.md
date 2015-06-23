@@ -68,7 +68,7 @@ They all inherited from **QMBaseService**.
 To support CoreData caching you can use **QMContactListCache** and **QMChatCache**, they all inherited from **QMDBStorage**. Of course you could use your own database storage - just need to implement **QMChatServiceDelegate**.
 
 # Getting started
-Add **#import \<QMServices.h\>** to your apps *.pch* file.
+Add **#import <QMServices.h>** to your apps *.pch* file.
 
 ## Service Manager
 
@@ -285,6 +285,16 @@ Usually you will implement following method in **QBServiceManager** class:
 ```
 
 ## Fetching dialogs
+
+Dialogs are loaded with paginated requests:
+
+```objective-c
+[QBServicesManager.instance.chatService allDialogsWithPageLimit:kDialogsPageLimit extendedRequest:nil iterationBlock:^(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, BOOL *stop) {
+	// reload UI, this block is called when page is loaded
+} completion:^(QBResponse *response) {
+	// loading finished, all dialogs fetched
+}];
+```
 
 ## Fetching messages
 
