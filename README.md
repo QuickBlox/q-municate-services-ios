@@ -337,4 +337,4 @@ Inline code documentation.
 
 # License
 
-See ![LICENTSE.txt](/LICENTSE.txt)
+See ![LICENSE.txt](LICENSE.txt)
