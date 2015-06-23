@@ -347,4 +347,4 @@ Inline code documentation.
 
 # License
 
-See License.txt.
+See License.txt
