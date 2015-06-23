@@ -4,16 +4,15 @@ Easy-to-use services for Quickblox SDK, for speeding up development of iOS chat 
 
 # Features
 
-* Simplified way to develop apps that communicate with Quickblox mBaaS
 * Inbox persistent storage for messages, dialogs and users
-* 
+* Inbox memory storage for messages, dialogs and users
+* Authentication service for logging to Quickblox REST and XMPP
 
 # Requirements
 
 - Xcode 6+
 - ARC
 - Quickblox
-- Mogenerator
 
 # Dependencies
 
@@ -84,7 +83,6 @@ Here is **QBServicesManager.h**:
 @interface QBServicesManager : NSObject
 @property (nonatomic, readonly) QMAuthService* authService; 
 @property (nonatomic, readonly) QMChatService* chatService;
-@property (nonatomic, readonly) UsersService* usersService;
 @end
 ```
 
@@ -93,9 +91,6 @@ And extension in **QBServicesManager.m**:
 ```objective-c
 @interface QBServicesManager () <QMServiceManagerProtocol, QMChatServiceCacheDataSource, QMContactListServiceCacheDataSource, QMChatServiceDelegate>
 
-@property (nonatomic, strong) QMAuthService* authService;
-@property (nonatomic, strong) QMChatService* chatService;
-@property (nonatomic, strong) UsersService* usersService;
 @property (nonatomic, strong) QMContactListService* contactListService;
 
 @end
@@ -194,10 +189,12 @@ To implement chat messages and dialogs caching you should implement following me
 }
 
 - (void)chatService:(QMChatService *)chatService  didReceiveNotificationMessage:(QBChatMessage *)message createDialog:(QBChatDialog *)dialog {
-	NSAssert(message.dialogID == dialog.ID, @"must be equal");
-	
 	[QMChatCache.instance insertOrUpdateMessage:message withDialogId:dialog.ID completion:nil];
 	[QMChatCache.instance insertOrUpdateDialog:dialog completion:nil];
+}
+
+- (void)chatService:(QMChatService *)chatService didUpdateChatDialogInMemoryStorage:(QBChatDialog *)chatDialog {
+    [[QMChatCache instance] insertOrUpdateDialog:chatDialog completion:nil];
 }
 ```
 
@@ -247,6 +244,7 @@ Usually you will implement following method in **QBServiceManager** class:
 - (void)logInWithUser:(QBUUser *)user
 		   completion:(void (^)(BOOL success, NSString *errorMessage))completion
 {
+        __weak typeof(self) weakSelf = self;
 	[self.authService logInWithUser:user completion:^(QBResponse *response, QBUUser *userProfile) {
 		if (response.error != nil) {
 			if (completion != nil) {
@@ -255,9 +253,7 @@ Usually you will implement following method in **QBServiceManager** class:
 			return;
 		}		
 		
-        __weak typeof(self) weakSelf = self;
 		[self.chatService logIn:^(NSError *error) {
-            __typeof(self) strongSelf = weakSelf;
 			if (completion != nil) {
 				completion(error == nil, error.localizedDescription);
 			}
