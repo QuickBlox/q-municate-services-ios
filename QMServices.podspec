@@ -25,6 +25,5 @@ Pod::Spec.new do |s|
   '#import <Quickblox/Quickblox.h>
 #import <CoreData/CoreData.h>
 #import <Quickblox/QBMulticastDelegate.h>'
-
-
+  s.resource_bundle = {'QMChatCacheModel' => 'QMChatCache/QMChatCache/CoreData/QMChatServiceModel.xcdatamodeld', 'QMContactListCacheModel' => 'QMContactListCache/QMContactListCache/CoreData/QMContactListModel.xcdatamodeld'}
 end
