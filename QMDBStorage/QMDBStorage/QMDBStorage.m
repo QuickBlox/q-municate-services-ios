@@ -22,7 +22,7 @@
 
 - (instancetype)initWithStoreNamed:(NSString *)storeName model:(NSManagedObjectModel *)model queueLabel:(const char *)queueLabel {
     
-    self = [super init];
+    self = [self init];
     if (self) {
         
         self.queue = dispatch_queue_create(queueLabel, DISPATCH_QUEUE_SERIAL);

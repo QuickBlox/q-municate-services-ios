@@ -11,6 +11,12 @@
 
 @interface QMChatCache : QMDBStorage
 
+/**
+ *  Messages limit in storage per dialog
+ */
+
+@property (nonatomic, assign) NSUInteger messagesLimitPerDialog; // default - NSNotFound (infinity)
+
 #pragma mark - Singleton
 
 /**
@@ -149,11 +155,21 @@
 - (void)deleteMessage:(QBChatMessage *)message completion:(void(^)(void))completion;
 
 /**
+ *  Delete messages for dialog ID
+ *
+ *  @param dialogID   dialog identifier
+ *  @param completion Completion block that is called after the delete operation has completed.
+ */
+- (void)deleteMessageWithDialogID:(NSString *)dialogID completion:(dispatch_block_t)completion;
+
+/**
  *  Delete all messages
  *
  *  @param completion Completion block that is called after the delete all messages operation  has completed.
  */
 - (void)deleteAllMessages:(void(^)(void))completion;
+
+
 
 #pragma mark Fetch Messages operations
 
