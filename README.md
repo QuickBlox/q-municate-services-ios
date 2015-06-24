@@ -17,7 +17,6 @@ Easy-to-use services for Quickblox SDK, for speeding up development of iOS chat 
 # Dependencies
 
 - Quickblox V2.0+
-- Mogenerator
 
 # Installation
 
@@ -50,13 +49,13 @@ Navigate to **Build Settings**, then search for **Framework Search Paths** and d
 
 Remember, that you have to link *QMServices* in **Target Dependencies** and in **Link Binary with Libraries**.
 
-## mogenerator
-generates ***Objective-C*** code for your ***Core Data*** custom classes
-Unlike Xcode, ***mogenerator*** manages two classes per entity: one for machines, one for humans
+### Bundle generation
 
-The machine class can always be overwritten to match the data model, with humans’ work effortlessly preserved
-##install via [homebrew](http://brew.sh):
-$ brew install mogenerator
+TODO
+
+## Cocoapods
+
+TODO
 
 # Architecture
 
