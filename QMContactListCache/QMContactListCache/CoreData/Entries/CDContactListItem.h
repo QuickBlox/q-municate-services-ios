@@ -1,5 +1,6 @@
 #import "_CDContactListItem.h"
 
+@class QBContactListItem;
 @interface CDContactListItem : _CDContactListItem {}
 
 - (QBContactListItem *)toQBContactListItem;
