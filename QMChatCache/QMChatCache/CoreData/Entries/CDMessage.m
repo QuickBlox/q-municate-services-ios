@@ -1,6 +1,6 @@
 #import "CDMessage.h"
 #import "CDAttachment.h"
-
+#import "NSManagedObject+QMCDRecord.h"
 
 @interface CDMessage ()
 

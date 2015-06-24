@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <Quickblox/Quickblox.h>
 
 #import <QMDBStorage.h>
 #import <QMChatCache.h>

@@ -6,6 +6,8 @@
 //  Copyright (c) 2013 QMCD Panda Software LLC. All rights reserved.
 //
 
+#import <CoreData/CoreData.h>
+
 @interface QMCDRecordStack : NSObject
 
 @property (nonatomic, copy) NSString *stackName;
