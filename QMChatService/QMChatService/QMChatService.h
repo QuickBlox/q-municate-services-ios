@@ -192,6 +192,8 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 
 - (void)messagesWithChatDialogID:(NSString *)chatDialogID completion:(void(^)(QBResponse *response, NSArray *messages))completion;
 
+- (void)earlierMessagesWithChatDialogID:(NSString *)chatDialogID completion:(void(^)(QBResponse *response, NSArray *messages))completion;
+
 #pragma mark Send message
 
 /**
