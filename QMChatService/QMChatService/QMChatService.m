@@ -628,15 +628,10 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 			[weakSelf.serviceManager handleErrorResponse:response];
 		}
 		
-		
 		if (completion) {
 			completion(response, nil);
 		}
 	}];
-    
-    if (completion) {
-        completion([QBResponse new], nil);
-    }
 }
 
 - (void)earlierMessagesWithChatDialogID:(NSString *)chatDialogID completion:(void(^)(QBResponse *response, NSArray *messages))completion {
