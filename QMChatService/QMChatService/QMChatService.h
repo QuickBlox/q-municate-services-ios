@@ -184,14 +184,20 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 #pragma mark - Fetch messages
 
 /**
- *  Fetch messages with chat dialog id
+ *  Fetch messages with chat dialog id.
  *
- *  @param chatDialogID Chat dialog id
- *  @param completion   Block with response instance and array of chat messages if request succeded or nil if filed
+ *  @param chatDialogID Chat dialog id.
+ *  @param completion   Block with response instance and array of chat messages if request succeded or nil if failed.
  */
 
 - (void)messagesWithChatDialogID:(NSString *)chatDialogID completion:(void(^)(QBResponse *response, NSArray *messages))completion;
 
+/**
+ *  Loads 100 messages that are older than oldest message in cache.
+ *
+ *  @param chatDialogID Chat dialog identifier.
+ *  @param completion   Block with response instance and array of chat messages if request succeded or nil if failed.
+ */
 - (void)earlierMessagesWithChatDialogID:(NSString *)chatDialogID completion:(void(^)(QBResponse *response, NSArray *messages))completion;
 
 #pragma mark Send message
