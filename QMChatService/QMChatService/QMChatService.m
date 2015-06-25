@@ -628,11 +628,50 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 			[weakSelf.serviceManager handleErrorResponse:response];
 		}
 		
-		
 		if (completion) {
 			completion(response, nil);
 		}
 	}];
+}
+
+- (void)earlierMessagesWithChatDialogID:(NSString *)chatDialogID completion:(void(^)(QBResponse *response, NSArray *messages))completion {
+    
+    if ([self.messagesMemoryStorage isEmptyForDialogID:chatDialogID]) {
+        
+        [self messagesWithChatDialogID:chatDialogID completion:completion];
+        
+        return;
+    }
+    
+    QBChatMessage *oldestMessage = [self.messagesMemoryStorage oldestMessageForDialogID:chatDialogID];
+    NSString *oldestMessageDate = [NSString stringWithFormat:@"%ld", (long)[oldestMessage.dateSent timeIntervalSince1970]];
+    __weak __typeof(self) weakSelf = self;
+    
+    [QBRequest messagesWithDialogID:chatDialogID extendedRequest:@{@"date_sent[lt]": oldestMessageDate} forPage:nil successBlock:^(QBResponse *response, NSArray *messages, QBResponsePage *page) {
+        
+        [weakSelf.messagesMemoryStorage addMessages:messages forDialogID:chatDialogID];
+        
+        if ([self.multicastDelegate respondsToSelector:@selector(chatService:didAddMessagesToMemoryStorage:forDialogID:)]) {
+            [self.multicastDelegate chatService:weakSelf didAddMessagesToMemoryStorage:messages forDialogID:chatDialogID];
+        }
+        
+        if (completion) {
+            completion(response, messages);
+        }
+        
+    } errorBlock:^(QBResponse *response) {
+        
+        // case where we may have deleted dialog from another device
+        if( response.status != QBResponseStatusCodeNotFound ) {
+            [weakSelf.serviceManager handleErrorResponse:response];
+        }
+        
+        
+        if (completion) {
+            completion(response, nil);
+        }
+        
+    }];
 }
 
 #pragma mark - Send messages

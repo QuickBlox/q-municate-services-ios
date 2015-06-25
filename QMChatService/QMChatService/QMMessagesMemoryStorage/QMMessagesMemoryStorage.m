@@ -34,6 +34,15 @@
     [datasource addObject:message];
 }
 
+- (void)addMessages:(NSArray *)messages forDialogID:(NSString *)dialogID {
+    
+    NSMutableArray *datasource = [self dataSourceWithDialogID:dialogID];
+    
+    [datasource addObjectsFromArray:messages];
+    
+    [self sortMessagesForDialogID:dialogID];
+}
+
 #pragma mark - replace
 
 - (void)replaceMessages:(NSArray *)messages forDialogID:(NSString *)dialogID {
@@ -67,6 +76,27 @@
 - (void)deleteMessagesWithDialogID:(NSString *)dialogID {
 	
 	[self.datasources removeObjectForKey:dialogID];
+}
+
+- (BOOL)isEmptyForDialogID:(NSString *)dialogID {
+    
+    NSArray *messages = self.datasources[dialogID];
+    
+    return !messages || [messages count] == 0;
+}
+
+- (QBChatMessage *)oldestMessageForDialogID:(NSString *)dialogID {
+    
+    NSArray *messages = [self messagesWithDialogID:dialogID];
+    
+    return [messages firstObject];
+}
+
+- (void)sortMessagesForDialogID:(NSString *)dialogID {
+    
+    NSMutableArray *datasource = [self dataSourceWithDialogID:dialogID];
+    
+    [datasource sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"dateSent" ascending:YES]]];
 }
 
 #pragma mark - QMMemeoryStorageProtocol

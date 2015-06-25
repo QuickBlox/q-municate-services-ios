@@ -19,6 +19,8 @@
  */
 - (void)addMessage:(QBChatMessage *)message forDialogID:(NSString *)dialogID;
 
+- (void)addMessages:(NSArray *)messages forDialogID:(NSString *)dialogID;
+
 /**
  *  Replace messages in memory storage for dialog identifier
  *
@@ -44,5 +46,10 @@
  *  @param dialogID Chat dialog identifier
  */
 - (void)deleteMessagesWithDialogID:(NSString *)dialogID;
+
+#pragma mark - Helpers
+
+- (BOOL)isEmptyForDialogID:(NSString *)dialogID;
+- (QBChatMessage *)oldestMessageForDialogID:(NSString *)dialogID;
 
 @end
