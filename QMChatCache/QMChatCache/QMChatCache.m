@@ -249,17 +249,22 @@ static QMChatCache *_chatCacheInstance = nil;
 
 #pragma mark Messages Limit
 
-- (void)checkMessagesLimit:(NSUInteger)messagesLimit forDialogWithID:(NSString *)dialogID withCompletion:(dispatch_block_t)completion {
+- (void)checkMessagesLimitForDialogWithID:(NSString *)dialogID withCompletion:(dispatch_block_t)completion {
+    
+    if (self.messagesLimitPerDialog == NSNotFound) {
+        if (completion) completion();
+        return;
+    }
     
     [self async:^(NSManagedObjectContext *context) {
         
         NSPredicate *messagePredicate = IS(@"dialogID", dialogID);
         
-        if ([CDMessage QM_countOfEntitiesWithPredicate:messagePredicate inContext:context] > messagesLimit) {
+        if ([CDMessage QM_countOfEntitiesWithPredicate:messagePredicate inContext:context] > self.messagesLimitPerDialog) {
             
             NSFetchRequest *oldestMessageRequest = [NSFetchRequest fetchRequestWithEntityName:[CDMessage entityName]];
             
-            oldestMessageRequest.fetchOffset = messagesLimit;
+            oldestMessageRequest.fetchOffset = self.messagesLimitPerDialog;
             oldestMessageRequest.predicate = messagePredicate;
             oldestMessageRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"dateSend" ascending:NO]];
             
@@ -268,9 +273,13 @@ static QMChatCache *_chatCacheInstance = nil;
             for (CDMessage *oldestMessage in oldestMessagesForDialogID) {
                 [context deleteObject:oldestMessage];
             }
+            
+            [self save:completion];
+            
+        } else {
+            
+            if (completion) completion();
         }
-        
-        [self save:completion];
         
     }];
 }
@@ -333,8 +342,8 @@ static QMChatCache *_chatCacheInstance = nil;
             
             [weakSelf save:^{
                
-                if ([toInsert count] > 0 && self.messagesLimitPerDialog != NSNotFound) {
-                    [self checkMessagesLimit:self.messagesLimitPerDialog forDialogWithID:dialogID withCompletion:completion];
+                if ([toInsert count] > 0) {
+                    [weakSelf checkMessagesLimitForDialogWithID:dialogID withCompletion:completion];
                 } else {
                     if (completion) completion();
                 }
