@@ -14,7 +14,7 @@ Pod::Spec.new do |s|
   s.license      = { :type => 'MIT', :file => 'LICENSE.txt' }
   s.author       = { "Andrey Moskvin" => "andrey.moskvin@quickblox.com" }
   s.platform     = :ios, "7.0"
-  s.source       = { :git => "https://github.com/QuickBlox/q-municate-services-ios.git" }
+  s.source       = { :git => "https://github.com/QuickBlox/q-municate-services-ios.git", :tag => '0.1'}
   s.source_files  = "Classes", "**/*.{h,m}"
   s.exclude_files = "Pods"
   s.frameworks = "CoreData"
