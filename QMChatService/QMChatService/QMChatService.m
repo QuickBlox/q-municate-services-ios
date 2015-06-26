@@ -614,7 +614,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
                     extendedRequest:@{@"sort_desc" : @"date_sent",}
                             forPage:nil
                        successBlock:^(QBResponse *response, NSArray *messages, QBResponsePage *page) {
-                           NSArray* sortedMessages = [messages sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"dateSent" ascending:YES]]];
+                           NSArray* sortedMessages = [[messages reverseObjectEnumerator] allObjects];
                            [weakSelf.messagesMemoryStorage replaceMessages:sortedMessages forDialogID:chatDialogID];
                            
                            if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddMessagesToMemoryStorage:forDialogID:)]) {
