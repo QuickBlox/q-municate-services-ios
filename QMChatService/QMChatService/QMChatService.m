@@ -610,28 +610,30 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 	[self loadCahcedMessagesWithDialogID:chatDialogID];
 	
 	__weak __typeof(self) weakSelf = self;
-	[QBRequest messagesWithDialogID:chatDialogID successBlock:^(QBResponse *response, NSArray *messages) {
-		
-		[weakSelf.messagesMemoryStorage replaceMessages:messages forDialogID:chatDialogID];
-		
-		if ([self.multicastDelegate respondsToSelector:@selector(chatService:didAddMessagesToMemoryStorage:forDialogID:)]) {
-			[self.multicastDelegate chatService:weakSelf didAddMessagesToMemoryStorage:messages forDialogID:chatDialogID];
-		}
-		
-		if (completion) {
-			completion(response, messages);
-		}
-		
-	} errorBlock:^(QBResponse *response) {
-		// case where we may have deleted dialog from another device
-		if( response.status != QBResponseStatusCodeNotFound ) {
-			[weakSelf.serviceManager handleErrorResponse:response];
-		}
-		
-		if (completion) {
-			completion(response, nil);
-		}
-	}];
+    [QBRequest messagesWithDialogID:chatDialogID
+                    extendedRequest:@{@"sort_desc" : @"date_sent",}
+                            forPage:nil
+                       successBlock:^(QBResponse *response, NSArray *messages, QBResponsePage *page) {
+                           NSArray* sortedMessages = [[messages reverseObjectEnumerator] allObjects];
+                           [weakSelf.messagesMemoryStorage replaceMessages:sortedMessages forDialogID:chatDialogID];
+                           
+                           if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddMessagesToMemoryStorage:forDialogID:)]) {
+                               [weakSelf.multicastDelegate chatService:weakSelf didAddMessagesToMemoryStorage:sortedMessages forDialogID:chatDialogID];
+                           }
+                           
+                           if (completion) {
+                               completion(response, sortedMessages);
+                           }
+                       } errorBlock:^(QBResponse *response) {
+                           // case where we may have deleted dialog from another device
+                           if( response.status != QBResponseStatusCodeNotFound ) {
+                               [weakSelf.serviceManager handleErrorResponse:response];
+                           }
+                           
+                           if (completion) {
+                               completion(response, nil);
+                           }
+                       }];
 }
 
 - (void)earlierMessagesWithChatDialogID:(NSString *)chatDialogID completion:(void(^)(QBResponse *response, NSArray *messages))completion {
