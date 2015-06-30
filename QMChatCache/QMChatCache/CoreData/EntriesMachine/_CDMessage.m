@@ -11,6 +11,7 @@ const struct CDMessageAttributes CDMessageAttributes = {
 	.dialogID = @"dialogID",
 	.isRead = @"isRead",
 	.messageID = @"messageID",
+	.readIDs = @"readIDs",
 	.recipientID = @"recipientID",
 	.senderID = @"senderID",
 	.senderNick = @"senderNick",
@@ -122,6 +123,8 @@ const struct CDMessageRelationships CDMessageRelationships = {
 }
 
 @dynamic messageID;
+
+@dynamic readIDs;
 
 @dynamic recipientID;
 
