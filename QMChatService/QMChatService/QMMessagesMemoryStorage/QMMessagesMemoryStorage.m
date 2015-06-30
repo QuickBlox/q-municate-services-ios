@@ -99,6 +99,22 @@
     [datasource sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"dateSent" ascending:YES]]];
 }
 
+- (QBChatMessage *)messageWithID:(NSString *)messageID fromDialogID:(NSString *)dialogID
+{
+    NSParameterAssert(messageID != nil);
+    NSParameterAssert(dialogID != nil);
+    
+    NSArray* messages = [self messagesWithDialogID:dialogID];
+    
+    for (QBChatMessage* message in messages) {
+        if ([message.ID isEqualToString:messageID]) {
+            return message;
+        }
+    }
+    
+    return nil;
+}
+
 #pragma mark - QMMemeoryStorageProtocol
 
 - (void)free {

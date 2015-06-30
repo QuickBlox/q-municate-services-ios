@@ -47,6 +47,15 @@
  */
 - (void)deleteMessagesWithDialogID:(NSString *)dialogID;
 
+/**
+ *  Message with ID
+ *
+ *  @param messageID Message identifier
+ *
+ *  @return QBChatMessage object
+ */
+- (QBChatMessage *)messageWithID:(NSString *)messageID dialogID:(NSString *)dialogID;
+
 #pragma mark - Helpers
 
 - (BOOL)isEmptyForDialogID:(NSString *)dialogID;

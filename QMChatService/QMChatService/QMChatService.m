@@ -167,9 +167,13 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     [self handleSystemMessage:message];
 }
 
-- (void)chatDidReadMessageWithID:(NSString *)messageID
+- (void)chatDidReadMessageWithID:(NSString *)messageID dialogID:(NSString *)dialogID readerID:(NSUInteger)readerID
 {
-    NSLog(@"chatDidReadMessageWithID: %@", messageID);
+    QBChatMessage* message = [self.messagesMemoryStorage messageWithID:messageID dialogID:dialogID];
+    message.readIDs = [message.readIDs arrayByAddingObject:@(readerID)];
+    if ([self.multicastDelegate respondsToSelector:@selector(chatService:didAddMessageToMemoryStorage:forDialogID:)]) {
+        [self.multicastDelegate chatService:self didAddMessageToMemoryStorage:message forDialogID:dialogID];
+    }
 }
 
 #pragma mark - Chat Login/Logout
