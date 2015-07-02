@@ -99,7 +99,7 @@
     [datasource sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"dateSent" ascending:YES]]];
 }
 
-- (QBChatMessage *)messageWithID:(NSString *)messageID fromDialogID:(NSString *)dialogID
+- (QBChatMessage *)messageWithID:(NSString *)messageID fromDialogID:(NSString *)dialogID;
 {
     NSParameterAssert(messageID != nil);
     NSParameterAssert(dialogID != nil);

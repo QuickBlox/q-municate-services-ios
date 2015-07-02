@@ -169,10 +169,15 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 
 - (void)chatDidReadMessageWithID:(NSString *)messageID dialogID:(NSString *)dialogID readerID:(NSUInteger)readerID
 {
-    QBChatMessage* message = [self.messagesMemoryStorage messageWithID:messageID dialogID:dialogID];
-    message.readIDs = [message.readIDs arrayByAddingObject:@(readerID)];
-    if ([self.multicastDelegate respondsToSelector:@selector(chatService:didAddMessageToMemoryStorage:forDialogID:)]) {
-        [self.multicastDelegate chatService:self didAddMessageToMemoryStorage:message forDialogID:dialogID];
+    QBChatMessage* message = [self.messagesMemoryStorage messageWithID:messageID fromDialogID:dialogID];
+    if (message != nil) {
+        if (message.readIDs == nil) {
+            message.readIDs = [NSArray array];
+        }
+        message.readIDs = [message.readIDs arrayByAddingObject:@(readerID)];
+        if ([self.multicastDelegate respondsToSelector:@selector(chatService:didAddMessageToMemoryStorage:forDialogID:)]) {
+            [self.multicastDelegate chatService:self didAddMessageToMemoryStorage:message forDialogID:dialogID];
+        }
     }
 }
 
@@ -299,7 +304,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
         if (message.markable) {
             [[QBChat instance] readMessage:message];
         }
-		
+        
 		return;
 	}
 	else if (message.messageType == QMMessageTypeUpdateGroupDialog) {

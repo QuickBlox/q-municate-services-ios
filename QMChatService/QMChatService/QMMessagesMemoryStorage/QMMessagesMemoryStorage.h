@@ -54,7 +54,7 @@
  *
  *  @return QBChatMessage object
  */
-- (QBChatMessage *)messageWithID:(NSString *)messageID dialogID:(NSString *)dialogID;
+- (QBChatMessage *)messageWithID:(NSString *)messageID fromDialogID:(NSString *)dialogID;
 
 #pragma mark - Helpers
 
