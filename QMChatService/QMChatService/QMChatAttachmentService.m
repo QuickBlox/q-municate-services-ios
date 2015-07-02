@@ -57,7 +57,7 @@ static NSString* attachmentPath(QBChatAttachment *attachment) {
         
         message.attachments = @[attachment];
         
-        [self saveImageData:imageData chatAttachment:attachment];
+        [self saveImageData:imageData chatAttachment:attachment error:nil];
         
         [self changeMessageAttachmentStatus:QMMessageAttachmentStatusLoaded forMessage:message];
         
