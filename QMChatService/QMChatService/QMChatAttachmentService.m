@@ -79,10 +79,13 @@ static NSString* attachmentPath(QBChatAttachment *attachment) {
     
     if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
         
-        UIImage *image = [UIImage imageWithContentsOfFile:path];
-        
-        if (completion) completion(nil, image);
-        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            
+            UIImage *image = [UIImage imageWithContentsOfFile:path];
+            
+            if (completion) completion(nil, image);
+        });
+
         return;
     }
     
