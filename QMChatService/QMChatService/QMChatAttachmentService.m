@@ -89,10 +89,11 @@ static NSString* attachmentPath(QBChatAttachment *attachment) {
     [QBRequest downloadFileWithID:attachment.ID.integerValue successBlock:^(QBResponse *response, NSData *fileData) {
         
         UIImage *image = [UIImage imageWithData:fileData];
+        NSError *error;
         
-        [self saveImageData:fileData chatAttachment:attachment];
+        [self saveImageData:fileData chatAttachment:attachment error:&error];
         
-        if (completion) completion(nil, image);
+        if (completion) completion(error, image);
         
     } statusBlock:^(QBRequest *request, QBRequestStatus *status) {
         
@@ -103,11 +104,11 @@ static NSString* attachmentPath(QBChatAttachment *attachment) {
     }];
 }
 
-- (void)saveImageData:(NSData *)imageData chatAttachment:(QBChatAttachment *)attachment {
+- (void)saveImageData:(NSData *)imageData chatAttachment:(QBChatAttachment *)attachment error:(NSError **)errorPtr {
     
     NSString *path = attachmentPath(attachment);
     
-    [imageData writeToFile:path atomically:YES];
+    [imageData writeToFile:path options:NSDataWritingAtomic error:errorPtr];
 }
 
 - (void)changeMessageAttachmentStatus:(QMMessageAttachmentStatus)status forMessage:(QBChatMessage *)message {
