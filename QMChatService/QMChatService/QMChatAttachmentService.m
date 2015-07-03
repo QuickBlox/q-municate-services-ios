@@ -81,9 +81,14 @@ static NSString* attachmentPath(QBChatAttachment *attachment) {
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             
-            UIImage *image = [UIImage imageWithContentsOfFile:path];
+            NSError *error;
+            NSData *data = [NSData dataWithContentsOfFile:path options:NSDataReadingMappedIfSafe error:&error];
             
-            if (completion) completion(nil, image);
+            UIImage *image = [UIImage imageWithData:data];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (completion) completion(error, image);
+            });
         });
 
         return;
@@ -99,6 +104,10 @@ static NSString* attachmentPath(QBChatAttachment *attachment) {
         if (completion) completion(error, image);
         
     } statusBlock:^(QBRequest *request, QBRequestStatus *status) {
+        
+        if ([self.delegate respondsToSelector:@selector(chatAttachmentService:didChangeLoadingProgress:forChatAttachment:)]) {
+            [self.delegate chatAttachmentService:self didChangeLoadingProgress:status.percentOfCompletion forChatAttachment:attachment];
+        }
         
     } errorBlock:^(QBResponse *response) {
         
@@ -118,9 +127,13 @@ static NSString* attachmentPath(QBChatAttachment *attachment) {
     
     message.attachmentStatus = status;
     
-    if ([self.delegate respondsToSelector:@selector(chatAttachmentService:didChangeAttachmentStatus:forMessage:)]) {
-        [self.delegate chatAttachmentService:self didChangeAttachmentStatus:status forMessage:message];
-    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        if ([self.delegate respondsToSelector:@selector(chatAttachmentService:didChangeAttachmentStatus:forMessage:)]) {
+            [self.delegate chatAttachmentService:self didChangeAttachmentStatus:status forMessage:message];
+        }
+        
+    });
 }
 
 
