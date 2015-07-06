@@ -11,6 +11,7 @@
 #import "QMDialogsMemoryStorage.h"
 #import "QMMessagesMemoryStorage.h"
 #import "QMChatTypes.h"
+#import "QMChatConstants.h"
 
 @protocol QMChatServiceDelegate;
 @protocol QMChatServiceCacheDataSource;
