@@ -19,3 +19,10 @@ typedef NS_ENUM(NSUInteger, QMMessageType) {
     QMMessageTypeDeleteContactRequest
 };
 
+typedef NS_ENUM(NSUInteger, QMMessageAttachmentStatus) {
+    QMMessageAttachmentStatusNotLoaded = 0,
+    QMMessageAttachmentStatusLoading,
+    QMMessageAttachmentStatusLoaded,
+    QMMessageAttachmentStatusError,
+};
+

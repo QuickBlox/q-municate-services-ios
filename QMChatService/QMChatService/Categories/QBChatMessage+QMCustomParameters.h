@@ -18,6 +18,9 @@
 @property (strong, nonatomic) NSString *chatMessageID;
 @property (strong, nonatomic) NSNumber *customDateSent;
 @property (assign, nonatomic) BOOL messageDeliveryStatus;
+@property (assign, nonatomic) QMMessageAttachmentStatus attachmentStatus;
+
+
 /**
  *  Dialog
  */

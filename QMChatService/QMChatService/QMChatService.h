@@ -10,6 +10,7 @@
 #import "QMBaseService.h"
 #import "QMDialogsMemoryStorage.h"
 #import "QMMessagesMemoryStorage.h"
+#import "QMChatAttachmentService.h"
 #import "QMChatTypes.h"
 
 @protocol QMChatServiceDelegate;
@@ -31,6 +32,11 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  *  Messages datasource
  */
 @property (strong, nonatomic, readonly) QMMessagesMemoryStorage *messagesMemoryStorage;
+
+/**
+ *  Attachment Service
+ */
+@property (strong, nonatomic, readonly) QMChatAttachmentService *chatAttachmentService;
 
 /**
  *  Init chat service

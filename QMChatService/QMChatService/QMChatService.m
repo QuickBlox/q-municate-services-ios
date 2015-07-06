@@ -21,6 +21,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 @property (weak, nonatomic) id <QMChatServiceCacheDataSource> cacheDataSource;
 @property (strong, nonatomic) QMDialogsMemoryStorage *dialogsMemoryStorage;
 @property (strong, nonatomic) QMMessagesMemoryStorage *messagesMemoryStorage;
+@property (strong, nonatomic) QMChatAttachmentService *chatAttachmentService;
 @property (strong, nonatomic, readonly) NSNumber *dateSendTimeInterval;
 
 @property (copy, nonatomic) void(^chatSuccessBlock)(NSError *error);
@@ -64,6 +65,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 	self.multicastDelegate = (id<QMChatServiceDelegate>)[[QBMulticastDelegate alloc] init];
 	self.dialogsMemoryStorage = [[QMDialogsMemoryStorage alloc] init];
 	self.messagesMemoryStorage = [[QMMessagesMemoryStorage alloc] init];
+    self.chatAttachmentService = [[QMChatAttachmentService alloc] init];
 	
 	[QBChat.instance addDelegate:self];
 }
@@ -680,48 +682,55 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 
 - (BOOL)sendMessage:(QBChatMessage *)message type:(QMMessageType)type toDialog:(QBChatDialog *)dialog save:(BOOL)save completion:(void(^)(NSError *error))completion {
 	
-	message.customDateSent = self.dateSendTimeInterval;
-	
-	message.text = [message.text gtm_stringByEscapingForHTML];
-	
-	//Save to history
-	if (save) {
-		message.saveToHistory = kChatServiceSaveToHistoryTrue;
-	}
-	//Set message type
-	if (type != QMMessageTypeText) {
-		message.messageType = type;
-	}
-	
-	QBUUser *currentUser = self.serviceManager.currentUser;
-	
-	if (dialog.type == QBChatDialogTypePrivate) {
-		
-		message.senderID = currentUser.ID;
-		message.recipientID = dialog.recipientID;
-		message.markable = YES;
-	}
-	
-	return [dialog sendMessage:message sentBlock:^(NSError *error) {
-		
-		if (!error) {
-			
-			message.senderID = currentUser.ID;
-			
-			dialog.lastMessageText = message.encodedText;
-			dialog.lastMessageDate = message.dateSent;
-			
-			[self.messagesMemoryStorage addMessage:message forDialogID:dialog.ID];
-			
-			if ([self.multicastDelegate respondsToSelector:@selector(chatService:didAddMessageToMemoryStorage:forDialogID:)]) {
-				[self.multicastDelegate chatService:self didAddMessageToMemoryStorage:message forDialogID:dialog.ID];
-			}
-		}
-		
-		if (completion) {
-			completion(error);
-		}
-	}];
+    return [self sendMessage:message type:type toDialog:dialog save:save saveToStorage:true completion:completion];
+}
+
+- (BOOL)sendMessage:(QBChatMessage *)message type:(QMMessageType)type toDialog:(QBChatDialog *)dialog save:(BOOL)save saveToStorage:(BOOL)saveToStorage completion:(void(^)(NSError *error))completion {
+    
+    message.customDateSent = self.dateSendTimeInterval;
+    
+    message.text = [message.text gtm_stringByEscapingForHTML];
+    
+    //Save to history
+    if (save) {
+        message.saveToHistory = kChatServiceSaveToHistoryTrue;
+    }
+    //Set message type
+    if (type != QMMessageTypeText) {
+        message.messageType = type;
+    }
+    
+    QBUUser *currentUser = self.serviceManager.currentUser;
+    
+    if (dialog.type == QBChatDialogTypePrivate) {
+        
+        message.senderID = currentUser.ID;
+        message.recipientID = dialog.recipientID;
+        message.markable = YES;
+    }
+    
+    return [dialog sendMessage:message sentBlock:^(NSError *error) {
+        
+        if (!error) {
+            
+            message.senderID = currentUser.ID;
+            
+            dialog.lastMessageText = message.encodedText;
+            dialog.lastMessageDate = message.dateSent;
+            
+            if (saveToStorage) {
+                [self.messagesMemoryStorage addMessage:message forDialogID:dialog.ID];
+                
+                if ([self.multicastDelegate respondsToSelector:@selector(chatService:didAddMessageToMemoryStorage:forDialogID:)]) {
+                    [self.multicastDelegate chatService:self didAddMessageToMemoryStorage:message forDialogID:dialog.ID];
+                }
+            }
+        }
+        
+        if (completion) {
+            completion(error);
+        }
+    }];
 }
 
 - (BOOL)sendMessage:(QBChatMessage *)message toDialog:(QBChatDialog *)dialog save:(BOOL)save completion:(void(^)(NSError *error))completion {
