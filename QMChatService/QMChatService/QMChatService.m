@@ -756,6 +756,28 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     return [self sendMessage:message toDialog:dialog save:YES completion:completion];
 }
 
+- (void)markMessageAsRead:(QBChatMessage *)message
+{
+    NSUInteger currentUserID = [QBSession currentSession].currentUser.ID;
+    if (message.senderID == currentUserID) return;
+    
+    if (![message.readIDs containsObject:@(currentUserID)]) {
+        [[QBChat instance] readMessage:message];
+        
+        if (message.readIDs == nil) {
+            message.readIDs = [NSArray array];
+        }
+        
+        message.readIDs = [message.readIDs arrayByAddingObject:@([QBSession currentSession].currentUser.ID)];
+        
+        [self.messagesMemoryStorage updateMessage:message];
+        
+        if ([self.multicastDelegate respondsToSelector:@selector(chatService:didUpdateMessage:forDialogID:)]) {
+            [self.multicastDelegate chatService:self didUpdateMessage:message forDialogID:message.dialogID];
+        }
+    }
+}
+
 #pragma mark - QMMemoryStorageProtocol
 
 - (void)free {
