@@ -54,7 +54,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 		
 		self.presenceTimerInterval = 45.0;
 		self.automaticallySendPresences = YES;
-	}
+    }
 	
 	return self;
 }
@@ -170,13 +170,18 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 - (void)chatDidReadMessageWithID:(NSString *)messageID dialogID:(NSString *)dialogID readerID:(NSUInteger)readerID
 {
     QBChatMessage* message = [self.messagesMemoryStorage messageWithID:messageID fromDialogID:dialogID];
+    
     if (message != nil) {
         if (message.readIDs == nil) {
             message.readIDs = [NSArray array];
         }
+        
         message.readIDs = [message.readIDs arrayByAddingObject:@(readerID)];
-        if ([self.multicastDelegate respondsToSelector:@selector(chatService:didAddMessageToMemoryStorage:forDialogID:)]) {
-            [self.multicastDelegate chatService:self didAddMessageToMemoryStorage:message forDialogID:dialogID];
+        
+        [self.messagesMemoryStorage updateMessage:message];
+        
+        if ([self.multicastDelegate respondsToSelector:@selector(chatService:didUpdateMessage:forDialogID:)]) {
+            [self.multicastDelegate chatService:self didUpdateMessage:message forDialogID:dialogID];
         }
     }
 }
@@ -260,7 +265,9 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 
 - (void)handleChatMessage:(QBChatMessage *)message {
 	
-	NSAssert(message.dialogID, @"Need update this case");
+//	NSAssert(message.dialogID, @"Need update this case");
+    
+    if (message.dialogID == nil) return;
 	
 	if (message.messageType == QMMessageTypeText) {
 		
@@ -299,10 +306,13 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 		
 		if ([self.multicastDelegate respondsToSelector:@selector(chatService:didAddMessageToMemoryStorage:forDialogID:)]) {
 			[self.multicastDelegate chatService:self didAddMessageToMemoryStorage:message forDialogID:message.dialogID];
-		}
+		}        
         
-        if (message.markable) {
-            [[QBChat instance] readMessage:message];
+        if (message.markable && message.senderID != [QBSession currentSession].currentUser.ID) {
+            NSLog(@"Marked as read!");
+            if (![[QBChat instance] readMessage:message]) {
+                NSLog(@"Problems while marking message as read!");
+            }
         }
         
 		return;
@@ -671,8 +681,8 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
         
         [weakSelf.messagesMemoryStorage addMessages:messages forDialogID:chatDialogID];
         
-        if ([self.multicastDelegate respondsToSelector:@selector(chatService:didAddMessagesToMemoryStorage:forDialogID:)]) {
-            [self.multicastDelegate chatService:weakSelf didAddMessagesToMemoryStorage:messages forDialogID:chatDialogID];
+        if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddMessagesToMemoryStorage:forDialogID:)]) {
+            [weakSelf.multicastDelegate chatService:weakSelf didAddMessagesToMemoryStorage:messages forDialogID:chatDialogID];
         }
         
         if (completion) {
@@ -719,23 +729,19 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 		message.recipientID = dialog.recipientID;
 		message.markable = YES;
 	}
-	
+    
+    message.senderID = currentUser.ID;
+    
+    dialog.lastMessageText = message.encodedText;
+    dialog.lastMessageDate = message.dateSent;
+    
+    [self.messagesMemoryStorage addMessage:message forDialogID:dialog.ID];
+    
+    if ([self.multicastDelegate respondsToSelector:@selector(chatService:didAddMessageToMemoryStorage:forDialogID:)]) {
+        [self.multicastDelegate chatService:self didAddMessageToMemoryStorage:message forDialogID:dialog.ID];
+    }
+    
 	return [dialog sendMessage:message sentBlock:^(NSError *error) {
-		
-		if (!error) {
-			
-			message.senderID = currentUser.ID;
-			
-			dialog.lastMessageText = message.encodedText;
-			dialog.lastMessageDate = message.dateSent;
-			
-			[self.messagesMemoryStorage addMessage:message forDialogID:dialog.ID];
-			
-			if ([self.multicastDelegate respondsToSelector:@selector(chatService:didAddMessageToMemoryStorage:forDialogID:)]) {
-				[self.multicastDelegate chatService:self didAddMessageToMemoryStorage:message forDialogID:dialog.ID];
-			}
-		}
-		
 		if (completion) {
 			completion(error);
 		}

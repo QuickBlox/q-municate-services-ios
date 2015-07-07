@@ -29,6 +29,13 @@
  */
 - (void)replaceMessages:(NSArray *)messages forDialogID:(NSString *)dialogID;
 
+/**
+ *  Updates message in memory storage. Dialog ID is taken from message.
+ *
+ *  @param message Updated message.
+ */
+- (void)updateMessage:(QBChatMessage *)message;
+
 #pragma mark - Getters
 
 /**

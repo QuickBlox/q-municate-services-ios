@@ -35,8 +35,9 @@
 
 #pragma mark - Add / Join / Remove
 
-- (void)addChatDialog:(QBChatDialog *)chatDialog andJoin:(BOOL)join  onJoin:(dispatch_block_t)onJoin {
-    
+- (void)addChatDialog:(QBChatDialog *)chatDialog andJoin:(BOOL)join onJoin:(dispatch_block_t)onJoin {
+    NSAssert(chatDialog != nil, @"Chat dialog is nil!");
+    NSAssert(chatDialog.ID != nil, @"Chat dialog without identifier!");
     self.dialogs[chatDialog.ID] = chatDialog;
 	
 	NSAssert(chatDialog.type != 0, @"Chat type is not defined");

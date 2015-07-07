@@ -225,6 +225,13 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  */
 - (BOOL)sendMessage:(QBChatMessage *)message toDialogId:(NSString *)dialogID save:(BOOL)save completion:(void (^)(NSError *))completion;
 
+/**
+ *  Marks message as read - sends readMessage to Quickblox and updates memory messages storage
+ *
+ *  @param message Message to update
+ */
+- (void)markMessageAsRead:(QBChatMessage *)message;
+
 @end
 
 @protocol QMChatServiceCacheDataSource <NSObject>
@@ -260,6 +267,7 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 - (void)chatService:(QMChatService *)chatService didDeleteChatDialogWithIDFromMemoryStorage:(NSString *)chatDialogID;
 
 - (void)chatService:(QMChatService *)chatService didAddMessageToMemoryStorage:(QBChatMessage *)message forDialogID:(NSString *)dialogID;
+- (void)chatService:(QMChatService *)chatService didUpdateMessage:(QBChatMessage *)message forDialogID:(NSString *)dialogID;
 - (void)chatService:(QMChatService *)chatService didAddMessagesToMemoryStorage:(NSArray *)messages forDialogID:(NSString *)dialogID;
 
 - (void)chatService:(QMChatService *)chatService  didReceiveNotificationMessage:(QBChatMessage *)message createDialog:(QBChatDialog *)dialog;

@@ -43,6 +43,21 @@
     [self sortMessagesForDialogID:dialogID];
 }
 
+- (void)updateMessage:(QBChatMessage *)message
+{
+    NSAssert(message.dialogID, @"Message must have a dialog ID.");
+    NSMutableArray* messages = [self dataSourceWithDialogID:message.dialogID];
+    NSUInteger indexToReplace = [messages indexOfObjectPassingTest:^BOOL(QBChatMessage* obj, NSUInteger idx, BOOL *stop) {
+        return [obj.ID isEqualToString:message.ID];
+    }];
+    
+    if (indexToReplace != NSNotFound) {
+        [messages removeObjectAtIndex:indexToReplace];
+    }
+    
+    [messages addObject:message];
+}
+
 #pragma mark - replace
 
 - (void)replaceMessages:(NSArray *)messages forDialogID:(NSString *)dialogID {
