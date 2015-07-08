@@ -158,8 +158,8 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     [self handleChatMessage:message];
 }
 
-- (void)chatDidReceiveMessage:(QBChatMessage *)message  {
-	
+- (void)chatDidReceiveMessage:(QBChatMessage *)message
+{
 	[self handleChatMessage:message];
 }
 
@@ -177,12 +177,14 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
             message.readIDs = [NSArray array];
         }
         
-        message.readIDs = [message.readIDs arrayByAddingObject:@(readerID)];
-        
-        [self.messagesMemoryStorage updateMessage:message];
-        
-        if ([self.multicastDelegate respondsToSelector:@selector(chatService:didUpdateMessage:forDialogID:)]) {
-            [self.multicastDelegate chatService:self didUpdateMessage:message forDialogID:dialogID];
+        if (![message.readIDs containsObject:@(readerID)]) {
+            message.readIDs = [message.readIDs arrayByAddingObject:@(readerID)];
+            
+            [self.messagesMemoryStorage updateMessage:message];
+            
+            if ([self.multicastDelegate respondsToSelector:@selector(chatService:didUpdateMessage:forDialogID:)]) {
+                [self.multicastDelegate chatService:self didUpdateMessage:message forDialogID:dialogID];
+            }
         }
     }
 }
@@ -307,13 +309,6 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 		if ([self.multicastDelegate respondsToSelector:@selector(chatService:didAddMessageToMemoryStorage:forDialogID:)]) {
 			[self.multicastDelegate chatService:self didAddMessageToMemoryStorage:message forDialogID:message.dialogID];
 		}        
-        
-//        if (message.markable && message.senderID != [QBSession currentSession].currentUser.ID) {
-//            NSLog(@"Marked as read!");
-//            if (![[QBChat instance] readMessage:message]) {
-//                NSLog(@"Problems while marking message as read!");
-//            }
-//        }
         
 		return;
 	}
@@ -765,28 +760,6 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     NSAssert(dialog != nil, @"Dialog have to be in memory cache!");
     
     return [self sendMessage:message toDialog:dialog save:YES completion:completion];
-}
-
-- (void)markMessageAsRead:(QBChatMessage *)message
-{
-    NSUInteger currentUserID = [QBSession currentSession].currentUser.ID;
-    if (message.senderID == currentUserID) return;
-    
-    if (![message.readIDs containsObject:@(currentUserID)]) {
-        [[QBChat instance] readMessage:message];
-        
-        if (message.readIDs == nil) {
-            message.readIDs = [NSArray array];
-        }
-        
-        message.readIDs = [message.readIDs arrayByAddingObject:@([QBSession currentSession].currentUser.ID)];
-        
-        [self.messagesMemoryStorage updateMessage:message];
-        
-        if ([self.multicastDelegate respondsToSelector:@selector(chatService:didUpdateMessage:forDialogID:)]) {
-            [self.multicastDelegate chatService:self didUpdateMessage:message forDialogID:message.dialogID];
-        }
-    }
 }
 
 #pragma mark - QMMemoryStorageProtocol

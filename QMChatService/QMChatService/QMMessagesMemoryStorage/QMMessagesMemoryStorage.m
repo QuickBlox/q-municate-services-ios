@@ -56,6 +56,8 @@
     }
     
     [messages addObject:message];
+    
+    [self sortMessagesForDialogID:message.dialogID];
 }
 
 #pragma mark - replace

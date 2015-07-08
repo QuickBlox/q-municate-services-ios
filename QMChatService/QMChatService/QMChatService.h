@@ -232,13 +232,6 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  */
 - (BOOL)sendMessage:(QBChatMessage *)message toDialogId:(NSString *)dialogID save:(BOOL)save completion:(void (^)(NSError *))completion;
 
-/**
- *  Marks message as read - sends readMessage to Quickblox and updates memory messages storage
- *
- *  @param message Message to update
- */
-- (void)markMessageAsRead:(QBChatMessage *)message;
-
 @end
 
 @protocol QMChatServiceCacheDataSource <NSObject>
