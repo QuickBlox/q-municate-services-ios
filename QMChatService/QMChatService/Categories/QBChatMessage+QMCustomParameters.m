@@ -43,6 +43,7 @@ NSString const *kQMCustomParameterDialogRoomUpdatedDate = @"room_updated_date";
 @dynamic customDateSent;
 @dynamic messageDeliveryStatus;
 @dynamic dialog;
+@dynamic attachmentStatus;
 
 - (NSMutableDictionary *)context {
     
@@ -95,6 +96,22 @@ NSString const *kQMCustomParameterDialogRoomUpdatedDate = @"room_updated_date";
 - (void)setTDialog:(QBChatDialog *)tDialog {
     
     objc_setAssociatedObject(self, @selector(tDialog), tDialog, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (QMMessageAttachmentStatus)attachmentStatus {
+    return [[self tAttachmentStatus] integerValue];
+}
+
+- (void)setAttachmentStatus:(QMMessageAttachmentStatus)attachmentStatus {
+    [self setTAttachmentStatus:@(attachmentStatus)];
+}
+
+- (NSNumber *)tAttachmentStatus {
+    return objc_getAssociatedObject(self, @selector(tAttachmentStatus));
+}
+
+- (void)setTAttachmentStatus:(NSNumber *)attachmentStatusNumber {
+    objc_setAssociatedObject(self, @selector(tAttachmentStatus), attachmentStatusNumber, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (void)updateCustomParametersWithDialog:(QBChatDialog *)dialog {

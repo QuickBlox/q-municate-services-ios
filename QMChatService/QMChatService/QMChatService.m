@@ -21,6 +21,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 @property (weak, nonatomic) id <QMChatServiceCacheDataSource> cacheDataSource;
 @property (strong, nonatomic) QMDialogsMemoryStorage *dialogsMemoryStorage;
 @property (strong, nonatomic) QMMessagesMemoryStorage *messagesMemoryStorage;
+@property (strong, nonatomic) QMChatAttachmentService *chatAttachmentService;
 @property (strong, nonatomic, readonly) NSNumber *dateSendTimeInterval;
 
 @property (copy, nonatomic) void(^chatSuccessBlock)(NSError *error);
@@ -64,6 +65,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 	self.multicastDelegate = (id<QMChatServiceDelegate>)[[QBMulticastDelegate alloc] init];
 	self.dialogsMemoryStorage = [[QMDialogsMemoryStorage alloc] init];
 	self.messagesMemoryStorage = [[QMMessagesMemoryStorage alloc] init];
+    self.chatAttachmentService = [[QMChatAttachmentService alloc] init];
 	
 	[QBChat.instance addDelegate:self];
 }
@@ -636,11 +638,14 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 - (void)messagesWithChatDialogID:(NSString *)chatDialogID completion:(void(^)(QBResponse *response, NSArray *messages))completion {
 	
 	[self loadCahcedMessagesWithDialogID:chatDialogID];
+    
+    QBResponsePage *page = [QBResponsePage responsePageWithLimit:kQMChatMessagesPerPage];
 	
 	__weak __typeof(self) weakSelf = self;
+    
     [QBRequest messagesWithDialogID:chatDialogID
                     extendedRequest:@{@"sort_desc" : @"date_sent",}
-                            forPage:nil
+                            forPage:page
                        successBlock:^(QBResponse *response, NSArray *messages, QBResponsePage *page) {
                            NSArray* sortedMessages = [[messages reverseObjectEnumerator] allObjects];
                            [weakSelf.messagesMemoryStorage replaceMessages:sortedMessages forDialogID:chatDialogID];
@@ -675,9 +680,11 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     
     QBChatMessage *oldestMessage = [self.messagesMemoryStorage oldestMessageForDialogID:chatDialogID];
     NSString *oldestMessageDate = [NSString stringWithFormat:@"%ld", (long)[oldestMessage.dateSent timeIntervalSince1970]];
+    QBResponsePage *page = [QBResponsePage responsePageWithLimit:kQMChatMessagesPerPage];
+    
     __weak __typeof(self) weakSelf = self;
     
-    [QBRequest messagesWithDialogID:chatDialogID extendedRequest:@{@"date_sent[lt]": oldestMessageDate} forPage:nil successBlock:^(QBResponse *response, NSArray *messages, QBResponsePage *page) {
+    [QBRequest messagesWithDialogID:chatDialogID extendedRequest:@{@"date_sent[lt]": oldestMessageDate} forPage:page successBlock:^(QBResponse *response, NSArray *messages, QBResponsePage *page) {
         
         [weakSelf.messagesMemoryStorage addMessages:messages forDialogID:chatDialogID];
         
