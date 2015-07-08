@@ -56,6 +56,7 @@ static NSString* attachmentPath(QBChatAttachment *attachment) {
         attachment.url = [blob publicUrl];
         
         message.attachments = @[attachment];
+        message.text = @"Attachment image";
         
         [self saveImageData:imageData chatAttachment:attachment error:nil];
         
