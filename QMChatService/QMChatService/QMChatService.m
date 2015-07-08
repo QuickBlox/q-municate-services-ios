@@ -170,6 +170,9 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 
 - (void)chatDidReadMessageWithID:(NSString *)messageID dialogID:(NSString *)dialogID readerID:(NSUInteger)readerID
 {
+    NSParameterAssert(dialogID != nil);
+    NSParameterAssert(messageID != nil);
+    
     QBChatMessage* message = [self.messagesMemoryStorage messageWithID:messageID fromDialogID:dialogID];
     
     if (message != nil) {
