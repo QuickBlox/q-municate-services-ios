@@ -153,10 +153,9 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 
 #pragma mark Handle messages (QBChatDelegate)
 
-- (void)chatRoomDidReceiveMessage:(QBChatMessage *)message fromRoomJID:(NSString *)roomJID {
-    
-	[self handleChatMessage:message];
-    
+- (void)chatRoomDidReceiveMessage:(QBChatMessage *)message fromDialogID:(NSString *)dialogID
+{
+    [self handleChatMessage:message];
 }
 
 - (void)chatDidReceiveMessage:(QBChatMessage *)message  {
@@ -208,6 +207,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 		
 		QBChat.instance.autoReconnectEnabled = YES;
 		QBChat.instance.streamManagementEnabled = YES;
+        [QBChat.instance setCarbonsEnabled:YES];
 		[QBChat.instance loginWithUser:user];
 		
 	}
@@ -267,9 +267,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 
 - (void)handleChatMessage:(QBChatMessage *)message {
 	
-//	NSAssert(message.dialogID, @"Need update this case");
-    
-    if (message.dialogID == nil) return;
+	NSAssert(message.dialogID, @"Need update this case");
 	
 	if (message.messageType == QMMessageTypeText) {
 		
@@ -310,12 +308,12 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 			[self.multicastDelegate chatService:self didAddMessageToMemoryStorage:message forDialogID:message.dialogID];
 		}        
         
-        if (message.markable && message.senderID != [QBSession currentSession].currentUser.ID) {
-            NSLog(@"Marked as read!");
-            if (![[QBChat instance] readMessage:message]) {
-                NSLog(@"Problems while marking message as read!");
-            }
-        }
+//        if (message.markable && message.senderID != [QBSession currentSession].currentUser.ID) {
+//            NSLog(@"Marked as read!");
+//            if (![[QBChat instance] readMessage:message]) {
+//                NSLog(@"Problems while marking message as read!");
+//            }
+//        }
         
 		return;
 	}
