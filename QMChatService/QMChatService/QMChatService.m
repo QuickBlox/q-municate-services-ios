@@ -12,6 +12,8 @@
 #import "QBChatMessage+QMCustomParameters.h"
 
 const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
+static NSString *const kLastMessagesRequestDate = @"qmchatservice_kLastMessagesRequestDate";
+
 
 #define kChatServiceSaveToHistoryTrue @"1"
 
@@ -23,6 +25,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 @property (strong, nonatomic) QMMessagesMemoryStorage *messagesMemoryStorage;
 @property (strong, nonatomic) QMChatAttachmentService *chatAttachmentService;
 @property (strong, nonatomic, readonly) NSNumber *dateSendTimeInterval;
+@property (strong, nonatomic) NSDate* lastMessagesRequestDate;
 
 @property (copy, nonatomic) void(^chatSuccessBlock)(NSError *error);
 
@@ -31,6 +34,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 @end
 
 @implementation QMChatService
+@synthesize lastMessagesRequestDate = _lastMessagesRequestDate;
 
 @dynamic dateSendTimeInterval;
 
@@ -75,6 +79,14 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 - (NSNumber *)dateSendTimeInterval {
 	
 	return @((NSInteger)CFAbsoluteTimeGetCurrent() + kCFAbsoluteTimeIntervalSince1970);
+}
+
+- (NSDate *)lastMessagesRequestDate
+{
+    if (_lastMessagesRequestDate == nil) {
+        _lastMessagesRequestDate = [[NSUserDefaults standardUserDefaults] objectForKey:kLastMessagesRequestDate];
+    }
+    return _lastMessagesRequestDate;
 }
 
 #pragma mark - Load cached data
@@ -639,12 +651,22 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 	
 	__weak __typeof(self) weakSelf = self;
     
+    NSMutableDictionary* parameters = [@{@"sort_desc" : @"date_sent"} mutableCopy];
+    
+    if (self.lastMessagesRequestDate != nil) {
+        [parameters setObject:@([self.lastMessagesRequestDate timeIntervalSince1970])
+                       forKey:@"date_sent[gt]"];
+    }
+    
     [QBRequest messagesWithDialogID:chatDialogID
-                    extendedRequest:@{@"sort_desc" : @"date_sent",}
+                    extendedRequest:parameters
                             forPage:page
                        successBlock:^(QBResponse *response, NSArray *messages, QBResponsePage *page) {
+                           weakSelf.lastMessagesRequestDate = [NSDate date];
+                           [[NSUserDefaults standardUserDefaults] setObject:weakSelf.lastMessagesRequestDate forKey:kLastMessagesRequestDate];
+                           
                            NSArray* sortedMessages = [[messages reverseObjectEnumerator] allObjects];
-                           [weakSelf.messagesMemoryStorage replaceMessages:sortedMessages forDialogID:chatDialogID];
+                           [weakSelf.messagesMemoryStorage addMessages:sortedMessages forDialogID:chatDialogID];
                            
                            if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddMessagesToMemoryStorage:forDialogID:)]) {
                                [weakSelf.multicastDelegate chatService:weakSelf didAddMessagesToMemoryStorage:sortedMessages forDialogID:chatDialogID];
