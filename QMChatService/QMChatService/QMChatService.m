@@ -405,8 +405,16 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 	__block dispatch_block_t t_request;
 	
 	dispatch_block_t request = [^{
-		
+        
+        if (![weakSelf.serviceManager isAutorized]) {
+            if (completion) {
+                completion(nil);
+            }
+            return;
+        }
+        
 		[QBRequest dialogsForPage:responsePage extendedRequest:extendedRequest successBlock:^(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, QBResponsePage *page) {
+            
 			[weakSelf.dialogsMemoryStorage addChatDialogs:dialogObjects andJoin:NO];
 			
 			if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddChatDialogsToMemoryStorage:)]) {
@@ -421,24 +429,16 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 			
 			interationBlock(response, dialogObjects, dialogsUsersIDs, &cancel);
             
-            if (![self.serviceManager isAutorized]) {
-                NSLog(@"Hit!");
-                return;
-            }
-			
-			if (!cancel) {
-				
+            if (!cancel) {
 				t_request();
-			}
-			else {
-				
-				if (completion) {
+			} else {
+                if (completion) {
 					completion(response);
 				}
 			}
 			
 		} errorBlock:^(QBResponse *response) {
-			
+
 			[weakSelf.serviceManager handleErrorResponse:response];
 			
 			if (completion) {
