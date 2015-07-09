@@ -63,6 +63,9 @@
  */
 - (QBChatMessage *)messageWithID:(NSString *)messageID fromDialogID:(NSString *)dialogID;
 
+
+- (QBChatMessage *)lastMessageFromDialogID:(NSString *)dialogID;
+
 #pragma mark - Helpers
 
 - (BOOL)isEmptyForDialogID:(NSString *)dialogID;

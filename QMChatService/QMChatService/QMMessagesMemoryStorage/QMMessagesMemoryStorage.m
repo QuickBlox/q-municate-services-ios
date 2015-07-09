@@ -60,6 +60,12 @@
     [self sortMessagesForDialogID:message.dialogID];
 }
 
+- (QBChatMessage *)lastMessageFromDialogID:(NSString *)dialogID
+{
+    NSArray* messages = [self messagesWithDialogID:dialogID];
+    return [messages lastObject];
+}
+
 #pragma mark - replace
 
 - (void)replaceMessages:(NSArray *)messages forDialogID:(NSString *)dialogID {
