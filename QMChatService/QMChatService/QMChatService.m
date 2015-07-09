@@ -213,7 +213,6 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 		
 		QBChat.instance.autoReconnectEnabled = YES;
 		QBChat.instance.streamManagementEnabled = YES;
-        [QBSettings disableXMPPLogging];
         [QBChat.instance setCarbonsEnabled:YES];
 		[QBChat.instance loginWithUser:user];
 		
