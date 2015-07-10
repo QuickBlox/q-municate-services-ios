@@ -29,14 +29,14 @@
 
 - (void)addMessage:(QBChatMessage *)message forDialogID:(NSString *)dialogID {
     
-    NSMutableArray *datasource = [self dataSourceWithDialogID:dialogID];
+    NSMutableOrderedSet *datasource = [self dataSourceWithDialogID:dialogID];
 
     [datasource addObject:message];
 }
 
 - (void)addMessages:(NSArray *)messages forDialogID:(NSString *)dialogID {
     
-    NSMutableArray *datasource = [self dataSourceWithDialogID:dialogID];
+    NSMutableOrderedSet *datasource = [self dataSourceWithDialogID:dialogID];
     
     [datasource addObjectsFromArray:messages];
     
@@ -46,7 +46,7 @@
 - (void)updateMessage:(QBChatMessage *)message
 {
     NSAssert(message.dialogID, @"Message must have a dialog ID.");
-    NSMutableArray* messages = [self dataSourceWithDialogID:message.dialogID];
+    NSMutableOrderedSet* messages = [self dataSourceWithDialogID:message.dialogID];
     NSUInteger indexToReplace = [messages indexOfObjectPassingTest:^BOOL(QBChatMessage* obj, NSUInteger idx, BOOL *stop) {
         return [obj.ID isEqualToString:message.ID];
     }];
@@ -70,19 +70,19 @@
 
 - (void)replaceMessages:(NSArray *)messages forDialogID:(NSString *)dialogID {
     
-    NSMutableArray *datasource = [self dataSourceWithDialogID:dialogID];
+    NSMutableOrderedSet *datasource = [self dataSourceWithDialogID:dialogID];
     [datasource removeAllObjects];
     [datasource addObjectsFromArray:messages];
 }
 
 #pragma mark - Getters
 
-- (NSMutableArray *)dataSourceWithDialogID:(NSString *)dialogID {
+- (NSMutableOrderedSet *)dataSourceWithDialogID:(NSString *)dialogID {
     
-    NSMutableArray *messages = self.datasources[dialogID];
+    NSMutableOrderedSet *messages = self.datasources[dialogID];
     
     if (!messages) {
-        messages = [NSMutableArray array];
+        messages = [NSMutableOrderedSet orderedSet];
         self.datasources[dialogID] = messages;
     }
     
@@ -91,9 +91,9 @@
 
 - (NSArray *)messagesWithDialogID:(NSString *)dialogID {
     
-    NSMutableArray *messages = self.datasources[dialogID];
+    NSMutableOrderedSet *messages = self.datasources[dialogID];
     
-    return [messages copy];
+    return [messages array];
 }
 
 - (void)deleteMessagesWithDialogID:(NSString *)dialogID {
@@ -117,7 +117,7 @@
 
 - (void)sortMessagesForDialogID:(NSString *)dialogID {
     
-    NSMutableArray *datasource = [self dataSourceWithDialogID:dialogID];
+    NSMutableOrderedSet *datasource = [self dataSourceWithDialogID:dialogID];
     
     [datasource sortUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"dateSent" ascending:YES]]];
 }
