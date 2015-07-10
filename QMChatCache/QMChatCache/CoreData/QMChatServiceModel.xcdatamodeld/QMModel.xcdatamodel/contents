@@ -29,6 +29,7 @@
         <attribute name="dialogID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isRead" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="messageID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="readIDs" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="recipientID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="senderID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="senderNick" optional="YES" attributeType="String" syncable="YES"/>
@@ -40,6 +41,6 @@
     <elements>
         <element name="CDAttachment" positionX="-333" positionY="-96" width="128" height="105"/>
         <element name="CDDialog" positionX="-713" positionY="-217" width="128" height="240"/>
-        <element name="CDMessage" positionX="-567" positionY="-216" width="128" height="255"/>
+        <element name="CDMessage" positionX="-567" positionY="-216" width="128" height="270"/>
     </elements>
 </model>

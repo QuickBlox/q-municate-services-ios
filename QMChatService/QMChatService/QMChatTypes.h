@@ -14,8 +14,15 @@ typedef NS_ENUM(NSUInteger, QMMessageType) {
     QMMessageTypeUpdateGroupDialog = 2,
     
     QMMessageTypeContactRequest = 4,
-    QMMessageTypeConfirmContactRequest,
+    QMMessageTypeAcceptContactRequest,
     QMMessageTypeRejectContactRequest,
     QMMessageTypeDeleteContactRequest
+};
+
+typedef NS_ENUM(NSUInteger, QMMessageAttachmentStatus) {
+    QMMessageAttachmentStatusNotLoaded = 0,
+    QMMessageAttachmentStatusLoading,
+    QMMessageAttachmentStatusLoaded,
+    QMMessageAttachmentStatusError,
 };
 

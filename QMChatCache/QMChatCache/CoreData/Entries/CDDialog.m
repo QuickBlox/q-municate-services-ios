@@ -26,7 +26,8 @@
 }
 
 - (void)updateWithQBChatDialog:(QBChatDialog *)dialog {
-
+	NSAssert(dialog.type != 0, @"dialog type is undefined");
+	
     self.dialogID = dialog.ID;
     self.roomJID = dialog.roomJID;
     self.dialogType = @(dialog.type);

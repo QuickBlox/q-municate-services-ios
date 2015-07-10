@@ -13,10 +13,9 @@
 <QBChatDelegate, QMUsersMemoryStorageDelegate>
 
 @property (strong, nonatomic) QBMulticastDelegate <QMContactListServiceDelegate> *multicastDelegate;
-@property (weak, nonatomic) id<QMContactListServiceCacheDelegate> cahceDelegate;
+@property (weak, nonatomic) id<QMContactListServiceCacheDataSource> cacheDataSource;
 @property (strong, nonatomic) QMContactListMemoryStorage *contactListMemoryStorage;
 @property (strong, nonatomic) QMUsersMemoryStorage *usersMemoryStorage;
-@property (strong, nonatomic) NSMutableSet *retrivedIds;
 
 @end
 
@@ -30,13 +29,12 @@
 }
 
 - (instancetype)initWithServiceManager:(id<QMServiceManagerProtocol>)serviceManager
-                         cacheDelegate:(id<QMContactListServiceCacheDelegate>)cacheDelegate {
+                         cacheDataSource:(id<QMContactListServiceCacheDataSource>)cacheDataSource {
     
     self = [super initWithServiceManager:serviceManager];
     if (self) {
         
-        self.cahceDelegate = cacheDelegate;
-        self.retrivedIds = [NSMutableSet set];
+        self.cacheDataSource = cacheDataSource;
         [self loadCachedData];
     }
     
@@ -63,11 +61,11 @@
     //Step 1. Load contact list (Roster)
     dispatch_async(queue, ^{
         
-        if ([self.cahceDelegate respondsToSelector:@selector(cachedContactListItems:)]) {
+        if ([self.cacheDataSource respondsToSelector:@selector(cachedContactListItems:)]) {
             
             dispatch_semaphore_t sem = dispatch_semaphore_create(0);
             
-            [self.cahceDelegate cachedContactListItems:^(NSArray *collection) {
+            [self.cacheDataSource cachedContactListItems:^(NSArray *collection) {
                 
                 [weakSelf.contactListMemoryStorage updateWithContactListItems:collection];
                 dispatch_semaphore_signal(sem);
@@ -79,11 +77,11 @@
     //Step 2. Load users for conatc list
     dispatch_async(queue, ^{
         
-        if ([self.cahceDelegate respondsToSelector:@selector(cachedUsers:)]) {
+        if ([self.cacheDataSource respondsToSelector:@selector(cachedUsers:)]) {
             
             dispatch_semaphore_t sem = dispatch_semaphore_create(0);
             
-            [self.cahceDelegate cachedUsers:^(NSArray *collection) {
+            [self.cacheDataSource cachedUsers:^(NSArray *collection) {
                 
                 [weakSelf.usersMemoryStorage addUsers:collection];
                 dispatch_semaphore_signal(sem);
@@ -125,7 +123,7 @@
     __weak __typeof(self)weakSelf = self;
     
     [self retrieveUsersWithIDs:[self.contactListMemoryStorage userIDsFromContactList]
-                    completion:^(QBResponse *responce, QBGeneralResponsePage *page, NSArray *users)
+				 forceDownload:NO completion:^(QBResponse *responce, QBGeneralResponsePage *page, NSArray *users)
      {
          if (responce.success) {
              
@@ -136,119 +134,59 @@
      }];
 }
 
-- (void)chatDidReceiveContactAddRequestFromUser:(NSUInteger)userID {
-    
-    [self.contactListMemoryStorage addContactRequestFromUserID:userID];
-    
-    QBUUser *user = [self.usersMemoryStorage userWithID:userID];
-    
-    if (user) {
-        
-        if ([self.multicastDelegate respondsToSelector:@selector(contactListService:addRequestFromUser:)]) {
-            [self.multicastDelegate contactListService:self addRequestFromUser:user];
-        }
-    }
-    else {
-        
-        __weak __typeof(self)weakSelf = self;
-        
-        [self retrieveUsersWithIDs:@[@(userID)] completion:^(QBResponse *responce, QBGeneralResponsePage *page, NSArray *users) {
-            
-            if (users.count == 0) {
-                return;
-            }
-            
-            QBUUser *newUser = users.firstObject;
-            
-            [weakSelf.usersMemoryStorage addUser:newUser];
-            
-            if ([weakSelf.multicastDelegate respondsToSelector:@selector(contactListService:addRequestFromUser:)]) {
-                [weakSelf.multicastDelegate contactListService:weakSelf addRequestFromUser:newUser];
-            }
-            
-            if ([weakSelf.multicastDelegate respondsToSelector:@selector(contactListService:didAddUser:)]) {
-                [weakSelf.multicastDelegate contactListService:weakSelf didAddUser:newUser];
-            }
-        }];
-    }
-}
-
 #pragma mark - Retrive users
 
-- (NSMutableSet *)checkExistIds:(NSArray *)ids {
-    
-    NSMutableSet *toFetch = [NSMutableSet setWithArray:ids];
-    
-    for (NSNumber *userID in ids) {
-        
-        QBUUser *savedUser = [self.usersMemoryStorage userWithID:userID.unsignedIntegerValue];
-        BOOL inProgress = [self.retrivedIds containsObject:userID];
-        
-        if (savedUser || inProgress) {
-            [toFetch removeObject:userID];
-        }
-    }
-    
-    return toFetch;
-}
+- (void)retrieveUsersWithIDs:(NSArray *)ids forceDownload:(BOOL)forceDownload completion:(void(^)(QBResponse *response, QBGeneralResponsePage *page, NSArray * users))completion {
+	
+	if (ids.count == 0) {
+		if (completion) {
+			completion(nil, nil, @[]);
+		}
+		return;
+	}
 
-- (void)retrieveUsersWithIDs:(NSArray *)ids completion:(void(^)(QBResponse *responce, QBGeneralResponsePage *page, NSArray * users))completion {
-    
-    NSSet *toRetrive = [self checkExistIds:ids].copy;
-    
-    NSLog(@"RetrieveUsers %@", toRetrive);
-    
-    if (toRetrive.count == 0) {
-        completion(nil, nil, nil);
-    }
-    else {
-        
-        QBGeneralResponsePage *pageResponce =
-        [QBGeneralResponsePage responsePageWithCurrentPage:1 perPage:toRetrive.count < 100 ? toRetrive.count : 100];
-        __weak __typeof(self)weakSelf = self;
-        
-        [self.retrivedIds unionSet:toRetrive];
-        
-        [QBRequest usersWithIDs:toRetrive.allObjects  page:pageResponce successBlock:^(QBResponse *responce, QBGeneralResponsePage *page, NSArray * users) {
-            
-            for (QBUUser *user in users) {
-                [weakSelf.retrivedIds removeObject:@(user.ID)];
-            }
-            
-            [weakSelf.usersMemoryStorage addUsers:users];
-            
-            if ([weakSelf.multicastDelegate respondsToSelector:@selector(contactListService:didAddUsers:)]) {
-                [weakSelf.multicastDelegate contactListService:weakSelf didAddUsers:users];
-            }
-            
-            if (completion) {
-                completion(responce, page, users);
-            }
-            
-        } errorBlock:^(QBResponse *responce) {
-            
-            completion(responce, nil, nil);
-        }];
-    }
-}
-
-- (void)retriveUsersForChatDialog:(QBChatDialog *)chatDialog
-                       completion:(void(^)(QBResponse *responce, QBGeneralResponsePage *page, NSArray * users))completion {
-    
-    __weak __typeof(self)weakSelf = self;
-    
-    [self retrieveUsersWithIDs:chatDialog.occupantIDs completion:^(QBResponse *responce, QBGeneralResponsePage *page, NSArray *users) {
-        if (users.count > 0 ) {
-            
-            if ([weakSelf.multicastDelegate respondsToSelector:@selector(contactListService:didFinishRetriveUsersForChatDialog:)]) {
-                [weakSelf.multicastDelegate contactListService:weakSelf didFinishRetriveUsersForChatDialog:chatDialog];
-            }
-        }
-        
-        if (completion) {
-            completion(responce, page, users);
-        }
-    }];
+	if (!forceDownload) {
+		// if all users with given ids in cache, return them
+		if ([[self.usersMemoryStorage usersWithIDs:ids] count] == [ids count]) {
+			if (completion) {
+				completion(nil, nil, [self.usersMemoryStorage usersWithIDs:ids]);
+			}
+			return;
+		}
+	}
+	
+	NSSet *usersIDs = [NSSet setWithArray:ids];
+	
+	QBGeneralResponsePage *pageResponse =
+	[QBGeneralResponsePage responsePageWithCurrentPage:1 perPage:usersIDs.count < 100 ? usersIDs.count : 100];
+	
+	__weak __typeof(self)weakSelf = self;
+	[QBRequest usersWithIDs:usersIDs.allObjects  page:pageResponse successBlock:^(QBResponse *response, QBGeneralResponsePage *page, NSArray * users) {
+		
+		// remove already downloaded users from adding to memory storage
+		NSMutableArray *mutableUsers = [users mutableCopy];
+		for (int i = 0; i < mutableUsers.count; i++ ) {
+			QBUUser *user = mutableUsers[i];
+			if ([weakSelf.usersMemoryStorage userWithID:user.ID] != nil ) {
+				[mutableUsers removeObjectAtIndex:i];
+			}
+		}
+		
+		[weakSelf.usersMemoryStorage addUsers:[mutableUsers copy]];
+		
+		if ([weakSelf.multicastDelegate respondsToSelector:@selector(contactListService:didAddUsers:)]) {
+			[weakSelf.multicastDelegate contactListService:weakSelf didAddUsers:users];
+		}
+		
+		if (completion) {
+			completion(response, page, users);
+		}
+		
+	} errorBlock:^(QBResponse *response) {
+		
+		completion(response, nil, nil);
+	}];
+	
 }
 
 #pragma mark - ContactList Request
@@ -300,12 +238,9 @@
 
 - (void)acceptContactRequest:(NSUInteger)userID completion:(void(^)(BOOL success))completion {
     
-    __weak __typeof(self)weakSelf = self;
     [[QBChat instance] confirmAddContactRequest:userID sentBlock:^(NSError *error) {
         
         if (!error) {
-            
-            [weakSelf.contactListMemoryStorage confirmOrRejectContactRequestForUserID:userID];
             
             if (completion) {
                 completion(YES);
@@ -325,8 +260,6 @@
     [[QBChat instance] rejectAddContactRequest:userID sentBlock:^(NSError *error) {
         
         if (!error) {
-            
-            [self.contactListMemoryStorage confirmOrRejectContactRequestForUserID:userID];
             
             if (completion) {
                 completion(YES);

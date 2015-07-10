@@ -1,6 +1,6 @@
 #import "CDMessage.h"
 #import "CDAttachment.h"
-
+#import "NSManagedObject+QMCDRecord.h"
 
 @interface CDMessage ()
 
@@ -18,11 +18,12 @@
     message.senderID = self.senderID.intValue;
     message.dateSent = self.dateSend;
     message.dialogID = self.dialogID;
-    message.customParameters = [self dictionaryWithBinaryData:self.customParameters].mutableCopy;
+    message.customParameters = [[self objectsWithBinaryData:self.customParameters] mutableCopy];
     message.read = self.isRead.boolValue;
     message.updatedAt = self.updateAt;
     message.createdAt = self.createAt;
     message.delayed = self.delayed.boolValue;
+    message.readIDs = [[self objectsWithBinaryData:self.readIDs] copy];
 
     NSMutableArray *attachments = [NSMutableArray arrayWithCapacity:self.attachments.count];
     
@@ -48,8 +49,9 @@
     self.recipientID = @(message.recipientID);
     self.senderID = @(message.senderID);
     self.dialogID = message.dialogID;
-    self.customParameters = [self binaryDataWithDictionary:message.customParameters];
+    self.customParameters = [self binaryDataWithObject:message.customParameters];
     self.isRead = @(message.isRead);
+    self.readIDs = [self binaryDataWithObject:message.readIDs];
 
     if (message.attachments.count > 0) {
         
@@ -71,16 +73,15 @@
     }
 }
 
-- (NSData *)binaryDataWithDictionary:(NSDictionary *)dictionary {
+- (NSData *)binaryDataWithObject:(id)object {
     
-    NSData *binaryData = [NSKeyedArchiver archivedDataWithRootObject:dictionary];
+    NSData *binaryData = [NSKeyedArchiver archivedDataWithRootObject:object];
     return binaryData;
 }
 
-- (NSDictionary *)dictionaryWithBinaryData:(NSData *)data {
+- (id)objectsWithBinaryData:(NSData *)data {
     
-    NSDictionary *dictionary = (NSDictionary*) [NSKeyedUnarchiver unarchiveObjectWithData:data];
-    return dictionary;
+    return [NSKeyedUnarchiver unarchiveObjectWithData:data];
 }
 
 @end

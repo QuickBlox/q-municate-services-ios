@@ -11,6 +11,7 @@ extern const struct CDMessageAttributes {
 	__unsafe_unretained NSString *dialogID;
 	__unsafe_unretained NSString *isRead;
 	__unsafe_unretained NSString *messageID;
+	__unsafe_unretained NSString *readIDs;
 	__unsafe_unretained NSString *recipientID;
 	__unsafe_unretained NSString *senderID;
 	__unsafe_unretained NSString *senderNick;
@@ -70,6 +71,10 @@ extern const struct CDMessageRelationships {
 @property (nonatomic, strong) NSString* messageID;
 
 //- (BOOL)validateMessageID:(id*)value_ error:(NSError**)error_;
+
+@property (nonatomic, strong) NSData* readIDs;
+
+//- (BOOL)validateReadIDs:(id*)value_ error:(NSError**)error_;
 
 @property (nonatomic, strong) NSNumber* recipientID;
 
@@ -145,6 +150,9 @@ extern const struct CDMessageRelationships {
 
 - (NSString*)primitiveMessageID;
 - (void)setPrimitiveMessageID:(NSString*)value;
+
+- (NSData*)primitiveReadIDs;
+- (void)setPrimitiveReadIDs:(NSData*)value;
 
 - (NSNumber*)primitiveRecipientID;
 - (void)setPrimitiveRecipientID:(NSNumber*)value;

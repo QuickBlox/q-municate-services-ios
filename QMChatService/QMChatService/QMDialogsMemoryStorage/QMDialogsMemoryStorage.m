@@ -35,14 +35,28 @@
 
 #pragma mark - Add / Join / Remove
 
-- (void)addChatDialog:(QBChatDialog *)chatDialog andJoin:(BOOL)join {
-    
+- (void)addChatDialog:(QBChatDialog *)chatDialog andJoin:(BOOL)join onJoin:(dispatch_block_t)onJoin {
+    NSAssert(chatDialog != nil, @"Chat dialog is nil!");
+    NSAssert(chatDialog.ID != nil, @"Chat dialog without identifier!");
     self.dialogs[chatDialog.ID] = chatDialog;
-    
+	
+	NSAssert(chatDialog.type != 0, @"Chat type is not defined");
+	if( chatDialog.type == QBChatDialogTypeGroup || chatDialog.type == QBChatDialogTypePublicGroup ){
+		NSAssert(chatDialog.roomJID != nil, @"Chat JID must exists for group chat");
+	}
+	
     if (join) {
         
-        if (!chatDialog.chatRoom.isJoined) {
-            [chatDialog.chatRoom joinRoomWithHistoryAttribute:@{@"maxstanzas": @"0"}];
+        if (chatDialog.isJoined) {
+            
+            if (onJoin) {
+                onJoin();
+            }
+        } else {
+            NSAssert(!chatDialog.isJoined, @"Need update this case");
+            [chatDialog setOnJoin:onJoin];
+
+            [chatDialog join];
         }
     }
 }
@@ -51,8 +65,13 @@
     
     for (QBChatDialog *chatDialog in dialogs) {
         
-        [self addChatDialog:chatDialog andJoin:join];
+        [self addChatDialog:chatDialog andJoin:join onJoin:nil];
     }
+}
+
+- (void)deleteChatDialogWithID:(NSString *)chatDialogID
+{
+    [self.dialogs removeObjectForKey:chatDialogID];
 }
 
 - (QBChatDialog *)chatDialogWithID:(NSString *)dialogID {
@@ -62,7 +81,7 @@
 
 - (QBChatDialog *)privateChatDialogWithOpponentID:(NSUInteger)opponentID {
     
-    NSArray *allDialogs = [self unreadDialogs];
+    NSArray *allDialogs = [self unsortedDialogs];
     
     NSPredicate *predicate =
     [NSPredicate predicateWithFormat:@"SELF.type == %d AND SUBQUERY(SELF.occupantIDs, $userID, $userID == %@).@count > 0", QBChatDialogTypePrivate, @(opponentID)];
@@ -121,6 +140,13 @@
 
     return sortedDialogs;
 };
+
+- (NSArray *)dialogsWithSortDescriptors:(NSArray *)descriptors {
+    
+    NSArray *sortedDialogs =  [self.dialogs.allValues sortedArrayUsingDescriptors:descriptors];
+    
+    return sortedDialogs;
+}
 
 #pragma mark - QMMemoryStorageProtocol
 
