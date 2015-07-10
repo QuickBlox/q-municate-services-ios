@@ -750,6 +750,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     }
     
     message.senderID = currentUser.ID;
+    message.dialogID = dialog.ID;
     
     dialog.lastMessageText = message.encodedText;
     dialog.lastMessageDate = message.dateSent;
