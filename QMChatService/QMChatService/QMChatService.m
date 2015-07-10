@@ -657,7 +657,11 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
                             forPage:page
                        successBlock:^(QBResponse *response, NSArray *messages, QBResponsePage *page) {
                            NSArray* sortedMessages = [[messages reverseObjectEnumerator] allObjects];
-                           [weakSelf.messagesMemoryStorage addMessages:sortedMessages forDialogID:chatDialogID];
+                           if (lastMessage == nil) {
+                               [weakSelf.messagesMemoryStorage replaceMessages:sortedMessages forDialogID:chatDialogID];
+                           } else {
+                               [weakSelf.messagesMemoryStorage addMessages:sortedMessages forDialogID:chatDialogID];
+                           }
                            
                            if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddMessagesToMemoryStorage:forDialogID:)]) {
                                [weakSelf.multicastDelegate chatService:weakSelf didAddMessagesToMemoryStorage:sortedMessages forDialogID:chatDialogID];
@@ -693,7 +697,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     
     __weak __typeof(self) weakSelf = self;
     
-    [QBRequest messagesWithDialogID:chatDialogID extendedRequest:@{@"date_sent[lt]": oldestMessageDate} forPage:page successBlock:^(QBResponse *response, NSArray *messages, QBResponsePage *page) {
+    [QBRequest messagesWithDialogID:chatDialogID extendedRequest:@{@"date_sent[lt]": oldestMessageDate, @"sort_desc" : @"date_sent"} forPage:page successBlock:^(QBResponse *response, NSArray *messages, QBResponsePage *page) {
         
         [weakSelf.messagesMemoryStorage addMessages:messages forDialogID:chatDialogID];
         
