@@ -759,20 +759,23 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     dialog.lastMessageText = message.encodedText;
     dialog.lastMessageDate = message.dateSent;
     
-    if (saveToStorage) {
-        [self.messagesMemoryStorage addMessage:message forDialogID:dialog.ID];
-        
-        if ([self.multicastDelegate respondsToSelector:@selector(chatService:didAddMessageToMemoryStorage:forDialogID:)]) {
-            [self.multicastDelegate chatService:self didAddMessageToMemoryStorage:message forDialogID:dialog.ID];
-        }
-    }
-    
-    return [dialog sendMessage:message sentBlock:^(NSError *error) {
-        
+    BOOL messageSent = [dialog sendMessage:message sentBlock:^(NSError *error) {
         if (completion) {
             completion(error);
         }
     }];
+    
+    if (messageSent) {
+        if (saveToStorage) {
+            [self.messagesMemoryStorage addMessage:message forDialogID:dialog.ID];
+            
+            if ([self.multicastDelegate respondsToSelector:@selector(chatService:didAddMessageToMemoryStorage:forDialogID:)]) {
+                [self.multicastDelegate chatService:self didAddMessageToMemoryStorage:message forDialogID:dialog.ID];
+            }
+        }
+    }
+    
+    return messageSent;
 }
 
 - (BOOL)sendMessage:(QBChatMessage *)message toDialog:(QBChatDialog *)dialog save:(BOOL)save completion:(void(^)(NSError *error))completion {
