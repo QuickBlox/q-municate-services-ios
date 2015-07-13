@@ -281,8 +281,11 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 @optional
 
 - (void)chatServiceChatDidConnect:(QMChatService *)chatService;
+- (void)chatServiceChatDidLogin;
+- (void)chatServiceChatDidNotLoginWithError:(NSError *)error;
 - (void)chatServiceChatDidAccidentallyDisconnect:(QMChatService *)chatService;
 - (void)chatServiceChatDidReconnect:(QMChatService *)chatService;
+- (void)chatServiceChatDidFailWithStreamError:(NSError *)error;
 
 @end
 

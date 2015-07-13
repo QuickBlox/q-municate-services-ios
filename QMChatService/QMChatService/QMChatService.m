@@ -142,6 +142,16 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 	}
     
     [QBChat.instance setCarbonsEnabled:YES];
+    
+    if ([self.multicastDelegate respondsToSelector:@selector(chatServiceChatDidLogin)]) {
+        [self.multicastDelegate chatServiceChatDidLogin];
+    }
+}
+
+- (void)chatDidNotLoginWithError:(NSError *)error {
+    if ([self.multicastDelegate respondsToSelector:@selector(chatServiceChatDidNotLoginWithError:)]) {
+        [self.multicastDelegate chatServiceChatDidNotLoginWithError:error];
+    }
 }
 
 - (void)chatDidFailWithStreamError:(NSError *)error {
@@ -152,6 +162,10 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 	}
 	
 	[self stopSendPresence];
+    
+    if ([self.multicastDelegate respondsToSelector:@selector(chatServiceChatDidFailWithStreamError:)]) {
+        [self.multicastDelegate chatServiceChatDidFailWithStreamError:error];
+    }
 }
 
 - (void)chatDidConnect
