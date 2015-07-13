@@ -16,6 +16,7 @@
 
 @protocol QMChatServiceDelegate;
 @protocol QMChatServiceCacheDataSource;
+@protocol QMChatConnectionDelegate;
 
 typedef void(^QMCacheCollection)(NSArray *collection);
 
@@ -48,23 +49,23 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  *  @return Return QMChatService instance
  */
 - (instancetype)initWithServiceManager:(id<QMServiceManagerProtocol>)serviceManager
-                         cacheDataSource:(id<QMChatServiceCacheDataSource>)cacheDataSource;
+                       cacheDataSource:(id<QMChatServiceCacheDataSource>)cacheDataSource;
 /**
  *  Add delegate (Multicast)
  *
  *  @param delegate Instance confirmed QMChatServiceDelegate protocol
  */
-- (void)addDelegate:(id<QMChatServiceDelegate>)delegate;
+- (void)addDelegate:(id<QMChatServiceDelegate, QMChatConnectionDelegate>)delegate;
 
 /**
  *  Remove delegate from observed list
  *
  *  @param delegate Instance confirmed QMChatServiceDelegate protocol
  */
-- (void)removeDelegate:(id<QMChatServiceDelegate>)delegate;
+- (void)removeDelegate:(id<QMChatServiceDelegate, QMChatConnectionDelegate>)delegate;
 
 /**
- *  Login to chant
+ *  Login to chat
  *
  *  @param completion The block which informs whether a chat did login or not. nil if no errors.
  */
@@ -272,4 +273,16 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 
 - (void)chatService:(QMChatService *)chatService  didReceiveNotificationMessage:(QBChatMessage *)message createDialog:(QBChatDialog *)dialog;
 
+
+
 @end
+
+@protocol QMChatConnectionDelegate <NSObject>
+@optional
+
+- (void)chatServiceChatDidConnect:(QMChatService *)chatService;
+- (void)chatServiceChatDidAccidentallyDisconnect:(QMChatService *)chatService;
+- (void)chatServiceChatDidReconnect:(QMChatService *)chatService;
+
+@end
+

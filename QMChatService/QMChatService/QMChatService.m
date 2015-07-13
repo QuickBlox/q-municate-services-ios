@@ -18,7 +18,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 
 @interface QMChatService() <QBChatDelegate>
 
-@property (strong, nonatomic) QBMulticastDelegate <QMChatServiceDelegate> *multicastDelegate;
+@property (strong, nonatomic) QBMulticastDelegate <QMChatServiceDelegate, QMChatConnectionDelegate> *multicastDelegate;
 @property (weak, nonatomic) id <QMChatServiceCacheDataSource> cacheDataSource;
 @property (strong, nonatomic) QMDialogsMemoryStorage *dialogsMemoryStorage;
 @property (strong, nonatomic) QMMessagesMemoryStorage *messagesMemoryStorage;
@@ -118,12 +118,12 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 
 #pragma mark - Add / Remove Multicast delegate
 
-- (void)addDelegate:(id<QMChatServiceDelegate>)delegate {
+- (void)addDelegate:(id<QMChatServiceDelegate, QMChatConnectionDelegate>)delegate {
 	
 	[self.multicastDelegate addDelegate:delegate];
 }
 
-- (void)removeDelegate:(id<QMChatServiceDelegate>)delegate{
+- (void)removeDelegate:(id<QMChatServiceDelegate, QMChatConnectionDelegate>)delegate{
 	
 	[self.multicastDelegate removeDelegate:delegate];
 }
@@ -140,6 +140,8 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 		self.chatSuccessBlock(nil);
 		self.chatSuccessBlock = nil;
 	}
+    
+    [QBChat.instance setCarbonsEnabled:YES];
 }
 
 - (void)chatDidFailWithStreamError:(NSError *)error {
@@ -150,6 +152,27 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 	}
 	
 	[self stopSendPresence];
+}
+
+- (void)chatDidConnect
+{
+    if ([self.multicastDelegate respondsToSelector:@selector(chatServiceChatDidConnect:)]) {
+        [self.multicastDelegate chatServiceChatDidConnect:self];
+    }
+}
+
+- (void)chatDidAccidentallyDisconnect
+{
+    if ([self.multicastDelegate respondsToSelector:@selector(chatServiceChatDidAccidentallyDisconnect:)]) {
+        [self.multicastDelegate chatServiceChatDidAccidentallyDisconnect:self];
+    }
+}
+
+- (void)chatDidReconnect
+{
+    if ([self.multicastDelegate respondsToSelector:@selector(chatServiceChatDidReconnect:)]) {
+        [self.multicastDelegate chatServiceChatDidReconnect:self];
+    }
 }
 
 #pragma mark Handle messages (QBChatDelegate)
@@ -213,7 +236,6 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 		
 		QBChat.instance.autoReconnectEnabled = YES;
 		QBChat.instance.streamManagementEnabled = YES;
-        [QBChat.instance setCarbonsEnabled:YES];
 		[QBChat.instance loginWithUser:user];
 		
 	}
