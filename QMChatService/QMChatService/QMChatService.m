@@ -225,7 +225,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
             
             if ([self.multicastDelegate respondsToSelector:@selector(chatService:didUpdateMessage:forDialogID:)]) {
                 [self.multicastDelegate chatService:self didUpdateMessage:message forDialogID:dialogID];
-            }
+            }            
         }
     }
 }

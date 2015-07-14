@@ -38,7 +38,14 @@
     
     NSMutableOrderedSet *datasource = [self dataSourceWithDialogID:dialogID];
     
-    [datasource addObjectsFromArray:messages];
+    for (QBChatMessage* message in messages) {
+        NSUInteger index = [datasource indexOfObject:message];
+        if (index != NSNotFound) {
+            [datasource replaceObjectAtIndex:index withObject:message];
+        } else {
+            [datasource addObject:message];
+        }
+    }
     
     [self sortMessagesForDialogID:dialogID];
 }
