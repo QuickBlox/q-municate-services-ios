@@ -63,7 +63,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 
 - (void)serviceWillStart {
 	
-	self.multicastDelegate = (id<QMChatServiceDelegate>)[[QBMulticastDelegate alloc] init];
+	self.multicastDelegate = (id<QMChatServiceDelegate, QMChatConnectionDelegate>)[[QBMulticastDelegate alloc] init];
 	self.dialogsMemoryStorage = [[QMDialogsMemoryStorage alloc] init];
 	self.messagesMemoryStorage = [[QMMessagesMemoryStorage alloc] init];
     self.chatAttachmentService = [[QMChatAttachmentService alloc] init];
