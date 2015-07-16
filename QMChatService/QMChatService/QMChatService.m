@@ -309,7 +309,12 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 
 - (void)handleChatMessage:(QBChatMessage *)message {
 	
-	NSAssert(message.dialogID, @"Need update this case");
+    if (!message.dialogID) {
+        
+        NSLog(@"Need update this case");
+        
+        return;
+    }
 	
 	if (message.messageType == QMMessageTypeText) {
 		
