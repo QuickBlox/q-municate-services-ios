@@ -25,7 +25,7 @@
 	if (self) {
 		[QMChatCache setupDBWithStoreNamed:@"sample-cache"];
         [QMChatCache instance].messagesLimitPerDialog = 10;
-		[QMContactListCache setupDBWithStoreNamed:@"sample-cache-contacts"];
+
 		_authService = [[QMAuthService alloc] initWithServiceManager:self];
 		_chatService = [[QMChatService alloc] initWithServiceManager:self cacheDataSource:self];
         [_chatService addDelegate:self];
@@ -38,7 +38,7 @@
 	static QMServicesManager* manager = nil;
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
-		manager = [[QMServicesManager alloc] init];
+		manager = [[self alloc] init];
 	});
 	return manager;
 }
@@ -172,18 +172,6 @@
 	[QMChatCache.instance messagesWithDialogId:dialogID sortedBy:CDMessageAttributes.messageID ascending:YES completion:^(NSArray *array) {
 		block(array);
 	}];
-}
-
-#pragma mark QMContactListServiceCacheDelegate delegate
-
-- (void)cachedUsers:(QMCacheCollection)block {
-	[QMContactListCache.instance usersSortedBy:@"id" ascending:YES completion:^(NSArray *users) {
-		block(users);
-	}];
-}
-
-- (void)cachedContactListItems:(QMCacheCollection)block {
-	[QMContactListCache.instance contactListItems:block];
 }
 
 @end

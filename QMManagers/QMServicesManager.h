@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "QMServices.h"
 
-@interface QMServicesManager : NSObject <QMServiceManagerProtocol, QMChatServiceCacheDataSource, QMContactListServiceCacheDataSource, QMChatServiceDelegate, QMChatConnectionDelegate>
+@interface QMServicesManager : NSObject <QMServiceManagerProtocol, QMChatServiceCacheDataSource, QMChatServiceDelegate, QMChatConnectionDelegate>
 
 + (instancetype)instance;
 
