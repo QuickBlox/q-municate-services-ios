@@ -22,6 +22,8 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		2CE107F71B594BD800379D96 /* QMServicesManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 2CE107F51B594BD800379D96 /* QMServicesManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2CE107F81B594BD800379D96 /* QMServicesManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CE107F61B594BD800379D96 /* QMServicesManager.m */; };
 		55013A801A1F68280030C134 /* QMServices.m in Sources */ = {isa = PBXBuildFile; fileRef = 55013A7F1A1F68280030C134 /* QMServices.m */; };
 		55013AEC1A1F72350030C134 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55013AEB1A1F72350030C134 /* Foundation.framework */; };
 		55A3651C1A2744A800C792C0 /* libQMAuthService.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 55A364E51A27378F00C792C0 /* libQMAuthService.a */; };
@@ -156,6 +158,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2CE107F51B594BD800379D96 /* QMServicesManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMServicesManager.h; sourceTree = "<group>"; };
+		2CE107F61B594BD800379D96 /* QMServicesManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMServicesManager.m; sourceTree = "<group>"; };
 		55013A331A1F63920030C134 /* QMServices.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QMServices.h; sourceTree = "<group>"; };
 		55013A7F1A1F68280030C134 /* QMServices.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMServices.m; sourceTree = "<group>"; };
 		55013AEB1A1F72350030C134 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.1.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
@@ -189,6 +193,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2CE107F01B594BCD00379D96 /* QMManagers */ = {
+			isa = PBXGroup;
+			children = (
+				2CE107F51B594BD800379D96 /* QMServicesManager.h */,
+				2CE107F61B594BD800379D96 /* QMServicesManager.m */,
+			);
+			path = QMManagers;
+			sourceTree = "<group>";
+		};
 		55013A321A1F63920030C134 /* QMServices */ = {
 			isa = PBXGroup;
 			children = (
@@ -265,6 +278,7 @@
 			isa = PBXGroup;
 			children = (
 				553E72861AAF060A00449EFB /* LICENSE.txt */,
+				2CE107F01B594BCD00379D96 /* QMManagers */,
 				55013A321A1F63920030C134 /* QMServices */,
 				5590F2911A0B8C7B00C5044F /* Cache */,
 				5590F28A1A0B8C5200C5044F /* Services */,
@@ -304,6 +318,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2CE107F71B594BD800379D96 /* QMServicesManager.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -485,6 +500,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2CE107F81B594BD800379D96 /* QMServicesManager.m in Sources */,
 				55013A801A1F68280030C134 /* QMServices.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -554,6 +570,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = "\"../../Framework\"";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -603,6 +620,7 @@
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = "\"../../Framework\"";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
