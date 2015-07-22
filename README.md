@@ -55,9 +55,13 @@ You can install **QMServices** using Cocoapods just by adding following line in 
 
 pod 'QMServices', '~> 0.1'
 
-### Bundle generation (you can skip this step if you do not use dialogs, messages and users memory storage)
+### Bundle generation (you can skip this step if you do not use dialogs, messages and users memory and disc storage)
 
-TODO
+Bundle allows to pass .xcdatamodel file together with static library so it is required for **QMChatCache** and **QMContactListCache** projects.
+
+To generate bundle for contact list you need to open **QMServices** project, navigate to Cache folder and select **QMContactListCache.xcodeproj**. Open project folder - you will see red **QMContactListCacheModel.bundle**. To create it select scheme **QMContactListCacheModel** and run it. After successful build **QMContactListCacheModel.bundle** color will change to black and you will be able to copy it to the project that uses **QMServices**. Include this bundle in your project.
+
+To generate bundle for dialogs and messages you need to open **QMServices** project, navigate to Cache folder and select **QMChatCache.xcodeproj**. Open project folder - you will see red **QMChatCacheModel.bundle**. To create it select scheme **QMChatCacheModel** and run it. After successful build **QMChatCacheModel.bundle`** color will change to black and you will be able to copy it to the project that uses **QMServices**. Include this bundle in your project.
 
 # Architecture
 
