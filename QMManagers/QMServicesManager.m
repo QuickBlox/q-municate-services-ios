@@ -14,6 +14,9 @@
 @property (nonatomic, strong) QMAuthService* authService;
 @property (nonatomic, strong) QMChatService* chatService;
 
+/**
+ *  Logout group for synchronous completion.
+ */
 @property (nonatomic, strong) dispatch_group_t logoutGroup;
 
 @end
