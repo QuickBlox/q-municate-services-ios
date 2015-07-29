@@ -12,11 +12,11 @@ Easy-to-use services for Quickblox SDK, for speeding up development of iOS chat 
 
 - Xcode 6+
 - ARC
-- Quickblox
+- Quickblox SDK 2.0+
 
 # Dependencies
 
-- Quickblox V2.0+
+- Quickblox SDK 2.0+
 
 # Installation
 
