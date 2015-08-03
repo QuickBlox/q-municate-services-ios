@@ -1,6 +1,6 @@
 //
 //  QMContactsService.m
-//  Q-municate
+//  QMServices
 //
 //  Created by Andrey Ivanov on 14/02/2014.
 //  Copyright (c) 2014 Quickblox. All rights reserved.

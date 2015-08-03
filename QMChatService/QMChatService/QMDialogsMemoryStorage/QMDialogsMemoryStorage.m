@@ -1,6 +1,6 @@
 //
 //  QMDialogsMemoryStorage.m
-//  Q-municate
+//  QMServices
 //
 //  Created by Andrey on 03.11.14.
 //  Copyright (c) 2014 Quickblox. All rights reserved.

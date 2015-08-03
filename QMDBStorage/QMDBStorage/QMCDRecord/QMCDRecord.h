@@ -1,6 +1,6 @@
 //
-//  Created by Saul Mora on 3/11/10.
-//  Copyright 2010 QMCD Panda Software, LLC All rights reserved.
+//  Created by Injoit on 3/11/10.
+//  Copyright (c) 2015 Quickblox Team. All rights reserved.
 //
 
 

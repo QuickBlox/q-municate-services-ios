@@ -1,6 +1,6 @@
 //
 //  QBChatAbstractMessage+QMCustomParameters.h
-//  Q-municate
+//  QMServices
 //
 //  Created by Andrey Ivanov on 24.07.14.
 //  Copyright (c) 2014 Quickblox. All rights reserved.
@@ -26,6 +26,11 @@
  */
 @property (strong, nonatomic, readonly) QBChatDialog *dialog;
 
+/**
+ *  Save values from QBChatDialog to message custom parameters
+ *
+ *  @param dialog QBChatDialog that will be saved
+ */
 - (void)updateCustomParametersWithDialog:(QBChatDialog *)dialog;
 
 /**
@@ -42,6 +47,12 @@
  */
 - (BOOL)isMediaMessage;
 
+/**
+ *  This method is used to determine if the message data item is notification.
+ *
+ *  @return A boolean value specifying whether or not this is a notification message.
+ *  Return `YES` if this item is a notification message, and `NO` if it is a text message.
+ */
 - (BOOL)isNotificatonMessage;
 
 @end

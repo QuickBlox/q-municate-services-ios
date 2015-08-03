@@ -2,8 +2,8 @@
 //  NSError+QMCDRecordErrorHandling.h
 //  Sidekick
 //
-//  Created by Saul Mora on 5/7/13.
-//  Copyright (c) 2013 Medallion Media. All rights reserved.
+//  Created by Injoit on 5/7/13.
+//  Copyright (c) 2015 Quickblox Team. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

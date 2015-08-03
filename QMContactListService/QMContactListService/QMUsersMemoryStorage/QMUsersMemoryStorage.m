@@ -3,7 +3,7 @@
 //  QMContactListService
 //
 //  Created by Andrey on 26.11.14.
-//
+//  Copyright (c) 2015 Quickblox Team. All rights reserved.
 //
 
 #import "QMUsersMemoryStorage.h"

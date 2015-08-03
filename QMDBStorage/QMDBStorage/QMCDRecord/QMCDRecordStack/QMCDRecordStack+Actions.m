@@ -1,8 +1,8 @@
 //
 //  QMCDRecord+Actions.m
 //
-//  Created by Saul Mora on 2/24/11.
-//  Copyright 2011 QMCD Panda Software. All rights reserved.
+//  Created by Injoit on 2/24/11.
+//  Copyright (c) 2015 Quickblox Team. All rights reserved.
 //
 
 #import "QMCDRecordStack+Actions.h"
