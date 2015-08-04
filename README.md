@@ -91,7 +91,7 @@ Here is **QMServicesManager.h**:
 + (instancetype)instance;
 
 - (void)logInWithUser:(QBUUser *)user completion:(void (^)(BOOL success, NSString *errorMessage))completion;
-- (void)logoutWithCompletion:(void(^)())completion;
+- (void)logoutWithCompletion:(dispatch_block_t)completion;
 
 @property (nonatomic, readonly) QMAuthService* authService;
 @property (nonatomic, readonly) QMChatService* chatService;
@@ -205,7 +205,7 @@ Also for prefetching initial dialogs and messages you have to implement **QMChat
 
 ```objective-c
 - (void)cachedDialogs:(QMCacheCollection)block {
-	[QMChatCache.instance dialogsSortedBy:@"lastMessageDate" ascending:YES completion:^(NSArray *dialogs) {
+	[QMChatCache.instance dialogsSortedBy:CDDialogAttributes.lastMessageDate ascending:YES completion:^(NSArray *dialogs) {
 		block(dialogs);
 	}];
 }
