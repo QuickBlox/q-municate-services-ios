@@ -7,12 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		554A27FD1A0CD53500C4E03C /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 554A27FC1A0CD53500C4E03C /* AVFoundation.framework */; };
 		55B2F11E1A091CE9008C2272 /* QMBaseService.m in Sources */ = {isa = PBXBuildFile; fileRef = 55B2F11D1A091CE9008C2272 /* QMBaseService.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		554A27FC1A0CD53500C4E03C /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.1.sdk/System/Library/Frameworks/AVFoundation.framework; sourceTree = DEVELOPER_DIR; };
 		55A6211C1A0BE2EB001BA470 /* QMBaseService-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QMBaseService-Prefix.pch"; sourceTree = "<group>"; };
 		55B2201B1A2C0C9D00668086 /* libQMBaseService.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libQMBaseService.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		55B2F11C1A091CE9008C2272 /* QMBaseService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMBaseService.h; sourceTree = "<group>"; };
@@ -27,7 +25,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				554A27FD1A0CD53500C4E03C /* AVFoundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -46,7 +43,6 @@
 			isa = PBXGroup;
 			children = (
 				8620BC591B0F7DCB005ED359 /* Quickblox.xcconfig */,
-				554A27FC1A0CD53500C4E03C /* AVFoundation.framework */,
 				55B2F1061A091CC9008C2272 /* QMBaseService */,
 				55A6211B1A0BE2EB001BA470 /* Support */,
 				55B2201B1A2C0C9D00668086 /* libQMBaseService.a */,

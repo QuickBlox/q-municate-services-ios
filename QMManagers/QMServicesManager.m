@@ -8,6 +8,7 @@
 
 #import "QMServicesManager.h"
 #import "_CDMessage.h"
+#import "_CDDialog.h"
 
 @interface QMServicesManager ()
 
@@ -46,7 +47,7 @@
 	return manager;
 }
 
-- (void)logoutWithCompletion:(void(^)())completion
+- (void)logoutWithCompletion:(dispatch_block_t)completion
 {
     if ([QBSession currentSession].currentUser != nil) {
         __weak typeof(self)weakSelf = self;    
@@ -166,7 +167,7 @@
 #pragma mark QMChatServiceCacheDataSource
 
 - (void)cachedDialogs:(QMCacheCollection)block {
-	[QMChatCache.instance dialogsSortedBy:@"lastMessageDate" ascending:YES completion:^(NSArray *dialogs) {
+	[QMChatCache.instance dialogsSortedBy:CDDialogAttributes.lastMessageDate ascending:YES completion:^(NSArray *dialogs) {
 		block(dialogs);
 	}];
 }
