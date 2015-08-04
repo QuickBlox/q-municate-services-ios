@@ -12,15 +12,15 @@ Easy-to-use services for Quickblox SDK, for speeding up development of iOS chat 
 
 - Xcode 6+
 - ARC
-- Quickblox
+- Quickblox SDK 2.0+
 
 # Dependencies
 
-- Quickblox V2.0+
+- Quickblox SDK 2.0+
 
 # Installation
 
-**Adding QMServices to your project is simple**: Just choose whichever method you're most comfortable with and follow the instructions below.
+There are several ways to add **QMServices** to your project. They are described below:
 
 ## Using an Xcode subproject
 
@@ -49,13 +49,19 @@ Navigate to **Build Settings**, then search for **Framework Search Paths** and d
 
 Remember, that you have to link *QMServices* in **Target Dependencies** and in **Link Binary with Libraries**.
 
-### Bundle generation
+### Bundle generation (you can skip this step if you do not use dialogs, messages and users memory and disc storage)
 
-TODO
+Bundle allows to pass .xcdatamodel file together with static library so it is required for **QMChatCache** and **QMContactListCache** projects.
+
+To generate bundle for contact list you need to open **QMServices** project, navigate to Cache folder and select **QMContactListCache.xcodeproj**. Open project folder - you will see red **QMContactListCacheModel.bundle**. To create it select scheme **QMContactListCacheModel** and run it. After successful build **QMContactListCacheModel.bundle** color will change to black and you will be able to copy it to the project that uses **QMServices**. Include this bundle in your project.
+
+To generate bundle for dialogs and messages you need to open **QMServices** project, navigate to Cache folder and select **QMChatCache.xcodeproj**. Open project folder - you will see red **QMChatCacheModel.bundle**. To create it select scheme **QMChatCacheModel** and run it. After successful build **QMChatCacheModel.bundle`** color will change to black and you will be able to copy it to the project that uses **QMServices**. Include this bundle in your project.
 
 ## Cocoapods
 
-TODO
+You can install **QMServices** using Cocoapods just by adding following line in your Podfile:
+
+pod 'QMServices', '~> 0.1'
 
 # Architecture
 
@@ -74,23 +80,34 @@ Add **#import \<QMServices.h\>** to your apps *.pch* file.
 
 ## Service Manager
 
-To start using services you should create **QBServicesManager** class.
+To start using services you could either use existing **QMServicesManager** class or create a subclass from it.
+Detailed explanation of the **QMServicesManager** class is below.
 
-Here is **QBServicesManager.h**:
+Here is **QMServicesManager.h**:
 
 ```objective-c
-@interface QBServicesManager : NSObject
-@property (nonatomic, readonly) QMAuthService* authService; 
+@interface QMServicesManager : NSObject <QMServiceManagerProtocol, QMChatServiceCacheDataSource, QMChatServiceDelegate, QMChatConnectionDelegate>
+
++ (instancetype)instance;
+
+- (void)logInWithUser:(QBUUser *)user completion:(void (^)(BOOL success, NSString *errorMessage))completion;
+- (void)logoutWithCompletion:(void(^)())completion;
+
+@property (nonatomic, readonly) QMAuthService* authService;
 @property (nonatomic, readonly) QMChatService* chatService;
+
 @end
 ```
 
-And extension in **QBServicesManager.m**:
+And extension in **QMServicesManager.m**:
 
 ```objective-c
-@interface QBServicesManager () <QMServiceManagerProtocol, QMChatServiceCacheDataSource, QMContactListServiceCacheDataSource, QMChatServiceDelegate>
+@interface QMServicesManager ()
 
-@property (nonatomic, strong) QMContactListService* contactListService;
+@property (nonatomic, strong) QMAuthService* authService;
+@property (nonatomic, strong) QMChatService* chatService;
+
+@property (nonatomic, strong) dispatch_group_t logoutGroup;
 
 @end
 ```
@@ -98,16 +115,16 @@ And extension in **QBServicesManager.m**:
 In ``init`` method, services and cache are initialised.
 
 ```objective-c
-@implementation QBServicesManager
-
 - (instancetype)init {
 	self = [super init];
 	if (self) {
 		[QMChatCache setupDBWithStoreNamed:@"sample-cache"];
-		[QMContactListCache setupDBWithStoreNamed:@"sample-cache-contacts"];
+        	[QMChatCache instance].messagesLimitPerDialog = 10;
+
 		_authService = [[QMAuthService alloc] initWithServiceManager:self];
 		_chatService = [[QMChatService alloc] initWithServiceManager:self cacheDataSource:self];
-		_contactListService = [[QMContactListService alloc] initWithServiceManager:self cacheDataSource:self];
+        	[_chatService addDelegate:self];
+        	_logoutGroup = dispatch_group_create();
 	}
 	return self;
 }
@@ -121,16 +138,9 @@ In ``init`` method, services and cache are initialised.
 	[QMChatCache setupDBWithStoreNamed:@"sample-cache"];
 	```
 
-	* Initiates Core Data database for users from contact list.
-
-	```objective-c
-	[QMContactListCache setupDBWithStoreNamed:@"sample-cache-contacts"];
-	```
-
 * Services setup
 
 	* Authentication service:
-
 	
 	```objective-c
 	_authService = [[QMAuthService alloc] initWithServiceManager:self];
@@ -140,12 +150,6 @@ In ``init`` method, services and cache are initialised.
 
 	```objective-c
 	_chatService = [[QMChatService alloc] initWithServiceManager:self cacheDataSource:self];
-	```
-
-	* Contact List service (responsible for managing users from XMPP roster):
-
-	```objective-c
-	_contactListService = [[QMContactListService alloc] initWithServiceManager:self cacheDataSource:self];
 	```
 	
 Also you have to implement **QMServiceManagerProtocol** methods:
@@ -213,20 +217,6 @@ Also for prefetching initial dialogs and messages you have to implement **QMChat
 }
 ```
 
-And for contact list service cache (**QMContactListServiceCacheDataSource**):
-
-```objective-c
-- (void)cachedUsers:(QMCacheCollection)block {
-	[QMContactListCache.instance usersSortedBy:@"id" ascending:YES completion:^(NSArray *users) {
-		block(users);
-	}];
-}
-
-- (void)cachedContactListItems:(QMCacheCollection)block {
-	[QMContactListCache.instance contactListItems:block];
-}
-```
-
 ## Authentication
 
 We encourage to use automatic session creation, to simplify communication with backend:
@@ -237,28 +227,41 @@ We encourage to use automatic session creation, to simplify communication with b
 
 ### Login
 
-Usually you will implement following method in **QBServiceManager** class:
+This method logins user to Quickblox REST API backend and to the Quickblox Chat backend. Also it automatically tries to join to the group dialog - to immediately receive incomming messages.
 
 ```objective-c
 - (void)logInWithUser:(QBUUser *)user
 		   completion:(void (^)(BOOL success, NSString *errorMessage))completion
 {
-        __weak typeof(self) weakSelf = self;
 	[self.authService logInWithUser:user completion:^(QBResponse *response, QBUUser *userProfile) {
 		if (response.error != nil) {
 			if (completion != nil) {
 				completion(NO, response.error.error.localizedDescription);
 			}
 			return;
-		}		
+		}
 		
+        	__weak typeof(self) weakSelf = self;
 		[self.chatService logIn:^(NSError *error) {
+            		__typeof(self) strongSelf = weakSelf;
 			if (completion != nil) {
 				completion(error == nil, error.localizedDescription);
 			}
- 		}];
+            		
+			NSArray* dialogs = [strongSelf.chatService.dialogsMemoryStorage unsortedDialogs];
+            		for (QBChatDialog* dialog in dialogs) {
+                		if (dialog.type != QBChatDialogTypePrivate) {
+                			[strongSelf.chatService joinToGroupDialog:dialog failed:^(NSError *error) {
+						if (error != nil) {
+							NSLog(@"Join error: %@", error.localizedDescription);
+						}
+                    			}];
+                		}
+            		}
+		}];
 	}];
 }
+
 ```
 
 ### Logout
@@ -266,16 +269,35 @@ Usually you will implement following method in **QBServiceManager** class:
 ```objective-c
 - (void)logoutWithCompletion:(void(^)())completion
 {
-	if ([QBSession currentSession].currentUser != nil) {
-		__weak typeof(self)weakSelf = self;           
-		[self.authService logOut:^(QBResponse *response) {
-			__typeof(self) strongSelf = weakSelf;
-			[strongSelf.chatService logoutChat];
-			if (completion) {
-				completion();
-			}
-		}];        
-   } else {
+    if ([QBSession currentSession].currentUser != nil) {
+        __weak typeof(self)weakSelf = self;    
+        
+        dispatch_group_enter(self.logoutGroup);
+        [self.authService logOut:^(QBResponse *response) {
+            __typeof(self) strongSelf = weakSelf;
+            [strongSelf.chatService logoutChat];
+            [strongSelf.chatService free];
+            dispatch_group_leave(strongSelf.logoutGroup);
+        }];
+        
+        dispatch_group_enter(self.logoutGroup);
+        [[QMChatCache instance] deleteAllDialogs:^{
+            __typeof(self) strongSelf = weakSelf;
+            dispatch_group_leave(strongSelf.logoutGroup);
+        }];
+        
+        dispatch_group_enter(self.logoutGroup);
+        [[QMChatCache instance] deleteAllMessages:^{
+            __typeof(self) strongSelf = weakSelf;
+            dispatch_group_leave(strongSelf.logoutGroup);
+        }];
+        
+        dispatch_group_notify(self.logoutGroup, dispatch_get_main_queue(), ^{
+            if (completion) {
+                completion();
+            }
+        });
+    } else {
         if (completion) {
             completion();
         }
@@ -299,7 +321,7 @@ These dialogs are automatically stored in **QMDialogsMemoryStorage** class.
 
 ## Fetching chat messages
 
-Fetching messages from REST history:
+Fetching messages from REST API history:
 
 ```objective-c
 [QBServicesManager instance].chatService messagesWithChatDialogID:<your_dialog_id> completion:^(QBResponse *response, NSArray *messages) {
@@ -329,6 +351,109 @@ Message is automatically added to **QMMessagesMemoryStorage** class.
 ```
 
 Users are automatically stored in **QMUsersMemoryStorage** class.
+
+## Subclass of QMServicesManager example
+
+This example adds additional functionality - storing of users in contact list cache, error handling, storing currently opened dialog identifier.
+
+Header file:
+
+```objective-c
+@interface ServicesManager : QMServicesManager <QMContactListServiceCacheDataSource>
+
+// Replaces with any users service you are already using or going to use
+@property (nonatomic, readonly) UsersService* usersService;
+
+@property (nonatomic, strong) NSString* currentDialogID;
+
+@end
+
+```
+
+Implementation file:
+
+```objective-c
+@interface ServicesManager ()
+
+@property (nonatomic, strong) QMContactListService* contactListService;
+
+@end
+
+@implementation ServicesManager
+
+- (instancetype)init {
+	self = [super init];
+    
+	if (self) {
+        [QMContactListCache setupDBWithStoreNamed:kContactListCacheNameKey];
+		_contactListService = [[QMContactListService alloc] initWithServiceManager:self cacheDataSource:self];
+		// Replace with any users service you are already using or going to use
+		_usersService = [[UsersService alloc] initWithContactListService:_contactListService];
+	}
+    
+	return self;
+}
+
+- (void)showNotificationForMessage:(QBChatMessage *)message inDialogID:(NSString *)dialogID
+{
+    if ([self.currentDialogID isEqualToString:dialogID]) return;
+    
+    if (message.senderID == self.currentUser.ID) return;
+    
+    NSString* dialogName = @"New message";
+    
+    QBChatDialog* dialog = [self.chatService.dialogsMemoryStorage chatDialogWithID:dialogID];
+    
+    if (dialog.type != QBChatDialogTypePrivate) {
+        dialogName = dialog.name;
+    } else {
+        QBUUser* user = [[StorageManager instance] userByID:dialog.recipientID];
+        if (user != nil) {
+            dialogName = user.login;
+        }
+    }
+    
+    // Display notification UI
+}
+
+- (void)handleErrorResponse:(QBResponse *)response {
+    
+    [super handleErrorResponse:response];
+    
+    if (![self isAutorized]) return;
+	NSString *errorMessage = [[response.error description] stringByReplacingOccurrencesOfString:@"(" withString:@""];
+	errorMessage = [errorMessage stringByReplacingOccurrencesOfString:@")" withString:@""];
+	
+	if( response.status == 502 ) { // bad gateway, server error
+		errorMessage = @"Bad Gateway, please try again";
+	}
+	else if( response.status == 0 ) { // bad gateway, server error
+		errorMessage = @"Connection network error, please try again";
+	}
+    
+    // Display notification UI
+}
+
+#pragma mark QMChatServiceCache delegate
+
+- (void)chatService:(QMChatService *)chatService didAddMessageToMemoryStorage:(QBChatMessage *)message forDialogID:(NSString *)dialogID {
+    [super chatService:chatService didAddMessageToMemoryStorage:message forDialogID:dialogID];
+    
+    [self showNotificationForMessage:message inDialogID:dialogID];
+}
+
+#pragma mark QMContactListServiceCacheDelegate delegate
+
+- (void)cachedUsers:(QMCacheCollection)block {
+	[QMContactListCache.instance usersSortedBy:@"id" ascending:YES completion:block];
+}
+
+- (void)cachedContactListItems:(QMCacheCollection)block {
+	[QMContactListCache.instance contactListItems:block];
+}
+
+@end
+```
 
 # Documentation
 

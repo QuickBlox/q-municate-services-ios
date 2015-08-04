@@ -18,7 +18,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 
 @interface QMChatService() <QBChatDelegate>
 
-@property (strong, nonatomic) QBMulticastDelegate <QMChatServiceDelegate> *multicastDelegate;
+@property (strong, nonatomic) QBMulticastDelegate <QMChatServiceDelegate, QMChatConnectionDelegate> *multicastDelegate;
 @property (weak, nonatomic) id <QMChatServiceCacheDataSource> cacheDataSource;
 @property (strong, nonatomic) QMDialogsMemoryStorage *dialogsMemoryStorage;
 @property (strong, nonatomic) QMMessagesMemoryStorage *messagesMemoryStorage;
@@ -63,7 +63,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 
 - (void)serviceWillStart {
 	
-	self.multicastDelegate = (id<QMChatServiceDelegate>)[[QBMulticastDelegate alloc] init];
+	self.multicastDelegate = (id<QMChatServiceDelegate, QMChatConnectionDelegate>)[[QBMulticastDelegate alloc] init];
 	self.dialogsMemoryStorage = [[QMDialogsMemoryStorage alloc] init];
 	self.messagesMemoryStorage = [[QMMessagesMemoryStorage alloc] init];
     self.chatAttachmentService = [[QMChatAttachmentService alloc] init];
@@ -118,12 +118,12 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 
 #pragma mark - Add / Remove Multicast delegate
 
-- (void)addDelegate:(id<QMChatServiceDelegate>)delegate {
+- (void)addDelegate:(id<QMChatServiceDelegate, QMChatConnectionDelegate>)delegate {
 	
 	[self.multicastDelegate addDelegate:delegate];
 }
 
-- (void)removeDelegate:(id<QMChatServiceDelegate>)delegate{
+- (void)removeDelegate:(id<QMChatServiceDelegate, QMChatConnectionDelegate>)delegate{
 	
 	[self.multicastDelegate removeDelegate:delegate];
 }
@@ -140,6 +140,18 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 		self.chatSuccessBlock(nil);
 		self.chatSuccessBlock = nil;
 	}
+    
+    [QBChat.instance setCarbonsEnabled:YES];
+    
+    if ([self.multicastDelegate respondsToSelector:@selector(chatServiceChatDidLogin)]) {
+        [self.multicastDelegate chatServiceChatDidLogin];
+    }
+}
+
+- (void)chatDidNotLoginWithError:(NSError *)error {
+    if ([self.multicastDelegate respondsToSelector:@selector(chatServiceChatDidNotLoginWithError:)]) {
+        [self.multicastDelegate chatServiceChatDidNotLoginWithError:error];
+    }
 }
 
 - (void)chatDidFailWithStreamError:(NSError *)error {
@@ -150,6 +162,31 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 	}
 	
 	[self stopSendPresence];
+    
+    if ([self.multicastDelegate respondsToSelector:@selector(chatServiceChatDidFailWithStreamError:)]) {
+        [self.multicastDelegate chatServiceChatDidFailWithStreamError:error];
+    }
+}
+
+- (void)chatDidConnect
+{
+    if ([self.multicastDelegate respondsToSelector:@selector(chatServiceChatDidConnect:)]) {
+        [self.multicastDelegate chatServiceChatDidConnect:self];
+    }
+}
+
+- (void)chatDidAccidentallyDisconnect
+{
+    if ([self.multicastDelegate respondsToSelector:@selector(chatServiceChatDidAccidentallyDisconnect:)]) {
+        [self.multicastDelegate chatServiceChatDidAccidentallyDisconnect:self];
+    }
+}
+
+- (void)chatDidReconnect
+{
+    if ([self.multicastDelegate respondsToSelector:@selector(chatServiceChatDidReconnect:)]) {
+        [self.multicastDelegate chatServiceChatDidReconnect:self];
+    }
 }
 
 #pragma mark Handle messages (QBChatDelegate)
@@ -188,7 +225,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
             
             if ([self.multicastDelegate respondsToSelector:@selector(chatService:didUpdateMessage:forDialogID:)]) {
                 [self.multicastDelegate chatService:self didUpdateMessage:message forDialogID:dialogID];
-            }
+            }            
         }
     }
 }
@@ -213,7 +250,6 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 		
 		QBChat.instance.autoReconnectEnabled = YES;
 		QBChat.instance.streamManagementEnabled = YES;
-        [QBChat.instance setCarbonsEnabled:YES];
 		[QBChat.instance loginWithUser:user];
 		
 	}
@@ -273,7 +309,12 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 
 - (void)handleChatMessage:(QBChatMessage *)message {
 	
-	NSAssert(message.dialogID, @"Need update this case");
+    if (!message.dialogID) {
+        
+        NSLog(@"Need update this case");
+        
+        return;
+    }
 	
 	if (message.messageType == QMMessageTypeText) {
 		
@@ -657,7 +698,11 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
                             forPage:page
                        successBlock:^(QBResponse *response, NSArray *messages, QBResponsePage *page) {
                            NSArray* sortedMessages = [[messages reverseObjectEnumerator] allObjects];
-                           [weakSelf.messagesMemoryStorage addMessages:sortedMessages forDialogID:chatDialogID];
+                           if (lastMessage == nil) {
+                               [weakSelf.messagesMemoryStorage replaceMessages:sortedMessages forDialogID:chatDialogID];
+                           } else {
+                               [weakSelf.messagesMemoryStorage addMessages:sortedMessages forDialogID:chatDialogID];
+                           }
                            
                            if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddMessagesToMemoryStorage:forDialogID:)]) {
                                [weakSelf.multicastDelegate chatService:weakSelf didAddMessagesToMemoryStorage:sortedMessages forDialogID:chatDialogID];
@@ -693,7 +738,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     
     __weak __typeof(self) weakSelf = self;
     
-    [QBRequest messagesWithDialogID:chatDialogID extendedRequest:@{@"date_sent[lt]": oldestMessageDate} forPage:page successBlock:^(QBResponse *response, NSArray *messages, QBResponsePage *page) {
+    [QBRequest messagesWithDialogID:chatDialogID extendedRequest:@{@"date_sent[lt]": oldestMessageDate, @"sort_desc" : @"date_sent"} forPage:page successBlock:^(QBResponse *response, NSArray *messages, QBResponsePage *page) {
         
         [weakSelf.messagesMemoryStorage addMessages:messages forDialogID:chatDialogID];
         
@@ -750,24 +795,28 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     }
     
     message.senderID = currentUser.ID;
+    message.dialogID = dialog.ID;
     
     dialog.lastMessageText = message.encodedText;
     dialog.lastMessageDate = message.dateSent;
     
-    if (saveToStorage) {
-        [self.messagesMemoryStorage addMessage:message forDialogID:dialog.ID];
-        
-        if ([self.multicastDelegate respondsToSelector:@selector(chatService:didAddMessageToMemoryStorage:forDialogID:)]) {
-            [self.multicastDelegate chatService:self didAddMessageToMemoryStorage:message forDialogID:dialog.ID];
-        }
-    }
-    
-    return [dialog sendMessage:message sentBlock:^(NSError *error) {
-        
+    BOOL messageSent = [dialog sendMessage:message sentBlock:^(NSError *error) {
         if (completion) {
             completion(error);
         }
     }];
+    
+    if (messageSent) {
+        if (saveToStorage) {
+            [self.messagesMemoryStorage addMessage:message forDialogID:dialog.ID];
+            
+            if ([self.multicastDelegate respondsToSelector:@selector(chatService:didAddMessageToMemoryStorage:forDialogID:)]) {
+                [self.multicastDelegate chatService:self didAddMessageToMemoryStorage:message forDialogID:dialog.ID];
+            }
+        }
+    }
+    
+    return messageSent;
 }
 
 - (BOOL)sendMessage:(QBChatMessage *)message toDialog:(QBChatDialog *)dialog save:(BOOL)save completion:(void(^)(NSError *error))completion {

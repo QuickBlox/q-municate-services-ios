@@ -23,3 +23,5 @@
 #import <QMUsersMemoryStorage.h>
 #import <QMContactListMemoryStorage.h>
 #import <QMMessagesMemoryStorage.h>
+
+#import "QMServicesManager.h"
