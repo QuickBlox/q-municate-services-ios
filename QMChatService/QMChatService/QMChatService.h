@@ -259,32 +259,132 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 @protocol QMChatServiceDelegate <NSObject>
 @optional
 
+/**
+ *  Is called when messages did load from cache for some dialog.
+ *
+ *  @param chatService instance
+ *  @param messages array of QBChatMessages loaded from cache
+ *  @param dialogID messages dialog ID
+ */
 - (void)chatService:(QMChatService *)chatService didLoadMessagesFromCache:(NSArray *)messages forDialogID:(NSString *)dialogID;
 
+/**
+ *  Is called when dialog instance did add to memmory storage.
+ *
+ *  @param chatService instance
+ *  @param chatDialog QBChatDialog has added to memory storage
+ */
 - (void)chatService:(QMChatService *)chatService didAddChatDialogToMemoryStorage:(QBChatDialog *)chatDialog;
+
+/**
+ *  Is called when dialogs array did add to memmory storage.
+ *
+ *  @param chatService instance
+ *  @param chatDialogs QBChatDialog items has added to memory storage
+ */
 - (void)chatService:(QMChatService *)chatService didAddChatDialogsToMemoryStorage:(NSArray *)chatDialogs;
+
+/**
+ *  Is called when some dialog did update in memory storage
+ *
+ *  @param chatService instance
+ *  @param chatDialog updated QBChatDialog
+ */
 - (void)chatService:(QMChatService *)chatService didUpdateChatDialogInMemoryStorage:(QBChatDialog *)chatDialog;
 
+/**
+ *  Is called when some dialog did delete from memory storage
+ *
+ *  @param chatService instance
+ *  @param chatDialog deleted QBChatDialog
+ */
 - (void)chatService:(QMChatService *)chatService didDeleteChatDialogWithIDFromMemoryStorage:(NSString *)chatDialogID;
 
+/**
+ *  Is called when message did add to memory storage for dialog with id
+ *
+ *  @param chatService instance
+ *  @param message added QBChatMessage
+ *  @param dialogID message dialog ID
+ */
 - (void)chatService:(QMChatService *)chatService didAddMessageToMemoryStorage:(QBChatMessage *)message forDialogID:(NSString *)dialogID;
+
+/**
+ *  Is called when message did update in memory storage for dialog with id
+ *
+ *  @param chatService instance
+ *  @param message updated QBChatMessage
+ *  @param dialogID message dialog ID
+ */
 - (void)chatService:(QMChatService *)chatService didUpdateMessage:(QBChatMessage *)message forDialogID:(NSString *)dialogID;
+
+/**
+ *  Is called when messages did add to memory storage for dialog with id
+ *
+ *  @param chatService instance
+ *  @param messages array of QBChatMessage
+ *  @param dialogID message dialog ID
+ */
 - (void)chatService:(QMChatService *)chatService didAddMessagesToMemoryStorage:(NSArray *)messages forDialogID:(NSString *)dialogID;
 
+/**
+ *  Is called when chat service did receive notification message
+ *
+ *  @param chatService instance
+ *  @param message received notification message
+ *  @param dialog QBChatDialog from notification message
+ */
 - (void)chatService:(QMChatService *)chatService  didReceiveNotificationMessage:(QBChatMessage *)message createDialog:(QBChatDialog *)dialog;
 
 
 
 @end
 
+/**
+ *  Chat connection delegate can handle chat stream events. Like did connect, did reconnect etc...
+ */
+
 @protocol QMChatConnectionDelegate <NSObject>
 @optional
 
+/**
+ *  It called when chat did connect.
+ *
+ *  @param chatService instance
+ */
 - (void)chatServiceChatDidConnect:(QMChatService *)chatService;
+
+/**
+ *  It called when user did login in chat.
+ */
 - (void)chatServiceChatDidLogin;
+
+/**
+ *  It called when user login failed.
+ *
+ *  @param error NSError login fail reason
+ */
 - (void)chatServiceChatDidNotLoginWithError:(NSError *)error;
+
+/**
+ *  It called when chat did accidentally disconnect
+ *
+ *  @param chatService instance
+ */
 - (void)chatServiceChatDidAccidentallyDisconnect:(QMChatService *)chatService;
+
+/**
+ *  It called when chat did reconnect
+ *
+ *  @param chatService instance
+ */
 - (void)chatServiceChatDidReconnect:(QMChatService *)chatService;
+
+/**
+ *  It called when chat did catch error from chat stream
+ *
+ *  @param error NSError from stream
+ */
 - (void)chatServiceChatDidFailWithStreamError:(NSError *)error;
 
 @end

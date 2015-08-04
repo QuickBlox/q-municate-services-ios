@@ -14,8 +14,24 @@
 
 @protocol QMChatAttachmentServiceDelegate <NSObject>
 
+/**
+ *  Is called when attachment service did change attachment status for some message.
+ *  Please see QMMessageAttachmentStatus for additional info.
+ *
+ *  @param chatAttachmentService instance QMChatAttachmentService
+ *  @param status new status
+ *  @param message new status owner QBChatMessage
+ */
 - (void)chatAttachmentService:(QMChatAttachmentService *)chatAttachmentService didChangeAttachmentStatus:(QMMessageAttachmentStatus)status forMessage:(QBChatMessage *)message;
 
+/**
+ *  Is called when chat attachment service did change loading progress for some attachment.
+ *  Used for display loading progress.
+ *
+ *  @param chatAttachmentService instance QMChatAttachmentService
+ *  @param progress changed value of progress min 0.0, max 1.0
+ *  @param attachment loaded QBChatAttachment
+ */
 - (void)chatAttachmentService:(QMChatAttachmentService *)chatAttachmentService didChangeLoadingProgress:(CGFloat)progress forChatAttachment:(QBChatAttachment *)attachment;
 
 @end

@@ -72,7 +72,19 @@
 @protocol QMAuthServiceDelegate <NSObject>
 @optional
 
+/**
+ *  It called when auth service did log out
+ *
+ *  @param authService QMAuthService instance
+ */
 - (void)authServiceDidLogOut:(QMAuthService *)authService;
+
+/**
+ *  It called when auth service did log in with user
+ *
+ *  @param authService QMAuthService instance
+ *  @param user logined QBUUser
+ */
 - (void)authService:(QMAuthService *)authService didLoginWithUser:(QBUUser *)user;
 
 @end

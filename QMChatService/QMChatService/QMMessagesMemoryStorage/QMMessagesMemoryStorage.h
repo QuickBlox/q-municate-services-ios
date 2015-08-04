@@ -69,12 +69,33 @@
  */
 - (QBChatMessage *)messageWithID:(NSString *)messageID fromDialogID:(NSString *)dialogID;
 
-
+/**
+ *  Get last message in memory storage from dialog by ID
+ *
+ *  @param dialogID dialog ID
+ *
+ *  @return QBChatMessage object
+ */
 - (QBChatMessage *)lastMessageFromDialogID:(NSString *)dialogID;
 
 #pragma mark - Helpers
 
+/**
+ *  Check is dialog hasn't any messages
+ *
+ *  @param dialogID dialog ID
+ *
+ *  @return YES if dialog empty
+ */
 - (BOOL)isEmptyForDialogID:(NSString *)dialogID;
+
+/**
+ *  Get first message in memory storage from dialog by ID
+ *
+ *  @param dialogID dialog ID
+ *
+ *  @return QBChatMessage object
+ */
 - (QBChatMessage *)oldestMessageForDialogID:(NSString *)dialogID;
 
 @end

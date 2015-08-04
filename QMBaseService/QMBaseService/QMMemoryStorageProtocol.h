@@ -10,6 +10,9 @@
 
 @protocol QMMemoryStorageProtocol <NSObject>
 
+/**
+ *  This method used for clean all storage data in memory
+ */
 - (void)free;
 
 @end
