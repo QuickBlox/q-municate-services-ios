@@ -652,6 +652,85 @@ Send message to dialog.
 
 ### QMDialogsMemoryStorage
 
+Adds chat dialog and joins if chosen.
+
+```objective-c
+
+- (void)addChatDialog:(QBChatDialog *)chatDialog andJoin:(BOOL)join onJoin:(dispatch_block_t)onJoin;
+
+```
+
+Adds chat dialogs and joins.
+
+```objective-c
+
+- (void)addChatDialogs:(NSArray *)dialogs andJoin:(BOOL)join;
+
+```
+
+Deletes chat dialog.
+
+```objective-c
+
+- (void)deleteChatDialogWithID:(NSString *)chatDialogID;
+
+```
+
+Find dialog by identifier.
+
+```objective-c
+
+- (QBChatDialog *)chatDialogWithID:(NSString *)dialogID;
+
+```
+
+Find dialog by room name.
+
+```objective-c
+
+- (QBChatDialog *)chatDialogWithRoomName:(NSString *)roomName;
+
+```
+
+Find private chat dialog with opponent ID.
+
+```objective-c
+
+- (QBChatDialog *)privateChatDialogWithOpponentID:(NSUInteger)opponentID;
+
+```
+
+Find unread dialogs.
+
+```objective-c
+
+- (NSArray *)unreadDialogs;
+
+```
+
+Fetch all dialogs.
+
+```objective-c
+
+- (NSArray *)unsortedDialogs;
+
+```
+
+Fetch all dialogs sorted by last message date.
+
+```objective-c
+
+- (NSArray *)dialogsSortByLastMessageDateWithAscending:(BOOL)ascending;
+
+```
+
+Fetch dialogs with specified sort descriptors.
+
+```objective-c
+
+- (NSArray *)dialogsSortByLastMessageDateWithAscending:(BOOL)ascending;
+
+```
 ### QMMessagesMemoryStorage
 
 ### QMChatAttachmentService
