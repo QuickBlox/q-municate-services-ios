@@ -27,7 +27,7 @@
 
 #pragma mark - Sorting
 
-- (NSArray *)unsorterdUsers;
+- (NSArray *)unsortedUsers;
 - (NSArray *)usersSortedByKey:(NSString *)key ascending:(BOOL)ascending;
 
 #pragma mark Contacts
