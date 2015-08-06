@@ -455,6 +455,213 @@ Implementation file:
 @end
 ```
 
+## QMAuthService
+
+Current user authorisation status:
+
+```objective-c
+
+@property (assign, nonatomic, readonly) BOOL isAuthorized;
+
+```
+
+Sign up user and log's in to Quickblox.
+
+```objective-c
+
+- (QBRequest *)signUpAndLoginWithUser:(QBUUser *)user completion:(void(^)(QBResponse *response, QBUUser *userProfile))completion;
+
+```
+
+Login user to Quickblox.
+
+```objective-c
+
+- (QBRequest *)logInWithUser:(QBUUser *)user completion:(void(^)(QBResponse *response, QBUUser *userProfile))completion;
+
+```
+
+Login with facebook session token.
+
+```objective-c
+
+- (QBRequest *)logInWithFacebookSessionToken:(NSString *)sessionToken completion:(void(^)(QBResponse *response, QBUUser *userProfile))completion;
+
+```
+
+Logout user from Quickblox.
+
+```objective-c
+
+- (QBRequest *)logInWithFacebookSessionToken:(NSString *)sessionToken completion:(void(^)(QBResponse *response, QBUUser *userProfile))completion;
+
+```
+
+## QMChatService
+
+Login user to Quickblox chat.
+
+```objective-c
+
+- (void)logIn:(void(^)(NSError *error))completion;
+
+```
+
+Logout user from Quickblox chat.
+
+```objective-c
+
+- (void)logoutChat;
+
+```
+
+Automatically send presences after logging in to Quickblox chat.
+
+```objective-c
+
+@property (nonatomic, assign) BOOL automaticallySendPresences;
+
+```
+
+Time interval for sending preseneces - default value 45 seconds.
+
+```objective-c
+
+@property (nonatomic, assign) NSTimeInterval presenceTimerInterval;
+
+```
+
+Join user to group dialog and correctly update cache.
+
+```objective-c
+
+- (void)joinToGroupDialog:(QBChatDialog *)dialog
+                   failed:(void(^)(NSError *error))failed;
+
+```
+
+Create group chat dialog with occupants on Quickblox.
+
+```objective-c
+
+- (void)createGroupChatDialogWithName:(NSString *)name photo:(NSString *)photo occupants:(NSArray *)occupants
+                           completion:(void(^)(QBResponse *response, QBChatDialog *createdDialog))completion;
+
+```
+
+Create private chat dialog with opponent on Quickblox.
+
+```objective-c
+
+- (void)createPrivateChatDialogWithOpponent:(QBUUser *)opponent
+                                 completion:(void(^)(QBResponse *response, QBChatDialog *createdDialog))completion;
+
+```
+
+Change dialog name.
+
+```objective-c
+
+- (void)changeDialogName:(NSString *)dialogName forChatDialog:(QBChatDialog *)chatDialog
+              completion:(void(^)(QBResponse *response, QBChatDialog *updatedDialog))completion;
+
+```
+
+Add occupants to dialog.
+
+``` objective-c
+
+- (void)joinOccupantsWithIDs:(NSArray *)ids toChatDialog:(QBChatDialog *)chatDialog
+                  completion:(void(^)(QBResponse *response, QBChatDialog *updatedDialog))completion;
+
+
+```
+
+
+Deletes dialog on service and in cache.
+
+```objective-c
+
+- (void)deleteDialogWithID:(NSString *)dialogId
+                completion:(void(^)(QBResponse *response))completion;
+
+```
+
+Recursively fetch all dialogs from Quickblox.
+
+```objective-c
+
+- (void)allDialogsWithPageLimit:(NSUInteger)limit
+                extendedRequest:(NSDictionary *)extendedRequest
+                iterationBlock:(void(^)(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, BOOL *stop))interationBlock
+                     completion:(void(^)(QBResponse *response))completion;
+```
+
+Notifies user via XMPP about created dialog.
+
+```objective-c
+
+- (void)notifyUsersWithIDs:(NSArray *)usersIDs aboutAddingToDialog:(QBChatDialog *)dialog;
+
+```
+
+Notifies users via XMPP that dialog was updated.
+
+```objective-c
+
+- (void)notifyAboutUpdateDialog:(QBChatDialog *)updatedDialog
+      occupantsCustomParameters:(NSDictionary *)occupantsCustomParameters
+               notificationText:(NSString *)notificationText
+                     completion:(void (^)(NSError *error))completion;
+
+```
+
+Notifies opponents that user accepted contact request.
+
+```objective-c
+
+- (void)notifyOponentAboutAcceptingContactRequest:(BOOL)accept
+                                       opponentID:(NSUInteger)opponentID
+                                       completion:(void(^)(NSError *error))completion;
+
+```
+
+Fetches 100 messages starting from latest message in cache.
+
+```objective-c
+
+- (void)messagesWithChatDialogID:(NSString *)chatDialogID completion:(void(^)(QBResponse *response, NSArray *messages))completion;
+
+```
+
+Fetches 100 messages that are older than oldest message in cache.
+
+```objective-c
+
+- (void)earlierMessagesWithChatDialogID:(NSString *)chatDialogID completion:(void(^)(QBResponse *response, NSArray *messages))completion;
+
+```
+
+Send message to dialog.
+
+```objective-c
+
+- (BOOL)sendMessage:(QBChatMessage *)message toDialog:(QBChatDialog *)dialog save:(BOOL)save completion:(void(^)(NSError *error))completion;
+
+```
+
+### QMDialogsMemoryStorage
+
+### QMMessagesMemoryStorage
+
+### QMChatAttachmentService
+
+## QMContactListService
+
+### QMContactListMemoryStorage
+
+### QMUsersMemoryStorage
+
 # Documentation
 
 Inline code documentation.
