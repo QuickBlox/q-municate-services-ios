@@ -12,6 +12,9 @@
 
 @interface QMAuthService : QMBaseService
 
+/**
+ *  Indentifies user authorisation status.
+ */
 @property (assign, nonatomic, readonly) BOOL isAuthorized;
 
 /**

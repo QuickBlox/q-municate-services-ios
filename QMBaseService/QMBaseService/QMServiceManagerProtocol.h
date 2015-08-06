@@ -27,7 +27,7 @@
  *
  *  @return YES if authorized
  */
-- (BOOL)isAutorized;
+- (BOOL)isAuthorized;
 
 /**
  *  This method called when some QBReqest falling. Use this method for handling errors, like show alert with error.

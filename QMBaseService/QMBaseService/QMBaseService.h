@@ -12,6 +12,9 @@
 
 @interface QMBaseService : NSObject <QMMemoryStorageProtocol>
 
+/**
+ *  Service manager reference.
+ */
 @property (weak, nonatomic, readonly) id <QMServiceManagerProtocol> serviceManager;
 
 - (id)init __attribute__((unavailable("init is not a supported initializer for this class.")));

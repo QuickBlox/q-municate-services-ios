@@ -19,9 +19,19 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 @protocol QMContactListServiceDelegate;
 @protocol QMContactListServiceCacheDataSource;
 
+/**
+ *  Service which used for handling users from contact list.
+ */
 @interface QMContactListService : QMBaseService
 
+/**
+ *  Memory storage for contact list items.
+ */
 @property (strong, nonatomic, readonly) QMContactListMemoryStorage *contactListMemoryStorage;
+
+/**
+ *  Memory storage for users items.
+ */
 @property (strong, nonatomic, readonly) QMUsersMemoryStorage *usersMemoryStorage;
 
 
@@ -59,7 +69,6 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  */
 - (void)retrieveUsersWithIDs:(NSArray *)ids forceDownload:(BOOL)forceDownload
                   completion:(void(^)(QBResponse *response, QBGeneralResponsePage *page, NSArray * users))completion;
-
 
 /**
  *  Add user to contact list request

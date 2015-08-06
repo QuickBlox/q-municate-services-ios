@@ -87,11 +87,17 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  */
 @property (nonatomic, assign) NSTimeInterval presenceTimerInterval;
 
+/**
+ *  Joins user to group dialog and correctly updates cache. Please use this method instead of 'join' in QBChatDialog if you are using QMServices.
+ *
+ *  @param dialog Dialog to join.
+ *  @param failed Failed callback.
+ */
 - (void)joinToGroupDialog:(QBChatDialog *)dialog
-               failed:(void(^)(NSError *error))failed;
+                   failed:(void(^)(NSError *error))failed;
 
 /**
- *  Create group dilog
+ *  Create group dialog
  *
  *  @param name       Dialog name
  *  @param occupants  QBUUser collection

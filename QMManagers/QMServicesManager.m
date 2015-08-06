@@ -118,7 +118,7 @@
 
 }
 
-- (BOOL)isAutorized {
+- (BOOL)isAuthorized {
 	return self.authService.isAuthorized;
 }
 
