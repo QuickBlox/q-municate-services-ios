@@ -29,7 +29,7 @@
  *
  *  @param completion Completion block with a result.
  */
-- (void)logoutWithCompletion:(void(^)())completion;
+- (void)logoutWithCompletion:(dispatch_block_t)completion;
 
 /**
  *  REST authentication service.

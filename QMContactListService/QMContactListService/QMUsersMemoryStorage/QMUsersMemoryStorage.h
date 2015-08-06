@@ -58,7 +58,7 @@
  *
  *  @return Array of QBUUsers items
  */
-- (NSArray *)unsorterdUsers;
+- (NSArray *)unsortedUsers;
 
 /**
  *  Get all users in memory storage sorted by key

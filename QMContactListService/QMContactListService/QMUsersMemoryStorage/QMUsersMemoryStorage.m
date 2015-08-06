@@ -76,7 +76,7 @@
     return [ids allObjects];
 }
 
-- (NSArray *)unsorterdUsers {
+- (NSArray *)unsortedUsers {
     
     NSArray *allUsers = self.users.allValues;
     return allUsers;
