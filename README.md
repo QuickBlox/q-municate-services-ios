@@ -457,6 +457,8 @@ Implementation file:
 
 ## QMAuthService
 
+This class is responsible for authentication operations.
+
 Current user authorisation status:
 
 ```objective-c
@@ -498,6 +500,8 @@ Logout user from Quickblox.
 ```
 
 ## QMChatService
+
+This class is responsible for operation with messages and dialogs.
 
 Login user to Quickblox chat.
 
@@ -652,6 +656,8 @@ Send message to dialog.
 
 ### QMDialogsMemoryStorage
 
+This class is responsible for in-memory dialogs storage.
+
 Adds chat dialog and joins if chosen.
 
 ```objective-c
@@ -731,15 +737,114 @@ Fetch dialogs with specified sort descriptors.
 - (NSArray *)dialogsSortByLastMessageDateWithAscending:(BOOL)ascending;
 
 ```
+
 ### QMMessagesMemoryStorage
+
+This class is responsible for in-memory messages storage.
+
+Add message.
+
+```objective-c
+
+- (void)addMessage:(QBChatMessage *)message forDialogID:(NSString *)dialogID;
+
+```
+
+Add messages.
+
+```objective-c
+
+- (void)addMessages:(NSArray *)messages forDialogID:(NSString *)dialogID;
+
+```
+
+Replace all messages for dialog.
+
+```objective-c
+
+- (void)replaceMessages:(NSArray *)messages forDialogID:(NSString *)dialogID;
+
+```
+
+Update message.
+
+```objective-c
+
+- (void)updateMessage:(QBChatMessage *)message;
+
+```
+
+Fetch messages.
+
+```objective-c
+
+- (NSArray *)messagesWithDialogID:(NSString *)dialogID;
+
+```
+
+Delete messages for dialog.
+
+```objective-c
+
+- (void)deleteMessagesWithDialogID:(NSString *)dialogID;
+
+```
+
+Fetch message by identifier.
+
+```objective-c
+
+- (QBChatMessage *)messageWithID:(NSString *)messageID fromDialogID:(NSString *)dialogID;
+
+```
+
+Fetch last message.
+
+```objective-c
+
+- (QBChatMessage *)lastMessageFromDialogID:(NSString *)dialogID;
+
+```
+
+Checks if dialog has messages.
+
+```objective-c
+
+- (BOOL)isEmptyForDialogID:(NSString *)dialogID;
+
+```
+
+Fetch oldest(first) message.
+
+```objective-c
+
+- (QBChatMessage *)oldestMessageForDialogID:(NSString *)dialogID;
+
+```
 
 ### QMChatAttachmentService
 
+This class is responsible for attachment operations (sending, receiving, loading, saving).
+
 ## QMContactListService
+
+This class is responsible for contact list operations.
 
 ### QMContactListMemoryStorage
 
+This class is responsible for in-memory contact list storage.
+
 ### QMUsersMemoryStorage
+
+This class is responsible for in-memory users storage.
+
+## QMChatCache
+
+This class is responsible for storing dialogs and messages on disc. CoreData is used as a persistent storage.
+
+## QMContactListCache
+
+This class is responsible for storing contact list items on disc. CoreData is used as a persistent storage.
 
 # Documentation
 
