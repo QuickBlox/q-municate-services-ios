@@ -1,6 +1,6 @@
 //
 //  QMBaseService.h
-//  Q-municate
+//  QMServices
 //
 //  Created by Andrey Ivanov on 04.08.14.
 //  Copyright (c) 2014 Quickblox. All rights reserved.
@@ -12,6 +12,9 @@
 
 @interface QMBaseService : NSObject <QMMemoryStorageProtocol>
 
+/**
+ *  Service manager reference.
+ */
 @property (weak, nonatomic, readonly) id <QMServiceManagerProtocol> serviceManager;
 
 - (id)init __attribute__((unavailable("init is not a supported initializer for this class.")));

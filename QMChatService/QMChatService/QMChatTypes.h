@@ -3,7 +3,7 @@
 //  QMChatService
 //
 //  Created by Andrey Ivanov on 29.04.15.
-//
+//  Copyright (c) 2015 Quickblox Team. All rights reserved.
 //
 
 typedef NS_ENUM(NSUInteger, QMMessageType) {

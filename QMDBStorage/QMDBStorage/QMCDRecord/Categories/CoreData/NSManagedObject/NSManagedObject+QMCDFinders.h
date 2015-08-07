@@ -2,8 +2,8 @@
 //  NSManagedObject+QMCDFinders.h
 //  QMCD Record
 //
-//  Created by Saul Mora on 3/7/12.
-//  Copyright (c) 2012 QMCD Panda Software LLC. All rights reserved.
+//  Created by Injoit on 3/7/12.
+//  Copyright (c) 2015 Quickblox Team. All rights reserved.
 //
 
 #import <CoreFoundation/CoreFoundation.h>

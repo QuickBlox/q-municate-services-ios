@@ -2,8 +2,8 @@
 //  NSPersistentStoreCoordinator+QMCDAutoMigrations.m
 //  QMCDRecord
 //
-//  Created by Saul Mora on 9/14/13.
-//  Copyright (c) 2013 QMCD Panda Software LLC. All rights reserved.
+//  Created by Injoit on 9/14/13.
+//  Copyright (c) 2015 Quickblox Team. All rights reserved.
 //
 
 #import "NSPersistentStoreCoordinator+QMCDAutoMigrations.h"

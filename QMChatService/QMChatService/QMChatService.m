@@ -1,6 +1,6 @@
 //
 //  QMChatService.m
-//  Q-municate
+//  QMServices
 //
 //  Created by Andrey Ivanov on 02.07.14.
 //  Copyright (c) 2014 Quickblox. All rights reserved.
@@ -234,8 +234,8 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 
 - (void)logIn:(void(^)(NSError *error))completion {
 	
-	BOOL isAutorized = self.serviceManager.isAutorized;
-	NSAssert(isAutorized, @"User must be autorized");
+	BOOL isAuthorized = self.serviceManager.isAuthorized;
+	NSAssert(isAuthorized, @"User must be authorized");
 	
 	self.chatSuccessBlock = completion;
 	QBUUser *user = self.serviceManager.currentUser;
@@ -447,7 +447,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 	
 	dispatch_block_t request = [^{
         
-        if (![weakSelf.serviceManager isAutorized]) {
+        if (![weakSelf.serviceManager isAuthorized]) {
             if (completion) {
                 completion(nil);
             }

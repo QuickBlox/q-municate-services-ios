@@ -2,8 +2,8 @@
 //  NSRelationshipDescription+QMCDDataImport.h
 //  QMCD Record
 //
-//  Created by Saul Mora on 9/4/11.
-//  Copyright 2011 QMCD Panda Software LLC. All rights reserved.
+//  Created by Injoit on 9/4/11.
+//  Copyright (c) 2015 Quickblox Team. All rights reserved.
 //
 
 @interface NSRelationshipDescription (QMCDRecordDataImport)

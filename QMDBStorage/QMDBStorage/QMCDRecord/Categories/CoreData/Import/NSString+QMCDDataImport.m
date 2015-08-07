@@ -2,8 +2,8 @@
 //  NSString+QMCDRecord_QMCDDataImport.m
 //  QMCD Record
 //
-//  Created by Saul Mora on 12/10/11.
-//  Copyright (c) 2011 QMCD Panda Software LLC. All rights reserved.
+//  Created by Injoit on 12/10/11.
+//  Copyright (c) 2015 Quickblox Team. All rights reserved.
 //
 
 #import "NSString+QMCDDataImport.h"

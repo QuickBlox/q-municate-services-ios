@@ -3,7 +3,7 @@
 //  QMChatService
 //
 //  Created by Andrey on 28.11.14.
-//
+//  Copyright (c) 2015 Quickblox Team. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -19,6 +19,12 @@
  */
 - (void)addMessage:(QBChatMessage *)message forDialogID:(NSString *)dialogID;
 
+/**
+ *  Add messages to memory storage
+ *
+ *  @param messages Array of QBChatMessage items
+ *  @param dialogID Chat dialog identifier
+ */
 - (void)addMessages:(NSArray *)messages forDialogID:(NSString *)dialogID;
 
 /**
@@ -63,12 +69,33 @@
  */
 - (QBChatMessage *)messageWithID:(NSString *)messageID fromDialogID:(NSString *)dialogID;
 
-
+/**
+ *  Get last message in memory storage from dialog by ID
+ *
+ *  @param dialogID dialog ID
+ *
+ *  @return QBChatMessage object
+ */
 - (QBChatMessage *)lastMessageFromDialogID:(NSString *)dialogID;
 
 #pragma mark - Helpers
 
+/**
+ *  Check is dialog hasn't any messages
+ *
+ *  @param dialogID dialog ID
+ *
+ *  @return YES if dialog empty
+ */
 - (BOOL)isEmptyForDialogID:(NSString *)dialogID;
+
+/**
+ *  Get first message in memory storage from dialog by ID
+ *
+ *  @param dialogID dialog ID
+ *
+ *  @return QBChatMessage object
+ */
 - (QBChatMessage *)oldestMessageForDialogID:(NSString *)dialogID;
 
 @end

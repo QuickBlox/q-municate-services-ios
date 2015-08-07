@@ -1,6 +1,6 @@
 //
 //  QMContactsService.h
-//  Q-municate
+//  QMServices
 //
 //  Created by Ivanov A.V on 14/02/2014.
 //  Copyright (c) 2014 Quickblox. All rights reserved.
@@ -19,9 +19,19 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 @protocol QMContactListServiceDelegate;
 @protocol QMContactListServiceCacheDataSource;
 
+/**
+ *  Service which used for handling users from contact list.
+ */
 @interface QMContactListService : QMBaseService
 
+/**
+ *  Memory storage for contact list items.
+ */
 @property (strong, nonatomic, readonly) QMContactListMemoryStorage *contactListMemoryStorage;
+
+/**
+ *  Memory storage for users items.
+ */
 @property (strong, nonatomic, readonly) QMUsersMemoryStorage *usersMemoryStorage;
 
 
@@ -60,7 +70,6 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 - (void)retrieveUsersWithIDs:(NSArray *)ids forceDownload:(BOOL)forceDownload
                   completion:(void(^)(QBResponse *response, QBGeneralResponsePage *page, NSArray * users))completion;
 
-
 /**
  *  Add user to contact list request
  *
@@ -97,21 +106,67 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 
 #pragma mark - Protocols
 
+/**
+ *  Data source for QMContactList Service
+ */
+
 @protocol QMContactListServiceCacheDataSource <NSObject>
 @required
 
+/**
+ * Is called when chat service will start. Need to use for inserting initial data QMUsersMemoryStorage
+ *
+ *  @param block Block for provide QBUUsers collection
+ */
 - (void)cachedUsers:(QMCacheCollection)block;
+
+/**
+ * Is called when chat service will start. Need to use for inserting initial data QMContactListMemoryStorage
+ *
+ *  @param block Block for provide QBContactListItem collection
+ */
 - (void)cachedContactListItems:(QMCacheCollection)block;
 
 @end
 
+/**
+ *  Actions from QMContactList Service
+ */
+
 @protocol QMContactListServiceDelegate <NSObject>
 @optional
 
+/**
+ * Is called when contact list service did load data from cache data source in memory storage
+ */
 - (void)contactListServiceDidLoadCache;
+
+/**
+ * Is called when contact list service did change some QBContactList item in memory storage
+ *
+ *  @param contactList updated QBContactList
+ */
 - (void)contactListService:(QMContactListService *)contactListService contactListDidChange:(QBContactList *)contactList;
+
+/**
+ * Is called when contact list service did add QBUUser item in memory storage
+ *
+ *  @param user added QBUUser
+ */
 - (void)contactListService:(QMContactListService *)contactListService didAddUser:(QBUUser *)user;
+
+/**
+ * Is called when contact list service did add QBUUser items in memory storage
+ *
+ *  @param users added QBUUsers items
+ */
 - (void)contactListService:(QMContactListService *)contactListService didAddUsers:(NSArray *)users;
+
+/**
+ * Is called when contact list service did change some QBUUser item in memory storage
+ *
+ *  @param user updated QBUUser
+ */
 - (void)contactListService:(QMContactListService *)contactListService didUpdateUser:(QBUUser *)user;
 
 @end

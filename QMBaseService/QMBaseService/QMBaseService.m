@@ -1,6 +1,6 @@
 //
 //  QMBaseService.m
-//  Q-municate
+//  QMServices
 //
 //  Created by Andrey Ivanov on 04.08.14.
 //  Copyright (c) 2014 Quickblox. All rights reserved.

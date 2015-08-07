@@ -2,8 +2,8 @@
 //  NSFetchedResultsController+QMCDFetching.h
 //  TradeShow
 //
-//  Created by Saul Mora on 2/5/13.
-//  Copyright (c) 2013 QMCD Panda Software. All rights reserved.
+//  Created by Injoit on 2/5/13.
+//  Copyright (c) 2015 Quickblox Team. All rights reserved.
 //
 
 #import <CoreData/CoreData.h>

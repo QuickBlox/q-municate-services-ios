@@ -1,6 +1,6 @@
 //
 //  QMBaseAuthService.h
-//  Q-municate
+//  QMServices
 //
 //  Created by Andrey Ivanov on 29.10.14.
 //  Copyright (c) 2014 Quickblox. All rights reserved.
@@ -12,6 +12,9 @@
 
 @interface QMAuthService : QMBaseService
 
+/**
+ *  Indentifies user authorisation status.
+ */
 @property (assign, nonatomic, readonly) BOOL isAuthorized;
 
 /**
@@ -72,7 +75,19 @@
 @protocol QMAuthServiceDelegate <NSObject>
 @optional
 
+/**
+ *  It called when auth service did log out
+ *
+ *  @param authService QMAuthService instance
+ */
 - (void)authServiceDidLogOut:(QMAuthService *)authService;
+
+/**
+ *  It called when auth service did log in with user
+ *
+ *  @param authService QMAuthService instance
+ *  @param user logined QBUUser
+ */
 - (void)authService:(QMAuthService *)authService didLoginWithUser:(QBUUser *)user;
 
 @end
