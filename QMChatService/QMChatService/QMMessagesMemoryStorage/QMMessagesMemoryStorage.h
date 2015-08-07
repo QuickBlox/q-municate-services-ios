@@ -81,7 +81,7 @@
 #pragma mark - Helpers
 
 /**
- *  Check is dialog hasn't any messages
+ *  Checks if dialog doesn't have messages
  *
  *  @param dialogID dialog ID
  *

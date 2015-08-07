@@ -88,7 +88,7 @@
  *  Get users by ids except some ID
  *
  *  @param IDs array of users IDs
- *  @param ID excepted ID
+ *  @param ID exclude ID
  *
  *  @return Array of QBUUsers items
  */
