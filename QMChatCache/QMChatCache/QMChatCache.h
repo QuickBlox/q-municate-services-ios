@@ -29,7 +29,7 @@
 #pragma mark - Configure store
 
 /**
- *  Setup QMChatCache stake wit store name
+ *  Setup QMChatCache stack with store name
  *
  *  @param storeName Store name
  */
