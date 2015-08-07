@@ -734,7 +734,7 @@ Fetch dialogs with specified sort descriptors.
 
 ```objective-c
 
-- (NSArray *)dialogsSortByLastMessageDateWithAscending:(BOOL)ascending;
+- (NSArray *)dialogsWithSortDescriptors:(NSArray *)descriptors;
 
 ```
 
@@ -826,25 +826,194 @@ Fetch oldest(first) message.
 
 This class is responsible for attachment operations (sending, receiving, loading, saving).
 
+Attachment status delegate:
+
+```objective-c
+
+@property (nonatomic, weak) id<QMChatAttachmentServiceDelegate> delegate;
+
+```
+
+Send image attachment.
+
+```objective-c
+
+- (void)sendMessage:(QBChatMessage *)message toDialog:(QBChatDialog *)dialog withChatService:(QMChatService *)chatService withAttachedImage:(UIImage *)image completion:(void(^)(NSError *error))completion;
+
+```
+
+Get attachment image. (Download from Quickblox or load from disc).
+
+```objective-c
+
+- (void)getImageForChatAttachment:(QBChatAttachment *)attachment completion:(void (^)(NSError *error, UIImage *image))completion;
+
+```
+
 ## QMContactListService
 
 This class is responsible for contact list operations.
+
+Fetch users by identifiers from Quickblox.
+
+```objective-c
+
+- (void)retrieveUsersWithIDs:(NSArray *)ids forceDownload:(BOOL)forceDownload
+                  completion:(void(^)(QBResponse *response, QBGeneralResponsePage *page, NSArray * users))completion;
+
+```
+
+Add user to contact list.
+
+```objective-c
+
+- (void)addUserToContactListRequest:(QBUUser *)user completion:(void(^)(BOOL success))completion;
+
+```
+
+Remove user from contact list.
+
+```objective-c
+
+- (void)removeUserFromContactListWithUserID:(NSUInteger)userID completion:(void(^)(BOOL success))completion;
+
+```
+
+Accept contact request.
+
+```objective-c
+
+- (void)acceptContactRequest:(NSUInteger)userID completion:(void (^)(BOOL success))completion;
+
+```
+
+Reject contact request.
+
+```objective-c
+
+- (void)rejectContactRequest:(NSUInteger)userID completion:(void(^)(BOOL success))completion;
+
+```
 
 ### QMContactListMemoryStorage
 
 This class is responsible for in-memory contact list storage.
 
+Update contact list memory storage.
+
+```objective-c
+
+- (void)updateWithContactList:(QBContactList *)contactList;
+
+```
+
+Update contact list memory storage with array of contact list items.
+
+```objective-c
+
+- (void)updateWithContactList:(QBContactList *)contactList;
+
+```
+
+Fetch contact list item.
+
+```objective-c
+
+- (QBContactListItem *)contactListItemWithUserID:(NSUInteger)userID;
+
+```
+
+Fetch user ids from contact list memory storage.
+
+```objective-c
+
+- (NSArray *)userIDsFromContactList;
+
+```
+
 ### QMUsersMemoryStorage
 
 This class is responsible for in-memory users storage.
 
-## QMChatCache
+Delegate for getting contact list user ids.
 
-This class is responsible for storing dialogs and messages on disc. CoreData is used as a persistent storage.
+```objective-c
 
-## QMContactListCache
+@property (weak, nonatomic) id <QMUsersMemoryStorageDelegate> delegate;
 
-This class is responsible for storing contact list items on disc. CoreData is used as a persistent storage.
+```
+
+Add user.
+
+```objective-c
+
+- (void)addUser:(QBUUser *)user;
+
+```
+
+Add users.
+
+```objective-c
+
+- (void)addUsers:(NSArray *)users;
+
+```
+
+Fetch user by identifier.
+
+```objective-c
+
+- (QBUUser *)userWithID:(NSUInteger)userID;
+
+```
+
+Fetch users by identifiers.
+
+```objective-c
+
+- (NSArray *)usersWithIDs:(NSArray *)ids;
+
+```
+
+Fetch all users from memory storage.
+
+```objective-c
+
+- (NSArray *)unsortedUsers;
+
+```
+
+Fetch all users sorted by key,
+
+```objective-c
+
+- (NSArray *)usersSortedByKey:(NSString *)key ascending:(BOOL)ascending;
+
+```
+
+Fetch all contact list users sorted by key.
+
+```objective-c
+
+- (NSArray *)contactsSortedByKey:(NSString *)key ascending:(BOOL)ascending;
+
+```
+
+Fetch users with identifiers and excluding user identifier.
+
+```objective-c
+
+- (NSArray *)usersWithIDs:(NSArray *)IDs withoutID:(NSUInteger)ID;
+
+```
+
+Create comma-separate user's full name string.
+
+```objective-c
+
+- (NSString *)joinedNamesbyUsers:(NSArray *)users;
+
+```
 
 # Documentation
 
