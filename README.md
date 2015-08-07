@@ -73,7 +73,7 @@ QMServices contains:
 
 
 They all inherited from **QMBaseService**.
-To support CoreData caching you can use **QMContactListCache** and **QMChatCache**, which are inherited from **QMDBStorage**. Of course you could use your own database storage - just need to implement **QMChatServiceDelegate**.
+To support CoreData caching you can use **QMContactListCache** and **QMChatCache**, which are inherited from **QMDBStorage**. Of course you could use your own database storage - just need to implement **QMChatServiceDelegate** or **QMContactListServiceDelegate** depending on your needs.
 
 # Getting started
 Add **#import \<QMServices.h\>** to your apps *.pch* file.
