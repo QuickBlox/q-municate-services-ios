@@ -8,6 +8,7 @@ extern const struct CDMessageAttributes {
 	__unsafe_unretained NSString *customParameters;
 	__unsafe_unretained NSString *dateSend;
 	__unsafe_unretained NSString *delayed;
+	__unsafe_unretained NSString *deliveredIDs;
 	__unsafe_unretained NSString *dialogID;
 	__unsafe_unretained NSString *isRead;
 	__unsafe_unretained NSString *messageID;
@@ -55,6 +56,10 @@ extern const struct CDMessageRelationships {
 - (void)setDelayedValue:(BOOL)value_;
 
 //- (BOOL)validateDelayed:(id*)value_ error:(NSError**)error_;
+
+@property (nonatomic, strong) NSData* deliveredIDs;
+
+//- (BOOL)validateDeliveredIDs:(id*)value_ error:(NSError**)error_;
 
 @property (nonatomic, strong) NSString* dialogID;
 
@@ -138,6 +143,9 @@ extern const struct CDMessageRelationships {
 
 - (BOOL)primitiveDelayedValue;
 - (void)setPrimitiveDelayedValue:(BOOL)value_;
+
+- (NSData*)primitiveDeliveredIDs;
+- (void)setPrimitiveDeliveredIDs:(NSData*)value;
 
 - (NSString*)primitiveDialogID;
 - (void)setPrimitiveDialogID:(NSString*)value;

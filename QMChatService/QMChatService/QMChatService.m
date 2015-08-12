@@ -230,6 +230,11 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     }
 }
 
+- (void)chatDidDeliverMessageWithID:(NSString *)messageID
+{
+    
+}
+
 #pragma mark - Chat Login/Logout
 
 - (void)logIn:(void(^)(NSError *error))completion {
