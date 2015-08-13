@@ -230,9 +230,28 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     }
 }
 
-- (void)chatDidDeliverMessageWithID:(NSString *)messageID
+- (void)chatDidDeliverMessageWithID:(NSString *)messageID dialogID:(NSString *)dialogID toUserID:(NSUInteger)userID
 {
+    NSParameterAssert(dialogID != nil);
+    NSParameterAssert(messageID != nil);
+
+    QBChatMessage* message = [self.messagesMemoryStorage messageWithID:messageID fromDialogID:dialogID];
     
+    if (message != nil) {
+        if (message.deliveredIDs == nil) {
+            message.deliveredIDs = [NSArray array];
+        }
+        
+        if (![message.deliveredIDs containsObject:@(userID)]) {
+            message.deliveredIDs = [message.deliveredIDs arrayByAddingObject:@(userID)];
+            
+            [self.messagesMemoryStorage updateMessage:message];
+            
+            if ([self.multicastDelegate respondsToSelector:@selector(chatService:didUpdateMessage:forDialogID:)]) {
+                [self.multicastDelegate chatService:self didUpdateMessage:message forDialogID:dialogID];
+            }
+        }
+    }
 }
 
 #pragma mark - Chat Login/Logout
