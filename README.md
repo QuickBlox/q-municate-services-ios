@@ -22,13 +22,13 @@ Easy-to-use services for Quickblox SDK, for speeding up development of iOS chat 
 
 There are several ways to add **QMServices** to your project. They are described below:
 
-## Cocoapods
+## 1. Cocoapods
 
 You can install **QMServices** using Cocoapods just by adding following line in your Podfile:
 
 pod 'QMServices'
 
-## Using an Xcode subproject
+## 2. Using an Xcode subproject
 
 Xcode sub-projects allow your project to use and build QMServices as an implicit dependency.
 
