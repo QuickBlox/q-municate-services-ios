@@ -266,6 +266,19 @@ This method logins user to Quickblox REST API backend and to the Quickblox Chat 
 
 ```
 
+Example of usage:
+
+```objective-c
+    // Logging in to Quickblox REST API and chat.
+    [ServicesManager.instance logInWithUser:selectedUser completion:^(BOOL success, NSString *errorMessage) {
+        if (success) {
+        	// Handle success login
+        } else {
+            	// Handle error with error message
+        }
+    }];
+```
+
 ### Logout
 
 ```objective-c
@@ -305,6 +318,14 @@ This method logins user to Quickblox REST API backend and to the Quickblox Chat 
         }
     }
 }
+```
+
+Example of usage:
+
+```objective-c
+    [[QMServicesManager instance] logoutWithCompletion:^{
+        // Handle logout
+    }];
 ```
 
 ## Fetching chat dialogs
