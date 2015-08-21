@@ -4,9 +4,9 @@ Easy-to-use services for Quickblox SDK, for speeding up development of iOS chat 
 
 # Features
 
+* High level API for Chat features including authentication service for logging to Quickblox REST and XMPP
 * Inbox persistent storage for messages, dialogs and users
 * Inbox memory storage for messages, dialogs and users
-* Authentication service for logging to Quickblox REST and XMPP
 
 # Requirements
 
