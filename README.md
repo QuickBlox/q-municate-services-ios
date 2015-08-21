@@ -333,7 +333,9 @@ Example of usage:
 Load all dialogs from REST API:
 
 ```objective-c
-[QBServicesManager.instance.chatService allDialogsWithPageLimit:<your_page_limit> extendedRequest:nil iterationBlock:^(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, BOOL *stop) {
+Extended request parameters could be taken from http://quickblox.com/developers/SimpleSample-chat_users-ios#Filters.
+
+[QBServicesManager.instance.chatService allDialogsWithPageLimit:100 extendedRequest:nil iterationBlock:^(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, BOOL *stop) {
 	// reload UI, this block is called when page is loaded
 } completion:^(QBResponse *response) {
 	// loading finished, all dialogs fetched
@@ -347,7 +349,7 @@ These dialogs are automatically stored in **QMDialogsMemoryStorage** class.
 Fetching messages from REST API history:
 
 ```objective-c
-[QBServicesManager instance].chatService messagesWithChatDialogID:<your_dialog_id> completion:^(QBResponse *response, NSArray *messages) {
+[QBServicesManager instance].chatService messagesWithChatDialogID:@"53fdc87fe4b0f91d92fbb27e" completion:^(QBResponse *response, NSArray *messages) {
 	// update UI, handle messages
 }];
 ```
@@ -359,7 +361,12 @@ These message are automatically stored in **QMMessagesMemoryStorage** class.
 Send message to dialog:
 
 ```objective-c
-[[QBServicesManager instance].chatService sendMessage:<your_message> toDialogId:<your_dialog_id> save:YES completion:nil];
+
+QBChatMessage *message = [QBChatMessage message];
+message.text = @"Awesome text";
+message.senderID = 2308497;
+
+[[QBServicesManager instance].chatService sendMessage:message toDialogId:@"53fdc87fe4b0f91d92fbb27e" save:YES completion:nil];
 ```
 
 Message is automatically added to **QMMessagesMemoryStorage** class.
@@ -368,7 +375,7 @@ Message is automatically added to **QMMessagesMemoryStorage** class.
 
 
 ```objective-c
-[QBServicesManager.instance.contactListService retrieveUsersWithIDs:<array_of_user_ids> completion:^(QBResponse *response, QBGeneralResponsePage *page, NSArray *users) {
+[QBServicesManager.instance.contactListService retrieveUsersWithIDs:@[@(2308497)] completion:^(QBResponse *response, QBGeneralResponsePage *page, NSArray *users) {
 	// handle users
 }];
 ```
