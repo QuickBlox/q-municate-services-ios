@@ -332,8 +332,9 @@ Example of usage:
 
 Load all dialogs from REST API:
 
-```objective-c
 Extended request parameters could be taken from http://quickblox.com/developers/SimpleSample-chat_users-ios#Filters.
+
+```objective-c
 
 [QBServicesManager.instance.chatService allDialogsWithPageLimit:100 extendedRequest:nil iterationBlock:^(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, BOOL *stop) {
 	// reload UI, this block is called when page is loaded
