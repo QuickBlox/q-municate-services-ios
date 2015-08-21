@@ -227,7 +227,7 @@ We encourage to use automatic session creation, to simplify communication with b
 
 ### Login
 
-This method logins user to Quickblox REST API backend and to the Quickblox Chat backend. Also it automatically tries to join to the group dialog - to immediately receive incomming messages.
+This method logins user to Quickblox REST API backend and to the Quickblox Chat backend. Also it automatically tries to join to all cached group dialogs - to immediately receive incomming messages.
 
 ```objective-c
 - (void)logInWithUser:(QBUUser *)user
