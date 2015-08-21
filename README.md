@@ -5,8 +5,8 @@
 - [Requirements](#requirements)
 - [Dependencies](#dependencies)
 - [Installation](#installation)
-	- [Using an Xcode subproject](#using-xcode-project)
-		- [Bundle generation (you can skip this step if you do not use dialogs, messages and users memory and disc storage)](#bundle-generation)
+	- [Using an Xcode subproject](#using-an-xcode-subproject)
+		- [Bundle generation](#bundle-generation)
 	- [Cocoapods](#cocoapods)
 - [Architecture](#architecture)
 - [Getting started](#getting-started)
@@ -73,7 +73,8 @@ Navigate to **Build Settings**, then search for **Framework Search Paths** and d
 
 Remember, that you have to link *QMServices* in **Target Dependencies** and in **Link Binary with Libraries**.
 
-### Bundle generation (you can skip this step if you do not use dialogs, messages and users memory and disc storage)
+### Bundle generation
+**NOTE:** You can skip this step if you do not use dialogs, messages and users memory and disc storage.
 
 Bundle allows to pass .xcdatamodel file together with static library so it is required for **QMChatCache** and **QMContactListCache** projects.
 
