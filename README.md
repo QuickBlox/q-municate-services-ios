@@ -83,6 +83,8 @@ Add **#import \<QMServices.h\>** to your apps *.pch* file.
 To start using services you could either use existing **QMServicesManager** class or create a subclass from it.
 Detailed explanation of the **QMServicesManager** class is below.
 
+**QMServicesManager** has 2 functions - user login(login to REST API, chat)/logout(Logging out from chat, REST API, clearing persistent and memory cache) and establishing connection between **QMChatCache** and **QMChatService** to enable storing dialogs and messages data on disc.
+
 Here is **QMServicesManager.h**:
 
 ```objective-c
