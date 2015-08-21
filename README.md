@@ -1,3 +1,27 @@
+**Table of Contents**
+
+- [QMServices](#)
+- [Features](#)
+- [Requirements](#)
+- [Dependencies](#)
+- [Installation](#)
+	- [Using an Xcode subproject](#)
+		- [Bundle generation (you can skip this step if you do not use dialogs, messages and users memory and disc storage)](#)
+	- [Cocoapods](#)
+- [Architecture](#)
+- [Getting started](#)
+	- [Service Manager](#)
+	- [Authentication](#)
+		- [Login](#)
+		- [Logout](#)
+	- [Fetching chat dialogs](#)
+	- [Fetching chat messages](#)
+	- [Sending message](#)
+	- [Fetching users](#)
+	- [Subclass of QMServicesManager example](#)
+- [Documentation](#)
+- [License](#)
+
 # QMServices
 
 Easy-to-use services for Quickblox SDK, for speeding up development of iOS chat applications.
