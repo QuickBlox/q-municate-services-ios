@@ -26,7 +26,7 @@ There are several ways to add **QMServices** to your project. They are described
 
 You can install **QMServices** using Cocoapods just by adding following line in your Podfile:
 
-pod 'QMServices', '~> 0.1'
+pod 'QMServices'
 
 ## Using an Xcode subproject
 
