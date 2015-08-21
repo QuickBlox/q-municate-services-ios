@@ -22,6 +22,12 @@ Easy-to-use services for Quickblox SDK, for speeding up development of iOS chat 
 
 There are several ways to add **QMServices** to your project. They are described below:
 
+## Cocoapods
+
+You can install **QMServices** using Cocoapods just by adding following line in your Podfile:
+
+pod 'QMServices', '~> 0.1'
+
 ## Using an Xcode subproject
 
 Xcode sub-projects allow your project to use and build QMServices as an implicit dependency.
@@ -56,12 +62,6 @@ Bundle allows to pass .xcdatamodel file together with static library so it is re
 To generate bundle for contact list you need to open **QMServices** project, navigate to Cache folder and select **QMContactListCache.xcodeproj**. Open project folder - you will see red **QMContactListCacheModel.bundle**. To create it select scheme **QMContactListCacheModel** and run it. After successful build **QMContactListCacheModel.bundle** color will change to black and you will be able to copy it to the project that uses **QMServices**. Include this bundle in your project.
 
 To generate bundle for dialogs and messages you need to open **QMServices** project, navigate to Cache folder and select **QMChatCache.xcodeproj**. Open project folder - you will see red **QMChatCacheModel.bundle**. To create it select scheme **QMChatCacheModel** and run it. After successful build **QMChatCacheModel.bundle`** color will change to black and you will be able to copy it to the project that uses **QMServices**. Include this bundle in your project.
-
-## Cocoapods
-
-You can install **QMServices** using Cocoapods just by adding following line in your Podfile:
-
-pod 'QMServices', '~> 0.1'
 
 # Architecture
 
