@@ -1,8 +1,8 @@
 //
 //  QMChatService+AttachmentService.h
-//  QMChatService
+//  QMServices
 //
-//  Created by Injoit on 7/1/15.
+//  Created by QuickBlox on 7/1/15.
 //  Copyright (c) 2015 Quickblox Team. All rights reserved.
 //
 

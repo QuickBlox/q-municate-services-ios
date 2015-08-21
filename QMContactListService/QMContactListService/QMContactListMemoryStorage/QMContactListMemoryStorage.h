@@ -1,6 +1,6 @@
 //
 //  QMContactListMemoryStorage.h
-//  QMContactListService
+//  QMServices
 //
 //  Created by Andrey on 25.11.14.
 //  Copyright (c) 2015 Quickblox Team. All rights reserved.

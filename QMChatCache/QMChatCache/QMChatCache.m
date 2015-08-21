@@ -1,6 +1,6 @@
 //
 //  QMChatCache.m
-//  QMChatCache
+//  QMServices
 //
 //  Created by Andrey on 06.11.14.
 //  Copyright (c) 2015 Quickblox Team. All rights reserved.

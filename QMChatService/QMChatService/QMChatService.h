@@ -3,7 +3,7 @@
 //  QMServices
 //
 //  Created by Andrey Ivanov on 02.07.14.
-//  Copyright (c) 2014 Quickblox. All rights reserved.
+//  Copyright (c) 2015 Quickblox. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
