@@ -353,9 +353,8 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
         
         if (!chatDialogToUpdate)
         {
-            chatDialogToUpdate = [[QBChatDialog alloc] initWithDialogID:message.dialogID];
+            chatDialogToUpdate = [[QBChatDialog alloc] initWithDialogID:message.dialogID type:QBChatDialogTypePrivate];
             chatDialogToUpdate.occupantIDs = @[@([self.serviceManager currentUser].ID), @(message.senderID)];
-            chatDialogToUpdate.type = QBChatDialogTypePrivate;
             
             shouldSaveDialog = YES;
         }
@@ -527,8 +526,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     
     if (!dialog) {
         
-        QBChatDialog *chatDialog = [[QBChatDialog alloc] init];
-        chatDialog.type = QBChatDialogTypePrivate;
+        QBChatDialog *chatDialog = [[QBChatDialog alloc] initWithDialogID:nil type:QBChatDialogTypePrivate];
         chatDialog.occupantIDs = @[@(opponentID)];
         
         __weak __typeof(self)weakSelf = self;
@@ -581,11 +579,10 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 		[occupantIDs addObject:@(user.ID)];
 	}
 	
-	QBChatDialog *chatDialog = [[QBChatDialog alloc] init];
+	QBChatDialog *chatDialog = [[QBChatDialog alloc] initWithDialogID:nil type:QBChatDialogTypeGroup];
 	chatDialog.name = name;
 	chatDialog.photo = photo;
 	chatDialog.occupantIDs = occupantIDs.allObjects;
-	chatDialog.type = QBChatDialogTypeGroup;
 	
 	__weak __typeof(self)weakSelf = self;
 	[QBRequest createDialog:chatDialog successBlock:^(QBResponse *response, QBChatDialog *createdDialog) {
