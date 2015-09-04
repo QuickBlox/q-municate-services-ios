@@ -162,6 +162,14 @@ typedef void(^QMCacheCollection)(NSArray *collection);
                 iterationBlock:(void(^)(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, BOOL *stop))interationBlock
                      completion:(void(^)(QBResponse *response))completion;
 
+/**
+ *  Loads dialogs specific to user from disc cache and puth them in memory storage. 
+ *  @warning This method MUST be called after the login.
+ *
+ *  @param completion Completion block to handle ending of operation.
+ */
+- (void)loadCachedDialogsWithCompletion:(void(^)())completion;
+
 #pragma mark - System Messages
 /**
  *  Notify opponents about creating the dialog

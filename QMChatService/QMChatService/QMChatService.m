@@ -52,7 +52,6 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 	if (self) {
 		
 		self.cacheDataSource = cacheDataSource;
-		[self loadCachedDialogs];
 		
 		self.presenceTimerInterval = 45.0;
 		self.automaticallySendPresences = YES;
@@ -80,19 +79,26 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 
 #pragma mark - Load cached data
 
-- (void)loadCachedDialogs {
-	
-	__weak __typeof(self)weakSelf = self;
+- (void)loadCachedDialogsWithCompletion:(void(^)())completion
+{
+    __weak __typeof(self)weakSelf = self;
 	
 	if ([self.cacheDataSource respondsToSelector:@selector(cachedDialogs:)]) {
+        
+        NSAssert([QBSession currentSession].currentUser != nil, @"Current user must be non nil!");
 		
-		[self.cacheDataSource cachedDialogs:^(NSArray *collection) {
-			
-			[weakSelf.dialogsMemoryStorage addChatDialogs:collection andJoin:NO];
+		[weakSelf.cacheDataSource cachedDialogs:^(NSArray *collection) {
+			// We need only current users dialog
+            NSArray* userDialogs = [collection filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"%lu IN self.occupantIDs", [QBSession currentSession].currentUser.ID]];
+            
+			[weakSelf.dialogsMemoryStorage addChatDialogs:userDialogs andJoin:NO];
 			
 			if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddChatDialogsToMemoryStorage:)]) {
 				[weakSelf.multicastDelegate chatService:weakSelf didAddChatDialogsToMemoryStorage:collection];
 			}
+            if (completion) {
+                completion();
+            }
 		}];
 	}
 }
