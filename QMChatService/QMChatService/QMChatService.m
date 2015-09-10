@@ -807,7 +807,6 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 
 - (BOOL)sendMessage:(QBChatMessage *)message type:(QMMessageType)type toDialog:(QBChatDialog *)dialog save:(BOOL)save saveToStorage:(BOOL)saveToStorage completion:(void(^)(NSError *error))completion {
     
-    message.dateSent = [NSDate date];
     message.customDateSent = self.dateSendTimeInterval;
     
     message.text = [message.text gtm_stringByEscapingForHTML];
