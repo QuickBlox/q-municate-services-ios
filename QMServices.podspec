@@ -20,7 +20,7 @@ Pod::Spec.new do |s|
   s.frameworks = "CoreData"
   s.requires_arc = true
   s.xcconfig = { "FRAMEWORK_SEARCH_PATHS" => "$(PODS_ROOT)/QuickBlox/" }
-  s.dependency "QuickBlox", "~> 2.3"
+  s.dependency "QuickBlox", "~> 2.4"
   s.prefix_header_contents = 
   '#import <Quickblox/Quickblox.h>
 #import <CoreData/CoreData.h>
