@@ -28,9 +28,9 @@ Easy-to-use services for Quickblox SDK, for speeding up development of iOS chat 
 
 # Features
 
+* High level API for Chat features including authentication service for logging to Quickblox REST and XMPP
 * Inbox persistent storage for messages, dialogs and users
 * Inbox memory storage for messages, dialogs and users
-* Authentication service for logging to Quickblox REST and XMPP
 
 # Requirements
 
@@ -46,7 +46,13 @@ Easy-to-use services for Quickblox SDK, for speeding up development of iOS chat 
 
 There are several ways to add **QMServices** to your project. They are described below:
 
-## Using an Xcode subproject
+## 1. Cocoapods
+
+You can install **QMServices** using Cocoapods just by adding following line in your Podfile:
+
+pod 'QMServices'
+
+## 2. Using an Xcode subproject
 
 Xcode sub-projects allow your project to use and build QMServices as an implicit dependency.
 
@@ -82,12 +88,6 @@ To generate bundle for contact list you need to open **QMServices** project, nav
 
 To generate bundle for dialogs and messages you need to open **QMServices** project, navigate to Cache folder and select **QMChatCache.xcodeproj**. Open project folder - you will see red **QMChatCacheModel.bundle**. To create it select scheme **QMChatCacheModel** and run it. After successful build **QMChatCacheModel.bundle`** color will change to black and you will be able to copy it to the project that uses **QMServices**. Include this bundle in your project.
 
-## Cocoapods
-
-You can install **QMServices** using Cocoapods just by adding following line in your Podfile:
-
-pod 'QMServices', '~> 0.1'
-
 # Architecture
 
 QMServices contains:
@@ -98,7 +98,7 @@ QMServices contains:
 
 
 They all inherited from **QMBaseService**.
-To support CoreData caching you can use **QMContactListCache** and **QMChatCache**, which are inherited from **QMDBStorage**. Of course you could use your own database storage - just need to implement **QMChatServiceDelegate**.
+To support CoreData caching you can use **QMContactListCache** and **QMChatCache**, which are inherited from **QMDBStorage**. Of course you could use your own database storage - just need to implement **QMChatServiceDelegate** or **QMContactListServiceDelegate** depending on your needs.
 
 # Getting started
 Add **#import \<QMServices.h\>** to your apps *.pch* file.
@@ -254,7 +254,7 @@ We encourage to use automatic session creation, to simplify communication with b
 
 ### Login
 
-This method logins user to Quickblox REST API backend and to the Quickblox Chat backend. Also it automatically tries to join to the group dialog - to immediately receive incomming messages.
+This method logins user to Quickblox REST API backend and to the Quickblox Chat backend. Also it automatically tries to join to all cached group dialogs - to immediately receive incomming messages.
 
 ```objective-c
 - (void)logInWithUser:(QBUUser *)user
@@ -509,6 +509,566 @@ Implementation file:
 }
 
 @end
+```
+
+## QMAuthService
+
+This class is responsible for authentication operations.
+
+Current user authorisation status:
+
+```objective-c
+
+@property (assign, nonatomic, readonly) BOOL isAuthorized;
+
+```
+
+Sign up user and log's in to Quickblox.
+
+```objective-c
+
+- (QBRequest *)signUpAndLoginWithUser:(QBUUser *)user completion:(void(^)(QBResponse *response, QBUUser *userProfile))completion;
+
+```
+
+Login user to Quickblox.
+
+```objective-c
+
+- (QBRequest *)logInWithUser:(QBUUser *)user completion:(void(^)(QBResponse *response, QBUUser *userProfile))completion;
+
+```
+
+Login with facebook session token.
+
+```objective-c
+
+- (QBRequest *)logInWithFacebookSessionToken:(NSString *)sessionToken completion:(void(^)(QBResponse *response, QBUUser *userProfile))completion;
+
+```
+
+Logout user from Quickblox.
+
+```objective-c
+
+- (QBRequest *)logInWithFacebookSessionToken:(NSString *)sessionToken completion:(void(^)(QBResponse *response, QBUUser *userProfile))completion;
+
+```
+
+## QMChatService
+
+This class is responsible for operation with messages and dialogs.
+
+Login user to Quickblox chat.
+
+```objective-c
+
+- (void)logIn:(void(^)(NSError *error))completion;
+
+```
+
+Logout user from Quickblox chat.
+
+```objective-c
+
+- (void)logoutChat;
+
+```
+
+Automatically send presences after logging in to Quickblox chat.
+
+```objective-c
+
+@property (nonatomic, assign) BOOL automaticallySendPresences;
+
+```
+
+Time interval for sending preseneces - default value 45 seconds.
+
+```objective-c
+
+@property (nonatomic, assign) NSTimeInterval presenceTimerInterval;
+
+```
+
+Join user to group dialog and correctly update cache.
+
+```objective-c
+
+- (void)joinToGroupDialog:(QBChatDialog *)dialog
+                   failed:(void(^)(NSError *error))failed;
+
+```
+
+Create group chat dialog with occupants on Quickblox.
+
+```objective-c
+
+- (void)createGroupChatDialogWithName:(NSString *)name photo:(NSString *)photo occupants:(NSArray *)occupants
+                           completion:(void(^)(QBResponse *response, QBChatDialog *createdDialog))completion;
+
+```
+
+Create private chat dialog with opponent on Quickblox.
+
+```objective-c
+
+- (void)createPrivateChatDialogWithOpponent:(QBUUser *)opponent
+                                 completion:(void(^)(QBResponse *response, QBChatDialog *createdDialog))completion;
+
+```
+
+Change dialog name.
+
+```objective-c
+
+- (void)changeDialogName:(NSString *)dialogName forChatDialog:(QBChatDialog *)chatDialog
+              completion:(void(^)(QBResponse *response, QBChatDialog *updatedDialog))completion;
+
+```
+
+Add occupants to dialog.
+
+``` objective-c
+
+- (void)joinOccupantsWithIDs:(NSArray *)ids toChatDialog:(QBChatDialog *)chatDialog
+                  completion:(void(^)(QBResponse *response, QBChatDialog *updatedDialog))completion;
+
+
+```
+
+
+Deletes dialog on service and in cache.
+
+```objective-c
+
+- (void)deleteDialogWithID:(NSString *)dialogId
+                completion:(void(^)(QBResponse *response))completion;
+
+```
+
+Recursively fetch all dialogs from Quickblox.
+
+```objective-c
+
+- (void)allDialogsWithPageLimit:(NSUInteger)limit
+                extendedRequest:(NSDictionary *)extendedRequest
+                iterationBlock:(void(^)(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, BOOL *stop))interationBlock
+                     completion:(void(^)(QBResponse *response))completion;
+```
+
+Notifies user via XMPP about created dialog.
+
+```objective-c
+
+- (void)notifyUsersWithIDs:(NSArray *)usersIDs aboutAddingToDialog:(QBChatDialog *)dialog;
+
+```
+
+Notifies users via XMPP that dialog was updated.
+
+```objective-c
+
+- (void)notifyAboutUpdateDialog:(QBChatDialog *)updatedDialog
+      occupantsCustomParameters:(NSDictionary *)occupantsCustomParameters
+               notificationText:(NSString *)notificationText
+                     completion:(void (^)(NSError *error))completion;
+
+```
+
+Notifies opponents that user accepted contact request.
+
+```objective-c
+
+- (void)notifyOponentAboutAcceptingContactRequest:(BOOL)accept
+                                       opponentID:(NSUInteger)opponentID
+                                       completion:(void(^)(NSError *error))completion;
+
+```
+
+Fetches 100 messages starting from latest message in cache.
+
+```objective-c
+
+- (void)messagesWithChatDialogID:(NSString *)chatDialogID completion:(void(^)(QBResponse *response, NSArray *messages))completion;
+
+```
+
+Fetches 100 messages that are older than oldest message in cache.
+
+```objective-c
+
+- (void)earlierMessagesWithChatDialogID:(NSString *)chatDialogID completion:(void(^)(QBResponse *response, NSArray *messages))completion;
+
+```
+
+Send message to dialog.
+
+```objective-c
+
+- (BOOL)sendMessage:(QBChatMessage *)message toDialog:(QBChatDialog *)dialog save:(BOOL)save completion:(void(^)(NSError *error))completion;
+
+```
+
+### QMDialogsMemoryStorage
+
+This class is responsible for in-memory dialogs storage.
+
+Adds chat dialog and joins if chosen.
+
+```objective-c
+
+- (void)addChatDialog:(QBChatDialog *)chatDialog andJoin:(BOOL)join onJoin:(dispatch_block_t)onJoin;
+
+```
+
+Adds chat dialogs and joins.
+
+```objective-c
+
+- (void)addChatDialogs:(NSArray *)dialogs andJoin:(BOOL)join;
+
+```
+
+Deletes chat dialog.
+
+```objective-c
+
+- (void)deleteChatDialogWithID:(NSString *)chatDialogID;
+
+```
+
+Find dialog by identifier.
+
+```objective-c
+
+- (QBChatDialog *)chatDialogWithID:(NSString *)dialogID;
+
+```
+
+Find dialog by room name.
+
+```objective-c
+
+- (QBChatDialog *)chatDialogWithRoomName:(NSString *)roomName;
+
+```
+
+Find private chat dialog with opponent ID.
+
+```objective-c
+
+- (QBChatDialog *)privateChatDialogWithOpponentID:(NSUInteger)opponentID;
+
+```
+
+Find unread dialogs.
+
+```objective-c
+
+- (NSArray *)unreadDialogs;
+
+```
+
+Fetch all dialogs.
+
+```objective-c
+
+- (NSArray *)unsortedDialogs;
+
+```
+
+Fetch all dialogs sorted by last message date.
+
+```objective-c
+
+- (NSArray *)dialogsSortByLastMessageDateWithAscending:(BOOL)ascending;
+
+```
+
+Fetch dialogs with specified sort descriptors.
+
+```objective-c
+
+- (NSArray *)dialogsWithSortDescriptors:(NSArray *)descriptors;
+
+```
+
+### QMMessagesMemoryStorage
+
+This class is responsible for in-memory messages storage.
+
+Add message.
+
+```objective-c
+
+- (void)addMessage:(QBChatMessage *)message forDialogID:(NSString *)dialogID;
+
+```
+
+Add messages.
+
+```objective-c
+
+- (void)addMessages:(NSArray *)messages forDialogID:(NSString *)dialogID;
+
+```
+
+Replace all messages for dialog.
+
+```objective-c
+
+- (void)replaceMessages:(NSArray *)messages forDialogID:(NSString *)dialogID;
+
+```
+
+Update message.
+
+```objective-c
+
+- (void)updateMessage:(QBChatMessage *)message;
+
+```
+
+Fetch messages.
+
+```objective-c
+
+- (NSArray *)messagesWithDialogID:(NSString *)dialogID;
+
+```
+
+Delete messages for dialog.
+
+```objective-c
+
+- (void)deleteMessagesWithDialogID:(NSString *)dialogID;
+
+```
+
+Fetch message by identifier.
+
+```objective-c
+
+- (QBChatMessage *)messageWithID:(NSString *)messageID fromDialogID:(NSString *)dialogID;
+
+```
+
+Fetch last message.
+
+```objective-c
+
+- (QBChatMessage *)lastMessageFromDialogID:(NSString *)dialogID;
+
+```
+
+Checks if dialog has messages.
+
+```objective-c
+
+- (BOOL)isEmptyForDialogID:(NSString *)dialogID;
+
+```
+
+Fetch oldest(first) message.
+
+```objective-c
+
+- (QBChatMessage *)oldestMessageForDialogID:(NSString *)dialogID;
+
+```
+
+### QMChatAttachmentService
+
+This class is responsible for attachment operations (sending, receiving, loading, saving).
+
+Attachment status delegate:
+
+```objective-c
+
+@property (nonatomic, weak) id<QMChatAttachmentServiceDelegate> delegate;
+
+```
+
+Send image attachment.
+
+```objective-c
+
+- (void)sendMessage:(QBChatMessage *)message toDialog:(QBChatDialog *)dialog withChatService:(QMChatService *)chatService withAttachedImage:(UIImage *)image completion:(void(^)(NSError *error))completion;
+
+```
+
+Get attachment image. (Download from Quickblox or load from disc).
+
+```objective-c
+
+- (void)getImageForChatAttachment:(QBChatAttachment *)attachment completion:(void (^)(NSError *error, UIImage *image))completion;
+
+```
+
+## QMContactListService
+
+This class is responsible for contact list operations.
+
+Fetch users by identifiers from Quickblox.
+
+```objective-c
+
+- (void)retrieveUsersWithIDs:(NSArray *)ids forceDownload:(BOOL)forceDownload
+                  completion:(void(^)(QBResponse *response, QBGeneralResponsePage *page, NSArray * users))completion;
+
+```
+
+Add user to contact list.
+
+```objective-c
+
+- (void)addUserToContactListRequest:(QBUUser *)user completion:(void(^)(BOOL success))completion;
+
+```
+
+Remove user from contact list.
+
+```objective-c
+
+- (void)removeUserFromContactListWithUserID:(NSUInteger)userID completion:(void(^)(BOOL success))completion;
+
+```
+
+Accept contact request.
+
+```objective-c
+
+- (void)acceptContactRequest:(NSUInteger)userID completion:(void (^)(BOOL success))completion;
+
+```
+
+Reject contact request.
+
+```objective-c
+
+- (void)rejectContactRequest:(NSUInteger)userID completion:(void(^)(BOOL success))completion;
+
+```
+
+### QMContactListMemoryStorage
+
+This class is responsible for in-memory contact list storage.
+
+Update contact list memory storage.
+
+```objective-c
+
+- (void)updateWithContactList:(QBContactList *)contactList;
+
+```
+
+Update contact list memory storage with array of contact list items.
+
+```objective-c
+
+- (void)updateWithContactList:(QBContactList *)contactList;
+
+```
+
+Fetch contact list item.
+
+```objective-c
+
+- (QBContactListItem *)contactListItemWithUserID:(NSUInteger)userID;
+
+```
+
+Fetch user ids from contact list memory storage.
+
+```objective-c
+
+- (NSArray *)userIDsFromContactList;
+
+```
+
+### QMUsersMemoryStorage
+
+This class is responsible for in-memory users storage.
+
+Delegate for getting contact list user ids.
+
+```objective-c
+
+@property (weak, nonatomic) id <QMUsersMemoryStorageDelegate> delegate;
+
+```
+
+Add user.
+
+```objective-c
+
+- (void)addUser:(QBUUser *)user;
+
+```
+
+Add users.
+
+```objective-c
+
+- (void)addUsers:(NSArray *)users;
+
+```
+
+Fetch user by identifier.
+
+```objective-c
+
+- (QBUUser *)userWithID:(NSUInteger)userID;
+
+```
+
+Fetch users by identifiers.
+
+```objective-c
+
+- (NSArray *)usersWithIDs:(NSArray *)ids;
+
+```
+
+Fetch all users from memory storage.
+
+```objective-c
+
+- (NSArray *)unsortedUsers;
+
+```
+
+Fetch all users sorted by key,
+
+```objective-c
+
+- (NSArray *)usersSortedByKey:(NSString *)key ascending:(BOOL)ascending;
+
+```
+
+Fetch all contact list users sorted by key.
+
+```objective-c
+
+- (NSArray *)contactsSortedByKey:(NSString *)key ascending:(BOOL)ascending;
+
+```
+
+Fetch users with identifiers and excluding user identifier.
+
+```objective-c
+
+- (NSArray *)usersWithIDs:(NSArray *)IDs withoutID:(NSUInteger)ID;
+
+```
+
+Create comma-separate user's full name string.
+
+```objective-c
+
+- (NSString *)joinedNamesbyUsers:(NSArray *)users;
+
 ```
 
 # Documentation

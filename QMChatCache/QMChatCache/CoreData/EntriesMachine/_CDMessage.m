@@ -8,6 +8,7 @@ const struct CDMessageAttributes CDMessageAttributes = {
 	.customParameters = @"customParameters",
 	.dateSend = @"dateSend",
 	.delayed = @"delayed",
+	.deliveredIDs = @"deliveredIDs",
 	.dialogID = @"dialogID",
 	.isRead = @"isRead",
 	.messageID = @"messageID",
@@ -99,6 +100,8 @@ const struct CDMessageRelationships CDMessageRelationships = {
 - (void)setPrimitiveDelayedValue:(BOOL)value_ {
 	[self setPrimitiveDelayed:[NSNumber numberWithBool:value_]];
 }
+
+@dynamic deliveredIDs;
 
 @dynamic dialogID;
 

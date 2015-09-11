@@ -1,9 +1,9 @@
 //
 //  QMMessagesMemoryStorage.m
-//  QMChatService
+//  QMServices
 //
 //  Created by Andrey on 28.11.14.
-//
+//  Copyright (c) 2015 Quickblox Team. All rights reserved.
 //
 
 #import "QMMessagesMemoryStorage.h"
@@ -30,8 +30,9 @@
 - (void)addMessage:(QBChatMessage *)message forDialogID:(NSString *)dialogID {
     
     NSMutableOrderedSet *datasource = [self dataSourceWithDialogID:dialogID];
-
+    
     [datasource addObject:message];
+    [self sortMessagesForDialogID:dialogID];
 }
 
 - (void)addMessages:(NSArray *)messages forDialogID:(NSString *)dialogID {

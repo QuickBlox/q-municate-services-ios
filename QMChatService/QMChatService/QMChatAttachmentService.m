@@ -1,9 +1,9 @@
 //
 //  QMChatAttachmentService.m
-//  QMChatService
+//  QMServices
 //
 //  Created by Injoit on 7/1/15.
-//
+//  Copyright (c) 2015 Quickblox Team. All rights reserved.
 //
 
 #import "QMChatAttachmentService.h"
@@ -62,7 +62,7 @@ static NSString* attachmentPath(QBChatAttachment *attachment) {
         
         [self changeMessageAttachmentStatus:QMMessageAttachmentStatusLoaded forMessage:message];
         
-        [chatService sendMessage:message type:QMMessageTypeText toDialog:dialog save:YES saveToStorage:NO completion:completion];
+        [chatService sendMessage:message type:QMMessageTypeText toDialog:dialog save:YES saveToStorage:YES completion:completion];
         
     } statusBlock:^(QBRequest *request, QBRequestStatus *status) {
         

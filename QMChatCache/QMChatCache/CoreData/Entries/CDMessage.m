@@ -24,6 +24,7 @@
     message.createdAt = self.createAt;
     message.delayed = self.delayed.boolValue;
     message.readIDs = [[self objectsWithBinaryData:self.readIDs] copy];
+    message.deliveredIDs = [[self objectsWithBinaryData:self.deliveredIDs] copy];
 
     NSMutableArray *attachments = [NSMutableArray arrayWithCapacity:self.attachments.count];
     
@@ -52,6 +53,7 @@
     self.customParameters = [self binaryDataWithObject:message.customParameters];
     self.isRead = @(message.isRead);
     self.readIDs = [self binaryDataWithObject:message.readIDs];
+    self.deliveredIDs = [self binaryDataWithObject:message.deliveredIDs];
 
     if (message.attachments.count > 0) {
         

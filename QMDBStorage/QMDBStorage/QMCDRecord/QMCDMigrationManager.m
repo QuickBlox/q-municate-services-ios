@@ -2,8 +2,8 @@
 //  QMCDMigrationManager.m
 //  Photobucket Next
 //
-//  Created by Saul Mora on 8/6/13.
-//  Copyright (c) 2013 Photobucket. All rights reserved.
+//  Created by Injoit on 8/6/13.
+//  Copyright (c) 2015 Quickblox Team. All rights reserved.
 //
 
 #import "QMCDMigrationManager.h"

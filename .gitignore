@@ -16,3 +16,6 @@ DerivedData
 *.hmap
 *.ipa
 *.xcuserstate
+
+# OS X
+.DS_Store

@@ -1,6 +1,6 @@
 
-//  Created by Saul Mora on 11/15/09.
-//  Copyright 2010 QMCD Panda Software, LLC All rights reserved.
+//  Created by Injoit on 11/15/09.
+//  Copyright (c) 2015 Quickblox Team. All rights reserved.
 //
 
 #import "QMCDRecord.h"

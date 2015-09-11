@@ -1,9 +1,9 @@
 //
 //  QMUsersMemoryStorage.m
-//  QMContactListService
+//  QMServices
 //
 //  Created by Andrey on 26.11.14.
-//
+//  Copyright (c) 2015 Quickblox Team. All rights reserved.
 //
 
 #import "QMUsersMemoryStorage.h"
@@ -76,7 +76,7 @@
     return [ids allObjects];
 }
 
-- (NSArray *)unsorterdUsers {
+- (NSArray *)unsortedUsers {
     
     NSArray *allUsers = self.users.allValues;
     return allUsers;

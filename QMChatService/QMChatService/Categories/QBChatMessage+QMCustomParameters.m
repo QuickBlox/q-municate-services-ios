@@ -1,9 +1,9 @@
 //
 //  QBChatAbstractMessage+QMCustomParameters.h
-//  Q-municate
+//  QMServices
 //
 //  Created by Andrey Ivanov on 24.07.14.
-//  Copyright (c) 2014 Quickblox. All rights reserved.
+//  Copyright (c) 2015 Quickblox. All rights reserved.
 //
 
 #import "QBChatMessage+QMCustomParameters.h"
@@ -58,11 +58,10 @@ NSString const *kQMCustomParameterDialogRoomUpdatedDate = @"room_updated_date";
     
     if (!self.tDialog) {
         
-        self.tDialog = [[QBChatDialog alloc] init];
+        self.tDialog = [[QBChatDialog alloc] initWithDialogID:self.context[kQMCustomParameterDialogID]
+                                                         type:[self.context[kQMCustomParameterDialogType] intValue]];
         //Grap custom parameters;
-        self.tDialog.ID = self.context[kQMCustomParameterDialogID];
         self.tDialog.roomJID = self.context[kQMCustomParameterRoomJID];
-        self.tDialog.type = [self.context[kQMCustomParameterDialogType] intValue];
 		NSAssert(self.tDialog.type != 0, @"dialog type is undefined");
         self.tDialog.name = self.context[kQMCustomParameterDialogRoomName];
     

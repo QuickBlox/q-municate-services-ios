@@ -1,9 +1,9 @@
 //
 //  QBChatAbstractMessage+TextEncoding.m
-//  Q-municate
+//  QMServices
 //
 //  Created by Igor Alefirenko on 20.08.14.
-//  Copyright (c) 2014 Quickblox. All rights reserved.
+//  Copyright (c) 2015 Quickblox. All rights reserved.
 //
 
 #import "QBChatMessage+TextEncoding.h"

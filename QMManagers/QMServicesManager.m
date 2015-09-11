@@ -1,9 +1,9 @@
 //
-//  QBServiceManager.m
-//  sample-chat
+//  QMServiceManager.m
+//  QMServices
 //
 //  Created by Andrey Moskvin on 5/19/15.
-//  Copyright (c) 2015 Igor Khomenko. All rights reserved.
+//  Copyright (c) 2015 Quickblox Team. All rights reserved.
 //
 
 #import "QMServicesManager.h"
@@ -96,21 +96,26 @@
 		}
 		
         __weak typeof(self) weakSelf = self;
-		[self.chatService logIn:^(NSError *error) {
+		[weakSelf.chatService logIn:^(NSError *error) {
             __typeof(self) strongSelf = weakSelf;
-			if (completion != nil) {
-				completion(error == nil, error.localizedDescription);
-			}
-            NSArray* dialogs = [strongSelf.chatService.dialogsMemoryStorage unsortedDialogs];
-            for (QBChatDialog* dialog in dialogs) {
-                if (dialog.type != QBChatDialogTypePrivate) {
-                    [strongSelf.chatService joinToGroupDialog:dialog failed:^(NSError *error) {
-						if (error != nil) {
-							NSLog(@"Join error: %@", error.localizedDescription);
-						}
-                    }];
+            
+            [strongSelf.chatService loadCachedDialogsWithCompletion:^{
+                NSArray* dialogs = [strongSelf.chatService.dialogsMemoryStorage unsortedDialogs];
+                for (QBChatDialog* dialog in dialogs) {
+                    if (dialog.type != QBChatDialogTypePrivate) {
+                        [strongSelf.chatService joinToGroupDialog:dialog failed:^(NSError *error) {
+                            if (error != nil) {
+                                NSLog(@"Join error: %@", error.localizedDescription);
+                            }
+                        }];
+                    }
                 }
-            }
+                
+                if (completion != nil) {
+                    completion(error == nil, error.localizedDescription);
+                }
+                
+            }];
 		}];
 	}];
 }
@@ -119,7 +124,7 @@
 
 }
 
-- (BOOL)isAutorized {
+- (BOOL)isAuthorized {
 	return self.authService.isAuthorized;
 }
 
