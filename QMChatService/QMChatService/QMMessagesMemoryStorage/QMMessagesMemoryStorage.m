@@ -30,8 +30,9 @@
 - (void)addMessage:(QBChatMessage *)message forDialogID:(NSString *)dialogID {
     
     NSMutableOrderedSet *datasource = [self dataSourceWithDialogID:dialogID];
-
+    
     [datasource addObject:message];
+    [self sortMessagesForDialogID:dialogID];
 }
 
 - (void)addMessages:(NSArray *)messages forDialogID:(NSString *)dialogID {
