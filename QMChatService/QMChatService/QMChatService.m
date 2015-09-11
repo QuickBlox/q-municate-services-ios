@@ -730,14 +730,18 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
                                 forPage:page
                            successBlock:^(QBResponse *response, NSArray *messages, QBResponsePage *page) {
                                NSArray* sortedMessages = [[messages reverseObjectEnumerator] allObjects];
-                               if (lastMessage == nil) {
-                                   [weakSelf.messagesMemoryStorage replaceMessages:sortedMessages forDialogID:chatDialogID];
-                               } else {
-                                   [weakSelf.messagesMemoryStorage addMessages:sortedMessages forDialogID:chatDialogID];
-                               }
                                
-                               if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddMessagesToMemoryStorage:forDialogID:)]) {
-                                   [weakSelf.multicastDelegate chatService:weakSelf didAddMessagesToMemoryStorage:sortedMessages forDialogID:chatDialogID];
+                               if ([sortedMessages count] > 0) {
+        
+                                   if (lastMessage == nil) {
+                                       [weakSelf.messagesMemoryStorage replaceMessages:sortedMessages forDialogID:chatDialogID];
+                                   } else {
+                                       [weakSelf.messagesMemoryStorage addMessages:sortedMessages forDialogID:chatDialogID];
+                                   }
+                                   
+                                   if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddMessagesToMemoryStorage:forDialogID:)]) {
+                                       [weakSelf.multicastDelegate chatService:weakSelf didAddMessagesToMemoryStorage:sortedMessages forDialogID:chatDialogID];
+                                   }
                                }
                                
                                if (completion) {
@@ -773,10 +777,13 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     
     [QBRequest messagesWithDialogID:chatDialogID extendedRequest:@{@"date_sent[lt]": oldestMessageDate, @"sort_desc" : @"date_sent"} forPage:page successBlock:^(QBResponse *response, NSArray *messages, QBResponsePage *page) {
         
-        [weakSelf.messagesMemoryStorage addMessages:messages forDialogID:chatDialogID];
+        if ([messages count] > 0) {
         
-        if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddMessagesToMemoryStorage:forDialogID:)]) {
-            [weakSelf.multicastDelegate chatService:weakSelf didAddMessagesToMemoryStorage:messages forDialogID:chatDialogID];
+            [weakSelf.messagesMemoryStorage addMessages:messages forDialogID:chatDialogID];
+            
+            if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddMessagesToMemoryStorage:forDialogID:)]) {
+                [weakSelf.multicastDelegate chatService:weakSelf didAddMessagesToMemoryStorage:messages forDialogID:chatDialogID];
+            }
         }
         
         if (completion) {
