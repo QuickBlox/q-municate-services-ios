@@ -809,17 +809,30 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 
 - (void)fetchDialogWithID:(NSString *)dialogID completion:(void (^)(QBChatDialog *dialog))completion
 {
-    __weak typeof(self)weakSelf = self;
+    // checking memory storage for dialog with specific id
+    QBChatDialog *dialogFromMemoryStorage = [self.dialogsMemoryStorage chatDialogWithID:dialogID];
+    if (dialogFromMemoryStorage != nil) {
+        if (completion) {
+            completion(dialogFromMemoryStorage);
+        }
+        return;
+    }
+    
+    // dialog is not in memory storage
+    __weak __typeof(self)weakSelf = self;
     QBResponsePage *responsePage = [QBResponsePage responsePageWithLimit:1 skip:0];
     NSMutableDictionary *extendedRequest = @{@"_id":dialogID}.mutableCopy;
     [QBRequest dialogsForPage:responsePage extendedRequest:extendedRequest successBlock:^(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, QBResponsePage *page) {
         if ([dialogObjects firstObject] != nil) {
             [weakSelf.dialogsMemoryStorage addChatDialog:[dialogObjects firstObject] andJoin:YES onJoin:^{
                 //
+                if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddChatDialogToMemoryStorage:)]) {
+                    [weakSelf.multicastDelegate chatService:weakSelf didAddChatDialogToMemoryStorage:[dialogObjects firstObject]];
+                }
+                if (completion) {
+                    completion([dialogObjects firstObject]);
+                }
             }];
-        }
-        if (completion) {
-            completion([dialogObjects firstObject]);
         }
     } errorBlock:^(QBResponse *response) {
         if (completion) {
