@@ -227,7 +227,7 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 /**
  *  Fetch dialog with dialog id.
  *
- *  @param dialogID Dialog identifier
+ *  @param dialogID   Dialog identifier
  *  @param completion Block with dialog if request succeded or nil if failed
  */
 - (void)fetchDialogWithID:(NSString *)dialogID completion:(void (^)(QBChatDialog *dialog))completion;
