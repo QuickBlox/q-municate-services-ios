@@ -222,6 +222,16 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  */
 - (void)earlierMessagesWithChatDialogID:(NSString *)chatDialogID completion:(void(^)(QBResponse *response, NSArray *messages))completion;
 
+#pragma mark - Fetch dialogs
+
+/**
+ *  Fetch dialog with dialog id.
+ *
+ *  @param dialogID Dialog identifier
+ *  @param completion Block with dialog if request succeded or nil if failed
+ */
+- (void)fetchDialogWithID:(NSString *)dialogID completion:(void (^)(QBChatDialog *dialog))completion;
+
 #pragma mark Send message
 
 /**

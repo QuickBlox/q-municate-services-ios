@@ -805,6 +805,29 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     }];
 }
 
+#pragma mark - Fetch dialogs
+
+- (void)fetchDialogWithID:(NSString *)dialogID completion:(void (^)(QBChatDialog *dialog))completion
+{
+    __weak typeof(self)weakSelf = self;
+    QBResponsePage *responsePage = [QBResponsePage responsePageWithLimit:1 skip:0];
+    NSMutableDictionary *extendedRequest = @{@"_id":dialogID}.mutableCopy;
+    [QBRequest dialogsForPage:responsePage extendedRequest:extendedRequest successBlock:^(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, QBResponsePage *page) {
+        if ([dialogObjects firstObject] != nil) {
+            [weakSelf.dialogsMemoryStorage addChatDialog:[dialogObjects firstObject] andJoin:YES onJoin:^{
+                //
+            }];
+        }
+        if (completion) {
+            completion([dialogObjects firstObject]);
+        }
+    } errorBlock:^(QBResponse *response) {
+        if (completion) {
+            completion(nil);
+        }
+    }];
+}
+
 #pragma mark - Send messages
 
 - (BOOL)sendMessage:(QBChatMessage *)message type:(QMMessageType)type toDialog:(QBChatDialog *)dialog save:(BOOL)save completion:(void(^)(NSError *error))completion {
