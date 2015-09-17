@@ -90,6 +90,14 @@
 - (void)dialogsSortedBy:(NSString *)sortTerm ascending:(BOOL)ascending completion:(void(^)(NSArray *dialogs))completion;
 
 /**
+ *  Fetch dialog by specific ID
+ *
+ *  @param dialogID   dialog identificator
+ *  @param completion Completion block that is called after the fetch has completed. Returns requested dialog or nil if not found
+ */
+- (void)dialogByID:(NSString *)dialogID completion:(void(^)(QBChatDialog *cachedDialog))completion;
+
+/**
  *  Fetch cached dialogs with predicate
  *
  *  Key for filtering:

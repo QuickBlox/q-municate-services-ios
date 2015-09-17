@@ -177,6 +177,12 @@
 	}];
 }
 
+- (void)cachedDialogWithID:(NSString *)dialogID completion:(void (^)(QBChatDialog *dialog))completion {
+    [QMChatCache.instance dialogByID:dialogID completion:^(QBChatDialog *cachedDialog) {
+        completion(cachedDialog);
+    }];
+}
+
 - (void)cachedMessagesWithDialogID:(NSString *)dialogID block:(QMCacheCollection)block {
 	[QMChatCache.instance messagesWithDialogId:dialogID sortedBy:CDMessageAttributes.messageID ascending:YES completion:^(NSArray *array) {
 		block(array);

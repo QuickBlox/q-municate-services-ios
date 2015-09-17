@@ -270,6 +270,14 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 - (void)cachedDialogs:(QMCacheCollection)block;
 
 /**
+ *  Will retrieve dialog with specific identificator from cache or nil if doesnt exists
+ *  
+ *  @param dialogID   dialog identificator
+ *  @param complition completion block with dialog
+ */
+- (void)cachedDialogWithID:(NSString *)dialogID completion:(void (^)(QBChatDialog *dialog))completion;
+
+/**
  *  Is called when begin fetch messages. @see -messagesWithChatDialogID:completion:
  *  Need to use for inserting initial data QMMessagesMemoryStorage by dialogID
  *

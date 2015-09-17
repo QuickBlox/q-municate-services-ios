@@ -76,6 +76,18 @@ static QMChatCache *_chatCacheInstance = nil;
     [self dialogsSortedBy:sortTerm ascending:ascending withPredicate:nil completion:completion];
 }
 
+- (void)dialogByID:(NSString *)dialogID completion:(void (^)(QBChatDialog *cachedDialog))completion {
+    __weak __typeof(self)weakSelf = self;
+    
+    [self async:^(NSManagedObjectContext *context) {
+        NSPredicate *fetchPredicate = [NSPredicate predicateWithFormat:@"(ANY dialogID contains[cd] %@)",dialogID];
+        [weakSelf dialogsSortedBy:CDDialogAttributes.dialogID ascending:NO withPredicate:fetchPredicate completion:^(NSArray *dialogs) {
+
+            DO_AT_MAIN(completion([dialogs firstObject]));
+        }];
+    }];
+}
+
 - (void)dialogsSortedBy:(NSString *)sortTerm ascending:(BOOL)ascending withPredicate:(NSPredicate *)predicate
              completion:(void(^)(NSArray *dialogs))completion {
     
