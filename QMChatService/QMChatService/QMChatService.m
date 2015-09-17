@@ -866,10 +866,10 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
                 if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddChatDialogToMemoryStorage:)]) {
                     [weakSelf.multicastDelegate chatService:weakSelf didAddChatDialogToMemoryStorage:[dialogObjects firstObject]];
                 }
-                if (completion) {
-                    completion([dialogObjects firstObject]);
-                }
             }];
+        }
+        if (completion) {
+            completion([dialogObjects firstObject]);
         }
     } errorBlock:^(QBResponse *response) {
         if (completion) {
