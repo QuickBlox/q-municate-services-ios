@@ -818,7 +818,44 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
         return;
     }
     
-    // dialog is not in memory storage
+    // checking cache for dialog with specific id
+    if ([self.cacheDataSource respondsToSelector:@selector(cachedDialogs:)]) {
+        NSAssert([QBSession currentSession].currentUser != nil, @"Current user must be non nil!");
+        
+        __weak __typeof(self)weakSelf = self;
+        [self.cacheDataSource cachedDialogs:^(NSArray *collection) {
+            //
+            BOOL success = NO;
+            NSArray* userDialogs = [collection filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"%lu IN self.occupantIDs", [QBSession currentSession].currentUser.ID]];
+            for (QBChatDialog* cachedDialog in userDialogs) {
+                if ([cachedDialog.ID isEqualToString:dialogID]) {
+                    success = YES;
+                    if (completion) {
+                        completion(cachedDialog);
+                    }
+                    break;
+                }
+            }
+            if (!success) {
+                // dialog is not in memory storage nor in cache
+                [weakSelf loadDialogWithID:dialogID completion:^(QBChatDialog *loadedDialog) {
+                    if (completion) {
+                        completion(loadedDialog);
+                    }
+                }];
+            }
+        }];
+    }
+    else {
+        [self loadDialogWithID:dialogID completion:^(QBChatDialog *loadedDialog) {
+            if (completion) {
+                completion(loadedDialog);
+            }
+        }];
+    }
+}
+
+- (void)loadDialogWithID:(NSString *)dialogID completion:(void (^)(QBChatDialog *loadedDialog))completion {
     __weak __typeof(self)weakSelf = self;
     QBResponsePage *responsePage = [QBResponsePage responsePageWithLimit:1 skip:0];
     NSMutableDictionary *extendedRequest = @{@"_id":dialogID}.mutableCopy;
