@@ -92,21 +92,6 @@
     return dialog;
 }
 
-- (void)leaveFromRooms {
-    
-    for (QBChatDialog *chatDialog in self.dialogs.allValues) {
-        
-        if (chatDialog.isJoined) {
-            
-            [chatDialog leave];
-        }
-        else {
-            
-            NSLog(@"Check this case");
-        }
-    }
-}
-
 - (QBChatDialog *)chatDialogWithRoomName:(NSString *)roomName {
     
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"self.chatRoom.name"];
