@@ -222,6 +222,24 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  */
 - (void)earlierMessagesWithChatDialogID:(NSString *)chatDialogID completion:(void(^)(QBResponse *response, NSArray *messages))completion;
 
+#pragma mark - Fetch dialogs
+
+/**
+ *  Fetch dialog with dialog id.
+ *
+ *  @param dialogID   Dialog identifier
+ *  @param completion Block with dialog if request succeded or nil if failed
+ */
+- (void)fetchDialogWithID:(NSString *)dialogID completion:(void (^)(QBChatDialog *dialog))completion;
+
+/**
+ *  Load dialog with dialog id from Quickblox and saving to memory storage and cache.
+ *
+ *  @param dialogID   Dialog identifier
+ *  @param completion Block with dialog if request succeded or nil if failed
+ */
+- (void)loadDialogWithID:(NSString *)dialogID completion:(void (^)(QBChatDialog *loadedDialog))completion;
+
 #pragma mark Send message
 
 /**
@@ -258,6 +276,14 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  *  @param block Block for provide QBChatDialogs collection
  */
 - (void)cachedDialogs:(QMCacheCollection)block;
+
+/**
+ *  Will retrieve dialog with specific identificator from cache or nil if doesnt exists
+ *  
+ *  @param dialogID   dialog identificator
+ *  @param complition completion block with dialog
+ */
+- (void)cachedDialogWithID:(NSString *)dialogID completion:(void (^)(QBChatDialog *dialog))completion;
 
 /**
  *  Is called when begin fetch messages. @see -messagesWithChatDialogID:completion:
