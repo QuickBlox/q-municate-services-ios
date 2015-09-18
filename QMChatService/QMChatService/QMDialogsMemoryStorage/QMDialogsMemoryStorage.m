@@ -96,9 +96,9 @@
     
     for (QBChatDialog *chatDialog in self.dialogs.allValues) {
         
-        if (chatDialog.chatRoom.isJoined) {
+        if (chatDialog.isJoined) {
             
-            [chatDialog .chatRoom leaveRoom];
+            [chatDialog leave];
         }
         else {
             
