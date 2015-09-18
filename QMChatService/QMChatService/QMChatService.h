@@ -232,6 +232,14 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  */
 - (void)fetchDialogWithID:(NSString *)dialogID completion:(void (^)(QBChatDialog *dialog))completion;
 
+/**
+ *  Load dialog with dialog id from Quickblox and saving to memory storage and cache.
+ *
+ *  @param dialogID   Dialog identifier
+ *  @param completion Block with dialog if request succeded or nil if failed
+ */
+- (void)loadDialogWithID:(NSString *)dialogID completion:(void (^)(QBChatDialog *loadedDialog))completion;
+
 #pragma mark Send message
 
 /**

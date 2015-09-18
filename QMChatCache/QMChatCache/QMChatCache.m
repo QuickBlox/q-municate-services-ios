@@ -82,9 +82,13 @@ static QMChatCache *_chatCacheInstance = nil;
         NSPredicate *fetchPredicate = [NSPredicate predicateWithFormat:@"(self.dialogID ==[cd] %@)",dialogID];
         
         CDDialog *cdChatDialog = [CDDialog QM_findFirstWithPredicate:fetchPredicate inContext:context];
-        QBChatDialog *dialog = [[weakSelf convertCDDialogsTOQBChatDialogs:@[cdChatDialog]] firstObject];
-        
-        DO_AT_MAIN(completion(dialog));
+        if (cdChatDialog != nil) {
+            QBChatDialog *dialog = [[weakSelf convertCDDialogsTOQBChatDialogs:@[cdChatDialog]] firstObject];
+            DO_AT_MAIN(completion(dialog));
+        }
+        else {
+            DO_AT_MAIN(completion(nil));
+        }
     }];
 }
 

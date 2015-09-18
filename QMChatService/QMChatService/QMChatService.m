@@ -822,9 +822,9 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     if ([self.cacheDataSource respondsToSelector:@selector(cachedDialogWithID:completion:)]) {
         NSAssert([QBSession currentSession].currentUser != nil, @"Current user must be non nil!");
         
-        __weak __typeof(self)weakSelf = self;
+        //__weak __typeof(self)weakSelf = self;
         [self.cacheDataSource cachedDialogWithID:dialogID completion:^(QBChatDialog *dialog) {
-            if (dialog == nil) {
+            /*if (dialog == nil) {
                 [weakSelf loadDialogWithID:dialogID completion:^(QBChatDialog *loadedDialog) {
                     if (completion) {
                         completion(loadedDialog);
@@ -833,15 +833,19 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
             }
             else {
                 if (completion) completion(dialog);
-            }
+            }*/
+            if (completion) completion(dialog);
         }];
     }
     else {
-        [self loadDialogWithID:dialogID completion:^(QBChatDialog *loadedDialog) {
+        /*[self loadDialogWithID:dialogID completion:^(QBChatDialog *loadedDialog) {
             if (completion) {
                 completion(loadedDialog);
             }
-        }];
+        }];*/
+        if (completion) {
+            completion(nil);
+        }
     }
 }
 
