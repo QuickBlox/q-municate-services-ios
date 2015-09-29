@@ -79,6 +79,17 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 - (void)retrieveUsersWithEmails:(NSArray *)emails completion:(void(^)(QBResponse *response, QBGeneralResponsePage *page, NSArray * users))completion;
 
 /**
+ *  Retrieve users with full name
+ *
+ *  @param  searchText string with full name
+ *  @param  pagedRequest extended set of pagination parameters
+ *  @param  completion Block with response, page and users instances if request succeded
+ *
+ *  @return QBRequest cancelable instance
+ */
+- (QBRequest *)retrieveUsersWithFullName:(NSString *)searchText pagedRequest:(QBGeneralResponsePage *)page completion:(void(^)(QBResponse *response, QBGeneralResponsePage *page, NSArray * users))completion;
+
+/**
  *  Retrieve users with facebook ids (with extended set of pagination parameters)
  *
  *  @param facebookIDs facebook ids to search
