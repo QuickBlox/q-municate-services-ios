@@ -195,6 +195,38 @@
 	
 }
 
+- (void)retrieveUsersWithFacebookIDs:(NSArray *)facebookIDs completion:(void(^)(QBResponse *response, QBGeneralResponsePage *page, NSArray * users))completion {
+    QBGeneralResponsePage *pageResponse =
+    [QBGeneralResponsePage responsePageWithCurrentPage:1 perPage:facebookIDs.count < 100 ? facebookIDs.count : 100];
+    
+    __weak __typeof(self)weakSelf = self;
+    [QBRequest usersWithFacebookIDs:facebookIDs page:pageResponse successBlock:^(QBResponse *response, QBGeneralResponsePage *page, NSArray *users) {
+        
+        // remove already downloaded users from adding to memory storage
+        NSMutableArray *mutableUsers = [users mutableCopy];
+        for (int i = 0; i < mutableUsers.count; i++ ) {
+            QBUUser *user = mutableUsers[i];
+            if ([weakSelf.usersMemoryStorage userWithID:user.ID] != nil ) {
+                [mutableUsers removeObjectAtIndex:i];
+            }
+        }
+        
+        [weakSelf.usersMemoryStorage addUsers:[mutableUsers copy]];
+        
+        if ([weakSelf.multicastDelegate respondsToSelector:@selector(contactListService:didAddUsers:)]) {
+            [weakSelf.multicastDelegate contactListService:weakSelf didAddUsers:users];
+        }
+        
+        if (completion) {
+            completion(response, page, users);
+        }
+        
+    } errorBlock:^(QBResponse *response) {
+        //
+        completion(response,nil,nil);
+    }];
+}
+
 #pragma mark - ContactList Request
 
 - (void)addUserToContactListRequest:(QBUUser *)user completion:(void(^)(BOOL success))completion {

@@ -71,6 +71,14 @@ typedef void(^QMCacheCollection)(NSArray *collection);
                   completion:(void(^)(QBResponse *response, QBGeneralResponsePage *page, NSArray * users))completion;
 
 /**
+ *  Retrieve users with facebook ids (with extended set of pagination parameters)
+ *
+ *  @param facebookIDs facebook ids to search
+ *  @param completion  Block with response, page and users instances if request succeded
+ */
+- (void)retrieveUsersWithFacebookIDs:(NSArray *)facebookIDs completion:(void(^)(QBResponse *response, QBGeneralResponsePage *page, NSArray * users))completion;
+
+/**
  *  Add user to contact list request
  *
  *  @param user       user which you would like to add to contact list
