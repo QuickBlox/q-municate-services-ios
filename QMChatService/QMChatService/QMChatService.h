@@ -127,11 +127,21 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  *  Change dialog name
  *
  *  @param dialogName Dialog name
- *  @param chatDialog QBChatDialog instane
+ *  @param chatDialog QBChatDialog instance
  *  @param completion Block with response and updated chat dialog instances
  */
 - (void)changeDialogName:(NSString *)dialogName forChatDialog:(QBChatDialog *)chatDialog
               completion:(void(^)(QBResponse *response, QBChatDialog *updatedDialog))completion;
+
+/**
+ *  Change dialog avatar
+ *
+ *  @param avatarPublicUrl avatar url
+ *  @param chatDialog      QBChatDialog instance
+ *  @param completion      Block with response and updated chat dialog instances
+ */
+- (void)changeDialogAvatar:(NSString *)avatarPublicUrl forChatDialog:(QBChatDialog *)chatDialog
+                completion:(void(^)(QBResponse *response, QBChatDialog *updatedDialog))completion;
 
 /**
  *  Join occupants

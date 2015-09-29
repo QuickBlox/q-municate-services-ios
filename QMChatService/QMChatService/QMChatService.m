@@ -644,6 +644,24 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 	}];
 }
 
+- (void)changeDialogAvatar:(NSString *)avatarPublicUrl forChatDialog:(QBChatDialog *)chatDialog completion:(void(^)(QBResponse *response, QBChatDialog *updatedDialog))completion {
+
+    chatDialog.photo = avatarPublicUrl;
+    
+    __weak __typeof(self)weakSelf = self;
+    [QBRequest updateDialog:chatDialog successBlock:^(QBResponse *response, QBChatDialog *dialog) {
+        //
+        [weakSelf.dialogsMemoryStorage addChatDialog:dialog andJoin:NO onJoin:nil];
+        
+        if (completion) completion(response,dialog);
+    } errorBlock:^(QBResponse *response) {
+        //
+        [weakSelf.serviceManager handleErrorResponse:response];
+        
+        if (completion) completion(response,nil);
+    }];
+}
+
 - (void)joinOccupantsWithIDs:(NSArray *)ids toChatDialog:(QBChatDialog *)chatDialog
 				  completion:(void(^)(QBResponse *response, QBChatDialog *updatedDialog))completion {
 	
