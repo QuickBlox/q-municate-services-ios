@@ -885,22 +885,13 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     
     [QBRequest dialogsForPage:[QBResponsePage responsePageWithLimit:1 skip:0] extendedRequest:extendedRequest successBlock:^(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, QBResponsePage *page) {
         //
-        // remove already downloaded dialogs from adding to memory storage
-        NSMutableArray *mutableDialogs = [dialogObjects mutableCopy];
-        for (int i = 0; i < mutableDialogs.count; i++) {
-            QBChatDialog *chatDialog = mutableDialogs[i];
-            if ([weakSelf.dialogsMemoryStorage chatDialogWithID:chatDialog.ID] != nil ) {
-                [mutableDialogs removeObjectAtIndex:i];
-            }
+        
+        [weakSelf.dialogsMemoryStorage addChatDialogs:dialogObjects andJoin:YES];
+        
+        if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddChatDialogsToMemoryStorage:)]) {
+            [weakSelf.multicastDelegate chatService:weakSelf didAddChatDialogsToMemoryStorage:dialogObjects];
         }
         
-        if (mutableDialogs != nil) {
-            [weakSelf.dialogsMemoryStorage addChatDialogs:[mutableDialogs copy] andJoin:YES];
-            
-            if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddChatDialogsToMemoryStorage:)]) {
-                [weakSelf.multicastDelegate chatService:weakSelf didAddChatDialogsToMemoryStorage:[mutableDialogs copy]];
-            }
-        }
         if (completion) {
             completion(response,dialogObjects,dialogsUsersIDs,page);
         }

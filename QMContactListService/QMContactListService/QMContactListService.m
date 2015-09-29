@@ -169,16 +169,7 @@
 	__weak __typeof(self)weakSelf = self;
 	[QBRequest usersWithIDs:usersIDs.allObjects  page:pageResponse successBlock:^(QBResponse *response, QBGeneralResponsePage *page, NSArray * users) {
 		
-		// remove already downloaded users from adding to memory storage
-		NSMutableArray *mutableUsers = [users mutableCopy];
-		for (int i = 0; i < mutableUsers.count; i++ ) {
-			QBUUser *user = mutableUsers[i];
-			if ([weakSelf.usersMemoryStorage userWithID:user.ID] != nil ) {
-				[mutableUsers removeObjectAtIndex:i];
-			}
-		}
-		
-		[weakSelf.usersMemoryStorage addUsers:[mutableUsers copy]];
+		[weakSelf.usersMemoryStorage addUsers:users];
 		
 		if ([weakSelf.multicastDelegate respondsToSelector:@selector(contactListService:didAddUsers:)]) {
 			[weakSelf.multicastDelegate contactListService:weakSelf didAddUsers:users];
@@ -200,16 +191,8 @@
     __weak __typeof(self)weakSelf = self;
     [QBRequest usersWithEmails:emails successBlock:^(QBResponse *response, QBGeneralResponsePage *page, NSArray *users) {
         //
-        // remove already downloaded users from adding to memory storage
-        NSMutableArray *mutableUsers = [users mutableCopy];
-        for (int i = 0; i < mutableUsers.count; i++ ) {
-            QBUUser *user = mutableUsers[i];
-            if ([weakSelf.usersMemoryStorage userWithID:user.ID] != nil ) {
-                [mutableUsers removeObjectAtIndex:i];
-            }
-        }
         
-        [weakSelf.usersMemoryStorage addUsers:[mutableUsers copy]];
+        [weakSelf.usersMemoryStorage addUsers:users];
         
         if ([weakSelf.multicastDelegate respondsToSelector:@selector(contactListService:didAddUsers:)]) {
             [weakSelf.multicastDelegate contactListService:weakSelf didAddUsers:users];
@@ -229,16 +212,8 @@
     __weak __typeof(self)weakSelf = self;
     return [QBRequest usersWithFullName:searchText page:page successBlock:^(QBResponse *response, QBGeneralResponsePage *page, NSArray *users) {
         //
-        // remove already downloaded users from adding to memory storage
-        NSMutableArray *mutableUsers = [users mutableCopy];
-        for (int i = 0; i < mutableUsers.count; i++ ) {
-            QBUUser *user = mutableUsers[i];
-            if ([weakSelf.usersMemoryStorage userWithID:user.ID] != nil ) {
-                [mutableUsers removeObjectAtIndex:i];
-            }
-        }
-        
-        [weakSelf.usersMemoryStorage addUsers:[mutableUsers copy]];
+
+        [weakSelf.usersMemoryStorage addUsers:users];
         
         if ([weakSelf.multicastDelegate respondsToSelector:@selector(contactListService:didAddUsers:)]) {
             [weakSelf.multicastDelegate contactListService:weakSelf didAddUsers:users];
@@ -261,16 +236,7 @@
     __weak __typeof(self)weakSelf = self;
     [QBRequest usersWithFacebookIDs:facebookIDs page:pageResponse successBlock:^(QBResponse *response, QBGeneralResponsePage *page, NSArray *users) {
         
-        // remove already downloaded users from adding to memory storage
-        NSMutableArray *mutableUsers = [users mutableCopy];
-        for (int i = 0; i < mutableUsers.count; i++ ) {
-            QBUUser *user = mutableUsers[i];
-            if ([weakSelf.usersMemoryStorage userWithID:user.ID] != nil ) {
-                [mutableUsers removeObjectAtIndex:i];
-            }
-        }
-        
-        [weakSelf.usersMemoryStorage addUsers:[mutableUsers copy]];
+        [weakSelf.usersMemoryStorage addUsers:users];
         
         if ([weakSelf.multicastDelegate respondsToSelector:@selector(contactListService:didAddUsers:)]) {
             [weakSelf.multicastDelegate contactListService:weakSelf didAddUsers:users];
