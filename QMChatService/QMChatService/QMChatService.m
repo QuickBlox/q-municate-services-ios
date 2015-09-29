@@ -822,27 +822,11 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     if ([self.cacheDataSource respondsToSelector:@selector(cachedDialogWithID:completion:)]) {
         NSAssert([QBSession currentSession].currentUser != nil, @"Current user must be non nil!");
         
-        //__weak __typeof(self)weakSelf = self;
         [self.cacheDataSource cachedDialogWithID:dialogID completion:^(QBChatDialog *dialog) {
-            /*if (dialog == nil) {
-                [weakSelf loadDialogWithID:dialogID completion:^(QBChatDialog *loadedDialog) {
-                    if (completion) {
-                        completion(loadedDialog);
-                    }
-                }];
-            }
-            else {
-                if (completion) completion(dialog);
-            }*/
             if (completion) completion(dialog);
         }];
     }
     else {
-        /*[self loadDialogWithID:dialogID completion:^(QBChatDialog *loadedDialog) {
-            if (completion) {
-                completion(loadedDialog);
-            }
-        }];*/
         if (completion) {
             completion(nil);
         }
@@ -869,6 +853,40 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
         if (completion) {
             completion(nil);
         }
+    }];
+}
+
+- (void)fetchDialogsWithLastActivityFromDate:(NSDate *)date completion:(void (^)(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, QBResponsePage *page))completion
+{
+    NSTimeInterval timeInterval = [date timeIntervalSince1970];
+    NSMutableDictionary *extendedRequest = @{@"last_message_date_sent[gt]":@(timeInterval)}.mutableCopy;
+    
+    __weak typeof(self)weakSelf = self;
+    
+    [QBRequest dialogsForPage:[QBResponsePage responsePageWithLimit:1 skip:0] extendedRequest:extendedRequest successBlock:^(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, QBResponsePage *page) {
+        //
+        // remove already downloaded dialogs from adding to memory storage
+        NSMutableArray *mutableDialogs = [dialogObjects mutableCopy];
+        for (int i = 0; i < mutableDialogs.count; i++) {
+            QBChatDialog *chatDialog = mutableDialogs[i];
+            if ([weakSelf.dialogsMemoryStorage chatDialogWithID:chatDialog.ID] != nil ) {
+                [mutableDialogs removeObjectAtIndex:i];
+            }
+        }
+        
+        if (mutableDialogs != nil) {
+            [weakSelf.dialogsMemoryStorage addChatDialogs:[mutableDialogs copy] andJoin:YES];
+            
+            if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddChatDialogsToMemoryStorage:)]) {
+                [weakSelf.multicastDelegate chatService:weakSelf didAddChatDialogsToMemoryStorage:[mutableDialogs copy]];
+            }
+        }
+        if (completion) {
+            completion(response,dialogObjects,dialogsUsersIDs,page);
+        }
+    } errorBlock:^(QBResponse *response) {
+        //
+        completion(response,nil,nil,nil);
     }];
 }
 

@@ -240,6 +240,14 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  */
 - (void)loadDialogWithID:(NSString *)dialogID completion:(void (^)(QBChatDialog *loadedDialog))completion;
 
+/**
+ *  Fetch dialog with last activity date from date
+ *
+ *  @param date date to fetch dialogs from
+ *  @param completion Block with response, dialogs, dialogs users and page if request succeded or response only if failed
+ */
+- (void)fetchDialogsWithLastActivityFromDate:(NSDate *)date completion:(void (^)(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, QBResponsePage *page))completion;
+
 #pragma mark Send message
 
 /**
