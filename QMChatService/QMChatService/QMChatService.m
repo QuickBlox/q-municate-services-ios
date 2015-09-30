@@ -646,7 +646,8 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 
 - (void)changeDialogAvatar:(NSString *)avatarPublicUrl forChatDialog:(QBChatDialog *)chatDialog completion:(void(^)(QBResponse *response, QBChatDialog *updatedDialog))completion {
 
-    NSAssert(chatDialog.type != QBChatDialogTypePrivate, @"Dialog type must be group dialog");
+    NSAssert(avatarPublicUrl != nil, @"avatarPublicUrl can't be nil");
+    NSAssert(chatDialog != nil, @"Dialog can't be nil");
     
     chatDialog.photo = avatarPublicUrl;
     
