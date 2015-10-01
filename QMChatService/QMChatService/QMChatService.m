@@ -628,7 +628,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 	__weak __typeof(self)weakSelf = self;
 	[QBRequest updateDialog:chatDialog successBlock:^(QBResponse *response, QBChatDialog *updatedDialog) {
         
-		[weakSelf.dialogsMemoryStorage addChatDialog:updatedDialog andJoin:NO onJoin:nil];
+		[weakSelf.dialogsMemoryStorage addChatDialog:updatedDialog andJoin:YES onJoin:nil];
 		
 		if (completion) {
 			completion(response, updatedDialog);
@@ -654,7 +654,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     __weak __typeof(self)weakSelf = self;
     [QBRequest updateDialog:chatDialog successBlock:^(QBResponse *response, QBChatDialog *dialog) {
         //
-        [weakSelf.dialogsMemoryStorage addChatDialog:dialog andJoin:NO onJoin:nil];
+        [weakSelf.dialogsMemoryStorage addChatDialog:dialog andJoin:YES onJoin:nil];
         
         if (completion) completion(response,dialog);
     } errorBlock:^(QBResponse *response) {
@@ -674,7 +674,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 	
 	[QBRequest updateDialog:chatDialog successBlock:^(QBResponse *response, QBChatDialog *updatedDialog) {
 
-		[weakSelf.dialogsMemoryStorage addChatDialog:updatedDialog andJoin:NO onJoin:nil];
+		[weakSelf.dialogsMemoryStorage addChatDialog:updatedDialog andJoin:YES onJoin:nil];
 		
 		if (completion) {
 			completion(response, updatedDialog);
