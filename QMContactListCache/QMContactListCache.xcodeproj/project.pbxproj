@@ -73,7 +73,7 @@
 		554A28331A0CE38600C4E03C /* _CDContactListItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _CDContactListItem.m; sourceTree = "<group>"; };
 		554A28341A0CE38600C4E03C /* _CDUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _CDUser.h; sourceTree = "<group>"; };
 		554A28351A0CE38600C4E03C /* _CDUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _CDUser.m; sourceTree = "<group>"; };
-		554A28361A0CE38600C4E03C /* ModelIncludes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModelIncludes.h; sourceTree = "<group>"; };
+		554A28361A0CE38600C4E03C /* QMCLModelIncludes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMCLModelIncludes.h; sourceTree = "<group>"; };
 		5590F2AD1A0B8D4000C5044F /* QMContactListCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = QMContactListCache.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		5590F2AF1A0B8D4000C5044F /* QMContactListCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = QMContactListCache.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		55A6211A1A0BE284001BA470 /* QMContactListCache-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = "QMContactListCache-Prefix.pch"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
@@ -112,7 +112,7 @@
 			isa = PBXGroup;
 			children = (
 				554A280F1A0CE1A900C4E03C /* QMContactListModel.xcdatamodeld */,
-				554A28361A0CE38600C4E03C /* ModelIncludes.h */,
+				554A28361A0CE38600C4E03C /* QMCLModelIncludes.h */,
 				554A282C1A0CE38600C4E03C /* Entries */,
 				554A28311A0CE38600C4E03C /* EntriesMachine */,
 			);
