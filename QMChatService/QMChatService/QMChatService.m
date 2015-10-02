@@ -328,16 +328,14 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 - (void)handleSystemMessage:(QBChatMessage *)message {
     
     if (message.messageType == QMMessageTypeCreateGroupDialog) {
-        if (message.senderID != [QBSession currentSession].currentUser.ID) {
-            __weak __typeof(self)weakSelf = self;
+        __weak __typeof(self)weakSelf = self;
+        
+        [self.dialogsMemoryStorage addChatDialog:message.dialog andJoin:YES onJoin:^{
             
-            [self.dialogsMemoryStorage addChatDialog:message.dialog andJoin:YES onJoin:^{
-                
-                if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddChatDialogToMemoryStorage:)]) {
-                    [weakSelf.multicastDelegate chatService:weakSelf didAddChatDialogToMemoryStorage:message.dialog];
-                }
-            }];
-        }
+            if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddChatDialogToMemoryStorage:)]) {
+                [weakSelf.multicastDelegate chatService:weakSelf didAddChatDialogToMemoryStorage:message.dialog];
+            }
+        }];
     }
 }
 
@@ -351,11 +349,6 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     }
 	
 	if (message.messageType == QMMessageTypeText) {
-		
-		if (message.recipientID == message.senderID) {
-			return;
-		}
-        
         BOOL shouldSaveDialog = NO;
         
 		//Update chat dialog in memory storage
@@ -860,9 +853,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     NSMutableDictionary *extendedRequest = @{@"_id":dialogID}.mutableCopy;
     [QBRequest dialogsForPage:responsePage extendedRequest:extendedRequest successBlock:^(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, QBResponsePage *page) {
         if ([dialogObjects firstObject] != nil) {
-            [weakSelf.dialogsMemoryStorage addChatDialog:[dialogObjects firstObject] andJoin:YES onJoin:^{
-                //
-            }];
+            [weakSelf.dialogsMemoryStorage addChatDialog:[dialogObjects firstObject] andJoin:YES onJoin:nil];
             if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddChatDialogToMemoryStorage:)]) {
                 [weakSelf.multicastDelegate chatService:weakSelf didAddChatDialogToMemoryStorage:[dialogObjects firstObject]];
             }
