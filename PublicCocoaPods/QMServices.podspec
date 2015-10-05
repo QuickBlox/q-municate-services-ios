@@ -5,7 +5,7 @@
 #  To learn more about Podspec attributes see http://docs.cocoapods.org/specification.html
 #  To see working Podspecs in the CocoaPods repo see https://github.com/CocoaPods/Specs/
 #   
-#  To submit use `pod trunk push QMChatViewController.podspec --verbose --use-libraries --allow-warnings`
+#  To submit use `pod trunk push QMServices.podspec --verbose --use-libraries --allow-warnings`
 #
 
 
