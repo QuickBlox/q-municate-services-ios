@@ -125,8 +125,10 @@
     [self retrieveUsersWithIDs:[self.contactListMemoryStorage userIDsFromContactList]
 				 forceDownload:NO completion:^(QBResponse *responce, QBGeneralResponsePage *page, NSArray *users)
      {
-         if ([weakSelf.multicastDelegate respondsToSelector:@selector(contactListService:contactListDidChange:)]) {
-             [weakSelf.multicastDelegate contactListService:self contactListDidChange:contactList];
+         if (users.count > 0) {
+             if ([weakSelf.multicastDelegate respondsToSelector:@selector(contactListService:contactListDidChange:)]) {
+                 [weakSelf.multicastDelegate contactListService:self contactListDidChange:contactList];
+             }
          }
      }];
 }
