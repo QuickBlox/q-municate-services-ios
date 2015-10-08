@@ -127,7 +127,7 @@ static NSString* attachmentPath(QBChatAttachment *attachment) {
         NSError *errorNotFound = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier] code:404 userInfo:errorDetails];
         
         if (attachment.url == nil) {
-            completion(errorNotFound,nil);
+            if (completion) completion(errorNotFound,nil);
             return;
         }
         
@@ -138,7 +138,7 @@ static NSString* attachmentPath(QBChatAttachment *attachment) {
             dispatch_async(dispatch_get_main_queue(), ^{
 
                 if (fileData == nil) {
-                    completion(errorNotFound,nil);
+                    if (completion) completion(errorNotFound,nil);
                 }
                 else {
                     NSError *error;
@@ -146,7 +146,7 @@ static NSString* attachmentPath(QBChatAttachment *attachment) {
                     
                     [self saveImageData:fileData chatAttachment:attachment error:&error];
                     
-                    completion(error,image);
+                    if (completion) completion(error,image);
                 }
             });
         });
