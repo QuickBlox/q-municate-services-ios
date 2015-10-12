@@ -629,7 +629,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
             }];
         }
         else {
-            [weakSelf.dialogsMemoryStorage addChatDialog:updatedDialog andJoin:YES onJoin:nil];
+            [weakSelf.dialogsMemoryStorage addChatDialog:updatedDialog andJoin:NO onJoin:nil];
             
             if (completion) {
                 completion(response, updatedDialog);
@@ -662,7 +662,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
             }];
         }
         else {
-            [weakSelf.dialogsMemoryStorage addChatDialog:dialog andJoin:YES onJoin:nil];
+            [weakSelf.dialogsMemoryStorage addChatDialog:dialog andJoin:NO onJoin:nil];
             
             if (completion) completion(response,dialog);
         }
