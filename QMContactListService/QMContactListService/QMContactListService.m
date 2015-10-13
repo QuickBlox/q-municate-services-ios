@@ -143,16 +143,7 @@
 
 - (void)retriveIfNeededUserWithID:(NSUInteger)userID completion:(void(^)(BOOL retrieveWasNeeded))completionBlock
 {
-    QBUUser *user = [self.usersMemoryStorage userWithID:userID];
-    
-    if (user == nil) {
-        [self retrieveUsersWithIDs:@[@(userID)] forceDownload:YES completion:^(QBResponse *response, QBGeneralResponsePage *page, NSArray *users) {
-            if (completionBlock) completionBlock(YES);
-        }];
-    }
-    else {
-        if (completionBlock) completionBlock(NO);
-    }
+    [self retriveIfNeededUsersWithIDs:@[@(userID)] completion:completionBlock];
 }
 
 - (void)retriveIfNeededUsersWithIDs:(NSArray *)usersIDs completion:(void (^)(BOOL retrieveWasNeeded))completionBlock
