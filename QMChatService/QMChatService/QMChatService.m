@@ -415,6 +415,14 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
             }
         }
         else {
+            chatDialogToUpdate = [[QBChatDialog alloc] initWithDialogID:message.dialogID type:QBChatDialogTypePrivate];
+            chatDialogToUpdate.occupantIDs = @[@([self.serviceManager currentUser].ID), @(message.senderID)];
+            chatDialogToUpdate.lastMessageText = message.encodedText;
+            chatDialogToUpdate.lastMessageDate = message.dialog.lastMessageDate;
+            chatDialogToUpdate.unreadMessagesCount++;
+            
+            [self.dialogsMemoryStorage addChatDialog:chatDialogToUpdate andJoin:NO onJoin:nil];
+            
             if ([self.multicastDelegate respondsToSelector:@selector(chatService:didAddChatDialogToMemoryStorage:)]) {
                 [self.multicastDelegate chatService:self didAddChatDialogToMemoryStorage:message.dialog];
             }
