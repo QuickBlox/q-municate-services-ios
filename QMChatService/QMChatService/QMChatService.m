@@ -402,12 +402,23 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 //        }
         }
 	}
-	else if (message.messageType == QMMessageTypeContactRequest) {
-		
-		
-        if ([self.multicastDelegate respondsToSelector:@selector(chatService:didAddChatDialogToMemoryStorage:)]) {
-			[self.multicastDelegate chatService:self didAddChatDialogToMemoryStorage:message.dialog];
-		}
+    else if (message.messageType == QMMessageTypeContactRequest || message.messageType == QMMessageTypeAcceptContactRequest || message.messageType == QMMessageTypeRejectContactRequest || message.messageType == QMMessageTypeDeleteContactRequest) {
+        QBChatDialog *chatDialogToUpdate = [self.dialogsMemoryStorage chatDialogWithID:message.dialogID];
+        
+        if (chatDialogToUpdate != nil) {
+            chatDialogToUpdate.lastMessageText = message.encodedText;
+            chatDialogToUpdate.lastMessageDate = [NSDate dateWithTimeIntervalSince1970:message.customDateSent.doubleValue];
+            chatDialogToUpdate.unreadMessagesCount++;
+            
+            if ([self.multicastDelegate respondsToSelector:@selector(chatService:didUpdateChatDialogInMemoryStorage:)]) {
+                [self.multicastDelegate chatService:self didUpdateChatDialogInMemoryStorage:chatDialogToUpdate];
+            }
+        }
+        else {
+            if ([self.multicastDelegate respondsToSelector:@selector(chatService:didAddChatDialogToMemoryStorage:)]) {
+                [self.multicastDelegate chatService:self didAddChatDialogToMemoryStorage:message.dialog];
+            }
+        }
 	}
 	
 	QBChatDialog *dialog = message.dialog;
