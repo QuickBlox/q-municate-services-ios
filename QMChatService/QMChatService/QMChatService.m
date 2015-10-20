@@ -432,7 +432,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
             [self.dialogsMemoryStorage addChatDialog:chatDialogToUpdate andJoin:NO onJoin:nil];
             
             if ([self.multicastDelegate respondsToSelector:@selector(chatService:didAddChatDialogToMemoryStorage:)]) {
-                [self.multicastDelegate chatService:self didAddChatDialogToMemoryStorage:message.dialog];
+                [self.multicastDelegate chatService:self didAddChatDialogToMemoryStorage:chatDialogToUpdate];
             }
         }
 	}
