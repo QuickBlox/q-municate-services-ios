@@ -374,7 +374,8 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
         }
         
 		chatDialogToUpdate.lastMessageText = message.encodedText;
-		chatDialogToUpdate.lastMessageDate = [NSDate dateWithTimeIntervalSince1970:message.customDateSent.doubleValue];
+		chatDialogToUpdate.lastMessageDate = message.dateSent;
+        chatDialogToUpdate.updatedAt = message.dateSent;
 		chatDialogToUpdate.unreadMessagesCount++;
         
         if (shouldSaveDialog) {
@@ -404,7 +405,8 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
             chatDialogToUpdate.photo = message.dialog.photo;
             chatDialogToUpdate.occupantIDs = message.dialog.occupantIDs;
             chatDialogToUpdate.lastMessageText = message.encodedText;
-            chatDialogToUpdate.lastMessageDate = message.dialog.lastMessageDate;
+            chatDialogToUpdate.lastMessageDate = message.dateSent;
+            chatDialogToUpdate.updatedAt = message.dateSent;
             chatDialogToUpdate.unreadMessagesCount++;
             
             if ([self.multicastDelegate respondsToSelector:@selector(chatService:didUpdateChatDialogInMemoryStorage:)]) {
@@ -418,7 +420,8 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
         
         if (chatDialogToUpdate != nil) {
             chatDialogToUpdate.lastMessageText = message.encodedText;
-            chatDialogToUpdate.lastMessageDate = [NSDate dateWithTimeIntervalSince1970:message.customDateSent.doubleValue];
+            chatDialogToUpdate.lastMessageDate = message.dateSent;
+            chatDialogToUpdate.updatedAt = message.dateSent;
             chatDialogToUpdate.unreadMessagesCount++;
             
             if ([self.multicastDelegate respondsToSelector:@selector(chatService:didUpdateChatDialogInMemoryStorage:)]) {
@@ -429,7 +432,8 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
             chatDialogToUpdate = [[QBChatDialog alloc] initWithDialogID:message.dialogID type:QBChatDialogTypePrivate];
             chatDialogToUpdate.occupantIDs = @[@([self.serviceManager currentUser].ID), @(message.senderID)];
             chatDialogToUpdate.lastMessageText = message.encodedText;
-            chatDialogToUpdate.lastMessageDate = message.dialog.lastMessageDate;
+            chatDialogToUpdate.lastMessageDate = message.dateSent;
+            chatDialogToUpdate.updatedAt = message.dateSent;
             chatDialogToUpdate.unreadMessagesCount++;
             
             [self.dialogsMemoryStorage addChatDialog:chatDialogToUpdate andJoin:NO onJoin:nil];
