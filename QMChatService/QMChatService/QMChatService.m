@@ -358,13 +358,13 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
         
         return;
     }
+    
+    QBChatDialog *chatDialogToUpdate = [self.dialogsMemoryStorage chatDialogWithID:message.dialogID];
 	
 	if (message.messageType == QMMessageTypeText) {
         BOOL shouldSaveDialog = NO;
         
 		//Update chat dialog in memory storage
-		QBChatDialog *chatDialogToUpdate = [self.dialogsMemoryStorage chatDialogWithID:message.dialogID];
-        
         if (!chatDialogToUpdate)
         {
             chatDialogToUpdate = [[QBChatDialog alloc] initWithDialogID:message.dialogID type:QBChatDialogTypePrivate];
@@ -385,20 +385,14 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
                 [self.multicastDelegate chatService:self didAddChatDialogToMemoryStorage:chatDialogToUpdate];
             }
         }
-        
-		//Add message in memory storage
-		[self.messagesMemoryStorage addMessage:message forDialogID:message.dialogID];
-		
-		if ([self.multicastDelegate respondsToSelector:@selector(chatService:didAddMessageToMemoryStorage:forDialogID:)]) {
-			[self.multicastDelegate chatService:self didAddMessageToMemoryStorage:message forDialogID:message.dialogID];
-		}        
-        
-		return;
+        else {
+            if ([self.multicastDelegate respondsToSelector:@selector(chatService:didUpdateChatDialogInMemoryStorage:)]) {
+                [self.multicastDelegate chatService:self didUpdateChatDialogInMemoryStorage:chatDialogToUpdate];
+            }
+        }
 	}
 	else if (message.messageType == QMMessageTypeUpdateGroupDialog) {
-        
-		QBChatDialog *chatDialogToUpdate = [self.dialogsMemoryStorage chatDialogWithID:message.dialogID];
-		
+
         if (chatDialogToUpdate) {
 //        if (!chatDialogToUpdate.updatedAt || [chatDialogToUpdate.updatedAt compare:message.dialog.updatedAt] == NSOrderedAscending) {
             chatDialogToUpdate.name = message.dialog.name;
@@ -416,8 +410,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
         }
 	}
     else if (message.messageType == QMMessageTypeContactRequest || message.messageType == QMMessageTypeAcceptContactRequest || message.messageType == QMMessageTypeRejectContactRequest || message.messageType == QMMessageTypeDeleteContactRequest) {
-        QBChatDialog *chatDialogToUpdate = [self.dialogsMemoryStorage chatDialogWithID:message.dialogID];
-        
+
         if (chatDialogToUpdate != nil) {
             chatDialogToUpdate.lastMessageText = message.encodedText;
             chatDialogToUpdate.lastMessageDate = message.dateSent;
@@ -444,20 +437,20 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
         }
 	}
 	
-	QBChatDialog *dialog = message.dialog;
-	
 	if ([message.saveToHistory isEqualToString:kChatServiceSaveToHistoryTrue]) {
 		
-		[self.messagesMemoryStorage addMessage:message forDialogID:dialog.ID];
+		[self.messagesMemoryStorage addMessage:message forDialogID:message.dialogID];
 		
 		if ([self.multicastDelegate respondsToSelector:@selector(chatService:didAddMessageToMemoryStorage:forDialogID:)]) {
 			[self.multicastDelegate chatService:self didAddMessageToMemoryStorage:message forDialogID:message.dialogID];
 		}
 	}
-	
-	if ([self.multicastDelegate respondsToSelector:@selector(chatService:didReceiveNotificationMessage:createDialog:)]) {
-		[self.multicastDelegate chatService:self didReceiveNotificationMessage:message createDialog:message.dialog];
-	}
+    
+    if (message.isNotificatonMessage) {
+        if ([self.multicastDelegate respondsToSelector:@selector(chatService:didReceiveNotificationMessage:createDialog:)]) {
+            [self.multicastDelegate chatService:self didReceiveNotificationMessage:message createDialog:chatDialogToUpdate];
+        }
+    }
 }
 
 - (void)joinToGroupDialog:(QBChatDialog *)dialog
@@ -977,6 +970,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     
     dialog.lastMessageText = message.encodedText;
     dialog.lastMessageDate = message.dateSent;
+    dialog.updatedAt = message.dateSent;
     
     BOOL messageSent = [dialog sendMessage:message sentBlock:^(NSError *error) {
         if (completion) {
@@ -990,6 +984,9 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
             
             if ([self.multicastDelegate respondsToSelector:@selector(chatService:didAddMessageToMemoryStorage:forDialogID:)]) {
                 [self.multicastDelegate chatService:self didAddMessageToMemoryStorage:message forDialogID:dialog.ID];
+            }
+            if ([self.multicastDelegate respondsToSelector:@selector(chatService:didUpdateChatDialogInMemoryStorage:)]) {
+                [self.multicastDelegate chatService:self didUpdateChatDialogInMemoryStorage:dialog];
             }
         }
     }
@@ -1070,13 +1067,12 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     
     QBChatMessage *message = [self privateMessageWithRecipientID:opponentID text:@"Contact request" save:YES];
     
-    message.messageType = accept ? QMMessageTypeAcceptContactRequest : QMMessageTypeRejectContactRequest;
+    QMMessageType messageType = accept ? QMMessageTypeAcceptContactRequest : QMMessageTypeRejectContactRequest;
     
     QBChatDialog *p2pDialog = [self.dialogsMemoryStorage privateChatDialogWithOpponentID:opponentID];
     NSParameterAssert(p2pDialog);
     
-    [message updateCustomParametersWithDialog:p2pDialog];
-    [p2pDialog sendMessage:message sentBlock:completion];
+    [self sendMessage:message type:messageType toDialog:p2pDialog save:YES saveToStorage:YES completion:completion];
 }
 
 #pragma mark System messages Utilites
@@ -1087,6 +1083,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 	message.recipientID = recipientID;
 	message.senderID = self.serviceManager.currentUser.ID;
     message.text = text;
+    message.dateSent = [NSDate date];
 	message.customDateSent = self.dateSendTimeInterval;
 	
 	if (save) {
