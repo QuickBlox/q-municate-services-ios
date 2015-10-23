@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name         = "QMServicesDevelopment"
-  s.version      = "0.2.4"
+  s.version      = "0.2.5"
   s.summary      = "Easy-to-use services for Quickblox SDK, for speeding up development of iOS chat applications."
   s.homepage     = "https://github.com/QuickBlox/q-municate-services-ios"
   s.license      = { :type => 'MIT', :file => 'LICENSE.txt' }
@@ -20,7 +20,7 @@ Pod::Spec.new do |s|
   s.requires_arc = true
   s.ios.frameworks      = "MobileCoreServices", "SystemConfiguration", "AVFoundation", "CoreVideo", "Accelerate", "CoreMedia", "AudioToolbox", "CoreLocation", "CoreData", "CoreGraphics", "CFNetwork", "UIKit"
   s.libraries           = "resolv", "xml2", "stdc++", "z"
-  s.xcconfig            = { 'HEADER_SEARCH_PATHS' => '/usr/include/libxml2', "FRAMEWORK_SEARCH_PATHS" => "(PODS_ROOT)/../../Framework $(PODS_ROOT)/../External"}
+  s.xcconfig            = { 'HEADER_SEARCH_PATHS' => '/usr/include/libxml2', "FRAMEWORK_SEARCH_PATHS" => "$(PODS_ROOT)/../../Framework $(PODS_ROOT)/../External"}
   s.prefix_header_contents = 
   '#import <Quickblox/Quickblox.h>
 #import <CoreData/CoreData.h>
