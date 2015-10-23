@@ -24,6 +24,8 @@ Pod::Spec.new do |s|
   s.prefix_header_contents = 
   '#import <Quickblox/Quickblox.h>
 #import <CoreData/CoreData.h>
-#import <Quickblox/QBMulticastDelegate.h>'
-  s.resource_bundle = {'QMChatCacheModel' => 'QMChatCache/QMChatCache/CoreData/QMChatServiceModel.xcdatamodeld', 'QMContactListCacheModel' => 'QMContactListCache/QMContactListCache/CoreData/QMContactListModel.xcdatamodeld'}
+#import <Quickblox/QBMulticastDelegate.h>
+#import <Bolts/Bolts.h>'
+  s.resource_bundle = {'QMChatCacheModel' => 'QMChatCache/QMChatCache/CoreData/QMChatServiceModel.xcdatamodeld', 'QMContactListCacheModel' => 'QMContactListCache/QMContactListCache/CoreData/QMContactListModel.xcdatamodeld', 'QMUsersCacheModel' => 'QMUsersCache/QMUsersCache/CoreData/QMUsersModel.xcdatamodeld'}
+  s.dependency "Bolts",  '1.3.0'
 end
