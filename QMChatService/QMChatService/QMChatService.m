@@ -445,7 +445,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 		}
 	}
     
-    if (message.isNotificatonMessage) {
+    if (message.isNotificatonMessage && chatDialogToUpdate != nil) {
         if ([self.multicastDelegate respondsToSelector:@selector(chatService:didReceiveNotificationMessage:createDialog:)]) {
             [self.multicastDelegate chatService:self didReceiveNotificationMessage:message createDialog:chatDialogToUpdate];
         }
