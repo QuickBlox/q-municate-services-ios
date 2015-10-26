@@ -46,6 +46,7 @@
 {
     if (self.loadFromCacheTask == nil) {
         BFTaskCompletionSource* source = [BFTaskCompletionSource taskCompletionSource];
+        
         if ([self.cacheDataSource respondsToSelector:@selector(cachedUsers:)]) {
             __weak __typeof(self)weakSelf = self;
             [self.cacheDataSource cachedUsers:^(NSArray *collection) {
@@ -53,9 +54,12 @@
                 [strongSelf.usersMemoryStorage addUsers:collection];
                 [source setResult:collection];
             }];
+            self.loadFromCacheTask = source.task;
+            return self.loadFromCacheTask;
+        } else {
+            // Cache is not required
+            self.loadFromCacheTask = [BFTask taskWithResult:nil];
         }
-        self.loadFromCacheTask = source.task;
-        return self.loadFromCacheTask;
     }
     
     return self.loadFromCacheTask;
@@ -82,7 +86,9 @@
 
 - (BFTask *)retrieveIfNeededUsersWithIDs:(NSArray *)usersIDs
 {
+    __weak __typeof(self)weakSelf = self;
     return [[self loadFromCache] continueWithBlock:^id(BFTask *task) {
+        __typeof(self) strongSelf = weakSelf;
         NSArray *memoryStorageUsers = [self.usersMemoryStorage usersWithIDs:usersIDs];
         
         if (memoryStorageUsers.count != usersIDs.count) {
@@ -92,7 +98,7 @@
                 [mutableUsersIDs removeObject:@(user.ID)];
               }
             
-            return [self retrieveUsersWithIDs:mutableUsersIDs forceDownload:YES];
+            return [strongSelf retrieveUsersWithIDs:mutableUsersIDs forceDownload:YES];
         } else {
             return [BFTask taskWithError:[NSError errorWithDomain:@"com.q-municate-services"
                                                              code:-1100
@@ -103,6 +109,7 @@
 
 - (BFTask<NSArray<QBUUser *> *> *)retrieveUsersWithIDs:(NSArray *)ids forceDownload:(BOOL)forceDownload;
 {
+    __weak __typeof(self)weakSelf = self;
     return [[self loadFromCacheTask] continueWithBlock:^id(BFTask *task) {
         if (ids.count == 0) {
             return [BFTask taskWithResult:@[]];
@@ -122,7 +129,6 @@
         
         BFTaskCompletionSource* source = [BFTaskCompletionSource taskCompletionSource];
         
-        __weak __typeof(self)weakSelf = self;
         [QBRequest usersWithIDs:usersIDs.allObjects page:pageResponse successBlock:^(QBResponse *response, QBGeneralResponsePage *page, NSArray * users) {
             __typeof(self) strongSelf = weakSelf;
             [strongSelf.usersMemoryStorage addUsers:users];
@@ -142,10 +148,10 @@
 
 - (BFTask<NSArray<QBUUser *> *> *)retrieveUsersWithEmails:(NSArray *)emails
 {
+    __weak __typeof(self)weakSelf = self;
     return [[self loadFromCacheTask] continueWithBlock:^id(BFTask *task) {
         BFTaskCompletionSource* source = [BFTaskCompletionSource taskCompletionSource];
-        
-        __weak __typeof(self)weakSelf = self;
+    
         [QBRequest usersWithEmails:emails successBlock:^(QBResponse *response, QBGeneralResponsePage *page, NSArray *users) {
             __typeof(self) strongSelf = weakSelf;
             
@@ -166,11 +172,11 @@
 
 - (BFTask<NSArray<QBUUser *> *> *)retrieveUsersWithFullName:(NSString *)searchText pagedRequest:(QBGeneralResponsePage *)page cancellationToken:(QMCancellationToken *)token
 {
-#warning Check cancellation token
+    __weak __typeof(self)weakSelf = self;
+#warning Check cancellation token functions
     return [[self loadFromCacheTask] continueWithBlock:^id(BFTask *task) {
         BFTaskCompletionSource* source = [BFTaskCompletionSource taskCompletionSource];
         
-        __weak __typeof(self)weakSelf = self;
         [QBRequest usersWithFullName:searchText page:page successBlock:^(QBResponse *response, QBGeneralResponsePage *page, NSArray *users) {
             __typeof(self) strongSelf = weakSelf;
             
@@ -196,13 +202,13 @@
 
 - (BFTask<NSArray<QBUUser *> *> *)retrieveUsersWithFacebookIDs:(NSArray *)facebookIDs
 {
+    __weak __typeof(self)weakSelf = self;
     return [[self loadFromCacheTask] continueWithBlock:^id(BFTask *task) {
         BFTaskCompletionSource* source = [BFTaskCompletionSource taskCompletionSource];
         
         QBGeneralResponsePage *pageResponse =
         [QBGeneralResponsePage responsePageWithCurrentPage:1 perPage:facebookIDs.count < 100 ? facebookIDs.count : 100];
-        
-        __weak __typeof(self)weakSelf = self;
+    
         [QBRequest usersWithFacebookIDs:facebookIDs page:pageResponse successBlock:^(QBResponse *response, QBGeneralResponsePage *page, NSArray *users) {
             
             [weakSelf.usersMemoryStorage addUsers:users];
