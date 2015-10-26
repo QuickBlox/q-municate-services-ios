@@ -7,9 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		862360C91BDD5C6A0076D7A2 /* QBUUser+CustomData.m in Sources */ = {isa = PBXBuildFile; fileRef = 862360C51BDD5C6A0076D7A2 /* QBUUser+CustomData.m */; };
+		862360CA1BDD5C6A0076D7A2 /* QMUsersMemoryStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 862360C81BDD5C6A0076D7A2 /* QMUsersMemoryStorage.m */; };
 		86F9CD461BDA27ED0021B6F0 /* QMUsersService.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 86F9CD451BDA27ED0021B6F0 /* QMUsersService.h */; };
 		86F9CD481BDA27ED0021B6F0 /* QMUsersService.m in Sources */ = {isa = PBXBuildFile; fileRef = 86F9CD471BDA27ED0021B6F0 /* QMUsersService.m */; };
-		E06E1D8E0EE843FF1BC3E656 /* libPods-QMUsersService.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F3F4859E581B61768FFDA92 /* libPods-QMUsersService.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -27,6 +28,11 @@
 
 /* Begin PBXFileReference section */
 		1F3F4859E581B61768FFDA92 /* libPods-QMUsersService.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-QMUsersService.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		862360C41BDD5C6A0076D7A2 /* QBUUser+CustomData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QBUUser+CustomData.h"; sourceTree = "<group>"; };
+		862360C51BDD5C6A0076D7A2 /* QBUUser+CustomData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "QBUUser+CustomData.m"; sourceTree = "<group>"; };
+		862360C71BDD5C6A0076D7A2 /* QMUsersMemoryStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMUsersMemoryStorage.h; sourceTree = "<group>"; };
+		862360C81BDD5C6A0076D7A2 /* QMUsersMemoryStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMUsersMemoryStorage.m; sourceTree = "<group>"; };
+		862360CB1BDD5DD20076D7A2 /* QMUsersService-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "QMUsersService-Prefix.pch"; sourceTree = "<group>"; };
 		86F9CD421BDA27ED0021B6F0 /* libQMUsersService.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libQMUsersService.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		86F9CD451BDA27ED0021B6F0 /* QMUsersService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QMUsersService.h; sourceTree = "<group>"; };
 		86F9CD471BDA27ED0021B6F0 /* QMUsersService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QMUsersService.m; sourceTree = "<group>"; };
@@ -37,7 +43,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E06E1D8E0EE843FF1BC3E656 /* libPods-QMUsersService.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -50,6 +55,24 @@
 				1F3F4859E581B61768FFDA92 /* libPods-QMUsersService.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		862360C31BDD5C6A0076D7A2 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				862360C41BDD5C6A0076D7A2 /* QBUUser+CustomData.h */,
+				862360C51BDD5C6A0076D7A2 /* QBUUser+CustomData.m */,
+			);
+			path = Categories;
+			sourceTree = "<group>";
+		};
+		862360C61BDD5C6A0076D7A2 /* QMUsersMemoryStorage */ = {
+			isa = PBXGroup;
+			children = (
+				862360C71BDD5C6A0076D7A2 /* QMUsersMemoryStorage.h */,
+				862360C81BDD5C6A0076D7A2 /* QMUsersMemoryStorage.m */,
+			);
+			path = QMUsersMemoryStorage;
 			sourceTree = "<group>";
 		};
 		86F9CD391BDA27ED0021B6F0 = {
@@ -74,6 +97,9 @@
 			children = (
 				86F9CD451BDA27ED0021B6F0 /* QMUsersService.h */,
 				86F9CD471BDA27ED0021B6F0 /* QMUsersService.m */,
+				862360C31BDD5C6A0076D7A2 /* Categories */,
+				862360C61BDD5C6A0076D7A2 /* QMUsersMemoryStorage */,
+				862360CB1BDD5DD20076D7A2 /* QMUsersService-Prefix.pch */,
 			);
 			path = QMUsersService;
 			sourceTree = "<group>";
@@ -85,11 +111,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 86F9CD4B1BDA27ED0021B6F0 /* Build configuration list for PBXNativeTarget "QMUsersService" */;
 			buildPhases = (
-				5A3C12652E2FBA47669ADE5D /* Check Pods Manifest.lock */,
 				86F9CD3E1BDA27ED0021B6F0 /* Sources */,
 				86F9CD3F1BDA27ED0021B6F0 /* Frameworks */,
 				86F9CD401BDA27ED0021B6F0 /* CopyFiles */,
-				7CAFCBAC8D3FC1C8B84F1EAA /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -131,45 +155,14 @@
 		};
 /* End PBXProject section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		5A3C12652E2FBA47669ADE5D /* Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		7CAFCBAC8D3FC1C8B84F1EAA /* Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-QMUsersService/Pods-QMUsersService-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
 		86F9CD3E1BDA27ED0021B6F0 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				862360C91BDD5C6A0076D7A2 /* QBUUser+CustomData.m in Sources */,
 				86F9CD481BDA27ED0021B6F0 /* QMUsersService.m in Sources */,
+				862360CA1BDD5C6A0076D7A2 /* QMUsersMemoryStorage.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -257,8 +250,10 @@
 		86F9CD4C1BDA27ED0021B6F0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = "../Frameworks/**";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = QMUsersService_Prefix.pch;
+				GCC_PREFIX_HEADER = "QMUsersService/QMUsersService-Prefix.pch";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/../**";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -268,8 +263,10 @@
 		86F9CD4D1BDA27ED0021B6F0 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = "../Frameworks/**";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = QMUsersService_Prefix.pch;
+				GCC_PREFIX_HEADER = "QMUsersService/QMUsersService-Prefix.pch";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/../**";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;

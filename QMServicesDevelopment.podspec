@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   s.platform     = :ios, "7.0"
   s.source       = { :git => "https://github.com/QuickBlox/q-municate-services-ios.git", :tag => "#{s.version}"}
   s.source_files  = "**/*.{h,m}"
-  s.exclude_files = "Pods" 
+  s.exclude_files = "Pods", "Frameworks"
   s.requires_arc = true
   s.ios.frameworks      = "MobileCoreServices", "SystemConfiguration", "AVFoundation", "CoreVideo", "Accelerate", "CoreMedia", "AudioToolbox", "CoreLocation", "CoreData", "CoreGraphics", "CFNetwork", "UIKit"
   s.libraries           = "resolv", "xml2", "stdc++", "z"

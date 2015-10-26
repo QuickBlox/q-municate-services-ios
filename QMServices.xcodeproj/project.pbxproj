@@ -199,7 +199,7 @@
 		2CE107F51B594BD800379D96 /* QMServicesManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMServicesManager.h; sourceTree = "<group>"; };
 		2CE107F61B594BD800379D96 /* QMServicesManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMServicesManager.m; sourceTree = "<group>"; };
 		55013A331A1F63920030C134 /* QMServices.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QMServices.h; sourceTree = "<group>"; };
-		55013A7F1A1F68280030C134 /* QMServices.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = QMServices.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		55013A7F1A1F68280030C134 /* QMServices.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = QMServices.m; sourceTree = "<group>"; };
 		55013AEB1A1F72350030C134 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.1.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		553E72861AAF060A00449EFB /* LICENSE.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		5590F22C1A0B876F00C5044F /* QMDBStorage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMDBStorage.xcodeproj; path = QMDBStorage/QMDBStorage.xcodeproj; sourceTree = "<group>"; };

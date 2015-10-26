@@ -69,7 +69,7 @@
 		554A28331A0CE38600C4E03C /* _CDContactListItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _CDContactListItem.m; sourceTree = "<group>"; };
 		554A28361A0CE38600C4E03C /* QMCLModelIncludes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMCLModelIncludes.h; sourceTree = "<group>"; };
 		5590F2AD1A0B8D4000C5044F /* QMContactListCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = QMContactListCache.h; sourceTree = "<group>"; };
-		5590F2AF1A0B8D4000C5044F /* QMContactListCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = QMContactListCache.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		5590F2AF1A0B8D4000C5044F /* QMContactListCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = QMContactListCache.m; sourceTree = "<group>"; };
 		55A6211A1A0BE284001BA470 /* QMContactListCache-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = "QMContactListCache-Prefix.pch"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		55B2201E1A2C0C9E00668086 /* libQMContactListCache.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libQMContactListCache.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		55B2201F1A2C0C9E00668086 /* QMContactListCacheModel.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QMContactListCacheModel.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
