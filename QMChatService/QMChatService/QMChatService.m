@@ -341,6 +341,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
         __weak __typeof(self)weakSelf = self;
         
         [self.dialogsMemoryStorage addChatDialog:message.dialog andJoin:YES onJoin:^{
+            [message.dialog setOnJoin:nil];
             
             if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddChatDialogToMemoryStorage:)]) {
                 [weakSelf.multicastDelegate chatService:weakSelf didAddChatDialogToMemoryStorage:message.dialog];
@@ -615,9 +616,10 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 	
 	__weak __typeof(self)weakSelf = self;
 	[QBRequest createDialog:chatDialog successBlock:^(QBResponse *response, QBChatDialog *createdDialog) {
-        
+
 		[weakSelf.dialogsMemoryStorage addChatDialog:createdDialog andJoin:YES onJoin:^{
-			
+            [createdDialog setOnJoin:nil];
+            
 			if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddChatDialogToMemoryStorage:)]) {
 				[weakSelf.multicastDelegate chatService:weakSelf didAddChatDialogToMemoryStorage:createdDialog];
 			}
@@ -649,6 +651,8 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
         
         if (updatedDialog.type != QBChatDialogTypePrivate) {
             [weakSelf.dialogsMemoryStorage addChatDialog:updatedDialog andJoin:YES onJoin:^{
+                [updatedDialog setOnJoin:nil];
+                
                 if (completion) {
                     completion(response, updatedDialog);
                 }
@@ -684,6 +688,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
         //
         if (dialog.type != QBChatDialogTypePrivate) {
             [weakSelf.dialogsMemoryStorage addChatDialog:dialog andJoin:YES onJoin:^{
+                [dialog setOnJoin:nil];
                 if (completion) completion(response,dialog);
             }];
         }
@@ -710,6 +715,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 	[QBRequest updateDialog:chatDialog successBlock:^(QBResponse *response, QBChatDialog *updatedDialog) {
 
 		[weakSelf.dialogsMemoryStorage addChatDialog:updatedDialog andJoin:YES onJoin:^{
+            [updatedDialog setOnJoin:nil];
             if (completion) {
                 completion(response, updatedDialog);
             }
