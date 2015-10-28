@@ -103,4 +103,26 @@
  */
 - (NSString *)joinedNamesbyUsers:(NSArray *)users;
 
+#pragma mark - Fetch
+
+- (NSArray<QBUUser *> *)usersWithFullnames:(NSArray<NSString *> *)fullnames;
+
+- (NSArray<QBUUser *> *)usersWithLogins:(NSArray<NSString *> *)logins;
+
+- (NSArray<QBUUser *> *)usersWithEmails:(NSArray<NSString *> *)emails;
+
+- (NSArray<QBUUser *> *)usersWithFacebookIDs:(NSArray<NSString *> *)facebookIDs;
+
+#pragma mark - Filter
+
+- (NSArray<NSNumber *> *)usersIDsByExcludingUsersIDs:(NSArray<NSNumber *> *)ids;
+
+- (NSArray<NSString *> *)usersFullNameByExcludingFullnames:(NSArray<NSString *> *)fullnames;
+
+- (NSArray<NSString *> *)usersLoginsByExcludingLogins:(NSArray<NSString *> *)logins;
+
+- (NSArray<NSString *> *)usersEmailsByExcludingEmails:(NSArray<NSString *> *)emails;
+
+- (NSArray<NSString *> *)usersFacebookIDsByExcludingFacebookIDs:(NSArray<NSString *> *)facebookIDs;
+
 @end

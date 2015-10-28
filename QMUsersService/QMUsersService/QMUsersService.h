@@ -64,15 +64,6 @@
 - (BFTask<NSArray<QBUUser *> *> *)retrieveIfNeededUsersWithIDs:(NSArray *)usersIDs;
 
 /**
- *  Retrieve users with ids (with extended set of pagination parameters)
- *
- *  @param ids						ids of users which you want to retrieve
- *  @param forceDownload	force download users even if users are already downloaded and exists in cache
- *  @param completion			Block with response, page and users instances if request succeded
- */
-- (BFTask<NSArray<QBUUser *> *> *)retrieveUsersWithIDs:(NSArray *)ids forceDownload:(BOOL)forceDownload;
-
-/**
  *  Retrieve users with emails
  *
  *  @param emails     emails to search users with
@@ -89,9 +80,9 @@
  *
  *  @return QBRequest cancelable instance
  */
-- (BFTask<NSArray<QBUUser *> *> *)retrieveUsersWithFullName:(NSString *)searchText
-                                               pagedRequest:(QBGeneralResponsePage *)page
-                                          cancellationToken:(QMCancellationToken *)token;
+- (BFTask<NSArray<QBUUser *> *> *)searchUsersWithFullName:(NSString *)searchText
+                                             pagedRequest:(QBGeneralResponsePage *)page
+                                        cancellationToken:(QMCancellationToken *)token;
 
 /**
  *  Retrieve users with facebook ids (with extended set of pagination parameters)

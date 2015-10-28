@@ -137,4 +137,18 @@
     [self.users removeAllObjects];
 }
 
+#pragma mark - Fetch
+
+#pragma mark - Filter
+
+- (NSArray<NSNumber *> *)usersIDsByExcludingUsersIDs:(NSArray<NSNumber *> *)ids
+{
+    if (self.users.allValues.count == 0) return ids;
+    
+    NSArray* filtereUsers = [self.users.allValues filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(QBUUser*   _Nonnull evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
+        return  (![ids containsObject:@(evaluatedObject.ID)]);
+    }]];
+    return [filtereUsers valueForKeyPath:@"ID"];
+}
+
 @end
