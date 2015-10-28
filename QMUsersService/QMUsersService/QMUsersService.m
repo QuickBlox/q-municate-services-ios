@@ -79,49 +79,47 @@
 
 #pragma mark - Retrive users
 
-- (BFTask *)retrieveIfNeededUserWithID:(NSUInteger)userID
+- (BFTask<QBUUser *> *)retrieveIfNeededUserWithID:(NSUInteger)userID
 {
-    return [self retrieveIfNeededUsersWithIDs:@[@(userID)]];
+    return (BFTask<QBUUser *> *)[[self retrieveIfNeededUsersWithIDs:@[@(userID)]] continueWithBlock:^id(BFTask *task) {
+        return [BFTask taskWithResult:[task.result firstObject]];
+    }];
 }
 
-- (BFTask *)retrieveIfNeededUsersWithIDs:(NSArray *)usersIDs
+- (BFTask<NSArray<QBUUser *> *> *)retrieveIfNeededUsersWithIDs:(NSArray *)usersIDs
 {
-    __weak __typeof(self)weakSelf = self;
-    return [[self loadFromCache] continueWithBlock:^id(BFTask *task) {
-        __typeof(self) strongSelf = weakSelf;
-        NSArray *memoryStorageUsers = [self.usersMemoryStorage usersWithIDs:usersIDs];
+    NSArray *memoryStorageUsers = [self.usersMemoryStorage usersWithIDs:usersIDs];
+    
+    if (memoryStorageUsers.count != usersIDs.count) {
+        NSMutableArray *mutableUsersIDs = usersIDs.mutableCopy;
         
-        if (memoryStorageUsers.count != usersIDs.count) {
-            NSMutableArray *mutableUsersIDs = usersIDs.mutableCopy;
-            
-            for (QBUUser *user in memoryStorageUsers) {
-                [mutableUsersIDs removeObject:@(user.ID)];
-              }
-            
-            return [strongSelf retrieveUsersWithIDs:mutableUsersIDs forceDownload:YES];
-        } else {
-            return [BFTask taskWithError:[NSError errorWithDomain:@"com.q-municate-services"
-                                                             code:-1100
-                                                         userInfo:@{NSLocalizedRecoverySuggestionErrorKey : @"Retrieve from server was not needed!"}]];
+        for (QBUUser *user in memoryStorageUsers) {
+            [mutableUsersIDs removeObject:@(user.ID)];
         }
-    }];
+        
+        return [self retrieveUsersWithIDs:mutableUsersIDs forceDownload:YES];
+    } else {
+        return [BFTask taskWithResult:memoryStorageUsers];
+    }
 }
 
 - (BFTask<NSArray<QBUUser *> *> *)retrieveUsersWithIDs:(NSArray *)ids forceDownload:(BOOL)forceDownload;
 {
     __weak __typeof(self)weakSelf = self;
+    
+    if (ids.count == 0) {
+        return [BFTask taskWithResult:@[]];
+    }
+    
+    if (!forceDownload) {
+        // if all users with given ids in cache, return them
+        if ([[self.usersMemoryStorage usersWithIDs:ids] count] == [ids count]) {
+            return [BFTask taskWithResult:[self.usersMemoryStorage usersWithIDs:ids]];
+        }
+    }
+
     return [[self loadFromCache] continueWithBlock:^id(BFTask *task) {
         __typeof(self) strongSelf = weakSelf;
-        if (ids.count == 0) {
-            return [BFTask taskWithResult:@[]];
-        }
-        
-        if (!forceDownload) {
-            // if all users with given ids in cache, return them
-            if ([[strongSelf.usersMemoryStorage usersWithIDs:ids] count] == [ids count]) {
-                return [BFTask taskWithResult:[strongSelf.usersMemoryStorage usersWithIDs:ids]];
-            }
-        }
         
         NSSet *usersIDs = [NSSet setWithArray:ids];
         

@@ -53,7 +53,7 @@
  *  @param userID       id of user to retrieve
  *  @param completion   completion block with boolean value YES if retrieve was needed
  */
-- (BFTask *)retrieveIfNeededUserWithID:(NSUInteger)userID;
+- (BFTask<QBUUser *> *)retrieveIfNeededUserWithID:(NSUInteger)userID;
 
 /**
  *  Retrieving users if needed.
@@ -61,7 +61,7 @@
  *  @param userIDs      array of users ids to retrieve
  *  @param completion   completion block with boolean value YES if retrieve was needed
  */
-- (BFTask *)retrieveIfNeededUsersWithIDs:(NSArray *)usersIDs;
+- (BFTask<NSArray<QBUUser *> *> *)retrieveIfNeededUsersWithIDs:(NSArray *)usersIDs;
 
 /**
  *  Retrieve users with ids (with extended set of pagination parameters)

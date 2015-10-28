@@ -104,14 +104,6 @@
     if ([self.multicastDelegate respondsToSelector:@selector(contactListService:contactListDidChange:)]) {
         [self.multicastDelegate contactListService:self contactListDidChange:contactList];
     }
-    
-//    [self retrieveUsersWithIDs:[self.contactListMemoryStorage userIDsFromContactList]
-//				 forceDownload:NO completion:^(QBResponse *responce, QBGeneralResponsePage *page, NSArray *users)
-//     {
-//         if (users.count > 0) {
-//
-//         }
-//     }];
 }
 
 - (void)chatDidReceiveContactItemActivity:(NSUInteger)userID isOnline:(BOOL)isOnline status:(NSString *)status {
