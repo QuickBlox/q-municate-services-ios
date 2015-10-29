@@ -33,24 +33,6 @@
  */
 - (void)addUsers:(NSArray *)users;
 
-/**
- *  Get user by user id
- *
- *  @param userID user ID
- *
- *  @return finded QBUUser
- */
-- (QBUUser *)userWithID:(NSUInteger)userID;
-
-/**
- *  Get users by user ids
- *
- *  @param ids users IDs
- *
- *  @return finded array of QBUUser
- */
-- (NSArray *)usersWithIDs:(NSArray *)ids;
-
 #pragma mark - Sorting
 
 /**
@@ -104,6 +86,24 @@
 - (NSString *)joinedNamesbyUsers:(NSArray *)users;
 
 #pragma mark - Fetch
+
+/**
+ *  Get user by user id
+ *
+ *  @param userID user ID
+ *
+ *  @return finded QBUUser
+ */
+- (QBUUser *)userWithID:(NSUInteger)userID;
+
+/**
+ *  Get users by user ids
+ *
+ *  @param ids users IDs
+ *
+ *  @return finded array of QBUUser
+ */
+- (NSArray *)usersWithIDs:(NSArray *)ids;
 
 - (NSArray<QBUUser *> *)usersWithFullnames:(NSArray<NSString *> *)fullnames;
 

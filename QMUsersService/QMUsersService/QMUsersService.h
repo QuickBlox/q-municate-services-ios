@@ -47,6 +47,8 @@
  */
 - (void)removeDelegate:(id <QMUsersServiceDelegate>)delegate;
 
+#pragma mark - Intelligent fetch
+
 /**
  *  Retrieving user if needed.
  *
@@ -61,7 +63,7 @@
  *  @param userIDs      array of users ids to retrieve
  *  @param completion   completion block with boolean value YES if retrieve was needed
  */
-- (BFTask<NSArray<QBUUser *> *> *)retrieveIfNeededUsersWithIDs:(NSArray *)usersIDs;
+- (BFTask<NSArray<QBUUser *> *> *)retrieveIfNeededUsersWithIDs:(NSArray<NSNumber *> *)usersIDs;
 
 /**
  *  Retrieve users with emails
@@ -69,7 +71,21 @@
  *  @param emails     emails to search users with
  *  @param completion Block with response, page and users instances if request succeded
  */
-- (BFTask<NSArray<QBUUser *> *> *)retrieveUsersWithEmails:(NSArray *)emails;
+- (BFTask<NSArray<QBUUser *> *> *)retrieveUsersWithEmails:(NSArray<NSString *> *)emails;
+
+/**
+ *  Retrieve users with facebook ids (with extended set of pagination parameters)
+ *
+ *  @param facebookIDs facebook ids to search
+ *  @param completion  Block with response, page and users instances if request succeded
+ */
+- (BFTask<NSArray<QBUUser *> *> *)retrieveUsersWithFacebookIDs:(NSArray<NSString *> *)facebookIDs;
+
+- (BFTask<NSArray<QBUUser *> *> *)retrieveUsersWithLogins:(NSArray<NSString *> *)logins;
+
+- (BFTask<NSArray<QBUUser *> *> *)retrieveUsersWithFullnames:(NSArray<NSString *> *)fullnames;
+
+#pragma mark - Search
 
 /**
  *  Retrieve users with full name
@@ -80,15 +96,6 @@
  *  @return QBRequest cancelable instance
  */
 - (BFTask<NSArray<QBUUser *> *> *)searchUsersWithFullName:(NSString *)searchText;
-
-/**
- *  Retrieve users with facebook ids (with extended set of pagination parameters)
- *
- *  @param facebookIDs facebook ids to search
- *  @param completion  Block with response, page and users instances if request succeded
- */
-- (BFTask<NSArray<QBUUser *> *> *)retrieveUsersWithFacebookIDs:(NSArray *)facebookIDs;
-
 
 @end
 
