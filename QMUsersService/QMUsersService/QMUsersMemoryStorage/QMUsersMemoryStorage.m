@@ -139,16 +139,70 @@
 
 #pragma mark - Fetch
 
+- (NSArray *)usersForKeypath:(NSString *)keypath withValues:(NSArray *)values
+{
+    return [self.users.allValues filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(QBUUser*  _Nonnull evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
+        return [values containsObject:[evaluatedObject valueForKeyPath:keypath]];
+    }]];
+}
+
+- (NSArray<QBUUser *> *)usersWithFullnames:(NSArray<NSString *> *)fullnames
+{
+    return [self usersForKeypath:@keypath(QBUUser.new, fullName) withValues:fullnames];
+}
+
+- (NSArray<QBUUser *> *)usersWithLogins:(NSArray<NSString *> *)logins
+{
+    return [self usersForKeypath:@keypath(QBUUser.new, login) withValues:logins];
+}
+
+- (NSArray<QBUUser *> *)usersWithEmails:(NSArray<NSString *> *)emails
+{
+    return [self usersForKeypath:@keypath(QBUUser.new, email) withValues:emails];
+}
+
+- (NSArray<QBUUser *> *)usersWithFacebookIDs:(NSArray<NSString *> *)facebookIDs
+{
+    return [self usersForKeypath:@keypath(QBUUser.new, facebookID) withValues:facebookIDs];
+}
+
 #pragma mark - Filter
+
+- (NSArray *)valuesForKeypath:(NSString *)keypath byExcludingValues:(NSArray *)values
+{
+    NSParameterAssert(values);
+    if (self.users.allValues.count == 0) return values;
+    
+    NSArray* filtereUsers = [self.users.allValues filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(QBUUser*   _Nonnull evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
+        return ![values containsObject:[evaluatedObject valueForKeyPath:keypath]];
+    }]];
+    
+    return [filtereUsers valueForKeyPath:keypath];
+}
 
 - (NSArray<NSNumber *> *)usersIDsByExcludingUsersIDs:(NSArray<NSNumber *> *)ids
 {
-    if (self.users.allValues.count == 0) return ids;
-    
-    NSArray* filtereUsers = [self.users.allValues filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(QBUUser*   _Nonnull evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
-        return  (![ids containsObject:@(evaluatedObject.ID)]);
-    }]];
-    return [filtereUsers valueForKeyPath:@"ID"];
+    return [self valuesForKeypath:@keypath(QBUUser.new, ID) byExcludingValues:ids];
+}
+
+- (NSArray<NSString *> *)usersFullNameByExcludingFullnames:(NSArray<NSString *> *)fullnames
+{
+    return [self valuesForKeypath:@keypath(QBUUser.new, fullName) byExcludingValues:fullnames];
+}
+
+- (NSArray<NSString *> *)usersLoginsByExcludingLogins:(NSArray<NSString *> *)logins
+{
+    return [self valuesForKeypath:@keypath(QBUUser.new, login) byExcludingValues:logins];
+}
+
+- (NSArray<NSString *> *)usersEmailsByExcludingEmails:(NSArray<NSString *> *)emails
+{
+    return [self valuesForKeypath:@keypath(QBUUser.new, email) byExcludingValues:emails];
+}
+
+- (NSArray<NSString *> *)usersFacebookIDsByExcludingFacebookIDs:(NSArray<NSString *> *)facebookIDs
+{
+    return [self valuesForKeypath:@keypath(QBUUser.new, facebookID) byExcludingValues:facebookIDs];
 }
 
 @end
