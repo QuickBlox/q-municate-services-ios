@@ -68,13 +68,31 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  *  Login to chat
  *
  *  @param completion The block which informs whether a chat did login or not. nil if no errors.
+ *
+ *  @warning *Deprecated in QMServices 0.3:* Use 'connectWithCompletionBlock:' instead.
  */
-- (void)logIn:(void(^)(NSError *error))completion;
+- (void)logIn:(QBChatCompletionBlock)completion DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.3. Use 'connectWithCompletionBlock:' instead.");
+
+/**
+ *  Connect to chat
+ *
+ *  @param completion   The block which informs whether a chat did connect or not. nil if no errors.
+ */
+- (void)connectWithCompletionBlock:(QBChatCompletionBlock)completion;
 
 /**
  *  Logout from chat
+ *
+ *  @warning *Deprecated in QMServices 0.3:* Use 'disconnectWithCompletionBlock:' instead.
  */
-- (void)logoutChat;
+- (void)logoutChat DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.3. Use 'disconnectWithCompletionBlock:' instead.");
+
+/**
+ *  Disconnect from chat
+ *
+ *  @param completion   The block which informs whether a chat did disconnect or not. nil if no errors.
+ */
+- (void)disconnectWithCompletionBlock:(QBChatCompletionBlock)completion;
 
 /**
  *  Automatically send chat presences when logged in
@@ -92,9 +110,19 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  *
  *  @param dialog Dialog to join.
  *  @param failed Failed callback.
+ *
+ *  @warning *Deprecated in QMServices 0.3:* Use 'joinToGroupDialog:completion:' instead.
  */
 - (void)joinToGroupDialog:(QBChatDialog *)dialog
-                   failed:(void(^)(NSError *error))failed;
+                   failed:(void(^)(NSError *error))failed DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.3. Use 'joinToGroupDialog:completion:' instead.");
+
+/**
+ *  Joins user to group dialog and correctly updates cache. Please use this method instead of 'join' in QBChatDialog if you are using QMServices.
+ *
+ *  @param dialog       dialog to join.
+ *  @param completion   completion block with error if failed or nil if succeed.
+ */
+- (void)joinToGroupDialog:(QBChatDialog *)dialog completion:(QBChatCompletionBlock)completion;
 
 /**
  *  Create group dialog
