@@ -76,13 +76,10 @@
  *
  *  @param  searchText string with full name
  *  @param  pagedRequest extended set of pagination parameters
- *  @param  completion Block with response, page and users instances if request succeded
  *
  *  @return QBRequest cancelable instance
  */
-- (BFTask<NSArray<QBUUser *> *> *)searchUsersWithFullName:(NSString *)searchText
-                                             pagedRequest:(QBGeneralResponsePage *)page
-                                        cancellationToken:(QMCancellationToken *)token;
+- (BFTask<NSArray<QBUUser *> *> *)searchUsersWithFullName:(NSString *)searchText;
 
 /**
  *  Retrieve users with facebook ids (with extended set of pagination parameters)

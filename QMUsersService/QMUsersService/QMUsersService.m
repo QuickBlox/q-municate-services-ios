@@ -175,22 +175,15 @@
 }
 
 - (BFTask<NSArray<QBUUser *> *> *)searchUsersWithFullName:(NSString *)searchText
-                                             pagedRequest:(QBGeneralResponsePage *)page
-                                        cancellationToken:(QMCancellationToken *)token
 {
-#warning Check cancellation token functions
     @weakify(self);
     return [[self loadFromCache] continueWithBlock:^id(BFTask *task) {
         @strongify(self);
+        
         BFTaskCompletionSource* source = [BFTaskCompletionSource taskCompletionSource];
         
-        [QBRequest usersWithFullName:searchText page:page successBlock:^(QBResponse *response, QBGeneralResponsePage *page, NSArray *users) {
-            
-            if (token.isCancelled) {
-                [source cancel];
-                return;
-            }
-            
+        [QBRequest usersWithFullName:searchText page:[QBGeneralResponsePage responsePageWithCurrentPage:1 perPage:100]
+                        successBlock:^(QBResponse *response, QBGeneralResponsePage *page, NSArray *users) {
             [self.usersMemoryStorage addUsers:users];
             
             if ([self.multicastDelegate respondsToSelector:@selector(usersService:didAddUsers:)]) {
@@ -205,6 +198,7 @@
         return source.task;
     }];
 }
+
 
 - (BFTask<NSArray<QBUUser *> *> *)retrieveUsersWithFacebookIDs:(NSArray *)facebookIDs
 {
