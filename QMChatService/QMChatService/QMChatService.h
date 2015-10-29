@@ -297,9 +297,11 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  *  @param dialog     QBChatDialog instance
  *  @param save       completion Send message result
  *
+ *  @warning *Deprecated in QMServices 0.3:* Use 'sendMessage:type:toDialog:saveToHistory:saveToStorage:completion:' instead.
+ *
  *  @return YES if the message was sent. If not - see log.
  */
-- (BOOL)sendMessage:(QBChatMessage *)message toDialog:(QBChatDialog *)dialog save:(BOOL)save completion:(void(^)(NSError *error))completion;
+- (BOOL)sendMessage:(QBChatMessage *)message toDialog:(QBChatDialog *)dialog save:(BOOL)save completion:(void(^)(NSError *error))completion DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.3. Use 'sendMessage:type:toDialog:saveToHistory:saveToStorage:completion:' instead.");
 
 /**
  *  Send message to dialog with identifier
@@ -309,9 +311,45 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  *  @param save       BOOL save
  *  @param completion completion Send message result
  *
+ *  @warning *Deprecated in QMServices 0.3:* Use 'sendMessage:type:toDialogID:saveToHistory:saveToStorage:completion:' instead.
+ *
  *  @return YES if the message was sent. If not - see log.
  */
-- (BOOL)sendMessage:(QBChatMessage *)message toDialogId:(NSString *)dialogID save:(BOOL)save completion:(void (^)(NSError *))completion;
+- (BOOL)sendMessage:(QBChatMessage *)message toDialogId:(NSString *)dialogID save:(BOOL)save completion:(void (^)(NSError *))completion DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.3. Use 'sendMessage:type:toDialogID:saveToHistory:saveToStorage:completion:' instead.");
+
+/**
+ *  Send message to dialog with identifier
+ *
+ *  @param message          QBChatMessage instance
+ *  @param type             message type (default: QMMessageTypeText)
+ *  @param dialogID         dialog identifier
+ *  @param saveToHistory    if YES - saves message to history
+ *  @param saveToStorage    if YES - saves to storage
+ *  @param completion       completion block with error if failed or nil if succeed
+ */
+- (void)sendMessage:(QBChatMessage *)message
+               type:(QMMessageType)type
+         toDialogID:(NSString *)dialogID
+      saveToHistory:(BOOL)saveToHistory
+      saveToStorage:(BOOL)saveToStorage
+         completion:(QBChatCompletionBlock)completion;
+
+/**
+ *  Send message to dialog with identifier
+ *
+ *  @param message          QBChatMessage instance
+ *  @param type             message type (default: QMMessageTypeText)
+ *  @param dialogID         dialog identifier
+ *  @param saveToHistory    if YES - saves message to history
+ *  @param saveToStorage    if YES - saves to storage
+ *  @param completion       completion block with error if failed or nil if succeed
+ */
+- (void)sendMessage:(QBChatMessage *)message
+               type:(QMMessageType)type
+           toDialog:(QBChatDialog *)dialog
+      saveToHistory:(BOOL)saveToHistory
+      saveToStorage:(BOOL)saveToStorage
+         completion:(QBChatCompletionBlock)completion;
 
 #pragma mark - read messages
 
