@@ -1063,7 +1063,7 @@ Fetch user ids from contact list memory storage.
 
 This class is responsible for operation with users and using [BFTasks](https://github.com/BoltsFramework/Bolts-iOS "Bolts-iOS") to return results.
 
-Retrieving user if needed.
+Retrieve user with id.
 
 ```objective-c
 
@@ -1071,7 +1071,7 @@ Retrieving user if needed.
 
 ```
 
-Retrieving users if needed.
+Retrieve users with ids.
 
 ```objective-c
 
@@ -1087,7 +1087,7 @@ Retrieve users with emails.
 
 ```
 
-Retrieve users with facebook ids (with extended set of pagination parameters).
+Retrieve users with facebook ids.
 
 ```objective-c
 
@@ -1103,7 +1103,7 @@ Retrieve users with logins.
 
 ```
 
-Retrieve users with full name.
+Search for users with full name.
 
 ```objective-c
 
@@ -1115,7 +1115,7 @@ Retrieve users with full name.
 
 This class is responsible for in-memory users storage.
 
-Delegate for getting contact list user ids.
+Delegate for getting UsersMemoryStorage user ids.
 
 ```objective-c
 
@@ -1123,7 +1123,7 @@ Delegate for getting contact list user ids.
 
 ```
 
-Add user.
+Add user to memory storage.
 
 ```objective-c
 
@@ -1131,7 +1131,7 @@ Add user.
 
 ```
 
-Add users.
+Add users to memory storage.
 
 ```objective-c
 
@@ -1139,7 +1139,7 @@ Add users.
 
 ```
 
-Get all users in memory storage.
+Get all users from memory storage without sorting.
 
 ```objective-c
 
@@ -1163,7 +1163,7 @@ Get all contacts in memory storage sorted by key.
 
 ```
 
-Get users by ids except some ID.
+Get users with ids without some id.
 
 ```objective-c
 
@@ -1179,7 +1179,7 @@ Get string created from users full names, separated by ",".
 
 ```
 
-Get user by user id.
+Get user with user id.
 
 ```objective-c
 
@@ -1187,7 +1187,7 @@ Get user by user id.
 
 ```
 
-Get users by user ids.
+Get users with user ids.
 
 ```objective-c
 
@@ -1195,7 +1195,7 @@ Get users by user ids.
 
 ```
 
-Get users by user logins.
+Get users with user logins.
 
 ```objective-c
 
@@ -1203,7 +1203,7 @@ Get users by user logins.
 
 ```
 
-Get users by user emails.
+Get users with user emails.
 
 ```objective-c
 
@@ -1211,7 +1211,7 @@ Get users by user emails.
 
 ```
 
-Get users by facebookIDs.
+Get users with user facebook ids.
 
 ```objective-c
 
@@ -1253,7 +1253,7 @@ Search for users excluding users with users facebook IDs.
 
 # Documentation
 
-Inline code documentation.
+For more information see our inline code documentation.
 
 # License
 
