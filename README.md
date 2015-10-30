@@ -5,20 +5,20 @@
 - [Requirements](#requirements)
 - [Dependencies](#dependencies)
 - [Installation](#installation)
-	- [Using an Xcode subproject](#using-an-xcode-subproject)
-		- [Bundle generation](#bundle-generation)
-	- [Cocoapods](#cocoapods)
+- [Using an Xcode subproject](#using-an-xcode-subproject)
+- [Bundle generation](#bundle-generation)
+- [Cocoapods](#cocoapods)
 - [Architecture](#architecture)
 - [Getting started](#getting-started)
-	- [Service Manager](#service-manager)
-	- [Authentication](#authentication)
-		- [Login](#login)
-		- [Logout](#logout)
-	- [Fetching chat dialogs](#fetching-chat-dialogs)
-	- [Fetching chat messages](#fetching-chat-messages)
-	- [Sending message](#sending-message)
-	- [Fetching users](#fetching-users)
-	- [Subclass of QMServicesManager example](#qmservices-example)
+- [Service Manager](#service-manager)
+- [Authentication](#authentication)
+- [Login](#login)
+- [Logout](#logout)
+- [Fetching chat dialogs](#fetching-chat-dialogs)
+- [Fetching chat messages](#fetching-chat-messages)
+- [Sending message](#sending-message)
+- [Fetching users](#fetching-users)
+- [Subclass of QMServicesManager example](#qmservices-example)
 - [Documentation](#documentation)
 - [License](#license)
 
@@ -36,11 +36,11 @@ Easy-to-use services for Quickblox SDK, for speeding up development of iOS chat 
 
 - Xcode 6+
 - ARC
-- Quickblox SDK 2.0+
+- Quickblox SDK 2.5+
 
 # Dependencies
 
-- Quickblox SDK 2.0+
+- Quickblox SDK 2.5+
 
 # Installation
 
@@ -95,10 +95,11 @@ QMServices contains:
 * **QMAuthService**
 * **QMChatService**
 * **QMContactListService**
+* **QMUsersService**
 
 
 They all inherited from **QMBaseService**.
-To support CoreData caching you can use **QMContactListCache** and **QMChatCache**, which are inherited from **QMDBStorage**. Of course you could use your own database storage - just need to implement **QMChatServiceDelegate** or **QMContactListServiceDelegate** depending on your needs.
+To support CoreData caching you can use **QMContactListCache**, **QMChatCache** and **QMUsersCache**, which are inherited from **QMDBStorage**. Of course you could use your own database storage - just need to implement **QMChatServiceDelegate**, **QMContactListServiceDelegate** or **QMUsersServiceDelegate** depending on your needs.
 
 # Getting started
 Add **#import \<QMServices.h\>** to your apps *.pch* file.
@@ -143,55 +144,55 @@ In ``init`` method, services and cache are initialised.
 
 ```objective-c
 - (instancetype)init {
-	self = [super init];
-	if (self) {
-		[QMChatCache setupDBWithStoreNamed:@"sample-cache"];
-        	[QMChatCache instance].messagesLimitPerDialog = 10;
+self = [super init];
+if (self) {
+[QMChatCache setupDBWithStoreNamed:@"sample-cache"];
+[QMChatCache instance].messagesLimitPerDialog = 10;
 
-		_authService = [[QMAuthService alloc] initWithServiceManager:self];
-		_chatService = [[QMChatService alloc] initWithServiceManager:self cacheDataSource:self];
-        	[_chatService addDelegate:self];
-        	_logoutGroup = dispatch_group_create();
-	}
-	return self;
+_authService = [[QMAuthService alloc] initWithServiceManager:self];
+_chatService = [[QMChatService alloc] initWithServiceManager:self cacheDataSource:self];
+[_chatService addDelegate:self];
+_logoutGroup = dispatch_group_create();
+}
+return self;
 }
 ```
 
 * Cache setup (You could skip it if you don't need persistent storage).
 
-	* Initiates Core Data database for dialog and messages:
+* Initiates Core Data database for dialog and messages:
 
-	```objective-c
-	[QMChatCache setupDBWithStoreNamed:@"sample-cache"];
-	```
+```objective-c
+[QMChatCache setupDBWithStoreNamed:@"sample-cache"];
+```
 
 * Services setup
 
-	* Authentication service:
-	
-	```objective-c
-	_authService = [[QMAuthService alloc] initWithServiceManager:self];
-	```
-	
-	* Chat service (responsible for establishing chat connection and responding to chat events (message, presences and so on)):
+* Authentication service:
 
-	```objective-c
-	_chatService = [[QMChatService alloc] initWithServiceManager:self cacheDataSource:self];
-	```
-	
+```objective-c
+_authService = [[QMAuthService alloc] initWithServiceManager:self];
+```
+
+* Chat service (responsible for establishing chat connection and responding to chat events (message, presences and so on)):
+
+```objective-c
+_chatService = [[QMChatService alloc] initWithServiceManager:self cacheDataSource:self];
+```
+
 Also you have to implement **QMServiceManagerProtocol** methods:
 
 ```objective-c
 - (void)handleErrorResponse:(QBResponse *)response {
-	// handle error response from services here
+// handle error response from services here
 }
 
 - (BOOL)isAutorized {
-	return self.authService.isAuthorized;
+return self.authService.isAuthorized;
 }
 
 - (QBUUser *)currentUser {
-	return [QBSession currentSession].currentUser;
+return [QBSession currentSession].currentUser;
 }
 ```
 
@@ -199,32 +200,32 @@ To implement chat messages and dialogs caching you should implement following me
 
 ```objective-c
 - (void)chatService:(QMChatService *)chatService didAddChatDialogToMemoryStorage:(QBChatDialog *)chatDialog {
-	[QMChatCache.instance insertOrUpdateDialog:chatDialog completion:nil];
+[QMChatCache.instance insertOrUpdateDialog:chatDialog completion:nil];
 }
 
 - (void)chatService:(QMChatService *)chatService didAddChatDialogsToMemoryStorage:(NSArray *)chatDialogs {
-	[QMChatCache.instance insertOrUpdateDialogs:chatDialogs completion:nil];
+[QMChatCache.instance insertOrUpdateDialogs:chatDialogs completion:nil];
 }
 
 - (void)chatService:(QMChatService *)chatService didAddMessageToMemoryStorage:(QBChatMessage *)message forDialogID:(NSString *)dialogID {
-	[QMChatCache.instance insertOrUpdateMessage:message withDialogId:dialogID completion:nil];
+[QMChatCache.instance insertOrUpdateMessage:message withDialogId:dialogID completion:nil];
 }
 
 - (void)chatService:(QMChatService *)chatService didAddMessagesToMemoryStorage:(NSArray *)messages forDialogID:(NSString *)dialogID {
-	[QMChatCache.instance insertOrUpdateMessages:messages withDialogId:dialogID completion:nil];
+[QMChatCache.instance insertOrUpdateMessages:messages withDialogId:dialogID completion:nil];
 }
 
 - (void)chatService:(QMChatService *)chatService didDeleteChatDialogWithIDFromMemoryStorage:(NSString *)chatDialogID {
-    [QMChatCache.instance deleteDialogWithID:chatDialogID completion:nil];
+[QMChatCache.instance deleteDialogWithID:chatDialogID completion:nil];
 }
 
 - (void)chatService:(QMChatService *)chatService  didReceiveNotificationMessage:(QBChatMessage *)message createDialog:(QBChatDialog *)dialog {
-	[QMChatCache.instance insertOrUpdateMessage:message withDialogId:dialog.ID completion:nil];
-	[QMChatCache.instance insertOrUpdateDialog:dialog completion:nil];
+[QMChatCache.instance insertOrUpdateMessage:message withDialogId:dialog.ID completion:nil];
+[QMChatCache.instance insertOrUpdateDialog:dialog completion:nil];
 }
 
 - (void)chatService:(QMChatService *)chatService didUpdateChatDialogInMemoryStorage:(QBChatDialog *)chatDialog {
-    [[QMChatCache instance] insertOrUpdateDialog:chatDialog completion:nil];
+[[QMChatCache instance] insertOrUpdateDialog:chatDialog completion:nil];
 }
 ```
 
@@ -232,15 +233,15 @@ Also for prefetching initial dialogs and messages you have to implement **QMChat
 
 ```objective-c
 - (void)cachedDialogs:(QMCacheCollection)block {
-	[QMChatCache.instance dialogsSortedBy:CDDialogAttributes.lastMessageDate ascending:YES completion:^(NSArray *dialogs) {
-		block(dialogs);
-	}];
+[QMChatCache.instance dialogsSortedBy:CDDialogAttributes.lastMessageDate ascending:YES completion:^(NSArray *dialogs) {
+block(dialogs);
+}];
 }
 
 - (void)cachedMessagesWithDialogID:(NSString *)dialogID block:(QMCacheCollection)block {
-	[QMChatCache.instance messagesWithDialogId:dialogID sortedBy:CDMessageAttributes.messageID ascending:YES completion:^(NSArray *array) {
-		block(array);
-	}];
+[QMChatCache.instance messagesWithDialogId:dialogID sortedBy:CDMessageAttributes.messageID ascending:YES completion:^(NSArray *array) {
+block(array);
+}];
 }
 ```
 
@@ -258,99 +259,104 @@ This method logins user to Quickblox REST API backend and to the Quickblox Chat 
 
 ```objective-c
 - (void)logInWithUser:(QBUUser *)user
-		   completion:(void (^)(BOOL success, NSString *errorMessage))completion
+completion:(void (^)(BOOL success, NSString *errorMessage))completion
 {
-	[self.authService logInWithUser:user completion:^(QBResponse *response, QBUUser *userProfile) {
-		if (response.error != nil) {
-			if (completion != nil) {
-				completion(NO, response.error.error.localizedDescription);
-			}
-			return;
-		}
-		
-        	__weak typeof(self) weakSelf = self;
-		[self.chatService logIn:^(NSError *error) {
-            		__typeof(self) strongSelf = weakSelf;
-			if (completion != nil) {
-				completion(error == nil, error.localizedDescription);
-			}
-            		
-			NSArray* dialogs = [strongSelf.chatService.dialogsMemoryStorage unsortedDialogs];
-            		for (QBChatDialog* dialog in dialogs) {
-                		if (dialog.type != QBChatDialogTypePrivate) {
-                			[strongSelf.chatService joinToGroupDialog:dialog failed:^(NSError *error) {
-						if (error != nil) {
-							NSLog(@"Join error: %@", error.localizedDescription);
-						}
-                    			}];
-                		}
-            		}
-		}];
-	}];
+[self.authService logInWithUser:user completion:^(QBResponse *response, QBUUser *userProfile) {
+if (response.error != nil) {
+if (completion != nil) {
+completion(NO, response.error.error.localizedDescription);
+}
+return;
 }
 
+__weak typeof(self) weakSelf = self;
+[weakSelf.chatService connectWithCompletionBlock:^(NSError * _Nullable error) {
+//
+__typeof(self) strongSelf = weakSelf;
+
+[strongSelf.chatService loadCachedDialogsWithCompletion:^{
+NSArray* dialogs = [strongSelf.chatService.dialogsMemoryStorage unsortedDialogs];
+for (QBChatDialog* dialog in dialogs) {
+if (dialog.type != QBChatDialogTypePrivate) {
+[strongSelf.chatService joinToGroupDialog:dialog completion:^(NSError * _Nullable error) {
+//
+if (error != nil) {
+NSLog(@"Join error: %@", error.localizedDescription);
+}
+}];
+}
+}
+
+if (completion != nil) {
+completion(error == nil, error.localizedDescription);
+}
+
+}];
+}];
+}];
+}
 ```
 
 Example of usage:
 
 ```objective-c
-    // Logging in to Quickblox REST API and chat.
-    [ServicesManager.instance logInWithUser:selectedUser completion:^(BOOL success, NSString *errorMessage) {
-        if (success) {
-        	// Handle success login
-        } else {
-            	// Handle error with error message
-        }
-    }];
+// Logging in to Quickblox REST API and chat.
+[QMServicesManager.instance logInWithUser:selectedUser completion:^(BOOL success, NSString *errorMessage) {
+if (success) {
+// Handle success login
+} else {
+// Handle error with error message
+}
+}];
 ```
 
 ### Logout
 
 ```objective-c
-- (void)logoutWithCompletion:(void(^)())completion
+- (void)logoutWithCompletion:(dispatch_block_t)completion
 {
-    if ([QBSession currentSession].currentUser != nil) {
-        __weak typeof(self)weakSelf = self;    
-        
-        dispatch_group_enter(self.logoutGroup);
-        [self.authService logOut:^(QBResponse *response) {
-            __typeof(self) strongSelf = weakSelf;
-            [strongSelf.chatService logoutChat];
-            [strongSelf.chatService free];
-            dispatch_group_leave(strongSelf.logoutGroup);
-        }];
-        
-        dispatch_group_enter(self.logoutGroup);
-        [[QMChatCache instance] deleteAllDialogs:^{
-            __typeof(self) strongSelf = weakSelf;
-            dispatch_group_leave(strongSelf.logoutGroup);
-        }];
-        
-        dispatch_group_enter(self.logoutGroup);
-        [[QMChatCache instance] deleteAllMessages:^{
-            __typeof(self) strongSelf = weakSelf;
-            dispatch_group_leave(strongSelf.logoutGroup);
-        }];
-        
-        dispatch_group_notify(self.logoutGroup, dispatch_get_main_queue(), ^{
-            if (completion) {
-                completion();
-            }
-        });
-    } else {
-        if (completion) {
-            completion();
-        }
-    }
+if ([QBSession currentSession].currentUser != nil) {
+__weak typeof(self)weakSelf = self;    
+
+dispatch_group_enter(self.logoutGroup);
+[self.authService logOut:^(QBResponse *response) {
+__typeof(self) strongSelf = weakSelf;
+[strongSelf.chatService disconnectWithCompletionBlock:nil];
+[strongSelf.chatService free];
+dispatch_group_leave(strongSelf.logoutGroup);
+}];
+
+dispatch_group_enter(self.logoutGroup);
+[[QMChatCache instance] deleteAllDialogs:^{
+__typeof(self) strongSelf = weakSelf;
+dispatch_group_leave(strongSelf.logoutGroup);
+}];
+
+dispatch_group_enter(self.logoutGroup);
+[[QMChatCache instance] deleteAllMessages:^{
+__typeof(self) strongSelf = weakSelf;
+dispatch_group_leave(strongSelf.logoutGroup);
+}];
+
+dispatch_group_notify(self.logoutGroup, dispatch_get_main_queue(), ^{
+if (completion) {
+completion();
+}
+});
+} else {
+if (completion) {
+completion();
+}
+}
 }
 ```
 
 Example of usage:
 
 ```objective-c
-    [[QMServicesManager instance] logoutWithCompletion:^{
-        // Handle logout
-    }];
+[[QMServicesManager instance] logoutWithCompletion:^{
+// Handle logout
+}];
 ```
 
 ## Fetching chat dialogs
@@ -360,11 +366,10 @@ Load all dialogs from REST API:
 Extended request parameters could be taken from http://quickblox.com/developers/SimpleSample-chat_users-ios#Filters.
 
 ```objective-c
-
-[QBServicesManager.instance.chatService allDialogsWithPageLimit:100 extendedRequest:nil iterationBlock:^(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, BOOL *stop) {
-	// reload UI, this block is called when page is loaded
+[QMServicesManager.instance.chatService allDialogsWithPageLimit:100 extendedRequest:nil iterationBlock:^(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, BOOL *stop) {
+// reload UI, this block is called when page is loaded
 } completion:^(QBResponse *response) {
-	// loading finished, all dialogs fetched
+// loading finished, all dialogs fetched
 }];
 ```
 
@@ -373,10 +378,9 @@ These dialogs are automatically stored in **QMDialogsMemoryStorage** class.
 ## Fetching chat messages
 
 Fetching messages from REST API history:
-
 ```objective-c
-[QBServicesManager instance].chatService messagesWithChatDialogID:@"53fdc87fe4b0f91d92fbb27e" completion:^(QBResponse *response, NSArray *messages) {
-	// update UI, handle messages
+[QMServicesManager instance].chatService messagesWithChatDialogID:@"53fdc87fe4b0f91d92fbb27e" completion:^(QBResponse *response, NSArray *messages) {
+// update UI, handle messages
 }];
 ```
 
@@ -387,12 +391,11 @@ These message are automatically stored in **QMMessagesMemoryStorage** class.
 Send message to dialog:
 
 ```objective-c
-
 QBChatMessage *message = [QBChatMessage message];
 message.text = @"Awesome text";
 message.senderID = 2308497;
 
-[[QBServicesManager instance].chatService sendMessage:message toDialogId:@"53fdc87fe4b0f91d92fbb27e" save:YES completion:nil];
+[[QMServicesManager instance].chatService sendMessage:message type:QMMessageTypeText toDialogID:@"53fdc87fe4b0f91d92fbb27e" saveToHistory:YES saveToStorage:YES completion:nil];
 ```
 
 Message is automatically added to **QMMessagesMemoryStorage** class.
@@ -401,8 +404,8 @@ Message is automatically added to **QMMessagesMemoryStorage** class.
 
 
 ```objective-c
-[QBServicesManager.instance.contactListService retrieveUsersWithIDs:@[@(2308497)] completion:^(QBResponse *response, QBGeneralResponsePage *page, NSArray *users) {
-	// handle users
+[QMServicesManager.instance.usersService retrieveUsersWithIDs:@[@(2308497)] completion:^(QBResponse *response, QBGeneralResponsePage *page, NSArray *users) {
+// handle users
 }];
 ```
 
@@ -438,74 +441,74 @@ Implementation file:
 @implementation ServicesManager
 
 - (instancetype)init {
-	self = [super init];
-    
-	if (self) {
-        [QMContactListCache setupDBWithStoreNamed:kContactListCacheNameKey];
-		_contactListService = [[QMContactListService alloc] initWithServiceManager:self cacheDataSource:self];
-		// Replace with any users service you are already using or going to use
-		_usersService = [[UsersService alloc] initWithContactListService:_contactListService];
-	}
-    
-	return self;
+self = [super init];
+
+if (self) {
+[QMContactListCache setupDBWithStoreNamed:kContactListCacheNameKey];
+_contactListService = [[QMContactListService alloc] initWithServiceManager:self cacheDataSource:self];
+// Replace with any users service you are already using or going to use
+_usersService = [[UsersService alloc] initWithContactListService:_contactListService];
+}
+
+return self;
 }
 
 - (void)showNotificationForMessage:(QBChatMessage *)message inDialogID:(NSString *)dialogID
 {
-    if ([self.currentDialogID isEqualToString:dialogID]) return;
-    
-    if (message.senderID == self.currentUser.ID) return;
-    
-    NSString* dialogName = @"New message";
-    
-    QBChatDialog* dialog = [self.chatService.dialogsMemoryStorage chatDialogWithID:dialogID];
-    
-    if (dialog.type != QBChatDialogTypePrivate) {
-        dialogName = dialog.name;
-    } else {
-        QBUUser* user = [[StorageManager instance] userByID:dialog.recipientID];
-        if (user != nil) {
-            dialogName = user.login;
-        }
-    }
-    
-    // Display notification UI
+if ([self.currentDialogID isEqualToString:dialogID]) return;
+
+if (message.senderID == self.currentUser.ID) return;
+
+NSString* dialogName = @"New message";
+
+QBChatDialog* dialog = [self.chatService.dialogsMemoryStorage chatDialogWithID:dialogID];
+
+if (dialog.type != QBChatDialogTypePrivate) {
+dialogName = dialog.name;
+} else {
+QBUUser* user = [[StorageManager instance] userByID:dialog.recipientID];
+if (user != nil) {
+dialogName = user.login;
+}
+}
+
+// Display notification UI
 }
 
 - (void)handleErrorResponse:(QBResponse *)response {
-    
-    [super handleErrorResponse:response];
-    
-    if (![self isAutorized]) return;
-	NSString *errorMessage = [[response.error description] stringByReplacingOccurrencesOfString:@"(" withString:@""];
-	errorMessage = [errorMessage stringByReplacingOccurrencesOfString:@")" withString:@""];
-	
-	if( response.status == 502 ) { // bad gateway, server error
-		errorMessage = @"Bad Gateway, please try again";
-	}
-	else if( response.status == 0 ) { // bad gateway, server error
-		errorMessage = @"Connection network error, please try again";
-	}
-    
-    // Display notification UI
+
+[super handleErrorResponse:response];
+
+if (![self isAutorized]) return;
+NSString *errorMessage = [[response.error description] stringByReplacingOccurrencesOfString:@"(" withString:@""];
+errorMessage = [errorMessage stringByReplacingOccurrencesOfString:@")" withString:@""];
+
+if( response.status == 502 ) { // bad gateway, server error
+errorMessage = @"Bad Gateway, please try again";
+}
+else if( response.status == 0 ) { // bad gateway, server error
+errorMessage = @"Connection network error, please try again";
+}
+
+// Display notification UI
 }
 
 #pragma mark QMChatServiceCache delegate
 
 - (void)chatService:(QMChatService *)chatService didAddMessageToMemoryStorage:(QBChatMessage *)message forDialogID:(NSString *)dialogID {
-    [super chatService:chatService didAddMessageToMemoryStorage:message forDialogID:dialogID];
-    
-    [self showNotificationForMessage:message inDialogID:dialogID];
+[super chatService:chatService didAddMessageToMemoryStorage:message forDialogID:dialogID];
+
+[self showNotificationForMessage:message inDialogID:dialogID];
 }
 
 #pragma mark QMContactListServiceCacheDelegate delegate
 
 - (void)cachedUsers:(QMCacheCollection)block {
-	[QMContactListCache.instance usersSortedBy:@"id" ascending:YES completion:block];
+[QMContactListCache.instance usersSortedBy:@"id" ascending:YES completion:block];
 }
 
 - (void)cachedContactListItems:(QMCacheCollection)block {
-	[QMContactListCache.instance contactListItems:block];
+[QMContactListCache.instance contactListItems:block];
 }
 
 @end
@@ -559,19 +562,19 @@ Logout user from Quickblox.
 
 This class is responsible for operation with messages and dialogs.
 
-Login user to Quickblox chat.
+Connect user to Quickblox chat.
 
 ```objective-c
 
-- (void)logIn:(void(^)(NSError *error))completion;
+- (void)connectWithCompletionBlock:(QBChatCompletionBlock)completion;
 
 ```
 
-Logout user from Quickblox chat.
+Disconnect user from Quickblox chat.
 
 ```objective-c
 
-- (void)logoutChat;
+- (void)disconnectWithCompletionBlock:(QBChatCompletionBlock)completion;
 
 ```
 
@@ -591,12 +594,11 @@ Time interval for sending preseneces - default value 45 seconds.
 
 ```
 
-Join user to group dialog and correctly update cache.
+Join user to group dialog.
 
 ```objective-c
 
-- (void)joinToGroupDialog:(QBChatDialog *)dialog
-                   failed:(void(^)(NSError *error))failed;
+- (void)joinToGroupDialog:(QBChatDialog *)dialog completion:(QBChatCompletionBlock)completion;
 
 ```
 
@@ -605,7 +607,7 @@ Create group chat dialog with occupants on Quickblox.
 ```objective-c
 
 - (void)createGroupChatDialogWithName:(NSString *)name photo:(NSString *)photo occupants:(NSArray *)occupants
-                           completion:(void(^)(QBResponse *response, QBChatDialog *createdDialog))completion;
+completion:(void(^)(QBResponse *response, QBChatDialog *createdDialog))completion;
 
 ```
 
@@ -614,7 +616,7 @@ Create private chat dialog with opponent on Quickblox.
 ```objective-c
 
 - (void)createPrivateChatDialogWithOpponent:(QBUUser *)opponent
-                                 completion:(void(^)(QBResponse *response, QBChatDialog *createdDialog))completion;
+completion:(void(^)(QBResponse *response, QBChatDialog *createdDialog))completion;
 
 ```
 
@@ -623,7 +625,16 @@ Change dialog name.
 ```objective-c
 
 - (void)changeDialogName:(NSString *)dialogName forChatDialog:(QBChatDialog *)chatDialog
-              completion:(void(^)(QBResponse *response, QBChatDialog *updatedDialog))completion;
+completion:(void(^)(QBResponse *response, QBChatDialog *updatedDialog))completion;
+
+```
+
+Change dialog avatar.
+
+```objective-c
+
+- (void)changeDialogAvatar:(NSString *)avatarPublicUrl forChatDialog:(QBChatDialog *)chatDialog
+completion:(void(^)(QBResponse *response, QBChatDialog *updatedDialog))completion;
 
 ```
 
@@ -632,7 +643,7 @@ Add occupants to dialog.
 ``` objective-c
 
 - (void)joinOccupantsWithIDs:(NSArray *)ids toChatDialog:(QBChatDialog *)chatDialog
-                  completion:(void(^)(QBResponse *response, QBChatDialog *updatedDialog))completion;
+completion:(void(^)(QBResponse *response, QBChatDialog *updatedDialog))completion;
 
 
 ```
@@ -643,7 +654,7 @@ Deletes dialog on service and in cache.
 ```objective-c
 
 - (void)deleteDialogWithID:(NSString *)dialogId
-                completion:(void(^)(QBResponse *response))completion;
+completion:(void(^)(QBResponse *response))completion;
 
 ```
 
@@ -652,9 +663,9 @@ Recursively fetch all dialogs from Quickblox.
 ```objective-c
 
 - (void)allDialogsWithPageLimit:(NSUInteger)limit
-                extendedRequest:(NSDictionary *)extendedRequest
-                iterationBlock:(void(^)(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, BOOL *stop))interationBlock
-                     completion:(void(^)(QBResponse *response))completion;
+extendedRequest:(NSDictionary *)extendedRequest
+iterationBlock:(void(^)(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, BOOL *stop))interationBlock
+completion:(void(^)(QBResponse *response))completion;
 ```
 
 Notifies user via XMPP about created dialog.
@@ -670,9 +681,9 @@ Notifies users via XMPP that dialog was updated.
 ```objective-c
 
 - (void)notifyAboutUpdateDialog:(QBChatDialog *)updatedDialog
-      occupantsCustomParameters:(NSDictionary *)occupantsCustomParameters
-               notificationText:(NSString *)notificationText
-                     completion:(void (^)(NSError *error))completion;
+occupantsCustomParameters:(NSDictionary *)occupantsCustomParameters
+notificationText:(NSString *)notificationText
+completion:(QBChatCompletionBlock)completion;
 
 ```
 
@@ -681,8 +692,8 @@ Notifies opponents that user accepted contact request.
 ```objective-c
 
 - (void)notifyOponentAboutAcceptingContactRequest:(BOOL)accept
-                                       opponentID:(NSUInteger)opponentID
-                                       completion:(void(^)(NSError *error))completion;
+opponentID:(NSUInteger)opponentID
+completion:(QBChatCompletionBlock)completion;
 
 ```
 
@@ -702,11 +713,56 @@ Fetches 100 messages that are older than oldest message in cache.
 
 ```
 
+Fetch dialog with dialog identifier.
+
+```objective-c
+
+- (void)fetchDialogWithID:(NSString *)dialogID completion:(void (^)(QBChatDialog *dialog))completion;
+
+```
+
+Load dialog with dialog identifier from Quickblox server and save to local storage.
+
+```objective-c
+
+- (void)loadDialogWithID:(NSString *)dialogID completion:(void (^)(QBChatDialog *loadedDialog))completion;
+
+```
+
+Fetch dialogs updated from date.
+
+```objective-c
+
+- (void)fetchDialogsUpdatedFromDate:(NSDate *)date andPageLimit:(NSUInteger)limit iterationBlock:(void(^)(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, BOOL *stop))iteration completionBlock:(void (^)(QBResponse *response))completion;
+
+```
+
 Send message to dialog.
 
 ```objective-c
 
-- (BOOL)sendMessage:(QBChatMessage *)message toDialog:(QBChatDialog *)dialog save:(BOOL)save completion:(void(^)(NSError *error))completion;
+- (void)sendMessage:(QBChatMessage *)message
+type:(QMMessageType)type
+toDialog:(QBChatDialog *)dialog
+saveToHistory:(BOOL)saveToHistory
+saveToStorage:(BOOL)saveToStorage
+completion:(QBChatCompletionBlock)completion;
+
+```
+
+Send read status for message and update unreadMessageCount for dialog in storage.
+
+```objective-c
+
+- (void)readMessage:(QBChatMessage *)message completion:(QBChatCompletionBlock)completion;
+
+```
+
+Send read status for messages and update unreadMessageCount for dialog in storage.
+
+```objective-c
+
+- (void)readMessages:(NSArray<QBChatMessage *> *)messages forDialogID:(NSString *)dialogID completion:(QBChatCompletionBlock)completion;
 
 ```
 
@@ -718,7 +774,7 @@ Adds chat dialog and joins if chosen.
 
 ```objective-c
 
-- (void)addChatDialog:(QBChatDialog *)chatDialog andJoin:(BOOL)join onJoin:(dispatch_block_t)onJoin;
+- (void)addChatDialog:(QBChatDialog *)chatDialog andJoin:(BOOL)join completion:(QBChatCompletionBlock)completion;
 
 ```
 
@@ -783,6 +839,14 @@ Fetch all dialogs sorted by last message date.
 ```objective-c
 
 - (NSArray *)dialogsSortByLastMessageDateWithAscending:(BOOL)ascending;
+
+```
+
+Fetch all dialogs sorted by updated at.
+
+```objective-c
+
+- (NSArray *)dialogsSortByUpdatedAtWithAscending:(BOOL)ascending;
 
 ```
 
@@ -910,15 +974,6 @@ Get attachment image. (Download from Quickblox or load from disc).
 
 This class is responsible for contact list operations.
 
-Fetch users by identifiers from Quickblox.
-
-```objective-c
-
-- (void)retrieveUsersWithIDs:(NSArray *)ids forceDownload:(BOOL)forceDownload
-                  completion:(void(^)(QBResponse *response, QBGeneralResponsePage *page, NSArray * users))completion;
-
-```
-
 Add user to contact list.
 
 ```objective-c
@@ -987,6 +1042,58 @@ Fetch user ids from contact list memory storage.
 
 ```
 
+## QMUsersService
+
+This class is responsible for operation with users and using [BFTasks](https://github.com/BoltsFramework/Bolts-iOS "Bolts-iOS") to return results.
+
+Retrieving user if needed.
+
+```objective-c
+
+- (BFTask<QBUUser *> *)retrieveUserWithID:(NSUInteger)userID;
+
+```
+
+Retrieving users if needed.
+
+```objective-c
+
+- (BFTask<NSArray<QBUUser *> *> *)retrieveUsersWithIDs:(NSArray<NSNumber *> *)usersIDs;
+
+```
+
+Retrieve users with emails.
+
+```objective-c
+
+- (BFTask<NSArray<QBUUser *> *> *)retrieveUsersWithEmails:(NSArray<NSString *> *)emails;
+
+```
+
+Retrieve users with facebook ids (with extended set of pagination parameters).
+
+```objective-c
+
+- (BFTask<NSArray<QBUUser *> *> *)retrieveUsersWithFacebookIDs:(NSArray<NSString *> *)facebookIDs;
+
+```
+
+Retrieve users with logins.
+
+```objective-c
+
+- (BFTask<NSArray<QBUUser *> *> *)retrieveUsersWithLogins:(NSArray<NSString *> *)logins;
+
+```
+
+Retrieve users with full name.
+
+```objective-c
+
+- (BFTask<NSArray<QBUUser *> *> *)searchUsersWithFullName:(NSString *)searchText;
+
+```
+
 ### QMUsersMemoryStorage
 
 This class is responsible for in-memory users storage.
@@ -1015,23 +1122,7 @@ Add users.
 
 ```
 
-Fetch user by identifier.
-
-```objective-c
-
-- (QBUUser *)userWithID:(NSUInteger)userID;
-
-```
-
-Fetch users by identifiers.
-
-```objective-c
-
-- (NSArray *)usersWithIDs:(NSArray *)ids;
-
-```
-
-Fetch all users from memory storage.
+Get all users in memory storage.
 
 ```objective-c
 
@@ -1039,7 +1130,7 @@ Fetch all users from memory storage.
 
 ```
 
-Fetch all users sorted by key,
+Get all users in memory storage sorted by key.
 
 ```objective-c
 
@@ -1047,7 +1138,7 @@ Fetch all users sorted by key,
 
 ```
 
-Fetch all contact list users sorted by key.
+Get all contacts in memory storage sorted by key.
 
 ```objective-c
 
@@ -1055,7 +1146,7 @@ Fetch all contact list users sorted by key.
 
 ```
 
-Fetch users with identifiers and excluding user identifier.
+Get users by ids except some ID.
 
 ```objective-c
 
@@ -1063,11 +1154,83 @@ Fetch users with identifiers and excluding user identifier.
 
 ```
 
-Create comma-separate user's full name string.
+Get string created from users full names, separated by ",".
 
 ```objective-c
 
 - (NSString *)joinedNamesbyUsers:(NSArray *)users;
+
+```
+
+Get user by user id.
+
+```objective-c
+
+- (QBUUser *)userWithID:(NSUInteger)userID;
+
+```
+
+Get users by user ids.
+
+```objective-c
+
+- (NSArray *)usersWithIDs:(NSArray *)ids;
+
+```
+
+Get users by user logins.
+
+```objective-c
+
+- (NSArray<QBUUser *> *)usersWithLogins:(NSArray<NSString *> *)logins;
+
+```
+
+Get users by user emails.
+
+```objective-c
+
+- (NSArray<QBUUser *> *)usersWithEmails:(NSArray<NSString *> *)emails;
+
+```
+
+Get users by facebookIDs.
+
+```objective-c
+
+- (NSArray<QBUUser *> *)usersWithFacebookIDs:(NSArray<NSString *> *)facebookIDs;
+
+```
+
+Search for users excluding users with users ids.
+
+```objective-c
+
+- (NSDictionary *)usersByExcludingUsersIDs:(NSArray<NSNumber *> *)ids;
+
+```
+
+Search for users excluding users with users logins.
+
+```objective-c
+
+- (NSDictionary *)usersByExcludingLogins:(NSArray<NSString *> *)logins;
+
+```
+
+Search for users excluding users with users logins.
+
+```objective-c
+
+- (NSDictionary *)usersByExcludingEmails:(NSArray<NSString *> *)emails;
+
+```
+
+Search for users excluding users with users facebook IDs.
+
+```objective-c
+
+- (NSDictionary *)usersByExcludingFacebookIDs:(NSArray<NSString *> *)facebookIDs;
 
 ```
 
