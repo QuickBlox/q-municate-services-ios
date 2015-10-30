@@ -25,6 +25,9 @@ extern const struct QMUsersSearchKeyStruct QMUsersSearchKey;
 
 @interface QMUsersMemoryStorage : NSObject <QMMemoryStorageProtocol>
 
+/**
+ *  Delegate for getting UsersMemoryStorage user ids.
+ */
 @property (weak, nonatomic) id <QMUsersMemoryStorageDelegate> delegate;
 
 /**
