@@ -677,9 +677,9 @@ Recursively fetch all dialogs from Quickblox.
 ```objective-c
 
 - (void)allDialogsWithPageLimit:(NSUInteger)limit
-extendedRequest:(NSDictionary *)extendedRequest
-iterationBlock:(void(^)(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, BOOL *stop))interationBlock
-completion:(void(^)(QBResponse *response))completion;
+				extendedRequest:(NSDictionary *)extendedRequest
+				 iterationBlock:(void(^)(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, BOOL *stop))interationBlock
+					 completion:(void(^)(QBResponse *response))completion;
 ```
 
 Notifies user via XMPP about created dialog.
@@ -695,9 +695,9 @@ Notifies users via XMPP that dialog was updated.
 ```objective-c
 
 - (void)notifyAboutUpdateDialog:(QBChatDialog *)updatedDialog
-occupantsCustomParameters:(NSDictionary *)occupantsCustomParameters
-notificationText:(NSString *)notificationText
-completion:(QBChatCompletionBlock)completion;
+	  occupantsCustomParameters:(NSDictionary *)occupantsCustomParameters
+			   notificationText:(NSString *)notificationText
+					 completion:(QBChatCompletionBlock)completion;
 
 ```
 
@@ -706,8 +706,8 @@ Notifies opponents that user accepted contact request.
 ```objective-c
 
 - (void)notifyOponentAboutAcceptingContactRequest:(BOOL)accept
-opponentID:(NSUInteger)opponentID
-completion:(QBChatCompletionBlock)completion;
+									   opponentID:(NSUInteger)opponentID
+									   completion:(QBChatCompletionBlock)completion;
 
 ```
 
@@ -747,7 +747,10 @@ Fetch dialogs updated from date.
 
 ```objective-c
 
-- (void)fetchDialogsUpdatedFromDate:(NSDate *)date andPageLimit:(NSUInteger)limit iterationBlock:(void(^)(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, BOOL *stop))iteration completionBlock:(void (^)(QBResponse *response))completion;
+- (void)fetchDialogsUpdatedFromDate:(NSDate *)date
+ 					   andPageLimit:(NSUInteger)limit
+ 					 iterationBlock:(void(^)(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, BOOL *stop))iteration
+ 					completionBlock:(void (^)(QBResponse *response))completion;
 
 ```
 
