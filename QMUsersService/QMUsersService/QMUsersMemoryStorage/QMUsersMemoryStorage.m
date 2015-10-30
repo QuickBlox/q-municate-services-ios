@@ -8,6 +8,11 @@
 
 #import "QMUsersMemoryStorage.h"
 
+const struct QMUsersSearchKeyStruct QMUsersSearchKey = {
+    .foundObjects = @"kFoundObjects",
+    .notFoundSearchValues = @"notFoundSearchValues"
+};
+
 @interface QMUsersMemoryStorage()
 
 @property (strong, nonatomic) NSMutableDictionary *users;
@@ -146,11 +151,6 @@
     }]];
 }
 
-- (NSArray<QBUUser *> *)usersWithFullnames:(NSArray<NSString *> *)fullnames
-{
-    return [self usersForKeypath:@keypath(QBUUser.new, fullName) withValues:fullnames];
-}
-
 - (NSArray<QBUUser *> *)usersWithLogins:(NSArray<NSString *> *)logins
 {
     return [self usersForKeypath:@keypath(QBUUser.new, login) withValues:logins];
@@ -168,39 +168,39 @@
 
 #pragma mark - Filter
 
-- (NSArray *)valuesForKeypath:(NSString *)keypath byExcludingValues:(NSArray *)values
+- (NSDictionary *)valuesForKeypath:(NSString *)keypath byExcludingValues:(NSArray *)values
 {
-    NSParameterAssert(values);
-    if (self.users.allValues.count == 0) return values;
+    NSParameterAssert(values);    
+    NSMutableArray* mutableValues = [values mutableCopy];
     
-    NSArray* filtereUsers = [self.users.allValues filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(QBUUser*   _Nonnull evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
-        return ![values containsObject:[evaluatedObject valueForKeyPath:keypath]];
+    NSArray* foundUsers = [self.users.allValues filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(QBUUser*  _Nonnull evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
+        
+        BOOL contains = [values containsObject:[evaluatedObject valueForKeyPath:keypath]];
+        if (contains) {
+            [mutableValues removeObject:[evaluatedObject valueForKeyPath:keypath]];
+        }
+        return contains;
     }]];
     
-    return [filtereUsers valueForKeyPath:keypath];
+    return @{QMUsersSearchKey.foundObjects : foundUsers, QMUsersSearchKey.notFoundSearchValues : [mutableValues copy]};
 }
 
-- (NSArray<NSNumber *> *)usersIDsByExcludingUsersIDs:(NSArray<NSNumber *> *)ids
+- (NSDictionary *)usersByExcludingUsersIDs:(NSArray<NSNumber *> *)ids
 {
     return [self valuesForKeypath:@keypath(QBUUser.new, ID) byExcludingValues:ids];
 }
 
-- (NSArray<NSString *> *)usersFullNameByExcludingFullnames:(NSArray<NSString *> *)fullnames
-{
-    return [self valuesForKeypath:@keypath(QBUUser.new, fullName) byExcludingValues:fullnames];
-}
-
-- (NSArray<NSString *> *)usersLoginsByExcludingLogins:(NSArray<NSString *> *)logins
+- (NSDictionary *)usersByExcludingLogins:(NSArray<NSString *> *)logins
 {
     return [self valuesForKeypath:@keypath(QBUUser.new, login) byExcludingValues:logins];
 }
 
-- (NSArray<NSString *> *)usersEmailsByExcludingEmails:(NSArray<NSString *> *)emails
+- (NSDictionary *)usersByExcludingEmails:(NSArray<NSString *> *)emails
 {
     return [self valuesForKeypath:@keypath(QBUUser.new, email) byExcludingValues:emails];
 }
 
-- (NSArray<NSString *> *)usersFacebookIDsByExcludingFacebookIDs:(NSArray<NSString *> *)facebookIDs
+- (NSDictionary *)usersByExcludingFacebookIDs:(NSArray<NSString *> *)facebookIDs
 {
     return [self valuesForKeypath:@keypath(QBUUser.new, facebookID) byExcludingValues:facebookIDs];
 }

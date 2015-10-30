@@ -9,6 +9,14 @@
 #import <Foundation/Foundation.h>
 #import "QMMemoryStorageProtocol.h"
 
+struct QMUsersSearchKeyStruct {
+    __unsafe_unretained NSString* foundObjects;
+    __unsafe_unretained NSString* notFoundSearchValues;
+};
+
+extern const struct QMUsersSearchKeyStruct QMUsersSearchKey;
+
+
 @protocol QMUsersMemoryStorageDelegate <NSObject>
 
 - (NSArray *)contactsIDS;
@@ -105,24 +113,20 @@
  */
 - (NSArray *)usersWithIDs:(NSArray *)ids;
 
-- (NSArray<QBUUser *> *)usersWithFullnames:(NSArray<NSString *> *)fullnames;
-
 - (NSArray<QBUUser *> *)usersWithLogins:(NSArray<NSString *> *)logins;
 
 - (NSArray<QBUUser *> *)usersWithEmails:(NSArray<NSString *> *)emails;
 
 - (NSArray<QBUUser *> *)usersWithFacebookIDs:(NSArray<NSString *> *)facebookIDs;
 
-#pragma mark - Filter
+#pragma mark - Search & Exclude
 
-- (NSArray<NSNumber *> *)usersIDsByExcludingUsersIDs:(NSArray<NSNumber *> *)ids;
+- (NSDictionary *)usersByExcludingUsersIDs:(NSArray<NSNumber *> *)ids;
 
-- (NSArray<NSString *> *)usersFullNameByExcludingFullnames:(NSArray<NSString *> *)fullnames;
+- (NSDictionary *)usersByExcludingLogins:(NSArray<NSString *> *)logins;
 
-- (NSArray<NSString *> *)usersLoginsByExcludingLogins:(NSArray<NSString *> *)logins;
+- (NSDictionary *)usersByExcludingEmails:(NSArray<NSString *> *)emails;
 
-- (NSArray<NSString *> *)usersEmailsByExcludingEmails:(NSArray<NSString *> *)emails;
-
-- (NSArray<NSString *> *)usersFacebookIDsByExcludingFacebookIDs:(NSArray<NSString *> *)facebookIDs;
+- (NSDictionary *)usersByExcludingFacebookIDs:(NSArray<NSString *> *)facebookIDs;
 
 @end

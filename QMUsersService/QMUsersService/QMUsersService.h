@@ -55,7 +55,7 @@
  *  @param userID       id of user to retrieve
  *  @param completion   completion block with boolean value YES if retrieve was needed
  */
-- (BFTask<QBUUser *> *)retrieveIfNeededUserWithID:(NSUInteger)userID;
+- (BFTask<QBUUser *> *)retrieveUserWithID:(NSUInteger)userID;
 
 /**
  *  Retrieving users if needed.
@@ -63,7 +63,7 @@
  *  @param userIDs      array of users ids to retrieve
  *  @param completion   completion block with boolean value YES if retrieve was needed
  */
-- (BFTask<NSArray<QBUUser *> *> *)retrieveIfNeededUsersWithIDs:(NSArray<NSNumber *> *)usersIDs;
+- (BFTask<NSArray<QBUUser *> *> *)retrieveUsersWithIDs:(NSArray<NSNumber *> *)usersIDs;
 
 /**
  *  Retrieve users with emails
@@ -83,7 +83,6 @@
 
 - (BFTask<NSArray<QBUUser *> *> *)retrieveUsersWithLogins:(NSArray<NSString *> *)logins;
 
-- (BFTask<NSArray<QBUUser *> *> *)retrieveUsersWithFullnames:(NSArray<NSString *> *)fullnames;
 
 #pragma mark - Search
 
