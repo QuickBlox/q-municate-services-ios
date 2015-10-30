@@ -1133,14 +1133,14 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
         privateMessage.messageType = QMMessageTypeCreateGroupDialog;
         [privateMessage updateCustomParametersWithDialog:dialog];
         
-        [[QBChat instance] sendSystemMessage:privateMessage];
+        [[QBChat instance] sendSystemMessage:privateMessage completion:nil];
     }
 }
 
 - (void)notifyAboutUpdateDialog:(QBChatDialog *)updatedDialog
       occupantsCustomParameters:(NSDictionary *)occupantsCustomParameters
                notificationText:(NSString *)notificationText
-                     completion:(void (^)(NSError *))completion {
+                     completion:(QBChatCompletionBlock)completion {
     
     NSParameterAssert(updatedDialog);
     
@@ -1156,17 +1156,10 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
         [message.customParameters addEntriesFromDictionary:occupantsCustomParameters];
     }
     
-    BOOL sendMessage = [updatedDialog sendMessage:message sentBlock:completion];
-    
-    if (!sendMessage) {
-        if (completion) {
-            completion(nil);
-        }
-        
-    }
+    [updatedDialog sendMessage:message completionBlock:completion];
 }
 
-- (void)notifyOponentAboutAcceptingContactRequest:(BOOL)accept opponentID:(NSUInteger)opponentID completion:(void(^)(NSError *error))completion {
+- (void)notifyOponentAboutAcceptingContactRequest:(BOOL)accept opponentID:(NSUInteger)opponentID completion:(QBChatCompletionBlock)completion {
     
     QBChatMessage *message = [self privateMessageWithRecipientID:opponentID text:@"Contact request" save:YES];
     
@@ -1175,7 +1168,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     QBChatDialog *p2pDialog = [self.dialogsMemoryStorage privateChatDialogWithOpponentID:opponentID];
     NSParameterAssert(p2pDialog);
     
-    [self sendMessage:message type:messageType toDialog:p2pDialog save:YES saveToStorage:YES completion:completion];
+    [self sendMessage:message type:messageType toDialog:p2pDialog saveToHistory:YES saveToStorage:YES completion:completion];
 }
 
 #pragma mark System messages Utilites

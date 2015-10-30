@@ -228,7 +228,7 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 - (void)notifyAboutUpdateDialog:(QBChatDialog *)updatedDialog
       occupantsCustomParameters:(NSDictionary *)occupantsCustomParameters
                notificationText:(NSString *)notificationText
-                     completion:(void (^)(NSError *error))completion;
+                     completion:(QBChatCompletionBlock)completion;
 
 /**
  *  Notify opponent about accept or reject contact request
@@ -239,7 +239,7 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  */
 - (void)notifyOponentAboutAcceptingContactRequest:(BOOL)accept
                                        opponentID:(NSUInteger)opponentID
-                                       completion:(void(^)(NSError *error))completion;
+                                       completion:(QBChatCompletionBlock)completion;
 
 #pragma mark - Fetch messages
 
