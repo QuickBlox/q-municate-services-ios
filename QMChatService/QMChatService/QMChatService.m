@@ -1084,6 +1084,12 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     return [self readMessages:@[message] forDialogID:dialogID];
 }
 
+- (void)readMessage:(QBChatMessage *)message completion:(QBChatCompletionBlock)completion {
+    NSAssert(message.dialogID != nil, @"Message must have a dialog ID!");
+    
+    [self readMessages:@[message] forDialogID:message.dialogID completion:completion];
+}
+
 - (BOOL)readMessages:(NSArray<QBChatMessage *> *)messages forDialogID:(NSString *)dialogID {
     NSAssert(dialogID != nil, @"dialogID can't be nil");
     
@@ -1109,6 +1115,44 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     }
     
     return YES;
+}
+
+- (void)readMessages:(NSArray<QBChatMessage *> *)messages forDialogID:(NSString *)dialogID completion:(QBChatCompletionBlock)completion {
+    NSAssert(dialogID != nil, @"dialogID can't be nil");
+    
+    dispatch_group_t readGroup = dispatch_group_create();
+    
+    QBChatDialog *chatDialogToUpdate = [self.dialogsMemoryStorage chatDialogWithID:dialogID];
+
+    for (QBChatMessage *message in messages) {
+        NSAssert([message.dialogID isEqualToString:dialogID], @"Message is from incorrect dialog.");
+        
+        __weak __typeof(self)weakSelf = self;
+        dispatch_group_enter(readGroup);
+        [[QBChat instance] readMessage:message completion:^(NSError * _Nullable error) {
+            //
+            if (error == nil) {
+                if (chatDialogToUpdate.unreadMessagesCount > 0) {
+                    chatDialogToUpdate.unreadMessagesCount--;
+                }
+                
+                if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didUpdateMessage:forDialogID:)]) {
+                    [weakSelf.multicastDelegate chatService:weakSelf didUpdateMessage:message forDialogID:dialogID];
+                }
+            }
+            dispatch_group_leave(readGroup);
+        }];
+    }
+    
+    dispatch_group_notify(readGroup, dispatch_get_main_queue(), ^{
+        //
+        if ([self.multicastDelegate respondsToSelector:@selector(chatService:didUpdateChatDialogInMemoryStorage:)]) {
+            [self.multicastDelegate chatService:self didUpdateChatDialogInMemoryStorage:chatDialogToUpdate];
+        }
+        if (completion) {
+            completion(nil);
+        }
+    });
 }
 
 #pragma mark - QMMemoryStorageProtocol

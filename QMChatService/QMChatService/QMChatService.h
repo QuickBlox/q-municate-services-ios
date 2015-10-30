@@ -323,8 +323,8 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  *  @param message          QBChatMessage instance
  *  @param type             message type (default: QMMessageTypeText)
  *  @param dialogID         dialog identifier
- *  @param saveToHistory    if YES - saves message to history
- *  @param saveToStorage    if YES - saves to storage
+ *  @param saveToHistory    if YES - saves message to chat history
+ *  @param saveToStorage    if YES - saves to local storage
  *  @param completion       completion block with error if failed or nil if succeed
  */
 - (void)sendMessage:(QBChatMessage *)message
@@ -340,8 +340,8 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  *  @param message          QBChatMessage instance
  *  @param type             message type (default: QMMessageTypeText)
  *  @param dialogID         dialog identifier
- *  @param saveToHistory    if YES - saves message to history
- *  @param saveToStorage    if YES - saves to storage
+ *  @param saveToHistory    if YES - saves message to chat history
+ *  @param saveToStorage    if YES - saves to local storage
  *  @param completion       completion block with error if failed or nil if succeed
  */
 - (void)sendMessage:(QBChatMessage *)message
@@ -359,9 +359,19 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  *  @param message  QBChatMessage instance to mark as read
  *  @param dialogID ID of dialog to update
  *
+ *  @warning *Deprecated in QMServices 0.3:* Use 'readMessage:completion:' instead.
+ *
  *  @return read message success status
  */
-- (BOOL)readMessage:(QBChatMessage *)message forDialogID:(NSString *)dialogID;
+- (BOOL)readMessage:(QBChatMessage *)message forDialogID:(NSString *)dialogID DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.3. Use 'readMessage:completion:' instead.");
+
+/**
+ *  Sending read status for message and updating unreadMessageCount for dialog in cache
+ *
+ *  @param message      QBChatMessage instance to mark as read
+ *  @param completion   completion block with error if failed or nil if succeed
+ */
+- (void)readMessage:(QBChatMessage *)message completion:(QBChatCompletionBlock)completion;
 
 /**
  *  Sending read status for messages and updating unreadMessageCount for dialog in cache
@@ -369,9 +379,20 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  *  @param messages Array of QBChatMessage instances to mark as read
  *  @param dialogID ID of dialog to update
  *
+ *  @warning *Deprecated in QMServices 0.3:* Use 'readMessages:forDialogID:completion:' instead.
+ *
  *  @return read messages success status
  */
-- (BOOL)readMessages:(NSArray<QBChatMessage *> *)messages forDialogID:(NSString *)dialogID;
+- (BOOL)readMessages:(NSArray<QBChatMessage *> *)messages forDialogID:(NSString *)dialogID DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.3. Use 'readMessages:forDialogID:completion:' instead.");
+
+/**
+ *  Sending read status for messages and updating unreadMessageCount for dialog in cache
+ *
+ *  @param messages     Array of QBChatMessage instances to mark as read
+ *  @param dialogID     ID of dialog to update
+ *  @param completion   completion block with error if failed or nil if succeed
+ */
+- (void)readMessages:(NSArray<QBChatMessage *> *)messages forDialogID:(NSString *)dialogID completion:(QBChatCompletionBlock)completion;
 
 @end
 
