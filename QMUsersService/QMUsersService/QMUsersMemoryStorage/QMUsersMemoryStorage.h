@@ -28,14 +28,14 @@ extern const struct QMUsersSearchKeyStruct QMUsersSearchKey;
 @property (weak, nonatomic) id <QMUsersMemoryStorageDelegate> delegate;
 
 /**
- *  Added user to memory storage.
+ *  Add user to memory storage.
  *
  *  @param user QBUUser instance of user to add
  */
 - (void)addUser:(QBUUser *)user;
 
 /**
- *  Added users to memory storage.
+ *  Add users to memory storage.
  *
  *  @param users array of QBUUser instances of users to add
  */
@@ -96,7 +96,7 @@ extern const struct QMUsersSearchKeyStruct QMUsersSearchKey;
 #pragma mark - Fetch
 
 /**
- *  Get user with user id
+ *  Get user with user id.
  *
  *  @param userID user ID
  *
@@ -105,7 +105,7 @@ extern const struct QMUsersSearchKeyStruct QMUsersSearchKey;
 - (QBUUser *)userWithID:(NSUInteger)userID;
 
 /**
- *  Get users with user ids
+ *  Get users with user ids.
  *
  *  @param ids users IDs
  *
@@ -142,12 +142,40 @@ extern const struct QMUsersSearchKeyStruct QMUsersSearchKey;
 
 #pragma mark - Search & Exclude
 
+/**
+ *  Search for users excluding users with users ids.
+ *
+ *  @param ids  users ids to exclude
+ *
+ *  @return dictionary of found and not found users
+ */
 - (NSDictionary *)usersByExcludingUsersIDs:(NSArray<NSNumber *> *)ids;
 
+/**
+ *  Search for users excluding users with users logins.
+ *
+ *  @param logins  users logins to exclude
+ *
+ *  @return dictionary of found and not found users
+ */
 - (NSDictionary *)usersByExcludingLogins:(NSArray<NSString *> *)logins;
 
+/**
+ *  Search for users excluding users with users logins.
+ *
+ *  @param emails  users emails to exclude
+ *
+ *  @return dictionary of found and not found users
+ */
 - (NSDictionary *)usersByExcludingEmails:(NSArray<NSString *> *)emails;
 
+/**
+ *  Search for users excluding users with users facebook IDs.
+ *
+ *  @param facebookIDs  users facebookIDs to exclude
+ *
+ *  @return dictionary of found and not found users
+ */
 - (NSDictionary *)usersByExcludingFacebookIDs:(NSArray<NSString *> *)facebookIDs;
 
 @end
