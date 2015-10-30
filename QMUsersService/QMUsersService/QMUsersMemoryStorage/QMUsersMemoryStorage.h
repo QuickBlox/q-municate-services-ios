@@ -9,6 +9,14 @@
 #import <Foundation/Foundation.h>
 #import "QMMemoryStorageProtocol.h"
 
+struct QMUsersSearchKeyStruct {
+    __unsafe_unretained NSString* foundObjects;
+    __unsafe_unretained NSString* notFoundSearchValues;
+};
+
+extern const struct QMUsersSearchKeyStruct QMUsersSearchKey;
+
+
 @protocol QMUsersMemoryStorageDelegate <NSObject>
 
 - (NSArray *)contactsIDS;
@@ -32,24 +40,6 @@
  *  @param users QBUUser items to add
  */
 - (void)addUsers:(NSArray *)users;
-
-/**
- *  Get user by user id
- *
- *  @param userID user ID
- *
- *  @return finded QBUUser
- */
-- (QBUUser *)userWithID:(NSUInteger)userID;
-
-/**
- *  Get users by user ids
- *
- *  @param ids users IDs
- *
- *  @return finded array of QBUUser
- */
-- (NSArray *)usersWithIDs:(NSArray *)ids;
 
 #pragma mark - Sorting
 
@@ -102,5 +92,41 @@
  *  @return joined names string
  */
 - (NSString *)joinedNamesbyUsers:(NSArray *)users;
+
+#pragma mark - Fetch
+
+/**
+ *  Get user by user id
+ *
+ *  @param userID user ID
+ *
+ *  @return finded QBUUser
+ */
+- (QBUUser *)userWithID:(NSUInteger)userID;
+
+/**
+ *  Get users by user ids
+ *
+ *  @param ids users IDs
+ *
+ *  @return finded array of QBUUser
+ */
+- (NSArray *)usersWithIDs:(NSArray *)ids;
+
+- (NSArray<QBUUser *> *)usersWithLogins:(NSArray<NSString *> *)logins;
+
+- (NSArray<QBUUser *> *)usersWithEmails:(NSArray<NSString *> *)emails;
+
+- (NSArray<QBUUser *> *)usersWithFacebookIDs:(NSArray<NSString *> *)facebookIDs;
+
+#pragma mark - Search & Exclude
+
+- (NSDictionary *)usersByExcludingUsersIDs:(NSArray<NSNumber *> *)ids;
+
+- (NSDictionary *)usersByExcludingLogins:(NSArray<NSString *> *)logins;
+
+- (NSDictionary *)usersByExcludingEmails:(NSArray<NSString *> *)emails;
+
+- (NSDictionary *)usersByExcludingFacebookIDs:(NSArray<NSString *> *)facebookIDs;
 
 @end

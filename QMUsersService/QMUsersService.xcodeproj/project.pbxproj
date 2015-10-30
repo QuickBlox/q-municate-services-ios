@@ -1,0 +1,300 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		862360C91BDD5C6A0076D7A2 /* QBUUser+CustomData.m in Sources */ = {isa = PBXBuildFile; fileRef = 862360C51BDD5C6A0076D7A2 /* QBUUser+CustomData.m */; };
+		862360CA1BDD5C6A0076D7A2 /* QMUsersMemoryStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 862360C81BDD5C6A0076D7A2 /* QMUsersMemoryStorage.m */; };
+		86F9CD461BDA27ED0021B6F0 /* QMUsersService.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 86F9CD451BDA27ED0021B6F0 /* QMUsersService.h */; };
+		86F9CD481BDA27ED0021B6F0 /* QMUsersService.m in Sources */ = {isa = PBXBuildFile; fileRef = 86F9CD471BDA27ED0021B6F0 /* QMUsersService.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		86F9CD401BDA27ED0021B6F0 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+				86F9CD461BDA27ED0021B6F0 /* QMUsersService.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		1F3F4859E581B61768FFDA92 /* libPods-QMUsersService.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-QMUsersService.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		862360C41BDD5C6A0076D7A2 /* QBUUser+CustomData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QBUUser+CustomData.h"; sourceTree = "<group>"; };
+		862360C51BDD5C6A0076D7A2 /* QBUUser+CustomData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "QBUUser+CustomData.m"; sourceTree = "<group>"; };
+		862360C71BDD5C6A0076D7A2 /* QMUsersMemoryStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMUsersMemoryStorage.h; sourceTree = "<group>"; };
+		862360C81BDD5C6A0076D7A2 /* QMUsersMemoryStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMUsersMemoryStorage.m; sourceTree = "<group>"; };
+		862360CB1BDD5DD20076D7A2 /* QMUsersService-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "QMUsersService-Prefix.pch"; sourceTree = "<group>"; };
+		86F9CD421BDA27ED0021B6F0 /* libQMUsersService.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libQMUsersService.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		86F9CD451BDA27ED0021B6F0 /* QMUsersService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QMUsersService.h; sourceTree = "<group>"; };
+		86F9CD471BDA27ED0021B6F0 /* QMUsersService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QMUsersService.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		86F9CD3F1BDA27ED0021B6F0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		78F9ADBF4D76C7672C37858E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1F3F4859E581B61768FFDA92 /* libPods-QMUsersService.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		862360C31BDD5C6A0076D7A2 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				862360C41BDD5C6A0076D7A2 /* QBUUser+CustomData.h */,
+				862360C51BDD5C6A0076D7A2 /* QBUUser+CustomData.m */,
+			);
+			path = Categories;
+			sourceTree = "<group>";
+		};
+		862360C61BDD5C6A0076D7A2 /* QMUsersMemoryStorage */ = {
+			isa = PBXGroup;
+			children = (
+				862360C71BDD5C6A0076D7A2 /* QMUsersMemoryStorage.h */,
+				862360C81BDD5C6A0076D7A2 /* QMUsersMemoryStorage.m */,
+			);
+			path = QMUsersMemoryStorage;
+			sourceTree = "<group>";
+		};
+		86F9CD391BDA27ED0021B6F0 = {
+			isa = PBXGroup;
+			children = (
+				86F9CD441BDA27ED0021B6F0 /* QMUsersService */,
+				86F9CD431BDA27ED0021B6F0 /* Products */,
+				78F9ADBF4D76C7672C37858E /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		86F9CD431BDA27ED0021B6F0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				86F9CD421BDA27ED0021B6F0 /* libQMUsersService.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		86F9CD441BDA27ED0021B6F0 /* QMUsersService */ = {
+			isa = PBXGroup;
+			children = (
+				86F9CD451BDA27ED0021B6F0 /* QMUsersService.h */,
+				86F9CD471BDA27ED0021B6F0 /* QMUsersService.m */,
+				862360C31BDD5C6A0076D7A2 /* Categories */,
+				862360C61BDD5C6A0076D7A2 /* QMUsersMemoryStorage */,
+				862360CB1BDD5DD20076D7A2 /* QMUsersService-Prefix.pch */,
+			);
+			path = QMUsersService;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		86F9CD411BDA27ED0021B6F0 /* QMUsersService */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 86F9CD4B1BDA27ED0021B6F0 /* Build configuration list for PBXNativeTarget "QMUsersService" */;
+			buildPhases = (
+				86F9CD3E1BDA27ED0021B6F0 /* Sources */,
+				86F9CD3F1BDA27ED0021B6F0 /* Frameworks */,
+				86F9CD401BDA27ED0021B6F0 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = QMUsersService;
+			productName = QMUsersService;
+			productReference = 86F9CD421BDA27ED0021B6F0 /* libQMUsersService.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		86F9CD3A1BDA27ED0021B6F0 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0700;
+				ORGANIZATIONNAME = Quickblox;
+				TargetAttributes = {
+					86F9CD411BDA27ED0021B6F0 = {
+						CreatedOnToolsVersion = 7.0.1;
+					};
+				};
+			};
+			buildConfigurationList = 86F9CD3D1BDA27ED0021B6F0 /* Build configuration list for PBXProject "QMUsersService" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 86F9CD391BDA27ED0021B6F0;
+			productRefGroup = 86F9CD431BDA27ED0021B6F0 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				86F9CD411BDA27ED0021B6F0 /* QMUsersService */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		86F9CD3E1BDA27ED0021B6F0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				862360C91BDD5C6A0076D7A2 /* QBUUser+CustomData.m in Sources */,
+				86F9CD481BDA27ED0021B6F0 /* QMUsersService.m in Sources */,
+				862360CA1BDD5C6A0076D7A2 /* QMUsersMemoryStorage.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		86F9CD491BDA27ED0021B6F0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		86F9CD4A1BDA27ED0021B6F0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		86F9CD4C1BDA27ED0021B6F0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = "../Frameworks/**";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "QMUsersService/QMUsersService-Prefix.pch";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/../**";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		86F9CD4D1BDA27ED0021B6F0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = "../Frameworks/**";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "QMUsersService/QMUsersService-Prefix.pch";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/../**";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		86F9CD3D1BDA27ED0021B6F0 /* Build configuration list for PBXProject "QMUsersService" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				86F9CD491BDA27ED0021B6F0 /* Debug */,
+				86F9CD4A1BDA27ED0021B6F0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		86F9CD4B1BDA27ED0021B6F0 /* Build configuration list for PBXNativeTarget "QMUsersService" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				86F9CD4C1BDA27ED0021B6F0 /* Debug */,
+				86F9CD4D1BDA27ED0021B6F0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 86F9CD3A1BDA27ED0021B6F0 /* Project object */;
+}
