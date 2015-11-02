@@ -27,9 +27,6 @@
 - (instancetype)init {
 	self = [super init];
 	if (self) {
-		[QMChatCache setupDBWithStoreNamed:@"sample-cache"];
-        [QMChatCache instance].messagesLimitPerDialog = 10;
-
 		_authService = [[QMAuthService alloc] initWithServiceManager:self];
 		_chatService = [[QMChatService alloc] initWithServiceManager:self cacheDataSource:self];
         [_chatService addDelegate:self];
