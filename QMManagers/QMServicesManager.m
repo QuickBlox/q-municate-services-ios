@@ -174,7 +174,7 @@
 #pragma mark QMChatServiceCacheDataSource
 
 - (void)cachedDialogs:(QMCacheCollection)block {
-	[QMChatCache.instance dialogsSortedBy:CDDialogAttributes.lastMessageDate ascending:YES completion:^(NSArray *dialogs) {
+	[QMChatCache.instance dialogsSortedBy:CDDialogAttributes.updatedAt ascending:YES completion:^(NSArray *dialogs) {
 		block(dialogs);
 	}];
 }
