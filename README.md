@@ -1061,9 +1061,9 @@ Fetch user ids from contact list memory storage.
 
 ## QMUsersService
 
-This class is responsible for operation with users and using [BFTasks](https://github.com/BoltsFramework/Bolts-iOS "Bolts-iOS") to return results.
+This class is responsible for operations with users and uses [BFTasks](https://github.com/BoltsFramework/Bolts-iOS "Bolts-iOS").
 
-Retrieve user with id.
+Get user with id:
 
 ```objective-c
 
@@ -1071,7 +1071,7 @@ Retrieve user with id.
 
 ```
 
-Retrieve users with ids.
+Get users with ids:
 
 ```objective-c
 
@@ -1079,7 +1079,7 @@ Retrieve users with ids.
 
 ```
 
-Retrieve users with emails.
+Get users with emails:
 
 ```objective-c
 
@@ -1087,7 +1087,7 @@ Retrieve users with emails.
 
 ```
 
-Retrieve users with facebook ids.
+Get users with facebook ids:
 
 ```objective-c
 
@@ -1095,7 +1095,7 @@ Retrieve users with facebook ids.
 
 ```
 
-Retrieve users with logins.
+Get users with logins:
 
 ```objective-c
 
@@ -1103,7 +1103,7 @@ Retrieve users with logins.
 
 ```
 
-Search for users with full name.
+Search for users with full name:
 
 ```objective-c
 
@@ -1220,6 +1220,7 @@ Get users with user facebook ids.
 ```
 
 Search for users excluding users with users ids.
+Result dictionary will contain an array of found users, and an array of not found search criteria (ids, logins, emails etc).
 
 ```objective-c
 
