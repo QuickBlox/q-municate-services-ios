@@ -8,23 +8,17 @@
 
 /* Begin PBXBuildFile section */
 		5547E6231A24CB490051F7DF /* QMContactListMemoryStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 5547E6221A24CB490051F7DF /* QMContactListMemoryStorage.m */; };
-		55A364CF1A25E41B00C792C0 /* QMUsersMemoryStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 55A364CE1A25E41B00C792C0 /* QMUsersMemoryStorage.m */; };
 		55B2F0B61A091C38008C2272 /* QMContactListService.m in Sources */ = {isa = PBXBuildFile; fileRef = 55B2F0B51A091C38008C2272 /* QMContactListService.m */; };
-		FB6FE6461AEE74E4002E3F8A /* QBUUser+CustomData.m in Sources */ = {isa = PBXBuildFile; fileRef = FB6FE6451AEE74E4002E3F8A /* QBUUser+CustomData.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		5547E6211A24CB490051F7DF /* QMContactListMemoryStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = QMContactListMemoryStorage.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		5547E6221A24CB490051F7DF /* QMContactListMemoryStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = QMContactListMemoryStorage.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		55A364CD1A25E41B00C792C0 /* QMUsersMemoryStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = QMUsersMemoryStorage.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		55A364CE1A25E41B00C792C0 /* QMUsersMemoryStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = QMUsersMemoryStorage.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		5547E6221A24CB490051F7DF /* QMContactListMemoryStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = QMContactListMemoryStorage.m; sourceTree = "<group>"; };
 		55A621221A0BE307001BA470 /* QMContactListService-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = "QMContactListService-Prefix.pch"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		55B220201A2C0C9E00668086 /* libQMContactListService.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libQMContactListService.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		55B2F0B31A091C38008C2272 /* QMContactListService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QMContactListService.h; sourceTree = "<group>"; };
 		55B2F0B51A091C38008C2272 /* QMContactListService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QMContactListService.m; sourceTree = "<group>"; };
 		8620BC5C1B0F7F0D005ED359 /* Quickblox.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; lineEnding = 0; name = Quickblox.xcconfig; path = ../Quickblox.xcconfig; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.xcconfig; };
-		FB6FE6441AEE74E4002E3F8A /* QBUUser+CustomData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = "QBUUser+CustomData.h"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		FB6FE6451AEE74E4002E3F8A /* QBUUser+CustomData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = "QBUUser+CustomData.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,15 +41,6 @@
 			path = QMContactListMemoryStorage;
 			sourceTree = "<group>";
 		};
-		55A364CC1A25E3F100C792C0 /* QMUsersMemoryStorage */ = {
-			isa = PBXGroup;
-			children = (
-				55A364CD1A25E41B00C792C0 /* QMUsersMemoryStorage.h */,
-				55A364CE1A25E41B00C792C0 /* QMUsersMemoryStorage.m */,
-			);
-			path = QMUsersMemoryStorage;
-			sourceTree = "<group>";
-		};
 		55A621211A0BE307001BA470 /* Support */ = {
 			isa = PBXGroup;
 			children = (
@@ -69,8 +54,6 @@
 			children = (
 				55B2F0B31A091C38008C2272 /* QMContactListService.h */,
 				55B2F0B51A091C38008C2272 /* QMContactListService.m */,
-				FB6FE6431AEE74C8002E3F8A /* Categories */,
-				55A364CC1A25E3F100C792C0 /* QMUsersMemoryStorage */,
 				5547E6201A24CB0C0051F7DF /* QMContactListMemoryStorage */,
 			);
 			path = QMContactListService;
@@ -84,15 +67,6 @@
 				55A621211A0BE307001BA470 /* Support */,
 				55B220201A2C0C9E00668086 /* libQMContactListService.a */,
 			);
-			sourceTree = "<group>";
-		};
-		FB6FE6431AEE74C8002E3F8A /* Categories */ = {
-			isa = PBXGroup;
-			children = (
-				FB6FE6441AEE74E4002E3F8A /* QBUUser+CustomData.h */,
-				FB6FE6451AEE74E4002E3F8A /* QBUUser+CustomData.m */,
-			);
-			path = Categories;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -151,8 +125,6 @@
 			files = (
 				55B2F0B61A091C38008C2272 /* QMContactListService.m in Sources */,
 				5547E6231A24CB490051F7DF /* QMContactListMemoryStorage.m in Sources */,
-				FB6FE6461AEE74E4002E3F8A /* QBUUser+CustomData.m in Sources */,
-				55A364CF1A25E41B00C792C0 /* QMUsersMemoryStorage.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

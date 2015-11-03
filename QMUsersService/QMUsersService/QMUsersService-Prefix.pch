@@ -1,0 +1,17 @@
+//
+//  QMUsersService-Prefix.pch
+//  QMUsersService
+//
+//  Created by Andrey Moskvin on 10/25/15.
+//  Copyright © 2015 Quickblox. All rights reserved.
+//
+
+#ifndef QMUsersService_Prefix_pch
+#define QMUsersService_Prefix_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+#import <Bolts/Bolts.h>
+#import <Quickblox/Quickblox.h>
+
+#endif /* QMUsersService_Prefix_pch */

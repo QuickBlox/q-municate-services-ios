@@ -8,6 +8,11 @@
 
 #import "QMUsersMemoryStorage.h"
 
+const struct QMUsersSearchKeyStruct QMUsersSearchKey = {
+    .foundObjects = @"kFoundObjects",
+    .notFoundSearchValues = @"notFoundSearchValues"
+};
+
 @interface QMUsersMemoryStorage()
 
 @property (strong, nonatomic) NSMutableDictionary *users;
@@ -135,6 +140,69 @@
 - (void)free {
     
     [self.users removeAllObjects];
+}
+
+#pragma mark - Fetch
+
+- (NSArray *)usersForKeypath:(NSString *)keypath withValues:(NSArray *)values
+{
+    return [self.users.allValues filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(QBUUser*  _Nonnull evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
+        return [values containsObject:[evaluatedObject valueForKeyPath:keypath]];
+    }]];
+}
+
+- (NSArray<QBUUser *> *)usersWithLogins:(NSArray<NSString *> *)logins
+{
+    return [self usersForKeypath:@keypath(QBUUser.new, login) withValues:logins];
+}
+
+- (NSArray<QBUUser *> *)usersWithEmails:(NSArray<NSString *> *)emails
+{
+    return [self usersForKeypath:@keypath(QBUUser.new, email) withValues:emails];
+}
+
+- (NSArray<QBUUser *> *)usersWithFacebookIDs:(NSArray<NSString *> *)facebookIDs
+{
+    return [self usersForKeypath:@keypath(QBUUser.new, facebookID) withValues:facebookIDs];
+}
+
+#pragma mark - Filter
+
+- (NSDictionary *)valuesForKeypath:(NSString *)keypath byExcludingValues:(NSArray *)values
+{
+    NSParameterAssert(values);    
+    NSMutableArray* mutableValues = [values mutableCopy];
+    
+    NSArray* foundUsers = [self.users.allValues filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(QBUUser*  _Nonnull evaluatedObject, NSDictionary<NSString *,id> * _Nullable bindings) {
+        
+        BOOL contains = [values containsObject:[evaluatedObject valueForKeyPath:keypath]];
+        if (contains) {
+            [mutableValues removeObject:[evaluatedObject valueForKeyPath:keypath]];
+        }
+        return contains;
+    }]];
+    
+    return @{QMUsersSearchKey.foundObjects : foundUsers, QMUsersSearchKey.notFoundSearchValues : [mutableValues copy]};
+}
+
+- (NSDictionary *)usersByExcludingUsersIDs:(NSArray<NSNumber *> *)ids
+{
+    return [self valuesForKeypath:@keypath(QBUUser.new, ID) byExcludingValues:ids];
+}
+
+- (NSDictionary *)usersByExcludingLogins:(NSArray<NSString *> *)logins
+{
+    return [self valuesForKeypath:@keypath(QBUUser.new, login) byExcludingValues:logins];
+}
+
+- (NSDictionary *)usersByExcludingEmails:(NSArray<NSString *> *)emails
+{
+    return [self valuesForKeypath:@keypath(QBUUser.new, email) byExcludingValues:emails];
+}
+
+- (NSDictionary *)usersByExcludingFacebookIDs:(NSArray<NSString *> *)facebookIDs
+{
+    return [self valuesForKeypath:@keypath(QBUUser.new, facebookID) byExcludingValues:facebookIDs];
 }
 
 @end

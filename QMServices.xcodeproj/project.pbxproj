@@ -33,6 +33,9 @@
 		55A3653D1A2744ED00C792C0 /* libQMChatCache.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 55A365341A2744ED00C792C0 /* libQMChatCache.a */; };
 		55A3653E1A2744ED00C792C0 /* libQMChatService.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 55A364EF1A27378F00C792C0 /* libQMChatService.a */; };
 		55A3653F1A2744ED00C792C0 /* libQMContactListCache.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 55A365391A2744ED00C792C0 /* libQMContactListCache.a */; };
+		56DE27FCE85EB9EE87541CC2 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AAFDDA46AE8F6A95CA17A95F /* libPods.a */; };
+		86E40FF11BDA4C50002B0496 /* libQMUsersCache.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 86F9CD721BDA28110021B6F0 /* libQMUsersCache.a */; };
+		86E40FF21BDA4C50002B0496 /* libQMUsersService.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 86F9CD571BDA27ED0021B6F0 /* libQMUsersService.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -155,13 +158,48 @@
 			remoteGlobalIDString = 55A3652D1A2744D300C792C0;
 			remoteInfo = QMContactListCacheModel;
 		};
+		86E40FE31BDA4C3A002B0496 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 86F9CD6D1BDA28110021B6F0 /* QMUsersCache.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 86F9CD601BDA28110021B6F0;
+			remoteInfo = QMUsersCache;
+		};
+		86E40FEC1BDA4C3A002B0496 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 86F9CD6D1BDA28110021B6F0 /* QMUsersCache.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 86E40FB81BDA34D8002B0496;
+			remoteInfo = QMUsersCacheModel;
+		};
+		86E40FEF1BDA4C47002B0496 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 86F9CD4E1BDA27ED0021B6F0 /* QMUsersService.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 86F9CD411BDA27ED0021B6F0;
+			remoteInfo = QMUsersService;
+		};
+		86F9CD561BDA27ED0021B6F0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 86F9CD4E1BDA27ED0021B6F0 /* QMUsersService.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 86F9CD421BDA27ED0021B6F0;
+			remoteInfo = QMUsersService;
+		};
+		86F9CD711BDA28110021B6F0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 86F9CD6D1BDA28110021B6F0 /* QMUsersCache.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 86F9CD611BDA28110021B6F0;
+			remoteInfo = QMUsersCache;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		2CE107F51B594BD800379D96 /* QMServicesManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMServicesManager.h; sourceTree = "<group>"; };
 		2CE107F61B594BD800379D96 /* QMServicesManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMServicesManager.m; sourceTree = "<group>"; };
 		55013A331A1F63920030C134 /* QMServices.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QMServices.h; sourceTree = "<group>"; };
-		55013A7F1A1F68280030C134 /* QMServices.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = QMServices.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		55013A7F1A1F68280030C134 /* QMServices.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = QMServices.m; sourceTree = "<group>"; };
 		55013AEB1A1F72350030C134 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.1.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		553E72861AAF060A00449EFB /* LICENSE.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		5590F22C1A0B876F00C5044F /* QMDBStorage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMDBStorage.xcodeproj; path = QMDBStorage/QMDBStorage.xcodeproj; sourceTree = "<group>"; };
@@ -172,6 +210,9 @@
 		55C276C71A0916BF005A0C38 /* QMChatService.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMChatService.xcodeproj; path = QMChatService/QMChatService.xcodeproj; sourceTree = "<group>"; };
 		55C276DB1A091739005A0C38 /* QMContactListService.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMContactListService.xcodeproj; path = QMContactListService/QMContactListService.xcodeproj; sourceTree = "<group>"; };
 		55C276E51A0917AF005A0C38 /* QMAuthService.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMAuthService.xcodeproj; path = QMAuthService/QMAuthService.xcodeproj; sourceTree = "<group>"; };
+		86F9CD4E1BDA27ED0021B6F0 /* QMUsersService.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMUsersService.xcodeproj; path = QMUsersService/QMUsersService.xcodeproj; sourceTree = "<group>"; };
+		86F9CD6D1BDA28110021B6F0 /* QMUsersCache.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMUsersCache.xcodeproj; path = QMUsersCache/QMUsersCache.xcodeproj; sourceTree = "<group>"; };
+		AAFDDA46AE8F6A95CA17A95F /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -179,6 +220,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				86E40FF11BDA4C50002B0496 /* libQMUsersCache.a in Frameworks */,
+				86E40FF21BDA4C50002B0496 /* libQMUsersService.a in Frameworks */,
 				55A3653C1A2744ED00C792C0 /* libQMBaseService.a in Frameworks */,
 				55A3653D1A2744ED00C792C0 /* libQMChatCache.a in Frameworks */,
 				55A3653E1A2744ED00C792C0 /* libQMChatService.a in Frameworks */,
@@ -187,6 +230,7 @@
 				55A3651D1A2744A800C792C0 /* libQMContactListService.a in Frameworks */,
 				55A3651E1A2744A800C792C0 /* libQMDBStorage.a in Frameworks */,
 				55013AEC1A1F72350030C134 /* Foundation.framework in Frameworks */,
+				56DE27FCE85EB9EE87541CC2 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -215,6 +259,7 @@
 			isa = PBXGroup;
 			children = (
 				55013AEB1A1F72350030C134 /* Foundation.framework */,
+				AAFDDA46AE8F6A95CA17A95F /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -239,6 +284,7 @@
 		5590F28A1A0B8C5200C5044F /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				86F9CD4E1BDA27ED0021B6F0 /* QMUsersService.xcodeproj */,
 				5590F2E01A0BA11900C5044F /* QMBaseService.xcodeproj */,
 				55C276C71A0916BF005A0C38 /* QMChatService.xcodeproj */,
 				55C276E51A0917AF005A0C38 /* QMAuthService.xcodeproj */,
@@ -250,6 +296,7 @@
 		5590F2911A0B8C7B00C5044F /* Cache */ = {
 			isa = PBXGroup;
 			children = (
+				86F9CD6D1BDA28110021B6F0 /* QMUsersCache.xcodeproj */,
 				5590F22C1A0B876F00C5044F /* QMDBStorage.xcodeproj */,
 				5590F2A31A0B8D2900C5044F /* QMContactListCache.xcodeproj */,
 				5590F26B1A0B8C0500C5044F /* QMChatCache.xcodeproj */,
@@ -311,6 +358,23 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		86F9CD4F1BDA27ED0021B6F0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				86F9CD571BDA27ED0021B6F0 /* libQMUsersService.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		86F9CD6E1BDA28110021B6F0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				86F9CD721BDA28110021B6F0 /* libQMUsersCache.a */,
+				86E40FED1BDA4C3A002B0496 /* QMUsersCacheModel.bundle */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -329,10 +393,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 55013A4F1A1F63920030C134 /* Build configuration list for PBXNativeTarget "QMServices" */;
 			buildPhases = (
+				307C130F128F0B9F09918DB0 /* Check Pods Manifest.lock */,
 				55013A2D1A1F63910030C134 /* Sources */,
 				55013A2E1A1F63910030C134 /* Frameworks */,
 				55AA62E81A232E7F00D73089 /* Headers */,
 				55AA62E91A232E8400D73089 /* ShellScript */,
+				C512B72BADECE8D900379944 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -343,6 +409,8 @@
 				55013B101A1F78FC0030C134 /* PBXTargetDependency */,
 				55013A721A1F64F40030C134 /* PBXTargetDependency */,
 				55013B081A1F759F0030C134 /* PBXTargetDependency */,
+				86E40FE41BDA4C3A002B0496 /* PBXTargetDependency */,
+				86E40FF01BDA4C47002B0496 /* PBXTargetDependency */,
 			);
 			name = QMServices;
 			productName = QMServices;
@@ -403,6 +471,14 @@
 				{
 					ProductGroup = 5590F22D1A0B876F00C5044F /* Products */;
 					ProjectRef = 5590F22C1A0B876F00C5044F /* QMDBStorage.xcodeproj */;
+				},
+				{
+					ProductGroup = 86F9CD6E1BDA28110021B6F0 /* Products */;
+					ProjectRef = 86F9CD6D1BDA28110021B6F0 /* QMUsersCache.xcodeproj */;
+				},
+				{
+					ProductGroup = 86F9CD4F1BDA27ED0021B6F0 /* Products */;
+					ProjectRef = 86F9CD4E1BDA27ED0021B6F0 /* QMUsersService.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -477,9 +553,45 @@
 			remoteRef = 55A3653A1A2744ED00C792C0 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		86E40FED1BDA4C3A002B0496 /* QMUsersCacheModel.bundle */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = QMUsersCacheModel.bundle;
+			remoteRef = 86E40FEC1BDA4C3A002B0496 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		86F9CD571BDA27ED0021B6F0 /* libQMUsersService.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libQMUsersService.a;
+			remoteRef = 86F9CD561BDA27ED0021B6F0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		86F9CD721BDA28110021B6F0 /* libQMUsersCache.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libQMUsersCache.a;
+			remoteRef = 86F9CD711BDA28110021B6F0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		307C130F128F0B9F09918DB0 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
 		55AA62E91A232E8400D73089 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -492,6 +604,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "echo \"\"";
+		};
+		C512B72BADECE8D900379944 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -548,6 +675,16 @@
 			name = QMContactListService;
 			targetProxy = 55013B0F1A1F78FC0030C134 /* PBXContainerItemProxy */;
 		};
+		86E40FE41BDA4C3A002B0496 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = QMUsersCache;
+			targetProxy = 86E40FE31BDA4C3A002B0496 /* PBXContainerItemProxy */;
+		};
+		86E40FF01BDA4C47002B0496 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = QMUsersService;
+			targetProxy = 86E40FEF1BDA4C47002B0496 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
@@ -592,7 +729,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"$(inherited)",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -634,7 +774,10 @@
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"$(inherited)",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;

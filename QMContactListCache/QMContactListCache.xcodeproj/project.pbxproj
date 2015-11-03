@@ -24,9 +24,7 @@
 		554A28111A0CE1A900C4E03C /* QMContactListModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 554A280F1A0CE1A900C4E03C /* QMContactListModel.xcdatamodeld */; };
 		554A28291A0CE28300C4E03C /* QMContactListModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 554A280F1A0CE1A900C4E03C /* QMContactListModel.xcdatamodeld */; };
 		554A28371A0CE38600C4E03C /* CDContactListItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 554A282E1A0CE38600C4E03C /* CDContactListItem.m */; };
-		554A28381A0CE38600C4E03C /* CDUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 554A28301A0CE38600C4E03C /* CDUser.m */; };
 		554A28391A0CE38600C4E03C /* _CDContactListItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 554A28331A0CE38600C4E03C /* _CDContactListItem.m */; };
-		554A283A1A0CE38600C4E03C /* _CDUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 554A28351A0CE38600C4E03C /* _CDUser.m */; };
 		5590F2B01A0B8D4000C5044F /* QMContactListCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 5590F2AF1A0B8D4000C5044F /* QMContactListCache.m */; };
 /* End PBXBuildFile section */
 
@@ -67,15 +65,11 @@
 		554A28101A0CE1A900C4E03C /* QMModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = QMModel.xcdatamodel; sourceTree = "<group>"; };
 		554A282D1A0CE38600C4E03C /* CDContactListItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDContactListItem.h; sourceTree = "<group>"; };
 		554A282E1A0CE38600C4E03C /* CDContactListItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDContactListItem.m; sourceTree = "<group>"; };
-		554A282F1A0CE38600C4E03C /* CDUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDUser.h; sourceTree = "<group>"; };
-		554A28301A0CE38600C4E03C /* CDUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDUser.m; sourceTree = "<group>"; };
 		554A28321A0CE38600C4E03C /* _CDContactListItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _CDContactListItem.h; sourceTree = "<group>"; };
 		554A28331A0CE38600C4E03C /* _CDContactListItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _CDContactListItem.m; sourceTree = "<group>"; };
-		554A28341A0CE38600C4E03C /* _CDUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _CDUser.h; sourceTree = "<group>"; };
-		554A28351A0CE38600C4E03C /* _CDUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _CDUser.m; sourceTree = "<group>"; };
 		554A28361A0CE38600C4E03C /* QMCLModelIncludes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMCLModelIncludes.h; sourceTree = "<group>"; };
-		5590F2AD1A0B8D4000C5044F /* QMContactListCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = QMContactListCache.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		5590F2AF1A0B8D4000C5044F /* QMContactListCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = QMContactListCache.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		5590F2AD1A0B8D4000C5044F /* QMContactListCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = QMContactListCache.h; sourceTree = "<group>"; };
+		5590F2AF1A0B8D4000C5044F /* QMContactListCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = QMContactListCache.m; sourceTree = "<group>"; };
 		55A6211A1A0BE284001BA470 /* QMContactListCache-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = "QMContactListCache-Prefix.pch"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		55B2201E1A2C0C9E00668086 /* libQMContactListCache.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libQMContactListCache.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		55B2201F1A2C0C9E00668086 /* QMContactListCacheModel.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QMContactListCacheModel.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -124,8 +118,6 @@
 			children = (
 				554A282D1A0CE38600C4E03C /* CDContactListItem.h */,
 				554A282E1A0CE38600C4E03C /* CDContactListItem.m */,
-				554A282F1A0CE38600C4E03C /* CDUser.h */,
-				554A28301A0CE38600C4E03C /* CDUser.m */,
 			);
 			path = Entries;
 			sourceTree = "<group>";
@@ -135,8 +127,6 @@
 			children = (
 				554A28321A0CE38600C4E03C /* _CDContactListItem.h */,
 				554A28331A0CE38600C4E03C /* _CDContactListItem.m */,
-				554A28341A0CE38600C4E03C /* _CDUser.h */,
-				554A28351A0CE38600C4E03C /* _CDUser.m */,
 			);
 			path = EntriesMachine;
 			sourceTree = "<group>";
@@ -285,8 +275,8 @@
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "echo \"Begin momd\"\n\nCOREDATA_DIR=\"${PROJECT_DIR}/QMContactListCache/CoreData\"\nHUMAN_DIR=\"${PROJECT_DIR}/QMContactListCache/CoreData/Entries\"\nMACHINE_DIR=\"${PROJECT_DIR}/QMContactListCache/CoreData/EntriesMachine\"\nINCLUDE_H=\"${PROJECT_DIR}/QMContactListCache/CoreData/ModelIncludes.h\"\nINPUT_FILE_PATH=\"${PROJECT_DIR}/QMContactListCache/CoreData/QMContactListModel.xcdatamodeld\"\n\ncurVer=`/usr/libexec/PlistBuddy \"${INPUT_FILE_PATH}/.xccurrentversion\" -c 'print _XCCurrentVersionName'`\n\n\necho ${DEVELOPER_BIN_DIR}/momc -XD_MOMC_TARGET_VERSION=10.6 \\\"${INPUT_FILE_PATH}\\\" \\\"${TARGET_BUILD_DIR}/${EXECUTABLE_FOLDER_PATH}/${INPUT_FILE_BASE}.momd\\\"\n${DEVELOPER_BIN_DIR}/momc -XD_MOMC_TARGET_VERSION=10.6 \"${INPUT_FILE_PATH}\" \"${TARGET_BUILD_DIR}/${EXECUTABLE_FOLDER_PATH}/${INPUT_FILE_BASE}.momd\"\n\necho \"Begin mom\"\n\necho ${DEVELOPER_BIN_DIR}/momc -XD_MOMC_TARGET_VERSION=10.6 \\\"${INPUT_FILE_PATH}\\\" \\\"${TARGET_BUILD_DIR}/${EXECUTABLE_FOLDER_PATH}/${INPUT_FILE_BASE}.mom\\\"\n${DEVELOPER_BIN_DIR}/momc -XD_MOMC_TARGET_VERSION=10.6 \"${INPUT_FILE_PATH}\" \"${TARGET_BUILD_DIR}/${EXECUTABLE_FOLDER_PATH}/${INPUT_FILE_BASE}.mom\"\n\necho \"that's all folks. mogen.sh is done\"\n";
+			shellPath = "/bin/sh  ../Scripts/mogenerator.sh QMCLModelIncludes.h QMContactListModel.xcdatamodeld QMContactListCache";
+			shellScript = "";
 		};
 		865A68921B1F3520003AC969 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -298,8 +288,9 @@
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\nif [ $CONFIGURATION == Release ]; then\necho \"skip for release\"\nelse\necho \"Copy $BUILT_PRODUCTS_DIR/QMContactListCache.bundle to $SRCROOT/Product/\"\ncp -R $BUILT_PRODUCTS_DIR/QMContactListCacheModel.bundle $SRCROOT/\nfi\n";
+			shellPath = "/bin/sh ../Scripts/copy_bundle.sh";
+			shellScript = "";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -317,9 +308,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				554A28371A0CE38600C4E03C /* CDContactListItem.m in Sources */,
-				554A283A1A0CE38600C4E03C /* _CDUser.m in Sources */,
 				554A28391A0CE38600C4E03C /* _CDContactListItem.m in Sources */,
-				554A28381A0CE38600C4E03C /* CDUser.m in Sources */,
 				554A28111A0CE1A900C4E03C /* QMContactListModel.xcdatamodeld in Sources */,
 				5590F2B01A0B8D4000C5044F /* QMContactListCache.m in Sources */,
 			);
@@ -475,7 +464,10 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"../Frameworks/**",
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -529,7 +521,10 @@
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"../Frameworks/**",
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Support/QMContactListCache-Prefix.pch";

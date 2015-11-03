@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   s.platform     = :ios, "7.0"
   s.source       = { :git => "https://github.com/QuickBlox/q-municate-services-ios.git", :tag => "#{s.version}"}
   s.source_files  = "**/*.{h,m}"
-  s.exclude_files = "Pods" 
+  s.exclude_files = "Pods", "Frameworks"
   s.requires_arc = true
   s.ios.frameworks      = "MobileCoreServices", "SystemConfiguration", "AVFoundation", "CoreVideo", "Accelerate", "CoreMedia", "AudioToolbox", "CoreLocation", "CoreData", "CoreGraphics", "CFNetwork", "UIKit"
   s.libraries           = "resolv", "xml2", "stdc++", "z"
@@ -24,6 +24,12 @@ Pod::Spec.new do |s|
   s.prefix_header_contents = 
   '#import <Quickblox/Quickblox.h>
 #import <CoreData/CoreData.h>
-#import <Quickblox/QBMulticastDelegate.h>'
-  s.resource_bundle = {'QMChatCacheModel' => 'QMChatCache/QMChatCache/CoreData/QMChatServiceModel.xcdatamodeld', 'QMContactListCacheModel' => 'QMContactListCache/QMContactListCache/CoreData/QMContactListModel.xcdatamodeld'}
+#import <Quickblox/QBMulticastDelegate.h>
+#import <Bolts/Bolts.h>
+#import <libextobjc/EXTKeyPathCoding.h>
+#import <libextobjc/EXTScope.h>'
+  s.resource_bundle = {'QMChatCacheModel' => 'QMChatCache/QMChatCache/CoreData/QMChatServiceModel.xcdatamodeld', 'QMContactListCacheModel' => 'QMContactListCache/QMContactListCache/CoreData/QMContactListModel.xcdatamodeld', 'QMUsersCacheModel' => 'QMUsersCache/QMUsersCache/CoreData/QMUsersModel.xcdatamodeld'}
+  s.dependency "Bolts",  '1.3.0'
+  s.dependency "libextobjc/EXTKeyPathCoding", '0.4.1'
+  s.dependency "libextobjc/EXTScope", '0.4.1'
 end
