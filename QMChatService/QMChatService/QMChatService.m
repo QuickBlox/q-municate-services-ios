@@ -370,7 +370,15 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 		chatDialogToUpdate.lastMessageText = message.encodedText;
 		chatDialogToUpdate.lastMessageDate = message.dateSent;
         chatDialogToUpdate.updatedAt = message.dateSent;
-		chatDialogToUpdate.unreadMessagesCount++;
+        
+        if (message.senderID != [QBSession currentSession].currentUser.ID) {
+            chatDialogToUpdate.unreadMessagesCount++;
+        }
+        else if (![message.readIDs containsObject:@([QBSession currentSession].currentUser.ID)]) {
+            NSMutableArray *readIDs = [message.readIDs mutableCopy];
+            [readIDs addObject:@([QBSession currentSession].currentUser.ID)];
+            message.readIDs = [readIDs copy];
+        }
         
         if (shouldSaveDialog) {
             [self.dialogsMemoryStorage addChatDialog:chatDialogToUpdate andJoin:NO completion:nil];
