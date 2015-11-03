@@ -47,6 +47,13 @@
  */
 - (void)removeDelegate:(id <QMUsersServiceDelegate>)delegate;
 
+#pragma mark - Tasks
+
+/**
+ *  Load users to memory storage from disc cache.
+ */
+- (BFTask<QBUUser *> *)loadFromCache;
+
 #pragma mark - Intelligent fetch
 
 /**
@@ -93,6 +100,15 @@
  *  @return BFTask with NSArray of QBUUser instances as a result
  */
 - (BFTask<NSArray<QBUUser *> *> *)retrieveUsersWithLogins:(NSArray<NSString *> *)logins;
+
+/**
+ *  Retrieve users with tags.
+ *
+ *  @param tags   array of user tags
+ *
+ *  @return BFTask with NSArray of QBUUser instances as a result
+ */
+- (BFTask<NSArray<QBUUser *> *> *)retrieveUsersWithTags:(NSArray<NSString *> *)tags;
 
 
 #pragma mark - Search
