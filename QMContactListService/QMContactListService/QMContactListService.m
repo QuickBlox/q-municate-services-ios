@@ -118,6 +118,7 @@
     
     __weak __typeof(self)weakSelf = self;
     [[QBChat instance] addUserToContactListRequest:user.ID completion:^(NSError * _Nullable error) {
+        __typeof(self) strongSelf = weakSelf;
         //
         if (!error) {
             if ([strongSelf.cacheDataSource respondsToSelector:@selector(contactListDidAddUser:)]) {
