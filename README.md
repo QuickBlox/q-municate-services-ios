@@ -819,14 +819,6 @@ Find dialog by identifier.
 
 ```
 
-Find dialog by room name.
-
-```objective-c
-
-- (QBChatDialog *)chatDialogWithRoomName:(NSString *)roomName;
-
-```
-
 Find private chat dialog with opponent ID.
 
 ```objective-c
@@ -1123,6 +1115,8 @@ Delegate for getting UsersMemoryStorage user ids.
 
 ```
 
+#### Add users
+
 Add user to memory storage.
 
 ```objective-c
@@ -1138,6 +1132,8 @@ Add users to memory storage.
 - (void)addUsers:(NSArray *)users;
 
 ```
+
+#### Get users
 
 Get all users from memory storage without sorting.
 
@@ -1219,8 +1215,8 @@ Get users with user facebook ids.
 
 ```
 
-Search for users excluding users with users ids.
-Result dictionary will contain an array of found users, and an array of not found search criteria (ids, logins, emails etc).
+#### Search and Exclude
+Search for users excluding users with users ids. Result dictionary will contain an array of found users, and an array of not found search criteria (ids, logins, emails etc).
 
 ```objective-c
 
@@ -1228,7 +1224,7 @@ Result dictionary will contain an array of found users, and an array of not foun
 
 ```
 
-Search for users excluding users with users logins.
+Search for users excluding users with logins.
 
 ```objective-c
 
@@ -1236,7 +1232,7 @@ Search for users excluding users with users logins.
 
 ```
 
-Search for users excluding users with users logins.
+Search for users excluding users with email.
 
 ```objective-c
 
@@ -1244,7 +1240,7 @@ Search for users excluding users with users logins.
 
 ```
 
-Search for users excluding users with users facebook IDs.
+Search for users excluding users with facebook IDs.
 
 ```objective-c
 
