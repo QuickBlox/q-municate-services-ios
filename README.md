@@ -421,8 +421,11 @@ Message is automatically added to **QMMessagesMemoryStorage** class.
 
 
 ```objective-c
-[QMServicesManager.instance.contactListService retrieveUsersWithIDs:@[@(2308497)] completion:^(QBResponse *response, QBGeneralResponsePage *page, NSArray *users) {
-	// handle users
+[[[QMServicesManager instance].usersService getUsersWithIDs:@[@(2308497), @(2308498)]] continueWithBlock:^id(BFTask<NSArray<QBUUser *> *> *task) {
+        if (task.error == nil) {
+            // handle users
+        }
+        return nil;
 }];
 ```
 
@@ -1066,75 +1069,75 @@ Load users to memory storage from disc cache.
 
 ```
 
-Retrieve user by id:
+Get user by id:
 
 ```objective-c
 
-- (BFTask<QBUUser *> *)retrieveUserWithID:(NSUInteger)userID;
+- (BFTask<QBUUser *> *)getUserWithID:(NSUInteger)userID;
 
 ```
 
-Retrieve users by ids:
+Get users by ids:
 
 ```objective-c
 
-- (BFTask<NSArray<QBUUser *> *> *)retrieveUsersWithIDs:(NSArray<NSNumber *> *)usersIDs;
+- (BFTask<NSArray<QBUUser *> *> *)getUsersWithIDs:(NSArray<NSNumber *> *)usersIDs;
 
 ```
 
-Retrieve users by ids with extended pagination parameters:
+Get users by ids with extended pagination parameters:
 
 ```objective-c
 
-- (BFTask<NSArray<QBUUser *> *> *)retrieveUsersWithIDs:(NSArray<NSNumber *> *)usersIDs page:(QBGeneralResponsePage *)page;
+- (BFTask<NSArray<QBUUser *> *> *)getUsersWithIDs:(NSArray<NSNumber *> *)usersIDs page:(QBGeneralResponsePage *)page;
 
 ```
 
-Retrieve users by emails:
+Get users by emails:
 
 ```objective-c
 
-- (BFTask<NSArray<QBUUser *> *> *)retrieveUsersWithEmails:(NSArray<NSString *> *)emails;
+- (BFTask<NSArray<QBUUser *> *> *)getUsersWithEmails:(NSArray<NSString *> *)emails;
 
 ```
 
-Retrieve users by emails with extended pagination parameters:
+Get users by emails with extended pagination parameters:
 
 ```objective-c
 
-- (BFTask<NSArray<QBUUser *> *> *)retrieveUsersWithEmails:(NSArray<NSString *> *)emails page:(QBGeneralResponsePage *)page;
+- (BFTask<NSArray<QBUUser *> *> *)getUsersWithEmails:(NSArray<NSString *> *)emails page:(QBGeneralResponsePage *)page;
 
 ```
 
-Retrieve users by facebook ids:
+Get users by facebook ids:
 
 ```objective-c
 
-- (BFTask<NSArray<QBUUser *> *> *)retrieveUsersWithFacebookIDs:(NSArray<NSString *> *)facebookIDs;
+- (BFTask<NSArray<QBUUser *> *> *)getUsersWithFacebookIDs:(NSArray<NSString *> *)facebookIDs;
 
 ```
 
-Retrieve users by facebook ids with extended pagination parameters:
+Get users by facebook ids with extended pagination parameters:
 
 ```objective-c
 
-- (BFTask<NSArray<QBUUser *> *> *)retrieveUsersWithFacebookIDs:(NSArray<NSString *> *)facebookIDs page:(QBGeneralResponsePage *)page;
+- (BFTask<NSArray<QBUUser *> *> *)getUsersWithFacebookIDs:(NSArray<NSString *> *)facebookIDs page:(QBGeneralResponsePage *)page;
 
 ```
 
-Retrieve users by logins:
+Get users by logins:
 
 ```objective-c
 
-- (BFTask<NSArray<QBUUser *> *> *)retrieveUsersWithLogins:(NSArray<NSString *> *)logins;
+- (BFTask<NSArray<QBUUser *> *> *)getUsersWithLogins:(NSArray<NSString *> *)logins;
 
 ```
 
-Retrieve users by logins with extended pagination parameters:
+Get users by logins with extended pagination parameters:
 
 ```objective-c
 
-- (BFTask<NSArray<QBUUser *> *> *)retrieveUsersWithLogins:(NSArray<NSString *> *)logins page:(QBGeneralResponsePage *)page;
+- (BFTask<NSArray<QBUUser *> *> *)getUsersWithLogins:(NSArray<NSString *> *)logins page:(QBGeneralResponsePage *)page;
 
 ```
 

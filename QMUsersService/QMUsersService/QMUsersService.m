@@ -81,22 +81,22 @@
 
 #pragma mark - Retrive users
 
-- (BFTask<QBUUser *> *)retrieveUserWithID:(NSUInteger)userID
+- (BFTask<QBUUser *> *)getUserWithID:(NSUInteger)userID
 {
-    return (BFTask<QBUUser *> *)[[self retrieveUsersWithIDs:@[@(userID)]] continueWithBlock:^id(BFTask *task) {
+    return (BFTask<QBUUser *> *)[[self getUsersWithIDs:@[@(userID)]] continueWithBlock:^id(BFTask *task) {
         return [BFTask taskWithResult:[task.result firstObject]];
     }];
 }
 
-- (BFTask<NSArray<QBUUser *> *> *)retrieveUsersWithIDs:(NSArray<NSNumber *> *)usersIDs
+- (BFTask<NSArray<QBUUser *> *> *)getUsersWithIDs:(NSArray<NSNumber *> *)usersIDs
 {
     QBGeneralResponsePage *pageResponse =
     [QBGeneralResponsePage responsePageWithCurrentPage:1 perPage:usersIDs.count < 100 ? usersIDs.count : 100];
     
-    return [self retrieveUsersWithIDs:usersIDs page:pageResponse];
+    return [self getUsersWithIDs:usersIDs page:pageResponse];
 }
 
-- (BFTask<NSArray<QBUUser *> *> *)retrieveUsersWithIDs:(NSArray<NSNumber *> *)usersIDs page:(QBGeneralResponsePage *)page
+- (BFTask<NSArray<QBUUser *> *> *)getUsersWithIDs:(NSArray<NSNumber *> *)usersIDs page:(QBGeneralResponsePage *)page
 {
     NSParameterAssert(usersIDs);
     NSParameterAssert(page);
@@ -112,14 +112,14 @@
             return [BFTask taskWithResult:foundUsers];
         }
         
-        return [self retrieveUsersWithIDs:searchInfo[QMUsersSearchKey.notFoundSearchValues]
-                               foundUsers:foundUsers
-                            forceDownload:YES
-                                     page:page];
+        return [self getUsersWithIDs:searchInfo[QMUsersSearchKey.notFoundSearchValues]
+                          foundUsers:foundUsers
+                       forceDownload:YES
+                                page:page];
     }];
 }
 
-- (BFTask<NSArray<QBUUser *> *> *)retrieveUsersWithIDs:(NSArray *)ids foundUsers:(NSArray *)foundUsers forceDownload:(BOOL)forceDownload page:(QBGeneralResponsePage *)page
+- (BFTask<NSArray<QBUUser *> *> *)getUsersWithIDs:(NSArray *)ids foundUsers:(NSArray *)foundUsers forceDownload:(BOOL)forceDownload page:(QBGeneralResponsePage *)page
 {
     if (ids.count == 0) {
         return [BFTask taskWithResult:foundUsers];
@@ -148,12 +148,12 @@
 }
 
 
-- (BFTask<NSArray<QBUUser *> *> *)retrieveUsersWithEmails:(NSArray<NSString *> *)emails
+- (BFTask<NSArray<QBUUser *> *> *)getUsersWithEmails:(NSArray<NSString *> *)emails
 {
-    return [self retrieveUsersWithEmails:emails page:[QBGeneralResponsePage responsePageWithCurrentPage:1 perPage:100]];
+    return [self getUsersWithEmails:emails page:[QBGeneralResponsePage responsePageWithCurrentPage:1 perPage:100]];
 }
 
-- (BFTask<NSArray<QBUUser *> *> *)retrieveUsersWithEmails:(NSArray<NSString *> *)emails page:(QBGeneralResponsePage *)page
+- (BFTask<NSArray<QBUUser *> *> *)getUsersWithEmails:(NSArray<NSString *> *)emails page:(QBGeneralResponsePage *)page
 {
     NSParameterAssert(emails);
     NSParameterAssert(page);
@@ -191,15 +191,15 @@
     }];
 }
 
-- (BFTask<NSArray<QBUUser *> *> *)retrieveUsersWithFacebookIDs:(NSArray<NSString *> *)facebookIDs
+- (BFTask<NSArray<QBUUser *> *> *)getUsersWithFacebookIDs:(NSArray<NSString *> *)facebookIDs
 {
     QBGeneralResponsePage *pageResponse =
     [QBGeneralResponsePage responsePageWithCurrentPage:1 perPage:facebookIDs.count < 100 ? facebookIDs.count : 100];
     
-    return [self retrieveUsersWithFacebookIDs:facebookIDs page:pageResponse];
+    return [self getUsersWithFacebookIDs:facebookIDs page:pageResponse];
 }
 
-- (BFTask<NSArray<QBUUser *> *> *)retrieveUsersWithFacebookIDs:(NSArray<NSString *> *)facebookIDs page:(QBGeneralResponsePage *)page
+- (BFTask<NSArray<QBUUser *> *> *)getUsersWithFacebookIDs:(NSArray<NSString *> *)facebookIDs page:(QBGeneralResponsePage *)page
 {
     NSParameterAssert(facebookIDs);
     NSParameterAssert(page);
@@ -234,15 +234,15 @@
     }];
 }
 
-- (BFTask<NSArray<QBUUser *> *> *)retrieveUsersWithLogins:(NSArray<NSString *> *)logins
+- (BFTask<NSArray<QBUUser *> *> *)getUsersWithLogins:(NSArray<NSString *> *)logins
 {
     QBGeneralResponsePage *pageResponse =
     [QBGeneralResponsePage responsePageWithCurrentPage:1 perPage:logins.count < 100 ? logins.count : 100];
     
-    return [self retrieveUsersWithLogins:logins page:pageResponse];
+    return [self getUsersWithLogins:logins page:pageResponse];
 }
 
-- (BFTask<NSArray<QBUUser *> *> *)retrieveUsersWithLogins:(NSArray<NSString *> *)logins page:(QBGeneralResponsePage *)page
+- (BFTask<NSArray<QBUUser *> *> *)getUsersWithLogins:(NSArray<NSString *> *)logins page:(QBGeneralResponsePage *)page
 {
     NSParameterAssert(logins);
     NSParameterAssert(page);
