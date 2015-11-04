@@ -166,36 +166,7 @@
 
 - (BFTask<NSArray<QBUUser *> *> *)retrieveUsersWithEmails:(NSArray<NSString *> *)emails
 {
-    NSParameterAssert(emails);
-    
-    @weakify(self)
-    return [[self loadFromCache] continueWithBlock:^id(BFTask *task) {
-        @strongify(self);
-        
-        NSDictionary* searchInfo = [self.usersMemoryStorage usersByExcludingEmails:emails];
-        NSArray* foundUsers = searchInfo[QMUsersSearchKey.foundObjects];
-        
-        if ([searchInfo[QMUsersSearchKey.notFoundSearchValues] count] == 0) {
-            return [BFTask taskWithResult:foundUsers];
-        }
-    
-        BFTaskCompletionSource* source = [BFTaskCompletionSource taskCompletionSource];
-        
-        [QBRequest usersWithEmails:searchInfo[QMUsersSearchKey.notFoundSearchValues] successBlock:^(QBResponse *response, QBGeneralResponsePage *page, NSArray *users) {
-            
-            [self.usersMemoryStorage addUsers:users];
-            
-            if ([self.multicastDelegate respondsToSelector:@selector(usersService:didAddUsers:)]) {
-                [self.multicastDelegate usersService:self didAddUsers:users];
-            }
-            
-            [source setResult:[foundUsers arrayByAddingObjectsFromArray:users]];
-        } errorBlock:^(QBResponse *response) {
-            [source setError:response.error.error];
-        }];
-        
-        return source.task;
-    }];
+    return (BFTask<NSArray<QBUUser *> *> *)[self retrieveUsersWithEmails:emails page:[QBGeneralResponsePage responsePageWithCurrentPage:1 perPage:100]];
 }
 
 - (BFTask<NSArray<QBUUser *> *> *)retrieveUsersWithEmails:(NSArray<NSString *> *)emails page:(QBGeneralResponsePage *)page
@@ -238,39 +209,10 @@
 
 - (BFTask<NSArray<QBUUser *> *> *)retrieveUsersWithFacebookIDs:(NSArray<NSString *> *)facebookIDs
 {
-    NSParameterAssert(facebookIDs);
+    QBGeneralResponsePage *pageResponse =
+    [QBGeneralResponsePage responsePageWithCurrentPage:1 perPage:facebookIDs.count < 100 ? facebookIDs.count : 100];
     
-    @weakify(self);
-    return [[self loadFromCache] continueWithBlock:^id(BFTask *task) {
-        @strongify(self);
-        
-        NSDictionary* searchInfo = [self.usersMemoryStorage usersByExcludingFacebookIDs:facebookIDs];
-        NSArray* foundUsers = searchInfo[QMUsersSearchKey.foundObjects];
-        
-        if ([searchInfo[QMUsersSearchKey.notFoundSearchValues] count] == 0) {
-            return [BFTask taskWithResult:foundUsers];
-        }
-        
-        BFTaskCompletionSource* source = [BFTaskCompletionSource taskCompletionSource];
-        
-        QBGeneralResponsePage *pageResponse =
-        [QBGeneralResponsePage responsePageWithCurrentPage:1 perPage:facebookIDs.count < 100 ? facebookIDs.count : 100];
-        
-        [QBRequest usersWithFacebookIDs:searchInfo[QMUsersSearchKey.notFoundSearchValues]
-                                   page:pageResponse
-                           successBlock:^(QBResponse *response, QBGeneralResponsePage *page, NSArray *users) {
-                               [self.usersMemoryStorage addUsers:users];
-                               
-                               if ([self.multicastDelegate respondsToSelector:@selector(usersService:didAddUsers:)]) {
-                                   [self.multicastDelegate usersService:self didAddUsers:users];
-                               }
-                               
-                               [source setResult:[foundUsers arrayByAddingObjectsFromArray:users]];
-                           } errorBlock:^(QBResponse *response) {
-                               [source setError:response.error.error];
-                           }];
-        return source.task;
-    }];
+    return (BFTask<NSArray<QBUUser *> *> *)[self retrieveUsersWithFacebookIDs:facebookIDs page:pageResponse];
 }
 
 - (BFTask<NSArray<QBUUser *> *> *)retrieveUsersWithFacebookIDs:(NSArray<NSString *> *)facebookIDs page:(QBGeneralResponsePage *)page
@@ -310,38 +252,10 @@
 
 - (BFTask<NSArray<QBUUser *> *> *)retrieveUsersWithLogins:(NSArray<NSString *> *)logins
 {
-    NSParameterAssert(logins);
+    QBGeneralResponsePage *pageResponse =
+    [QBGeneralResponsePage responsePageWithCurrentPage:1 perPage:logins.count < 100 ? logins.count : 100];
     
-    @weakify(self);
-    return [[self loadFromCache] continueWithBlock:^id(BFTask *task) {
-        @strongify(self);
-        
-        NSDictionary* searchInfo = [self.usersMemoryStorage usersByExcludingLogins:logins];
-        NSArray* foundUsers = searchInfo[QMUsersSearchKey.foundObjects];
-        if ([searchInfo[QMUsersSearchKey.notFoundSearchValues] count] == 0) {
-            return [BFTask taskWithResult:foundUsers];
-        }
-        
-        BFTaskCompletionSource* source = [BFTaskCompletionSource taskCompletionSource];
-        
-        QBGeneralResponsePage *pageResponse =
-        [QBGeneralResponsePage responsePageWithCurrentPage:1 perPage:logins.count < 100 ? logins.count : 100];
-        
-        [QBRequest usersWithLogins:searchInfo[QMUsersSearchKey.notFoundSearchValues]
-                              page:pageResponse
-                      successBlock:^(QBResponse *response, QBGeneralResponsePage *page, NSArray *users) {
-                          [self.usersMemoryStorage addUsers:users];
-                          
-                          if ([self.multicastDelegate respondsToSelector:@selector(usersService:didAddUsers:)]) {
-                              [self.multicastDelegate usersService:self didAddUsers:users];
-                          }
-                          
-                          [source setResult:[foundUsers arrayByAddingObjectsFromArray:users]];
-                      } errorBlock:^(QBResponse *response) {
-                          [source setError:response.error.error];
-                      }];
-        return source.task;
-    }];
+    return (BFTask<NSArray<QBUUser *> *> *)[self retrieveUsersWithLogins:logins page:pageResponse];
 }
 
 - (BFTask<NSArray<QBUUser *> *> *)retrieveUsersWithLogins:(NSArray<NSString *> *)logins page:(QBGeneralResponsePage *)page
@@ -382,29 +296,7 @@
 
 - (BFTask<NSArray<QBUUser *> *> *)searchUsersWithFullName:(NSString *)searchText
 {
-    NSParameterAssert(searchText);
-    
-    @weakify(self);
-    return [[self loadFromCache] continueWithBlock:^id(BFTask *task) {
-        @strongify(self);
-        
-        BFTaskCompletionSource* source = [BFTaskCompletionSource taskCompletionSource];
-        
-        [QBRequest usersWithFullName:searchText page:[QBGeneralResponsePage responsePageWithCurrentPage:1 perPage:100]
-                        successBlock:^(QBResponse *response, QBGeneralResponsePage *page, NSArray *users) {
-            [self.usersMemoryStorage addUsers:users];
-            
-            if ([self.multicastDelegate respondsToSelector:@selector(usersService:didAddUsers:)]) {
-                [self.multicastDelegate usersService:self didAddUsers:users];
-            }
-            
-            [source setResult:users];
-        } errorBlock:^(QBResponse *response) {
-            [source setError:response.error.error];
-        }];
-        
-        return source.task;
-    }];
+    return (BFTask<NSArray<QBUUser *> *> *)[self searchUsersWithFullName:searchText page:[QBGeneralResponsePage responsePageWithCurrentPage:1 perPage:100]];
 }
 
 - (BFTask<NSArray<QBUUser *> *> *)searchUsersWithFullName:(NSString *)searchText page:(QBGeneralResponsePage *)page
@@ -437,30 +329,7 @@
 
 - (BFTask<NSArray<QBUUser *> *> *)searchUsersWithTags:(NSArray<NSString *> *)tags
 {
-    NSParameterAssert(tags);
-    
-    @weakify(self);
-    return [[self loadFromCache] continueWithBlock:^id(BFTask *task) {
-        @strongify(self);
-        
-        BFTaskCompletionSource* source = [BFTaskCompletionSource taskCompletionSource];
-        
-        [QBRequest usersWithTags:tags
-                    successBlock:^(QBResponse * _Nonnull response, QBGeneralResponsePage * _Nullable page, NSArray<QBUUser *> * _Nullable users) {
-                        //
-                        [self.usersMemoryStorage addUsers:users];
-                        
-                        if ([self.multicastDelegate respondsToSelector:@selector(usersService:didAddUsers:)]) {
-                            [self.multicastDelegate usersService:self didAddUsers:users];
-                        }
-                        
-                        [source setResult:users];
-                    } errorBlock:^(QBResponse * _Nonnull response) {
-                        //
-                        [source setError:response.error.error];
-                    }];
-        return source.task;
-    }];
+    return (BFTask<NSArray<QBUUser *> *> *)[self searchUsersWithTags:tags page:[QBGeneralResponsePage responsePageWithCurrentPage:1 perPage:100]];
 }
 
 - (BFTask<NSArray<QBUUser *> *> *)searchUsersWithTags:(NSArray<NSString *> *)tags page:(QBGeneralResponsePage *)page
