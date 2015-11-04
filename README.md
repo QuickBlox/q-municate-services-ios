@@ -1066,7 +1066,7 @@ Load users to memory storage from disc cache.
 
 ```
 
-Get user with id:
+Retrieve user by id:
 
 ```objective-c
 
@@ -1074,7 +1074,7 @@ Get user with id:
 
 ```
 
-Get users with ids:
+Retrieve users by ids:
 
 ```objective-c
 
@@ -1082,7 +1082,15 @@ Get users with ids:
 
 ```
 
-Get users with emails:
+Retrieve users by ids with extended pagination parameters:
+
+```objective-c
+
+- (BFTask<NSArray<QBUUser *> *> *)retrieveUsersWithIDs:(NSArray<NSNumber *> *)usersIDs page:(QBGeneralResponsePage *)page;
+
+```
+
+Retrieve users by emails:
 
 ```objective-c
 
@@ -1090,7 +1098,15 @@ Get users with emails:
 
 ```
 
-Get users with facebook ids:
+Retrieve users by emails with extended pagination parameters:
+
+```objective-c
+
+- (BFTask<NSArray<QBUUser *> *> *)retrieveUsersWithEmails:(NSArray<NSString *> *)emails page:(QBGeneralResponsePage *)page;
+
+```
+
+Retrieve users by facebook ids:
 
 ```objective-c
 
@@ -1098,7 +1114,15 @@ Get users with facebook ids:
 
 ```
 
-Get users with logins:
+Retrieve users by facebook ids with extended pagination parameters:
+
+```objective-c
+
+- (BFTask<NSArray<QBUUser *> *> *)retrieveUsersWithFacebookIDs:(NSArray<NSString *> *)facebookIDs page:(QBGeneralResponsePage *)page;
+
+```
+
+Retrieve users by logins:
 
 ```objective-c
 
@@ -1106,7 +1130,15 @@ Get users with logins:
 
 ```
 
-Search for users with full name:
+Retrieve users by logins with extended pagination parameters:
+
+```objective-c
+
+- (BFTask<NSArray<QBUUser *> *> *)retrieveUsersWithLogins:(NSArray<NSString *> *)logins page:(QBGeneralResponsePage *)page;
+
+```
+
+Search for users by full name:
 
 ```objective-c
 
@@ -1114,11 +1146,27 @@ Search for users with full name:
 
 ```
 
-Search for users with tags:
+Search for users by full name with extended pagination parameters:
+
+```objective-c
+
+- (BFTask<NSArray<QBUUser *> *> *)searchUsersWithFullName:(NSString *)searchText page:(QBGeneralResponsePage *)page;
+
+```
+
+Search for users by tags:
 
 ```objective-c
 
 - (BFTask<NSArray<QBUUser *> *> *)searchUsersWithTags:(NSArray<NSString *> *)tags;
+
+```
+
+Search for users by tags with extended pagination parameters:
+
+```objective-c
+
+- (BFTask<NSArray<QBUUser *> *> *)searchUsersWithTags:(NSArray<NSString *> *)tags page:(QBGeneralResponsePage *)page;
 
 ```
 

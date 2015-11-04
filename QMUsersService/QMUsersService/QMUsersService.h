@@ -66,7 +66,7 @@
 - (BFTask<QBUUser *> *)retrieveUserWithID:(NSUInteger)userID;
 
 /**
- *  Retrieve users with ids.
+ *  Retrieve users by ids.
  *
  *  @param userIDs  array of user ids
  *
@@ -85,7 +85,7 @@
 - (BFTask<NSArray<QBUUser *> *> *)retrieveUsersWithIDs:(NSArray<NSNumber *> *)usersIDs page:(QBGeneralResponsePage *)page;
 
 /**
- *  Retrieve users with emails.
+ *  Retrieve users by emails.
  *
  *  @param emails   array of user emails
  *
@@ -104,7 +104,7 @@
 - (BFTask<NSArray<QBUUser *> *> *)retrieveUsersWithEmails:(NSArray<NSString *> *)emails page:(QBGeneralResponsePage *)page;
 
 /**
- *  Retrieve users with facebook ids.
+ *  Retrieve users by facebook ids.
  *
  *  @param facebookIDs  array of user facebook ids
  *
@@ -123,7 +123,7 @@
 - (BFTask<NSArray<QBUUser *> *> *)retrieveUsersWithFacebookIDs:(NSArray<NSString *> *)facebookIDs page:(QBGeneralResponsePage *)page;
 
 /**
- *  Retrieve users with logins.
+ *  Retrieve users by logins.
  *
  *  @param logins   array of user logins
  *
@@ -145,7 +145,7 @@
 #pragma mark - Search
 
 /**
- *  Search for users with full name.
+ *  Search for users by full name.
  *
  *  @param searchText   user full name
  *
@@ -164,7 +164,7 @@
 - (BFTask<NSArray<QBUUser *> *> *)searchUsersWithFullName:(NSString *)searchText page:(QBGeneralResponsePage *)page;
 
 /**
- *  Search for users with tags.
+ *  Search for users by tags.
  *
  *  @param tags   array of user tags
  *
