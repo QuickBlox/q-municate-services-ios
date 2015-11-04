@@ -1221,7 +1221,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     
     NSParameterAssert(updatedDialog);
     
-    QBChatMessage *message = [QBChatMessage markableMessage];
+    QBChatMessage *message = [QBChatMessage message];
     message.messageType = QMMessageTypeUpdateGroupDialog;
     message.text = notificationText;
     message.saveToHistory = kChatServiceSaveToHistoryTrue;
