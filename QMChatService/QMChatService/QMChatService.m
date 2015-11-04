@@ -1187,6 +1187,33 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     }
 }
 
+- (void)notifyUsersWithIDs:(NSArray *)usersIDs aboutAddingToDialog:(QBChatDialog *)dialog completion:(QBChatCompletionBlock)completion {
+    
+    dispatch_group_t notifyGroup = dispatch_group_create();
+    
+    for (NSNumber *occupantID in usersIDs) {
+        
+        if (self.serviceManager.currentUser.ID == [occupantID integerValue]) {
+            continue;
+        }
+        
+        QBChatMessage *privateMessage = [self systemMessageWithRecipientID:[occupantID integerValue] parameters:nil];
+        privateMessage.messageType = QMMessageTypeCreateGroupDialog;
+        [privateMessage updateCustomParametersWithDialog:dialog];
+        
+        dispatch_group_enter(notifyGroup);
+        [[QBChat instance] sendSystemMessage:privateMessage completion:^(NSError * _Nullable error) {
+            //
+            dispatch_group_leave(notifyGroup);
+        }];
+    }
+    
+    dispatch_group_notify(notifyGroup, dispatch_get_main_queue(), ^{
+        //
+        if (completion) completion(nil);
+    });
+}
+
 - (void)notifyAboutUpdateDialog:(QBChatDialog *)updatedDialog
       occupantsCustomParameters:(NSDictionary *)occupantsCustomParameters
                notificationText:(NSString *)notificationText
@@ -1194,7 +1221,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     
     NSParameterAssert(updatedDialog);
     
-    QBChatMessage *message = [QBChatMessage message];
+    QBChatMessage *message = [QBChatMessage markableMessage];
     message.messageType = QMMessageTypeUpdateGroupDialog;
     message.text = notificationText;
     message.saveToHistory = kChatServiceSaveToHistoryTrue;
