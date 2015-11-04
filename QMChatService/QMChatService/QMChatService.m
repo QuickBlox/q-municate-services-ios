@@ -1130,21 +1130,24 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     for (QBChatMessage *message in messages) {
         NSAssert([message.dialogID isEqualToString:dialogID], @"Message is from incorrect dialog.");
         
-        __weak __typeof(self)weakSelf = self;
-        dispatch_group_enter(readGroup);
-        [[QBChat instance] readMessage:message completion:^(NSError * _Nullable error) {
-            //
-            if (error == nil) {
-                if (chatDialogToUpdate.unreadMessagesCount > 0) {
-                    chatDialogToUpdate.unreadMessagesCount--;
+        if (![message.readIDs containsObject:@([QBSession currentSession].currentUser.ID)]) {
+            message.markable = YES;
+            __weak __typeof(self)weakSelf = self;
+            dispatch_group_enter(readGroup);
+            [[QBChat instance] readMessage:message completion:^(NSError * _Nullable error) {
+                //
+                if (error == nil) {
+                    if (chatDialogToUpdate.unreadMessagesCount > 0) {
+                        chatDialogToUpdate.unreadMessagesCount--;
+                    }
+                    
+                    if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didUpdateMessage:forDialogID:)]) {
+                        [weakSelf.multicastDelegate chatService:weakSelf didUpdateMessage:message forDialogID:dialogID];
+                    }
                 }
-                
-                if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didUpdateMessage:forDialogID:)]) {
-                    [weakSelf.multicastDelegate chatService:weakSelf didUpdateMessage:message forDialogID:dialogID];
-                }
-            }
-            dispatch_group_leave(readGroup);
-        }];
+                dispatch_group_leave(readGroup);
+            }];
+        }
     }
     
     dispatch_group_notify(readGroup, dispatch_get_main_queue(), ^{
