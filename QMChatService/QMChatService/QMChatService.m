@@ -1063,7 +1063,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 
     [dialog sendMessage:message completionBlock:^(NSError * _Nullable error) {
         //
-        if (saveToStorage) {
+        if (error == nil && saveToStorage) {
             [self.messagesMemoryStorage addMessage:message forDialogID:dialog.ID];
             
             if ([self.multicastDelegate respondsToSelector:@selector(chatService:didAddMessageToMemoryStorage:forDialogID:)]) {
