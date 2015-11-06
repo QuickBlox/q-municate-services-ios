@@ -61,7 +61,10 @@
     }
 }
 
-- (void)addOrUpdateChatDialog:(QBChatDialog *)chatDialog {
+- (void)addChatDialog:(QBChatDialog *)chatDialog andJoin:(BOOL)join completion:(QBChatCompletionBlock)completion {
+    NSAssert(chatDialog != nil, @"Chat dialog is nil!");
+    NSAssert(chatDialog.ID != nil, @"Chat dialog without identifier!");
+    
     QBChatDialog *dialog = self.dialogs[chatDialog.ID];
     
     if (dialog != nil) {
@@ -74,17 +77,14 @@
         dialog.unreadMessagesCount  = chatDialog.unreadMessagesCount;
         dialog.occupantIDs          = chatDialog.occupantIDs;
         dialog.data                 = chatDialog.data;
+        
+        if (dialog.isJoined) {
+            join = NO;
+        }
     }
     else {
         self.dialogs[chatDialog.ID] = chatDialog;
     }
-}
-
-- (void)addChatDialog:(QBChatDialog *)chatDialog andJoin:(BOOL)join completion:(QBChatCompletionBlock)completion {
-    NSAssert(chatDialog != nil, @"Chat dialog is nil!");
-    NSAssert(chatDialog.ID != nil, @"Chat dialog without identifier!");
-    
-    [self addOrUpdateChatDialog:chatDialog];
     
     NSAssert(chatDialog.type != 0, @"Chat type is not defined");
     if( chatDialog.type == QBChatDialogTypeGroup || chatDialog.type == QBChatDialogTypePublicGroup ){
