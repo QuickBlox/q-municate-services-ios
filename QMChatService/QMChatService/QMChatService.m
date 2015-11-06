@@ -1233,8 +1233,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
         [message.customParameters addEntriesFromDictionary:occupantsCustomParameters];
     }
     
-    QBChatDialog *dialog = [self.dialogsMemoryStorage chatDialogWithID:updatedDialog.ID];
-    [dialog sendMessage:message completionBlock:completion];
+    [updatedDialog sendMessage:message completionBlock:completion];
 }
 
 - (void)notifyOponentAboutAcceptingContactRequest:(BOOL)accept opponentID:(NSUInteger)opponentID completion:(QBChatCompletionBlock)completion {
