@@ -1,0 +1,2 @@
+Frameworks/Quickblox.framework/Versions/A/Quickblox filter=lfs diff=lfs merge=lfs -text
+Frameworks/Bolts.framework/Versions/A/Bolts filter=lfs diff=lfs merge=lfs -text
