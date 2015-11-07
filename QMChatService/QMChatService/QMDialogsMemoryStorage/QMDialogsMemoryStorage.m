@@ -64,7 +64,27 @@
 - (void)addChatDialog:(QBChatDialog *)chatDialog andJoin:(BOOL)join completion:(QBChatCompletionBlock)completion {
     NSAssert(chatDialog != nil, @"Chat dialog is nil!");
     NSAssert(chatDialog.ID != nil, @"Chat dialog without identifier!");
-    self.dialogs[chatDialog.ID] = chatDialog;
+    
+    QBChatDialog *dialog = self.dialogs[chatDialog.ID];
+    
+    if (dialog != nil) {
+        dialog.createdAt            = chatDialog.createdAt;
+        dialog.updatedAt            = chatDialog.updatedAt;
+        dialog.name                 = chatDialog.name;
+        dialog.photo                = chatDialog.photo;
+        dialog.lastMessageDate      = chatDialog.lastMessageDate;
+        dialog.lastMessageUserID    = chatDialog.lastMessageUserID;
+        dialog.unreadMessagesCount  = chatDialog.unreadMessagesCount;
+        dialog.occupantIDs          = chatDialog.occupantIDs;
+        dialog.data                 = chatDialog.data;
+        
+        if (dialog.isJoined) {
+            join = NO;
+        }
+    }
+    else {
+        self.dialogs[chatDialog.ID] = chatDialog;
+    }
     
     NSAssert(chatDialog.type != 0, @"Chat type is not defined");
     if( chatDialog.type == QBChatDialogTypeGroup || chatDialog.type == QBChatDialogTypePublicGroup ){

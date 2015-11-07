@@ -398,7 +398,10 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
             chatDialogToUpdate.lastMessageText = message.encodedText;
             chatDialogToUpdate.lastMessageDate = message.dateSent;
             chatDialogToUpdate.updatedAt = message.dateSent;
-            chatDialogToUpdate.unreadMessagesCount++;
+            
+            if (message.senderID != [QBSession currentSession].currentUser.ID) {
+                chatDialogToUpdate.unreadMessagesCount++;
+            }
             
             if ([self.multicastDelegate respondsToSelector:@selector(chatService:didUpdateChatDialogInMemoryStorage:)]) {
                 [self.multicastDelegate chatService:self didUpdateChatDialogInMemoryStorage:chatDialogToUpdate];
