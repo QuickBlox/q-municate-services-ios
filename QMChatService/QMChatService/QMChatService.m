@@ -1120,8 +1120,13 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
             [[QBChat instance] markAsDelivered:message completion:^(NSError * _Nullable error) {
                 //
                 if (error == nil) {
-                    if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didUpdateMessage:forDialogID:)]) {
-                        [weakSelf.multicastDelegate chatService:weakSelf didUpdateMessage:message forDialogID:message.dialogID];
+                    __typeof(weakSelf)strongSelf = weakSelf;
+                    
+                    // updating message in memory storage
+                    [strongSelf.messagesMemoryStorage addMessage:message forDialogID:message.dialogID];
+                    // calling multicast delegate
+                    if ([strongSelf.multicastDelegate respondsToSelector:@selector(chatService:didUpdateMessage:forDialogID:)]) {
+                        [strongSelf.multicastDelegate chatService:strongSelf didUpdateMessage:message forDialogID:message.dialogID];
                     }
                 }
                 dispatch_group_leave(deliveredGroup);
@@ -1194,12 +1199,16 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
             [[QBChat instance] readMessage:message completion:^(NSError * _Nullable error) {
                 //
                 if (error == nil) {
+                    __typeof(weakSelf)strongSelf = weakSelf;
+                    
                     if (chatDialogToUpdate.unreadMessagesCount > 0) {
                         chatDialogToUpdate.unreadMessagesCount--;
                     }
-                    
-                    if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didUpdateMessage:forDialogID:)]) {
-                        [weakSelf.multicastDelegate chatService:weakSelf didUpdateMessage:message forDialogID:dialogID];
+                    // updating message in memory storage
+                    [strongSelf.messagesMemoryStorage addMessage:message forDialogID:message.dialogID];
+                    // calling multicast delegate
+                    if ([strongSelf.multicastDelegate respondsToSelector:@selector(chatService:didUpdateMessage:forDialogID:)]) {
+                        [strongSelf.multicastDelegate chatService:strongSelf didUpdateMessage:message forDialogID:dialogID];
                     }
                 }
                 dispatch_group_leave(readGroup);
