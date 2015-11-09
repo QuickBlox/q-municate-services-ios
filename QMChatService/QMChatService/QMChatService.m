@@ -335,11 +335,31 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     if (message.messageType == QMMessageTypeCreateGroupDialog) {
         __weak __typeof(self)weakSelf = self;
         
-        [self.dialogsMemoryStorage addChatDialog:message.dialog andJoin:YES completion:^(NSError * _Nullable error) {
+        [self messagesWithChatDialogID:message.dialogID completion:^(QBResponse *response, NSArray *messages) {
             //
-            if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddChatDialogToMemoryStorage:)]) {
-                [weakSelf.multicastDelegate chatService:weakSelf didAddChatDialogToMemoryStorage:message.dialog];
+            __typeof(weakSelf)strongSelf = weakSelf;
+            QBChatDialog *dialogToAdd = message.dialog;
+            
+            if (messages.count > 0) {
+                QBChatMessage *lastMessage = [messages lastObject];
+                dialogToAdd.lastMessageText = [lastMessage encodedText];
+                dialogToAdd.lastMessageDate = lastMessage.dateSent;
+                dialogToAdd.updatedAt       = lastMessage.dateSent;
+                dialogToAdd.unreadMessagesCount++;
             }
+            
+            [strongSelf.dialogsMemoryStorage addChatDialog:dialogToAdd andJoin:YES completion:^(NSError * _Nullable error) {
+                //
+                if ([strongSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddChatDialogToMemoryStorage:)]) {
+                    [strongSelf.multicastDelegate chatService:strongSelf didAddChatDialogToMemoryStorage:dialogToAdd];
+                }
+                // calling multicast delegate to show notification
+                if (messages.count > 0) {
+                    if ([strongSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddMessageToMemoryStorage:forDialogID:)]) {
+                        [strongSelf.multicastDelegate chatService:strongSelf didAddMessageToMemoryStorage:messages.lastObject forDialogID:dialogToAdd.ID];
+                    }
+                }
+            }];
         }];
     }
 }
