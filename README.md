@@ -813,7 +813,7 @@ Adds chat dialog and joins if chosen.
 
 ```objective-c
 
-- (void)addChatDialog:(QBChatDialog *)chatDialog andJoin:(BOOL)join completion:(QBChatCompletionBlock)completion;
+- (void)addChatDialog:(QBChatDialog *)chatDialog andJoin:(BOOL)join completion:(void(^)(QBChatDialog *addedDialog, NSError *error))completion;
 
 ```
 

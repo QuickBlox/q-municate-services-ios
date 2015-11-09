@@ -348,15 +348,15 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
                 dialogToAdd.unreadMessagesCount++;
             }
             
-            [strongSelf.dialogsMemoryStorage addChatDialog:dialogToAdd andJoin:YES completion:^(NSError * _Nullable error) {
+            [strongSelf.dialogsMemoryStorage addChatDialog:dialogToAdd andJoin:YES completion:^(QBChatDialog *addedDialog, NSError *error) {
                 //
                 if ([strongSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddChatDialogToMemoryStorage:)]) {
-                    [strongSelf.multicastDelegate chatService:strongSelf didAddChatDialogToMemoryStorage:dialogToAdd];
+                    [strongSelf.multicastDelegate chatService:strongSelf didAddChatDialogToMemoryStorage:addedDialog];
                 }
                 // calling multicast delegate to show notification
                 if (messages.count > 0) {
                     if ([strongSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddMessageToMemoryStorage:forDialogID:)]) {
-                        [strongSelf.multicastDelegate chatService:strongSelf didAddMessageToMemoryStorage:messages.lastObject forDialogID:dialogToAdd.ID];
+                        [strongSelf.multicastDelegate chatService:strongSelf didAddMessageToMemoryStorage:messages.lastObject forDialogID:addedDialog.ID];
                     }
                 }
             }];
@@ -667,14 +667,13 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 	__weak __typeof(self)weakSelf = self;
 	[QBRequest createDialog:chatDialog successBlock:^(QBResponse *response, QBChatDialog *createdDialog) {
 
-        [weakSelf.dialogsMemoryStorage addChatDialog:createdDialog andJoin:YES completion:^(NSError * _Nullable error) {
-            //
+        [weakSelf.dialogsMemoryStorage addChatDialog:createdDialog andJoin:YES completion:^(QBChatDialog *addedDialog, NSError *error) {
             if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddChatDialogToMemoryStorage:)]) {
-                [weakSelf.multicastDelegate chatService:weakSelf didAddChatDialogToMemoryStorage:createdDialog];
+                [weakSelf.multicastDelegate chatService:weakSelf didAddChatDialogToMemoryStorage:addedDialog];
             }
             
             if (completion) {
-                completion(response, createdDialog);
+                completion(response, addedDialog);
             }
         }];
 		
@@ -698,10 +697,9 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 	__weak __typeof(self)weakSelf = self;
 	[QBRequest updateDialog:chatDialog successBlock:^(QBResponse *response, QBChatDialog *updatedDialog) {
         
-        [weakSelf.dialogsMemoryStorage addChatDialog:updatedDialog andJoin:YES completion:^(NSError * _Nullable error) {
-            //
+        [weakSelf.dialogsMemoryStorage addChatDialog:updatedDialog andJoin:YES completion:^(QBChatDialog *addedDialog, NSError *error) {
             if (completion) {
-                completion(response, updatedDialog);
+                completion(response, addedDialog);
             }
         }];
 		
@@ -725,9 +723,8 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     __weak __typeof(self)weakSelf = self;
     [QBRequest updateDialog:chatDialog successBlock:^(QBResponse *response, QBChatDialog *dialog) {
         //
-        [weakSelf.dialogsMemoryStorage addChatDialog:dialog andJoin:YES completion:^(NSError * _Nullable error) {
-            //
-            if (completion) completion(response,dialog);
+        [weakSelf.dialogsMemoryStorage addChatDialog:dialog andJoin:YES completion:^(QBChatDialog *addedDialog, NSError *error) {
+            if (completion) completion(response, addedDialog);
         }];
     } errorBlock:^(QBResponse *response) {
         //
@@ -746,10 +743,9 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 	
 	[QBRequest updateDialog:chatDialog successBlock:^(QBResponse *response, QBChatDialog *updatedDialog) {
 
-        [weakSelf.dialogsMemoryStorage addChatDialog:updatedDialog andJoin:YES completion:^(NSError * _Nullable error) {
-            //
+        [weakSelf.dialogsMemoryStorage addChatDialog:updatedDialog andJoin:YES completion:^(QBChatDialog *addedDialog, NSError *error) {
             if (completion) {
-                completion(response, updatedDialog);
+                completion(response, addedDialog);
             }
         }];
 		
