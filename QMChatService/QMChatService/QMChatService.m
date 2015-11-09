@@ -1101,6 +1101,43 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     }];
 }
 
+#pragma mark - mark as delivered
+
+- (void)markMessageAsDelivered:(QBChatMessage *)message completion:(QBChatCompletionBlock)completion {
+    [self markMessagesAsDelivered:@[message] completion:completion];
+}
+
+- (void)markMessagesAsDelivered:(NSArray<QBChatMessage *> *)messages completion:(QBChatCompletionBlock)completion {
+    
+    dispatch_group_t deliveredGroup = dispatch_group_create();
+    
+    for (QBChatMessage *message in messages) {
+
+        if (![message.deliveredIDs containsObject:@([QBSession currentSession].currentUser.ID)]) {
+            message.markable = YES;
+            __weak __typeof(self)weakSelf = self;
+            dispatch_group_enter(deliveredGroup);
+            [[QBChat instance] markAsDelivered:message completion:^(NSError * _Nullable error) {
+                //
+                if (error == nil) {
+                    if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didUpdateMessage:forDialogID:)]) {
+                        [weakSelf.multicastDelegate chatService:weakSelf didUpdateMessage:message forDialogID:message.dialogID];
+                    }
+                }
+                dispatch_group_leave(deliveredGroup);
+            }];
+        }
+    }
+    
+    dispatch_group_notify(deliveredGroup, dispatch_get_main_queue(), ^{
+        //
+        if (completion) {
+            completion(nil);
+        }
+    });
+
+}
+
 #pragma mark - read messages
 
 - (BOOL)readMessage:(QBChatMessage *)message forDialogID:(NSString *)dialogID {
