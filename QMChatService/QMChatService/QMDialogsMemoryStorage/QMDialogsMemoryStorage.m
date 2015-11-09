@@ -61,7 +61,7 @@
     }
 }
 
-- (void)addChatDialog:(QBChatDialog *)chatDialog andJoin:(BOOL)join completion:(QBChatCompletionBlock)completion {
+- (void)addChatDialog:(QBChatDialog *)chatDialog andJoin:(BOOL)join completion:(void(^)(QBChatDialog *dialog, NSError *error))completion {
     NSAssert(chatDialog != nil, @"Chat dialog is nil!");
     NSAssert(chatDialog.ID != nil, @"Chat dialog without identifier!");
     
@@ -79,7 +79,8 @@
         dialog.data                 = chatDialog.data;
         
         if (dialog.isJoined) {
-            join = NO;
+            if (completion) completion(dialog,nil);
+            return;
         }
     }
     else {
@@ -92,10 +93,15 @@
     }
     
     if (join && chatDialog.type != QBChatDialogTypePrivate) {
-        [chatDialog joinWithCompletionBlock:completion];
+        [chatDialog joinWithCompletionBlock:^(NSError * _Nullable error) {
+            //
+            if (completion) {
+                completion(chatDialog,error);
+            }
+        }];
     }
     else {
-        if (completion) completion(nil);
+        if (completion) completion(chatDialog, nil);
     }
 }
 
