@@ -773,6 +773,22 @@ completion:(QBChatCompletionBlock)completion;
 
 ```
 
+Mark message as delivered.
+
+```objective-c
+
+- (void)markMessageAsDelivered:(QBChatMessage *)message completion:(QBChatCompletionBlock)completion;
+
+```
+
+Mark messages as delivered.
+
+```objective-c
+
+- (void)markMessagesAsDelivered:(NSArray<QBChatMessage *> *)messages completion:(QBChatCompletionBlock)completion;
+
+```
+
 Send read status for message and update unreadMessageCount for dialog in storage.
 
 ```objective-c

@@ -374,7 +374,7 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 - (void)markMessageAsDelivered:(QBChatMessage *)message completion:(QBChatCompletionBlock)completion;
 
 /**
- *  Mark message as delivered.
+ *  Mark messages as delivered.
  *
  *  @param message      array of QBChatMessage instances to mark as delivered
  *  @param completion   completion block with failure error
