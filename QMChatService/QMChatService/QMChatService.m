@@ -681,7 +681,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
         [weakSelf.dialogsMemoryStorage addChatDialog:updatedDialog andJoin:YES completion:^(NSError * _Nullable error) {
             //
             if (completion) {
-                completion(response, updatedDialog);
+                completion(response, [weakSelf.dialogsMemoryStorage chatDialogWithID:updatedDialog.ID]);
             }
         }];
 		
@@ -707,7 +707,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
         //
         [weakSelf.dialogsMemoryStorage addChatDialog:dialog andJoin:YES completion:^(NSError * _Nullable error) {
             //
-            if (completion) completion(response,dialog);
+            if (completion) completion(response, [weakSelf.dialogsMemoryStorage chatDialogWithID:dialog.ID]);
         }];
     } errorBlock:^(QBResponse *response) {
         //
@@ -729,7 +729,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
         [weakSelf.dialogsMemoryStorage addChatDialog:updatedDialog andJoin:YES completion:^(NSError * _Nullable error) {
             //
             if (completion) {
-                completion(response, updatedDialog);
+                completion(response, [weakSelf.dialogsMemoryStorage chatDialogWithID:updatedDialog.ID]);
             }
         }];
 		
