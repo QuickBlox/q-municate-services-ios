@@ -213,34 +213,53 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 /**
  *  Notify opponents about creating the dialog
  *
- *  @param dialog created dialog we notificate about
- *  @param usersIDs [NSNumber] array of OccupantIDs which not be notified
- *
- *  @warning *Deprecated in QMServices 0.3:* Use 'notifyUsersWithIDs:aboutAddingToDialog:completion:' instead.
- */
-- (void)notifyUsersWithIDs:(NSArray *)usersIDs aboutAddingToDialog:(QBChatDialog *)dialog DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.3. Use 'notifyUsersWithIDs:aboutAddingToDialog:completion:' instead.");
-
-/**
- *  Notify opponents about creating the dialog
- *
  *  @param dialog       created dialog we notificate about
  *  @param usersIDs     [NSNumber] array of OccupantIDs which not be notified
  *  @param completion   completion block with failure error
+ *
+ *  @warning *Deprecated in QMServices 0.3.1:* Use 'sendSystemMessageAboutAddingToDialog:toUsersIDs:completion:' instead.
  */
-- (void)notifyUsersWithIDs:(NSArray *)usersIDs aboutAddingToDialog:(QBChatDialog *)dialog completion:(QBChatCompletionBlock)completion;
+- (void)notifyUsersWithIDs:(NSArray *)usersIDs aboutAddingToDialog:(QBChatDialog *)dialog completion:(QBChatCompletionBlock)completion DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.3.1. Use 'sendSystemMessageAboutAddingToDialog:toUsersIDs:completion:' instead.");;
+
+/**
+ *  Send system message to users about adding to dialog with dialog inside.
+ *
+ *  @param chatDialog   created dialog we notificate about
+ *  @param usersIDs     array of users id to send message
+ *  @param completion   completion block with failure error
+ */
+- (void)sendSystemMessageAboutAddingToDialog:(QBChatDialog *)chatDialog
+                                  toUsersIDs:(NSArray *)usersIDs
+                                  completion:(QBChatCompletionBlock)completion;
 
 /**
  *  Notify opponents about update the dialog
  *
- *  @param leaveDialog                  leave dialog
+ *  @param updatedDialog                updated dialog
  *  @param occupantsCustomParameters    {NSNumber : NSDictionary} dictionary of custom parameters for each occupant
  *  @param notificationText             notification text
  *  @param completion                   completion block with failure error
+ *
+ *  @warning *Deprecated in QMServices 0.3.1:* Use 'sendMessageAboutUpdateDialog:withNotificationText:customParameters:completion:' instead.
  */
 - (void)notifyAboutUpdateDialog:(QBChatDialog *)updatedDialog
       occupantsCustomParameters:(NSDictionary *)occupantsCustomParameters
                notificationText:(NSString *)notificationText
-                     completion:(QBChatCompletionBlock)completion;
+                     completion:(QBChatCompletionBlock)completion
+        DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.3.1. Use 'sendMessageAboutUpdateDialog:withNotificationText:customParameters:completion:' instead.");
+
+/**
+ *  Send message about updated dialog with dialog inside and notification.
+ *
+ *  @param updatedDialog        updated dialog
+ *  @param notificationText     notification text
+ *  @param customParameters     {NSNumber : NSDictionary} dictionary of custom parameters
+ *  @param completion           completion block with failure error
+ */
+- (void)sendMessageAboutUpdateDialog:(QBChatDialog *)updatedDialog
+                withNotificationText:(NSString *)notificationText
+                    customParameters:(NSDictionary *)customParameters
+                          completion:(QBChatCompletionBlock)completion;
 
 /**
  *  Notify opponent about accept or reject contact request
@@ -248,10 +267,24 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  *  @param accept     YES - accept, NO reject
  *  @param opponent   opponent ID
  *  @param completion completion block with failure error
+ *
+ *  @warning *Deprecated in QMServices 0.3.1:* Use 'sendMessageAboutAcceptingContactRequest:toOpponentID:completion:' instead.
  */
 - (void)notifyOponentAboutAcceptingContactRequest:(BOOL)accept
                                        opponentID:(NSUInteger)opponentID
-                                       completion:(QBChatCompletionBlock)completion;
+                                       completion:(QBChatCompletionBlock)completion
+                          DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.3.1. Use 'sendMessageAboutAcceptingContactRequest:toOpponentID:completion:' instead.");
+
+/**
+ *  Send message about accepting or rejecting contact requst.
+ *
+ *  @param accept     YES - accept, NO reject
+ *  @param opponent   opponent ID
+ *  @param completion completion block with failure error
+ */
+- (void)sendMessageAboutAcceptingContactRequest:(BOOL)accept
+                                   toOpponentID:(NSUInteger)opponentID
+                                     completion:(QBChatCompletionBlock)completion;
 
 #pragma mark - Fetch messages
 

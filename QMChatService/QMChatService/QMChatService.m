@@ -1173,22 +1173,6 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 
 #pragma mark - System messages
 
-- (void)notifyUsersWithIDs:(NSArray *)usersIDs aboutAddingToDialog:(QBChatDialog *)dialog {
-    
-    for (NSNumber *occupantID in usersIDs) {
-        
-        if (self.serviceManager.currentUser.ID == [occupantID integerValue]) {
-            continue;
-        }
-        
-        QBChatMessage *privateMessage = [self systemMessageWithRecipientID:[occupantID integerValue] parameters:nil];
-        privateMessage.messageType = QMMessageTypeCreateGroupDialog;
-        [privateMessage updateCustomParametersWithDialog:dialog];
-        
-        [[QBChat instance] sendSystemMessage:privateMessage completion:nil];
-    }
-}
-
 - (void)notifyUsersWithIDs:(NSArray *)usersIDs aboutAddingToDialog:(QBChatDialog *)dialog completion:(QBChatCompletionBlock)completion {
     
     dispatch_group_t notifyGroup = dispatch_group_create();
@@ -1216,6 +1200,13 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     });
 }
 
+- (void)sendSystemMessageAboutAddingToDialog:(QBChatDialog *)chatDialog
+                                  toUsersIDs:(NSArray *)usersIDs
+                                  completion:(QBChatCompletionBlock)completion
+{
+    [self notifyUsersWithIDs:usersIDs aboutAddingToDialog:chatDialog completion:completion];
+}
+
 - (void)notifyAboutUpdateDialog:(QBChatDialog *)updatedDialog
       occupantsCustomParameters:(NSDictionary *)occupantsCustomParameters
                notificationText:(NSString *)notificationText
@@ -1236,6 +1227,14 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     [self sendMessage:message type:QMMessageTypeUpdateGroupDialog toDialog:updatedDialog saveToHistory:YES saveToStorage:YES completion:completion];
 }
 
+- (void)sendMessageAboutUpdateDialog:(QBChatDialog *)updatedDialog
+                withNotificationText:(NSString *)notificationText
+                    customParameters:(NSDictionary *)customParameters
+                          completion:(QBChatCompletionBlock)completion
+{
+    [self notifyAboutUpdateDialog:updatedDialog occupantsCustomParameters:customParameters notificationText:notificationText completion:completion];
+}
+
 - (void)notifyOponentAboutAcceptingContactRequest:(BOOL)accept opponentID:(NSUInteger)opponentID completion:(QBChatCompletionBlock)completion {
     
     QBChatMessage *message = [QBChatMessage message];
@@ -1247,6 +1246,13 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     NSParameterAssert(p2pDialog);
     
     [self sendMessage:message type:messageType toDialog:p2pDialog saveToHistory:YES saveToStorage:YES completion:completion];
+}
+
+- (void)sendMessageAboutAcceptingContactRequest:(BOOL)accept
+                                   toOpponentID:(NSUInteger)opponentID
+                                     completion:(QBChatCompletionBlock)completion
+{
+    [self notifyOponentAboutAcceptingContactRequest:accept opponentID:opponentID completion:completion];
 }
 
 #pragma mark System messages Utilites
