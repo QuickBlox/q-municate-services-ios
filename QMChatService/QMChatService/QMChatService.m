@@ -29,7 +29,9 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 
 @end
 
-@implementation QMChatService
+@implementation QMChatService  {
+    BFTask* loadEarlierMessagesTask;
+}
 
 @dynamic dateSendTimeInterval;
 
@@ -847,6 +849,50 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
                                }
                            }];
     }];
+}
+
+- (BFTask <NSArray <QBChatMessage *> *> *)loadEarlierMessagesWithChatDialogID:(NSString *)chatDialogID {
+    
+    if (loadEarlierMessagesTask == nil) {
+        BFTaskCompletionSource* source = [BFTaskCompletionSource taskCompletionSource];
+        
+        
+        QBChatMessage *oldestMessage = [self.messagesMemoryStorage oldestMessageForDialogID:chatDialogID];
+        NSString *oldestMessageDate = [NSString stringWithFormat:@"%ld", (long)[oldestMessage.dateSent timeIntervalSince1970]];
+        QBResponsePage *page = [QBResponsePage responsePageWithLimit:kQMChatMessagesPerPage];
+        
+        @weakify(self);
+        [QBRequest messagesWithDialogID:chatDialogID extendedRequest:@{@"date_sent[lt]": oldestMessageDate} forPage:page successBlock:^(QBResponse *response, NSArray *messages, QBResponsePage *page) {
+            @strongify(self);
+            
+            if ([messages count] > 0) {
+                
+                [self.messagesMemoryStorage addMessages:messages forDialogID:chatDialogID];
+                
+                if ([self.multicastDelegate respondsToSelector:@selector(chatService:didAddMessagesToMemoryStorage:forDialogID:)]) {
+                    [self.multicastDelegate chatService:self didAddMessagesToMemoryStorage:messages forDialogID:chatDialogID];
+                }
+            }
+            
+            [source setResult:messages];
+            loadEarlierMessagesTask = nil;
+            
+        } errorBlock:^(QBResponse *response) {
+            @strongify(self);
+            
+            // case where we may have deleted dialog from another device
+            if( response.status != QBResponseStatusCodeNotFound ) {
+                [self.serviceManager handleErrorResponse:response];
+            }
+            
+            [source setError:response.error.error];
+            loadEarlierMessagesTask = nil;
+        }];
+        
+        loadEarlierMessagesTask = source.task;
+    }
+    
+    return loadEarlierMessagesTask;
 }
 
 - (void)earlierMessagesWithChatDialogID:(NSString *)chatDialogID completion:(void(^)(QBResponse *response, NSArray *messages))completion {

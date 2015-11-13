@@ -267,10 +267,21 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 /**
  *  Loads 100 messages that are older than oldest message in cache.
  *
- *  @param chatDialogID Chat dialog identifier.
- *  @param completion   Block with response instance and array of chat messages if request succeded or nil if failed.
+ *  @param chatDialogID     chat dialog identifier
+ *
+ *  @return BFTask instance of QBChatMessage's array
  */
-- (void)earlierMessagesWithChatDialogID:(NSString *)chatDialogID completion:(void(^)(QBResponse *response, NSArray *messages))completion;
+- (BFTask <NSArray <QBChatMessage *> *> *)loadEarlierMessagesWithChatDialogID:(NSString *)chatDialogID;
+
+/**
+ *  Loads 100 messages that are older than oldest message in cache.
+ *
+ *  @param chatDialogID Chat dialog identifier
+ *  @param completion   Block with response instance and array of chat messages if request succeded or nil if failed
+ *
+ *  @warning *Deprecated in QMServices 0.3.1:* Use 'loadEarlierMessagesWithChatDialogID:' instead.
+ */
+- (void)earlierMessagesWithChatDialogID:(NSString *)chatDialogID completion:(void(^)(QBResponse *response, NSArray *messages))completion DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.3.1. Use 'loadEarlierMessagesWithChatDialogID:' instead.");;
 
 #pragma mark - Fetch dialogs
 
