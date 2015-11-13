@@ -885,7 +885,6 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
             }
             
             [source setResult:messages];
-            self.loadEarlierMessagesTask = nil;
             
         } errorBlock:^(QBResponse *response) {
             @strongify(self);
@@ -896,7 +895,6 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
             }
             
             [source setError:response.error.error];
-            self.loadEarlierMessagesTask = nil;
         }];
         
         self.loadEarlierMessagesTask = source.task;
