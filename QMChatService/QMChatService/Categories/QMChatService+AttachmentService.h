@@ -14,6 +14,7 @@
  *  Send message to dialog with identifier
  *
  *  @param message          QBChatMessage instance
+ *  @param type             QMMessageType message type (Default: QMMessageTypeText)
  *  @param dialogID         dialog identifier
  *  @param saveToHistory    if YES - saves message to chat history
  *  @param saveToStorage    if YES - saves to local storage
