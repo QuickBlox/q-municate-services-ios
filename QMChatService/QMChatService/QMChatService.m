@@ -962,90 +962,6 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 
 #pragma mark - Send messages
 
-- (BOOL)sendMessage:(QBChatMessage *)message type:(QMMessageType)type toDialog:(QBChatDialog *)dialog save:(BOOL)save completion:(void(^)(NSError *error))completion {
-	
-    return [self sendMessage:message type:type toDialog:dialog save:save saveToStorage:YES completion:completion];
-}
-
-- (BOOL)sendMessage:(QBChatMessage *)message type:(QMMessageType)type toDialog:(QBChatDialog *)dialog save:(BOOL)save saveToStorage:(BOOL)saveToStorage completion:(void(^)(NSError *error))completion {
-    
-    message.customDateSent = self.dateSendTimeInterval;
-    
-    message.text = [message.text gtm_stringByEscapingForHTML];
-    
-    //Save to history
-    if (save) {
-        message.saveToHistory = kChatServiceSaveToHistoryTrue;
-    }
-    //Set message type
-    if (type != QMMessageTypeText) {
-        message.messageType = type;
-    }
-    
-    QBUUser *currentUser = self.serviceManager.currentUser;
-    
-    if (dialog.type == QBChatDialogTypePrivate) {
-        message.recipientID = dialog.recipientID;
-        message.markable = YES;
-    }
-    
-    message.senderID = currentUser.ID;
-    message.dialogID = dialog.ID;
-    
-    dialog.lastMessageText = message.encodedText;
-    dialog.lastMessageDate = message.dateSent;
-    dialog.updatedAt = message.dateSent;
-    
-    BOOL messageSent = [dialog sendMessage:message sentBlock:^(NSError *error) {
-        if (completion) {
-            completion(error);
-        }
-    }];
-    
-    if (messageSent) {
-        if (saveToStorage) {
-            [self.messagesMemoryStorage addMessage:message forDialogID:dialog.ID];
-            
-            if ([self.multicastDelegate respondsToSelector:@selector(chatService:didAddMessageToMemoryStorage:forDialogID:)]) {
-                [self.multicastDelegate chatService:self didAddMessageToMemoryStorage:message forDialogID:dialog.ID];
-            }
-            if ([self.multicastDelegate respondsToSelector:@selector(chatService:didUpdateChatDialogInMemoryStorage:)]) {
-                [self.multicastDelegate chatService:self didUpdateChatDialogInMemoryStorage:dialog];
-            }
-        }
-    }
-    
-    return messageSent;
-}
-
-- (BOOL)sendMessage:(QBChatMessage *)message toDialog:(QBChatDialog *)dialog save:(BOOL)save completion:(void(^)(NSError *error))completion {
-	
-	return [self sendMessage:message type:QMMessageTypeText toDialog:dialog save:save completion:completion];
-}
-
-- (BOOL)sendMessage:(QBChatMessage *)message toDialogId:(NSString *)dialogID save:(BOOL)save completion:(void (^)(NSError *))completion
-{
-    NSCParameterAssert(dialogID);
-    QBChatDialog *dialog = [self.dialogsMemoryStorage chatDialogWithID:dialogID];
-    NSAssert(dialog != nil, @"Dialog have to be in memory cache!");
-    
-    return [self sendMessage:message toDialog:dialog save:YES completion:completion];
-}
-
-- (void)sendMessage:(QBChatMessage *)message
-               type:(QMMessageType)type
-         toDialogID:(NSString *)dialogID
-      saveToHistory:(BOOL)saveToHistory
-      saveToStorage:(BOOL)saveToStorage
-         completion:(QBChatCompletionBlock)completion
-{
-    NSCParameterAssert(dialogID);
-    QBChatDialog *dialog = [self.dialogsMemoryStorage chatDialogWithID:dialogID];
-    NSAssert(dialog != nil, @"Dialog have to be in memory cache!");
-    
-    [self sendMessage:message type:type toDialog:dialog saveToHistory:saveToHistory saveToStorage:saveToStorage completion:completion];
-}
-
 - (void)sendMessage:(QBChatMessage *)message
                type:(QMMessageType)type
            toDialog:(QBChatDialog *)dialog
@@ -1054,7 +970,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
          completion:(QBChatCompletionBlock)completion
 {
     message.customDateSent = self.dateSendTimeInterval;
-    
+    message.dateSent = [NSDate date];
     message.text = [message.text gtm_stringByEscapingForHTML];
     
     //Save to history
@@ -1079,7 +995,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     dialog.lastMessageText = message.encodedText;
     dialog.lastMessageDate = message.dateSent;
     dialog.updatedAt = message.dateSent;
-
+    
     [dialog sendMessage:message completionBlock:^(NSError * _Nullable error) {
         //
         if (error == nil && saveToStorage) {
@@ -1095,6 +1011,30 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
         
         if (completion) completion(error);
     }];
+}
+
+- (void)sendMessage:(QBChatMessage *)message
+         toDialogID:(NSString *)dialogID
+      saveToHistory:(BOOL)saveToHistory
+      saveToStorage:(BOOL)saveToStorage
+         completion:(QBChatCompletionBlock)completion
+{
+    NSCParameterAssert(dialogID);
+    QBChatDialog *dialog = [self.dialogsMemoryStorage chatDialogWithID:dialogID];
+    NSAssert(dialog != nil, @"Dialog have to be in memory cache!");
+    
+    [self sendMessage:message toDialog:dialog saveToHistory:saveToHistory saveToStorage:saveToStorage completion:completion];
+}
+
+- (void)sendMessage:(QBChatMessage *)message
+           toDialog:(QBChatDialog *)dialog
+      saveToHistory:(BOOL)saveToHistory
+      saveToStorage:(BOOL)saveToStorage
+         completion:(QBChatCompletionBlock)completion
+{
+    NSAssert(message.messageType == QMMessageTypeText, @"You can only send text messages with this method.");
+    
+    [self sendMessage:message type:QMMessageTypeText toDialog:dialog saveToHistory:saveToHistory saveToStorage:saveToStorage completion:completion];
 }
 
 #pragma mark - mark as delivered
@@ -1284,9 +1224,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     NSParameterAssert(updatedDialog);
     
     QBChatMessage *message = [QBChatMessage message];
-    message.messageType = QMMessageTypeUpdateGroupDialog;
     message.text = notificationText;
-    message.saveToHistory = kChatServiceSaveToHistoryTrue;
     
     [message updateCustomParametersWithDialog:updatedDialog];
     
@@ -1295,12 +1233,13 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
         [message.customParameters addEntriesFromDictionary:occupantsCustomParameters];
     }
     
-    [updatedDialog sendMessage:message completionBlock:completion];
+    [self sendMessage:message type:QMMessageTypeUpdateGroupDialog toDialog:updatedDialog saveToHistory:YES saveToStorage:YES completion:completion];
 }
 
 - (void)notifyOponentAboutAcceptingContactRequest:(BOOL)accept opponentID:(NSUInteger)opponentID completion:(QBChatCompletionBlock)completion {
     
-    QBChatMessage *message = [self privateMessageWithRecipientID:opponentID text:@"Contact request" save:YES];
+    QBChatMessage *message = [QBChatMessage message];
+    message.text = @"Contact request";
     
     QMMessageType messageType = accept ? QMMessageTypeAcceptContactRequest : QMMessageTypeRejectContactRequest;
     
