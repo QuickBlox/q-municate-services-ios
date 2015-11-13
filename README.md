@@ -731,7 +731,7 @@ Fetches 100 messages that are older than oldest message in cache.
 
 ```objective-c
 
-- (void)earlierMessagesWithChatDialogID:(NSString *)chatDialogID completion:(void(^)(QBResponse *response, NSArray *messages))completion;
+- (BFTask <NSArray <QBChatMessage *> *> *)loadEarlierMessagesWithChatDialogID:(NSString *)chatDialogID;
 
 ```
 
