@@ -27,13 +27,12 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 
 @property (strong, nonatomic) NSTimer *presenceTimer;
 
+@property (weak, nonatomic)   BFTask* loadEarlierMessagesTask;
 @property (strong, nonatomic) NSMutableDictionary *loadedAllMessages;
 
 @end
 
-@implementation QMChatService  {
-    BFTask* loadEarlierMessagesTask;
-}
+@implementation QMChatService
 
 @dynamic dateSendTimeInterval;
 
@@ -861,11 +860,10 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 
 - (BFTask <NSArray <QBChatMessage *> *> *)loadEarlierMessagesWithChatDialogID:(NSString *)chatDialogID {
     
-    if ([self.loadedAllMessages[chatDialogID]  isEqualToNumber: kQMLoadedAllMessages]) return nil;
+    if ([self.loadedAllMessages[chatDialogID]  isEqualToNumber: kQMLoadedAllMessages]) return [BFTask taskWithResult:@[]];
     
-    if (loadEarlierMessagesTask == nil) {
+    if (self.loadEarlierMessagesTask == nil) {
         BFTaskCompletionSource* source = [BFTaskCompletionSource taskCompletionSource];
-        
         
         QBChatMessage *oldestMessage = [self.messagesMemoryStorage oldestMessageForDialogID:chatDialogID];
         NSString *oldestMessageDate = [NSString stringWithFormat:@"%ld", (long)[oldestMessage.dateSent timeIntervalSince1970]];
@@ -887,7 +885,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
             }
             
             [source setResult:messages];
-            loadEarlierMessagesTask = nil;
+            self.loadEarlierMessagesTask = nil;
             
         } errorBlock:^(QBResponse *response) {
             @strongify(self);
@@ -898,13 +896,13 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
             }
             
             [source setError:response.error.error];
-            loadEarlierMessagesTask = nil;
+            self.loadEarlierMessagesTask = nil;
         }];
         
-        loadEarlierMessagesTask = source.task;
+        self.loadEarlierMessagesTask = source.task;
     }
     
-    return loadEarlierMessagesTask;
+    return self.loadEarlierMessagesTask;
 }
 
 - (void)earlierMessagesWithChatDialogID:(NSString *)chatDialogID completion:(void(^)(QBResponse *response, NSArray *messages))completion {
