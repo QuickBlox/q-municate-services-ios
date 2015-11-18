@@ -62,7 +62,9 @@ static NSString* attachmentPath(QBChatAttachment *attachment) {
         
         [self changeMessageAttachmentStatus:QMMessageAttachmentStatusLoaded forMessage:message];
         
-        [chatService sendMessage:message type:QMMessageTypeText toDialog:dialog saveToHistory:YES saveToStorage:YES completion:completion];
+        [chatService sendMessage:message type:QMMessageTypeText toDialog:dialog saveToHistory:YES saveToStorage:YES completion:^(NSError *error, QBChatMessage *sentMessage) {
+            if (completion) completion(error);
+        }];
         
     } statusBlock:^(QBRequest *request, QBRequestStatus *status) {
         

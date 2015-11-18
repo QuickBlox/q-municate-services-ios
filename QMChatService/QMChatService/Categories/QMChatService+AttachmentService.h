@@ -25,6 +25,6 @@
            toDialog:(QBChatDialog *)dialog
       saveToHistory:(BOOL)saveToHistory
       saveToStorage:(BOOL)saveToStorage
-         completion:(QBChatCompletionBlock)completion;
+         completion:(void(^)(NSError *error, QBChatMessage *sentMessage))completion;
 
 @end
