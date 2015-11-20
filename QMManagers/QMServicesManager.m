@@ -101,7 +101,7 @@
 		}
 		
         __weak typeof(self) weakSelf = self;
-        [weakSelf.chatService connectWithCompletionBlock:^(NSError * _Nullable error) {
+        [weakSelf.chatService connectWithCompletionBlock:^(NSError *error) {
             //
             __typeof(self) strongSelf = weakSelf;
             
@@ -109,7 +109,7 @@
                 NSArray* dialogs = [strongSelf.chatService.dialogsMemoryStorage unsortedDialogs];
                 for (QBChatDialog* dialog in dialogs) {
                     if (dialog.type != QBChatDialogTypePrivate) {
-                        [strongSelf.chatService joinToGroupDialog:dialog completion:^(NSError * _Nullable error) {
+                        [strongSelf.chatService joinToGroupDialog:dialog completion:^(NSError *error) {
                             //
                             if (error != nil) {
                                 NSLog(@"Join error: %@", error.localizedDescription);
@@ -202,7 +202,7 @@
 
 - (void)cachedUsers:(QMCacheCollection)block {
     [[QMUsersCache.instance usersSortedBy:@"id" ascending:YES] continueWithExecutor:[BFExecutor mainThreadExecutor]
-                                                                          withBlock:^id(BFTask<NSArray<QBUUser *> *> *task) {
+                                                                          withBlock:^id(BFTask *task) {
                                                                               if (block) block(task.result);
                                                                               return nil;
                                                                           }];
@@ -210,7 +210,7 @@
 
 #pragma mark - QMUsersServiceDelegate
 
-- (void)usersService:(QMUsersService *)usersService didAddUsers:(NSArray<QBUUser *> *)users
+- (void)usersService:(QMUsersService *)usersService didAddUsers:(NSArray *)users
 {
     [QMUsersCache.instance insertOrUpdateUsers:users];
 }
