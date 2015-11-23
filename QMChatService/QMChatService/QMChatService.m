@@ -1123,6 +1123,9 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
                     __typeof(weakSelf)strongSelf = weakSelf;
                     
                     // updating message in memory storage
+                    NSMutableArray *updatedDeliveredIDs = [NSMutableArray arrayWithArray:message.deliveredIDs];
+                    [updatedDeliveredIDs addObject:@(self.serviceManager.currentUser.ID)];
+                    message.deliveredIDs = [updatedDeliveredIDs copy];
                     [strongSelf.messagesMemoryStorage addMessage:message forDialogID:message.dialogID];
                     // calling multicast delegate
                     if ([strongSelf.multicastDelegate respondsToSelector:@selector(chatService:didUpdateMessage:forDialogID:)]) {
@@ -1205,6 +1208,9 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
                         chatDialogToUpdate.unreadMessagesCount--;
                     }
                     // updating message in memory storage
+                    NSMutableArray *updatedReadIDs = [NSMutableArray arrayWithArray:message.readIDs];
+                    [updatedReadIDs addObject:@(self.serviceManager.currentUser.ID)];
+                    message.readIDs = [updatedReadIDs copy];
                     [strongSelf.messagesMemoryStorage addMessage:message forDialogID:message.dialogID];
                     // calling multicast delegate
                     if ([strongSelf.multicastDelegate respondsToSelector:@selector(chatService:didUpdateMessage:forDialogID:)]) {
