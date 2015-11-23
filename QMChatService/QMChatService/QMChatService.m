@@ -1121,9 +1121,6 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
                     __typeof(weakSelf)strongSelf = weakSelf;
                     
                     // updating message in memory storage
-                    NSMutableArray *updatedDeliveredIDs = [NSMutableArray arrayWithArray:message.deliveredIDs];
-                    [updatedDeliveredIDs addObject:@(self.serviceManager.currentUser.ID)];
-                    message.deliveredIDs = [updatedDeliveredIDs copy];
                     [strongSelf.messagesMemoryStorage addMessage:message forDialogID:message.dialogID];
                     // calling multicast delegate
                     if ([strongSelf.multicastDelegate respondsToSelector:@selector(chatService:didUpdateMessage:forDialogID:)]) {
@@ -1146,41 +1143,10 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 
 #pragma mark - read messages
 
-- (BOOL)readMessage:(QBChatMessage *)message forDialogID:(NSString *)dialogID {
-    return [self readMessages:@[message] forDialogID:dialogID];
-}
-
 - (void)readMessage:(QBChatMessage *)message completion:(QBChatCompletionBlock)completion {
     NSAssert(message.dialogID != nil, @"Message must have a dialog ID!");
     
     [self readMessages:@[message] forDialogID:message.dialogID completion:completion];
-}
-
-- (BOOL)readMessages:(NSArray<QBChatMessage *> *)messages forDialogID:(NSString *)dialogID {
-    NSAssert(dialogID != nil, @"dialogID can't be nil");
-    
-    if (![QBChat instance].isConnected) return NO;
-    
-    QBChatDialog *chatDialogToUpdate = [self.dialogsMemoryStorage chatDialogWithID:dialogID];
-    
-    for (QBChatMessage *message in messages) {
-        message.markable = YES;
-        if ([[QBChat instance] readMessage:message]) {
-            if (chatDialogToUpdate.unreadMessagesCount > 0) {
-                chatDialogToUpdate.unreadMessagesCount--;
-            }
-            
-            if ([self.multicastDelegate respondsToSelector:@selector(chatService:didUpdateMessage:forDialogID:)]) {
-                [self.multicastDelegate chatService:self didUpdateMessage:message forDialogID:dialogID];
-            }
-        }
-    }
-    
-    if ([self.multicastDelegate respondsToSelector:@selector(chatService:didUpdateChatDialogInMemoryStorage:)]) {
-        [self.multicastDelegate chatService:self didUpdateChatDialogInMemoryStorage:chatDialogToUpdate];
-    }
-    
-    return YES;
 }
 
 - (void)readMessages:(NSArray<QBChatMessage *> *)messages forDialogID:(NSString *)dialogID completion:(QBChatCompletionBlock)completion {
@@ -1206,9 +1172,6 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
                         chatDialogToUpdate.unreadMessagesCount--;
                     }
                     // updating message in memory storage
-                    NSMutableArray *updatedReadIDs = [NSMutableArray arrayWithArray:message.readIDs];
-                    [updatedReadIDs addObject:@(self.serviceManager.currentUser.ID)];
-                    message.readIDs = [updatedReadIDs copy];
                     [strongSelf.messagesMemoryStorage addMessage:message forDialogID:message.dialogID];
                     // calling multicast delegate
                     if ([strongSelf.multicastDelegate respondsToSelector:@selector(chatService:didUpdateMessage:forDialogID:)]) {
