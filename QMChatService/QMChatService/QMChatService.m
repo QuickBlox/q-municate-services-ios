@@ -1046,10 +1046,6 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     message.senderID = currentUser.ID;
     message.dialogID = dialog.ID;
     
-    dialog.lastMessageText = message.encodedText;
-    dialog.lastMessageDate = message.dateSent;
-    dialog.updatedAt = message.dateSent;
-    
     [dialog sendMessage:message completionBlock:^(NSError *error) {
         //
         if (error == nil && saveToStorage) {
@@ -1058,6 +1054,11 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
             if ([self.multicastDelegate respondsToSelector:@selector(chatService:didAddMessageToMemoryStorage:forDialogID:)]) {
                 [self.multicastDelegate chatService:self didAddMessageToMemoryStorage:message forDialogID:dialog.ID];
             }
+            
+            dialog.lastMessageText = message.encodedText;
+            dialog.lastMessageDate = message.dateSent;
+            dialog.updatedAt = message.dateSent;
+            
             if ([self.multicastDelegate respondsToSelector:@selector(chatService:didUpdateChatDialogInMemoryStorage:)]) {
                 [self.multicastDelegate chatService:self didUpdateChatDialogInMemoryStorage:dialog];
             }
