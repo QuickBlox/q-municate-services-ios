@@ -821,8 +821,6 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
         
         if (lastMessage != nil) {
             parameters[@"date_sent[gt]"] = @([lastMessage.dateSent timeIntervalSince1970]);
-        } else {
-            self.loadedAllMessages[chatDialogID] = kQMLoadedAllMessages;
         }
         
         [QBRequest messagesWithDialogID:chatDialogID
