@@ -26,6 +26,11 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 @interface QMChatService : QMBaseService
 
 /**
+ *  Chat messages per page with messages load methods
+ */
+@property (assign, nonatomic) NSUInteger chatMessagesPerPage;
+
+/**
  *  Dialogs datasoruce
  */
 @property (strong, nonatomic, readonly) QMDialogsMemoryStorage *dialogsMemoryStorage;

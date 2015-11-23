@@ -813,7 +813,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
         
         __block NSMutableArray *allMessages = [NSMutableArray arrayWithArray:messages];
         
-        QBResponsePage *page = [QBResponsePage responsePageWithLimit:kQMChatMessagesPerPage];
+        QBResponsePage *page = [QBResponsePage responsePageWithLimit:self.chatMessagesPerPage];
         
         NSMutableDictionary* parameters = [@{@"sort_desc" : @"date_sent"} mutableCopy];
         
@@ -870,7 +870,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
         
         QBChatMessage *oldestMessage = [self.messagesMemoryStorage oldestMessageForDialogID:chatDialogID];
         NSString *oldestMessageDate = [NSString stringWithFormat:@"%ld", (long)[oldestMessage.dateSent timeIntervalSince1970]];
-        QBResponsePage *page = [QBResponsePage responsePageWithLimit:kQMChatMessagesPerPage];
+        QBResponsePage *page = [QBResponsePage responsePageWithLimit:self.chatMessagesPerPage];
         
         NSMutableDictionary* parameters = [@{
                                              @"date_sent[lt]" : oldestMessageDate,
@@ -882,7 +882,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
         [QBRequest messagesWithDialogID:chatDialogID extendedRequest:parameters forPage:page successBlock:^(QBResponse *response, NSArray *messages, QBResponsePage *page) {
             @strongify(self);
             
-            if ([messages count] < kQMChatMessagesPerPage) self.loadedAllMessages[chatDialogID] = kQMLoadedAllMessages;
+            if ([messages count] < self.chatMessagesPerPage) self.loadedAllMessages[chatDialogID] = kQMLoadedAllMessages;
             
             if ([messages count] > 0) {
                 
@@ -924,7 +924,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     
     QBChatMessage *oldestMessage = [self.messagesMemoryStorage oldestMessageForDialogID:chatDialogID];
     NSString *oldestMessageDate = [NSString stringWithFormat:@"%ld", (long)[oldestMessage.dateSent timeIntervalSince1970]];
-    QBResponsePage *page = [QBResponsePage responsePageWithLimit:kQMChatMessagesPerPage];
+    QBResponsePage *page = [QBResponsePage responsePageWithLimit:self.chatMessagesPerPage];
     
     __weak __typeof(self) weakSelf = self;
     
