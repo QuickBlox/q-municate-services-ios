@@ -92,6 +92,8 @@
 - (void)logInWithUser:(QBUUser *)user
 		   completion:(void (^)(BOOL success, NSString *errorMessage))completion
 {
+    
+    __weak typeof(self)weakSelf = self;
 	[self.authService logInWithUser:user completion:^(QBResponse *response, QBUUser *userProfile) {
 		if (response.error != nil) {
 			if (completion != nil) {
@@ -100,29 +102,11 @@
 			return;
 		}
 		
-        __weak typeof(self) weakSelf = self;
         [weakSelf.chatService connectWithCompletionBlock:^(NSError *error) {
             //
-            __typeof(self) strongSelf = weakSelf;
-            
-            [strongSelf.chatService loadCachedDialogsWithCompletion:^{
-                NSArray* dialogs = [strongSelf.chatService.dialogsMemoryStorage unsortedDialogs];
-                for (QBChatDialog* dialog in dialogs) {
-                    if (dialog.type != QBChatDialogTypePrivate) {
-                        [strongSelf.chatService joinToGroupDialog:dialog completion:^(NSError *error) {
-                            //
-                            if (error != nil) {
-                                NSLog(@"Join error: %@", error.localizedDescription);
-                            }
-                        }];
-                    }
-                }
-                
-                if (completion != nil) {
-                    completion(error == nil, error.localizedDescription);
-                }
-                
-            }];
+            if (completion != nil) {
+                completion(error == nil, error.localizedDescription);
+            }
         }];
 	}];
 }
@@ -137,6 +121,31 @@
 
 - (QBUUser *)currentUser {
 	return [QBSession currentSession].currentUser;
+}
+
+- (void)joinAllGroupDialogs {
+    NSArray *dialogObjects = [self.chatService.dialogsMemoryStorage unsortedDialogs];
+    for (QBChatDialog* dialog in dialogObjects) {
+        if (dialog.type != QBChatDialogTypePrivate) {
+            // Joining to group chat dialogs.
+            [self.chatService joinToGroupDialog:dialog completion:^(NSError * _Nullable error) {
+                //
+                if (error != nil) {
+                    NSLog(@"Failed to join room with error: %@", error.localizedDescription);
+                }
+            }];
+        }
+    }
+}
+
+#pragma mark - QMChatServiceDelegate
+
+- (void)chatServiceChatDidConnect:(QMChatService *)chatService {
+    [self joinAllGroupDialogs];
+}
+
+- (void)chatServiceChatDidReconnect:(QMChatService *)chatService {
+    [self joinAllGroupDialogs];
 }
 
 #pragma mark QMChatServiceCache delegate
