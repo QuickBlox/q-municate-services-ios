@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		55B2F11E1A091CE9008C2272 /* QMBaseService.m in Sources */ = {isa = PBXBuildFile; fileRef = 55B2F11D1A091CE9008C2272 /* QMBaseService.m */; };
-		866DCC0D1BDE710A004764C6 /* QMCancellationToken.m in Sources */ = {isa = PBXBuildFile; fileRef = 866DCC0C1BDE710A004764C6 /* QMCancellationToken.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -17,8 +16,6 @@
 		55B2F11C1A091CE9008C2272 /* QMBaseService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMBaseService.h; sourceTree = "<group>"; };
 		55B2F11D1A091CE9008C2272 /* QMBaseService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMBaseService.m; sourceTree = "<group>"; };
 		8620BC591B0F7DCB005ED359 /* Quickblox.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; lineEnding = 0; name = Quickblox.xcconfig; path = ../Quickblox.xcconfig; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.xcconfig; };
-		866DCC0B1BDE710A004764C6 /* QMCancellationToken.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMCancellationToken.h; sourceTree = "<group>"; };
-		866DCC0C1BDE710A004764C6 /* QMCancellationToken.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMCancellationToken.m; sourceTree = "<group>"; };
 		FBBBDBE41AEF98DA00841288 /* QMMemoryStorageProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = QMMemoryStorageProtocol.h; sourceTree = "<group>"; };
 		FBBBDBEF1AEF9DA300841288 /* QMServiceManagerProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = QMServiceManagerProtocol.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 /* End PBXFileReference section */
@@ -59,8 +56,6 @@
 				FBBBDBEF1AEF9DA300841288 /* QMServiceManagerProtocol.h */,
 				55B2F11D1A091CE9008C2272 /* QMBaseService.m */,
 				FBBBDBE41AEF98DA00841288 /* QMMemoryStorageProtocol.h */,
-				866DCC0B1BDE710A004764C6 /* QMCancellationToken.h */,
-				866DCC0C1BDE710A004764C6 /* QMCancellationToken.m */,
 			);
 			path = QMBaseService;
 			sourceTree = "<group>";
@@ -119,7 +114,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				866DCC0D1BDE710A004764C6 /* QMCancellationToken.m in Sources */,
 				55B2F11E1A091CE9008C2272 /* QMBaseService.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
