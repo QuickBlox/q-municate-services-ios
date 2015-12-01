@@ -126,11 +126,11 @@ NSString const *kQMCustomParameterDialogRoomUpdatedDate = @"room_updated_date";
     self.context[kQMCustomParameterDialogType] = @(dialog.type);
 	
 	if (dialog.lastMessageDate != nil){
-        NSNumber *lastMessageDate = @((int)[dialog.lastMessageDate timeIntervalSince1970]);
+        NSNumber *lastMessageDate = @((NSUInteger)[dialog.lastMessageDate timeIntervalSince1970]);
 		self.context[kQMCustomParameterDialogRoomLastMessageDate] = [lastMessageDate stringValue];
 	}
     if (dialog.updatedAt != nil) {
-        NSNumber *updatedAt = @((int)[dialog.updatedAt timeIntervalSince1970]);
+        NSNumber *updatedAt = @((NSUInteger)[dialog.updatedAt timeIntervalSince1970]);
         self.context[kQMCustomParameterDialogRoomUpdatedDate] = [updatedAt stringValue];
     }
 	
