@@ -1154,7 +1154,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     [self readMessages:@[message] forDialogID:message.dialogID completion:completion];
 }
 
-- (void)readMessages:(NSArray<QBChatMessage *> *)messages forDialogID:(NSString *)dialogID completion:(QBChatCompletionBlock)completion {
+- (void)readMessages:(NSArray *)messages forDialogID:(NSString *)dialogID completion:(QBChatCompletionBlock)completion {
     NSAssert(dialogID != nil, @"dialogID can't be nil");
     
     dispatch_group_t readGroup = dispatch_group_create();
