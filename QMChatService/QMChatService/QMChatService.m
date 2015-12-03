@@ -1198,6 +1198,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 
 - (void)free {
 	
+    [self.loadedAllMessages removeAllObjects];
 	[self.messagesMemoryStorage free];
 	[self.dialogsMemoryStorage free];
 }
