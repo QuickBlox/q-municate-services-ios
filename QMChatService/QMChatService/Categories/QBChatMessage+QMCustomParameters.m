@@ -80,7 +80,7 @@ NSString const *kQMCustomParameterDialogDeletedOccupantsIDs = @"deleted_occupant
 - (QBChatDialog *)dialog {
     
     if (!self.tDialog) {
-        NSAssert(self.context[kQMCustomParameterDialogID] != nil, @"Chat dialog doesn't exist");
+        if (self.context[kQMCustomParameterDialogID] == nil) return nil;
         
         self.tDialog = [[QBChatDialog alloc] initWithDialogID:self.context[kQMCustomParameterDialogID]
                                                          type:[self.context[kQMCustomParameterDialogType] intValue]];

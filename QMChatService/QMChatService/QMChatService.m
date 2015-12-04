@@ -409,13 +409,50 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 	else if (message.messageType == QMMessageTypeUpdateGroupDialog) {
 
         if (chatDialogToUpdate) {
-//        if (!chatDialogToUpdate.updatedAt || [chatDialogToUpdate.updatedAt compare:message.dialog.updatedAt] == NSOrderedAscending) {
-            chatDialogToUpdate.name = message.dialog.name;
-            chatDialogToUpdate.photo = message.dialog.photo;
-            chatDialogToUpdate.occupantIDs = message.dialog.occupantIDs;
-            chatDialogToUpdate.lastMessageText = message.encodedText;
-            chatDialogToUpdate.lastMessageDate = message.dateSent;
-            chatDialogToUpdate.updatedAt = message.dateSent;
+            
+            // old custom parameters handling
+            if (message.dialog != nil) {
+                
+                if ([chatDialogToUpdate.updatedAt compare:message.dialog.updatedAt] == NSOrderedAscending) {
+                    
+                    chatDialogToUpdate.name = message.dialog.name;
+                    chatDialogToUpdate.photo = message.dialog.photo;
+                    chatDialogToUpdate.occupantIDs = message.dialog.occupantIDs;
+                    chatDialogToUpdate.lastMessageText = message.encodedText;
+                    chatDialogToUpdate.lastMessageDate = message.dateSent;
+                    chatDialogToUpdate.updatedAt = message.dateSent;
+                }
+            }
+            
+            // new custom parameters handling
+            switch (message.dialogUpdateType) {
+                case QMDialogUpdateTypeName:
+                    chatDialogToUpdate.name = message.dialogName;
+                    break;
+                    
+                case QMDialogUpdateTypePhoto:
+                    chatDialogToUpdate.photo = message.dialogPhoto;
+                    break;
+                    
+                case QMDialogUpdateTypeOccupants:
+                {
+                    NSMutableArray *updatedOccupantsIDs = [NSMutableArray arrayWithArray:chatDialogToUpdate.occupantIDs];
+                    
+                    if ([message.addedOccupantsIDs count] > 0) {
+                        
+                        [updatedOccupantsIDs addObjectsFromArray:message.addedOccupantsIDs];
+                    } else if ([message.deletedOccupantsIDs count] > 0) {
+                        
+                        [updatedOccupantsIDs removeObjectsInArray:message.deletedOccupantsIDs];
+                    }
+                    
+                    chatDialogToUpdate.occupantIDs = [updatedOccupantsIDs copy];
+                }
+                    break;
+                    
+                default:
+                    break;
+            }
             
             if (message.senderID != [QBSession currentSession].currentUser.ID) {
                 chatDialogToUpdate.unreadMessagesCount++;
@@ -424,7 +461,6 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
             if ([self.multicastDelegate respondsToSelector:@selector(chatService:didUpdateChatDialogInMemoryStorage:)]) {
                 [self.multicastDelegate chatService:self didUpdateChatDialogInMemoryStorage:chatDialogToUpdate];
             }
-//        }
         }
 	}
     else if (message.messageType == QMMessageTypeContactRequest || message.messageType == QMMessageTypeAcceptContactRequest || message.messageType == QMMessageTypeRejectContactRequest || message.messageType == QMMessageTypeDeleteContactRequest) {
