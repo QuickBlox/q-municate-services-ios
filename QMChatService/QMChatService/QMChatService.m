@@ -415,12 +415,22 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
                 
                 if ([chatDialogToUpdate.updatedAt compare:message.dialog.updatedAt] == NSOrderedDescending) {
                     
-                    chatDialogToUpdate.name = message.dialog.name;
-                    chatDialogToUpdate.photo = message.dialog.photo;
-                    chatDialogToUpdate.occupantIDs = message.dialog.occupantIDs;
-                    chatDialogToUpdate.lastMessageText = message.encodedText;
-                    chatDialogToUpdate.lastMessageDate = message.dateSent;
-                    chatDialogToUpdate.updatedAt = message.dateSent;
+                    if (message.dialog.name != nil) {
+                        chatDialogToUpdate.name = message.dialog.name;
+                    }
+                    if (message.dialog.photo != nil) {
+                        chatDialogToUpdate.photo = message.dialog.photo;
+                    }
+                    if ([message.dialog.occupantIDs count] > 0) {
+                        chatDialogToUpdate.occupantIDs = message.dialog.occupantIDs;
+                    }
+                    if (message.encodedText != nil) {
+                        chatDialogToUpdate.lastMessageText = message.encodedText;
+                    }
+                    if (message.dateSent != nil) {
+                        chatDialogToUpdate.lastMessageDate = message.dateSent;
+                        chatDialogToUpdate.updatedAt = message.dateSent;
+                    }
                 }
             }
             
