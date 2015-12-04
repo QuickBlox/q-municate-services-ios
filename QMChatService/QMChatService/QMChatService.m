@@ -413,7 +413,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
             // old custom parameters handling
             if (message.dialog != nil) {
                 
-                if ([chatDialogToUpdate.updatedAt compare:message.dialog.updatedAt] == NSOrderedAscending) {
+                if ([chatDialogToUpdate.updatedAt compare:message.dialog.updatedAt] == NSOrderedDescending) {
                     
                     chatDialogToUpdate.name = message.dialog.name;
                     chatDialogToUpdate.photo = message.dialog.photo;
@@ -436,17 +436,19 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
                     
                 case QMDialogUpdateTypeOccupants:
                 {
-                    NSMutableArray *updatedOccupantsIDs = [NSMutableArray arrayWithArray:chatDialogToUpdate.occupantIDs];
+                    NSMutableSet *updatedOccupantsIDs = [NSMutableSet setWithArray:chatDialogToUpdate.occupantIDs];
                     
                     if ([message.addedOccupantsIDs count] > 0) {
                         
                         [updatedOccupantsIDs addObjectsFromArray:message.addedOccupantsIDs];
                     } else if ([message.deletedOccupantsIDs count] > 0) {
                         
-                        [updatedOccupantsIDs removeObjectsInArray:message.deletedOccupantsIDs];
+                        for (NSNumber *occupantID in message.deletedOccupantsIDs) {
+                            [updatedOccupantsIDs removeObject:occupantID];
+                        }
                     }
                     
-                    chatDialogToUpdate.occupantIDs = [updatedOccupantsIDs copy];
+                    chatDialogToUpdate.occupantIDs = [updatedOccupantsIDs allObjects];
                 }
                     break;
                     
