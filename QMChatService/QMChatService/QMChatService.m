@@ -1331,7 +1331,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 - (void)sendNotificationMessageAboutLeavingDialog:(QBChatDialog *)chatDialog
                                        completion:(QBChatCompletionBlock)completion
 {
-    QBChatMessage *notificationMessage = [self notificationMessageAboutUpdateDialogWithType:QMDialogUpdateTypeOccupants andDialogUpdatedAt:chatDialog.updatedAt];
+    QBChatMessage *notificationMessage = [self notificationMessageAboutUpdateDialogWithType:QMDialogUpdateTypeOccupants andDialogUpdatedAt:[NSDate date]];
     notificationMessage.deletedOccupantsIDs = @[@(self.serviceManager.currentUser.ID)];
     
     NSMutableArray *occupantsWithoutCurrentUser = [NSMutableArray arrayWithArray:chatDialog.occupantIDs];
