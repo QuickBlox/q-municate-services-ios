@@ -23,8 +23,6 @@ Pod::Spec.new do |s|
   s.frameworks = "CoreData"
   s.requires_arc = true
   s.xcconfig = { "FRAMEWORK_SEARCH_PATHS" => "$(PODS_ROOT)/QuickBlox/" }
-  s.dependency "QuickBlox", "~> 2.4"
-  s.dependency "Bolts", "~> 1.3.0"
   s.prefix_header_contents = 
   '#import <Quickblox/Quickblox.h>
 #import <CoreData/CoreData.h>
@@ -34,6 +32,7 @@ Pod::Spec.new do |s|
 #import <libextobjc/EXTScope.h>'
   s.resource_bundle = {'QMChatCacheModel' => 'QMChatCache/QMChatCache/CoreData/QMChatServiceModel.xcdatamodeld', 'QMContactListCacheModel' => 'QMContactListCache/QMContactListCache/CoreData/QMContactListModel.xcdatamodeld', 'QMUsersCacheModel' => 'QMUsersCache/QMUsersCache/CoreData/QMUsersModel.xcdatamodeld'}
 
+  s.dependency "QuickBlox", "~> 2.6"
   s.dependency "Bolts",  '1.3.0'
   s.dependency "libextobjc/EXTKeyPathCoding", '0.4.1'
   s.dependency "libextobjc/EXTScope", '0.4.1'
