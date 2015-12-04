@@ -1397,7 +1397,6 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     QBChatMessage *notificationMessage = [QBChatMessage message];
     notificationMessage.senderID = self.serviceManager.currentUser.ID;
     notificationMessage.text = @"Notification message";
-    notificationMessage.dateSent = [NSDate date];
     notificationMessage.dialogUpdateType = dialogUpdateType;
     notificationMessage.dialogUpdatedAt = dialogUpdatedAt;
     
