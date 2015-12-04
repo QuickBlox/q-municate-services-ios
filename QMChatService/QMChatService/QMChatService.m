@@ -413,7 +413,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
             // old custom parameters handling
             if (message.dialog != nil) {
                 
-                if ([chatDialogToUpdate.updatedAt compare:message.dialog.updatedAt] == NSOrderedDescending) {
+                if ([chatDialogToUpdate.updatedAt compare:message.dialog.updatedAt] == NSOrderedAscending) {
                     
                     if (message.dialog.name != nil) {
                         chatDialogToUpdate.name = message.dialog.name;
@@ -424,47 +424,33 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
                     if ([message.dialog.occupantIDs count] > 0) {
                         chatDialogToUpdate.occupantIDs = message.dialog.occupantIDs;
                     }
-                    if (message.encodedText != nil) {
-                        chatDialogToUpdate.lastMessageText = message.encodedText;
-                    }
-                    if (message.dateSent != nil) {
-                        chatDialogToUpdate.lastMessageDate = message.dateSent;
-                        chatDialogToUpdate.updatedAt = message.dateSent;
-                    }
                 }
             }
             
             // new custom parameters handling
-            switch (message.dialogUpdateType) {
-                case QMDialogUpdateTypeName:
-                    chatDialogToUpdate.name = message.dialogName;
-                    break;
-                    
-                case QMDialogUpdateTypePhoto:
-                    chatDialogToUpdate.photo = message.dialogPhoto;
-                    break;
-                    
-                case QMDialogUpdateTypeOccupants:
-                {
-                    NSMutableSet *updatedOccupantsIDs = [NSMutableSet setWithArray:chatDialogToUpdate.occupantIDs];
-                    
-                    if ([message.addedOccupantsIDs count] > 0) {
+            if (message.dialogUpdatedAt != nil && [chatDialogToUpdate.updatedAt compare:message.dialogUpdatedAt] == NSOrderedAscending) {
+                
+                switch (message.dialogUpdateType) {
+                    case QMDialogUpdateTypeName:
+                        chatDialogToUpdate.name = message.dialogName;
+                        break;
                         
-                        [updatedOccupantsIDs addObjectsFromArray:message.addedOccupantsIDs];
-                    } else if ([message.deletedOccupantsIDs count] > 0) {
+                    case QMDialogUpdateTypePhoto:
+                        chatDialogToUpdate.photo = message.dialogPhoto;
+                        break;
                         
-                        for (NSNumber *occupantID in message.deletedOccupantsIDs) {
-                            [updatedOccupantsIDs removeObject:occupantID];
-                        }
-                    }
-                    
-                    chatDialogToUpdate.occupantIDs = [updatedOccupantsIDs allObjects];
+                    case QMDialogUpdateTypeOccupants:
+                        chatDialogToUpdate.occupantIDs = message.currentOccupantsIDs;
+                        break;
+                        
+                    default:
+                        break;
                 }
-                    break;
-                    
-                default:
-                    break;
+                
+                chatDialogToUpdate.updatedAt = message.dialogUpdatedAt;
             }
+            
+            chatDialogToUpdate.lastMessageText = message.encodedText;
             
             if (message.senderID != [QBSession currentSession].currentUser.ID) {
                 chatDialogToUpdate.unreadMessagesCount++;
@@ -1335,8 +1321,9 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
                                            toDialog:(QBChatDialog *)chatDialog
                                          completion:(QBChatCompletionBlock)completion
 {
-    QBChatMessage *notificationMessage = [self notificationMessageAboutUpdateDialogWithType:QMDialogUpdateTypeOccupants];
+    QBChatMessage *notificationMessage = [self notificationMessageAboutUpdateDialogWithType:QMDialogUpdateTypeOccupants andDialogUpdatedAt:chatDialog.updatedAt];
     notificationMessage.addedOccupantsIDs = occupantsIDs;
+    notificationMessage.currentOccupantsIDs = chatDialog.occupantIDs;
     
     [self sendMessage:notificationMessage type:QMMessageTypeUpdateGroupDialog toDialog:chatDialog saveToHistory:YES saveToStorage:YES completion:completion];
 }
@@ -1344,8 +1331,13 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 - (void)sendNotificationMessageAboutLeavingDialog:(QBChatDialog *)chatDialog
                                        completion:(QBChatCompletionBlock)completion
 {
-    QBChatMessage *notificationMessage = [self notificationMessageAboutUpdateDialogWithType:QMDialogUpdateTypeOccupants];
+    QBChatMessage *notificationMessage = [self notificationMessageAboutUpdateDialogWithType:QMDialogUpdateTypeOccupants andDialogUpdatedAt:chatDialog.updatedAt];
     notificationMessage.deletedOccupantsIDs = @[@(self.serviceManager.currentUser.ID)];
+    
+    NSMutableArray *occupantsWithoutCurrentUser = [NSMutableArray arrayWithArray:chatDialog.occupantIDs];
+    [occupantsWithoutCurrentUser removeObject:@(self.serviceManager.currentUser.ID)];
+    
+    notificationMessage.currentOccupantsIDs = [occupantsWithoutCurrentUser copy];
     
     [self sendMessage:notificationMessage type:QMMessageTypeUpdateGroupDialog toDialog:chatDialog saveToHistory:YES saveToStorage:YES completion:completion];
 }
@@ -1353,7 +1345,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 - (void)sendNotificationMessageAboutChangingDialogPhoto:(QBChatDialog *)chatDialog
                                              completion:(QBChatCompletionBlock)completion
 {
-    QBChatMessage *notificationMessage = [self notificationMessageAboutUpdateDialogWithType:QMDialogUpdateTypePhoto];
+    QBChatMessage *notificationMessage = [self notificationMessageAboutUpdateDialogWithType:QMDialogUpdateTypePhoto andDialogUpdatedAt:chatDialog.updatedAt];
     notificationMessage.dialogPhoto = chatDialog.photo;
     
     [self sendMessage:notificationMessage type:QMMessageTypeUpdateGroupDialog toDialog:chatDialog saveToHistory:YES saveToStorage:YES completion:completion];
@@ -1362,13 +1354,13 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 - (void)sendNotificationMessageAboutChangingDialogName:(QBChatDialog *)chatDialog
                                             completion:(QBChatCompletionBlock)completion
 {
-    QBChatMessage *notificationMessage = [self notificationMessageAboutUpdateDialogWithType:QMDialogUpdateTypeName];
+    QBChatMessage *notificationMessage = [self notificationMessageAboutUpdateDialogWithType:QMDialogUpdateTypeName andDialogUpdatedAt:chatDialog.updatedAt];
     notificationMessage.dialogName = chatDialog.name;
     
     [self sendMessage:notificationMessage type:QMMessageTypeUpdateGroupDialog toDialog:chatDialog saveToHistory:YES saveToStorage:YES completion:completion];
 }
 
-#pragma mark System messages Utilites
+#pragma mark Utilites
 
 - (QBChatMessage *)privateMessageWithRecipientID:(NSUInteger)recipientID text:(NSString *)text save:(BOOL)save {
 	
@@ -1398,13 +1390,16 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     return message;
 }
 
-- (QBChatMessage *)notificationMessageAboutUpdateDialogWithType:(QMDialogUpdateType)dialogUpdateType {
+- (QBChatMessage *)notificationMessageAboutUpdateDialogWithType:(QMDialogUpdateType)dialogUpdateType
+                                             andDialogUpdatedAt:(NSDate *)dialogUpdatedAt
+{
     
     QBChatMessage *notificationMessage = [QBChatMessage message];
     notificationMessage.senderID = self.serviceManager.currentUser.ID;
     notificationMessage.text = @"Notification message";
     notificationMessage.dateSent = [NSDate date];
     notificationMessage.dialogUpdateType = dialogUpdateType;
+    notificationMessage.dialogUpdatedAt = dialogUpdatedAt;
     
     return notificationMessage;
 }
