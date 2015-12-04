@@ -19,11 +19,14 @@
 @property (assign, nonatomic) BOOL messageDeliveryStatus;
 @property (assign, nonatomic) QMMessageAttachmentStatus attachmentStatus;
 
-
 /**
  *  Dialog
  */
 @property (strong, nonatomic, readonly) QBChatDialog *dialog;
+@property (assign, nonatomic) QMDialogUpdateType dialogUpdateType;
+@property (strong, nonatomic) NSArray *addedOccupantsIDs;
+@property (strong, nonatomic) NSArray *deletedOccupantsIDs;
+@property (strong, nonatomic) NSString *dialogName;
 
 /**
  *  Save values from QBChatDialog to message custom parameters
