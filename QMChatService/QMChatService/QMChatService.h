@@ -226,6 +226,8 @@ typedef void(^QMCacheCollection)(NSArray *collection);
                                   toUsersIDs:(NSArray *)usersIDs
                                   completion:(QBChatCompletionBlock)completion;
 
+#pragma mark - Notification messages
+
 /**
  *  Send message about updated dialog with dialog inside and notification.
  *
@@ -233,11 +235,14 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  *  @param notificationText     notification text
  *  @param customParameters     {NSNumber : NSDictionary} dictionary of custom parameters
  *  @param completion           completion block with failure error
+ *
+ * @warning *Deprecated in QMServices 0.3.3:* Use 'sendNotificationMessageAboutAddingOccupants:toDialog:completion:', 'sendNotificationMessageAboutLeavingDialog:completion:', 'sendNotificationMessageAboutChangingDialogPhoto:completion:' or 'sendNotificationMessageAboutChangingDialogName:completion:' depending on update type instead.
  */
 - (void)sendMessageAboutUpdateDialog:(QBChatDialog *)updatedDialog
                 withNotificationText:(NSString *)notificationText
                     customParameters:(NSDictionary *)customParameters
-                          completion:(QBChatCompletionBlock)completion;
+                          completion:(QBChatCompletionBlock)completion
+             DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.3.3. Use 'sendNotificationMessageAboutAddingOccupants:toDialog:completion:', 'sendNotificationMessageAboutLeavingDialog:completion:', 'sendNotificationMessageAboutChangingDialogPhoto:completion:' or 'sendNotificationMessageAboutChangingDialogName:completion:' depending on update type instead.");
 
 /**
  *  Send message about accepting or rejecting contact requst.
@@ -249,6 +254,44 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 - (void)sendMessageAboutAcceptingContactRequest:(BOOL)accept
                                    toOpponentID:(NSUInteger)opponentID
                                      completion:(QBChatCompletionBlock)completion;
+
+/**
+ *  Sending notification message about adding occupants to specific dialog.
+ *
+ *  @param occupantsIDs array of occupants that were added to a specific dialog
+ *  @param chatDialog   chat dialog to send notification message to
+ *  @param completion   completion block with failure error
+ */
+- (void)sendNotificationMessageAboutAddingOccupants:(NSArray *)occupantsIDs
+                                           toDialog:(QBChatDialog *)chatDialog
+                                         completion:(QBChatCompletionBlock)completion;
+
+/**
+ *  Sending notification message about leaving dialog.
+ *
+ *  @param chatDialog chat dialog to send message to
+ *  @param completion completion block with failure error
+ */
+- (void)sendNotificationMessageAboutLeavingDialog:(QBChatDialog *)chatDialog
+                                       completion:(QBChatCompletionBlock)completion;
+
+/**
+ *  Sending notification message about changing dialog photo.
+ *
+ *  @param chatDialog chat dialog to send message to
+ *  @param completion completion block with failure error
+ */
+- (void)sendNotificationMessageAboutChangingDialogPhoto:(QBChatDialog *)chatDialog
+                                             completion:(QBChatCompletionBlock)completion;
+
+/**
+ *  Sending notification message about changing dialog name.
+ *
+ *  @param chatDialog chat dialog to send message to
+ *  @param completion completion block with failure error
+ */
+- (void)sendNotificationMessageAboutChangingDialogName:(QBChatDialog *)chatDialog
+                                            completion:(QBChatCompletionBlock)completion;
 
 #pragma mark - Fetch messages
 
@@ -278,7 +321,7 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  *
  *  @warning *Deprecated in QMServices 0.3.1:* Use 'loadEarlierMessagesWithChatDialogID:' instead.
  */
-- (void)earlierMessagesWithChatDialogID:(NSString *)chatDialogID completion:(void(^)(QBResponse *response, NSArray *messages))completion DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.3.1. Use 'loadEarlierMessagesWithChatDialogID:' instead.");;
+- (void)earlierMessagesWithChatDialogID:(NSString *)chatDialogID completion:(void(^)(QBResponse *response, NSArray *messages))completion DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.3.1. Use 'loadEarlierMessagesWithChatDialogID:' instead.");
 
 #pragma mark - Fetch dialogs
 

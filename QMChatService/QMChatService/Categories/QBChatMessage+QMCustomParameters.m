@@ -62,6 +62,7 @@ NSString const *kQMCustomParameterDialogDeletedOccupantsIDs = @"deleted_occupant
 @dynamic addedOccupantsIDs;
 @dynamic deletedOccupantsIDs;
 @dynamic dialogName;
+@dynamic dialogPhoto;
 
 #pragma mark - Context
 
@@ -204,7 +205,8 @@ NSString const *kQMCustomParameterDialogDeletedOccupantsIDs = @"deleted_occupant
 
 - (NSArray *)addedOccupantsIDs {
     
-    return [self arrayOfUserIDsWithString:self.context[kQMCustomParameterDialogAddedOccupantsIDs]];
+    NSString *occupantsIDsString = self.context[kQMCustomParameterDialogAddedOccupantsIDs];
+    return [self arrayOfUserIDsWithString: occupantsIDsString];
 }
 
 - (void)setDeletedOccupantsIDs:(NSArray *)deletedOccupantsIDs {
@@ -215,7 +217,8 @@ NSString const *kQMCustomParameterDialogDeletedOccupantsIDs = @"deleted_occupant
 
 - (NSArray *)deletedOccupantsIDs {
     
-    return [self arrayOfUserIDsWithString:self.context[kQMCustomParameterDialogDeletedOccupantsIDs]];
+    NSString *occupantsIDsString = self.context[kQMCustomParameterDialogDeletedOccupantsIDs];
+    return [self arrayOfUserIDsWithString:occupantsIDsString];
 }
 
 #pragma mark - Room name
@@ -228,6 +231,18 @@ NSString const *kQMCustomParameterDialogDeletedOccupantsIDs = @"deleted_occupant
 - (NSString *)dialogName {
     
     return self.context[kQMCustomParameterDialogRoomName];
+}
+
+#pragma mark - Dialog photo
+
+- (void)setDialogPhoto:(NSString *)dialogPhoto {
+    
+    self.context[kQMCustomParameterDialogRoomPhoto] = dialogPhoto;
+}
+
+- (NSString *)dialogPhoto {
+    
+    return self.context[kQMCustomParameterDialogRoomPhoto];
 }
 
 #pragma mark - cParamChatMessageID

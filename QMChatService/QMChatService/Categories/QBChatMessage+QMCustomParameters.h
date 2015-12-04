@@ -27,6 +27,7 @@
 @property (strong, nonatomic) NSArray *addedOccupantsIDs;
 @property (strong, nonatomic) NSArray *deletedOccupantsIDs;
 @property (strong, nonatomic) NSString *dialogName;
+@property (strong, nonatomic) NSString *dialogPhoto;
 
 /**
  *  Save values from QBChatDialog to message custom parameters

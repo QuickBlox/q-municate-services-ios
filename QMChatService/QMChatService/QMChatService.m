@@ -1281,31 +1281,6 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     [self sendMessage:message type:messageType toDialog:p2pDialog saveToHistory:YES saveToStorage:YES completion:completion];
 }
 
-- (void)sendMessageAboutUpdateDialog:(QBChatDialog *)chatDialog
-                      withUpdateType:(QMDialogUpdateType)dialogUpdateType
-                     andUpdatedField:(NSString *)updatedField
-                          completion:(QBChatCompletionBlock)completion
-{
-    QBChatMessage *notificationMessage = [QBChatMessage message];
-    notificationMessage.text = @"Notification message";
-    notificationMessage.dialogUpdateType = dialogUpdateType;
-    
-    switch (dialogUpdateType) {
-        case QMDialogUpdateTypeName:
-            
-            break;
-        case QMDialogUpdateTypePhoto:
-            
-            break;
-        case QMDialogUpdateTypeOccupants:
-            
-        default:
-            break;
-    }
-    
-    [self sendMessage:notificationMessage type:QMMessageTypeUpdateGroupDialog toDialog:chatDialog saveToHistory:YES saveToStorage:YES completion:completion];
-}
-
 #pragma mark - Notification messages
 
 - (void)sendNotificationMessageAboutAddingOccupants:(NSArray *)occupantsIDs
@@ -1331,6 +1306,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
                                              completion:(QBChatCompletionBlock)completion
 {
     QBChatMessage *notificationMessage = [self notificationMessageAboutUpdateDialogWithType:QMDialogUpdateTypePhoto];
+    notificationMessage.dialogPhoto = chatDialog.photo;
     
     [self sendMessage:notificationMessage type:QMMessageTypeUpdateGroupDialog toDialog:chatDialog saveToHistory:YES saveToStorage:YES completion:completion];
 }
