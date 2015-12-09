@@ -400,17 +400,14 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
             // old custom parameters handling
             if (message.dialog != nil) {
                 
-                if ([chatDialogToUpdate.updatedAt compare:message.dialog.updatedAt] == NSOrderedAscending) {
-                    
-                    if (message.dialog.name != nil) {
-                        chatDialogToUpdate.name = message.dialog.name;
-                    }
-                    if (message.dialog.photo != nil) {
-                        chatDialogToUpdate.photo = message.dialog.photo;
-                    }
-                    if ([message.dialog.occupantIDs count] > 0) {
-                        chatDialogToUpdate.occupantIDs = message.dialog.occupantIDs;
-                    }
+                if (message.dialog.name != nil) {
+                    chatDialogToUpdate.name = message.dialog.name;
+                }
+                if (message.dialog.photo != nil) {
+                    chatDialogToUpdate.photo = message.dialog.photo;
+                }
+                if ([message.dialog.occupantIDs count] > 0) {
+                    chatDialogToUpdate.occupantIDs = message.dialog.occupantIDs;
                 }
             }
             
