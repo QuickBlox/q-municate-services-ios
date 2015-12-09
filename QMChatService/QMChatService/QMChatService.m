@@ -1145,7 +1145,8 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     dispatch_group_t deliveredGroup = dispatch_group_create();
     
     for (QBChatMessage *message in messages) {
-
+        if (message.senderID == self.serviceManager.currentUser.ID) continue;
+        
         if (![message.deliveredIDs containsObject:@([QBSession currentSession].currentUser.ID)]) {
             message.markable = YES;
             __weak __typeof(self)weakSelf = self;
