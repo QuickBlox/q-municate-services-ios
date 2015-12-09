@@ -1328,7 +1328,7 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     
     notificationMessage.currentOccupantsIDs = [occupantsWithoutCurrentUser copy];
     
-    [self sendMessage:notificationMessage type:QMMessageTypeUpdateGroupDialog toDialog:chatDialog saveToHistory:YES saveToStorage:YES completion:completion];
+    [self sendMessage:notificationMessage type:QMMessageTypeUpdateGroupDialog toDialog:chatDialog saveToHistory:YES saveToStorage:NO completion:completion];
 }
 
 - (void)sendNotificationMessageAboutChangingDialogPhoto:(QBChatDialog *)chatDialog
