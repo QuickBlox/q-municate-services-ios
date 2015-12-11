@@ -556,16 +556,12 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 - (void)chatServiceChatDidConnect:(QMChatService *)chatService;
 
 /**
- *  It called when user did login in chat.
- */
-- (void)chatServiceChatDidLogin;
-
-/**
- *  It called when user login failed.
+ *  Called when chat did not connect.
  *
- *  @param error NSError login fail reason
+ *  @param chatService instance
+ *  @param error       connection failure error
  */
-- (void)chatServiceChatDidNotLoginWithError:(NSError *)error;
+- (void)chatService:(QMChatService *)chatService chatDidNotConnectWithError:(NSError *)error;
 
 /**
  *  It called when chat did accidentally disconnect

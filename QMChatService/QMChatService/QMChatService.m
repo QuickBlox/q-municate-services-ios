@@ -147,25 +147,6 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 
 #pragma mark - QBChatDelegate
 
-- (void)chatDidLogin {
-	
-	if (self.automaticallySendPresences){
-		[self startSendPresence];
-	}
-    
-    [QBChat.instance setCarbonsEnabled:YES];
-    
-    if ([self.multicastDelegate respondsToSelector:@selector(chatServiceChatDidLogin)]) {
-        [self.multicastDelegate chatServiceChatDidLogin];
-    }
-}
-
-- (void)chatDidNotLoginWithError:(NSError *)error {
-    if ([self.multicastDelegate respondsToSelector:@selector(chatServiceChatDidNotLoginWithError:)]) {
-        [self.multicastDelegate chatServiceChatDidNotLoginWithError:error];
-    }
-}
-
 - (void)chatDidFailWithStreamError:(NSError *)error {
 	
 	[self stopSendPresence];
@@ -177,8 +158,19 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 
 - (void)chatDidConnect
 {
+    if (self.automaticallySendPresences){
+        [self startSendPresence];
+    }
+    
     if ([self.multicastDelegate respondsToSelector:@selector(chatServiceChatDidConnect:)]) {
         [self.multicastDelegate chatServiceChatDidConnect:self];
+    }
+}
+
+- (void)chatDidNotConnectWithError:(NSError *)error
+{
+    if ([self.multicastDelegate respondsToSelector:@selector(chatService:chatDidNotConnectWithError:)]) {
+        [self.multicastDelegate chatService:self chatDidNotConnectWithError:error];
     }
 }
 
