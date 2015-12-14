@@ -361,10 +361,10 @@ typedef void(^QMCacheCollection)(NSArray *collection);
          completion:(QBChatCompletionBlock)completion;
 
 /**
- *  Send message to dialog with identifier.
+ *  Send message to.
  *
  *  @param message          QBChatMessage instance
- *  @param dialogID         dialog identifier
+ *  @param dialog           dialog instance to send message to
  *  @param saveToHistory    if YES - saves message to chat history
  *  @param saveToStorage    if YES - saves to local storage
  *  @param completion       completion block with failure error
@@ -376,10 +376,10 @@ typedef void(^QMCacheCollection)(NSArray *collection);
          completion:(QBChatCompletionBlock)completion;
 
 /**
- *  Send message to dialog with identifier.
+ *  Send attachment message to dialog.
  *
  *  @param attachmentMessage    QBChatMessage instance with attachment
- *  @param dialog               dialog to send message to
+ *  @param dialog               dialog instance to send message to
  *  @param image                attachment image to upload
  *  @param completion           completion block with failure error
  */
