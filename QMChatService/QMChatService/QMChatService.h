@@ -242,39 +242,47 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 /**
  *  Sending notification message about adding occupants to specific dialog.
  *
- *  @param occupantsIDs array of occupants that were added to a specific dialog
- *  @param chatDialog   chat dialog to send notification message to
- *  @param completion   completion block with failure error
+ *  @param occupantsIDs     array of occupants that were added to a specific dialog
+ *  @param chatDialog       chat dialog to send notification message to
+ *  @param notificationText notification message body (text)
+ *  @param completion       completion block with failure error
  */
 - (void)sendNotificationMessageAboutAddingOccupants:(NSArray *)occupantsIDs
                                            toDialog:(QBChatDialog *)chatDialog
+                               withNotificationText:(NSString *)notificationText
                                          completion:(QBChatCompletionBlock)completion;
 
 /**
  *  Sending notification message about leaving dialog.
  *
- *  @param chatDialog chat dialog to send message to
- *  @param completion completion block with failure error
+ *  @param chatDialog       chat dialog to send message to
+ *  @param notificationText notification message body (text)
+ *  @param completion       completion block with failure error
  */
 - (void)sendNotificationMessageAboutLeavingDialog:(QBChatDialog *)chatDialog
+                             withNotificationText:(NSString *)notificationText
                                        completion:(QBChatCompletionBlock)completion;
 
 /**
  *  Sending notification message about changing dialog photo.
  *
- *  @param chatDialog chat dialog to send message to
- *  @param completion completion block with failure error
+ *  @param chatDialog       chat dialog to send message to
+ *  @param notificationText notification message body (text)
+ *  @param completion       completion block with failure error
  */
 - (void)sendNotificationMessageAboutChangingDialogPhoto:(QBChatDialog *)chatDialog
+                                   withNotificationText:(NSString *)notificationText
                                              completion:(QBChatCompletionBlock)completion;
 
 /**
  *  Sending notification message about changing dialog name.
  *
- *  @param chatDialog chat dialog to send message to
- *  @param completion completion block with failure error
+ *  @param chatDialog       chat dialog to send message to
+ *  @param notificationText notification message body (text)
+ *  @param completion       completion block with failure error
  */
 - (void)sendNotificationMessageAboutChangingDialogName:(QBChatDialog *)chatDialog
+                                  withNotificationText:(NSString *)notificationText
                                             completion:(QBChatCompletionBlock)completion;
 
 #pragma mark - Fetch messages
