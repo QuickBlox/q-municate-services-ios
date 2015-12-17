@@ -785,6 +785,8 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
             [weakSelf.multicastDelegate chatService:weakSelf didDeleteChatDialogWithIDFromMemoryStorage:dialogId];
         }
         
+        [weakSelf.loadedAllMessages removeObjectsForKeys:deletedObjectsIDs];
+        
         if (completion) {
             completion(response);
         }
@@ -880,21 +882,23 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
         
         if (oldestMessage == nil) return [BFTask taskWithResult:@[]];
         
-        NSString *oldestMessageDate = [NSString stringWithFormat:@"%ld", (long)[oldestMessage.dateSent timeIntervalSince1970]];
+        NSString *oldestMessageDate = [NSString stringWithFormat:@"%ld", (NSUInteger)[oldestMessage.dateSent timeIntervalSince1970]];
         
         QBResponsePage *page = [QBResponsePage responsePageWithLimit:self.chatMessagesPerPage];
         
-        NSMutableDictionary* parameters = [@{
-                                             @"date_sent[lt]" : oldestMessageDate,
-                                             @"sort_desc"     : @"date_sent"
-                                             } mutableCopy];
+        NSDictionary* parameters = @{
+                                        @"date_sent[lt]" : oldestMessageDate,
+                                        @"sort_desc"     : @"date_sent"
+                                    };
         
         
         @weakify(self);
         [QBRequest messagesWithDialogID:chatDialogID extendedRequest:parameters forPage:page successBlock:^(QBResponse *response, NSArray *messages, QBResponsePage *page) {
             @strongify(self);
             
-            if ([messages count] < self.chatMessagesPerPage) self.loadedAllMessages[chatDialogID] = kQMLoadedAllMessages;
+            if ([messages count] < self.chatMessagesPerPage) {
+                self.loadedAllMessages[chatDialogID] = kQMLoadedAllMessages;
+            }
             
             if ([messages count] > 0) {
                 
