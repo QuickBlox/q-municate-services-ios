@@ -12,6 +12,7 @@
 #import "QBChatMessage+QMCustomParameters.h"
 
 const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
+static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 
 #define kChatServiceSaveToHistoryTrue @"1"
 #define kQMLoadedAllMessages          @1
@@ -260,11 +261,12 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 
 - (void)connectWithCompletionBlock:(QBChatCompletionBlock)completion {
     
-    BOOL isAuthorized = self.serviceManager.isAuthorized;
-    NSAssert(isAuthorized, @"User must be authorized");
-    
-    QBUUser *user = self.serviceManager.currentUser;
-    NSAssert(user != nil, @"User must be already allocated!");
+    if (!self.serviceManager.isAuthorized) {
+        if (completion) completion([NSError errorWithDomain:kQMChatServiceDomain
+                                                       code:-1000
+                                                   userInfo:@{NSLocalizedRecoverySuggestionErrorKey : @"You are not authorized in REST."}]);
+        return;
+    }
     
     if ([QBChat instance].isConnected) {
         if(completion){
@@ -273,6 +275,8 @@ const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
     }
     else {
         [QBSettings setAutoReconnectEnabled:YES];
+        
+        QBUUser *user = self.serviceManager.currentUser;
         [[QBChat instance] connectWithUser:user completion:completion];
     }
 }
