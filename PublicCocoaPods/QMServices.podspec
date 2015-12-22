@@ -11,7 +11,7 @@
 
 Pod::Spec.new do |s|
   s.name         = "QMServices"
-  s.version      = "0.3.2"
+  s.version      = "0.3.3"
   s.summary      = "Easy-to-use services for Quickblox SDK, for speeding up development of iOS chat applications."
   s.homepage     = "https://github.com/QuickBlox/q-municate-services-ios"
   s.license      = { :type => 'MIT', :file => 'LICENSE.txt' }
@@ -31,7 +31,7 @@ Pod::Spec.new do |s|
 #import <libextobjc/EXTKeyPathCoding.h>
 #import <libextobjc/EXTScope.h>'
   s.resource_bundle = {'QMChatCacheModel' => 'QMChatCache/QMChatCache/CoreData/QMChatServiceModel.xcdatamodeld', 'QMContactListCacheModel' => 'QMContactListCache/QMContactListCache/CoreData/QMContactListModel.xcdatamodeld', 'QMUsersCacheModel' => 'QMUsersCache/QMUsersCache/CoreData/QMUsersModel.xcdatamodeld'}
-  
+
   s.dependency "QuickBlox", '~> 2.5'
   s.dependency "Bolts",  '1.3.0'
   s.dependency "libextobjc/EXTKeyPathCoding", '0.4.1'
