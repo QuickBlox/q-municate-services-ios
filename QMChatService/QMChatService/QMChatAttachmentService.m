@@ -276,11 +276,11 @@ static NSString* attachmentPath(QBChatAttachment *attachment) {
     }
 }
 
-- (void)saveImageData:(NSData *)imageData chatAttachment:(QBChatAttachment *)attachment error:(NSError **)errorPtr {
+- (BOOL)saveImageData:(NSData *)imageData chatAttachment:(QBChatAttachment *)attachment error:(NSError **)errorPtr {
     
     NSString *path = attachmentPath(attachment);
     
-    [imageData writeToFile:path options:NSDataWritingAtomic error:errorPtr];
+    return [imageData writeToFile:path options:NSDataWritingAtomic error:errorPtr];
 }
 
 - (void)changeMessageAttachmentStatus:(QMMessageAttachmentStatus)status forMessage:(QBChatMessage *)message {
