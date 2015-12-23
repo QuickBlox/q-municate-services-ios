@@ -33,7 +33,7 @@ Pod::Spec.new do |s|
   s.resource_bundle = {'QMChatCacheModel' => 'QMChatCache/QMChatCache/CoreData/QMChatServiceModel.xcdatamodeld', 'QMContactListCacheModel' => 'QMContactListCache/QMContactListCache/CoreData/QMContactListModel.xcdatamodeld', 'QMUsersCacheModel' => 'QMUsersCache/QMUsersCache/CoreData/QMUsersModel.xcdatamodeld'}
 
   s.dependency "QuickBlox", "~> 2.5"
-  s.dependency "Bolts",  '1.3.0'
+  s.dependency "Bolts",  '1.5.0'
   s.dependency "libextobjc/EXTKeyPathCoding", '0.4.1'
   s.dependency "libextobjc/EXTScope", '0.4.1'
 end
