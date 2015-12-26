@@ -998,6 +998,31 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     }];
 }
 
+- (BFTask *)loadDialogWithID:(NSString *)dialogID {
+    
+    QBResponsePage *responsePage = [QBResponsePage responsePageWithLimit:1 skip:0];
+    NSMutableDictionary *extendedRequest = @{@"_id":dialogID}.mutableCopy;
+    BFTaskCompletionSource* source = [BFTaskCompletionSource taskCompletionSource];
+    
+    @weakify(self);
+    [QBRequest dialogsForPage:responsePage extendedRequest:extendedRequest successBlock:^(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, QBResponsePage *page) {
+        @strongify(self);
+        if ([dialogObjects firstObject] != nil) {
+            [self.dialogsMemoryStorage addChatDialog:[dialogObjects firstObject] andJoin:YES completion:nil];
+            if ([self.multicastDelegate respondsToSelector:@selector(chatService:didAddChatDialogToMemoryStorage:)]) {
+                [self.multicastDelegate chatService:self didAddChatDialogToMemoryStorage:[dialogObjects firstObject]];
+            }
+        }
+        
+        [source setResult:[dialogObjects firstObject]];
+    } errorBlock:^(QBResponse *response) {
+        
+        [source setError:response.error.error];
+    }];
+    
+    return source.task;
+}
+
 - (void)fetchDialogsUpdatedFromDate:(NSDate *)date
                        andPageLimit:(NSUInteger)limit
                      iterationBlock:(void(^)(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, BOOL *stop))iteration

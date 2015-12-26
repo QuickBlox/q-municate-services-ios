@@ -291,27 +291,37 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  *  @param chatDialogID Chat dialog id.
  *  @param completion   Block with response instance and array of chat messages if request succeded or nil if failed.
  */
-
 - (void)messagesWithChatDialogID:(NSString *)chatDialogID completion:(void(^)(QBResponse *response, NSArray *messages))completion;
 
 /**
- *  Loads 100 messages that are older than oldest message in cache.
+ *  Fetch messages with chat dialog id using Bolts.
+ *
+ *  @param chatDialogID chat dialog identifier to fetch messages from
+ *
+ *  @return BFTask with NSArray of QBChatMessage instances
+ *
+ *  @see In order to know how to work with BFTask's see documentation https://github.com/BoltsFramework/Bolts-iOS#bolts
+ */
+- (BFTask QB_GENERIC(NSArray QB_GENERIC(QBChatMessage *) *) *)messagesWithChatDialogID:(NSString *)chatDialogID;
+
+/**
+ *  Loads messages that are older than oldest message in cache.
+ *
+ *  @param chatDialogID Chat dialog identifier
+ *  @param completion   Block with response instance and array of chat messages if request succeded or nil if failed
+ */
+- (void)earlierMessagesWithChatDialogID:(NSString *)chatDialogID completion:(void(^)(QBResponse *response, NSArray *messages))completion;
+
+/**
+ *  Loads messages that are older than oldest message in cache.
  *
  *  @param chatDialogID     chat dialog identifier
  *
  *  @return BFTask instance of QBChatMessage's array
+ *
+ *  @see In order to know how to work with BFTask's see documentation https://github.com/BoltsFramework/Bolts-iOS#bolts
  */
 - (BFTask QB_GENERIC(NSArray QB_GENERIC(QBChatMessage *) *) *)loadEarlierMessagesWithChatDialogID:(NSString *)chatDialogID;
-
-/**
- *  Loads 100 messages that are older than oldest message in cache.
- *
- *  @param chatDialogID Chat dialog identifier
- *  @param completion   Block with response instance and array of chat messages if request succeded or nil if failed
- *
- *  @warning *Deprecated in QMServices 0.3.1:* Use 'loadEarlierMessagesWithChatDialogID:' instead.
- */
-- (void)earlierMessagesWithChatDialogID:(NSString *)chatDialogID completion:(void(^)(QBResponse *response, NSArray *messages))completion DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.3.1. Use 'loadEarlierMessagesWithChatDialogID:' instead.");
 
 #pragma mark - Fetch dialogs
 
@@ -324,12 +334,32 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 - (void)fetchDialogWithID:(NSString *)dialogID completion:(void (^)(QBChatDialog *dialog))completion;
 
 /**
+ *  Fetch dialog with identifier using Bolts.
+ *
+ *  @param dialogID dialog identifier to fetch
+ *
+ *  @return BFTask with chat dialog
+ *
+ *  @see In order to know how to work with BFTask's see documentation https://github.com/BoltsFramework/Bolts-iOS#bolts
+ */
+- (BFTask QB_GENERIC(QBChatDialog *) *)fetchDialogWithID:(NSString *)dialogID;
+
+/**
  *  Load dialog with dialog id from Quickblox and saving to memory storage and cache.
  *
  *  @param dialogID   Dialog identifier
  *  @param completion Block with dialog if request succeded or nil if failed
  */
 - (void)loadDialogWithID:(NSString *)dialogID completion:(void (^)(QBChatDialog *loadedDialog))completion;
+
+/**
+ *  Load dialog with dialog identifier from server and saving to memory storage and cache using Bolts.
+ *
+ *  @param dialogID dialog identifier to load.
+ *
+ *  @return BFTask with chat dialog
+ */
+- (BFTask QB_GENERIC(QBChatDialog *) *)loadDialogWithID:(NSString *)dialogID;
 
 /**
  *  Fetch dialog with last activity date from date
