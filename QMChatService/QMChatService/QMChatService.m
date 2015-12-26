@@ -488,36 +488,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     }
 }
 
-- (void)joinToGroupDialog:(QBChatDialog *)dialog
-               failed:(void (^)(NSError *))failed {
-    
-    NSParameterAssert(dialog.type != QBChatDialogTypePrivate);
-    
-    if (dialog.isJoined) {
-        return;
-    }
-    
-    NSString *dialogID = dialog.ID;
-    
-    [dialog setOnJoinFailed:^(NSError *error) {
-        
-        if (error.code == 201 || error.code == 404 || error.code == 407) {
-            
-            [self.dialogsMemoryStorage deleteChatDialogWithID:dialogID];
-            
-            if ([self.multicastDelegate respondsToSelector:@selector(chatService:didDeleteChatDialogWithIDFromMemoryStorage:)]) {
-                [self.multicastDelegate chatService:self didDeleteChatDialogWithIDFromMemoryStorage:dialogID];
-            }
-        }
-        
-        if (failed) {
-            failed(error);
-        }
-        
-    }];
-    
-    [dialog join];
-}
+#pragma mark - Group dialog join
 
 - (void)joinToGroupDialog:(QBChatDialog *)dialog completion:(QBChatCompletionBlock)completion {
     
@@ -612,7 +583,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 	request();
 }
 
-#pragma mark - Create Private/Group dialog
+#pragma mark - Chat dialog creation
 
 - (void)createPrivateChatDialogWithOpponentID:(NSUInteger)opponentID
                                  completion:(void(^)(QBResponse *response, QBChatDialog *createdDialo))completion {

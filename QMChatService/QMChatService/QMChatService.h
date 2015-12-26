@@ -94,6 +94,8 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  */
 @property (nonatomic, assign) NSTimeInterval presenceTimerInterval;
 
+#pragma mark - Group dialog join
+
 /**
  *  Joins user to group dialog and correctly updates cache. Please use this method instead of 'join' in QBChatDialog if you are using QMServices.
  *
@@ -102,15 +104,21 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  */
 - (void)joinToGroupDialog:(QBChatDialog *)dialog completion:(QBChatCompletionBlock)completion;
 
+#pragma mark - Dialog history
+
 /**
- *  Create group dialog
+ *  Retrieve chat dialogs
  *
- *  @param name       Dialog name
- *  @param occupants  QBUUser collection
- *  @param completion Block with response and created chat dialog instances
+ *  @param extendedRequest Set of request parameters. http://quickblox.com/developers/SimpleSample-chat_users-ios#Filters
+ *  @param completion Block with response dialogs instances
  */
-- (void)createGroupChatDialogWithName:(NSString *)name photo:(NSString *)photo occupants:(NSArray *)occupants
-                           completion:(void(^)(QBResponse *response, QBChatDialog *createdDialog))completion;
+- (void)allDialogsWithPageLimit:(NSUInteger)limit
+                extendedRequest:(NSDictionary *)extendedRequest
+                 iterationBlock:(void(^)(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, BOOL *stop))interationBlock
+                     completion:(void(^)(QBResponse *response))completion;
+
+#pragma mark - Chat dialog creation
+
 /**
  *  Create p2p dialog
  *
@@ -121,6 +129,16 @@ typedef void(^QMCacheCollection)(NSArray *collection);
                                  completion:(void(^)(QBResponse *response, QBChatDialog *createdDialog))completion;
 
 /**
+ *  Create group dialog
+ *
+ *  @param name       Dialog name
+ *  @param occupants  QBUUser collection
+ *  @param completion Block with response and created chat dialog instances
+ */
+- (void)createGroupChatDialogWithName:(NSString *)name photo:(NSString *)photo occupants:(NSArray *)occupants
+                           completion:(void(^)(QBResponse *response, QBChatDialog *createdDialog))completion;
+
+/**
  *  Create p2p dialog
  *
  *  @param opponentID Opponent ID
@@ -128,6 +146,8 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  */
 - (void)createPrivateChatDialogWithOpponentID:(NSUInteger)opponentID
                                    completion:(void(^)(QBResponse *response, QBChatDialog *createdDialo))completion;
+
+#pragma mark - Edit dialog methods
 
 /**
  *  Change dialog name
@@ -166,17 +186,6 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  */
 - (void)deleteDialogWithID:(NSString *)dialogId
                 completion:(void(^)(QBResponse *response))completion;
-
-/**
- *  Retrieve chat dialogs
- *
- *  @param extendedRequest Set of request parameters. http://quickblox.com/developers/SimpleSample-chat_users-ios#Filters
- *  @param completion Block with response dialogs instances
- */
-- (void)allDialogsWithPageLimit:(NSUInteger)limit
-                extendedRequest:(NSDictionary *)extendedRequest
-                iterationBlock:(void(^)(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, BOOL *stop))interationBlock
-                     completion:(void(^)(QBResponse *response))completion;
 
 /**
  *  Loads dialogs specific to user from disc cache and puth them in memory storage. 
