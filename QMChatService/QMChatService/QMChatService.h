@@ -195,6 +195,18 @@ typedef void(^QMCacheCollection)(NSArray *collection);
               completion:(void(^)(QBResponse *response, QBChatDialog *updatedDialog))completion;
 
 /**
+ *  Change dialog name using Bolts.
+ *
+ *  @param dialogName new dialog name
+ *  @param chatDialog chat dialog to update
+ *
+ *  @return BFTask with updated dialog
+ *
+ *  @see In order to know how to work with BFTask's see documentation https://github.com/BoltsFramework/Bolts-iOS#bolts
+ */
+- (BFTask QB_GENERIC(QBChatDialog *) *)changeDialogName:(NSString *)dialogName forChatDialog:(QBChatDialog *)chatDialog;
+
+/**
  *  Change dialog avatar
  *
  *  @param avatarPublicUrl avatar url
@@ -205,6 +217,18 @@ typedef void(^QMCacheCollection)(NSArray *collection);
                 completion:(void(^)(QBResponse *response, QBChatDialog *updatedDialog))completion;
 
 /**
+ *  Change dialog avatar using Bolts.
+ *
+ *  @param avatarPublicUrl avatar url
+ *  @param chatDialog      chat dialog to update
+ *
+ *  @return BFTask with updated dialog
+ *
+ *  @see In order to know how to work with BFTask's see documentation https://github.com/BoltsFramework/Bolts-iOS#bolts
+ */
+- (BFTask QB_GENERIC(QBChatDialog *) *)changeDialogAvatar:(NSString *)avatarPublicUrl forChatDialog:(QBChatDialog *)chatDialog;
+
+/**
  *  Join occupants
  *
  *  @param ids        Occupants ids
@@ -213,6 +237,18 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  */
 - (void)joinOccupantsWithIDs:(NSArray *)ids toChatDialog:(QBChatDialog *)chatDialog
                   completion:(void(^)(QBResponse *response, QBChatDialog *updatedDialog))completion;
+
+/**
+ *  Join occupants to dialog using Bolts.
+ *
+ *  @param ids        occupants ids to join
+ *  @param chatDialog chat dialog to update
+ *
+ *  @return BFTask with updated dialog
+ *
+ *  @see In order to know how to work with BFTask's see documentation https://github.com/BoltsFramework/Bolts-iOS#bolts
+ */
+- (BFTask QB_GENERIC(QBChatDialog *) *)joinOccupantsWithIDs:(NSArray *)ids toChatDialog:(QBChatDialog *)chatDialog;
 
 /**
  *  Delete dialog by id on server and chat cache

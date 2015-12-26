@@ -60,6 +60,56 @@
     return source.task;
 }
 
+#pragma mark - Edit dialog methods
+
+- (BFTask *)changeDialogName:(NSString *)dialogName forChatDialog:(QBChatDialog *)chatDialog {
+    
+    BFTaskCompletionSource* source = [BFTaskCompletionSource taskCompletionSource];
+    
+    [self changeDialogName:dialogName forChatDialog:chatDialog completion:^(QBResponse *response, QBChatDialog *updatedDialog) {
+        //
+        if (response.success) {
+            [source setResult:updatedDialog];
+        } else {
+            [source setError:response.error.error];
+        }
+    }];
+    
+    return source.task;
+}
+
+- (BFTask *)changeDialogAvatar:(NSString *)avatarPublicUrl forChatDialog:(QBChatDialog *)chatDialog {
+    
+    BFTaskCompletionSource* source = [BFTaskCompletionSource taskCompletionSource];
+    
+    [self changeDialogAvatar:avatarPublicUrl forChatDialog:chatDialog completion:^(QBResponse *response, QBChatDialog *updatedDialog) {
+        //
+        if (response.success) {
+            [source setResult:updatedDialog];
+        } else {
+            [source setError:response.error.error];
+        }
+    }];
+    
+    return source.task;
+}
+
+- (BFTask *)joinOccupantsWithIDs:(NSArray *)ids toChatDialog:(QBChatDialog *)chatDialog {
+    
+    BFTaskCompletionSource* source = [BFTaskCompletionSource taskCompletionSource];
+    
+    [self joinOccupantsWithIDs:ids toChatDialog:chatDialog completion:^(QBResponse *response, QBChatDialog *updatedDialog) {
+        //
+        if (response.success) {
+            [source setResult:updatedDialog];
+        } else {
+            [source setError:response.error.error];
+        }
+    }];
+    
+    return source.task;
+}
+
 #pragma mark Messages loading
 
 - (BFTask *)messagesWithChatDialogID:(NSString *)chatDialogID {
