@@ -551,8 +551,22 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  */
 - (void)chatService:(QMChatService *)chatService didAddMessagesToMemoryStorage:(NSArray QB_GENERIC(QBChatMessage *)*)messages forDialogID:(NSString *)dialogID;
 
+/**
+ *  Is called when message was deleted from memory storage for dialog id
+ *
+ *  @param chatService chat service instance
+ *  @param message     message that was deleted
+ *  @param dialogID    dialog identifier of deleted message
+ */
 - (void)chatService:(QMChatService *)chatService didDeleteMessageFromMemoryStorage:(QBChatMessage *)message forDialogID:(NSString *)dialogID;
 
+/**
+ *  Is called when messages was deleted from memory storage for dialog id
+ *
+ *  @param chatService chat service instance
+ *  @param messages    messages that were deleted
+ *  @param dialogID    dialog identifier of deleted messages
+ */
 - (void)chatService:(QMChatService *)chatService didDeleteMessagesFromMemoryStorage:(NSArray QB_GENERIC(QBChatMessage *)*)messages forDialogID:(NSString *)dialogID;
 
 /**
