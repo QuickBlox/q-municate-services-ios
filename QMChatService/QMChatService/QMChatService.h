@@ -97,17 +97,6 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 /**
  *  Joins user to group dialog and correctly updates cache. Please use this method instead of 'join' in QBChatDialog if you are using QMServices.
  *
- *  @param dialog Dialog to join.
- *  @param failed Failed callback.
- *
- *  @warning *Deprecated in QMServices 0.3:* Use 'joinToGroupDialog:completion:' instead.
- */
-- (void)joinToGroupDialog:(QBChatDialog *)dialog
-                   failed:(void(^)(NSError *error))failed DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.3. Use 'joinToGroupDialog:completion:' instead.");
-
-/**
- *  Joins user to group dialog and correctly updates cache. Please use this method instead of 'join' in QBChatDialog if you are using QMServices.
- *
  *  @param dialog       dialog to join
  *  @param completion   completion block with failure error
  */
