@@ -85,6 +85,10 @@ static NSString* attachmentPath(QBChatAttachment *attachment) {
         [chatService sendMessage:message type:QMMessageTypeText toDialog:dialog saveToHistory:YES saveToStorage:YES completion:completion];
         
     } statusBlock:^(QBRequest *request, QBRequestStatus *status) {
+
+        if ([self.delegate respondsToSelector:@selector(chatAttachmentService:didChangeUploadingProgress:forMessage:)]) {
+            [self.delegate chatAttachmentService:self didChangeUploadingProgress:status.percentOfCompletion forMessage:message];
+        }
         
     } errorBlock:^(QBResponse *response) {
         
