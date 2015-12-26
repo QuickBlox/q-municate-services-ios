@@ -586,7 +586,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 #pragma mark - Chat dialog creation
 
 - (void)createPrivateChatDialogWithOpponentID:(NSUInteger)opponentID
-                                 completion:(void(^)(QBResponse *response, QBChatDialog *createdDialo))completion {
+                                 completion:(void(^)(QBResponse *response, QBChatDialog *createdDialog))completion {
     
     QBChatDialog *dialog = [self.dialogsMemoryStorage privateChatDialogWithOpponentID:opponentID];
     

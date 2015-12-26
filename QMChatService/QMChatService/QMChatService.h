@@ -129,14 +129,38 @@ typedef void(^QMCacheCollection)(NSArray *collection);
                                  completion:(void(^)(QBResponse *response, QBChatDialog *createdDialog))completion;
 
 /**
+ *  Create private dialog with user using Bolts.
+ *
+ *  @param opponent opponent user to create private dialog with
+ *
+ *  @return BFTask with created chat dialog
+ *
+ *  @see In order to know how to work with BFTask's see documentation https://github.com/BoltsFramework/Bolts-iOS#bolts
+ */
+- (BFTask QB_GENERIC(QBChatDialog *) *)createPrivateChatDialogWithOpponent:(QBUUser *)opponent;
+
+/**
  *  Create group dialog
  *
  *  @param name       Dialog name
  *  @param occupants  QBUUser collection
  *  @param completion Block with response and created chat dialog instances
  */
-- (void)createGroupChatDialogWithName:(NSString *)name photo:(NSString *)photo occupants:(NSArray *)occupants
+- (void)createGroupChatDialogWithName:(NSString *)name photo:(NSString *)photo occupants:(NSArray QB_GENERIC(QBUUser *)*)occupants
                            completion:(void(^)(QBResponse *response, QBChatDialog *createdDialog))completion;
+
+/**
+ *  Create group chat using Bolts.
+ *
+ *  @param name      group chat name
+ *  @param photo     group chatm photo url
+ *  @param occupants array of QBUUser instances to add to chat
+ *
+ *  @return BFTask with created chat dialog
+ *
+ *  @see In order to know how to work with BFTask's see documentation https://github.com/BoltsFramework/Bolts-iOS#bolts
+ */
+- (BFTask QB_GENERIC(QBChatDialog *) *)createGroupChatDialogWithName:(NSString *)name photo:(NSString *)photo occupants:(NSArray QB_GENERIC(QBUUser *)*)occupants;
 
 /**
  *  Create p2p dialog
@@ -145,7 +169,18 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  *  @param completion Block with response and created chat dialog instances
  */
 - (void)createPrivateChatDialogWithOpponentID:(NSUInteger)opponentID
-                                   completion:(void(^)(QBResponse *response, QBChatDialog *createdDialo))completion;
+                                   completion:(void(^)(QBResponse *response, QBChatDialog *createdDialog))completion;
+
+/**
+ *  Create private dialog using Bolts.
+ *
+ *  @param opponentID opponent user identificatior to create dialog with
+ *
+ *  @return BFTask with created chat dialog
+ *
+ *  @see In order to know how to work with BFTask's see documentation https://github.com/BoltsFramework/Bolts-iOS#bolts
+ */
+- (BFTask QB_GENERIC(QBChatDialog *) *)createPrivateChatDialogWithOpponentID:(NSUInteger)opponentID;
 
 #pragma mark - Edit dialog methods
 
