@@ -228,7 +228,8 @@
         
         [source setResult:[dialogObjects firstObject]];
     } errorBlock:^(QBResponse *response) {
-        
+        @strongify(self);
+        [self.serviceManager handleErrorResponse:response];
         [source setError:response.error.error];
     }];
     
