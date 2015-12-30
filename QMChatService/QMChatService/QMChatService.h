@@ -421,6 +421,49 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 @interface QMChatService (Bolts)
 
 /**
+ *  Connect to the chat using Bolts.
+ *
+ *  @return BFTask with failure error
+ *
+ *  @see In order to know how to work with BFTask's see documentation https://github.com/BoltsFramework/Bolts-iOS#bolts
+ */
+- (BFTask *)connect;
+
+/**
+ *  Disconnect from the chat using Bolts.
+ *
+ *  @return BFTask with failure error
+ *
+ *  @see In order to know how to work with BFTask's see documentation https://github.com/BoltsFramework/Bolts-iOS#bolts
+ */
+- (BFTask *)disconnect;
+
+/**
+ *  Join group chat dialog.
+ *
+ *  @param dialog group chat dialog to join
+ *
+ *  @return BFTask with failure error
+ *
+ *  @see In order to know how to work with BFTask's see documentation https://github.com/BoltsFramework/Bolts-iOS#bolts
+ */
+- (BFTask *)joinToGroupDialog:(QBChatDialog *)dialog;
+
+/**
+ *  Retrieve chat dialogs using Bolts.
+ *
+ *  @param extendedRequest Set of request parameters. http://quickblox.com/developers/SimpleSample-chat_users-ios#Filters
+ *  @param iterationBlock  block with dialog pagination
+ *
+ *  @return BFTask with failure error
+ *
+ *  @see In order to know how to work with BFTask's see documentation https://github.com/BoltsFramework/Bolts-iOS#bolts
+ */
+- (BFTask *)allDialogsWithPageLimit:(NSUInteger)limit
+                    extendedRequest:(NSDictionary *)extendedRequest
+                     iterationBlock:(void(^)(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, BOOL *stop))interationBlock;
+
+/**
  *  Create private dialog with user using Bolts.
  *
  *  @param opponent opponent user to create private dialog with
@@ -492,6 +535,17 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 - (BFTask QB_GENERIC(QBChatDialog *) *)joinOccupantsWithIDs:(NSArray *)ids toChatDialog:(QBChatDialog *)chatDialog;
 
 /**
+ *  Delete dialog by id on server and chat cache using Bolts
+ *
+ *  @param dialogID id of dialog to delete
+ *
+ *  @return BFTask with failure error
+ *
+ *  @see In order to know how to work with BFTask's see documentation https://github.com/BoltsFramework/Bolts-iOS#bolts
+ */
+- (BFTask *)deleteDialogWithID:(NSString *)dialogID;
+
+/**
  *  Fetch messages with chat dialog id using Bolts.
  *
  *  @param chatDialogID chat dialog identifier to fetch messages from
@@ -530,8 +584,199 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  *  @param dialogID dialog identifier to load.
  *
  *  @return BFTask with chat dialog
+ *
+ *  @see In order to know how to work with BFTask's see documentation https://github.com/BoltsFramework/Bolts-iOS#bolts
  */
 - (BFTask QB_GENERIC(QBChatDialog *) *)loadDialogWithID:(NSString *)dialogID;
+
+/**
+ *  Fetch dialog with last activity date from date using Bolts.
+ *
+ *  @param date         date to fetch dialogs from
+ *  @param limit        page limit
+ *  @param iteration    iteration block with dialogs for pages
+ *
+ *  @return BFTask with chat dialog
+ *
+ *  @see In order to know how to work with BFTask's see documentation https://github.com/BoltsFramework/Bolts-iOS#bolts
+ */
+- (BFTask *)fetchDialogsUpdatedFromDate:(NSDate *)date
+                           andPageLimit:(NSUInteger)limit
+                         iterationBlock:(void(^)(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, BOOL *stop))iteration;
+
+/**
+ *  Send system message to users about adding to dialog with dialog inside using Bolts.
+ *
+ *  @param chatDialog   created dialog we notificate about
+ *  @param usersIDs     array of users id to send message
+ *
+ *  @return BFTask with failure error
+ *
+ *  @see In order to know how to work with BFTask's see documentation https://github.com/BoltsFramework/Bolts-iOS#bolts
+ */
+- (BFTask *)sendSystemMessageAboutAddingToDialog:(QBChatDialog *)chatDialog
+                                      toUsersIDs:(NSArray *)usersIDs;
+
+/**
+ *  Send message about accepting or rejecting contact requst using Bolts.
+ *
+ *  @param accept     YES - accept, NO reject
+ *  @param opponent   opponent ID
+ *
+ *  @return BFTask with failure error
+ *
+ *  @see In order to know how to work with BFTask's see documentation https://github.com/BoltsFramework/Bolts-iOS#bolts
+ */
+- (BFTask *)sendMessageAboutAcceptingContactRequest:(BOOL)accept
+                                       toOpponentID:(NSUInteger)opponentID;
+
+/**
+ *  Sending notification message about adding occupants to specific dialog using Bolts.
+ *
+ *  @param occupantsIDs     array of occupants that were added to a specific dialog
+ *  @param chatDialog       chat dialog to send notification message to
+ *  @param notificationText notification message body (text)
+ *
+ *  @return BFTask with failure error
+ *
+ *  @see In order to know how to work with BFTask's see documentation https://github.com/BoltsFramework/Bolts-iOS#bolts
+ */
+- (BFTask *)sendNotificationMessageAboutAddingOccupants:(NSArray *)occupantsIDs
+                                               toDialog:(QBChatDialog *)chatDialog
+                                   withNotificationText:(NSString *)notificationText;
+
+/**
+ *  Sending notification message about leaving dialog using Bolts.
+ *
+ *  @param chatDialog       chat dialog to send message to
+ *  @param notificationText notification message body (text)
+ *
+ *  @return BFTask with failure error
+ *
+ *  @see In order to know how to work with BFTask's see documentation https://github.com/BoltsFramework/Bolts-iOS#bolts
+ */
+- (BFTask *)sendNotificationMessageAboutLeavingDialog:(QBChatDialog *)chatDialog
+                                 withNotificationText:(NSString *)notificationText;
+
+/**
+ *  Sending notification message about changing dialog photo using Bolts.
+ *
+ *  @param chatDialog       chat dialog to send message to
+ *  @param notificationText notification message body (text)
+ *
+ *  @return BFTask with failure error
+ *
+ *  @see In order to know how to work with BFTask's see documentation https://github.com/BoltsFramework/Bolts-iOS#bolts
+ */
+- (BFTask *)sendNotificationMessageAboutChangingDialogPhoto:(QBChatDialog *)chatDialog
+                                       withNotificationText:(NSString *)notificationText;
+
+/**
+ *  Sending notification message about changing dialog name.
+ *
+ *  @param chatDialog       chat dialog to send message to
+ *  @param notificationText notification message body (text)
+ *
+ *  @return BFTask with failure error
+ *
+ *  @see In order to know how to work with BFTask's see documentation https://github.com/BoltsFramework/Bolts-iOS#bolts
+ */
+- (BFTask *)sendNotificationMessageAboutChangingDialogName:(QBChatDialog *)chatDialog
+                                      withNotificationText:(NSString *)notificationText;
+
+/**
+ *  Send message to dialog with identifier using Bolts.
+ *
+ *  @param message          QBChatMessage instance
+ *  @param dialogID         dialog identifier
+ *  @param saveToHistory    if YES - saves message to chat history
+ *  @param saveToStorage    if YES - saves to local storage
+ *
+ *  @return BFTask with failure error
+ *
+ *  @see In order to know how to work with BFTask's see documentation https://github.com/BoltsFramework/Bolts-iOS#bolts
+ */
+- (BFTask *)sendMessage:(QBChatMessage *)message
+             toDialogID:(NSString *)dialogID
+          saveToHistory:(BOOL)saveToHistory
+          saveToStorage:(BOOL)saveToStorage;
+
+/**
+ *  Send message to using Bolts.
+ *
+ *  @param message          QBChatMessage instance
+ *  @param dialog           dialog instance to send message to
+ *  @param saveToHistory    if YES - saves message to chat history
+ *  @param saveToStorage    if YES - saves to local storage
+ *
+ *  @return BFTask with failure error
+ *
+ *  @see In order to know how to work with BFTask's see documentation https://github.com/BoltsFramework/Bolts-iOS#bolts
+ */
+- (BFTask *)sendMessage:(QBChatMessage *)message
+               toDialog:(QBChatDialog *)dialog
+          saveToHistory:(BOOL)saveToHistory
+          saveToStorage:(BOOL)saveToStorage;
+
+/**
+ *  Send attachment message to dialog using Bolts.
+ *
+ *  @param attachmentMessage    QBChatMessage instance with attachment
+ *  @param dialog               dialog instance to send message to
+ *  @param image                attachment image to upload
+ *
+ *  @return BFTask with failure error
+ *
+ *  @see In order to know how to work with BFTask's see documentation https://github.com/BoltsFramework/Bolts-iOS#bolts
+ */
+- (BFTask *)sendAttachmentMessage:(QBChatMessage *)attachmentMessage
+                         toDialog:(QBChatDialog *)dialog
+              withAttachmentImage:(UIImage *)image;
+
+/**
+ *  Mark message as delivered.
+ *
+ *  @param message      QBChatMessage instance to mark as delivered
+ *
+ *  @return BFTask with failure error
+ *
+ *  @see In order to know how to work with BFTask's see documentation https://github.com/BoltsFramework/Bolts-iOS#bolts
+ */
+- (BFTask *)markMessageAsDelivered:(QBChatMessage *)message;
+
+/**
+ *  Mark messages as delivered.
+ *
+ *  @param message      array of QBChatMessage instances to mark as delivered
+ *
+ *  @return BFTask with failure error
+ *
+ *  @see In order to know how to work with BFTask's see documentation https://github.com/BoltsFramework/Bolts-iOS#bolts
+ */
+- (BFTask *)markMessagesAsDelivered:(NSArray QB_GENERIC(QBChatMessage *) *)messages;
+
+/**
+ *  Sending read status for message and updating unreadMessageCount for dialog in cache
+ *
+ *  @param message      QBChatMessage instance to mark as read
+ *
+ *  @return BFTask with failure error
+ *
+ *  @see In order to know how to work with BFTask's see documentation https://github.com/BoltsFramework/Bolts-iOS#bolts
+ */
+- (BFTask *)readMessage:(QBChatMessage *)message;
+
+/**
+ *  Sending read status for messages and updating unreadMessageCount for dialog in cache
+ *
+ *  @param messages     Array of QBChatMessage instances to mark as read
+ *  @param dialogID     ID of dialog to update
+ *
+ *  @return BFTask with failure error
+ *
+ *  @see In order to know how to work with BFTask's see documentation https://github.com/BoltsFramework/Bolts-iOS#bolts
+ */
+- (BFTask *)readMessages:(NSArray QB_GENERIC(QBChatMessage *) *)messages forDialogID:(NSString *)dialogID;
 
 @end
 

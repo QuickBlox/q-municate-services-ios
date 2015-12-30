@@ -9,6 +9,7 @@
 #import "QMChatService.h"
 
 #define kQMLoadedAllMessages @1
+static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 
 @interface QMChatService()
 
@@ -19,6 +20,89 @@
 @end
 
 @implementation QMChatService (Bolts)
+
+#pragma mark - Chat connection
+
+- (BFTask *)connect {
+    
+    BFTaskCompletionSource* source = [BFTaskCompletionSource taskCompletionSource];
+    
+    if (!self.serviceManager.isAuthorized) {
+        [source setError:[NSError errorWithDomain:kQMChatServiceDomain
+                                             code:-1000
+                                         userInfo:@{NSLocalizedRecoverySuggestionErrorKey : @"You are not authorized in REST."}]];
+        return source.task;
+    }
+    
+    if ([QBChat instance].isConnected) {
+        [source setResult:nil];
+    }
+    else {
+        [QBSettings setAutoReconnectEnabled:YES];
+        
+        QBUUser *user = self.serviceManager.currentUser;
+        [[QBChat instance] connectWithUser:user completion:^(NSError *error) {
+            //
+            if (error != nil) {
+                [source setError:error];
+            } else {
+                [source setResult:nil];
+            }
+        }];
+    }
+
+    return source.task;
+}
+
+- (BFTask *)disconnect {
+    
+    BFTaskCompletionSource* source = [BFTaskCompletionSource taskCompletionSource];
+    
+    [self disconnectWithCompletionBlock:^(NSError *error) {
+        //
+        if (error != nil) {
+            [source setError:error];
+        } else {
+            [source setResult:nil];
+        }
+    }];
+    
+    return source.task;
+}
+
+#pragma mark - chat dialog handling
+
+- (BFTask *)joinToGroupDialog:(QBChatDialog *)dialog {
+    
+    BFTaskCompletionSource* source = [BFTaskCompletionSource taskCompletionSource];
+    
+    [self joinToGroupDialog:dialog completion:^(NSError *error) {
+        //
+        if (error != nil) {
+            [source setError:error];
+        } else {
+            [source setResult:nil];
+        }
+    }];
+    
+    return source.task;
+}
+
+- (BFTask *)allDialogsWithPageLimit:(NSUInteger)limit extendedRequest:(NSDictionary *)extendedRequest iterationBlock:(void (^)(QBResponse *response, NSArray *dialogs, NSSet *dialogsUsers, BOOL *stop))interationBlock {
+    
+    BFTaskCompletionSource* source = [BFTaskCompletionSource taskCompletionSource];
+    
+    [self allDialogsWithPageLimit:limit extendedRequest:extendedRequest iterationBlock:interationBlock completion:^(QBResponse *response) {
+        //
+        if (response.success) {
+            [source setResult:nil];
+        } else {
+            [source setError:response.error.error];
+        }
+    }];
+    
+    return source.task;
+}
 
 #pragma mark Chat dialog creation
 
@@ -112,6 +196,22 @@
         //
         if (response.success) {
             [source setResult:updatedDialog];
+        } else {
+            [source setError:response.error.error];
+        }
+    }];
+    
+    return source.task;
+}
+
+- (BFTask *)deleteDialogWithID:(NSString *)dialogID {
+    
+    BFTaskCompletionSource* source = [BFTaskCompletionSource taskCompletionSource];
+    
+    [self deleteDialogWithID:dialogID completion:^(QBResponse *response) {
+        //
+        if (response.success) {
+            [source setResult:nil];
         } else {
             [source setError:response.error.error];
         }
@@ -231,6 +331,236 @@
         @strongify(self);
         [self.serviceManager handleErrorResponse:response];
         [source setError:response.error.error];
+    }];
+    
+    return source.task;
+}
+
+- (BFTask *)fetchDialogsUpdatedFromDate:(NSDate *)date andPageLimit:(NSUInteger)limit iterationBlock:(void (^)(QBResponse *response, NSArray *dialogs, NSSet *dialogsUsers, BOOL *stop))iteration {
+    
+    BFTaskCompletionSource* source = [BFTaskCompletionSource taskCompletionSource];
+    
+    [self fetchDialogsUpdatedFromDate:date andPageLimit:limit iterationBlock:iteration completionBlock:^(QBResponse *response) {
+        //
+        if (response.success) {
+            [source setResult:nil];
+        } else {
+            [source setError:response.error.error];
+        }
+    }];
+    
+    return source.task;
+}
+
+#pragma mark - notifications
+
+- (BFTask *)sendSystemMessageAboutAddingToDialog:(QBChatDialog *)chatDialog toUsersIDs:(NSArray *)usersIDs {
+    
+    BFTaskCompletionSource* source = [BFTaskCompletionSource taskCompletionSource];
+    
+    [self sendSystemMessageAboutAddingToDialog:chatDialog toUsersIDs:usersIDs completion:^(NSError *error) {
+        //
+        if (error != nil) {
+            [source setError:error];
+        } else {
+            [source setResult:nil];
+        }
+    }];
+    
+    return source.task;
+}
+
+- (BFTask *)sendMessageAboutAcceptingContactRequest:(BOOL)accept toOpponentID:(NSUInteger)opponentID {
+    
+    BFTaskCompletionSource* source = [BFTaskCompletionSource taskCompletionSource];
+    
+    [self sendMessageAboutAcceptingContactRequest:accept toOpponentID:opponentID completion:^(NSError *error) {
+        //
+        if (error != nil) {
+            [source setError:error];
+        } else {
+            [source setResult:nil];
+        }
+    }];
+    
+    return source.task;
+}
+
+- (BFTask *)sendNotificationMessageAboutAddingOccupants:(NSArray *)occupantsIDs toDialog:(QBChatDialog *)chatDialog withNotificationText:(NSString *)notificationText {
+    
+    BFTaskCompletionSource* source = [BFTaskCompletionSource taskCompletionSource];
+    
+    [self sendNotificationMessageAboutAddingOccupants:occupantsIDs toDialog:chatDialog withNotificationText:notificationText completion:^(NSError *error) {
+        //
+        if (error != nil) {
+            [source setError:error];
+        } else {
+            [source setResult:nil];
+        }
+    }];
+    
+    return source.task;
+}
+
+- (BFTask *)sendNotificationMessageAboutLeavingDialog:(QBChatDialog *)chatDialog withNotificationText:(NSString *)notificationText {
+    
+    BFTaskCompletionSource* source = [BFTaskCompletionSource taskCompletionSource];
+    
+    [self sendNotificationMessageAboutLeavingDialog:chatDialog withNotificationText:notificationText completion:^(NSError *error) {
+        //
+        if (error != nil) {
+            [source setError:error];
+        } else {
+            [source setResult:nil];
+        }
+    }];
+    
+    return source.task;
+}
+
+- (BFTask *)sendNotificationMessageAboutChangingDialogPhoto:(QBChatDialog *)chatDialog withNotificationText:(NSString *)notificationText {
+    
+    BFTaskCompletionSource* source = [BFTaskCompletionSource taskCompletionSource];
+    
+    [self sendNotificationMessageAboutChangingDialogPhoto:chatDialog withNotificationText:notificationText completion:^(NSError *error) {
+        //
+        if (error != nil) {
+            [source setError:error];
+        } else {
+            [source setResult:nil];
+        }
+    }];
+    
+    return source.task;
+}
+
+- (BFTask *)sendNotificationMessageAboutChangingDialogName:(QBChatDialog *)chatDialog withNotificationText:(NSString *)notificationText {
+    
+    BFTaskCompletionSource* source = [BFTaskCompletionSource taskCompletionSource];
+    
+    [self sendNotificationMessageAboutChangingDialogName:chatDialog withNotificationText:notificationText completion:^(NSError *error) {
+        //
+        if (error != nil) {
+            [source setError:error];
+        } else {
+            [source setResult:nil];
+        }
+    }];
+    
+    return source.task;
+}
+
+#pragma mark - Message sending
+
+- (BFTask *)sendMessage:(QBChatMessage *)message toDialogID:(NSString *)dialogID saveToHistory:(BOOL)saveToHistory saveToStorage:(BOOL)saveToStorage {
+    
+    BFTaskCompletionSource* source = [BFTaskCompletionSource taskCompletionSource];
+    
+    [self sendMessage:message toDialogID:dialogID saveToHistory:saveToHistory saveToStorage:saveToStorage completion:^(NSError *error) {
+        //
+        if (error != nil) {
+            [source setError:error];
+        } else {
+            [source setResult:nil];
+        }
+    }];
+    
+    return source.task;
+}
+
+- (BFTask *)sendMessage:(QBChatMessage *)message toDialog:(QBChatDialog *)dialog saveToHistory:(BOOL)saveToHistory saveToStorage:(BOOL)saveToStorage {
+    
+    BFTaskCompletionSource* source = [BFTaskCompletionSource taskCompletionSource];
+    
+    [self sendMessage:message toDialog:dialog saveToHistory:saveToHistory saveToStorage:saveToStorage completion:^(NSError *error) {
+        //
+        if (error != nil) {
+            [source setError:error];
+        } else {
+            [source setResult:nil];
+        }
+    }];
+    
+    return source.task;
+}
+
+- (BFTask *)sendAttachmentMessage:(QBChatMessage *)attachmentMessage toDialog:(QBChatDialog *)dialog withAttachmentImage:(UIImage *)image {
+    
+    BFTaskCompletionSource* source = [BFTaskCompletionSource taskCompletionSource];
+    
+    [self sendAttachmentMessage:attachmentMessage toDialog:dialog withAttachmentImage:image completion:^(NSError *error) {
+        //
+        if (error != nil) {
+            [source setError:error];
+        } else {
+            [source setResult:nil];
+        }
+    }];
+    
+    return source.task;
+}
+
+#pragma mark - Message marking
+
+- (BFTask *)markMessageAsDelivered:(QBChatMessage *)message {
+    
+    BFTaskCompletionSource* source = [BFTaskCompletionSource taskCompletionSource];
+    
+    [self markMessageAsDelivered:message completion:^(NSError *error) {
+        //
+        if (error != nil) {
+            [source setError:error];
+        } else {
+            [source setResult:nil];
+        }
+    }];
+    
+    return source.task;
+}
+
+- (BFTask *)markMessagesAsDelivered:(NSArray *)messages {
+    
+    BFTaskCompletionSource* source = [BFTaskCompletionSource taskCompletionSource];
+    
+    [self markMessagesAsDelivered:messages completion:^(NSError *error) {
+        //
+        if (error != nil) {
+            [source setError:error];
+        } else {
+            [source setResult:nil];
+        }
+    }];
+    
+    return source.task;
+}
+
+- (BFTask *)readMessage:(QBChatMessage *)message {
+    
+    BFTaskCompletionSource* source = [BFTaskCompletionSource taskCompletionSource];
+    
+    [self readMessage:message completion:^(NSError *error) {
+        //
+        if (error != nil) {
+            [source setError:error];
+        } else {
+            [source setResult:nil];
+        }
+    }];
+    
+    return source.task;
+}
+
+- (BFTask *)readMessages:(NSArray *)messages forDialogID:(NSString *)dialogID {
+    
+    BFTaskCompletionSource* source = [BFTaskCompletionSource taskCompletionSource];
+    
+    [self readMessages:messages forDialogID:dialogID completion:^(NSError *error) {
+        //
+        if (error != nil) {
+            [source setError:error];
+        } else {
+            [source setResult:nil];
+        }
     }];
     
     return source.task;
