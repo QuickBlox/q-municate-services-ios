@@ -112,7 +112,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     
     [self createPrivateChatDialogWithOpponent:opponent completion:^(QBResponse *response, QBChatDialog *createdDialog) {
         //
-        if (response.success) {
+        if (createdDialog != nil) {
             [source setResult:createdDialog];
         } else {
             [source setError:response.error.error];
@@ -144,7 +144,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     
     [self createPrivateChatDialogWithOpponentID:opponentID completion:^(QBResponse *response, QBChatDialog *createdDialog) {
         //
-        if (response.success) {
+        if (createdDialog != nil) {
             [source setResult:createdDialog];
         } else {
             [source setError:response.error.error];

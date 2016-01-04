@@ -479,7 +479,7 @@ typedef void(^QMCacheCollection)(NSArray *collection);
                      iterationBlock:(void(^)(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, BOOL *stop))interationBlock;
 
 /**
- *  Create private dialog with user using Bolts.
+ *  Create private dialog with user if needed using Bolts.
  *
  *  @param opponent opponent user to create private dialog with
  *
@@ -503,7 +503,7 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 - (BFTask QB_GENERIC(QBChatDialog *) *)createGroupChatDialogWithName:(NSString *)name photo:(NSString *)photo occupants:(NSArray QB_GENERIC(QBUUser *)*)occupants;
 
 /**
- *  Create private dialog using Bolts.
+ *  Create private dialog if needed using Bolts.
  *
  *  @param opponentID opponent user identificatior to create dialog with
  *
