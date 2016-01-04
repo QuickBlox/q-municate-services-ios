@@ -108,18 +108,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 
 - (BFTask *)createPrivateChatDialogWithOpponent:(QBUUser *)opponent {
     
-    BFTaskCompletionSource* source = [BFTaskCompletionSource taskCompletionSource];
-    
-    [self createPrivateChatDialogWithOpponent:opponent completion:^(QBResponse *response, QBChatDialog *createdDialog) {
-        //
-        if (createdDialog != nil) {
-            [source setResult:createdDialog];
-        } else {
-            [source setError:response.error.error];
-        }
-    }];
-    
-    return source.task;
+    return [self createPrivateChatDialogWithOpponentID:opponent.ID];
 }
 
 - (BFTask *)createGroupChatDialogWithName:(NSString *)name photo:(NSString *)photo occupants:(NSArray *)occupants {
@@ -146,8 +135,10 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
         //
         if (createdDialog != nil) {
             [source setResult:createdDialog];
-        } else {
+        } else if (response.error != nil) {
             [source setError:response.error.error];
+        } else {
+            NSAssert(nil, @"Need to update this case");
         }
     }];
     
