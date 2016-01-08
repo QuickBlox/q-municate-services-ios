@@ -116,6 +116,8 @@
  *  Logout current user using Bolts.
  *
  *  @return BFTask with failure error
+ *
+ *  @see In order to know how to work with BFTask's see documentation https://github.com/BoltsFramework/Bolts-iOS#bolts
  */
 - (BFTask *)logout;
 
