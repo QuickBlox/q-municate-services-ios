@@ -20,7 +20,9 @@
 	- [Fetching users](#fetching-users)
 	- [Subclass of QMServicesManager example](#qmservices-example)
 	- [QMAuthService](#qmauthservice)
+		- [QMAuthService + Bolts](#qmauthservice--bolts)
 	- [QMChatService](#qmauthservice)
+		- [QMChatService + Bolts](#qmchatservice--bolts)
 		- [QMDialogsMemoryStorage](#qmdialogsmemorystorage)
 		- [QMMessagesMemoryStorage](#qmmessagesmemorystorage)
 		- [QMChatAttachmentService](#qmchatattachmentservice)
@@ -583,7 +585,7 @@ Logout user from Quickblox.
 
 QMAuthService also has all methods implemented using BFTasks.
 
-Sign up user and log's in to Quickblox.
+Sign up user and log's in to Quickblox using Bolts.
 
 ```objective-c
 
@@ -591,7 +593,7 @@ Sign up user and log's in to Quickblox.
 
 ```
 
-Login user to Quickblox.
+Login user to Quickblox using Bolts.
 
 ```objective-c
 
@@ -599,7 +601,7 @@ Login user to Quickblox.
 
 ```
 
-Login with facebook session token.
+Login with facebook session token using Bolts.
 
 ```objective-c
 
@@ -607,7 +609,7 @@ Login with facebook session token.
 
 ```
 
-Logout user from Quickblox.
+Logout user from Quickblox using Bolts.
 
 ```objective-c
 
