@@ -77,7 +77,7 @@ $ cd MyXcodeProjectFolder
 $ git submodule add https://github.com/QuickBlox/q-municate-services-ios.git Vendor/QMServices
 $ git commit -m "Add QMServices submodule"
 ```
-Drag `Vendor/QMServices/QMServices ` into your existing Xcode project.
+Drag `Vendor/QMServices/QMServices.xcodeproj` into your existing Xcode project.
 
 Navigate to your project's settings, then select the target you wish to add QMServices to.
 
