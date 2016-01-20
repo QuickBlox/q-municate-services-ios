@@ -1128,6 +1128,11 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
         
         if (![message.readIDs containsObject:@([QBSession currentSession].currentUser.ID)]) {
             message.markable = YES;
+            
+            if (chatDialogToUpdate.unreadMessagesCount > 0) {
+                chatDialogToUpdate.unreadMessagesCount--;
+            }
+            
             __weak __typeof(self)weakSelf = self;
             dispatch_group_enter(readGroup);
             [[QBChat instance] readMessage:message completion:^(NSError *error) {
@@ -1135,9 +1140,6 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
                 if (error == nil) {
                     __typeof(weakSelf)strongSelf = weakSelf;
                     
-                    if (chatDialogToUpdate.unreadMessagesCount > 0) {
-                        chatDialogToUpdate.unreadMessagesCount--;
-                    }
                     // updating message in memory storage
                     [strongSelf.messagesMemoryStorage addMessage:message forDialogID:message.dialogID];
                     // calling multicast delegate
@@ -1150,11 +1152,13 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
         }
     }
     
+    // updating dialog in cache
+    if ([self.multicastDelegate respondsToSelector:@selector(chatService:didUpdateChatDialogInMemoryStorage:)]) {
+        [self.multicastDelegate chatService:self didUpdateChatDialogInMemoryStorage:chatDialogToUpdate];
+    }
+    
     dispatch_group_notify(readGroup, dispatch_get_main_queue(), ^{
-        //
-        if ([self.multicastDelegate respondsToSelector:@selector(chatService:didUpdateChatDialogInMemoryStorage:)]) {
-            [self.multicastDelegate chatService:self didUpdateChatDialogInMemoryStorage:chatDialogToUpdate];
-        }
+        
         if (completion) {
             completion(nil);
         }
