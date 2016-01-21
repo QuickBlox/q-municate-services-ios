@@ -99,7 +99,9 @@ Navigate to **Build Settings**, then search for **Framework Search Paths** and d
 
 > ** NOTE** Please be aware that if you've set Xcode's **Link Frameworks Automatically** to **No** then you may need to add the Quickblox.framework, CoreData.framework to your project on iOS, as UIKit does not include Core Data by default. On OS X, Cocoa includes Core Data.
 
-Remember, that you have to link *QMServices* in **Target Dependencies** and in **Link Binary with Libraries**.
+Now navigate to QMServices.xcodeproj subproject, open **Build Settings**, search for **Framework Search Paths** and locate Quickblox and Bolts frameworks folder there.
+Remember, that you have to link *QMServices* in **Target Dependencies** and *libQMServices.a* in **Link Binary with Libraries**.
+Don't forget to add Quickblox and Bolts frameworks to your project.
 
 ### Bundle generation
 **NOTE:** You can skip this step if you do not use dialogs, messages and users memory and disc storage.
