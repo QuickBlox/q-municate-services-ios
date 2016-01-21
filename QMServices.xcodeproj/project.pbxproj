@@ -33,7 +33,6 @@
 		55A3653D1A2744ED00C792C0 /* libQMChatCache.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 55A365341A2744ED00C792C0 /* libQMChatCache.a */; };
 		55A3653E1A2744ED00C792C0 /* libQMChatService.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 55A364EF1A27378F00C792C0 /* libQMChatService.a */; };
 		55A3653F1A2744ED00C792C0 /* libQMContactListCache.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 55A365391A2744ED00C792C0 /* libQMContactListCache.a */; };
-		56DE27FCE85EB9EE87541CC2 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AAFDDA46AE8F6A95CA17A95F /* libPods.a */; };
 		86E40FF11BDA4C50002B0496 /* libQMUsersCache.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 86F9CD721BDA28110021B6F0 /* libQMUsersCache.a */; };
 		86E40FF21BDA4C50002B0496 /* libQMUsersService.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 86F9CD571BDA27ED0021B6F0 /* libQMUsersService.a */; };
 /* End PBXBuildFile section */
@@ -212,7 +211,6 @@
 		55C276E51A0917AF005A0C38 /* QMAuthService.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMAuthService.xcodeproj; path = QMAuthService/QMAuthService.xcodeproj; sourceTree = "<group>"; };
 		86F9CD4E1BDA27ED0021B6F0 /* QMUsersService.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMUsersService.xcodeproj; path = QMUsersService/QMUsersService.xcodeproj; sourceTree = "<group>"; };
 		86F9CD6D1BDA28110021B6F0 /* QMUsersCache.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMUsersCache.xcodeproj; path = QMUsersCache/QMUsersCache.xcodeproj; sourceTree = "<group>"; };
-		AAFDDA46AE8F6A95CA17A95F /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -230,7 +228,6 @@
 				55A3651D1A2744A800C792C0 /* libQMContactListService.a in Frameworks */,
 				55A3651E1A2744A800C792C0 /* libQMDBStorage.a in Frameworks */,
 				55013AEC1A1F72350030C134 /* Foundation.framework in Frameworks */,
-				56DE27FCE85EB9EE87541CC2 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -259,7 +256,6 @@
 			isa = PBXGroup;
 			children = (
 				55013AEB1A1F72350030C134 /* Foundation.framework */,
-				AAFDDA46AE8F6A95CA17A95F /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -393,12 +389,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 55013A4F1A1F63920030C134 /* Build configuration list for PBXNativeTarget "QMServices" */;
 			buildPhases = (
-				307C130F128F0B9F09918DB0 /* Check Pods Manifest.lock */,
 				55013A2D1A1F63910030C134 /* Sources */,
 				55013A2E1A1F63910030C134 /* Frameworks */,
 				55AA62E81A232E7F00D73089 /* Headers */,
-				55AA62E91A232E8400D73089 /* ShellScript */,
-				C512B72BADECE8D900379944 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -575,52 +568,6 @@
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		307C130F128F0B9F09918DB0 /* Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		55AA62E91A232E8400D73089 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "echo \"\"";
-		};
-		C512B72BADECE8D900379944 /* Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		55013A2D1A1F63910030C134 /* Sources */ = {
