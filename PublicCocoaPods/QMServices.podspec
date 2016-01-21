@@ -27,13 +27,9 @@ Pod::Spec.new do |s|
   '#import <Quickblox/Quickblox.h>
 #import <CoreData/CoreData.h>
 #import <Quickblox/QBMulticastDelegate.h>
-#import <Bolts/Bolts.h>
-#import <libextobjc/EXTKeyPathCoding.h>
-#import <libextobjc/EXTScope.h>'
+#import <Bolts/Bolts.h>'
   s.resource_bundle = {'QMChatCacheModel' => 'QMChatCache/QMChatCache/CoreData/QMChatServiceModel.xcdatamodeld', 'QMContactListCacheModel' => 'QMContactListCache/QMContactListCache/CoreData/QMContactListModel.xcdatamodeld', 'QMUsersCacheModel' => 'QMUsersCache/QMUsersCache/CoreData/QMUsersModel.xcdatamodeld'}
 
   s.dependency "QuickBlox", "~> 2.5"
   s.dependency "Bolts",  '1.5.0'
-  s.dependency "libextobjc/EXTKeyPathCoding", '0.4.1'
-  s.dependency "libextobjc/EXTScope", '0.4.1'
 end
