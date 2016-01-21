@@ -12,5 +12,6 @@
     #import <MobileCoreServices/MobileCoreServices.h>
     #import <SystemConfiguration/SystemConfiguration.h>
     #import <Quickblox/Quickblox.h>
+    #import <Bolts/Bolts.h>
     #import <Quickblox/QBMulticastDelegate.h>
 #endif

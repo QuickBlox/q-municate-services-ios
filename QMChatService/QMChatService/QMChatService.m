@@ -818,14 +818,13 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
         }];
     }
     
-    @weakify(self);
+    __weak __typeof(self)weakSelf = self;
     dispatch_group_notify(messagesLoadGroup, dispatch_get_main_queue(), ^{
-        //
-        @strongify(self);
+        __typeof(weakSelf)strongSelf = weakSelf;
         
-        QBResponsePage *page = [QBResponsePage responsePageWithLimit:self.chatMessagesPerPage];
+        QBResponsePage *page = [QBResponsePage responsePageWithLimit:strongSelf.chatMessagesPerPage];
         NSMutableDictionary *parameters = [@{@"sort_desc" : @"date_sent"} mutableCopy];
-        QBChatMessage *lastMessage = [self.messagesMemoryStorage lastMessageFromDialogID:chatDialogID];
+        QBChatMessage *lastMessage = [strongSelf.messagesMemoryStorage lastMessageFromDialogID:chatDialogID];
         if (lastMessage != nil) {
             parameters[@"date_sent[gt]"] = @([lastMessage.dateSent timeIntervalSince1970]);
         }
@@ -839,13 +838,13 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
                                if ([sortedMessages count] > 0) {
                                    
                                    if (lastMessage == nil) {
-                                       [self.messagesMemoryStorage replaceMessages:sortedMessages forDialogID:chatDialogID];
+                                       [strongSelf.messagesMemoryStorage replaceMessages:sortedMessages forDialogID:chatDialogID];
                                    } else {
-                                       [self.messagesMemoryStorage addMessages:sortedMessages forDialogID:chatDialogID];
+                                       [strongSelf.messagesMemoryStorage addMessages:sortedMessages forDialogID:chatDialogID];
                                    }
                                    
-                                   if ([self.multicastDelegate respondsToSelector:@selector(chatService:didAddMessagesToMemoryStorage:forDialogID:)]) {
-                                       [self.multicastDelegate chatService:self didAddMessagesToMemoryStorage:sortedMessages forDialogID:chatDialogID];
+                                   if ([strongSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddMessagesToMemoryStorage:forDialogID:)]) {
+                                       [strongSelf.multicastDelegate chatService:strongSelf didAddMessagesToMemoryStorage:sortedMessages forDialogID:chatDialogID];
                                    }
                                }
                                
@@ -855,7 +854,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
                            } errorBlock:^(QBResponse *response) {
                                // case where we may have deleted dialog from another device
                                if( response.status != QBResponseStatusCodeNotFound ) {
-                                   [self.serviceManager handleErrorResponse:response];
+                                   [strongSelf.serviceManager handleErrorResponse:response];
                                }
                                
                                if (completion) {

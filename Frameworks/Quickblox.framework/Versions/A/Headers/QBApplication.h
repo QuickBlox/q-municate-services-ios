@@ -21,28 +21,17 @@
 + (QB_NONNULL QBApplication *)sharedApplication;
 
 /**
-* Storing and accessing Application ID
-*/
-@property (nonatomic) NSUInteger applicationId;
-
-/**
-* Storing and accessing Rest API Version
-*/
-@property (nonatomic, copy, QB_NULLABLE_PROPERTY) NSString *restAPIVersion;
-
-/**
-* Production or development environment for push notifications, works only if autoDetectEnvironment = NO.
-
- @warning Deprecated in 2.4.4. See 'autoDetectEnvironment'.
-*/
-@property (nonatomic, assign) BOOL productionEnvironmentForPushesEnabled DEPRECATED_MSG_ATTRIBUTE("Deprecated in 2.4.4. Please use automatic environment detection which is enabled by default.");
-
-/**
- *  Automatically detects environment for push notifications. By default is - YES.
+ *  Storing and accessing Application ID
  *
- *  @warning Deprecated in 2.4.4. Will be always enable.
+ *  @warning *Deprecated in QB iOS SDK 2.5.0:* Use [QBSettings applicationID], [QBSettings setApplicationID:] instead.
  */
-@property (nonatomic, assign) BOOL autoDetectEnvironment DEPRECATED_MSG_ATTRIBUTE("Deprecated in 2.4.4. Will be always enabled.");
+@property (nonatomic) NSUInteger applicationId DEPRECATED_MSG_ATTRIBUTE("Deprecated in 2.5. Use [QBSettings applicationID], [QBSettings setApplicationID:] instead");
 
+/**
+ *  Storing and accessing Rest API Version
+ *
+ *  @warning *Deprecated in QB iOS SDK 2.5.0:* Use [QBSettings restAPIVersion] instead.
+ */
+@property (nonatomic, readonly, QB_NONNULL_PROPERTY) NSString *restAPIVersion DEPRECATED_MSG_ATTRIBUTE("Deprecated in 2.5. Use [QBSettings restAPIVersion] instead");
 
 @end
