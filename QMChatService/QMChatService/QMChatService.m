@@ -119,6 +119,10 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 		[self.cacheDataSource cachedMessagesWithDialogID:dialogID block:^(NSArray *collection) {
 			
 			if (collection.count > 0) {
+                
+                if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didLoadMessagesFromCache:forDialogID:)]) {
+                    [weakSelf.multicastDelegate chatService:weakSelf didLoadMessagesFromCache:collection forDialogID:dialogID];
+                }
 				
 				[weakSelf.messagesMemoryStorage addMessages:collection forDialogID:dialogID];
 				
