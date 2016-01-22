@@ -7,3 +7,4 @@
 //
 
 FRAMEWORK_SEARCH_PATHS="../Frameworks"
+HEADER_SEARCH_PATHS="../Frameworks"/**
