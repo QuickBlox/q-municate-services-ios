@@ -90,7 +90,7 @@ Navigate to your project's settings, then select the target you wish to add QMSe
 
 Navigate to **Build Settings**, then search for **Header Search Paths** and double-click it to edit
 
-Add a new item using **+**: `"$(SRCROOT)/Vendor/QMServices/QMServices"` and ensure that it is set to *recursive*
+Add a new item using **+**: `"$(SRCROOT)/Vendor/QMServices"` and ensure that it is set to *recursive*
 
 Navigate to **Build Settings**, then search for **Framework Search Paths** and double-click it to edit
 
