@@ -28,6 +28,7 @@
 
 /* Begin PBXFileReference section */
 		1F3F4859E581B61768FFDA92 /* libPods-QMUsersService.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-QMUsersService.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		52F09DA01C5268670039258C /* Quickblox.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Quickblox.xcconfig; path = ../Quickblox.xcconfig; sourceTree = "<group>"; };
 		862360C41BDD5C6A0076D7A2 /* QBUUser+CustomData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QBUUser+CustomData.h"; sourceTree = "<group>"; };
 		862360C51BDD5C6A0076D7A2 /* QBUUser+CustomData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "QBUUser+CustomData.m"; sourceTree = "<group>"; };
 		862360C71BDD5C6A0076D7A2 /* QMUsersMemoryStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMUsersMemoryStorage.h; sourceTree = "<group>"; };
@@ -78,6 +79,7 @@
 		86F9CD391BDA27ED0021B6F0 = {
 			isa = PBXGroup;
 			children = (
+				52F09DA01C5268670039258C /* Quickblox.xcconfig */,
 				86F9CD441BDA27ED0021B6F0 /* QMUsersService */,
 				86F9CD431BDA27ED0021B6F0 /* Products */,
 				78F9ADBF4D76C7672C37858E /* Frameworks */,
@@ -171,6 +173,7 @@
 /* Begin XCBuildConfiguration section */
 		86F9CD491BDA27ED0021B6F0 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 52F09DA01C5268670039258C /* Quickblox.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -213,6 +216,7 @@
 		};
 		86F9CD4A1BDA27ED0021B6F0 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 52F09DA01C5268670039258C /* Quickblox.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -249,11 +253,15 @@
 		};
 		86F9CD4C1BDA27ED0021B6F0 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 52F09DA01C5268670039258C /* Quickblox.xcconfig */;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = "../Frameworks/**";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "QMUsersService/QMUsersService-Prefix.pch";
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/../**";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../**",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -262,11 +270,15 @@
 		};
 		86F9CD4D1BDA27ED0021B6F0 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 52F09DA01C5268670039258C /* Quickblox.xcconfig */;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = "../Frameworks/**";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "QMUsersService/QMUsersService-Prefix.pch";
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/../**";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../**",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
