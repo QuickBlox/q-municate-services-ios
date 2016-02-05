@@ -8,11 +8,11 @@
 
 Pod::Spec.new do |s|
   s.name         = "QMServicesDevelopment"
-  s.version      = "0.3.5"
+  s.version      = "0.3.6"
   s.summary      = "Easy-to-use services for Quickblox SDK, for speeding up development of iOS chat applications."
   s.homepage     = "https://github.com/QuickBlox/q-municate-services-ios"
   s.license      = { :type => 'MIT', :file => 'LICENSE.txt' }
-  s.author       = { "Gleb Ustimenko" => "gleb.ustimenko@injoit.com" }
+  s.author       = { "Andrey Ivanov" => "andrey.ivanov@quickblox.com" }
   s.platform     = :ios, "7.0"
   s.source       = { :git => "https://github.com/QuickBlox/q-municate-services-ios.git", :tag => "#{s.version}"}
   s.source_files  = "**/*.{h,m}"
