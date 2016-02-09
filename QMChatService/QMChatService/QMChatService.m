@@ -379,7 +379,10 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 		chatDialogToUpdate.lastMessageDate = message.dateSent;
         chatDialogToUpdate.updatedAt = message.dateSent;
         
-        if (message.senderID != [QBSession currentSession].currentUser.ID) {
+        if (message.senderID != [QBSession currentSession].currentUser.ID
+            && !(chatDialogToUpdate.type == QBChatDialogTypePrivate && message.delayed))
+        {
+            
             chatDialogToUpdate.unreadMessagesCount++;
         }
         
