@@ -42,6 +42,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		14E9F54E1C6CA35B007F58B7 /* QMModel2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = QMModel2.xcdatamodel; sourceTree = "<group>"; };
 		550678C71A237C7B00660A12 /* QMChatCacheModel.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = QMChatCacheModel.bundle; sourceTree = "<group>"; };
 		554A280B1A0CE16200C4E03C /* QMModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = QMModel.xcdatamodel; sourceTree = "<group>"; };
 		554A287D1A0CECA000C4E03C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -595,9 +596,10 @@
 		554A280A1A0CE16200C4E03C /* QMChatServiceModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				14E9F54E1C6CA35B007F58B7 /* QMModel2.xcdatamodel */,
 				554A280B1A0CE16200C4E03C /* QMModel.xcdatamodel */,
 			);
-			currentVersion = 554A280B1A0CE16200C4E03C /* QMModel.xcdatamodel */;
+			currentVersion = 14E9F54E1C6CA35B007F58B7 /* QMModel2.xcdatamodel */;
 			path = QMChatServiceModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
