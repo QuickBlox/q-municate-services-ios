@@ -100,7 +100,7 @@
 - (NSDictionary *) defaultStoreOptions
 {
     NSDictionary *options = @{ QMCDRecordShouldDeletePersistentStoreOnModelMismatchKey:
-                                   @(self.shouldDeletePersistentStoreOnModelMismatch)};
+                                   @(self.shouldDeletePersistentStoreOnModelMismatch) };
     return options;
 }
 
