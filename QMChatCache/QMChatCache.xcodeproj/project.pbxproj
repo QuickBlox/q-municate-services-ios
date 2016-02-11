@@ -180,7 +180,7 @@
 				554A28771A0CECA000C4E03C /* Frameworks */,
 				554A28781A0CECA000C4E03C /* Resources */,
 				FB09C0D91B1DA8A100D00158 /* ShellScript */,
-				865A68931B1F3541003AC969 /* ShellScript */,
+				865A68931B1F3541003AC969 /* Run Script */,
 			);
 			buildRules = (
 			);
@@ -270,13 +270,14 @@
 			shellPath = "/bin/sh  ../Scripts/mogenerator.sh QMCCModelIncludes.h QMChatServiceModel.xcdatamodeld QMChatCache";
 			shellScript = "";
 		};
-		865A68931B1F3541003AC969 /* ShellScript */ = {
+		865A68931B1F3541003AC969 /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "Run Script";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
