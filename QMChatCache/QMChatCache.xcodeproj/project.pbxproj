@@ -42,11 +42,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		14E9F54E1C6CA35B007F58B7 /* QMModel2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = QMModel2.xcdatamodel; sourceTree = "<group>"; };
 		550678C71A237C7B00660A12 /* QMChatCacheModel.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = QMChatCacheModel.bundle; sourceTree = "<group>"; };
 		554A280B1A0CE16200C4E03C /* QMModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = QMModel.xcdatamodel; sourceTree = "<group>"; };
 		554A287D1A0CECA000C4E03C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5590F2751A0B8C4200C5044F /* QMChatCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = QMChatCache.h; sourceTree = "<group>"; };
-		5590F2771A0B8C4200C5044F /* QMChatCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = QMChatCache.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		5590F2771A0B8C4200C5044F /* QMChatCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = QMChatCache.m; sourceTree = "<group>"; };
 		55A620CA1A0BB87F001BA470 /* QMChatCache-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = "QMChatCache-Prefix.pch"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		55A621051A0BDC5D001BA470 /* CDAttachment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDAttachment.h; sourceTree = "<group>"; };
 		55A621061A0BDC5D001BA470 /* CDAttachment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDAttachment.m; sourceTree = "<group>"; };
@@ -179,7 +180,7 @@
 				554A28771A0CECA000C4E03C /* Frameworks */,
 				554A28781A0CECA000C4E03C /* Resources */,
 				FB09C0D91B1DA8A100D00158 /* ShellScript */,
-				865A68931B1F3541003AC969 /* ShellScript */,
+				865A68931B1F3541003AC969 /* Run Script */,
 			);
 			buildRules = (
 			);
@@ -269,13 +270,14 @@
 			shellPath = "/bin/sh  ../Scripts/mogenerator.sh QMCCModelIncludes.h QMChatServiceModel.xcdatamodeld QMChatCache";
 			shellScript = "";
 		};
-		865A68931B1F3541003AC969 /* ShellScript */ = {
+		865A68931B1F3541003AC969 /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "Run Script";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -595,9 +597,10 @@
 		554A280A1A0CE16200C4E03C /* QMChatServiceModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				14E9F54E1C6CA35B007F58B7 /* QMModel2.xcdatamodel */,
 				554A280B1A0CE16200C4E03C /* QMModel.xcdatamodel */,
 			);
-			currentVersion = 554A280B1A0CE16200C4E03C /* QMModel.xcdatamodel */;
+			currentVersion = 14E9F54E1C6CA35B007F58B7 /* QMModel2.xcdatamodel */;
 			path = QMChatServiceModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
