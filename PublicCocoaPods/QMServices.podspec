@@ -14,7 +14,7 @@ Pod::Spec.new do |s|
   s.version      = "0.3.7"
   s.summary      = "Easy-to-use services for Quickblox SDK, for speeding up development of iOS chat applications."
   s.homepage     = "https://github.com/QuickBlox/q-municate-services-ios"
-  s.license      = { :type => 'MIT', :file => 'LICENSE.txt' }
+  s.license      = { :type => 'BSD', :file => 'LICENSE.txt' }
   s.author       = { "Andrey Ivanov" => "andrey.ivanov@quickblox.com" }
   s.platform     = :ios, "7.0"
   s.source       = { :git => "https://github.com/QuickBlox/q-municate-services-ios.git", :tag => "#{s.version}"}
