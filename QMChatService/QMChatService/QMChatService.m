@@ -425,7 +425,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
                 }
             }
             // new custom parameters handling
-            else if (message.dialogUpdateType > 0) {
+            else if (message.dialogUpdateType != QMDialogUpdateTypeNone) {
                 
                 NSDate *updatedAt = nil;
                 if (message.deletedOccupantsIDs.count > 0) {
