@@ -7,8 +7,6 @@
 //
 
 #import "QMChatService.h"
-#import "QBChatMessage+TextEncoding.h"
-#import "NSString+GTMNSStringHTMLAdditions.h"
 #import "QBChatMessage+QMCustomParameters.h"
 
 const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
@@ -338,7 +336,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
             
             if (messages.count > 0) {
                 QBChatMessage *lastMessage = [messages lastObject];
-                dialogToAdd.lastMessageText = [lastMessage encodedText];
+                dialogToAdd.lastMessageText = [lastMessage text];
                 dialogToAdd.lastMessageDate = lastMessage.dateSent;
                 dialogToAdd.updatedAt       = lastMessage.dateSent;
                 dialogToAdd.unreadMessagesCount++;
@@ -383,7 +381,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
             shouldSaveDialog = YES;
         }
         
-		chatDialogToUpdate.lastMessageText = message.encodedText;
+		chatDialogToUpdate.lastMessageText = message.text;
 		chatDialogToUpdate.lastMessageDate = message.dateSent;
         chatDialogToUpdate.updatedAt = message.dateSent;
         
@@ -466,7 +464,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
                 }
             }
             
-            chatDialogToUpdate.lastMessageText = message.encodedText;
+            chatDialogToUpdate.lastMessageText = message.text;
             
             if (message.senderID != [QBSession currentSession].currentUser.ID) {
                 chatDialogToUpdate.unreadMessagesCount++;
@@ -480,7 +478,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     else if (message.messageType == QMMessageTypeContactRequest || message.messageType == QMMessageTypeAcceptContactRequest || message.messageType == QMMessageTypeRejectContactRequest || message.messageType == QMMessageTypeDeleteContactRequest) {
 
         if (chatDialogToUpdate != nil) {
-            chatDialogToUpdate.lastMessageText = message.encodedText;
+            chatDialogToUpdate.lastMessageText = message.text;
             chatDialogToUpdate.lastMessageDate = message.dateSent;
             chatDialogToUpdate.updatedAt = message.dateSent;
             chatDialogToUpdate.unreadMessagesCount++;
@@ -492,7 +490,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
         else {
             chatDialogToUpdate = [[QBChatDialog alloc] initWithDialogID:message.dialogID type:QBChatDialogTypePrivate];
             chatDialogToUpdate.occupantIDs = @[@([self.serviceManager currentUser].ID), @(message.senderID)];
-            chatDialogToUpdate.lastMessageText = message.encodedText;
+            chatDialogToUpdate.lastMessageText = message.text;
             chatDialogToUpdate.lastMessageDate = message.dateSent;
             chatDialogToUpdate.updatedAt = message.dateSent;
             chatDialogToUpdate.unreadMessagesCount++;
@@ -1044,8 +1042,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
          completion:(QBChatCompletionBlock)completion
 {
     message.dateSent = [NSDate date];
-    message.text = [message.text gtm_stringByEscapingForHTML];
-    
+
     //Save to history
     if (saveToHistory) {
         message.saveToHistory = kChatServiceSaveToHistoryTrue;
@@ -1074,7 +1071,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
                 [self.multicastDelegate chatService:self didAddMessageToMemoryStorage:message forDialogID:dialog.ID];
             }
             
-            dialog.lastMessageText = message.encodedText;
+            dialog.lastMessageText = message.text;
             dialog.lastMessageDate = message.dateSent;
             dialog.updatedAt = message.dateSent;
             
