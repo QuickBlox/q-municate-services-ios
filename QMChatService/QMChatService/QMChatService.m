@@ -411,6 +411,12 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 
         if (chatDialogToUpdate) {
             
+            NSNumber * currentUserID = @([self.serviceManager currentUser].ID);
+            //if current user leaves the chat there are no needs for updating the dialog
+            if ([message.deletedOccupantsIDs containsObject:currentUserID]) {
+                return;
+            }
+            
             // old custom parameters handling
             if (message.dialog != nil) {
                 
