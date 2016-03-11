@@ -849,9 +849,10 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 
 - (void)deleteMessagesLocally:(NSArray *)messages forDialogID:(NSString *)dialogID {
     
+    NSArray *messagesToDelete = messages.copy;
     [self.messagesMemoryStorage deleteMessages:messages forDialogID:dialogID];
     if ([self.multicastDelegate respondsToSelector:@selector(chatService:didDeleteMessagesFromMemoryStorage:forDialogID:)]) {
-        [self.multicastDelegate chatService:self didDeleteMessagesFromMemoryStorage:messages forDialogID:dialogID];
+        [self.multicastDelegate chatService:self didDeleteMessagesFromMemoryStorage:messagesToDelete forDialogID:dialogID];
     }
 }
 
@@ -863,7 +864,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
         // loading messages from cache
         dispatch_group_enter(messagesLoadGroup);
         [self loadCachedMessagesWithDialogID:chatDialogID compleion:^{
-            //
+            
             dispatch_group_leave(messagesLoadGroup);
         }];
     }
