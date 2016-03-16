@@ -14,23 +14,23 @@
     
     QBUUser *qbUser = [QBUUser user];
     
-    qbUser.ID = self.id.integerValue;
-    qbUser.updatedAt = self.updatedAt;
-    qbUser.createdAt = self.createdAt;
+    qbUser.ID				= self.id.integerValue;
+    qbUser.updatedAt		= self.updatedAt;
+    qbUser.createdAt		= self.createdAt;
     
-    qbUser.externalUserID = self.externalUserID.integerValue;
-    qbUser.blobID = self.blobID.integerValue;
-    qbUser.facebookID = self.facebookID;
-    qbUser.twitterID = self.twitterID;
-    qbUser.fullName = self.fullName;
-    qbUser.email = self.email;
-    qbUser.login = self.login;
-    qbUser.phone = self.phone;
-    qbUser.website = self.website;
-    
+    qbUser.externalUserID	= self.externalUserID.integerValue;
+    qbUser.blobID			= self.blobID.integerValue;
+    qbUser.facebookID		= self.facebookID;
+    qbUser.twitterID		= self.twitterID;
+    qbUser.fullName			= self.fullName;
+    qbUser.email			= self.email;
+    qbUser.login			= self.login;
+    qbUser.phone			= self.phone;
+    qbUser.website			= self.website;
+	qbUser.lastRequestAt	= self.lastRequestAt;
+	qbUser.customData		= self.customData;
+	
     qbUser.tags = [self.tags componentsSeparatedByString:@","].mutableCopy;
-    
-    qbUser.customData = self.customData;
     
     return qbUser;
 }
@@ -52,6 +52,7 @@
     self.website = user.website;
     self.tags = [user.tags componentsJoinedByString:@","];
     self.customData = user.customData;
+	self.lastRequestAt = user.lastRequestAt;
 }
 
 
