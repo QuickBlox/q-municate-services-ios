@@ -98,12 +98,12 @@ typedef void(^QMCacheCollection)(NSArray *collection);
  *  Automatically send chat presences when logged in
  *  Default value: YES
  */
-@property (nonatomic, assign) BOOL automaticallySendPresences;
+@property (nonatomic, assign) BOOL automaticallySendPresences DEPRECATED_ATTRIBUTE;
 
 /**
  *  Default value: 45 seconds
  */
-@property (nonatomic, assign) NSTimeInterval presenceTimerInterval;
+@property (nonatomic, assign) NSTimeInterval presenceTimerInterval DEPRECATED_ATTRIBUTE;
 
 #pragma mark - Group dialog join
 

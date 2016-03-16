@@ -51,8 +51,8 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 		
 		_cacheDataSource = cacheDataSource;
 		
-		_presenceTimerInterval = 45.0;
-		_automaticallySendPresences = YES;
+//		_presenceTimerInterval = 45.0;
+//		_automaticallySendPresences = YES;
         
         _loadedAllMessages = [NSMutableDictionary dictionary];
         _lastMessagesLoadDate = [NSMutableDictionary dictionary];
@@ -151,7 +151,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 
 - (void)chatDidFailWithStreamError:(NSError *)error {
 	
-	[self stopSendPresence];
+	//[self stopSendPresence];
     
     if ([self.multicastDelegate respondsToSelector:@selector(chatServiceChatDidFailWithStreamError:)]) {
         [self.multicastDelegate chatServiceChatDidFailWithStreamError:error];
@@ -160,9 +160,9 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 
 - (void)chatDidConnect
 {
-    if (self.automaticallySendPresences){
-        [self startSendPresence];
-    }
+//    if (self.automaticallySendPresences){
+//        [self startSendPresence];
+//    }
     
     // Enabling carbons for chat
     [QBSettings setCarbonsEnabled:YES];
@@ -284,34 +284,34 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 
 - (void)disconnectWithCompletionBlock:(QBChatCompletionBlock)completion {
     
-    [self stopSendPresence];
+//    [self stopSendPresence];
     [[QBChat instance] disconnectWithCompletionBlock:completion];
 }
 
 #pragma mark - Presence
 
-- (void)startSendPresence {
-	
-	[self sendPresence:nil];
-	
-	self.presenceTimer =
-	[NSTimer scheduledTimerWithTimeInterval:self.presenceTimerInterval
-									 target:self
-								   selector:@selector(sendPresence:)
-								   userInfo:nil
-									repeats:YES];
-}
-
-- (void)sendPresence:(NSTimer *)timer {
-	
-	[QBChat.instance sendPresence];
-}
-
-- (void)stopSendPresence {
-	
-	[self.presenceTimer invalidate];
-	self.presenceTimer = nil;
-}
+//- (void)startSendPresence {
+//	
+//	[self sendPresence:nil];
+//	
+//	self.presenceTimer =
+//	[NSTimer scheduledTimerWithTimeInterval:self.presenceTimerInterval
+//									 target:self
+//								   selector:@selector(sendPresence:)
+//								   userInfo:nil
+//									repeats:YES];
+//}
+//
+//- (void)sendPresence:(NSTimer *)timer {
+//	
+//	[QBChat.instance sendPresence];
+//}
+//
+//- (void)stopSendPresence {
+//	
+//	[self.presenceTimer invalidate];
+//	self.presenceTimer = nil;
+//}
 
 #pragma mark - Handle Chat messages
 
