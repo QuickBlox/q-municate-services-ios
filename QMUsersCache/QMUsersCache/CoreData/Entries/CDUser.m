@@ -27,7 +27,6 @@
     qbUser.login = self.login;
     qbUser.phone = self.phone;
     qbUser.website = self.website;
-    qbUser.lastRequestAt = self.lastRequestAt;
     
     qbUser.tags = [self.tags componentsSeparatedByString:@","].mutableCopy;
     
@@ -51,7 +50,6 @@
     self.login = user.login;
     self.phone = user.phone;
     self.website = user.website;
-    self.lastRequestAt = user.lastRequestAt;
     self.tags = [user.tags componentsJoinedByString:@","];
     self.customData = user.customData;
 }
