@@ -373,7 +373,11 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
         if (!chatDialogToUpdate)
         {
             chatDialogToUpdate = [[QBChatDialog alloc] initWithDialogID:message.dialogID type:QBChatDialogTypePrivate];
-            chatDialogToUpdate.occupantIDs = @[@([self.serviceManager currentUser].ID), @(message.senderID)];
+            
+            BOOL isCarbon = [self.serviceManager currentUser].ID == message.recipientID;
+            
+
+            chatDialogToUpdate.occupantIDs = @[@([self.serviceManager currentUser].ID), @(isCarbon ? message.senderID: message.recipientID)];
             
             shouldSaveDialog = YES;
         }
@@ -818,7 +822,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
         }
     } errorBlock:^(QBResponse *response) {
         //
-        if (response.status == QBResponseStatusCodeNotFound) {
+        if (response.status == QBResponseStatusCodeNotFound || response.status == QBResponseStatusCodeForbidden) {
             [weakSelf.dialogsMemoryStorage deleteChatDialogWithID:dialogId];
             
             if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didDeleteChatDialogWithIDFromMemoryStorage:)]) {
@@ -826,6 +830,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
             }
         }
         else {
+            
             [weakSelf.serviceManager handleErrorResponse:response];
         }
         
