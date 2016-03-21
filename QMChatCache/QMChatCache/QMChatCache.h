@@ -77,6 +77,7 @@
  *  @param completion Completion block is called after delete all dialogs operation is completed
  */
 - (void)deleteAllDialogsWithCompletion:(QB_NULLABLE dispatch_block_t)completion;
+- (void)deleteAllDialogs:(QB_NULLABLE dispatch_block_t)completion DEPRECATED_MSG_ATTRIBUTE("use 'deleteAllDialogsWithCompletion:' instead.");
 
 #pragma mark Fetch dialog operations
 
@@ -184,6 +185,7 @@
  *  @param completion Completion block that is called after the delete all messages operation  has completed.
  */
 - (void)deleteAllMessagesWithCompletion:(QB_NULLABLE dispatch_block_t)completion;
+- (void)deleteAllMessages:(QB_NULLABLE dispatch_block_t)completion DEPRECATED_MSG_ATTRIBUTE("use 'deleteAllMessagesWithCompletion:' instead.");
 
 
 #pragma mark Fetch Messages operations

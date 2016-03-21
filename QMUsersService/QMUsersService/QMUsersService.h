@@ -197,6 +197,7 @@
  *  @param block Block for provide QBUUsers collection
  */
 - (void)cachedUsersWithCompletion:(void(^QB_NULLABLE_S)(NSArray *QB_NULLABLE_S collection))block;
+- (void)cachedUsers:(void(^QB_NULLABLE_S)(NSArray *QB_NULLABLE_S collection))block DEPRECATED_MSG_ATTRIBUTE("use 'cachedUsersWithCompletion:' instead.");
 
 @end
 

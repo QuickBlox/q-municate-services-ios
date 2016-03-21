@@ -186,6 +186,10 @@ static QMChatCache *_chatCacheInstance = nil;
     }];
 }
 
+- (void)deleteAllDialogs:(dispatch_block_t)completion {
+	[self deleteAllDialogsWithCompletion:completion];
+}
+
 #pragma mark Utils
 
 - (void)insertQBChatDialogs:(NSArray *)qbChatDialogs inContext:(NSManagedObjectContext *)context {
@@ -476,6 +480,10 @@ static QMChatCache *_chatCacheInstance = nil;
             }
         }];
     }];
+}
+
+-(void)deleteAllMessages:(dispatch_block_t)completion {
+	[self deleteAllMessagesWithCompletion:completion];
 }
 
 @end

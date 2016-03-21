@@ -92,7 +92,7 @@ typedef void(^QMCacheCollection)(NSArray *QB_NULLABLE_S collection);
  *
  *  @param completion   The block which informs whether a chat did disconnect or not. nil if no errors.
  */
-- (void)disconnectWithCompletionBlock:(QB_NONNULL QBChatCompletionBlock)completion;
+- (void)disconnectWithCompletionBlock:(QB_NULLABLE QBChatCompletionBlock)completion;
 
 /**
  *  Automatically send chat presences when logged in
