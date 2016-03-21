@@ -56,7 +56,7 @@
 /* Begin PBXFileReference section */
 		145C58FA1C99806B00740FF4 /* QMUsersModel2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = QMUsersModel2.xcdatamodel; sourceTree = "<group>"; };
 		28A9F32CF877B56314D17DE6 /* libPods-QMUsersCache.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-QMUsersCache.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		52F09D9E1C5267D70039258C /* Quickblox.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Quickblox.xcconfig; path = ../Quickblox.xcconfig; sourceTree = "<group>"; };
+		52F09D9E1C5267D70039258C /* Quickblox.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Quickblox.xcconfig; path = ../Quickblox.xcconfig; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.xcconfig; };
 		86E40FB81BDA34D8002B0496 /* QMUsersCacheModel.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QMUsersCacheModel.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		86E40FBA1BDA34D8002B0496 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		86E40FC41BDA3881002B0496 /* CDUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDUser.h; path = CoreData/Entries/CDUser.h; sourceTree = "<group>"; };
