@@ -197,7 +197,14 @@
  *  @param block Block for provide QBUUsers collection
  */
 - (void)cachedUsersWithCompletion:(void(^QB_NULLABLE_S)(NSArray *QB_NULLABLE_S collection))block;
-- (void)cachedUsers:(void(^QB_NULLABLE_S)(NSArray *QB_NULLABLE_S collection))block DEPRECATED_MSG_ATTRIBUTE("use 'cachedUsersWithCompletion:' instead.");
+
+/**
+ *  Is called when users service will start. Need to use for inserting initial data QMUsersMemoryStorage.
+ *
+ *  @param block Block for provide QBUUsers collection
+ *  @warning *Deprecated in 0.3.8:* Use 'cachedUsersWithCompletion:' instead.
+ */
+- (void)cachedUsers:(void(^QB_NULLABLE_S)(NSArray *QB_NULLABLE_S collection))block DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.3.8. Use 'cachedUsersWithCompletion:' instead.");
 
 @end
 

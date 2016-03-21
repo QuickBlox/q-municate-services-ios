@@ -77,7 +77,14 @@
  *  @param completion Completion block is called after delete all dialogs operation is completed
  */
 - (void)deleteAllDialogsWithCompletion:(QB_NULLABLE dispatch_block_t)completion;
-- (void)deleteAllDialogs:(QB_NULLABLE dispatch_block_t)completion DEPRECATED_MSG_ATTRIBUTE("use 'deleteAllDialogsWithCompletion:' instead.");
+
+/**
+ *  Delete all dialogs
+ *
+ *  @param completion Completion block is called after delete all dialogs operation is completed
+ *  @warning *Deprecated in 0.3.8:* Use 'deleteAllDialogsWithCompletion:' instead.
+ */
+- (void)deleteAllDialogs:(QB_NULLABLE dispatch_block_t)completion DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.3.8. Use 'deleteAllDialogsWithCompletion:' instead.");
 
 #pragma mark Fetch dialog operations
 
@@ -185,7 +192,14 @@
  *  @param completion Completion block that is called after the delete all messages operation  has completed.
  */
 - (void)deleteAllMessagesWithCompletion:(QB_NULLABLE dispatch_block_t)completion;
-- (void)deleteAllMessages:(QB_NULLABLE dispatch_block_t)completion DEPRECATED_MSG_ATTRIBUTE("use 'deleteAllMessagesWithCompletion:' instead.");
+
+/**
+ *  Delete all messages
+ *
+ *  @param completion Completion block that is called after the delete all messages operation  has completed.
+ *  @warning *Deprecated in 0.3.8:* Use 'deleteAllMessagesWithCompletion:' instead.
+ */
+- (void)deleteAllMessages:(QB_NULLABLE dispatch_block_t)completion DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.3.8:* Use 'deleteAllMessagesWithCompletion:' instead.");
 
 
 #pragma mark Fetch Messages operations
