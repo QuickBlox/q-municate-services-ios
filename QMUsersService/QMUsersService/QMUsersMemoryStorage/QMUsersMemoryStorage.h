@@ -73,7 +73,7 @@ extern const struct QMUsersSearchKeyStruct QMUsersSearchKey;
  *
  *  @return Array of QBUUsers instances as users
  */
-- (QB_NULLABLE NSArray *)contactsSortedByKey:(QB_NONNULL NSString *)key ascending:(BOOL)ascending;
+- (QB_NULLABLE NSArray QB_GENERIC(QBUUser *)*)contactsSortedByKey:(QB_NONNULL NSString *)key ascending:(BOOL)ascending;
 
 #pragma mark Utils
 
@@ -114,7 +114,7 @@ extern const struct QMUsersSearchKeyStruct QMUsersSearchKey;
  *
  *  @return Array of QBUUser instances as users
  */
-- (QB_NULLABLE NSArray *)usersWithIDs:(QB_NONNULL NSArray QB_GENERIC(NSNumber *)*)ids;
+- (QB_NULLABLE NSArray QB_GENERIC(QBUUser *)*)usersWithIDs:(QB_NONNULL NSArray QB_GENERIC(NSNumber *)*)ids;
 
 /**
  *  Get users with user logins.
