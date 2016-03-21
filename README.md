@@ -213,7 +213,7 @@ Also you have to implement **QMServiceManagerProtocol** methods:
 	// handle error response from services here
 }
 
-- (BOOL)isAutorized {
+- (BOOL)isAuthorized {
 	return self.authService.isAuthorized;
 }
 
@@ -276,7 +276,7 @@ Also for prefetching initial dialogs and messages you have to implement **QMChat
 We encourage to use automatic session creation, to simplify communication with backend:
 
 ```objective-c
-[QBConnection setAutoCreateSessionEnabled:YES];
+[QBSettings setAutoCreateSessionEnabled:YES];
 ```
 
 ### Login
@@ -331,9 +331,9 @@ Example of usage:
     // Logging in to Quickblox REST API and chat.
     [QMServicesManager.instance logInWithUser:selectedUser completion:^(BOOL success, NSString *errorMessage) {
         if (success) {
-        	// Handle success login
+            // Handle success login
         } else {
-            	// Handle error with error message
+            // Handle error with error message
         }
     }];
 ```
@@ -344,8 +344,8 @@ Example of usage:
 - (void)logoutWithCompletion:(dispatch_block_t)completion
 {
     if ([QBSession currentSession].currentUser != nil) {
-        __weak typeof(self)weakSelf = self;    
-        
+        __weak typeof(self)weakSelf = self;
+                
         dispatch_group_enter(self.logoutGroup);
         [self.authService logOut:^(QBResponse *response) {
             __typeof(self) strongSelf = weakSelf;
@@ -355,13 +355,13 @@ Example of usage:
         }];
         
         dispatch_group_enter(self.logoutGroup);
-        [[QMChatCache instance] deleteAllDialogs:^{
+        [[QMChatCache instance] deleteAllDialogsWithCompletion:^{
             __typeof(self) strongSelf = weakSelf;
             dispatch_group_leave(strongSelf.logoutGroup);
         }];
         
         dispatch_group_enter(self.logoutGroup);
-        [[QMChatCache instance] deleteAllMessages:^{
+        [[QMChatCache instance] deleteAllMessagesWithCompletion:^{
             __typeof(self) strongSelf = weakSelf;
             dispatch_group_leave(strongSelf.logoutGroup);
         }];
@@ -513,7 +513,7 @@ Implementation file:
     
     [super handleErrorResponse:response];
     
-    if (![self isAutorized]) return;
+    if (![self isAuthorized]) return;
 	NSString *errorMessage = [[response.error description] stringByReplacingOccurrencesOfString:@"(" withString:@""];
 	errorMessage = [errorMessage stringByReplacingOccurrencesOfString:@")" withString:@""];
 	
@@ -560,7 +560,7 @@ Current user authorisation status:
 
 ```
 
-Sign up user and log's in to Quickblox.
+Sign up user and login to Quickblox.
 
 ```objective-c
 
@@ -645,22 +645,6 @@ Disconnect user from Quickblox chat.
 ```objective-c
 
 - (void)disconnectWithCompletionBlock:(QBChatCompletionBlock)completion;
-
-```
-
-Automatically send presences after logging in to Quickblox chat.
-
-```objective-c
-
-@property (nonatomic, assign) BOOL automaticallySendPresences;
-
-```
-
-Time interval for sending preseneces - default value 45 seconds.
-
-```objective-c
-
-@property (nonatomic, assign) NSTimeInterval presenceTimerInterval;
 
 ```
 
