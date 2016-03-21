@@ -234,7 +234,7 @@
 
 #pragma mark - QMUsersServiceCacheDataSource
 
-- (void)cachedUsers:(QMCacheCollection)block {
+- (void)cachedUsersWithCompletion:(QMCacheCollection)block {
     [[QMUsersCache.instance usersSortedBy:@"id" ascending:YES] continueWithExecutor:[BFExecutor mainThreadExecutor]
                                                                           withBlock:^id(BFTask *task) {
                                                                               if (block) block(task.result);
