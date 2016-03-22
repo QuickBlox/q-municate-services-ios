@@ -28,7 +28,7 @@
 
 /* Begin PBXFileReference section */
 		1F3F4859E581B61768FFDA92 /* libPods-QMUsersService.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-QMUsersService.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		52F09DA01C5268670039258C /* Quickblox.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Quickblox.xcconfig; path = ../Quickblox.xcconfig; sourceTree = "<group>"; };
+		52F09DA01C5268670039258C /* Quickblox.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Quickblox.xcconfig; path = ../Quickblox.xcconfig; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.xcconfig; };
 		862360C41BDD5C6A0076D7A2 /* QBUUser+CustomData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QBUUser+CustomData.h"; sourceTree = "<group>"; };
 		862360C51BDD5C6A0076D7A2 /* QBUUser+CustomData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "QBUUser+CustomData.m"; sourceTree = "<group>"; };
 		862360C71BDD5C6A0076D7A2 /* QMUsersMemoryStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMUsersMemoryStorage.h; sourceTree = "<group>"; };

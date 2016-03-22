@@ -69,7 +69,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 
 #pragma mark - Load cached data
 
-- (void)loadCachedDialogsWithCompletion:(void(^)())completion
+- (void)loadCachedDialogsWithCompletion:(QB_NULLABLE dispatch_block_t)completion
 {
     __weak __typeof(self)weakSelf = self;
 	
@@ -538,9 +538,9 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 #pragma mark - Dialog history
 
 - (void)allDialogsWithPageLimit:(NSUInteger)limit
-				extendedRequest:(NSDictionary *)extendedRequest
-				iterationBlock:(void(^)(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, BOOL *stop))interationBlock
-					 completion:(void(^)(QBResponse *response))completion {
+				extendedRequest:(NSDictionary *QB_NULLABLE_S)extendedRequest
+				 iterationBlock:(void(^QB_NULLABLE_S )(QBResponse *QB_NULLABLE_S response, NSArray QB_GENERIC(QBChatDialog *) *QB_NULLABLE_S dialogObjects, NSSet QB_GENERIC(NSNumber *) * QB_NULLABLE_S dialogsUsersIDs, BOOL *QB_NONNULL_S stop))iterationBlock
+					 completion:(void(^QB_NULLABLE_S)(QBResponse *QB_NULLABLE_S response))completion {
 	
 	__weak __typeof(self)weakSelf = self;
 	
@@ -591,7 +591,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 				cancel = YES;
 			}
 			
-			interationBlock(response, dialogObjects, dialogsUsersIDs, &cancel);
+			iterationBlock(response, dialogObjects, dialogsUsersIDs, &cancel);
             
             if (!cancel) {
 				t_request();
@@ -838,7 +838,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     }
 }
 
-- (void)messagesWithChatDialogID:(NSString *)chatDialogID completion:(void(^)(QBResponse *response, NSArray *messages))completion {
+- (void)messagesWithChatDialogID:(QB_NONNULL NSString *)chatDialogID completion:(void(^QB_NULLABLE_S)(QBResponse *QB_NONNULL_S response, NSArray QB_GENERIC(QBChatMessage *) *QB_NULLABLE_S messages))completion {
 	
     dispatch_group_t messagesLoadGroup = dispatch_group_create();
     if ([[self.messagesMemoryStorage messagesWithDialogID:chatDialogID] count] == 0) {
@@ -905,7 +905,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     });
 }
 
-- (void)earlierMessagesWithChatDialogID:(NSString *)chatDialogID completion:(void(^)(QBResponse *response, NSArray *messages))completion {
+- (void)earlierMessagesWithChatDialogID:(QB_NONNULL NSString *)chatDialogID completion:(void(^QB_NULLABLE_S)(QBResponse *QB_NULLABLE_S response, NSArray QB_GENERIC(QBChatMessage *) *QB_NULLABLE_S messages))completion {
     
     if ([self.messagesMemoryStorage isEmptyForDialogID:chatDialogID]) {
         
@@ -999,20 +999,18 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     }];
 }
 
-- (void)fetchDialogsUpdatedFromDate:(NSDate *)date
-                       andPageLimit:(NSUInteger)limit
-                     iterationBlock:(void(^)(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, BOOL *stop))iteration
-                    completionBlock:(void (^)(QBResponse *response))completion
-{
+- (void)fetchDialogsUpdatedFromDate:(QB_NONNULL NSDate *)date andPageLimit:(NSUInteger)limit iterationBlock:(void(^QB_NULLABLE_S)(QBResponse *QB_NULLABLE_S response, NSArray QB_GENERIC(QBChatDialog *) *QB_NULLABLE_S dialogObjects, NSSet QB_GENERIC(NSNumber *) * QB_NULLABLE_S dialogsUsersIDs, BOOL *QB_NULLABLE_S stop))iteration completionBlock:(void (^QB_NULLABLE_S)(QBResponse *QB_NULLABLE_S response))completion {
     NSTimeInterval timeInterval = [date timeIntervalSince1970];
     NSMutableDictionary *extendedRequest = @{@"updated_at[gt]":@(timeInterval)}.mutableCopy;
     
     [self allDialogsWithPageLimit:limit extendedRequest:extendedRequest iterationBlock:^(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, BOOL *stop) {
         //
-        if (iteration) iteration(response,dialogObjects,dialogsUsersIDs,stop);
+        if (iteration) iteration(response, dialogObjects, dialogsUsersIDs, stop);
     } completion:^(QBResponse *response) {
         //
-        if (completion) completion(response);
+		if (completion){
+			completion(response);
+		}
     }];
 }
 
