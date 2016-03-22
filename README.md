@@ -116,7 +116,7 @@ To generate bundle for dialogs and messages you need to open **QMServices** proj
 
 # Architecture
 
-QMServices contains:
+QMServices contain:
 
 * **QMAuthService**
 * **QMChatService**
@@ -128,7 +128,7 @@ They all inherited from **QMBaseService**.
 To support CoreData caching you can use **QMContactListCache**, **QMChatCache** and **QMUsersCache**, which are inherited from **QMDBStorage**. Of course you could use your own database storage - just need to implement **QMChatServiceDelegate**, **QMContactListServiceDelegate** or **QMUsersServiceDelegate** depending on your needs.
 
 # Getting started
-Add **#import \<QMServices.h\>** to your apps *.pch* file.
+Add **#import \<QMServices.h\>** to your app's *.pch* file.
 
 ## Service Manager
 
@@ -173,12 +173,12 @@ In ``init`` method, services and cache are initialised.
 	self = [super init];
 	if (self) {
 		[QMChatCache setupDBWithStoreNamed:@"sample-cache"];
-        	[QMChatCache instance].messagesLimitPerDialog = 10;
+		[QMChatCache instance].messagesLimitPerDialog = 10;
 
 		_authService = [[QMAuthService alloc] initWithServiceManager:self];
 		_chatService = [[QMChatService alloc] initWithServiceManager:self cacheDataSource:self];
-        	[_chatService addDelegate:self];
-        	_logoutGroup = dispatch_group_create();
+		[_chatService addDelegate:self];
+		_logoutGroup = dispatch_group_create();
 	}
 	return self;
 }
@@ -287,6 +287,7 @@ This method logins user to Quickblox REST API backend and to the Quickblox Chat 
 - (void)logInWithUser:(QBUUser *)user
 		   completion:(void (^)(BOOL success, NSString *errorMessage))completion
 {
+	__weak typeof(self) weakSelf = self;
 	[self.authService logInWithUser:user completion:^(QBResponse *response, QBUUser *userProfile) {
 		if (response.error != nil) {
 			if (completion != nil) {
@@ -295,8 +296,7 @@ This method logins user to Quickblox REST API backend and to the Quickblox Chat 
 			return;
 		}
 		
-        __weak typeof(self) weakSelf = self;
-        [weakSelf.chatService connectWithCompletionBlock:^(NSError * _Nullable error) {
+		[weakSelf.chatService connectWithCompletionBlock:^(NSError * _Nullable error) {
             //
             __typeof(self) strongSelf = weakSelf;
             
@@ -718,7 +718,7 @@ Recursively fetch all dialogs from Quickblox.
 
 - (void)allDialogsWithPageLimit:(NSUInteger)limit
 				extendedRequest:(NSDictionary *)extendedRequest
-				 iterationBlock:(void(^)(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, BOOL *stop))interationBlock
+				 iterationBlock:(void(^)(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, BOOL *stop))iterationBlock
 					 completion:(void(^)(QBResponse *response))completion;
 ```
 
@@ -974,7 +974,7 @@ Recursively fetch all dialogs from Quickblox using Bolts.
 
 - (BFTask *)allDialogsWithPageLimit:(NSUInteger)limit
                     extendedRequest:(NSDictionary *)extendedRequest
-                     iterationBlock:(void(^)(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, BOOL *stop))interationBlock;
+                     iterationBlock:(void(^)(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, BOOL *stop))iterationBlock;
 
 ```
 
@@ -1506,7 +1506,7 @@ Add users to memory storage.
 
 ```objective-c
 
-- (void)addUsers:(NSArray *)users;
+- (void)addUsers:(NSArray<QBUUser *> *)users;
 
 ```
 
@@ -1516,7 +1516,7 @@ Get all users from memory storage without sorting.
 
 ```objective-c
 
-- (NSArray *)unsortedUsers;
+- (NSArray<QBUUser *> *)unsortedUsers;
 
 ```
 
@@ -1524,7 +1524,7 @@ Get all users in memory storage sorted by key.
 
 ```objective-c
 
-- (NSArray *)usersSortedByKey:(NSString *)key ascending:(BOOL)ascending;
+- (NSArray<QBUUser *> *)usersSortedByKey:(NSString *)key ascending:(BOOL)ascending;
 
 ```
 
@@ -1540,7 +1540,7 @@ Get users with ids without some id.
 
 ```objective-c
 
-- (NSArray *)usersWithIDs:(NSArray *)IDs withoutID:(NSUInteger)ID;
+- (NSArray<QBUUser *> *)usersWithIDs:(NSArray *)IDs withoutID:(NSUInteger)ID;
 
 ```
 
@@ -1564,7 +1564,7 @@ Get users with user ids.
 
 ```objective-c
 
-- (NSArray *)usersWithIDs:(NSArray *)ids;
+- (NSArray<QBUUser *> *)usersWithIDs:(NSArray *)ids;
 
 ```
 
