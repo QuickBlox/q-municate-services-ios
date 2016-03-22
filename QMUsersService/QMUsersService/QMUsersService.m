@@ -24,7 +24,6 @@
     
     NSLog(@"%@ - %@",  NSStringFromSelector(_cmd), self);
     [[QBChat instance] removeDelegate:self];
-    self.usersMemoryStorage = nil;
 }
 
 - (instancetype)initWithServiceManager:(id<QMServiceManagerProtocol>)serviceManager cacheDataSource:(id<QMUsersServiceCacheDataSource>)cacheDataSource
