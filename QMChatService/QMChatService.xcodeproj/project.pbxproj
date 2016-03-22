@@ -26,8 +26,6 @@
 		55B2F0D11A091C68008C2272 /* QMChatService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QMChatService.m; sourceTree = "<group>"; };
 		55F41E351A0A4C3B008D1C68 /* QMDialogsMemoryStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMDialogsMemoryStorage.h; sourceTree = "<group>"; };
 		55F41E361A0A4C3B008D1C68 /* QMDialogsMemoryStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMDialogsMemoryStorage.m; sourceTree = "<group>"; };
-		55F41E3E1A0A627D008D1C68 /* NSString+GTMNSStringHTMLAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+GTMNSStringHTMLAdditions.h"; sourceTree = "<group>"; };
-		55F41E3F1A0A627D008D1C68 /* NSString+GTMNSStringHTMLAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+GTMNSStringHTMLAdditions.m"; sourceTree = "<group>"; };
 		55F5FA4F1A288F07004490FB /* libQMChatService.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libQMChatService.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		55F5FA551A289B4B004490FB /* QMMessagesMemoryStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = QMMessagesMemoryStorage.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		55F5FA561A289B4B004490FB /* QMMessagesMemoryStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = QMMessagesMemoryStorage.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
@@ -94,8 +92,6 @@
 			children = (
 				55AA615E1A23235500D73089 /* QBChatMessage+QMCustomParameters.h */,
 				55AA615F1A23235500D73089 /* QBChatMessage+QMCustomParameters.m */,
-				55F41E3E1A0A627D008D1C68 /* NSString+GTMNSStringHTMLAdditions.h */,
-				55F41E3F1A0A627D008D1C68 /* NSString+GTMNSStringHTMLAdditions.m */,
 				2C271ED61B440F3900A48BC0 /* QMChatService+AttachmentService.h */,
 			);
 			path = Categories;
