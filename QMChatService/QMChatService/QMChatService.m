@@ -875,7 +875,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     }
 }
 
-- (void)messagesWithChatDialogID:(QB_NONNULL NSString *)chatDialogID completion:(void(^QB_NULLABLE_S)(QBResponse *QB_NULLABLE_S response, NSArray QB_GENERIC(QBChatMessage *) *QB_NULLABLE_S messages))completion {
+- (void)messagesWithChatDialogID:(QB_NONNULL NSString *)chatDialogID completion:(void(^QB_NULLABLE_S)(QBResponse *QB_NONNULL_S response, NSArray QB_GENERIC(QBChatMessage *) *QB_NULLABLE_S messages))completion {
 	
     dispatch_group_t messagesLoadGroup = dispatch_group_create();
     if ([[self.messagesMemoryStorage messagesWithDialogID:chatDialogID] count] == 0) {
@@ -1042,10 +1042,12 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     
     [self allDialogsWithPageLimit:limit extendedRequest:extendedRequest iterationBlock:^(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, BOOL *stop) {
         //
-        if (iteration) iteration(response,dialogObjects,dialogsUsersIDs,stop);
+        if (iteration) iteration(response, dialogObjects, dialogsUsersIDs, stop);
     } completion:^(QBResponse *response) {
         //
-        if (completion) completion(response);
+		if (completion){
+			completion(response);
+		}
     }];
 }
 
