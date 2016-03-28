@@ -247,7 +247,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
         QBResponsePage *page = [QBResponsePage responsePageWithLimit:self.chatMessagesPerPage];
         
         NSDictionary* parameters = @{
-                                     @"date_sent[lt]" : oldestMessageDate,
+                                     @"date_sent[lte]" : oldestMessageDate,
                                      @"sort_desc"     : @"date_sent"
                                      };
         
