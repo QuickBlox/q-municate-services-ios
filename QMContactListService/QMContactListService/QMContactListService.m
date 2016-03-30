@@ -115,7 +115,7 @@
     [[QBChat instance] addUserToContactListRequest:user.ID completion:^(NSError *error) {
         __typeof(self) strongSelf = weakSelf;
         
-        if (error != nil) {
+        if (error == nil) {
             
             if ([strongSelf.cacheDataSource respondsToSelector:@selector(contactListDidAddUser:)]) {
                 [strongSelf.cacheDataSource contactListDidAddUser:user];
