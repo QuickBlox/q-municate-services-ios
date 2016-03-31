@@ -12,7 +12,7 @@ Pod::Spec.new do |s|
   s.summary      = "Easy-to-use services for Quickblox SDK, for speeding up development of iOS chat applications."
   s.homepage     = "https://github.com/QuickBlox/q-municate-services-ios"
   s.license      = { :type => 'BSD', :file => 'LICENSE.txt' }
-  s.author       = { "Andrey Ivanov" => "andrey.ivanov@quickblox.com" }
+  s.authors      = {"Anton Sokolchenko" => "anton.sokolchenko@quickblox.com", "Andrey Ivanov" => "andrey.ivanov@quickblox.com", "Vitaliy Gorbachov" => "vitaliy.gorbachov@quickblox.com"}
   s.platform     = :ios, "7.0"
   s.source       = { :git => "https://github.com/QuickBlox/q-municate-services-ios.git", :tag => "#{s.version}"}
   s.source_files  = "**/*.{h,m}"
@@ -27,5 +27,5 @@ Pod::Spec.new do |s|
 #import <Quickblox/QBMulticastDelegate.h>
 #import <Bolts/Bolts.h>'
   s.resource_bundle = {'QMChatCacheModel' => 'QMChatCache/QMChatCache/CoreData/QMChatServiceModel.xcdatamodeld', 'QMContactListCacheModel' => 'QMContactListCache/QMContactListCache/CoreData/QMContactListModel.xcdatamodeld', 'QMUsersCacheModel' => 'QMUsersCache/QMUsersCache/CoreData/QMUsersModel.xcdatamodeld'}
-  s.dependency "Bolts",  '1.5.0'
+  s.dependency "Bolts",  '>= 1.5.0'
 end
