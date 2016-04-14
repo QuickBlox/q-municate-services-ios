@@ -26,6 +26,7 @@
 		554A28371A0CE38600C4E03C /* CDContactListItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 554A282E1A0CE38600C4E03C /* CDContactListItem.m */; };
 		554A28391A0CE38600C4E03C /* _CDContactListItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 554A28331A0CE38600C4E03C /* _CDContactListItem.m */; };
 		5590F2B01A0B8D4000C5044F /* QMContactListCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 5590F2AF1A0B8D4000C5044F /* QMContactListCache.m */; };
+		5849CC6C1CBFA722006CAA24 /* QMContactListCacheModel.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5849CC6B1CBFA722006CAA24 /* QMContactListCacheModel.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -61,7 +62,6 @@
 
 /* Begin PBXFileReference section */
 		55013B221A1F81530030C134 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		550678C81A237CA700660A12 /* QMContactListCacheModel.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = QMContactListCacheModel.bundle; sourceTree = "<group>"; };
 		554A28101A0CE1A900C4E03C /* QMModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = QMModel.xcdatamodel; sourceTree = "<group>"; };
 		554A282D1A0CE38600C4E03C /* CDContactListItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDContactListItem.h; sourceTree = "<group>"; };
 		554A282E1A0CE38600C4E03C /* CDContactListItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDContactListItem.m; sourceTree = "<group>"; };
@@ -72,7 +72,8 @@
 		5590F2AF1A0B8D4000C5044F /* QMContactListCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = QMContactListCache.m; sourceTree = "<group>"; };
 		55A6211A1A0BE284001BA470 /* QMContactListCache-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = "QMContactListCache-Prefix.pch"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		55B2201E1A2C0C9E00668086 /* libQMContactListCache.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libQMContactListCache.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		55B2201F1A2C0C9E00668086 /* QMContactListCacheModel.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QMContactListCacheModel.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		5849CC6B1CBFA722006CAA24 /* QMContactListCacheModel.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = QMContactListCacheModel.bundle; sourceTree = "<group>"; };
+		58BBF3B41CBFA78900ECC291 /* QMContactListCacheModel.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = QMContactListCacheModel.bundle; path = "/Users/Vit/Documents/Development/Quickblox/q-municate-services-ios/QMContactListCache/build/Debug-iphoneos/QMContactListCacheModel.bundle"; sourceTree = "<absolute>"; };
 		8620BC571B0F7B1E005ED359 /* Quickblox.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; lineEnding = 0; name = Quickblox.xcconfig; path = ../Quickblox.xcconfig; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.xcconfig; };
 /* End PBXFileReference section */
 
@@ -135,12 +136,11 @@
 			isa = PBXGroup;
 			children = (
 				8620BC571B0F7B1E005ED359 /* Quickblox.xcconfig */,
-				550678C81A237CA700660A12 /* QMContactListCacheModel.bundle */,
 				5590F2AC1A0B8D4000C5044F /* QMContactListCache */,
 				55013B211A1F81530030C134 /* QMContactListCacheModel */,
 				55A621191A0BE284001BA470 /* Support */,
 				55B2201E1A2C0C9E00668086 /* libQMContactListCache.a */,
-				55B2201F1A2C0C9E00668086 /* QMContactListCacheModel.bundle */,
+				5849CC6B1CBFA722006CAA24 /* QMContactListCacheModel.bundle */,
 			);
 			sourceTree = "<group>";
 		};
@@ -182,7 +182,7 @@
 			);
 			name = QMContactListCacheModel;
 			productName = QMCotactListCacheModel;
-			productReference = 55B2201F1A2C0C9E00668086 /* QMContactListCacheModel.bundle */;
+			productReference = 58BBF3B41CBFA78900ECC291 /* QMContactListCacheModel.bundle */;
 			productType = "com.apple.product-type.bundle";
 		};
 		5590F2A91A0B8D4000C5044F /* QMContactListCache */ = {
@@ -246,6 +246,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5849CC6C1CBFA722006CAA24 /* QMContactListCacheModel.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

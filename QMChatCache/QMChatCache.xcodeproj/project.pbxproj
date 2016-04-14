@@ -29,6 +29,7 @@
 		55A621161A0BDC5D001BA470 /* _CDAttachment.m in Sources */ = {isa = PBXBuildFile; fileRef = 55A6210D1A0BDC5D001BA470 /* _CDAttachment.m */; };
 		55A621171A0BDC5D001BA470 /* _CDDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = 55A6210F1A0BDC5D001BA470 /* _CDDialog.m */; };
 		55A621181A0BDC5D001BA470 /* _CDMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 55A621111A0BDC5D001BA470 /* _CDMessage.m */; };
+		58BBF3B81CBFA7B400ECC291 /* QMChatCacheModel.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 58BBF3B71CBFA7B400ECC291 /* QMChatCacheModel.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,7 +44,6 @@
 
 /* Begin PBXFileReference section */
 		14E9F54E1C6CA35B007F58B7 /* QMModel2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = QMModel2.xcdatamodel; sourceTree = "<group>"; };
-		550678C71A237C7B00660A12 /* QMChatCacheModel.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = QMChatCacheModel.bundle; sourceTree = "<group>"; };
 		554A280B1A0CE16200C4E03C /* QMModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = QMModel.xcdatamodel; sourceTree = "<group>"; };
 		554A287D1A0CECA000C4E03C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5590F2751A0B8C4200C5044F /* QMChatCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = QMChatCache.h; sourceTree = "<group>"; };
@@ -63,7 +63,8 @@
 		55A621111A0BDC5D001BA470 /* _CDMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _CDMessage.m; sourceTree = "<group>"; };
 		55A621121A0BDC5D001BA470 /* QMCCModelIncludes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMCCModelIncludes.h; sourceTree = "<group>"; };
 		55B2201C1A2C0C9D00668086 /* libQMChatCache.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libQMChatCache.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		55B2201D1A2C0C9D00668086 /* QMChatCacheModel.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QMChatCacheModel.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		58BBF3B61CBFA79C00ECC291 /* QMChatCacheModel.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = QMChatCacheModel.bundle; path = "/Users/Vit/Documents/Development/Quickblox/q-municate-services-ios/QMChatCache/build/Debug-iphoneos/QMChatCacheModel.bundle"; sourceTree = "<absolute>"; };
+		58BBF3B71CBFA7B400ECC291 /* QMChatCacheModel.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = QMChatCacheModel.bundle; sourceTree = "<group>"; };
 		8620BC581B0F7D5A005ED359 /* Quickblox.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; lineEnding = 0; name = Quickblox.xcconfig; path = ../Quickblox.xcconfig; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.xcconfig; };
 		B407CFFF1CAD67C9002DFC5A /* QMModel3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = QMModel3.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -106,12 +107,11 @@
 			isa = PBXGroup;
 			children = (
 				8620BC581B0F7D5A005ED359 /* Quickblox.xcconfig */,
-				550678C71A237C7B00660A12 /* QMChatCacheModel.bundle */,
 				5590F2741A0B8C4200C5044F /* QMChatCache */,
 				554A287B1A0CECA000C4E03C /* QMChatCacheModel */,
 				55A620C91A0BB87F001BA470 /* Support */,
 				55B2201C1A2C0C9D00668086 /* libQMChatCache.a */,
-				55B2201D1A2C0C9D00668086 /* QMChatCacheModel.bundle */,
+				58BBF3B71CBFA7B400ECC291 /* QMChatCacheModel.bundle */,
 			);
 			sourceTree = "<group>";
 		};
@@ -190,7 +190,7 @@
 			);
 			name = QMChatCacheModel;
 			productName = QMChatCacheModel;
-			productReference = 55B2201D1A2C0C9D00668086 /* QMChatCacheModel.bundle */;
+			productReference = 58BBF3B61CBFA79C00ECC291 /* QMChatCacheModel.bundle */;
 			productType = "com.apple.product-type.bundle";
 		};
 		5590F2711A0B8C4200C5044F /* QMChatCache */ = {
@@ -252,6 +252,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				58BBF3B81CBFA7B400ECC291 /* QMChatCacheModel.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
