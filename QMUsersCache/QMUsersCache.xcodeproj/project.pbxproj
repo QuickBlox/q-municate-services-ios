@@ -22,6 +22,7 @@
 
 /* Begin PBXBuildFile section */
 		52F09D9F1C5267D70039258C /* Quickblox.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 52F09D9E1C5267D70039258C /* Quickblox.xcconfig */; };
+		58BBF3DF1CBFB55E00ECC291 /* QMUsersCacheModel.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 58BBF3DE1CBFB55E00ECC291 /* QMUsersCacheModel.bundle */; };
 		86E40FC61BDA3881002B0496 /* CDUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 86E40FC51BDA3881002B0496 /* CDUser.m */; };
 		86E40FD81BDA4732002B0496 /* QMUsersModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 86E40FD61BDA4732002B0496 /* QMUsersModel.xcdatamodeld */; };
 		86E40FD91BDA4732002B0496 /* QMUsersModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 86E40FD61BDA4732002B0496 /* QMUsersModel.xcdatamodeld */; };
@@ -57,6 +58,7 @@
 		145C58FA1C99806B00740FF4 /* QMUsersModel2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = QMUsersModel2.xcdatamodel; sourceTree = "<group>"; };
 		28A9F32CF877B56314D17DE6 /* libPods-QMUsersCache.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-QMUsersCache.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		52F09D9E1C5267D70039258C /* Quickblox.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Quickblox.xcconfig; path = ../Quickblox.xcconfig; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.xcconfig; };
+		58BBF3DE1CBFB55E00ECC291 /* QMUsersCacheModel.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = QMUsersCacheModel.bundle; sourceTree = "<group>"; };
 		86E40FB81BDA34D8002B0496 /* QMUsersCacheModel.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QMUsersCacheModel.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		86E40FBA1BDA34D8002B0496 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		86E40FC41BDA3881002B0496 /* CDUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDUser.h; path = CoreData/Entries/CDUser.h; sourceTree = "<group>"; };
@@ -65,7 +67,6 @@
 		86E40FDA1BDA4847002B0496 /* QMUsersModelIncludes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QMUsersModelIncludes.h; path = CoreData/QMUsersModelIncludes.h; sourceTree = "<group>"; };
 		86E40FDB1BDA4851002B0496 /* _CDUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = _CDUser.h; path = CoreData/EntriesMachine/_CDUser.h; sourceTree = "<group>"; };
 		86E40FDC1BDA4851002B0496 /* _CDUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = _CDUser.m; path = CoreData/EntriesMachine/_CDUser.m; sourceTree = "<group>"; };
-		86E40FE11BDA4C08002B0496 /* QMUsersCacheModel.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = QMUsersCacheModel.bundle; sourceTree = "<group>"; };
 		86E410231BDA5151002B0496 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bolts.framework; path = ../Frameworks/Bolts.framework; sourceTree = "<group>"; };
 		86E410251BDA522B002B0496 /* QMUsersCache-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "QMUsersCache-Prefix.pch"; sourceTree = "<group>"; };
 		86F9CD611BDA28110021B6F0 /* libQMUsersCache.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libQMUsersCache.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -141,11 +142,11 @@
 			isa = PBXGroup;
 			children = (
 				52F09D9E1C5267D70039258C /* Quickblox.xcconfig */,
-				86E40FE11BDA4C08002B0496 /* QMUsersCacheModel.bundle */,
 				86F9CD631BDA28110021B6F0 /* QMUsersCache */,
 				86E40FB91BDA34D8002B0496 /* QMUsersCacheModel */,
 				86F9CD621BDA28110021B6F0 /* Products */,
 				18DBF0715DB68BFB9B4137F9 /* Frameworks */,
+				58BBF3DE1CBFB55E00ECC291 /* QMUsersCacheModel.bundle */,
 			);
 			sourceTree = "<group>";
 		};
@@ -179,7 +180,7 @@
 				86E40FB41BDA34D8002B0496 /* Sources */,
 				86E40FB51BDA34D8002B0496 /* Frameworks */,
 				86E40FB61BDA34D8002B0496 /* Resources */,
-				86E40FDF1BDA49EB002B0496 /* ShellScript */,
+				86E40FDF1BDA49EB002B0496 /* Run Script */,
 				86E40FE01BDA49F7002B0496 /* ShellScript */,
 			);
 			buildRules = (
@@ -254,6 +255,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				52F09D9F1C5267D70039258C /* Quickblox.xcconfig in Resources */,
+				58BBF3DF1CBFB55E00ECC291 /* QMUsersCacheModel.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -273,19 +275,19 @@
 			shellPath = "/bin/sh  ../Scripts/mogenerator.sh QMUsersModelIncludes.h QMUsersModel.xcdatamodeld QMUsersCache";
 			shellScript = "";
 		};
-		86E40FDF1BDA49EB002B0496 /* ShellScript */ = {
+		86E40FDF1BDA49EB002B0496 /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "Run Script";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = "/bin/sh  ../Scripts/mogenerator.sh QMUsersModelIncludes.h QMUsersModel.xcdatamodeld QMUsersCache";
 			shellScript = "";
-			showEnvVarsInLog = 0;
 		};
 		86E40FE01BDA49F7002B0496 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -354,14 +356,15 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 52F09D9E1C5267D70039258C /* Quickblox.xcconfig */;
 			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = QMUsersCacheModel/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.quickblox.QMUsersCacheModel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
+				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+				VALID_ARCHS = "armv7s armv7 arm64";
 				WRAPPER_EXTENSION = bundle;
 			};
 			name = Debug;
@@ -370,14 +373,16 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 52F09D9E1C5267D70039258C /* Quickblox.xcconfig */;
 			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = YES;
 				INFOPLIST_FILE = QMUsersCacheModel/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.quickblox.QMUsersCacheModel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
+				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+				VALID_ARCHS = "armv7s armv7 arm64";
 				WRAPPER_EXTENSION = bundle;
 			};
 			name = Release;
