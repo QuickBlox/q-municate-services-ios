@@ -54,13 +54,6 @@ static NSString* attachmentPath(QBChatAttachment *attachment) {
     return self;
 }
 
-- (void)sendMessage:(QBChatMessage *)message toDialog:(QBChatDialog *)dialog withChatService:(QMChatService *)chatService withAttachedImage:(UIImage *)image completion:(void (^)(NSError *))completion {
-	
-    [self uploadAndSendAttachmentMessage:message toDialog:dialog withChatService:chatService withAttachedImage:image completion:completion];
-	
-	[chatService.messagesMemoryStorage addMessage:message forDialogID:dialog.ID];
-}
-
 - (void)uploadAndSendAttachmentMessage:(QBChatMessage *)message toDialog:(QBChatDialog *)dialog withChatService:(QMChatService *)chatService withAttachedImage:(UIImage *)image completion:(QBChatCompletionBlock)completion {
     
     [self changeMessageAttachmentStatus:QMMessageAttachmentStatusLoading forMessage:message];
