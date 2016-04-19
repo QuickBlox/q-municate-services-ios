@@ -19,7 +19,7 @@ Pod::Spec.new do |s|
   s.platform     = :ios, "7.0"
   s.source       = { :git => "https://github.com/QuickBlox/q-municate-services-ios.git", :tag => "#{s.version}"}
   s.source_files  = "Classes", "**/*.{h,m}"
-  s.exclude_files = "Pods"
+  s.exclude_files = "Pods", "Frameworks"
   s.frameworks = "CoreData"
   s.requires_arc = true
   s.xcconfig = { "FRAMEWORK_SEARCH_PATHS" => "$(PODS_ROOT)/QuickBlox/" }
