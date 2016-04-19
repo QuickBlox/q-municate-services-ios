@@ -92,11 +92,11 @@ static QMContactListCache *_chatCacheInstance = nil;
         }
         
         if (toInsert.count + toUpdate.count > 0) {
+            
             [weakSelf save:completion];
         }
         
-        NSLog(@"ContactListItems to insert %lu", (unsigned long)toInsert.count);
-        NSLog(@"ContactListItems to update %lu", (unsigned long)toUpdate.count);
+        NSLog(@"[%@] ContactListItems to insert %tu, update %tu", NSStringFromClass([self class]), toInsert.count, toUpdate.count);
     }];
 }
 

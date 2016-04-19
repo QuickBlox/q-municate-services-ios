@@ -157,8 +157,7 @@ static QMChatCache *_chatCacheInstance = nil;
             [weakSelf save:completion];
         }
         
-        NSLog(@"Dialogs to insert %lu", (unsigned long)toInsert.count);
-        NSLog(@"Dialogs to update %lu", (unsigned long)toUpdate.count);
+        NSLog(@"[%@] Dialogs to insert %tu, update %tu", NSStringFromClass([self class]), toInsert.count, toUpdate.count);
     }];
 }
 
@@ -371,8 +370,7 @@ static QMChatCache *_chatCacheInstance = nil;
             }];
         }
         
-        NSLog(@"Messages to insert %lu", (unsigned long)toInsert.count);
-        NSLog(@"Messages to update %lu", (unsigned long)toUpdate.count);
+        NSLog(@"[%@] Messages to insert %tu, update %tu", NSStringFromClass([self class]), toInsert.count, toUpdate.count);
     }];
 }
 
