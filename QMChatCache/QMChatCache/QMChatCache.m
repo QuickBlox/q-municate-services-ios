@@ -71,7 +71,7 @@ static QMChatCache *_chatCacheInstance = nil;
 
 #pragma mark Fetch Dialogs
 
-- (void)dialogsSortedBy:(QB_NONNULL NSString *)sortTerm ascending:(BOOL)ascending completion:(void(^QB_NULLABLE_S)(NSArray QB_GENERIC(QBChatDialog *) *QB_NULLABLE_S dialogs))completion {
+- (void)dialogsSortedBy:(NSString *)sortTerm ascending:(BOOL)ascending completion:(void(^)(NSArray *dialogs))completion {
     
     [self dialogsSortedBy:sortTerm ascending:ascending withPredicate:nil completion:completion];
 }
@@ -92,7 +92,7 @@ static QMChatCache *_chatCacheInstance = nil;
     }];
 }
 
-- (void)dialogsSortedBy:(QB_NONNULL NSString *)sortTerm ascending:(BOOL)ascending withPredicate:(QB_NULLABLE NSPredicate *)predicate completion:(void(^QB_NULLABLE_S)(NSArray QB_GENERIC(QBChatDialog *) *QB_NULLABLE_S dialogs))completion {
+- (void)dialogsSortedBy:(NSString *)sortTerm ascending:(BOOL)ascending withPredicate:(NSPredicate *)predicate completion:(void(^)(NSArray *dialogs))completion {
     
     __weak __typeof(self)weakSelf = self;
     
@@ -248,12 +248,12 @@ static QMChatCache *_chatCacheInstance = nil;
 
 #pragma mark Fetch Messages
 
-- (void)messagesWithDialogId:(QB_NONNULL NSString *)dialogId sortedBy:(QB_NONNULL NSString *)sortTerm ascending:(BOOL)ascending completion:(void(^QB_NULLABLE_S)(NSArray QB_GENERIC(QBChatMessage *) *QB_NULLABLE_S messages))completion {
+- (void)messagesWithDialogId:(NSString *)dialogId sortedBy:(NSString *)sortTerm ascending:(BOOL)ascending completion:(void(^)(NSArray *messages))completion {
     
     [self messagesWithPredicate:IS(@"dialogID", dialogId) sortedBy:sortTerm ascending:ascending completion:completion];
 }
 
-- (void)messagesWithPredicate:(QB_NONNULL NSPredicate *)predicate sortedBy:(QB_NONNULL NSString *)sortTerm ascending:(BOOL)ascending completion:(void(^QB_NULLABLE_S)(NSArray QB_GENERIC(QBChatMessage *) *QB_NULLABLE_S messages))completion {
+- (void)messagesWithPredicate:(NSPredicate *)predicate sortedBy:(NSString *)sortTerm ascending:(BOOL)ascending completion:(void(^)(NSArray *messages))completion {
     
     __weak __typeof(self)weakSelf = self;
     [self async:^(NSManagedObjectContext *context) {
