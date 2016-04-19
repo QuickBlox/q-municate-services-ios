@@ -10,8 +10,8 @@
 
 @interface QBUUser (CustomData)
 
-@property (strong, nonatomic) NSString *avatarUrl;
-@property (strong, nonatomic) NSString *status;
+@property (strong, nonatomic, QB_NULLABLE) NSString *avatarUrl;
+@property (strong, nonatomic, QB_NULLABLE) NSString *status;
 @property (assign, nonatomic) BOOL isImport;
 
 @end
