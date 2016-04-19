@@ -224,22 +224,6 @@ typedef void(^QMCacheCollection)(NSArray *QB_NULLABLE_S collection);
 #pragma mark - Notification messages
 
 /**
- *  Send message about updated dialog with dialog inside and notification.
- *
- *  @param updatedDialog        updated dialog
- *  @param notificationText     notification text
- *  @param customParameters     {NSNumber : NSDictionary} dictionary of custom parameters
- *  @param completion           completion block with failure error
- *
- * @warning *Deprecated in QMServices 0.3.3:* Use 'sendNotificationMessageAboutAddingOccupants:toDialog:completion:', 'sendNotificationMessageAboutLeavingDialog:completion:', 'sendNotificationMessageAboutChangingDialogPhoto:completion:' or 'sendNotificationMessageAboutChangingDialogName:completion:' depending on update type instead.
- */
-- (void)sendMessageAboutUpdateDialog:(QB_NONNULL QBChatDialog *)updatedDialog
-                withNotificationText:(QB_NONNULL NSString *)notificationText
-                    customParameters:(QB_NULLABLE NSDictionary *)customParameters
-                          completion:(QB_NULLABLE QBChatCompletionBlock)completion
-             DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.3.3. Use 'sendNotificationMessageAboutAddingOccupants:toDialog:completion:', 'sendNotificationMessageAboutLeavingDialog:completion:', 'sendNotificationMessageAboutChangingDialogPhoto:completion:' or 'sendNotificationMessageAboutChangingDialogName:completion:' depending on update type instead.");
-
-/**
  *  Send message about accepting or rejecting contact requst.
  *
  *  @param accept     YES - accept, NO reject
