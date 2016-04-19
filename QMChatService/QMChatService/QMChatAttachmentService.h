@@ -65,17 +65,7 @@
  *  @param image        Attachment image
  *  @param completion   Send message result
  */
-- (void)uploadAndSendAttachmentMessage:(QB_NONNULL QBChatMessage *)message toDialog:(QB_NONNULL QBChatDialog *)dialog withChatService:(QMChatService *QB_NONNULL_S)chatService withAttachedImage:(QB_NONNULL UIImage *)image completion:(QB_NULLABLE QBChatCompletionBlock)completion;
-
-/**
- *  Get image by attachment
- *
- *  @param attachment      QBChatAttachment instance
- *  @param completion      Fetch image result
- *
- *  @warning *Deprecated in QMServices 0.3.2:* Use 'getImageForAttachmentMessage:completion:' instead.
- */
-- (void)getImageForChatAttachment:(QB_NONNULL QBChatAttachment *)attachment completion:(void (^QB_NULLABLE_S)(NSError *QB_NULLABLE_S error, UIImage *QB_NULLABLE_S image))completion DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.3.2. Use 'getImageForAttachmentMessage:completion:' instead.");
+- (void)uploadAndSendAttachmentMessage:(QB_NONNULL QBChatMessage *)message toDialog:(QB_NONNULL QBChatDialog *)dialog withChatService:(QB_NONNULL QMChatService *)chatService withAttachedImage:(QB_NONNULL UIImage *)image completion:(QB_NULLABLE QBChatCompletionBlock)completion;
 
 /**
  *  Get image by attachment message.
