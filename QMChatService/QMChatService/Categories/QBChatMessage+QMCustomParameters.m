@@ -330,4 +330,9 @@ NSString const *kQMCustomParameterDialogDeletedOccupantsIDs = @"deleted_occupant
 	return self.attachments.count > 0 || self.attachmentStatus == QMMessageAttachmentStatusLoading;
 }
 
+- (BOOL)isStickerMessage {
+    
+    return self.messageType == QMMessageTypeSticker;
+}
+
 @end
