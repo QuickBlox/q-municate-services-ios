@@ -1166,6 +1166,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
              saveToStorage:(BOOL)saveToStorage
                 completion:(QBChatCompletionBlock)completion
 {
+    NSAssert(message.stickerMessage != nil, @"Sticker message required!");
     [self sendMessage:message type:QMMessageTypeSticker toDialog:dialog saveToHistory:saveToHistory saveToStorage:saveToStorage completion:completion];
 }
 
