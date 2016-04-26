@@ -35,6 +35,8 @@
 		55A3653F1A2744ED00C792C0 /* libQMContactListCache.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 55A365391A2744ED00C792C0 /* libQMContactListCache.a */; };
 		86E40FF11BDA4C50002B0496 /* libQMUsersCache.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 86F9CD721BDA28110021B6F0 /* libQMUsersCache.a */; };
 		86E40FF21BDA4C50002B0496 /* libQMUsersService.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 86F9CD571BDA27ED0021B6F0 /* libQMUsersService.a */; };
+		FE52AC0C1CCF894700CCABC2 /* QMOfflineManager.h in Headers */ = {isa = PBXBuildFile; fileRef = FE52AC0A1CCF894700CCABC2 /* QMOfflineManager.h */; };
+		FE52AC0D1CCF894700CCABC2 /* QMOfflineManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FE52AC0B1CCF894700CCABC2 /* QMOfflineManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -211,6 +213,8 @@
 		55C276E51A0917AF005A0C38 /* QMAuthService.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMAuthService.xcodeproj; path = QMAuthService/QMAuthService.xcodeproj; sourceTree = "<group>"; };
 		86F9CD4E1BDA27ED0021B6F0 /* QMUsersService.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMUsersService.xcodeproj; path = QMUsersService/QMUsersService.xcodeproj; sourceTree = "<group>"; };
 		86F9CD6D1BDA28110021B6F0 /* QMUsersCache.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMUsersCache.xcodeproj; path = QMUsersCache/QMUsersCache.xcodeproj; sourceTree = "<group>"; };
+		FE52AC0A1CCF894700CCABC2 /* QMOfflineManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMOfflineManager.h; sourceTree = "<group>"; };
+		FE52AC0B1CCF894700CCABC2 /* QMOfflineManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMOfflineManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -239,6 +243,8 @@
 			children = (
 				2CE107F51B594BD800379D96 /* QMServicesManager.h */,
 				2CE107F61B594BD800379D96 /* QMServicesManager.m */,
+				FE52AC0A1CCF894700CCABC2 /* QMOfflineManager.h */,
+				FE52AC0B1CCF894700CCABC2 /* QMOfflineManager.m */,
 			);
 			path = QMManagers;
 			sourceTree = "<group>";
@@ -378,6 +384,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FE52AC0C1CCF894700CCABC2 /* QMOfflineManager.h in Headers */,
 				2CE107F71B594BD800379D96 /* QMServicesManager.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -574,6 +581,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FE52AC0D1CCF894700CCABC2 /* QMOfflineManager.m in Sources */,
 				2CE107F81B594BD800379D96 /* QMServicesManager.m in Sources */,
 				55013A801A1F68280030C134 /* QMServices.m in Sources */,
 			);
