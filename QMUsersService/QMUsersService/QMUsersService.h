@@ -208,6 +208,44 @@
 - (QB_NONNULL BFTask QB_GENERIC(NSArray QB_GENERIC(QBUUser *) *) *)getUsersWithFacebookIDs:(QB_NONNULL NSArray QB_GENERIC(NSString *) *)facebookIDs page:(QB_NONNULL QBGeneralResponsePage *)page forceLoad:(BOOL)forceLoad;
 
 /**
+ *  Get users by twitter ids.
+ *
+ *  @param twitterIDs array of user twitter ids
+ *
+ *  @return BFTask with NSArray of QBUUser instances as a result
+ */
+- (QB_NONNULL BFTask QB_GENERIC(NSArray QB_GENERIC(QBUUser *) *) *)getUsersWithTwitterIDs:(QB_NONNULL NSArray QB_GENERIC(NSString *) *)twitterIDs;
+
+/**
+ *  Get users by twitter ids.
+ *
+ *  @param twitterIDs array of user twitter ids
+ *  @param forceLoad  whether users should be loaded from server even when they are already existing in cache
+ *
+ *  @return BFTask with NSArray of QBUUser instances as a result
+ */
+- (QB_NONNULL BFTask QB_GENERIC(NSArray QB_GENERIC(QBUUser *) *) *)getUsersWithTwitterIDs:(QB_NONNULL NSArray QB_GENERIC(NSString *) *)twitterIDs forceLoad:(BOOL)forceLoad;
+
+/**
+ *  Get users by twitter ids with extended pagination parameters.
+ *
+ *  @param twitterIDs array of user twitter ids
+ *  @param page       QBGeneralResponsePage instance with extended pagination parameters
+ *
+ *  @return BFTask with NSArray of QBUUser instances as a result
+ */
+- (QB_NONNULL BFTask QB_GENERIC(NSArray QB_GENERIC(QBUUser *) *) *)getUsersWithTwitterIDs:(QB_NONNULL NSArray QB_GENERIC(NSString *) *)twitterIDs page:(QBGeneralResponsePage *)page;
+
+/**
+ *  Get users by twitter ids with extended pagination parameters.
+ *
+ *  @param twitterIDs array of user twitter ids
+ *  @param page       QBGeneralResponsePage instance with extended pagination parameters
+ *  @param forceLoad  whether users should be loaded from server even when they are already existing in cache
+ */
+- (QB_NONNULL BFTask QB_GENERIC(NSArray QB_GENERIC(QBUUser *) *) *)getUsersWithTwitterIDs:(QB_NONNULL NSArray QB_GENERIC(NSString *) *)twitterIDs page:(QBGeneralResponsePage *)page forceLoad:(BOOL)forceLoad;
+
+/**
  *  Get users by logins.
  *
  *  @param logins   array of user logins

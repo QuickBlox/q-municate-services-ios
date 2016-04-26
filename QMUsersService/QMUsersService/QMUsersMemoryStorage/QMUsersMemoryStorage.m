@@ -12,6 +12,7 @@ static NSString *const kQMQBUUserIDKeyPath = @"ID";
 static NSString *const kQMQBUUserLoginKeyPath = @"login";
 static NSString *const kQMQBUUserEmailKeyPath = @"email";
 static NSString *const kQMQBUUserFacebookIDKeyPath = @"facebookID";
+static NSString *const kQMQBUUserTwitterIDKeyPath = @"twitterID";
 
 const struct QMUsersSearchKeyStruct QMUsersSearchKey = {
     .foundObjects = @"kFoundObjects",
@@ -208,6 +209,11 @@ const struct QMUsersSearchKeyStruct QMUsersSearchKey = {
 - (NSDictionary *)usersByExcludingFacebookIDs:(NSArray *)facebookIDs {
     
     return [self valuesForKeypath:kQMQBUUserFacebookIDKeyPath byExcludingValues:facebookIDs];
+}
+
+- (NSDictionary *)usersByExcludingTwitterIDs:(NSArray *)twitterIDs {
+    
+    return [self valuesForKeypath:kQMQBUUserTwitterIDKeyPath byExcludingValues:twitterIDs];
 }
 
 @end

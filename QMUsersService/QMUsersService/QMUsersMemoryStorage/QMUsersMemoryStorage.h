@@ -181,4 +181,13 @@ extern const struct QMUsersSearchKeyStruct QMUsersSearchKey;
  */
 - (QB_NONNULL NSDictionary *)usersByExcludingFacebookIDs:(QB_NONNULL NSArray QB_GENERIC(NSString *) *)facebookIDs;
 
+/**
+ *  Search for users excluding users with users twitter IDs.
+ *
+ *  @param twitterIDs   users twitterIDs to exclude
+ *
+ *  @return dictionary of found and not found users
+ */
+- (QB_NONNULL NSDictionary *)usersByExcludingTwitterIDs:(QB_NONNULL NSArray QB_GENERIC(NSString *) *)twitterIDs;
+
 @end

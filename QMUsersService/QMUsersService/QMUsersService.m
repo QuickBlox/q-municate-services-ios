@@ -301,6 +301,69 @@
     }];
 }
 
+#pragma mark - Get users by Twitter IDs
+
+- (BFTask *)getUsersWithTwitterIDs:(NSArray *)twitterIDs {
+    
+    return [self getUsersWithTwitterIDs:twitterIDs
+                                   page:[self generalResponsePageForCount:twitterIDs.count]
+                              forceLoad:NO];
+}
+
+- (BFTask *)getUsersWithTwitterIDs:(NSArray *)twitterIDs forceLoad:(BOOL)forceLoad {
+    
+    return [self getUsersWithTwitterIDs:twitterIDs
+                                   page:[self generalResponsePageForCount:twitterIDs.count]
+                              forceLoad:forceLoad];
+}
+
+- (BFTask *)getUsersWithTwitterIDs:(NSArray *)twitterIDs page:(QBGeneralResponsePage *)page {
+    
+    return [self getUsersWithTwitterIDs:twitterIDs
+                                   page:page
+                              forceLoad:NO];
+}
+
+- (BFTask *)getUsersWithTwitterIDs:(NSArray *)twitterIDs page:(QBGeneralResponsePage *)page forceLoad:(BOOL)forceLoad {
+    NSParameterAssert(twitterIDs);
+    NSParameterAssert(page);
+    
+    __weak __typeof(self)weakSelf = self;
+    return [[self loadFromCache] continueWithBlock:^id(BFTask *task) {
+        
+        __typeof(weakSelf)strongSelf = weakSelf;
+        
+        NSDictionary *searchInfo = [strongSelf.usersMemoryStorage usersByExcludingTwitterIDs:twitterIDs];
+        NSArray *foundUsers = searchInfo[QMUsersSearchKey.foundObjects];
+        NSArray *notFoundTwitterIDs = searchInfo[QMUsersSearchKey.notFoundSearchValues];
+        
+        if (!forceLoad && notFoundTwitterIDs.count == 0) {
+            
+            return [BFTask taskWithResult:foundUsers];
+        }
+        
+        BFTaskCompletionSource *source = [BFTaskCompletionSource taskCompletionSource];
+        NSArray *searchableUsers = forceLoad ? twitterIDs : notFoundTwitterIDs;
+        
+        [QBRequest usersWithTwitterIDs:searchableUsers
+                                  page:page
+                          successBlock:^(QBResponse *response, QBGeneralResponsePage *page, NSArray *users) {
+                              
+                              NSArray *result = [strongSelf performUpdateWithLoadedUsers:users
+                                                                              foundUsers:foundUsers
+                                                                           wasLoadForced:forceLoad];
+                              
+                              [source setResult:result];
+                              
+                          } errorBlock:^(QBResponse *response) {
+                              
+                              [source setError:response.error.error];
+                          }];
+        
+        return source.task;
+    }];
+}
+
 #pragma mark - Get users by Logins
 
 - (BFTask *)getUsersWithLogins:(NSArray *)logins {
