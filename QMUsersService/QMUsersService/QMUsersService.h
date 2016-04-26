@@ -224,8 +224,16 @@
  *  Is called when users were added to QMUsersService.
  *
  *  @param usersService     QMUsersService instance
- *  @param user             NSArray of QBUUser instances as users
+ *  @param users            NSArray of QBUUser instances as users
  */
-- (void)usersService:(QB_NONNULL QMUsersService *)usersService didAddUsers:(QB_NONNULL NSArray QB_GENERIC(QBUUser *) *)user;
+- (void)usersService:(QB_NONNULL QMUsersService *)usersService didAddUsers:(QB_NONNULL NSArray QB_GENERIC(QBUUser *) *)users;
+
+/**
+ *  Is called when users were updated in cache by forcing its load from server.
+ *
+ *  @param usersService     QMUsersService instance
+ *  @param users            NSArray of QBUUser instances as users
+ */
+- (void)usersService:(QB_NONNULL QMUsersService *)usersService didUpdateUsers:(QB_NONNULL NSArray QB_GENERIC(QBUUser *) *)users;
 
 @end
