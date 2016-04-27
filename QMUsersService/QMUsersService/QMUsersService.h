@@ -120,6 +120,27 @@
 - (QB_NONNULL BFTask QB_GENERIC(NSArray QB_GENERIC(QBUUser *) *) *)getUsersWithIDs:(QB_NONNULL NSArray QB_GENERIC(NSNumber *) *)usersIDs page:(QB_NONNULL QBGeneralResponsePage *)page forceLoad:(BOOL)forceLoad;
 
 /**
+ *  Get user with
+ *
+ *  @param externalUserID external user ID
+ *
+ *  @return BFTask with user as a result.
+ */
+- (QB_NONNULL BFTask QB_GENERIC(QBUUser *) *)getUserWithExternalID:(NSUInteger *)externalUserID;
+
+/**
+ *  Get user with
+ *
+ *  @param externalUserID external user ID
+ *  @param forceLoad      whether user should be loaded from server even when they are already existing in cache
+ *
+ *  @discussion Use forceLoad flag if you want to update user in cache by loading him from server.
+ *
+ *  @return BFTask with user as a result.
+ */
+- (QB_NONNULL BFTask QB_GENERIC(QBUUser *) *)getUserWithExternalID:(NSUInteger *)externalUserID forceLoad:(BOOL)forceLoad;
+
+/**
  *  Get users by emails.
  *
  *  @param emails   array of user emails

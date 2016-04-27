@@ -175,6 +175,45 @@
     }];
 }
 
+#pragma mark - Get user by External IDs
+
+- (BFTask *)getUserWithExternalID:(NSUInteger *)externalUserID {
+    
+    return [self getUserWithExternalID:externalUserID
+                             forceLoad:NO];
+}
+
+- (BFTask *)getUserWithExternalID:(NSUInteger *)externalUserID forceLoad:(BOOL)forceLoad {
+    
+    __weak __typeof(self)weakSelf = self;
+    return [[self loadFromCache] continueWithBlock:^id(BFTask *task) {
+        
+        __typeof(weakSelf)strongSelf = weakSelf;
+        
+        BFTaskCompletionSource *source = [BFTaskCompletionSource taskCompletionSource];
+        
+        QBUUser *user = [strongSelf.usersMemoryStorage userWithExternalID:externalUserID];
+        if (user != nil) {
+            
+            [source setResult:user];
+        }
+        else {
+            
+            [QBRequest userWithExternalID:externalUserID
+                             successBlock:^(QBResponse *response, QBUUser *user) {
+                                 
+                                 [source setResult:user];
+                                 
+                             } errorBlock:^(QBResponse *response) {
+                                 
+                                 [source setError:response.error.error];
+                             }];
+        }
+        
+        return source.task;
+    }];
+}
+
 #pragma mark - Get users by emails
 
 - (BFTask *)getUsersWithEmails:(NSArray *)emails {
