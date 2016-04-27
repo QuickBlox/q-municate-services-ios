@@ -351,6 +351,25 @@
  */
 - (QB_NONNULL BFTask QB_GENERIC(NSArray QB_GENERIC(QBUUser *) *) *)searchUsersWithTags:(QB_NONNULL NSArray QB_GENERIC(NSString *) *)tags page:(QB_NONNULL QBGeneralResponsePage *)page;
 
+/**
+ *  Search for users by phone numbers.
+ *
+ *  @param phoneNumbers   array of user phone numbers
+ *
+ *  @return BFTask with NSArray of QBUUser instances as a result
+ */
+- (QB_NONNULL BFTask QB_GENERIC(NSArray QB_GENERIC(QBUUser *) *) *)searchUsersWithPhoneNumbers:(QB_NONNULL NSArray QB_GENERIC(NSString *) *)phoneNumbers;
+
+/**
+ *  Search for users by phone numbers with extended pagination parameters.
+ *
+ *  @param phoneNumbers array of user phone numbers
+ *  @param page         QBGeneralResponsePage instance with extended pagination parameters
+ *
+ *  @return BFTask with NSArray of QBUUser instances as a result
+ */
+- (QB_NONNULL BFTask QB_GENERIC(NSArray QB_GENERIC(QBUUser *) *) *)searchUsersWithPhoneNumbers:(QB_NONNULL NSArray QB_GENERIC(NSString *) *)phoneNumbers page:(QB_NONNULL QBGeneralResponsePage *)page;
+
 @end
 
 #pragma mark - Protocols

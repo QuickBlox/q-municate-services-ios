@@ -532,6 +532,7 @@
                         [strongSelf.usersMemoryStorage addUsers:users];
                         
                         if ([strongSelf.multicastDelegate respondsToSelector:@selector(usersService:didAddUsers:)]) {
+                            
                             [strongSelf.multicastDelegate usersService:strongSelf didAddUsers:users];
                         }
                         
@@ -541,6 +542,45 @@
                         
                         [source setError:response.error.error];
                     }];
+        
+        return source.task;
+    }];
+}
+
+- (BFTask *)searchUsersWithPhoneNumbers:(NSArray *)phoneNumbers {
+    
+    [self searchUsersWithPhoneNumbers:phoneNumbers
+                                 page:[QBGeneralResponsePage responsePageWithCurrentPage:1 perPage:100]];
+}
+
+- (BFTask *)searchUsersWithPhoneNumbers:(NSArray *)phoneNumbers page:(QBGeneralResponsePage *)page {
+    NSParameterAssert(phoneNumbers);
+    NSParameterAssert(page);
+    
+    __weak __typeof(self)weakSelf = self;
+    return [[self loadFromCache] continueWithBlock:^id(BFTask *task) {
+        
+        __typeof(weakSelf)strongSelf = weakSelf;
+        
+        BFTaskCompletionSource* source = [BFTaskCompletionSource taskCompletionSource];
+        
+        [QBRequest usersWithPhoneNumbers:phoneNumbers
+                                    page:page
+                            successBlock:^(QBResponse *response, QBGeneralResponsePage *page, NSArray *users) {
+                                
+                                [strongSelf.usersMemoryStorage addUsers:users];
+                                
+                                if ([strongSelf.multicastDelegate respondsToSelector:@selector(usersService:didAddUsers:)]) {
+                                    
+                                    [strongSelf.multicastDelegate usersService:strongSelf didAddUsers:users];
+                                }
+                                
+                                [source setResult:users];
+                                
+                            } errorBlock:^(QBResponse *response) {
+                                
+                                [source setError:response.error.error];
+                            }];
         
         return source.task;
     }];
