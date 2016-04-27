@@ -392,6 +392,7 @@ typedef void(^QMCacheCollection)(NSArray *collection);
 - (void)sendStickerMessage:(QB_NONNULL QBChatMessage *)message
                   toDialog:(QB_NONNULL QBChatDialog *)dialog
              saveToHistory:(BOOL)saveToHistory
+             saveToStorage:(BOOL)saveToStorage
                 completion:(QB_NONNULL QBChatCompletionBlock)completion;
 
 /**
