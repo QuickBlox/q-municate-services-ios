@@ -1144,6 +1144,16 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     [self.chatAttachmentService uploadAndSendAttachmentMessage:attachmentMessage toDialog:dialog withChatService:self withAttachedImage:image completion:completion];
 }
 
+- (void)sendStickerMessage:(QBChatMessage *)message
+                  toDialog:(QBChatDialog *)dialog
+             saveToHistory:(BOOL)saveToHistory
+             saveToStorage:(BOOL)saveToStorage
+                completion:(QBChatCompletionBlock)completion
+{
+    NSAssert(message.stickerMessage != nil, @"Sticker message required!");
+    [self sendMessage:message type:QMMessageTypeSticker toDialog:dialog saveToHistory:saveToHistory saveToStorage:saveToStorage completion:completion];
+}
+
 #pragma mark - mark as delivered
 
 - (void)markMessageAsDelivered:(QBChatMessage *)message completion:(QBChatCompletionBlock)completion {

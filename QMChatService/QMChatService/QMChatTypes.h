@@ -15,7 +15,9 @@ typedef NS_ENUM(NSUInteger, QMMessageType) {
     QMMessageTypeContactRequest = 4,
     QMMessageTypeAcceptContactRequest,
     QMMessageTypeRejectContactRequest,
-    QMMessageTypeDeleteContactRequest
+    QMMessageTypeDeleteContactRequest,
+    
+    QMMessageTypeSticker = 90
 };
 
 typedef NS_ENUM(NSUInteger, QMMessageAttachmentStatus) {

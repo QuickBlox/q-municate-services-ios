@@ -387,6 +387,13 @@ typedef void(^QMCacheCollection)(NSArray *collection);
       saveToStorage:(BOOL)saveToStorage
          completion:(QBChatCompletionBlock)completion;
 
+
+
+- (void)sendStickerMessage:(QB_NONNULL QBChatMessage *)message
+                  toDialog:(QB_NONNULL QBChatDialog *)dialog
+             saveToHistory:(BOOL)saveToHistory
+                completion:(QB_NONNULL QBChatCompletionBlock)completion;
+
 /**
  *  Send attachment message to dialog.
  *
