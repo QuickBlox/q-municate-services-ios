@@ -13,6 +13,7 @@ static NSString *const kQMQBUUserLoginKeyPath = @"login";
 static NSString *const kQMQBUUserEmailKeyPath = @"email";
 static NSString *const kQMQBUUserFacebookIDKeyPath = @"facebookID";
 static NSString *const kQMQBUUserTwitterIDKeyPath = @"twitterID";
+static NSString *const kQMQBUUserExternalUserIDKeyPath = @"externalUserID";
 
 const struct QMUsersSearchKeyStruct QMUsersSearchKey = {
     .foundObjects = @"kFoundObjects",
@@ -58,6 +59,11 @@ const struct QMUsersSearchKeyStruct QMUsersSearchKey = {
     QBUUser *user = self.users[stingID];
     
     return user;
+}
+
+- (QBUUser *)userWithExternalID:(NSUInteger)externalUserID {
+    
+    return [self usersWithExternalIDs:@[@(externalUserID)]].firstObject;
 }
 
 - (NSArray *)usersWithIDs:(NSArray *)ids {
@@ -158,6 +164,11 @@ const struct QMUsersSearchKeyStruct QMUsersSearchKey = {
     }]];
 }
 
+- (NSArray *)usersWithExternalIDs:(NSArray *)externalUserIDs {
+    
+    return [self usersForKeypath:kQMQBUUserExternalUserIDKeyPath withValues:externalUserIDs];
+}
+
 - (NSArray *)usersWithLogins:(NSArray *)logins {
     
     return [self usersForKeypath:kQMQBUUserLoginKeyPath withValues:logins];
@@ -171,6 +182,11 @@ const struct QMUsersSearchKeyStruct QMUsersSearchKey = {
 - (NSArray *)usersWithFacebookIDs:(NSArray *)facebookIDs {
     
     return [self usersForKeypath:kQMQBUUserFacebookIDKeyPath withValues:facebookIDs];
+}
+
+- (NSArray *)usersWithTwitterIDs:(NSArray *)twitterIDs {
+    
+    return [self usersForKeypath:kQMQBUUserTwitterIDKeyPath withValues:twitterIDs];
 }
 
 #pragma mark - Filter
