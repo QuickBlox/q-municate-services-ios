@@ -1,4 +1,4 @@
-*Help avoid duplicate issue reports, check [existing issues](https://github.com/QuickBlox/quickblox-ios-sdk/issues)*
+*Help avoid duplicate issue reports, check [existing issues](https://github.com/QuickBlox/q-municate-services-ios/issues)*
  
 **Environment details**
 *iOS version, Quickblox iOS SDK version, QMServices version*
