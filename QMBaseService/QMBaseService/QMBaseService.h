@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "QMMemoryStorageProtocol.h"
 #import "QMServiceManagerProtocol.h"
+#import "QMOfflineManager.h"
 
 @interface QMBaseService : NSObject <QMMemoryStorageProtocol>
 

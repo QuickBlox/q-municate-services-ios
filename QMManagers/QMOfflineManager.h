@@ -7,13 +7,23 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "QMServices.h"
+#import <Bolts/Bolts.h>
+#import <Quickblox/Quickblox.h>
 
 @interface QMOfflineManager : NSObject
 
+@property (nonatomic, strong, readonly)  NSArray * offlineActions;
+
 + (QB_NONNULL instancetype)instance;
 
-- (void)performOfflineTasks;
-- (void)addOfflineTask:(QB_NONNULL BFTaskCompletionSource*)source;
++ (void)setOfflineModeEnabled:(BOOL)offlineModeEnabled;
++ (BOOL)isOfflineModeEnabled;
+
+- (QB_NONNULL BFTask*)newActionWithParameters:(NSDictionary*)parameters;
+
+- (void)performOfflineActions;
+- (void)cleanUpOfflineQueue;
+
+
 
 @end
