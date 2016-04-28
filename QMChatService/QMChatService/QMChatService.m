@@ -1165,14 +1165,24 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
           withAttachmentImage:(UIImage *)image
                    completion:(QBChatCompletionBlock)completion
 {
-	[self.chatAttachmentService uploadAndSendAttachmentMessage:attachmentMessage toDialog:dialog withChatService:self withAttachedImage:image completion:completion];
-	
+    [self.chatAttachmentService uploadAndSendAttachmentMessage:attachmentMessage toDialog:dialog withChatService:self withAttachedImage:image completion:completion];
+    
     [self.messagesMemoryStorage addMessage:attachmentMessage forDialogID:dialog.ID];
     if ([self.multicastDelegate respondsToSelector:@selector(chatService:didAddMessageToMemoryStorage:forDialogID:)]) {
         
         [self.multicastDelegate chatService:self didAddMessageToMemoryStorage:attachmentMessage forDialogID:dialog.ID];
         
     }
+}
+
+- (void)sendStickerMessage:(QBChatMessage *)message
+                  toDialog:(QBChatDialog *)dialog
+             saveToHistory:(BOOL)saveToHistory
+             saveToStorage:(BOOL)saveToStorage
+                completion:(QBChatCompletionBlock)completion
+{
+    NSAssert(message.stickerMessage != nil, @"Sticker message required!");
+    [self sendMessage:message type:QMMessageTypeSticker toDialog:dialog saveToHistory:saveToHistory saveToStorage:saveToStorage completion:completion];
 }
 
 #pragma mark - mark as delivered

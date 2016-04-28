@@ -35,6 +35,8 @@ NSString const *kQMCustomParameterDialogCurrentOccupantsIDs = @"current_occupant
 NSString const *kQMCustomParameterDialogAddedOccupantsIDs = @"added_occupant_ids";
 NSString const *kQMCustomParameterDialogDeletedOccupantsIDs = @"deleted_occupant_ids";
 
+NSString const *kQMCustomParameterStickerMessage = @"sticker_message";
+
 @interface QBChatMessage (Context)
 
 @property (strong, nonatomic) NSMutableDictionary *context;
@@ -53,6 +55,7 @@ NSString const *kQMCustomParameterDialogDeletedOccupantsIDs = @"deleted_occupant
 @dynamic messageDeliveryStatus;
 @dynamic dialog;
 @dynamic attachmentStatus;
+@dynamic stickerMessage;
 
 /**
  *  Dialog params
@@ -306,6 +309,19 @@ NSString const *kQMCustomParameterDialogDeletedOccupantsIDs = @"deleted_occupant
     return [self.context[kQMCustomParameterMessageType] integerValue];
 }
 
+#pragma mark - stickerMessage 
+
+- (void)setStickerMessage:(NSString *)stickerMessage {
+    
+    self.context[kQMCustomParameterStickerMessage] = stickerMessage;
+}
+
+
+- (NSString *)stickerMessage {
+  
+    return self.context[kQMCustomParameterStickerMessage];
+}
+
 #pragma mark - dialogUpdateType
 
 - (void)setDialogUpdateType:(QMDialogUpdateType)dialogUpdateType {
@@ -322,12 +338,17 @@ NSString const *kQMCustomParameterDialogDeletedOccupantsIDs = @"deleted_occupant
 
 - (BOOL)isNotificatonMessage {
     
-    return self.messageType != QMMessageTypeText;
+    return self.messageType != QMMessageTypeText || self.messageType != QMMessageTypeSticker;
 }
 
 - (BOOL)isMediaMessage {
 	
 	return self.attachments.count > 0 || self.attachmentStatus == QMMessageAttachmentStatusLoading;
+}
+
+- (BOOL)isStickerMessage {
+    
+    return self.messageType == QMMessageTypeSticker;
 }
 
 @end

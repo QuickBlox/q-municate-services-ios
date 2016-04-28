@@ -388,6 +388,13 @@ typedef void(^QMCacheCollection)(NSArray *QB_NULLABLE_S collection);
           withAttachmentImage:(QB_NONNULL UIImage *)image
                    completion:(QB_NULLABLE QBChatCompletionBlock)completion;
 
+
+- (void)sendStickerMessage:(QB_NONNULL QBChatMessage *)message
+                  toDialog:(QB_NONNULL QBChatDialog *)dialog
+             saveToHistory:(BOOL)saveToHistory
+             saveToStorage:(BOOL)saveToStorage
+                completion:(QB_NONNULL QBChatCompletionBlock)completion;
+
 #pragma mark - mark as delivered
 
 /**
