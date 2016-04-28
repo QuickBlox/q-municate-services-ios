@@ -337,7 +337,7 @@ NSString const *kQMCustomParameterDialogDeletedOccupantsIDs = @"deleted_occupant
 
 - (BOOL)isNotificatonMessage {
     
-    return self.messageType != QMMessageTypeText || self.messageType != QMMessageTypeSticker;
+    return self.messageType != QMMessageTypeText && self.messageType != QMMessageTypeSticker;
 }
 
 - (BOOL)isMediaMessage {
