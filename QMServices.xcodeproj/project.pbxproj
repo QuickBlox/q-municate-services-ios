@@ -37,6 +37,8 @@
 		86E40FF21BDA4C50002B0496 /* libQMUsersService.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 86F9CD571BDA27ED0021B6F0 /* libQMUsersService.a */; };
 		FE52AC0C1CCF894700CCABC2 /* QMOfflineManager.h in Headers */ = {isa = PBXBuildFile; fileRef = FE52AC0A1CCF894700CCABC2 /* QMOfflineManager.h */; };
 		FE52AC0D1CCF894700CCABC2 /* QMOfflineManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FE52AC0B1CCF894700CCABC2 /* QMOfflineManager.m */; };
+		FE7245A91CD10EBC009C9C1B /* QMOfflineAction.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7245A71CD10EBC009C9C1B /* QMOfflineAction.h */; };
+		FE7245AA1CD10EBC009C9C1B /* QMOfflineAction.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7245A81CD10EBC009C9C1B /* QMOfflineAction.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -215,6 +217,8 @@
 		86F9CD6D1BDA28110021B6F0 /* QMUsersCache.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMUsersCache.xcodeproj; path = QMUsersCache/QMUsersCache.xcodeproj; sourceTree = "<group>"; };
 		FE52AC0A1CCF894700CCABC2 /* QMOfflineManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMOfflineManager.h; sourceTree = "<group>"; };
 		FE52AC0B1CCF894700CCABC2 /* QMOfflineManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMOfflineManager.m; sourceTree = "<group>"; };
+		FE7245A71CD10EBC009C9C1B /* QMOfflineAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMOfflineAction.h; sourceTree = "<group>"; };
+		FE7245A81CD10EBC009C9C1B /* QMOfflineAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMOfflineAction.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -241,6 +245,8 @@
 		2CE107F01B594BCD00379D96 /* QMManagers */ = {
 			isa = PBXGroup;
 			children = (
+				FE7245A71CD10EBC009C9C1B /* QMOfflineAction.h */,
+				FE7245A81CD10EBC009C9C1B /* QMOfflineAction.m */,
 				2CE107F51B594BD800379D96 /* QMServicesManager.h */,
 				2CE107F61B594BD800379D96 /* QMServicesManager.m */,
 				FE52AC0A1CCF894700CCABC2 /* QMOfflineManager.h */,
@@ -386,6 +392,7 @@
 			files = (
 				FE52AC0C1CCF894700CCABC2 /* QMOfflineManager.h in Headers */,
 				2CE107F71B594BD800379D96 /* QMServicesManager.h in Headers */,
+				FE7245A91CD10EBC009C9C1B /* QMOfflineAction.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -584,6 +591,7 @@
 				FE52AC0D1CCF894700CCABC2 /* QMOfflineManager.m in Sources */,
 				2CE107F81B594BD800379D96 /* QMServicesManager.m in Sources */,
 				55013A801A1F68280030C134 /* QMServices.m in Sources */,
+				FE7245AA1CD10EBC009C9C1B /* QMOfflineAction.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
