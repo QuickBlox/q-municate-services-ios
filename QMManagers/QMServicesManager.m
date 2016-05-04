@@ -74,14 +74,14 @@
     if ([QBSession currentSession].currentUser != nil) {
         
         __weak typeof(self)weakSelf = self;
+
+        
         dispatch_group_enter(self.logoutGroup);
         [self.authService logOut:^(QBResponse *response) {
-            
             __typeof(self) strongSelf = weakSelf;
+    
             [strongSelf.chatService disconnectWithCompletionBlock:nil];
             [strongSelf.chatService free];
-            
-            [[QMOfflineManager instance] cleanUpOfflineQueue];
             
             dispatch_group_leave(strongSelf.logoutGroup);
         }];
@@ -159,6 +159,7 @@
 
 - (void)joinAllGroupDialogsIfNeededWithCompletion:(dispatch_block_t)completion {
     static NSInteger counter = 0;
+    dispatch_group_t joinGroup = dispatch_group_create();
     if (!self.chatService.isAutoJoinEnabled) {
         // if auto join is not enabled QMServices will not join group chat dialogs automatically.
         if (completion) {
@@ -172,19 +173,21 @@
         
         if (dialog.type != QBChatDialogTypePrivate) {
             // Joining to group chat dialogs.
-            dispatch_group_enter(self.joinGroup);
+            NSLog(@"enter = %d",++counter);
+            dispatch_group_enter(joinGroup);
             
             [self.chatService joinToGroupDialog:dialog completion:^(NSError *error) {
                 if (error != nil) {
                     
-                   // NSLog(@"Failed to join room with error: %@", error.localizedDescription);
+                    NSLog(@"Failed to join room with error: %@", error.localizedDescription);
                 }
-                dispatch_group_leave(self.joinGroup);
+                NSLog(@"leave = %d",--counter);
+                dispatch_group_leave(joinGroup);
             }];
         }
     }
     
-    dispatch_group_notify(self.joinGroup, dispatch_get_main_queue(), ^{
+    dispatch_group_notify(joinGroup, dispatch_get_main_queue(), ^{
         if (completion) {
             completion();
         }
@@ -201,14 +204,14 @@
 - (void)chatServiceChatDidConnect:(QMChatService *)chatService {
   
     [self joinAllGroupDialogsIfNeededWithCompletion:^{
-        [[QMOfflineManager instance] performOfflineActions];
+        [self.chatService.offlineManager performOfflineActions];
     }];
 }
 
 - (void)chatServiceChatDidReconnect:(QMChatService *)chatService {
     
     [self joinAllGroupDialogsIfNeededWithCompletion:^{
-        [[QMOfflineManager instance] performOfflineActions];
+         [self.chatService.offlineManager performOfflineActions];
     }];
 }
 

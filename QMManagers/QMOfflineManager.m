@@ -8,13 +8,14 @@
 
 #import "QMOfflineManager.h"
 #import "QMOfflineAction.h"
+#import "QMOfflineActionsMemoryStorage.h"
 
 static BOOL _QMOfflineManager_offlineModeEnabled = YES;
 
 @interface QMOfflineManager()
 
 @property (nonatomic, strong) NSMutableArray * mutableOfflineActions;
-@property (nonatomic, strong) BFCancellationTokenSource* bfTaskCancelationToken;
+
 @end
 
 @implementation QMOfflineManager
@@ -26,6 +27,7 @@ static BOOL _QMOfflineManager_offlineModeEnabled = YES;
     if (self) {
         _mutableOfflineActions = [NSMutableArray array];
         _bfTaskCancelationToken = [BFCancellationTokenSource cancellationTokenSource];
+        _offlineActionsMemoryStorage = [QMOfflineActionsMemoryStorage new];
     }
     
     return self;
@@ -42,7 +44,10 @@ static BOOL _QMOfflineManager_offlineModeEnabled = YES;
         if  (parameters) {
             action.parameters = parameters;
         }
-        
+        if  ([self.delegate respondsToSelector:@selector(actionTypeForAction:)]) {
+            action.actionType = [self.delegate actionTypeForAction:action];
+            
+        }
         [self addOfflineAction:action];
     }
     else {
@@ -52,7 +57,7 @@ static BOOL _QMOfflineManager_offlineModeEnabled = YES;
 
     return [source.task continueWithBlock:^id _Nullable(BFTask * _Nonnull task) {
         return nil;
-    } cancellationToken:self.bfTaskCancelationToken];
+    } cancellationToken:self.bfTaskCancelationToken.token];
 }
 
 + (QB_NONNULL instancetype)instance {
@@ -98,7 +103,13 @@ static BOOL _QMOfflineManager_offlineModeEnabled = YES;
 
 - (void)cleanUpOfflineQueue {
    [self.bfTaskCancelationToken cancel];
+    
+    for (QMOfflineAction * action in self.offlineActions) {
+        [self cancelOfflineAction:action];
+    }
    [self.mutableOfflineActions removeAllObjects];
+    
+    self.bfTaskCancelationToken = [BFCancellationTokenSource cancellationTokenSource];
 }
 
 #pragma mark - Offline Mode Settings

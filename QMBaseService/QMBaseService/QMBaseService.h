@@ -22,6 +22,8 @@
 
 - (QB_NULLABLE instancetype)initWithServiceManager:(QB_NONNULL id<QMServiceManagerProtocol>)serviceManager;
 
+@property (strong, nonatomic, readonly) QMOfflineManager * offlineManager;
+
 /**
  *  Called when the servise is will begin start
  */

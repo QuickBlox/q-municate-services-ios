@@ -675,7 +675,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
         QBChatDialog *chatDialog = [[QBChatDialog alloc] initWithDialogID:nil type:QBChatDialogTypePrivate];
         chatDialog.occupantIDs = @[@(opponentID)];
         
-        [[[QMOfflineManager instance] newActionWithParameters:nil] continueWithBlock:^id _Nullable(BFTask * _Nonnull task) {
+        [[self.offlineManager newActionWithParameters:nil] continueWithBlock:^id _Nullable(BFTask * _Nonnull task) {
             
             __weak __typeof(self)weakSelf = self;
             
@@ -729,7 +729,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     chatDialog.photo = photo;
     chatDialog.occupantIDs = occupantIDs.allObjects;
     
-    [[[QMOfflineManager instance] newActionWithParameters:nil] continueWithBlock:^id _Nullable(BFTask * _Nonnull task) {
+    [[self.offlineManager newActionWithParameters:nil] continueWithBlock:^id _Nullable(BFTask * _Nonnull task) {
         
         __weak __typeof(self)weakSelf = self;
         
@@ -1105,8 +1105,6 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
          completion:(QBChatCompletionBlock)completion
 {
     
-    message.dateSent = [NSDate date];
-    
     //Save to history
     if (saveToHistory) {
         message.saveToHistory = kChatServiceSaveToHistoryTrue;
@@ -1126,9 +1124,11 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     message.senderID = currentUser.ID;
     message.dialogID = dialog.ID;
     
-    [[[QMOfflineManager instance] newActionWithParameters:nil] continueWithBlock:^id _Nullable(BFTask * _Nonnull task) {
+    [[self.offlineManager newActionWithParameters:nil] continueWithBlock:^id _Nullable(BFTask * _Nonnull task) {
         
         __weak __typeof(self)weakSelf = self;
+
+        message.dateSent = [NSDate date];
         
         [dialog sendMessage:message completionBlock:^(NSError *error) {
             
@@ -1154,11 +1154,17 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
                     [strongSelf.multicastDelegate chatService:strongSelf didUpdateChatDialogInMemoryStorage:dialog];
                 }
             }
+          
             if (completion) completion(error);
             
         }];
         return nil;
-    }];
+    } cancellationToken:self.offlineManager.bfTaskCancelationToken.token];
+    
+}
+
+- (QMOfflineActionType)actionTypeForAction:(QMOfflineAction*)action {
+    return QMOfflineActionTypeMessage;
 }
 
 - (void)sendMessage:(QBChatMessage *)message
