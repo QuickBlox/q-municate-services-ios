@@ -466,7 +466,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
                 }
             }
             
-            if (message.senderID != [QBSession currentSession].currentUser.ID) {
+            if (message.senderID != [QBSession currentSession].currentUser.ID && ![message.addedOccupantsIDs containsObject:@([QBSession currentSession].currentUser.ID)]) {
                 chatDialogToUpdate.unreadMessagesCount++;
             }
             
