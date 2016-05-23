@@ -226,19 +226,14 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
                 [self.multicastDelegate chatService:self didUpdateMessage:message forDialogID:dialogID];
             }
             
-            QBUUser *user = self.serviceManager.currentUser;
+            QBChatDialog * dialog = [self.dialogsMemoryStorage chatDialogWithID:dialogID];
             
-            if (user.ID == readerID) {
+            if (dialog.unreadMessagesCount > 0) {
                 
-                QBChatDialog * dialog = [self.dialogsMemoryStorage chatDialogWithID:dialogID];
+                dialog.unreadMessagesCount--;
                 
-                if (dialog.unreadMessagesCount > 0) {
-                    
-                    dialog.unreadMessagesCount--;
-                    
-                    if ([self.multicastDelegate respondsToSelector:@selector(chatService:didUpdateChatDialogInMemoryStorage:)]) {
-                        [self.multicastDelegate chatService:self didUpdateChatDialogInMemoryStorage:dialog];
-                    }
+                if ([self.multicastDelegate respondsToSelector:@selector(chatService:didUpdateChatDialogInMemoryStorage:)]) {
+                    [self.multicastDelegate chatService:self didUpdateChatDialogInMemoryStorage:dialog];
                 }
             }
         }
@@ -341,10 +336,8 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
         [self.dialogsMemoryStorage addChatDialog:dialogToAdd andJoin:self.isAutoJoinEnabled completion:^(QBChatDialog *addedDialog, NSError *error) {
             //
             __typeof(weakSelf)strongSelf = weakSelf;
-          //  if (message.text.length) {
-                addedDialog.unreadMessagesCount++;
-           // }
             
+              addedDialog.unreadMessagesCount++;
             
             if ([strongSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddChatDialogToMemoryStorage:)]) {
                 [strongSelf.multicastDelegate chatService:strongSelf didAddChatDialogToMemoryStorage:addedDialog];
