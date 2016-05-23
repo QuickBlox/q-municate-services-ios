@@ -231,7 +231,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
                 QBChatDialog * dialog = [self.dialogsMemoryStorage chatDialogWithID:dialogID];
                 
                 if (dialog.unreadMessagesCount > 0) {
-                    
+                    //--
                     dialog.unreadMessagesCount--;
                     
                     if ([self.multicastDelegate respondsToSelector:@selector(chatService:didUpdateChatDialogInMemoryStorage:)]) {
