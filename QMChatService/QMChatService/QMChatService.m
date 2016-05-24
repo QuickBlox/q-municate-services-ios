@@ -226,14 +226,17 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
                 [self.multicastDelegate chatService:self didUpdateMessage:message forDialogID:dialogID];
             }
             
-            QBChatDialog * dialog = [self.dialogsMemoryStorage chatDialogWithID:dialogID];
-            
-            if (dialog.unreadMessagesCount > 0) {
+            if (self.serviceManager.currentUser.ID == readerID) {
                 
-                dialog.unreadMessagesCount--;
+                QBChatDialog * dialog = [self.dialogsMemoryStorage chatDialogWithID:dialogID];
                 
-                if ([self.multicastDelegate respondsToSelector:@selector(chatService:didUpdateChatDialogInMemoryStorage:)]) {
-                    [self.multicastDelegate chatService:self didUpdateChatDialogInMemoryStorage:dialog];
+                if (dialog.unreadMessagesCount > 0) {
+                    //--
+                    dialog.unreadMessagesCount--;
+                    
+                    if ([self.multicastDelegate respondsToSelector:@selector(chatService:didUpdateChatDialogInMemoryStorage:)]) {
+                        [self.multicastDelegate chatService:self didUpdateChatDialogInMemoryStorage:dialog];
+                    }
                 }
             }
         }
