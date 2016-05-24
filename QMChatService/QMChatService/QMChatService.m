@@ -1331,10 +1331,11 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 }
 
 #pragma mark - System messages
-- (void)sendSystemMessageAboutAddingToDialog:(QB_NONNULL QBChatDialog *)chatDialog
-                                  toUsersIDs:(QB_NONNULL NSArray QB_GENERIC(NSNumber *) *)usersIDs
-                                    withText:(QB_NULLABLE NSString *)text
-                                  completion:(QB_NULLABLE QBChatCompletionBlock)completion {
+
+- (void)sendSystemMessageAboutAddingToDialog:(QBChatDialog *)chatDialog
+                                  toUsersIDs:(NSArray *)usersIDs
+                                    withText:(NSString *)text
+                                  completion:(QBChatCompletionBlock)completion {
     
     dispatch_group_t notifyGroup = dispatch_group_create();
     
@@ -1353,13 +1354,13 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
         
         dispatch_group_enter(notifyGroup);
         [[QBChat instance] sendSystemMessage:privateMessage completion:^(NSError *error) {
-            //
+            
             dispatch_group_leave(notifyGroup);
         }];
     }
     
     dispatch_group_notify(notifyGroup, dispatch_get_main_queue(), ^{
-        //
+        
         if (completion) completion(nil);
     });
     
