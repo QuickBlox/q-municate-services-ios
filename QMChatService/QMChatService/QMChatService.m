@@ -432,14 +432,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
                 
                 updatedAt = message.dialogUpdatedAt;
             }
-            
-            NSLog(@"Chat dialog date: %@", chatDialogToUpdate.updatedAt);
-            NSLog(@"Message updatedAt: %@", updatedAt);
-            NSLog(@"Compare: %zd", [chatDialogToUpdate.updatedAt compare:updatedAt]);
-            NSLog(@"Dialog date: %p", chatDialogToUpdate.updatedAt);
-            NSLog(@"Message date: %p", updatedAt);
-            NSLog(@"Message ID: %@", message.ID);
-            
+
             if ([chatDialogToUpdate.updatedAt compare:updatedAt] != NSOrderedDescending) {
                 
                 switch (message.dialogUpdateType) {
@@ -1306,12 +1299,9 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     NSAssert(dialogID != nil, @"dialogID can't be nil");
     
     QBChatDialog *chatDialogToUpdate = [self.dialogsMemoryStorage chatDialogWithID:dialogID];
-    //    NSAssert(chatDialogToUpdate != nil, @"Dialog wasn't found in memory storage!");
-    if (chatDialogToUpdate == nil) {
-        
-        return;
-    }
     
+    NSAssert(chatDialogToUpdate != nil, @"Dialog wasn't found in memory storage!");
+
     NSMutableArray *updatedMessages = [NSMutableArray arrayWithCapacity:messages.count];
     
     __weak __typeof(self)weakSelf = self;
