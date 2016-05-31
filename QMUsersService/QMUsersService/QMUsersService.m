@@ -549,7 +549,7 @@
 
 - (BFTask *)searchUsersWithPhoneNumbers:(NSArray *)phoneNumbers {
     
-    [self searchUsersWithPhoneNumbers:phoneNumbers
+   return  [self searchUsersWithPhoneNumbers:phoneNumbers
                                  page:[QBGeneralResponsePage responsePageWithCurrentPage:1 perPage:100]];
 }
 

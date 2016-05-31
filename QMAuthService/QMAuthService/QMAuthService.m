@@ -49,6 +49,9 @@ NSString *const kQMAuthSocialProvider = @"facebook";
     __weak __typeof(self)weakSelf = self;
     
     weakSelf.isAuthorized = NO;
+    
+    [self.offlineManager cleanUpOfflineQueue];
+    
     QBRequest *request = [QBRequest logOutWithSuccessBlock:^(QBResponse *response) {
         //Notify subscribes about logout
         if ([weakSelf.multicastDelegate respondsToSelector:@selector(authServiceDidLogOut:)]) {

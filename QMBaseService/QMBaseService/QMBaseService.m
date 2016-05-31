@@ -8,9 +8,10 @@
 
 #import "QMBaseService.h"
 
-@interface QMBaseService()
+@interface QMBaseService() <QMOfflineActionDelegate>
 
 @property (weak, nonatomic) id <QMServiceManagerProtocol> serviceManager;
+@property (strong, nonatomic, readwrite) QMOfflineManager * offlineManager;
 
 @end
 
@@ -20,6 +21,9 @@
     
     self = [super init];
     if (self) {
+        
+        _offlineManager = [[QMOfflineManager alloc] init];
+        _offlineManager.delegate = self;
         
         self.serviceManager = serviceManager;
         NSLog(@"Init - %@ service...", NSStringFromClass(self.class));

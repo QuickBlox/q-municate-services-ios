@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "QMMemoryStorageProtocol.h"
 #import "QMServiceManagerProtocol.h"
+#import "QMOfflineManager.h"
 
 @interface QMBaseService : NSObject <QMMemoryStorageProtocol>
 
@@ -20,6 +21,8 @@
 - (QB_NULLABLE id)init __attribute__((unavailable("init is not a supported initializer for this class.")));
 
 - (QB_NULLABLE instancetype)initWithServiceManager:(QB_NONNULL id<QMServiceManagerProtocol>)serviceManager;
+
+@property (strong, nonatomic, readonly) QMOfflineManager * offlineManager;
 
 /**
  *  Called when the servise is will begin start
