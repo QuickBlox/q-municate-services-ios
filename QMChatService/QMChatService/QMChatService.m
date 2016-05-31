@@ -352,7 +352,10 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
             //
             __typeof(weakSelf)strongSelf = weakSelf;
             
-              addedDialog.unreadMessagesCount++;
+            if (message.senderID != self.serviceManager.currentUser.ID) {
+                
+                addedDialog.unreadMessagesCount++;
+            }
             
             if ([strongSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddChatDialogToMemoryStorage:)]) {
                 [strongSelf.multicastDelegate chatService:strongSelf didAddChatDialogToMemoryStorage:addedDialog];
