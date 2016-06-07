@@ -13,6 +13,7 @@ static NSString *const kQMChatServiceDomain = @"com.q-municate.chatservice";
 
 @interface QMChatService()
 
+@property (assign, nonatomic, readwrite) QMChatConnectionState chatConnectionState;
 @property (strong, nonatomic) QBMulticastDelegate <QMChatServiceDelegate, QMChatConnectionDelegate> *multicastDelegate;
 @property (weak, nonatomic) BFTask* loadEarlierMessagesTask;
 @property (strong, nonatomic) NSMutableDictionary *loadedAllMessages;
@@ -27,20 +28,29 @@ static NSString *const kQMChatServiceDomain = @"com.q-municate.chatservice";
     
     BFTaskCompletionSource* source = [BFTaskCompletionSource taskCompletionSource];
     
-    if (!self.serviceManager.isAuthorized) {
-        [source setError:[NSError errorWithDomain:kQMChatServiceDomain
-                                             code:-1000
-                                         userInfo:@{NSLocalizedRecoverySuggestionErrorKey : @"You are not authorized in REST."}]];
-        return source.task;
-    }
-    
     if ([QBChat instance].isConnected) {
         [source setResult:nil];
     }
     else {
         [QBSettings setAutoReconnectEnabled:YES];
         
+        if ([self.multicastDelegate respondsToSelector:@selector(chatServiceChatHasStartedConnecting:)]) {
+            
+            [self.multicastDelegate chatServiceChatHasStartedConnecting:self];
+        }
+        
         QBUUser *user = self.serviceManager.currentUser;
+        
+        if (user.password == nil) {
+            
+            [source setError:[NSError errorWithDomain:kQMChatServiceDomain
+                                                 code:-1000
+                                             userInfo:@{NSLocalizedRecoverySuggestionErrorKey : @"QBSession currentUser should have password in order to connect in chat."}]];
+            return source.task;
+        }
+        
+        self.chatConnectionState = QMChatConnectionStateConnecting;
+        
         [[QBChat instance] connectWithUser:user completion:^(NSError *error) {
             
             if (error != nil) {
@@ -413,6 +423,25 @@ static NSString *const kQMChatServiceDomain = @"com.q-municate.chatservice";
     return source.task;
 }
 
+- (BFTask *)sendSystemMessageAboutAddingToDialog:(QBChatDialog *)chatDialog toUsersIDs:(NSArray *)usersIDs withText:(NSString *)text {
+    
+    BFTaskCompletionSource* source = [BFTaskCompletionSource taskCompletionSource];
+    
+    [self sendSystemMessageAboutAddingToDialog:chatDialog toUsersIDs:usersIDs withText:text completion:^(NSError *error) {
+        
+        if (error != nil) {
+            
+            [source setError:error];
+        }
+        else {
+            
+            [source setResult:nil];
+        }
+    }];
+    
+    return source.task;
+}
+
 - (BFTask *)sendMessageAboutAcceptingContactRequest:(BOOL)accept toOpponentID:(NSUInteger)opponentID {
     
     BFTaskCompletionSource* source = [BFTaskCompletionSource taskCompletionSource];
@@ -509,6 +538,25 @@ static NSString *const kQMChatServiceDomain = @"com.q-municate.chatservice";
 }
 
 #pragma mark - Message sending
+
+- (BFTask *)sendMessage:(QBChatMessage *)message type:(QMMessageType)type toDialog:(QBChatDialog *)dialog saveToHistory:(BOOL)saveToHistory saveToStorage:(BOOL)saveToStorage {
+    
+    BFTaskCompletionSource *source = [BFTaskCompletionSource taskCompletionSource];
+    
+    [self sendMessage:message type:type toDialog:dialog saveToHistory:saveToHistory saveToStorage:saveToStorage completion:^(NSError * _Nullable error) {
+        
+        if (error != nil) {
+            
+            [source setError:error];
+        }
+        else {
+            
+            [source setResult:nil];
+        }
+    }];
+    
+    return source.task;
+}
 
 - (BFTask *)sendMessage:(QBChatMessage *)message toDialogID:(NSString *)dialogID saveToHistory:(BOOL)saveToHistory saveToStorage:(BOOL)saveToStorage {
     
