@@ -26,6 +26,15 @@
 
 @implementation QMServicesManager
 
+#pragma mark - Logging management
+
++ (void)enableLogging:(BOOL)flag {
+    
+    QMSLogSetEnabled(flag);
+}
+
+#pragma mark - Construction
+
 - (instancetype)init {
     
     self = [super init];
@@ -66,6 +75,8 @@
     
     return manager;
 }
+
+#pragma mark - Methods
 
 - (void)logoutWithCompletion:(dispatch_block_t)completion {
     
@@ -302,18 +313,6 @@
 - (void)usersService:(QMUsersService *)usersService didUpdateUsers:(NSArray *)users {
     
     [QMUsersCache.instance insertOrUpdateUsers:users];
-}
-
-#pragma mark - Logging management
-
-- (void)setLoggingEnabled:(BOOL)loggingEnabled {
-    
-    QMSLogSetEnabled(loggingEnabled);
-}
-
-- (BOOL)loggingEnabled {
-    
-    return QMSLogEnabled();
 }
 
 @end
