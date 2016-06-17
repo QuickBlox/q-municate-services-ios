@@ -1,4 +1,3 @@
-
 //
 //  QMBaseAuthService.m
 //  QMServices
@@ -8,6 +7,8 @@
 //
 
 #import "QMAuthService.h"
+
+#import "QMSLog.h"
 
 NSString *const kQMAuthSocialProvider = @"facebook";
 
@@ -22,7 +23,7 @@ NSString *const kQMAuthSocialProvider = @"facebook";
 
 - (void)dealloc {
     
-    NSLog(@"%@ - %@",  NSStringFromSelector(_cmd), self);
+    QMSLog(@"%@ - %@",  NSStringFromSelector(_cmd), self);
 }
 
 #pragma  mark Add / Remove multicast delegate

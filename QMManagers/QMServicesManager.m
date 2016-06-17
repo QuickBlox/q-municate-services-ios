@@ -168,7 +168,7 @@
                 
                 if (error != nil) {
                     
-                    NSLog(@"Failed to join room with error: %@", error.localizedDescription);
+                    QMSLog(@"Failed to join room with error: %@", error.localizedDescription);
                 }
             }];
         }
