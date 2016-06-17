@@ -22,6 +22,27 @@ QMUsersServiceCacheDataSource,
 QMUsersServiceDelegate
 >
 
+/**
+ *  Determines whether extended services logging is enabled.
+ *  Default value: YES
+ */
+@property (assign, nonatomic) BOOL loggingEnabled;
+
+/**
+ *  REST authentication service.
+ */
+@property (strong, nonatomic, readonly, QB_NONNULL) QMAuthService* authService;
+
+/**
+ *  Chat service.
+ */
+@property (strong, nonatomic, readonly, QB_NONNULL) QMChatService* chatService;
+
+/**
+ *  Users service.
+ */
+@property (strong, nonatomic, readonly, QB_NONNULL) QMUsersService* usersService;
+
 + (QB_NONNULL instancetype)instance;
 
 /**
@@ -38,20 +59,5 @@ QMUsersServiceDelegate
  *  @param completion Completion block with a result.
  */
 - (void)logoutWithCompletion:(QB_NULLABLE dispatch_block_t)completion;
-
-/**
- *  REST authentication service.
- */
-@property (strong, nonatomic, readonly, QB_NONNULL) QMAuthService* authService;
-
-/**
- *  Chat service.
- */
-@property (strong, nonatomic, readonly, QB_NONNULL) QMChatService* chatService;
-
-/**
- *  Users service.
- */
-@property (strong, nonatomic, readonly, QB_NONNULL) QMUsersService* usersService;
 
 @end

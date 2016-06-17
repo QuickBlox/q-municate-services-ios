@@ -10,10 +10,12 @@
 #import "_CDMessage.h"
 #import "_CDDialog.h"
 
+#import "QMSLog.h"
+
 @interface QMServicesManager ()
 
-@property (nonatomic, strong) QMAuthService* authService;
-@property (nonatomic, strong) QMChatService* chatService;
+@property (nonatomic, strong) QMAuthService *authService;
+@property (nonatomic, strong) QMChatService *chatService;
 
 /**
  *  Logout group for synchronous completion.
@@ -300,6 +302,18 @@
 - (void)usersService:(QMUsersService *)usersService didUpdateUsers:(NSArray *)users {
     
     [QMUsersCache.instance insertOrUpdateUsers:users];
+}
+
+#pragma mark - Logging management
+
+- (void)setLoggingEnabled:(BOOL)loggingEnabled {
+    
+    QMSLogSetEnabled(loggingEnabled);
+}
+
+- (BOOL)loggingEnabled {
+    
+    return QMSLogEnabled();
 }
 
 @end
