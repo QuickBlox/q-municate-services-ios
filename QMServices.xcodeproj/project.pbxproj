@@ -33,6 +33,8 @@
 		55A3653D1A2744ED00C792C0 /* libQMChatCache.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 55A365341A2744ED00C792C0 /* libQMChatCache.a */; };
 		55A3653E1A2744ED00C792C0 /* libQMChatService.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 55A364EF1A27378F00C792C0 /* libQMChatService.a */; };
 		55A3653F1A2744ED00C792C0 /* libQMContactListCache.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 55A365391A2744ED00C792C0 /* libQMContactListCache.a */; };
+		584AFDCC1D13F462007D286D /* QMSLog.h in Headers */ = {isa = PBXBuildFile; fileRef = 584AFDCA1D13F462007D286D /* QMSLog.h */; };
+		584AFDCD1D13F462007D286D /* QMSLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 584AFDCB1D13F462007D286D /* QMSLog.m */; };
 		86E40FF11BDA4C50002B0496 /* libQMUsersCache.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 86F9CD721BDA28110021B6F0 /* libQMUsersCache.a */; };
 		86E40FF21BDA4C50002B0496 /* libQMUsersService.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 86F9CD571BDA27ED0021B6F0 /* libQMUsersService.a */; };
 /* End PBXBuildFile section */
@@ -209,6 +211,8 @@
 		55C276C71A0916BF005A0C38 /* QMChatService.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMChatService.xcodeproj; path = QMChatService/QMChatService.xcodeproj; sourceTree = "<group>"; };
 		55C276DB1A091739005A0C38 /* QMContactListService.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMContactListService.xcodeproj; path = QMContactListService/QMContactListService.xcodeproj; sourceTree = "<group>"; };
 		55C276E51A0917AF005A0C38 /* QMAuthService.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMAuthService.xcodeproj; path = QMAuthService/QMAuthService.xcodeproj; sourceTree = "<group>"; };
+		584AFDCA1D13F462007D286D /* QMSLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMSLog.h; sourceTree = "<group>"; };
+		584AFDCB1D13F462007D286D /* QMSLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMSLog.m; sourceTree = "<group>"; };
 		86F9CD4E1BDA27ED0021B6F0 /* QMUsersService.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMUsersService.xcodeproj; path = QMUsersService/QMUsersService.xcodeproj; sourceTree = "<group>"; };
 		86F9CD6D1BDA28110021B6F0 /* QMUsersCache.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMUsersCache.xcodeproj; path = QMUsersCache/QMUsersCache.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -248,6 +252,8 @@
 			children = (
 				55013A331A1F63920030C134 /* QMServices.h */,
 				55013A7F1A1F68280030C134 /* QMServices.m */,
+				584AFDCA1D13F462007D286D /* QMSLog.h */,
+				584AFDCB1D13F462007D286D /* QMSLog.m */,
 			);
 			path = QMServices;
 			sourceTree = "<group>";
@@ -379,6 +385,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2CE107F71B594BD800379D96 /* QMServicesManager.h in Headers */,
+				584AFDCC1D13F462007D286D /* QMSLog.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -416,7 +423,9 @@
 		55C276A91A09162F005A0C38 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				CLASSPREFIX = QM;
 				LastUpgradeCheck = 0620;
+				ORGANIZATIONNAME = Quickblox;
 				TargetAttributes = {
 					55013A301A1F63910030C134 = {
 						CreatedOnToolsVersion = 6.1;
@@ -576,6 +585,7 @@
 			files = (
 				2CE107F81B594BD800379D96 /* QMServicesManager.m in Sources */,
 				55013A801A1F68280030C134 /* QMServices.m in Sources */,
+				584AFDCD1D13F462007D286D /* QMSLog.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
