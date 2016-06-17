@@ -10,7 +10,7 @@
 
 #import "QMSLog.h"
 
-NSString *const kQMAuthSocialProvider = @"facebook";
+static NSString *const kQMFacebookAuthSocialProvider = @"facebook";
 
 @interface QMAuthService()
 
@@ -169,7 +169,7 @@ NSString *const kQMAuthSocialProvider = @"facebook";
 - (QBRequest *)logInWithFacebookSessionToken:(NSString *)sessionToken completion:(void(^)(QBResponse *response, QBUUser *userProfile))completion {
     
     __weak __typeof(self)weakSelf = self;
-    QBRequest *request = [QBRequest logInWithSocialProvider:kQMAuthSocialProvider accessToken:sessionToken accessTokenSecret:nil successBlock:^(QBResponse *response, QBUUser *tUser) {
+    QBRequest *request = [QBRequest logInWithSocialProvider:kQMFacebookAuthSocialProvider accessToken:sessionToken accessTokenSecret:nil successBlock:^(QBResponse *response, QBUUser *tUser) {
         //set password
         tUser.password = [QBSession currentSession].sessionDetails.token;
         
