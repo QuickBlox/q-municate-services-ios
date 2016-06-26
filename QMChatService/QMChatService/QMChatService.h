@@ -432,6 +432,14 @@ typedef NS_ENUM(NSUInteger, QMChatConnectionState) {
       saveToStorage:(BOOL)saveToStorage
          completion:(QB_NULLABLE QBChatCompletionBlock)completion;
 
+
+
+- (void)sendStickerMessage:(QB_NONNULL QBChatMessage *)message
+                  toDialog:(QB_NONNULL QBChatDialog *)dialog
+             saveToHistory:(BOOL)saveToHistory
+             saveToStorage:(BOOL)saveToStorage
+                completion:(QB_NONNULL QBChatCompletionBlock)completion;
+
 /**
  *  Send attachment message to dialog.
  *

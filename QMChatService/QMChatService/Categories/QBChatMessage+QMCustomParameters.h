@@ -32,6 +32,7 @@
 @property (strong, nonatomic, QB_NULLABLE) NSString *dialogPhoto;
 @property (strong, nonatomic, QB_NULLABLE) NSDate *dialogUpdatedAt;
 
+@property (strong, nonatomic) NSString *stickerMessage;
 /**
  *  Save values from QBChatDialog to message custom parameters
  *
@@ -60,5 +61,7 @@
  *  Return `YES` if this item is a notification message, and `NO` if it is a text message.
  */
 - (BOOL)isNotificatonMessage;
+
+- (BOOL)isStickerMessage;
 
 @end
