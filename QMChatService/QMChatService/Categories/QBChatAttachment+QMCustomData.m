@@ -37,7 +37,7 @@
                                                        options:NSJSONWritingPrettyPrinted
                                                          error:&error];
     
-    self.customData = [[NSString alloc] initWithData:jsonData
+    self.data = [[NSString alloc] initWithData:jsonData
                                             encoding:NSUTF8StringEncoding];
 }
 
@@ -46,7 +46,7 @@
 - (NSMutableDictionary *)_jsonObject {
     
     NSError *error = nil;
-    NSData *jsonData = [self.customData dataUsingEncoding:NSUTF8StringEncoding];
+    NSData *jsonData = [self.data dataUsingEncoding:NSUTF8StringEncoding];
     
     if (jsonData) {
         
