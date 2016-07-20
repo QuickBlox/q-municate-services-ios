@@ -559,8 +559,6 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
         
         BOOL messageExists = [self.messagesMemoryStorage isMessageExistent:message forDialogID:message.dialogID];
         
-        [self.messagesMemoryStorage addMessage:message forDialogID:message.dialogID];
-        
         if (messageExists) {
             
             if ([self.multicastDelegate respondsToSelector:@selector(chatService:didUpdateMessage:forDialogID:)]) {
@@ -570,12 +568,14 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
         }
         else {
             
-            chatDialogToUpdate.updatedAt = message.dateSent;
+             [self.messagesMemoryStorage addMessage:message forDialogID:message.dialogID];
             
             if ([self.multicastDelegate respondsToSelector:@selector(chatService:didAddMessageToMemoryStorage:forDialogID:)]) {
                 
                 [self.multicastDelegate chatService:self didAddMessageToMemoryStorage:message forDialogID:message.dialogID];
             }
+            
+            chatDialogToUpdate.updatedAt = message.dateSent;
             
             if ([self.multicastDelegate respondsToSelector:@selector(chatService:didUpdateChatDialogInMemoryStorage:)]) {
                 
@@ -1180,19 +1180,22 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     [dialog sendMessage:message completionBlock:^(NSError *error) {
         
         __typeof(weakSelf)strongSelf = weakSelf;
-        
-        // there is a case when message that was returned from server (Group dialogs)
-        // will be handled faster then this completion block been fired
-        // therefore there is no need to add local message to memory storage, while server
-        // up-to-date one is already there
-        BOOL messageExists = [strongSelf.messagesMemoryStorage isMessageExistent:message forDialogID:message.dialogID];
-        
-        if (error == nil && !messageExists && saveToStorage) {
+    
+        if (error == nil && saveToStorage) {
             
-            [strongSelf.messagesMemoryStorage addMessage:message forDialogID:dialog.ID];
+            // there is a case when message that was returned from server (Group dialogs)
+            // will be handled faster then this completion block been fired
+            // therefore there is no need to add local message to memory storage, while server
+            // up-to-date one is already there
+            BOOL messageExists = [strongSelf.messagesMemoryStorage isMessageExistent:message forDialogID:message.dialogID];
             
-            if ([strongSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddMessageToMemoryStorage:forDialogID:)]) {
-                [strongSelf.multicastDelegate chatService:strongSelf didAddMessageToMemoryStorage:message forDialogID:dialog.ID];
+            if (!messageExists) {
+                
+                [strongSelf.messagesMemoryStorage addMessage:message forDialogID:dialog.ID];
+                
+                if ([strongSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddMessageToMemoryStorage:forDialogID:)]) {
+                    [strongSelf.multicastDelegate chatService:strongSelf didAddMessageToMemoryStorage:message forDialogID:dialog.ID];
+                }
             }
             
             [strongSelf updateLastMessageParamsForChatDialog:dialog withMessage:message];
