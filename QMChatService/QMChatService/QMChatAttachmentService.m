@@ -209,6 +209,45 @@ static NSString* attachmentPath(QBChatAttachment *attachment) {
     }
 }
 
+- (void)getLocalImageForAttachmentMessage:(QB_NONNULL QBChatMessage *)attachmentMessage completion:(void(^QB_NULLABLE_S)(NSError *QB_NULLABLE_S error, UIImage *QB_NULLABLE_S image))completion {
+    
+    if (attachmentMessage.attachmentStatus == QMMessageAttachmentStatusLoading || attachmentMessage.attachmentStatus == QMMessageAttachmentStatusError) {
+        return;
+    }
+    
+    QBChatAttachment *attachment = [attachmentMessage.attachments firstObject];
+    
+    // checking attachment in storage
+    if ([self.attachmentsStorage objectForKey:attachment.ID] != nil) {
+        if (completion) completion(nil, [self.attachmentsStorage objectForKey:attachment.ID]);
+        return;
+    }
+    
+    // checking attachment in cache
+    NSString *path = attachmentPath(attachment);
+    if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            
+            NSError *error;
+            NSData *data = [NSData dataWithContentsOfFile:path options:NSDataReadingMappedIfSafe error:&error];
+            
+            UIImage *image = [UIImage imageWithData:data];
+            
+            if (image != nil) {
+                [self.attachmentsStorage setObject:image forKey:attachment.ID];
+            }
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (completion) completion(error, image);
+            });
+        });
+        
+        return;
+    }
+
+}
+
 - (BOOL)saveImageData:(NSData *)imageData chatAttachment:(QBChatAttachment *)attachment error:(NSError **)errorPtr {
     
     NSString *path = attachmentPath(attachment);

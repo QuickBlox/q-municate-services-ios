@@ -75,4 +75,13 @@
  */
 - (void)getImageForAttachmentMessage:(QB_NONNULL QBChatMessage *)attachmentMessage completion:(void(^QB_NULLABLE_S)(NSError *QB_NULLABLE_S error, UIImage *QB_NULLABLE_S image))completion;
 
+/**
+ *  Get image local image by attachment message.
+ *
+ *  @param attachmentMessage      message with attachment
+ *  @param completion             fetched image or nil if no image
+ */
+- (void)getLocalImageForAttachmentMessage:(QB_NONNULL QBChatMessage *)attachmentMessage completion:(void(^QB_NULLABLE_S)(NSError *QB_NULLABLE_S error, UIImage *QB_NULLABLE_S image))completion;
+
+
 @end
