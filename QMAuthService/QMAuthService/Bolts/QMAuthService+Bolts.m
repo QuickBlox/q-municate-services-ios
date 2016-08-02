@@ -60,7 +60,7 @@
     return source.task;
 }
 
-- (BFTask *)loginWithTwitterAccessToken:(QB_NONNULL NSString *)accessToken accessTokenSecret:(QB_NONNULL NSString*)accessTokenSecret {
+- (BFTask *)loginWithTwitterAccessToken:(QB_NONNULL NSString *)accessToken accessTokenSecret:(QB_NONNULL NSString *)accessTokenSecret {
     
     BFTaskCompletionSource* source = [BFTaskCompletionSource taskCompletionSource];
     

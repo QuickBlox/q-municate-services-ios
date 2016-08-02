@@ -167,7 +167,7 @@ static NSString *const kQMTwitterAuthSocialProvider  = @"twitter";
 
 #pragma mark - Social auth
 
-- (QBRequest *)loginWithTwitterAccessToken:(NSString *)accessToken accessTokenSecret:(NSString*)accessTokenSecret completion:(void(^)(QBResponse *response, QBUUser *userProfile))completion {
+- (QBRequest *)loginWithTwitterAccessToken:(NSString *)accessToken accessTokenSecret:(NSString *)accessTokenSecret completion:(void(^)(QBResponse *response, QBUUser *userProfile))completion {
     
     __weak __typeof(self)weakSelf = self;
     
