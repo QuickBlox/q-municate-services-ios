@@ -25,6 +25,13 @@ typedef NS_ENUM(NSUInteger, QMMessageAttachmentStatus) {
     QMMessageAttachmentStatusError,
 };
 
+typedef NS_ENUM(NSUInteger, QMMessageStatus) {
+    QMMessageStatusSent = 0,
+    QMMessageStatusSending,
+    QMMessageStatusNotSent,
+    QMMessageStatusError
+};
+
 typedef NS_ENUM(NSUInteger, QMDialogUpdateType) {
     QMDialogUpdateTypeNone      = 0,
     QMDialogUpdateTypePhoto     = 1,

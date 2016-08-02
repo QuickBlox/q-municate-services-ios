@@ -1178,10 +1178,23 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     message.dialogID = dialog.ID;
     
     __weak __typeof(self)weakSelf = self;
+    
+    
+    
+    [self.messagesMemoryStorage addMessage:message forDialogID:dialog.ID];
+    
+    if ([self.multicastDelegate respondsToSelector:@selector(chatService:didAddMessageToMemoryStorage:forDialogID:)]) {
+        
+        [self.multicastDelegate chatService:self didAddMessageToMemoryStorage:message forDialogID:dialog.ID];
+        
+    }
+    
+    [self changeMessageStatus:QMMessageStatusSending forMessage:message];
+    
     [dialog sendMessage:message completionBlock:^(NSError *error) {
         
         __typeof(weakSelf)strongSelf = weakSelf;
-    
+        
         if (error == nil && saveToStorage) {
             
             // there is a case when message that was returned from server (Group dialogs)
@@ -1204,12 +1217,34 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
             
             if ([strongSelf.multicastDelegate respondsToSelector:@selector(chatService:didUpdateChatDialogInMemoryStorage:)]) {
                 [strongSelf.multicastDelegate chatService:strongSelf didUpdateChatDialogInMemoryStorage:dialog];
+                
             }
+            
+            [self changeMessageStatus:QMMessageStatusSent forMessage:message];
+        }
+        else if (error) {
+            
+           // [self deleteMessageLocally:message];
+            
+            [self changeMessageStatus:QMMessageStatusNotSent forMessage:message];
         }
         
-        if (completion) completion(error);
+        if (completion) {
+            completion(error);
+        }
     }];
 }
+
+- (void)changeMessageStatus:(QMMessageStatus)status forMessage:(QBChatMessage *)message {
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+        message.messageStatus = status;
+        if ([self.multicastDelegate respondsToSelector:@selector(chatService:didChangeMessageStatus:forMessage:)]) {
+            [self.multicastDelegate chatService:self didChangeMessageStatus:status forMessage:message];
+        }
+    });
+}
+
 
 - (void)sendMessage:(QBChatMessage *)message
          toDialogID:(NSString *)dialogID

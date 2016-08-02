@@ -1096,4 +1096,7 @@ typedef NS_ENUM(NSUInteger, QMChatConnectionState) {
  */
 - (void)chatServiceChatDidFailWithStreamError:(QB_NONNULL NSError *)error;
 
+- (void)chatService:(QB_NONNULL QMChatService *)chatService didChangeMessageStatus:(QMMessageStatus)status forMessage:(QB_NONNULL QBChatMessage*)message;
+
+
 @end

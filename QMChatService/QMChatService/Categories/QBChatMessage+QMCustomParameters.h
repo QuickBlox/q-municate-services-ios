@@ -20,6 +20,7 @@
 @property (assign, nonatomic) BOOL messageDeliveryStatus;
 @property (assign, nonatomic) QMMessageAttachmentStatus attachmentStatus;
 @property (assign, nonatomic) CLLocationCoordinate2D locationCoordinate;
+@property (assign, nonatomic) QMMessageStatus messageStatus;
 
 /**
  *  Dialog
@@ -69,5 +70,8 @@
  *  Return `YES` if this item is a location message, and `NO` if it is a text message.
  */
 - (BOOL)isLocationMessage;
+
+
+
 
 @end
