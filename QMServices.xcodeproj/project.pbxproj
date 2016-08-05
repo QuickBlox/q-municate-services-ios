@@ -37,6 +37,14 @@
 		584AFDCD1D13F462007D286D /* QMSLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 584AFDCB1D13F462007D286D /* QMSLog.m */; };
 		86E40FF11BDA4C50002B0496 /* libQMUsersCache.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 86F9CD721BDA28110021B6F0 /* libQMUsersCache.a */; };
 		86E40FF21BDA4C50002B0496 /* libQMUsersService.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 86F9CD571BDA27ED0021B6F0 /* libQMUsersService.a */; };
+		E075B2561D50EA5600F7F72B /* QBOfflineActionParameters.h in Headers */ = {isa = PBXBuildFile; fileRef = E075B24E1D50EA5600F7F72B /* QBOfflineActionParameters.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E075B2571D50EA5600F7F72B /* QBOfflineActionParameters.m in Sources */ = {isa = PBXBuildFile; fileRef = E075B24F1D50EA5600F7F72B /* QBOfflineActionParameters.m */; };
+		E075B2581D50EA5600F7F72B /* QMOfflineAction.h in Headers */ = {isa = PBXBuildFile; fileRef = E075B2501D50EA5600F7F72B /* QMOfflineAction.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E075B2591D50EA5600F7F72B /* QMOfflineAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E075B2511D50EA5600F7F72B /* QMOfflineAction.m */; };
+		E075B25A1D50EA5600F7F72B /* QMOfflineActionsMemoryStorage.h in Headers */ = {isa = PBXBuildFile; fileRef = E075B2521D50EA5600F7F72B /* QMOfflineActionsMemoryStorage.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E075B25B1D50EA5600F7F72B /* QMOfflineActionsMemoryStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = E075B2531D50EA5600F7F72B /* QMOfflineActionsMemoryStorage.m */; };
+		E075B25C1D50EA5600F7F72B /* QMOfflineManager.h in Headers */ = {isa = PBXBuildFile; fileRef = E075B2541D50EA5600F7F72B /* QMOfflineManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E075B25D1D50EA5600F7F72B /* QMOfflineManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E075B2551D50EA5600F7F72B /* QMOfflineManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -215,6 +223,14 @@
 		584AFDCB1D13F462007D286D /* QMSLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMSLog.m; sourceTree = "<group>"; };
 		86F9CD4E1BDA27ED0021B6F0 /* QMUsersService.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMUsersService.xcodeproj; path = QMUsersService/QMUsersService.xcodeproj; sourceTree = "<group>"; };
 		86F9CD6D1BDA28110021B6F0 /* QMUsersCache.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMUsersCache.xcodeproj; path = QMUsersCache/QMUsersCache.xcodeproj; sourceTree = "<group>"; };
+		E075B24E1D50EA5600F7F72B /* QBOfflineActionParameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBOfflineActionParameters.h; sourceTree = "<group>"; };
+		E075B24F1D50EA5600F7F72B /* QBOfflineActionParameters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBOfflineActionParameters.m; sourceTree = "<group>"; };
+		E075B2501D50EA5600F7F72B /* QMOfflineAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMOfflineAction.h; sourceTree = "<group>"; };
+		E075B2511D50EA5600F7F72B /* QMOfflineAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMOfflineAction.m; sourceTree = "<group>"; };
+		E075B2521D50EA5600F7F72B /* QMOfflineActionsMemoryStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMOfflineActionsMemoryStorage.h; sourceTree = "<group>"; };
+		E075B2531D50EA5600F7F72B /* QMOfflineActionsMemoryStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMOfflineActionsMemoryStorage.m; sourceTree = "<group>"; };
+		E075B2541D50EA5600F7F72B /* QMOfflineManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMOfflineManager.h; sourceTree = "<group>"; };
+		E075B2551D50EA5600F7F72B /* QMOfflineManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMOfflineManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -241,6 +257,14 @@
 		2CE107F01B594BCD00379D96 /* QMManagers */ = {
 			isa = PBXGroup;
 			children = (
+				E075B24E1D50EA5600F7F72B /* QBOfflineActionParameters.h */,
+				E075B24F1D50EA5600F7F72B /* QBOfflineActionParameters.m */,
+				E075B2501D50EA5600F7F72B /* QMOfflineAction.h */,
+				E075B2511D50EA5600F7F72B /* QMOfflineAction.m */,
+				E075B2521D50EA5600F7F72B /* QMOfflineActionsMemoryStorage.h */,
+				E075B2531D50EA5600F7F72B /* QMOfflineActionsMemoryStorage.m */,
+				E075B2541D50EA5600F7F72B /* QMOfflineManager.h */,
+				E075B2551D50EA5600F7F72B /* QMOfflineManager.m */,
 				2CE107F51B594BD800379D96 /* QMServicesManager.h */,
 				2CE107F61B594BD800379D96 /* QMServicesManager.m */,
 			);
@@ -386,6 +410,10 @@
 			files = (
 				2CE107F71B594BD800379D96 /* QMServicesManager.h in Headers */,
 				584AFDCC1D13F462007D286D /* QMSLog.h in Headers */,
+				E075B25C1D50EA5600F7F72B /* QMOfflineManager.h in Headers */,
+				E075B2581D50EA5600F7F72B /* QMOfflineAction.h in Headers */,
+				E075B25A1D50EA5600F7F72B /* QMOfflineActionsMemoryStorage.h in Headers */,
+				E075B2561D50EA5600F7F72B /* QBOfflineActionParameters.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -583,8 +611,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E075B25D1D50EA5600F7F72B /* QMOfflineManager.m in Sources */,
+				E075B25B1D50EA5600F7F72B /* QMOfflineActionsMemoryStorage.m in Sources */,
 				2CE107F81B594BD800379D96 /* QMServicesManager.m in Sources */,
 				55013A801A1F68280030C134 /* QMServices.m in Sources */,
+				E075B2591D50EA5600F7F72B /* QMOfflineAction.m in Sources */,
+				E075B2571D50EA5600F7F72B /* QBOfflineActionParameters.m in Sources */,
 				584AFDCD1D13F462007D286D /* QMSLog.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

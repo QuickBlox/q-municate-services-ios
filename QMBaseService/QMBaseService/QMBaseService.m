@@ -10,9 +10,12 @@
 
 #import "QMSLog.h"
 
-@interface QMBaseService()
+
+@interface QMBaseService() <QMOfflineActionDelegate>
 
 @property (weak, nonatomic) id <QMServiceManagerProtocol> serviceManager;
+
+@property (strong, nonatomic, readwrite) QMOfflineManager * offlineManager;
 
 @end
 
@@ -22,7 +25,6 @@
     
     self = [super init];
     if (self) {
-        
         self.serviceManager = serviceManager;
         QMSLog(@"Init - %@ service...", NSStringFromClass(self.class));
         [self serviceWillStart];
@@ -32,6 +34,19 @@
 
 - (void)serviceWillStart {
     
+}
+
+- (QMOfflineManager*)offlineManager {
+    static QMOfflineManager *manager = nil;
+    
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        
+        manager = [[QMOfflineManager alloc] init];
+        [manager.multicastDelegate addDelegate:self];
+    });
+    
+    return manager;
 }
 
 #pragma mark - QMMemoryStorageProtocol
