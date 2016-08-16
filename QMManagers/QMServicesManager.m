@@ -11,7 +11,6 @@
 #import "_CDDialog.h"
 
 #import "QMSLog.h"
-#import "QMOfflineManager.h"
 
 @interface QMServicesManager ()
 
@@ -210,14 +209,14 @@
 - (void)chatServiceChatDidConnect:(QMChatService *)chatService {
     
     [self joinAllGroupDialogsIfNeededWithCompletion:^{
-        [chatService.offlineManager performOfflineActions];
+        [chatService.deferredQueueManager performDeferredActions];
     }];
 }
 
 - (void)chatServiceChatDidReconnect:(QMChatService *)chatService {
     
     [self joinAllGroupDialogsIfNeededWithCompletion:^{
-        [chatService.offlineManager performOfflineActions];
+        [chatService.deferredQueueManager performDeferredActions];
     }];
 }
 

@@ -22,11 +22,11 @@ typedef NS_ENUM(NSUInteger, QMMessageStatus) {
 - (void)removeDelegate:(QB_NONNULL id <QMDeferredQueueManagerDelegate>)delegate;
 
 
-- (void)addMessage:(QBChatMessage *)message;
-- (void)updateMessage:(QBChatMessage *)message;
+- (void)addOrUpdateMessage:(QBChatMessage *)message;
 - (void)removeMessage:(QBChatMessage *)message;
 
 - (QMMessageStatus)statusForMessage:(QBChatMessage *)message;
+- (void)performDeferredActions;
 
 @end
 
@@ -36,5 +36,6 @@ typedef NS_ENUM(NSUInteger, QMMessageStatus) {
 @optional
 
 - (void)deferredQueueManager:(QMDeferredQueueManager*)queueManager performActionWithMessage:(QB_NONNULL QBChatMessage *)message;
+- (void)deferredQueueManager:(QMDeferredQueueManager*)queueManager didAddMessageLocally:(QBChatMessage*)addedMessage;
 
 @end

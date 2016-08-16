@@ -50,12 +50,17 @@
 #pragma mark -
 #pragma mark Messages
 
-- (void)addMessage:(QBChatMessage *)message {
+- (void)addOrUpdateMessage:(QBChatMessage *)message {
+    
+    BOOL messageIsExisted = [self.deferredQueueMemoryStorage containsMessage:message];
+    
     [self.deferredQueueMemoryStorage addMessage:message];
-}
-
-- (void)updateMessage:(QBChatMessage *)message {
-    [self.deferredQueueMemoryStorage addMessage:message];
+    
+    if (!messageIsExisted && [self.multicastDelegate respondsToSelector:@selector(deferredQueueManager:didAddMessageLocally:)]) {
+        
+        [self.multicastDelegate deferredQueueManager:self
+                                didAddMessageLocally:message];
+    }
 }
 
 - (void)removeMessage:(QBChatMessage *)message {
@@ -69,6 +74,25 @@
     }
     else {
         return QMMessageStatusSent;
+    }
+}
+
+- (void)perfromDefferedActionForMessage:(QBChatMessage*)message {
+    BOOL messageIsExisted = [self.deferredQueueMemoryStorage containsMessage:message];
+    NSAssert(!messageIsExisted, @"Message should exist");
+    
+    if ([self.multicastDelegate respondsToSelector:@selector(deferredQueueManager:performActionWithMessage:)]) {
+        [self.multicastDelegate deferredQueueManager:self
+                            performActionWithMessage:message];
+    }
+}
+
+#pragma mark -
+#pragma mark Deferred Queue Operations
+- (void)performDeferredActions {
+    
+    for (QBChatMessage * message in self.deferredQueueMemoryStorage.messages) {
+        [self perfromDefferedActionForMessage:message];
     }
 }
 
