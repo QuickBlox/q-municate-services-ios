@@ -7,6 +7,7 @@
 //
 
 #import "QMDeferredQueueManager.h"
+#import "QMDeferredQueueMemoryStorage.h"
 
 @implementation QMDeferredQueueManager
 

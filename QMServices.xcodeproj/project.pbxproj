@@ -49,6 +49,8 @@
 		E0C3C38C1D632766003C0FB8 /* QMDeferredQueueManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E0C3C38A1D632766003C0FB8 /* QMDeferredQueueManager.m */; };
 		E0C3C3951D632789003C0FB8 /* QMDeferredAction.h in Headers */ = {isa = PBXBuildFile; fileRef = E0C3C3931D632789003C0FB8 /* QMDeferredAction.h */; };
 		E0C3C3961D632789003C0FB8 /* QMDeferredAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0C3C3941D632789003C0FB8 /* QMDeferredAction.m */; };
+		E0C3C3991D632FA9003C0FB8 /* QMDeferredQueueMemoryStorage.h in Headers */ = {isa = PBXBuildFile; fileRef = E0C3C3971D632FA9003C0FB8 /* QMDeferredQueueMemoryStorage.h */; };
+		E0C3C39A1D632FA9003C0FB8 /* QMDeferredQueueMemoryStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = E0C3C3981D632FA9003C0FB8 /* QMDeferredQueueMemoryStorage.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -239,6 +241,8 @@
 		E0C3C38A1D632766003C0FB8 /* QMDeferredQueueManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMDeferredQueueManager.m; sourceTree = "<group>"; };
 		E0C3C3931D632789003C0FB8 /* QMDeferredAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMDeferredAction.h; sourceTree = "<group>"; };
 		E0C3C3941D632789003C0FB8 /* QMDeferredAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMDeferredAction.m; sourceTree = "<group>"; };
+		E0C3C3971D632FA9003C0FB8 /* QMDeferredQueueMemoryStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMDeferredQueueMemoryStorage.h; sourceTree = "<group>"; };
+		E0C3C3981D632FA9003C0FB8 /* QMDeferredQueueMemoryStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMDeferredQueueMemoryStorage.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -279,6 +283,8 @@
 				E0C3C38A1D632766003C0FB8 /* QMDeferredQueueManager.m */,
 				E0C3C3931D632789003C0FB8 /* QMDeferredAction.h */,
 				E0C3C3941D632789003C0FB8 /* QMDeferredAction.m */,
+				E0C3C3971D632FA9003C0FB8 /* QMDeferredQueueMemoryStorage.h */,
+				E0C3C3981D632FA9003C0FB8 /* QMDeferredQueueMemoryStorage.m */,
 			);
 			path = QMManagers;
 			sourceTree = "<group>";
@@ -428,6 +434,7 @@
 				E0C3C3951D632789003C0FB8 /* QMDeferredAction.h in Headers */,
 				E075B25A1D50EA5600F7F72B /* QMOfflineActionsMemoryStorage.h in Headers */,
 				E075B2561D50EA5600F7F72B /* QBOfflineActionParameters.h in Headers */,
+				E0C3C3991D632FA9003C0FB8 /* QMDeferredQueueMemoryStorage.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -626,6 +633,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E075B25D1D50EA5600F7F72B /* QMOfflineManager.m in Sources */,
+				E0C3C39A1D632FA9003C0FB8 /* QMDeferredQueueMemoryStorage.m in Sources */,
 				E075B25B1D50EA5600F7F72B /* QMOfflineActionsMemoryStorage.m in Sources */,
 				E0C3C38C1D632766003C0FB8 /* QMDeferredQueueManager.m in Sources */,
 				E0C3C3961D632789003C0FB8 /* QMDeferredAction.m in Sources */,
