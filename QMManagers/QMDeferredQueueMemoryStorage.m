@@ -38,7 +38,7 @@
 
 - (void)addMessage:(QBChatMessage *)message {
     QBChatMessage *localMessage = self.messagesInQueue[message.ID];
-    if (message != nil) {
+    if (localMessage != nil) {
         
     }
     self.messagesInQueue[message.ID] = message;

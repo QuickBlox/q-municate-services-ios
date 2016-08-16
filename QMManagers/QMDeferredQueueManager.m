@@ -79,7 +79,7 @@
 
 - (void)perfromDefferedActionForMessage:(QBChatMessage*)message {
     BOOL messageIsExisted = [self.deferredQueueMemoryStorage containsMessage:message];
-    NSAssert(!messageIsExisted, @"Message should exist");
+ //   NSAssert(!messageIsExisted, @"Message should exist");
     
     if ([self.multicastDelegate respondsToSelector:@selector(deferredQueueManager:performActionWithMessage:)]) {
         [self.multicastDelegate deferredQueueManager:self

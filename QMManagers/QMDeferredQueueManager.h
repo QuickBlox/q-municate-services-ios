@@ -7,6 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <Quickblox/QBMulticastDelegate.h>
+#import <Quickblox/Quickblox.h>
 
 @protocol QMDeferredQueueManagerDelegate;
 

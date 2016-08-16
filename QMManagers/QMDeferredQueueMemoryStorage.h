@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "QMMemoryStorageProtocol.h"
+#import <Quickblox/Quickblox.h>
 
 @interface QMDeferredQueueMemoryStorage : NSObject <QMMemoryStorageProtocol>
 
