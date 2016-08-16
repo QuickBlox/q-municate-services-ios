@@ -10,7 +10,7 @@
 
 @interface QMDeferredQueueMemoryStorage()
 
-@property (strong, nonatomic) NSMutableDictionary *messages;
+@property (strong, nonatomic) NSMutableDictionary *messagesInQueue;
 @property (strong, nonatomic) NSMutableDictionary *dialogs;
 @property (strong, nonatomic) NSMutableDictionary *contactRequests;
 
@@ -19,7 +19,7 @@
 @implementation QMDeferredQueueMemoryStorage
 
 - (void)dealloc {
-    [self.messages removeAllObjects];
+    [self.messagesInQueue removeAllObjects];
     [self.dialogs removeAllObjects];
     [self.contactRequests removeAllObjects];
 }
@@ -30,26 +30,26 @@
     if (self) {
         
         self.dialogs = [NSMutableDictionary dictionary];
-        self.messages = [NSMutableDictionary dictionary];
+        self.messagesInQueue = [NSMutableDictionary dictionary];
         self.contactRequests = [NSMutableDictionary dictionary];
     }
     return self;
 }
 
 - (void)addMessage:(QBChatMessage *)message {
-    QBChatMessage *localMessage = self.messages[message.ID];
+    QBChatMessage *localMessage = self.messagesInQueue[message.ID];
     if (message != nil) {
         
     }
-    self.messages[message.ID] = message;
+    self.messagesInQueue[message.ID] = message;
 }
 
 - (void)removeMessage:(QBChatMessage *)message {
-    [self.messages removeObjectForKey:message.ID];
+    [self.messagesInQueue removeObjectForKey:message.ID];
 }
 
 - (BOOL)containsMessage:(QBChatMessage*)message {
-    return [self.messages.allKeys containsObject:message.ID];
+    return [self.messagesInQueue.allKeys containsObject:message.ID];
 }
 
 
@@ -57,7 +57,7 @@
 
 - (void)free {
 
-    [self.messages removeAllObjects];
+    [self.messagesInQueue removeAllObjects];
     [self.dialogs removeAllObjects];
     [self.contactRequests removeAllObjects];
 }
