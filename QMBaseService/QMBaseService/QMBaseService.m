@@ -43,7 +43,7 @@
     dispatch_once(&onceToken, ^{
         
         manager = [[QMDeferredQueueManager alloc] init];
-        [manager.multicastDelegate addDelegate:self];
+        [manager addDelegate:self];
     });
     
     return manager;

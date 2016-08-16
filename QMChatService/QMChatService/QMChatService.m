@@ -18,7 +18,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 #define kChatServiceSaveToHistoryTrue @"1"
 #define kQMLoadedAllMessages          @1
 
-@interface QMChatService() <QBChatDelegate, OfflineActionDelegate>
+@interface QMChatService() <QBChatDelegate, QMDeferredQueueManagerDelegate>
 
 @property (assign, nonatomic, readwrite) QMChatConnectionState chatConnectionState;
 @property (strong, nonatomic) QBMulticastDelegate <QMChatServiceDelegate, QMChatConnectionDelegate> *multicastDelegate;
@@ -68,7 +68,6 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     self.multicastDelegate = (id<QMChatServiceDelegate, QMChatConnectionDelegate>)[[QBMulticastDelegate alloc] init];
     self.dialogsMemoryStorage = [[QMDialogsMemoryStorage alloc] init];
     self.messagesMemoryStorage = [[QMMessagesMemoryStorage alloc] init];
-    self.messagesMemoryStorage.delegate = self.offlineManager;
     self.chatAttachmentService = [[QMChatAttachmentService alloc] init];
     
     [QBChat.instance addDelegate:self];
@@ -744,7 +743,8 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
         } errorBlock:^(QBResponse *response) {
             
             [weakSelf.serviceManager handleErrorResponse:response];
-            [weakSelf.offlineManager addOrUpdateDialog:chatDialog];
+              //TODO:
+            //[weakSelf.offlineManager addOrUpdateDialog:chatDialog];
             
             if (completion) {
                 completion(response, nil);
@@ -796,7 +796,8 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     } errorBlock:^(QBResponse *response) {
         
         [weakSelf.serviceManager handleErrorResponse:response];
-        [self.offlineManager addOrUpdateDialog:chatDialog];
+        //TODO:
+       // [self.deferredQueueManager addOrUpdateDialog:chatDialog];
         if (completion) {
             completion(response, nil);
         }
@@ -1183,7 +1184,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     __weak __typeof(self)weakSelf = self;
 
 
-    [self.offlineManager addOrUpdateMessage:message];
+    [self.deferredQueueManager addOrUpdateMessage:message];
     
     [dialog sendMessage:message completionBlock:^(NSError *error) {
         
@@ -1191,7 +1192,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
         
         if (error == nil && saveToStorage) {
             
-            [self.offlineManager deleteMessage:message];
+            [self.deferredQueueManager removeMessage:message];
             // there is a case when message that was returned from server (Group dialogs)
             // will be handled faster then this completion block been fired
             // therefore there is no need to add local message to memory storage, while server
@@ -1224,7 +1225,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
         }
         else if (error) {
             
-            [self.offlineManager addOrUpdateMessage:message];
+            [self.deferredQueueManager addOrUpdateMessage:message];
             
         }
         
@@ -1235,40 +1236,42 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 }
 
 
-- (void)offlineManager:(QMOfflineManager*)offlineManager performActionWithMessage:(QBChatMessage*)message withCompletion:(QBChatCompletionBlock)completion {
+#pragma mark -
+#pragma mark QMDeferredQueueManagerDelegate
 
-        QBChatDialog * dialog = [self.dialogsMemoryStorage chatDialogWithID:message.dialogID];
-        [self sendMessage:message toDialog:dialog saveToHistory:message.saveToHistory saveToStorage:YES completion:completion];
+- (void)deferredQueueManager:(QMDeferredQueueManager *)queueManager performActionWithMessage:(QBChatMessage *)message {
+    QBChatDialog * dialog = [self.dialogsMemoryStorage chatDialogWithID:message.dialogID];
+    [self sendMessage:message toDialog:dialog saveToHistory:message.saveToHistory saveToStorage:YES completion:nil];
 }
 
 
-- (void)offlineManager:(QMOfflineManager*)offlineManager performActionWithDialog:(QBChatDialog*)chatDialog withCompletion:(void(^)(QBResponse *response, QBChatDialog *createdDialog))completion {
-    
-    __weak __typeof(self)weakSelf = self;
-    [QBRequest createDialog:chatDialog successBlock:^(QBResponse *response, QBChatDialog *createdDialog) {
-        
-        BOOL shouldJoin = (chatDialog.type == QBChatDialogTypePrivate) ? false : self.isAutoJoinEnabled;
-        
-        [weakSelf.dialogsMemoryStorage addChatDialog:createdDialog andJoin:shouldJoin completion:^(QBChatDialog *addedDialog, NSError *error) {
-            if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddChatDialogToMemoryStorage:)]) {
-                [weakSelf.multicastDelegate chatService:weakSelf didAddChatDialogToMemoryStorage:addedDialog];
-            }
-            
-            if (completion) {
-                completion(response, addedDialog);
-            }
-        }];
-        
-    } errorBlock:^(QBResponse *response) {
-        
-        [weakSelf.serviceManager handleErrorResponse:response];
-        [self.offlineManager addOrUpdateDialog:chatDialog];
-        if (completion) {
-            completion(response, nil);
-        }
-    }];
-
-}
+//- (void)offlineManager:(QMOfflineManager*)offlineManager performActionWithDialog:(QBChatDialog*)chatDialog withCompletion:(void(^)(QBResponse *response, QBChatDialog *createdDialog))completion {
+//    
+//    __weak __typeof(self)weakSelf = self;
+//    [QBRequest createDialog:chatDialog successBlock:^(QBResponse *response, QBChatDialog *createdDialog) {
+//        
+//        BOOL shouldJoin = (chatDialog.type == QBChatDialogTypePrivate) ? false : self.isAutoJoinEnabled;
+//        
+//        [weakSelf.dialogsMemoryStorage addChatDialog:createdDialog andJoin:shouldJoin completion:^(QBChatDialog *addedDialog, NSError *error) {
+//            if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddChatDialogToMemoryStorage:)]) {
+//                [weakSelf.multicastDelegate chatService:weakSelf didAddChatDialogToMemoryStorage:addedDialog];
+//            }
+//            
+//            if (completion) {
+//                completion(response, addedDialog);
+//            }
+//        }];
+//        
+//    } errorBlock:^(QBResponse *response) {
+//        
+//        [weakSelf.serviceManager handleErrorResponse:response];
+//        [self.offlineManager addOrUpdateDialog:chatDialog];
+//        if (completion) {
+//            completion(response, nil);
+//        }
+//    }];
+//
+//}
 
 - (void)sendMessage:(QBChatMessage *)message
          toDialogID:(NSString *)dialogID
