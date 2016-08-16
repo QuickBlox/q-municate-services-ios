@@ -20,7 +20,6 @@
 @property (assign, nonatomic) BOOL messageDeliveryStatus;
 @property (assign, nonatomic) QMMessageAttachmentStatus attachmentStatus;
 @property (assign, nonatomic) CLLocationCoordinate2D locationCoordinate;
-@property (assign, nonatomic) QMMessageStatus messageStatus;
 
 /**
  *  Dialog

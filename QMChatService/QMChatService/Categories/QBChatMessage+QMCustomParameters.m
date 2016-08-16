@@ -60,7 +60,6 @@ NSString const *kQMCustomParameterDialogDeletedOccupantsIDs = @"deleted_occupant
 @dynamic messageDeliveryStatus;
 @dynamic dialog;
 @dynamic attachmentStatus;
-@dynamic messageStatus;
 
 /**
  *  Dialog params
@@ -190,30 +189,6 @@ NSString const *kQMCustomParameterDialogDeletedOccupantsIDs = @"deleted_occupant
     }
     
     return result;
-}
-
-
-
-#pragma mark Message status 
-
-- (QMMessageStatus)messageStatus {
-   // return [[self tMessageStatus] integerValue];
-    return [self.context[kQMCustomParameterMessageStatus] integerValue];
-}
-
-- (void)setMessageStatus:(QMMessageStatus)messageStatus {
-    //[self setTMessageStatus:@(messageStatus)];
-    self.context[kQMCustomParameterMessageStatus] = @(messageStatus);
-}
-
-- (NSNumber *)tMessageStatus {
-    
-    return objc_getAssociatedObject(self, @selector(tMessageStatus));
-}
-
-- (void)setTMessageStatus:(NSNumber *)messageStatusNumber {
-    
-    objc_setAssociatedObject(self, @selector(tMessageStatus), messageStatusNumber, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 #pragma mark Message attachment status
