@@ -21,6 +21,6 @@
 - (BOOL)containsMessage:(QBChatMessage*)message;
 
 - (QB_NULLABLE NSArray QB_GENERIC(QBChatMessage *) *)messages;
-- (QB_NULLABLE NSArray QB_GENERIC(QBChatMessage *) *)sortedMessagesWithSortDescriptors:(QB_NONNULL NSArray QB_GENERIC(NSSortDescriptor*) *)sortDescriptors;
+- (QB_NULLABLE NSArray QB_GENERIC(QBChatMessage *) *)messagesSortedWithDescriptors:(QB_NONNULL NSArray QB_GENERIC(NSSortDescriptor*) *)descriptors;
 
 @end
