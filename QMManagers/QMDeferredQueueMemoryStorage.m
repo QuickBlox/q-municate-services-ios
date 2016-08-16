@@ -37,7 +37,7 @@
 }
 
 - (void)addMessage:(QBChatMessage *)message {
-    QBChatMessage *message = self.messages[message.ID];
+    QBChatMessage *localMessage = self.messages[message.ID];
     if (message != nil) {
         
     }
@@ -47,6 +47,11 @@
 - (void)removeMessage:(QBChatMessage *)message {
     [self.messages removeObjectForKey:message.ID];
 }
+
+- (BOOL)containsMessage:(QBChatMessage*)message {
+    return [self.messages.allKeys containsObject:message.ID];
+}
+
 
 #pragma mark - QMMemoryStorageProtocol
 

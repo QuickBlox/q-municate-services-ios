@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "QMMemoryStorageProtocol.h"
 
 @interface QMDeferredQueueMemoryStorage : NSObject <QMMemoryStorageProtocol>
 
@@ -16,5 +17,7 @@
 
 - (void)addMessages:(NSArray QB_GENERIC(QBChatMessage *) *)messages;
 - (void)removeMessages:(NSArray QB_GENERIC(QBChatMessage *) *)messages;
+
+- (BOOL)containsMessage:(QBChatMessage*)message;
 
 @end

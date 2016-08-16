@@ -18,11 +18,14 @@ typedef NS_ENUM(NSUInteger, QMMessageStatus) {
 
 @interface QMDeferredQueueManager : NSObject
 
-@property (strong, nonatomic) QBMulticastDelegate <QMDeferredQueueManagerDelegate> *multicastDelegate;
+- (void)addDelegate:(QB_NONNULL id <QMDeferredQueueManagerDelegate>)delegate;
+- (void)removeDelegate:(QB_NONNULL id <QMDeferredQueueManagerDelegate>)delegate;
+
 
 - (void)addMessage:(QBChatMessage *)message;
 - (void)updateMessage:(QBChatMessage *)message;
 - (void)removeMessage:(QBChatMessage *)message;
+
 - (QMMessageStatus)statusForMessage:(QBChatMessage *)message;
 
 @end
