@@ -11,11 +11,11 @@
 #import "QMSLog.h"
 
 
-@interface QMBaseService() <QMOfflineActionDelegate>
+@interface QMBaseService() <QMDeferredQueueManagerDelegate>
 
 @property (weak, nonatomic) id <QMServiceManagerProtocol> serviceManager;
 
-@property (strong, nonatomic, readwrite) QMOfflineManager * offlineManager;
+@property (strong, nonatomic, readwrite) QMDeferredQueueManager * deferredQueueManager;
 
 @end
 
@@ -36,13 +36,13 @@
     
 }
 
-- (QMOfflineManager*)offlineManager {
-    static QMOfflineManager *manager = nil;
+- (QMDeferredQueueManager*)deferredQueueManager {
+    static QMDeferredQueueManager *manager = nil;
     
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         
-        manager = [[QMOfflineManager alloc] init];
+        manager = [[QMDeferredQueueManager alloc] init];
         [manager.multicastDelegate addDelegate:self];
     });
     

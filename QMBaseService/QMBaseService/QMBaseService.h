@@ -12,7 +12,7 @@
 
 #import "QMMemoryStorageProtocol.h"
 #import "QMServiceManagerProtocol.h"
-#import "QMOfflineManager.h"
+#import "QMDeferredQueueManager.h"
 
 @interface QMBaseService : NSObject <QMMemoryStorageProtocol>
 
@@ -25,7 +25,7 @@
 
 - (QB_NULLABLE instancetype)initWithServiceManager:(QB_NONNULL id<QMServiceManagerProtocol>)serviceManager;
 
-@property (strong, nonatomic, readonly) QMOfflineManager * offlineManager;
+@property (strong, nonatomic, readonly) QMDeferredQueueManager * deferredQueueManager;
 
 /**
  *  Called when the servise is will begin start
