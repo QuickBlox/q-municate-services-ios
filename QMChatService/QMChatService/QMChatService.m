@@ -10,8 +10,7 @@
 #import "QBChatMessage+QMCustomParameters.h"
 
 #import "QMSLog.h"
-#import "QBOfflineActionParameters.h"
-#import "QMOfflineManager.h"
+
 
 const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
