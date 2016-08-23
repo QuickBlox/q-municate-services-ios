@@ -12,7 +12,7 @@
 @interface QMDeferredQueueManager()
 
 @property (strong, nonatomic) QBMulticastDelegate <QMDeferredQueueManagerDelegate> *multicastDelegate;
-@property (strong, nonatomic) QMDeferredQueueMemoryStorage * deferredQueueMemoryStorage;
+@property (strong, nonatomic) QMDeferredQueueMemoryStorage *deferredQueueMemoryStorage;
 @end
 
 @implementation QMDeferredQueueManager
@@ -77,7 +77,17 @@
     }
 }
 
-- (void)perfromDefferedActionForMessage:(QBChatMessage*)message {
+#pragma mark -
+#pragma mark Deferred Queue Operations
+
+- (void)performDeferredActions {
+    
+    for (QBChatMessage *message in self.deferredQueueMemoryStorage.messages) {
+        [self perfromDefferedActionForMessage:message];
+    }
+}
+
+- (void)perfromDefferedActionForMessage:(QBChatMessage *)message {
     
     BOOL messageIsExisted = [self.deferredQueueMemoryStorage containsMessage:message];
     
@@ -87,13 +97,8 @@
     }
 }
 
-#pragma mark -
-#pragma mark Deferred Queue Operations
-- (void)performDeferredActions {
-    
-    for (QBChatMessage * message in self.deferredQueueMemoryStorage.messages) {
-        [self perfromDefferedActionForMessage:message];
-    }
+- (void)removeDeferredActionForMessage:(QB_NONNULL QBChatMessage *)message {
+    [self.deferredQueueMemoryStorage removeMessage:message];
 }
 
 @end

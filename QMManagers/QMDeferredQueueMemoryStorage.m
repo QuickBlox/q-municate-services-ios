@@ -48,19 +48,21 @@
     [self.messagesInQueue removeObjectForKey:message.ID];
 }
 
-- (BOOL)containsMessage:(QBChatMessage*)message {
+- (BOOL)containsMessage:(QBChatMessage *)message {
     return [self.messagesInQueue.allKeys containsObject:message.ID];
 }
 
 - (QB_NULLABLE NSArray QB_GENERIC(QBChatMessage *) *)messages {
+    
     NSSortDescriptor *dateSentDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"dateSent" ascending:YES];
     NSSortDescriptor *idDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"ID" ascending:YES];
+    
     return [self messagesSortedWithDescriptors:@[dateSentDescriptor,idDescriptor]];
 }
 
 - (QB_NULLABLE NSArray QB_GENERIC(QBChatMessage *) *)messagesSortedWithDescriptors:(QB_NONNULL NSArray QB_GENERIC(NSSortDescriptor*) *)descriptors {
     
-    NSArray *sortedMessages =  [self.messagesInQueue.allValues sortedArrayUsingDescriptors:descriptors];
+    NSArray *sortedMessages = [self.messagesInQueue.allValues sortedArrayUsingDescriptors:descriptors];
     
     return sortedMessages;
 }
