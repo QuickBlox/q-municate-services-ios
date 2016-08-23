@@ -19,7 +19,7 @@
 - (void)addMessages:(NSArray QB_GENERIC(QBChatMessage *) *)messages;
 - (void)removeMessages:(NSArray QB_GENERIC(QBChatMessage *) *)messages;
 
-- (BOOL)containsMessage:(QBChatMessage*)message;
+- (BOOL)containsMessage:(QBChatMessage *)message;
 
 - (QB_NULLABLE NSArray QB_GENERIC(QBChatMessage *) *)messages;
 - (QB_NULLABLE NSArray QB_GENERIC(QBChatMessage *) *)messagesSortedWithDescriptors:(QB_NONNULL NSArray QB_GENERIC(NSSortDescriptor*) *)descriptors;

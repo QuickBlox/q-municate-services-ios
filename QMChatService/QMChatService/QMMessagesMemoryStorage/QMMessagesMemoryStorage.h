@@ -13,7 +13,7 @@
 
 @interface QMMessagesMemoryStorage : NSObject <QMMemoryStorageProtocol>
 
-@property (weak,nonatomic) id <QMMemoryTemporaryQueueDelegate> delegate;
+@property (weak, nonatomic) id <QMMemoryTemporaryQueueDelegate> delegate;
 
 /**
  *  Add message to memory storage
