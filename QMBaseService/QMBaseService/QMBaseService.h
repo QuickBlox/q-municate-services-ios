@@ -25,7 +25,7 @@
 
 - (QB_NULLABLE instancetype)initWithServiceManager:(QB_NONNULL id<QMServiceManagerProtocol>)serviceManager;
 
-@property (strong, nonatomic, readonly) QMDeferredQueueManager * deferredQueueManager;
+@property (strong, nonatomic, readonly, QB_NONNULL) QMDeferredQueueManager *deferredQueueManager;
 
 /**
  *  Called when the servise is will begin start

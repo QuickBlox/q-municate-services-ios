@@ -15,7 +15,7 @@
 
 @property (weak, nonatomic) id <QMServiceManagerProtocol> serviceManager;
 
-@property (strong, nonatomic, readwrite) QMDeferredQueueManager * deferredQueueManager;
+@property (strong, nonatomic, readwrite) QMDeferredQueueManager *deferredQueueManager;
 
 @end
 
@@ -36,7 +36,7 @@
     
 }
 
-- (QMDeferredQueueManager*)deferredQueueManager {
+- (QMDeferredQueueManager *)deferredQueueManager {
     static QMDeferredQueueManager *manager = nil;
     
     static dispatch_once_t onceToken;

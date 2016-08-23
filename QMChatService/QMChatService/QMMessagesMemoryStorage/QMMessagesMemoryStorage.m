@@ -95,15 +95,16 @@
 - (NSArray *)messagesWithDialogID:(NSString *)dialogID {
     
     NSMutableOrderedSet *messages = self.datasources[dialogID];
+    
     if ([self.delegate respondsToSelector:@selector(localMessagesForDialogWithID:)]) {
-        
-        NSArray * tempMessages = [self.delegate localMessagesForDialogWithID:dialogID];
+    
+        NSArray *localMessages = [self.delegate localMessagesForDialogWithID:dialogID];
         
         if (!messages) {
             messages = [NSMutableOrderedSet orderedSet];
         }
         
-        [messages addObjectsFromArray:tempMessages];
+        [messages addObjectsFromArray:localMessages];
     }
     
     return [messages array];

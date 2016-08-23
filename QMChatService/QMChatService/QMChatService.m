@@ -743,7 +743,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
         } errorBlock:^(QBResponse *response) {
             
             [weakSelf.serviceManager handleErrorResponse:response];
-              //TODO:
+            //TODO: addOrUpdateDialog:chatDialog
             //[weakSelf.offlineManager addOrUpdateDialog:chatDialog];
             
             if (completion) {
@@ -1241,7 +1241,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 
 - (void)deferredQueueManager:(QMDeferredQueueManager *)queueManager performActionWithMessage:(QBChatMessage *)message {
     
-    QBChatDialog * dialog = [self.dialogsMemoryStorage chatDialogWithID:message.dialogID];
+    QBChatDialog *dialog = [self.dialogsMemoryStorage chatDialogWithID:message.dialogID];
     [self sendMessage:message toDialog:dialog saveToHistory:message.saveToHistory saveToStorage:YES completion:nil];
 }
 

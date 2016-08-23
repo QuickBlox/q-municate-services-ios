@@ -70,7 +70,4 @@
  */
 - (BOOL)isLocationMessage;
 
-
-
-
 @end
