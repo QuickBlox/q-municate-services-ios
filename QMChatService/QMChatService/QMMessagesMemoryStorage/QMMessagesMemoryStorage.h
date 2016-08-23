@@ -129,10 +129,10 @@
 
 @end
 
-@protocol  QMMemoryTemporaryQueueDelegate <NSObject>
+@protocol QMMemoryTemporaryQueueDelegate <NSObject>
 
 @optional
 
-- (NSArray*)localMessagesForDialogWithID:(NSString*)dialogID;
+- (QB_NULLABLE NSArray *)localMessagesForDialogWithID:(QB_NONNULL NSString *)dialogID;
 
 @end
