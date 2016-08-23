@@ -97,14 +97,17 @@
     NSMutableOrderedSet *messages = self.datasources[dialogID];
     
     if ([self.delegate respondsToSelector:@selector(localMessagesForDialogWithID:)]) {
-    
+        
         NSArray *localMessages = [self.delegate localMessagesForDialogWithID:dialogID];
         
-        if (!messages) {
-            messages = [NSMutableOrderedSet orderedSet];
+        if (localMessages.count) {
+            
+            if (!messages) {
+                messages = [NSMutableOrderedSet orderedSet];
+            }
+            
+            [messages addObjectsFromArray:localMessages];
         }
-        
-        [messages addObjectsFromArray:localMessages];
     }
     
     return [messages array];

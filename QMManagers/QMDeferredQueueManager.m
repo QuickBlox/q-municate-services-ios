@@ -97,8 +97,18 @@
     }
 }
 
-- (void)removeDeferredActionForMessage:(QB_NONNULL QBChatMessage *)message {
-    [self.deferredQueueMemoryStorage removeMessage:message];
+#pragma mark 
+#pragma mark QMMemoryTemporaryQueueDelegate
+
+- (NSArray *)localMessagesForDialogWithID:(NSString *)dialogID {
+    
+    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(QBChatMessage * _Nonnull message, NSDictionary<NSString *,id> * _Nullable bindings) {
+        return [message.dialogID isEqualToString:dialogID];
+    }];
+    
+    NSArray *localMessages = [self.deferredQueueMemoryStorage.messages filteredArrayUsingPredicate:predicate];
+    
+    return localMessages;
 }
 
 @end

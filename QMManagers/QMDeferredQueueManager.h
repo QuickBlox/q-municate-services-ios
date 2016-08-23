@@ -30,8 +30,6 @@ typedef NS_ENUM(NSUInteger, QMMessageStatus) {
 - (void)performDeferredActions;
 - (void)perfromDefferedActionForMessage:(QB_NONNULL QBChatMessage *)message;
 
-- (void)removeDeferredActionForMessage:(QB_NONNULL QBChatMessage *)message;
-
 - (QMMessageStatus)statusForMessage:(QB_NONNULL QBChatMessage *)message;
 
 @end
