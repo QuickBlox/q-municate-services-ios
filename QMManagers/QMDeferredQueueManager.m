@@ -55,11 +55,20 @@
     BOOL messageIsExisted = [self.deferredQueueMemoryStorage containsMessage:message];
     
     [self.deferredQueueMemoryStorage addMessage:message];
-    
-    if (!messageIsExisted && [self.multicastDelegate respondsToSelector:@selector(deferredQueueManager:didAddMessageLocally:)]) {
+    if (!messageIsExisted) {
         
-        [self.multicastDelegate deferredQueueManager:self
-                                didAddMessageLocally:message];
+        if ([self.multicastDelegate respondsToSelector:@selector(deferredQueueManager:didAddMessageLocally:)]) {
+            
+            [self.multicastDelegate deferredQueueManager:self
+                                    didAddMessageLocally:message];
+        }
+    }
+    else {
+        if ([self.multicastDelegate respondsToSelector:@selector(deferredQueueManager:didUpdateMessageLocally:)]) {
+            
+            [self.multicastDelegate deferredQueueManager:self
+                                    didUpdateMessageLocally:message];
+        }
     }
 }
 

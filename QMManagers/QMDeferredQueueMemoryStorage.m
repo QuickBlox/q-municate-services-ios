@@ -36,12 +36,17 @@
     return self;
 }
 
+
 - (void)addMessage:(QBChatMessage *)message {
+    
     QBChatMessage *localMessage = self.messagesInQueue[message.ID];
+    
     if (localMessage != nil) {
-        
+        localMessage = [message copy];
     }
-    self.messagesInQueue[message.ID] = message;
+    else {
+        self.messagesInQueue[message.ID] = message;
+    }
 }
 
 - (void)removeMessage:(QBChatMessage *)message {
