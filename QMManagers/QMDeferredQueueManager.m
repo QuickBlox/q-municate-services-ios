@@ -55,11 +55,20 @@
     BOOL messageIsExisted = [self.deferredQueueMemoryStorage containsMessage:message];
     
     [self.deferredQueueMemoryStorage addMessage:message];
-    
-    if (!messageIsExisted && [self.multicastDelegate respondsToSelector:@selector(deferredQueueManager:didAddMessageLocally:)]) {
+    if (!messageIsExisted) {
         
-        [self.multicastDelegate deferredQueueManager:self
-                                didAddMessageLocally:message];
+        if ([self.multicastDelegate respondsToSelector:@selector(deferredQueueManager:didAddMessageLocally:)]) {
+            
+            [self.multicastDelegate deferredQueueManager:self
+                                    didAddMessageLocally:message];
+        }
+    }
+    else {
+        if ([self.multicastDelegate respondsToSelector:@selector(deferredQueueManager:didUpdateMessageLocally:)]) {
+            
+            [self.multicastDelegate deferredQueueManager:self
+                                    didUpdateMessageLocally:message];
+        }
     }
 }
 
@@ -97,8 +106,18 @@
     }
 }
 
-- (void)removeDeferredActionForMessage:(QB_NONNULL QBChatMessage *)message {
-    [self.deferredQueueMemoryStorage removeMessage:message];
+#pragma mark 
+#pragma mark QMMemoryTemporaryQueueDelegate
+
+- (NSArray *)localMessagesForDialogWithID:(NSString *)dialogID {
+    
+    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(QBChatMessage * _Nonnull message, NSDictionary<NSString *,id> * _Nullable bindings) {
+        return [message.dialogID isEqualToString:dialogID];
+    }];
+    
+    NSArray *localMessages = [self.deferredQueueMemoryStorage.messages filteredArrayUsingPredicate:predicate];
+    
+    return localMessages;
 }
 
 @end
