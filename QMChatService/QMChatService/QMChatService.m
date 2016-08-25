@@ -58,7 +58,6 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
         _messagesToRead = [NSMutableSet set];
         
         if (self.serviceManager.currentUser != nil) {
-            
             [self loadCachedDialogsWithCompletion:nil];
         }
     }
@@ -150,7 +149,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     [self.multicastDelegate addDelegate:delegate];
 }
 
-- (void)removeDelegate:(id<QMChatServiceDelegate, QMChatConnectionDelegate>)delegate{
+- (void)removeDelegate:(id<QMChatServiceDelegate, QMChatConnectionDelegate>)delegate {
     
     [self.multicastDelegate removeDelegate:delegate];
 }
