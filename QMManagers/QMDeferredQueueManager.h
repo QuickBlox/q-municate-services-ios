@@ -28,12 +28,12 @@ typedef NS_ENUM(NSUInteger, QMMessageStatus) {
 - (void)removeMessage:(QB_NONNULL QBChatMessage *)message;
 
 - (void)performDeferredActions;
+- (void)performDeferredActionsForDialogWithID:(QB_NONNULL NSString *)dialogID;
 - (void)perfromDefferedActionForMessage:(QB_NONNULL QBChatMessage *)message;
 
 - (QMMessageStatus)statusForMessage:(QB_NONNULL QBChatMessage *)message;
 
 @end
-
 
 @protocol QMDeferredQueueManagerDelegate <NSObject>
 
