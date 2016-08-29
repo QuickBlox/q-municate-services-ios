@@ -116,8 +116,8 @@
             [successful setResult:message];
         }
     }];
-    return successful.task;
     
+    return successful.task;
 }
 
 - (void)performDeferredActionsForDialogWithID:(NSString *)dialogID {
@@ -125,10 +125,10 @@
     BFTask *task = [BFTask taskWithResult:nil];
     
     for (QBChatMessage *message in [self messagesForDialogWithID:dialogID]) {
+        
         task = [task continueWithBlock:^id(BFTask *task) {
             return [self perfromDefferedActionForMessage:message];
         }];
-        
     }
     
     [task continueWithBlock:^id _Nullable(BFTask * _Nonnull task) {
@@ -140,12 +140,14 @@
 - (void)performDeferredActions {
     
     BFTask *task = [BFTask taskWithResult:nil];
+    
     for (QBChatMessage *message in self.deferredQueueMemoryStorage.messages) {
+        
         task = [task continueWithBlock:^id(BFTask *task) {
             return [self perfromDefferedActionForMessage:message];
         }];
-        
     }
+    
     [task continueWithBlock:^id _Nullable(BFTask * _Nonnull task) {
         
         return nil;
