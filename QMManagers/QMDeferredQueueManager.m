@@ -159,7 +159,10 @@
     
     BOOL messageIsExisted = [self.deferredQueueMemoryStorage containsMessage:message];
     
-    if (messageIsExisted && [self.multicastDelegate respondsToSelector:@selector(deferredQueueManager:performActionWithMessage:withCompletion:)]) {
+    if (messageIsExisted
+        && [self.multicastDelegate respondsToSelector:@selector(deferredQueueManager:
+                                                                performActionWithMessage:
+                                                                withCompletion:)]) {
         
         [self.multicastDelegate deferredQueueManager:self
                             performActionWithMessage:message
