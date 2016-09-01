@@ -9,10 +9,16 @@
 #import "QMDeferredQueueManager.h"
 #import "QMDeferredQueueMemoryStorage.h"
 
-@interface QMDeferredQueueManager()
+@interface QMDeferredQueueManager() {
+    
+    NSDate *chatDidConnectDate;
+    NSDate *chatDidDisconnectDate;
+}
+
 
 @property (strong, nonatomic) QBMulticastDelegate <QMDeferredQueueManagerDelegate> *multicastDelegate;
 @property (strong, nonatomic) QMDeferredQueueMemoryStorage *deferredQueueMemoryStorage;
+
 @end
 
 @implementation QMDeferredQueueManager
@@ -27,6 +33,7 @@
     if (self) {
         _deferredQueueMemoryStorage = [[QMDeferredQueueMemoryStorage alloc] init];
         _multicastDelegate = [[QBMulticastDelegate alloc] init];
+        _autoSendTimeInterval = 15;
     }
 
     return self;
@@ -93,7 +100,7 @@
 - (QMMessageStatus)statusForMessage:(QBChatMessage *)message {
     
     if ([self.deferredQueueMemoryStorage containsMessage:message]) {
-        return [[QBChat instance] isConnected] ? QMMessageStatusSending : QMMessageStatusNotSent;
+        return ([[QBChat instance] isConnected] && [self isAutoSendEnabledForMessage:message]) ? QMMessageStatusSending : QMMessageStatusNotSent;
     }
     else {
         return QMMessageStatusSent;
@@ -126,15 +133,16 @@
     
     for (QBChatMessage *message in [self messagesForDialogWithID:dialogID]) {
         
-        task = [task continueWithBlock:^id(BFTask *task) {
-            return [self perfromDefferedActionForMessage:message];
-        }];
+        if ([self isAutoSendEnabledForMessage:message]) {
+            
+            task = [task continueWithBlock:^id(BFTask *task) {
+                return [self perfromDefferedActionForMessage:message];
+            }];
+        }
+        else {
+            continue;
+        }
     }
-    
-    [task continueWithBlock:^id _Nullable(BFTask * _Nonnull task) {
-        
-        return nil;
-    }];
 }
 
 - (void)performDeferredActions {
@@ -147,11 +155,6 @@
             return [self perfromDefferedActionForMessage:message];
         }];
     }
-    
-    [task continueWithBlock:^id _Nullable(BFTask * _Nonnull task) {
-        
-        return nil;
-    }];
 }
 
 
@@ -170,7 +173,17 @@
     }
 }
 
-#pragma mark
+#pragma mark -
+#pragma mark Helpers
+
+- (BOOL)isAutoSendEnabledForMessage:(QBChatMessage *)message {
+
+    NSTimeInterval secondsBetween = [[NSDate date] timeIntervalSinceDate:message.dateSent];
+
+    return secondsBetween <= self.autoSendTimeInterval;
+}
+
+#pragma mark -
 #pragma mark QMMemoryTemporaryQueueDelegate
 
 - (NSArray *)localMessagesForDialogWithID:(NSString *)dialogID {
