@@ -9,12 +9,7 @@
 #import "QMDeferredQueueManager.h"
 #import "QMDeferredQueueMemoryStorage.h"
 
-@interface QMDeferredQueueManager() {
-    
-    NSDate *chatDidConnectDate;
-    NSDate *chatDidDisconnectDate;
-}
-
+@interface QMDeferredQueueManager()
 
 @property (strong, nonatomic) QBMulticastDelegate <QMDeferredQueueManagerDelegate> *multicastDelegate;
 @property (strong, nonatomic) QMDeferredQueueMemoryStorage *deferredQueueMemoryStorage;
@@ -133,7 +128,7 @@
     
     for (QBChatMessage *message in [self messagesForDialogWithID:dialogID]) {
         
-        if ([self isAutoSendEnabledForMessage:message]) {
+        if ([self isAutoSendAvailableForMessage:message]) {
             
             task = [task continueWithBlock:^id(BFTask *task) {
                 return [self perfromDefferedActionForMessage:message];
@@ -176,7 +171,7 @@
 #pragma mark -
 #pragma mark Helpers
 
-- (BOOL)isAutoSendEnabledForMessage:(QBChatMessage *)message {
+- (BOOL)isAutoSendAvailableForMessage:(QBChatMessage *)message {
 
     NSTimeInterval secondsBetween = [[NSDate date] timeIntervalSinceDate:message.dateSent];
 

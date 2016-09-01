@@ -38,13 +38,11 @@ typedef NS_ENUM(NSUInteger, QMMessageStatus) {
 
 - (QMMessageStatus)statusForMessage:(QB_NONNULL QBChatMessage *)message;
 
-
 @end
 
 @protocol QMDeferredQueueManagerDelegate <NSObject>
 
 @optional
-
 
 - (void)deferredQueueManager:(QB_NONNULL QMDeferredQueueManager *)queueManager performActionWithMessage:(QB_NONNULL QBChatMessage *)message withCompletion:(QB_NULLABLE_S QBChatCompletionBlock)completion;
 - (void)deferredQueueManager:(QB_NONNULL QMDeferredQueueManager *)queueManager didAddMessageLocally:(QB_NONNULL QBChatMessage *)addedMessage;
