@@ -583,7 +583,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
         
         chatDialogToUpdate.updatedAt = message.dateSent;
         
-        if ([self.multicastDelegate respondsToSelector:@selector(chatService:didUpdateChatDialogInMemoryStorage:)]) {
+        if (chatDialogToUpdate != nil && [self.multicastDelegate respondsToSelector:@selector(chatService:didUpdateChatDialogInMemoryStorage:)]) {
             
             [self.multicastDelegate chatService:self didUpdateChatDialogInMemoryStorage:chatDialogToUpdate];
         }
