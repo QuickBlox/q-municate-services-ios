@@ -1173,65 +1173,88 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 #pragma mark - Send messages
 
 - (void)sendMessage:(QBChatMessage *)message
+			   type:(QMMessageType)type
+		   toDialog:(QBChatDialog *)dialog
+		withoutJoin:(BOOL)withoutJoin
+	  saveToHistory:(BOOL)saveToHistory
+	  saveToStorage:(BOOL)saveToStorage
+		 completion:(QBChatCompletionBlock)completion
+{
+	message.dateSent = [NSDate date];
+	
+	//Save to history
+	if (saveToHistory) {
+		message.saveToHistory = kChatServiceSaveToHistoryTrue;
+	}
+	//Set message type
+	if (type != QMMessageTypeText) {
+		message.messageType = type;
+	}
+	
+	QBUUser *currentUser = self.serviceManager.currentUser;
+	
+	if (dialog.type == QBChatDialogTypePrivate) {
+		message.recipientID = dialog.recipientID;
+		message.markable = YES;
+	}
+	
+	message.senderID = currentUser.ID;
+	message.dialogID = dialog.ID;
+	
+	__weak __typeof(self)weakSelf = self;
+	void(^sendMessageCompletionBlock)(NSError *) = ^(NSError *error) {
+		__typeof(weakSelf)strongSelf = weakSelf;
+		
+		if (error == nil && saveToStorage) {
+			
+			// there is a case when message that was returned from server (Group dialogs)
+			// will be handled faster then this completion block been fired
+			// therefore there is no need to add local message to memory storage, while server
+			// up-to-date one is already there
+			BOOL messageExists = [strongSelf.messagesMemoryStorage isMessageExistent:message forDialogID:message.dialogID];
+			
+			if (!messageExists) {
+				
+				[strongSelf.messagesMemoryStorage addMessage:message forDialogID:dialog.ID];
+				
+				if ([strongSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddMessageToMemoryStorage:forDialogID:)]) {
+					[strongSelf.multicastDelegate chatService:strongSelf didAddMessageToMemoryStorage:message forDialogID:dialog.ID];
+				}
+			}
+			
+			[strongSelf updateLastMessageParamsForChatDialog:dialog withMessage:message];
+			dialog.updatedAt = message.dateSent;
+			
+			if ([strongSelf.multicastDelegate respondsToSelector:@selector(chatService:didUpdateChatDialogInMemoryStorage:)]) {
+				[strongSelf.multicastDelegate chatService:strongSelf didUpdateChatDialogInMemoryStorage:dialog];
+			}
+		}
+		
+		if (completion) completion(error);
+	};
+	
+	if (withoutJoin && (dialog.type == QBChatDialogTypeGroup || dialog.type == QBChatDialogTypePublicGroup)) {
+		[dialog sendGroupChatMessageWithoutJoin:message completion:sendMessageCompletionBlock];
+	}
+	else {
+		[dialog sendMessage:message completionBlock:sendMessageCompletionBlock];
+	}
+}
+
+- (void)sendMessage:(QBChatMessage *)message
                type:(QMMessageType)type
            toDialog:(QBChatDialog *)dialog
       saveToHistory:(BOOL)saveToHistory
       saveToStorage:(BOOL)saveToStorage
          completion:(QBChatCompletionBlock)completion
 {
-    message.dateSent = [NSDate date];
-    
-    //Save to history
-    if (saveToHistory) {
-        message.saveToHistory = kChatServiceSaveToHistoryTrue;
-    }
-    //Set message type
-    if (type != QMMessageTypeText) {
-        message.messageType = type;
-    }
-    
-    QBUUser *currentUser = self.serviceManager.currentUser;
-    
-    if (dialog.type == QBChatDialogTypePrivate) {
-        message.recipientID = dialog.recipientID;
-        message.markable = YES;
-    }
-    
-    message.senderID = currentUser.ID;
-    message.dialogID = dialog.ID;
-    
-    __weak __typeof(self)weakSelf = self;
-    [dialog sendMessage:message completionBlock:^(NSError *error) {
-        
-        __typeof(weakSelf)strongSelf = weakSelf;
-    
-        if (error == nil && saveToStorage) {
-            
-            // there is a case when message that was returned from server (Group dialogs)
-            // will be handled faster then this completion block been fired
-            // therefore there is no need to add local message to memory storage, while server
-            // up-to-date one is already there
-            BOOL messageExists = [strongSelf.messagesMemoryStorage isMessageExistent:message forDialogID:message.dialogID];
-            
-            if (!messageExists) {
-                
-                [strongSelf.messagesMemoryStorage addMessage:message forDialogID:dialog.ID];
-                
-                if ([strongSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddMessageToMemoryStorage:forDialogID:)]) {
-                    [strongSelf.multicastDelegate chatService:strongSelf didAddMessageToMemoryStorage:message forDialogID:dialog.ID];
-                }
-            }
-            
-            [strongSelf updateLastMessageParamsForChatDialog:dialog withMessage:message];
-            dialog.updatedAt = message.dateSent;
-            
-            if ([strongSelf.multicastDelegate respondsToSelector:@selector(chatService:didUpdateChatDialogInMemoryStorage:)]) {
-                [strongSelf.multicastDelegate chatService:strongSelf didUpdateChatDialogInMemoryStorage:dialog];
-            }
-        }
-        
-        if (completion) completion(error);
-    }];
+	[self sendMessage:message
+				 type:type
+			 toDialog:dialog
+		  withoutJoin:NO
+		saveToHistory:saveToHistory
+		saveToStorage:saveToStorage
+		   completion:completion];
 }
 
 - (void)sendMessage:(QBChatMessage *)message
