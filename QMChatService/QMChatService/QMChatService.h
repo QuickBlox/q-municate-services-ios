@@ -406,6 +406,28 @@ typedef NS_ENUM(NSUInteger, QMChatConnectionState) {
  *  @param message       QBChatMessage instance
  *  @param type          QMMessageType type
  *  @param dialog        QBChatDialog instance
+ *  @param withoutJoin   if YES - do not auto join the dialog if it is of type QBChatDialogTypeGroup or QBChatDialogTypePublicGroup
+ *  @param saveToHistory if YES - saves message to chat history
+ *  @param saveToStorage if YES - saves to local storage
+ *  @param completion    completion block with failure error
+ *
+ *  @discussion The purpose of this method is to have a proper way of sending messages
+ *  with a different message type, which does not have their own methods (e.g. contact request).
+ */
+- (void)sendMessage:(QBChatMessage *)message
+			   type:(QMMessageType)type
+		   toDialog:(QBChatDialog *)dialog
+		withoutJoin:(BOOL)withoutJoin
+	  saveToHistory:(BOOL)saveToHistory
+	  saveToStorage:(BOOL)saveToStorage
+		 completion:(QBChatCompletionBlock)completion;
+
+/**
+ *  Send message with a specific message type to dialog with identifier.
+ *
+ *  @param message       QBChatMessage instance
+ *  @param type          QMMessageType type
+ *  @param dialog        QBChatDialog instance
  *  @param saveToHistory if YES - saves message to chat history
  *  @param saveToStorage if YES - saves to local storage
  *  @param completion    completion block with failure error
@@ -414,11 +436,11 @@ typedef NS_ENUM(NSUInteger, QMChatConnectionState) {
  *  with a different message type, which does not have their own methods (e.g. contact request).
  */
 - (void)sendMessage:(QB_NONNULL QBChatMessage *)message
-               type:(QMMessageType)type
-           toDialog:(QB_NONNULL QBChatDialog *)dialog
-      saveToHistory:(BOOL)saveToHistory
-      saveToStorage:(BOOL)saveToStorage
-         completion:(QB_NULLABLE QBChatCompletionBlock)completion;
+			   type:(QMMessageType)type
+		   toDialog:(QB_NONNULL QBChatDialog *)dialog
+	  saveToHistory:(BOOL)saveToHistory
+	  saveToStorage:(BOOL)saveToStorage
+		 completion:(QB_NULLABLE QBChatCompletionBlock)completion;
 
 /**
  *  Send message to dialog with identifier.
