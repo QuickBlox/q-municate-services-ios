@@ -342,12 +342,30 @@ typedef NS_ENUM(NSUInteger, QMChatConnectionState) {
 - (void)messagesWithChatDialogID:(QB_NONNULL NSString *)chatDialogID completion:(void(^QB_NULLABLE_S)(QBResponse *QB_NONNULL_S response, NSArray QB_GENERIC(QBChatMessage *) *QB_NULLABLE_S messages))completion;
 
 /**
+ *  Fetch messages with chat dialog id.
+ *
+ *  @param chatDialogID    Chat dialog id.
+ *  @param extendedRequest Set of request parameters. http://quickblox.com/developers/SimpleSample-chat_users-ios#Filters
+ *  @param completion      Block with response instance and array of chat messages if request succeded or nil if failed.
+ */
+- (void)messagesWithChatDialogID:(QB_NONNULL NSString *)chatDialogID extendedRequest:(QB_NULLABLE NSDictionary *)parameters completion:(void(^QB_NULLABLE_S)(QBResponse *QB_NONNULL_S response, NSArray QB_GENERIC(QBChatMessage *) *QB_NULLABLE_S messages))completion;
+
+/**
  *  Loads messages that are older than oldest message in cache.
  *
  *  @param chatDialogID Chat dialog identifier
  *  @param completion   Block with response instance and array of chat messages if request succeded or nil if failed
  */
 - (void)earlierMessagesWithChatDialogID:(QB_NONNULL NSString *)chatDialogID completion:(void(^QB_NULLABLE_S)(QBResponse *QB_NONNULL_S response, NSArray QB_GENERIC(QBChatMessage *) *QB_NULLABLE_S messages))completion;
+
+/**
+ *  Loads messages that are older than oldest message in cache.
+ *
+ *  @param chatDialogID    Chat dialog identifier
+ *  @param extendedRequest Set of request parameters. http://quickblox.com/developers/SimpleSample-chat_users-ios#Filters
+ *  @param completion      Block with response instance and array of chat messages if request succeded or nil if failed
+ */
+- (void)earlierMessagesWithChatDialogID:(QB_NONNULL NSString *)chatDialogID extendedRequest:(QB_NULLABLE NSDictionary *)parameters completion:(void(^QB_NULLABLE_S)(QBResponse *QB_NONNULL_S response, NSArray QB_GENERIC(QBChatMessage *) *QB_NULLABLE_S messages))completion;
 
 #pragma mark - Fetch dialogs
 
@@ -388,6 +406,28 @@ typedef NS_ENUM(NSUInteger, QMChatConnectionState) {
  *  @param message       QBChatMessage instance
  *  @param type          QMMessageType type
  *  @param dialog        QBChatDialog instance
+ *  @param withoutJoin   if YES - do not auto join the dialog if it is of type QBChatDialogTypeGroup or QBChatDialogTypePublicGroup
+ *  @param saveToHistory if YES - saves message to chat history
+ *  @param saveToStorage if YES - saves to local storage
+ *  @param completion    completion block with failure error
+ *
+ *  @discussion The purpose of this method is to have a proper way of sending messages
+ *  with a different message type, which does not have their own methods (e.g. contact request).
+ */
+- (void)sendMessage:(QBChatMessage *)message
+			   type:(QMMessageType)type
+		   toDialog:(QBChatDialog *)dialog
+		withoutJoin:(BOOL)withoutJoin
+	  saveToHistory:(BOOL)saveToHistory
+	  saveToStorage:(BOOL)saveToStorage
+		 completion:(QBChatCompletionBlock)completion;
+
+/**
+ *  Send message with a specific message type to dialog with identifier.
+ *
+ *  @param message       QBChatMessage instance
+ *  @param type          QMMessageType type
+ *  @param dialog        QBChatDialog instance
  *  @param saveToHistory if YES - saves message to chat history
  *  @param saveToStorage if YES - saves to local storage
  *  @param completion    completion block with failure error
@@ -396,11 +436,11 @@ typedef NS_ENUM(NSUInteger, QMChatConnectionState) {
  *  with a different message type, which does not have their own methods (e.g. contact request).
  */
 - (void)sendMessage:(QB_NONNULL QBChatMessage *)message
-               type:(QMMessageType)type
-           toDialog:(QB_NONNULL QBChatDialog *)dialog
-      saveToHistory:(BOOL)saveToHistory
-      saveToStorage:(BOOL)saveToStorage
-         completion:(QB_NULLABLE QBChatCompletionBlock)completion;
+			   type:(QMMessageType)type
+		   toDialog:(QB_NONNULL QBChatDialog *)dialog
+	  saveToHistory:(BOOL)saveToHistory
+	  saveToStorage:(BOOL)saveToStorage
+		 completion:(QB_NULLABLE QBChatCompletionBlock)completion;
 
 /**
  *  Send message to dialog with identifier.
