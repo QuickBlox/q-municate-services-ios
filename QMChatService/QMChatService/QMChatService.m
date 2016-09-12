@@ -1430,13 +1430,21 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
                                didUpdateChatDialogInMemoryStorage:chatDialogToUpdate];
                     }
                 }
-                
+				
                 // updating message in memory storage
                 [strongSelf.messagesMemoryStorage updateMessage:message];
-                
+				
+				// update message in cache
+				if ([strongSelf.multicastDelegate respondsToSelector:@selector(chatService:didUpdateMessage:forDialogID:)]) {
+					
+					[strongSelf.multicastDelegate chatService:strongSelf
+											 didUpdateMessage:message
+												  forDialogID:chatDialogToUpdate.ID];
+				}
+				
                 [updatedMessages addObject:message];
             }
-            
+			
             [strongSelf.messagesToRead removeObject:message.ID];
             
             dispatch_group_leave(readGroup);
