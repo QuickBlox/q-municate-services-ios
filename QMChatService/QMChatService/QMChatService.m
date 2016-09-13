@@ -1164,41 +1164,39 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 #pragma mark - Send messages
 
 - (void)sendMessage:(QBChatMessage *)message
-               type:(QMMessageType)type
-           toDialog:(QBChatDialog *)dialog
-      saveToHistory:(BOOL)saveToHistory
-      saveToStorage:(BOOL)saveToStorage
-         completion:(QBChatCompletionBlock)completion
+			   type:(QMMessageType)type
+		   toDialog:(QBChatDialog *)dialog
+		withoutJoin:(BOOL)withoutJoin
+	  saveToHistory:(BOOL)saveToHistory
+	  saveToStorage:(BOOL)saveToStorage
+		 completion:(QBChatCompletionBlock)completion
 {
-    message.dateSent = [NSDate date];
-    
-    //Save to history
-    if (saveToHistory) {
-        message.saveToHistory = kChatServiceSaveToHistoryTrue;
-    }
-    //Set message type
-    if (type != QMMessageTypeText) {
-        message.messageType = type;
-    }
-    
-    QBUUser *currentUser = self.serviceManager.currentUser;
-    
-    if (dialog.type == QBChatDialogTypePrivate) {
-        message.recipientID = dialog.recipientID;
-        message.markable = YES;
-    }
-    
-    message.senderID = currentUser.ID;
-    message.dialogID = dialog.ID;
-    
-    __weak __typeof(self)weakSelf = self;
+	message.dateSent = [NSDate date];
+	
+	//Save to history
+	if (saveToHistory) {
+		message.saveToHistory = kChatServiceSaveToHistoryTrue;
+	}
+	//Set message type
+	if (type != QMMessageTypeText) {
+		message.messageType = type;
+	}
+	
+	QBUUser *currentUser = self.serviceManager.currentUser;
+	
+	if (dialog.type == QBChatDialogTypePrivate) {
+		message.recipientID = dialog.recipientID;
+		message.markable = YES;
+	}
+	
+	message.senderID = currentUser.ID;
+	message.dialogID = dialog.ID;
+	
+	[self.deferredQueueManager addOrUpdateMessage:message];
 
-
-    [self.deferredQueueManager addOrUpdateMessage:message];
-    
-    [dialog sendMessage:message completionBlock:^(NSError *error) {
-        
-        __typeof(weakSelf)strongSelf = weakSelf;
+	__weak __typeof(self)weakSelf = self;
+	void(^sendMessageCompletionBlock)(NSError *) = ^(NSError *error) {
+		__typeof(weakSelf)strongSelf = weakSelf;
         
         if (error == nil && saveToStorage) {
             
@@ -1243,7 +1241,30 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
         if (completion) {
             completion(error);
         }
-    }];
+	};
+	
+	if (withoutJoin && (dialog.type == QBChatDialogTypeGroup || dialog.type == QBChatDialogTypePublicGroup)) {
+		[dialog sendGroupChatMessageWithoutJoin:message completion:sendMessageCompletionBlock];
+	}
+	else {
+		[dialog sendMessage:message completionBlock:sendMessageCompletionBlock];
+	}
+}
+
+- (void)sendMessage:(QBChatMessage *)message
+               type:(QMMessageType)type
+           toDialog:(QBChatDialog *)dialog
+      saveToHistory:(BOOL)saveToHistory
+      saveToStorage:(BOOL)saveToStorage
+         completion:(QBChatCompletionBlock)completion
+{
+	[self sendMessage:message
+				 type:type
+			 toDialog:dialog
+		  withoutJoin:NO
+		saveToHistory:saveToHistory
+		saveToStorage:saveToStorage
+		   completion:completion];
 }
 
 
