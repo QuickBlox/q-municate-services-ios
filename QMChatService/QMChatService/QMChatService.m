@@ -583,7 +583,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
         
         chatDialogToUpdate.updatedAt = message.dateSent;
         
-        if ([self.multicastDelegate respondsToSelector:@selector(chatService:didUpdateChatDialogInMemoryStorage:)]) {
+        if (chatDialogToUpdate != nil && [self.multicastDelegate respondsToSelector:@selector(chatService:didUpdateChatDialogInMemoryStorage:)]) {
             
             [self.multicastDelegate chatService:self didUpdateChatDialogInMemoryStorage:chatDialogToUpdate];
         }
@@ -940,6 +940,23 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 
 - (void)messagesWithChatDialogID:(NSString *)chatDialogID completion:(void(^)(QBResponse *response, NSArray *messages))completion {
     
+    NSMutableDictionary *parameters = [@{@"sort_desc" : @"date_sent"} mutableCopy];
+    
+    NSDate *lastMessagesLoadDate = self.lastMessagesLoadDate[chatDialogID];
+    QBChatMessage *lastMessage = [self.messagesMemoryStorage lastMessageFromDialogID:chatDialogID];
+    
+    if (lastMessagesLoadDate == nil && lastMessage != nil) {
+        
+        lastMessagesLoadDate = lastMessage.dateSent;
+    }
+    
+    parameters[@"date_sent[gte]"] = @([lastMessagesLoadDate timeIntervalSince1970]);
+    
+    [self messagesWithChatDialogID:chatDialogID extendedRequest:parameters completion:completion];
+}
+
+- (void)messagesWithChatDialogID:(NSString *)chatDialogID extendedRequest:(NSDictionary *)extendedParameters completion:(void(^)(QBResponse *response, NSArray *messages))completion {
+    
     dispatch_group_t messagesLoadGroup = dispatch_group_create();
     if ([[self.messagesMemoryStorage messagesWithDialogID:chatDialogID] count] == 0) {
         
@@ -956,20 +973,10 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
         __typeof(weakSelf)strongSelf = weakSelf;
         
         QBResponsePage *page = [QBResponsePage responsePageWithLimit:strongSelf.chatMessagesPerPage];
-        NSMutableDictionary *parameters = [@{@"sort_desc" : @"date_sent"} mutableCopy];
-        
-        NSDate *lastMessagesLoadDate = self.lastMessagesLoadDate[chatDialogID];
         QBChatMessage *lastMessage = [strongSelf.messagesMemoryStorage lastMessageFromDialogID:chatDialogID];
         
-        if (lastMessagesLoadDate == nil && lastMessage != nil) {
-            
-            lastMessagesLoadDate = lastMessage.dateSent;
-        }
-        
-        parameters[@"date_sent[gte]"] = @([lastMessagesLoadDate timeIntervalSince1970]);
-        
         [QBRequest messagesWithDialogID:chatDialogID
-                        extendedRequest:parameters
+                        extendedRequest:extendedParameters
                                 forPage:page
                            successBlock:^(QBResponse *response, NSArray *messages, QBResponsePage *page) {
                                
@@ -1185,36 +1192,55 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 	message.senderID = currentUser.ID;
 	message.dialogID = dialog.ID;
 	
+	[self.deferredQueueManager addOrUpdateMessage:message];
+
 	__weak __typeof(self)weakSelf = self;
 	void(^sendMessageCompletionBlock)(NSError *) = ^(NSError *error) {
 		__typeof(weakSelf)strongSelf = weakSelf;
-		
-		if (error == nil && saveToStorage) {
-			
-			// there is a case when message that was returned from server (Group dialogs)
-			// will be handled faster then this completion block been fired
-			// therefore there is no need to add local message to memory storage, while server
-			// up-to-date one is already there
-			BOOL messageExists = [strongSelf.messagesMemoryStorage isMessageExistent:message forDialogID:message.dialogID];
-			
-			if (!messageExists) {
-				
-				[strongSelf.messagesMemoryStorage addMessage:message forDialogID:dialog.ID];
-				
-				if ([strongSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddMessageToMemoryStorage:forDialogID:)]) {
-					[strongSelf.multicastDelegate chatService:strongSelf didAddMessageToMemoryStorage:message forDialogID:dialog.ID];
-				}
-			}
-			
-			[strongSelf updateLastMessageParamsForChatDialog:dialog withMessage:message];
-			dialog.updatedAt = message.dateSent;
-			
-			if ([strongSelf.multicastDelegate respondsToSelector:@selector(chatService:didUpdateChatDialogInMemoryStorage:)]) {
-				[strongSelf.multicastDelegate chatService:strongSelf didUpdateChatDialogInMemoryStorage:dialog];
-			}
-		}
-		
-		if (completion) completion(error);
+        
+        if (error == nil && saveToStorage) {
+            
+            [self.deferredQueueManager removeMessage:message];
+            
+            // there is a case when message that was returned from server (Group dialogs)
+            // will be handled faster then this completion block been fired
+            // therefore there is no need to add local message to memory storage, while server
+            // up-to-date one is already there
+            BOOL messageExists = [strongSelf.messagesMemoryStorage isMessageExistent:message forDialogID:message.dialogID];
+            
+            if (!messageExists) {
+                
+                [strongSelf.messagesMemoryStorage addMessage:message forDialogID:dialog.ID];
+                
+                if ([strongSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddMessageToMemoryStorage:forDialogID:)]) {
+                    [strongSelf.multicastDelegate chatService:strongSelf didAddMessageToMemoryStorage:message forDialogID:dialog.ID];
+                }
+            }
+            else {
+                if ([strongSelf.multicastDelegate respondsToSelector:@selector(chatService:didUpdateMessage:forDialogID:)]) {
+                    [strongSelf.multicastDelegate chatService:strongSelf didUpdateMessage:message forDialogID:dialog.ID];
+                }
+
+            }
+            
+            [strongSelf updateLastMessageParamsForChatDialog:dialog withMessage:message];
+            dialog.updatedAt = message.dateSent;
+            
+            if ([strongSelf.multicastDelegate respondsToSelector:@selector(chatService:didUpdateChatDialogInMemoryStorage:)]) {
+                [strongSelf.multicastDelegate chatService:strongSelf didUpdateChatDialogInMemoryStorage:dialog];
+                
+            }
+            
+        }
+        else if (error) {
+            
+            [self.deferredQueueManager addOrUpdateMessage:message];
+            
+        }
+        
+        if (completion) {
+            completion(error);
+        }
 	};
 	
 	if (withoutJoin && (dialog.type == QBChatDialogTypeGroup || dialog.type == QBChatDialogTypePublicGroup)) {
@@ -1245,10 +1271,15 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 #pragma mark -
 #pragma mark QMDeferredQueueManagerDelegate
 
-- (void)deferredQueueManager:(QMDeferredQueueManager *)queueManager performActionWithMessage:(QBChatMessage *)message {
+- (void)deferredQueueManager:(QB_NONNULL QMDeferredQueueManager *)queueManager performActionWithMessage:(QB_NONNULL QBChatMessage *)message withCompletion:(QBChatCompletionBlock)completion {
     
     QBChatDialog *dialog = [self.dialogsMemoryStorage chatDialogWithID:message.dialogID];
-    [self sendMessage:message toDialog:dialog saveToHistory:message.saveToHistory saveToStorage:YES completion:nil];
+    
+    [self sendMessage:message
+             toDialog:dialog
+        saveToHistory:message.saveToHistory
+        saveToStorage:YES
+           completion:completion];
 }
 
 - (void)sendMessage:(QBChatMessage *)message

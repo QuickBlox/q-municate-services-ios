@@ -180,20 +180,29 @@
         return;
     }
     
-    NSArray *dialogObjects = [self.chatService.dialogsMemoryStorage unsortedDialogs];
-    for (QBChatDialog* dialog in dialogObjects) {
+    NSArray *dialogObjects = [self.chatService.dialogsMemoryStorage dialogsSortByUpdatedAtWithAscending:NO];
+    
+    for (QBChatDialog *dialog in dialogObjects) {
         
         if (dialog.type != QBChatDialogTypePrivate) {
+            
             // Joining to group chat dialogs.
             dispatch_group_enter(self.joinGroup);
+            
             [self.chatService joinToGroupDialog:dialog completion:^(NSError *error) {
                 
                 if (error != nil) {
-                    
                     QMSLog(@"Failed to join room with error: %@", error.localizedDescription);
                 }
+                else {
+                    [self.chatService.deferredQueueManager performDeferredActionsForDialogWithID:dialog.ID];
+                }
+                
                 dispatch_group_leave(self.joinGroup);
             }];
+        }
+        else {
+            [self.chatService.deferredQueueManager performDeferredActionsForDialogWithID:dialog.ID];
         }
     }
     dispatch_group_notify(self.joinGroup, dispatch_get_main_queue(), ^{
@@ -208,15 +217,20 @@
 
 - (void)chatServiceChatDidConnect:(QMChatService *)chatService {
     
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    
     [self joinAllGroupDialogsIfNeededWithCompletion:^{
-        [chatService.deferredQueueManager performDeferredActions];
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     }];
 }
 
 - (void)chatServiceChatDidReconnect:(QMChatService *)chatService {
     
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    
     [self joinAllGroupDialogsIfNeededWithCompletion:^{
-        [chatService.deferredQueueManager performDeferredActions];
+        
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     }];
 }
 
