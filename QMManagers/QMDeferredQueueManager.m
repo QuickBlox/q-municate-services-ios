@@ -31,7 +31,7 @@
         _multicastDelegate = (id <QMDeferredQueueManagerDelegate>)[[QBMulticastDelegate alloc] init];
         _autoSendTimeInterval = 60;
         _performingMessages = [NSMutableSet set];
-        _maxDeferredMessagesCount = 0;
+        _maxDeferredActionsCount = 0;
     }
 
     return self;
@@ -92,8 +92,8 @@
 - (void)removeMessage:(QBChatMessage *)message {
     
     [self.deferredQueueMemoryStorage removeMessage:message];
-    
-    
+    [self.performingMessages removeObject:message.ID];
+
 }
 
 - (QMMessageStatus)statusForMessage:(QBChatMessage *)message {
