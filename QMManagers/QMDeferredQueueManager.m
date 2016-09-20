@@ -14,7 +14,7 @@
 
 @property (strong, nonatomic) QBMulticastDelegate <QMDeferredQueueManagerDelegate> *multicastDelegate;
 @property (strong, nonatomic) QMDeferredQueueMemoryStorage *deferredQueueMemoryStorage;
-
+@property (strong, nonatomic) NSMutableSet *performingMessages;
 @end
 
 @implementation QMDeferredQueueManager
@@ -30,6 +30,8 @@
         _deferredQueueMemoryStorage = [[QMDeferredQueueMemoryStorage alloc] init];
         _multicastDelegate = (id <QMDeferredQueueManagerDelegate>)[[QBMulticastDelegate alloc] init];
         _autoSendTimeInterval = 60;
+        _performingMessages = [NSMutableSet set];
+        _maxDeferredMessagesCount = 0;
     }
 
     return self;
@@ -91,6 +93,7 @@
     
     [self.deferredQueueMemoryStorage removeMessage:message];
     
+    
 }
 
 - (QMMessageStatus)statusForMessage:(QBChatMessage *)message {
@@ -107,17 +110,25 @@
 #pragma mark -
 #pragma mark Deferred Queue Operations
 
-- (BFTask *)perfromDefferedActionForMessage:(QBChatMessage*)message {
+- (BFTask *)perfromDefferedActionForMessage:(QBChatMessage *)message {
+    
+    if ([self.performingMessages containsObject:message.ID]) {
+        return nil;
+    }
+    
+    [self.performingMessages addObject:message.ID];
     
     BFTaskCompletionSource *successful = [BFTaskCompletionSource taskCompletionSource];
     
     [self perfromDefferedActionForMessage:message withCompletion:^(NSError * _Nullable error) {
         
-        if (error) {
+        [self.performingMessages removeObject:message.ID];
+        
+        if (error != nil) {
             [successful setError:error];
         }
         else {
-            [successful setResult:message];
+            [successful setResult:nil];
         }
     }];
     
@@ -126,9 +137,14 @@
 
 - (void)performDeferredActionsForDialogWithID:(NSString *)dialogID {
     
+    NSArray *messages = [self messagesForDialogWithID:dialogID];
+    if (messages.count == 0) {
+        return;
+    }
+    
     BFTask *task = [BFTask taskWithResult:nil];
     
-    for (QBChatMessage *message in [self messagesForDialogWithID:dialogID]) {
+    for (QBChatMessage *message in messages) {
         
         if ([self isAutoSendAvailableForMessage:message]) {
             
