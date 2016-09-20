@@ -41,6 +41,8 @@ typedef NS_ENUM(NSUInteger, QMMessageStatus) {
 
 - (QMMessageStatus)statusForMessage:(QB_NONNULL QBChatMessage *)message;
 
+- (BOOL)shouldSendMessagesInDialogWithID:(NSString *)dialogID;
+
 @end
 
 @protocol QMDeferredQueueManagerDelegate <NSObject>
@@ -51,6 +53,5 @@ typedef NS_ENUM(NSUInteger, QMMessageStatus) {
 - (void)deferredQueueManager:(QB_NONNULL QMDeferredQueueManager *)queueManager didAddMessageLocally:(QB_NONNULL QBChatMessage *)addedMessage;
 - (void)deferredQueueManager:(QB_NONNULL QMDeferredQueueManager *)queueManager didUpdateMessageLocally:(QB_NONNULL QBChatMessage *)addedMessage;
 
-- (BOOL)deferredQueueManager:(QB_NONNULL QMDeferredQueueManager *)queueManager canSendMessagesForDialogWithID:(NSString *)dialogID;
 @end
 

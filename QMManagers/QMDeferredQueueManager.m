@@ -31,7 +31,7 @@
         _multicastDelegate = (id <QMDeferredQueueManagerDelegate>)[[QBMulticastDelegate alloc] init];
         _autoSendTimeInterval = 60;
         _performingMessages = [NSMutableSet set];
-        _maxDeferredActionsCount = 0;
+        _maxDeferredActionsCount = 3;
     }
 
     return self;
@@ -44,16 +44,27 @@
 #pragma mark -
 #pragma mark MulticastDelegate
 
-- (void)addDelegate:(QB_NONNULL id <QMDeferredQueueManagerDelegate>)delegate {
+- (void)addDelegate:(id)delegate {
     [self.multicastDelegate addDelegate:delegate];
 }
 
-- (void)removeDelegate:(QB_NONNULL id <QMDeferredQueueManagerDelegate>)delegate {
+- (void)removeDelegate:(id)delegate {
     [self.multicastDelegate removeDelegate:delegate];
 }
 
 #pragma mark -
 #pragma mark Messages
+
+- (NSUInteger)numberOfNotSentMessagesForDialogWithID:(NSString *)dialogID {
+    
+    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(QBChatMessage * _Nonnull message, NSDictionary<NSString *,id> * _Nullable bindings) {
+        return [message.dialogID isEqualToString:dialogID] && [self statusForMessage:message] == QMMessageStatusNotSent;
+    }];
+    
+    NSArray *messages = [self.deferredQueueMemoryStorage.messages filteredArrayUsingPredicate:predicate];
+    
+    return messages.count;
+}
 
 - (NSArray *)messagesForDialogWithID:(NSString *)dialogID {
     
@@ -196,6 +207,16 @@
     return secondsBetween <= self.autoSendTimeInterval;
 }
 
+- (BOOL)shouldSendMessagesInDialogWithID:(NSString *)dialogID {
+    
+    NSUInteger messagesCount = [self numberOfNotSentMessagesForDialogWithID:dialogID];
+    
+    if (self.maxDeferredActionsCount > 0 && self.maxDeferredActionsCount <= messagesCount) {
+        return NO;
+    }
+    
+    return YES;
+}
 #pragma mark -
 #pragma mark QMMemoryTemporaryQueueDelegate
 
