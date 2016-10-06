@@ -119,19 +119,6 @@ typedef NS_ENUM(NSUInteger, QMChatConnectionState) {
  */
 - (void)disconnectWithCompletionBlock:(nullable QBChatCompletionBlock)completion;
 
-/**
- *  Automatically send chat presences when logged in
- *  Default value: YES
- *  @warning *Deprecated in QMServices 0.3.8:*
- */
-@property (nonatomic, assign) BOOL automaticallySendPresences DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.3.8.");
-
-/**
- *  Default value: 45 seconds
- *  @warning *Deprecated in QMServices 0.3.8:*
- */
-@property (nonatomic, assign) NSTimeInterval presenceTimerInterval DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.3.8.");
-
 #pragma mark - Group dialog join
 
 /**
@@ -234,18 +221,6 @@ typedef NS_ENUM(NSUInteger, QMChatConnectionState) {
 
 #pragma mark - System Messages
 
-/**
- *  Send system message to users about adding to dialog with dialog inside.
- *
- *  @param chatDialog   created dialog we notificate about
- *  @param usersIDs     array of users id to send message
- *  @param completion   completion block with failure error
- *
- *  @warning *Deprecated in QMServices 0.4.1:* Use 'sendSystemMessageAboutAddingToDialog:toUsersIDs:withText:completion' instead.
- */
-- (void)sendSystemMessageAboutAddingToDialog:(QBChatDialog *)chatDialog
-                                  toUsersIDs:(NSArray QB_GENERIC(NSNumber *) *)usersIDs
-                                  completion:(nullable QBChatCompletionBlock)completion DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.4.1. Use 'sendSystemMessageAboutAddingToDialog:toUsersIDs:withText:completion:' instead.");
 /**
  *  Send system message to users about adding to dialog with dialog inside with text.
  *
@@ -689,21 +664,6 @@ typedef NS_ENUM(NSUInteger, QMChatConnectionState) {
 - (BFTask *)fetchDialogsUpdatedFromDate:(NSDate *)date
                            andPageLimit:(NSUInteger)limit
                          iterationBlock:(nullable void(^)(QBResponse *response, NSArray QB_GENERIC(QBChatDialog *) * _Nullable dialogObjects, NSSet QB_GENERIC(NSNumber *) * _Nullable dialogsUsersIDs, BOOL *stop))iterationBlock;
-
-/**
- *  Send system message to users about adding to dialog with dialog inside using Bolts.
- *
- *  @param chatDialog   created dialog we notificate about
- *  @param usersIDs     array of users id to send message
- *
- *  @warning *Deprecated in QMServices 0.4.1:* Use 'sendSystemMessageAboutAddingToDialog:toUsersIDs:withText:' instead.
- *
- *  @return BFTask with failure error
- *
- *  @see In order to know how to work with BFTask's see documentation https://github.com/BoltsFramework/Bolts-iOS#bolts
- */
-- (BFTask *)sendSystemMessageAboutAddingToDialog:(QBChatDialog *)chatDialog
-                                      toUsersIDs:(NSArray QB_GENERIC(NSNumber *) *)usersIDs  DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.4.1. Use 'sendSystemMessageAboutAddingToDialog:toUsersIDs:withText:' instead.");
 
 /**
  *  Send system message to users about adding to dialog with dialog inside using Bolts.

@@ -1522,15 +1522,6 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     });
     
 }
-- (void)sendSystemMessageAboutAddingToDialog:(QBChatDialog *)chatDialog
-                                  toUsersIDs:(NSArray *)usersIDs
-                                  completion:(QBChatCompletionBlock)completion
-{
-    [self sendSystemMessageAboutAddingToDialog:chatDialog
-                                    toUsersIDs:usersIDs
-                                      withText:nil
-                                    completion:completion];
-}
 
 - (void)sendMessageAboutAcceptingContactRequest:(BOOL)accept
                                    toOpponentID:(NSUInteger)opponentID

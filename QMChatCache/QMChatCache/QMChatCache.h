@@ -79,14 +79,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)deleteAllDialogsWithCompletion:(nullable dispatch_block_t)completion;
 
-/**
- *  Delete all dialogs
- *
- *  @param completion Completion block is called after delete all dialogs operation is completed
- *  @warning *Deprecated in 0.3.8:* Use 'deleteAllDialogsWithCompletion:' instead.
- */
-- (void)deleteAllDialogs:(nullable dispatch_block_t)completion DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.3.8. Use 'deleteAllDialogsWithCompletion:' instead.");
-
 #pragma mark Fetch dialog operations
 
 /**
@@ -193,15 +185,6 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param completion Completion block that is called after the delete all messages operation  has completed.
  */
 - (void)deleteAllMessagesWithCompletion:(nullable dispatch_block_t)completion;
-
-/**
- *  Delete all messages
- *
- *  @param completion Completion block that is called after the delete all messages operation  has completed.
- *  @warning *Deprecated in 0.3.8:* Use 'deleteAllMessagesWithCompletion:' instead.
- */
-- (void)deleteAllMessages:(nullable dispatch_block_t)completion DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.3.8:* Use 'deleteAllMessagesWithCompletion:' instead.");
-
 
 #pragma mark Fetch Messages operations
 

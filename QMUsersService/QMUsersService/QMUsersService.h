@@ -390,14 +390,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)cachedUsersWithCompletion:(nullable void(^)(NSArray * _Nullable collection))block;
 
-/**
- *  Is called when users service will start. Need to use for inserting initial data QMUsersMemoryStorage.
- *
- *  @param block Block for provide QBUUsers collection
- *  @warning *Deprecated in 0.3.8:* Use 'cachedUsersWithCompletion:' instead.
- */
-- (void)cachedUsers:(nullable void(^)(NSArray * _Nullable collection))block DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.3.8. Use 'cachedUsersWithCompletion:' instead.");
-
 @end
 
 @protocol QMUsersServiceDelegate <NSObject>

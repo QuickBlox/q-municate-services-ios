@@ -407,25 +407,6 @@ static NSString *const kQMChatServiceDomain = @"com.q-municate.chatservice";
 
 #pragma mark - notifications
 
-- (BFTask *)sendSystemMessageAboutAddingToDialog:(QBChatDialog *)chatDialog toUsersIDs:(NSArray *)usersIDs {
-    
-    BFTaskCompletionSource* source = [BFTaskCompletionSource taskCompletionSource];
-    
-    [self sendSystemMessageAboutAddingToDialog:chatDialog toUsersIDs:usersIDs completion:^(NSError *error) {
-        
-        if (error != nil) {
-            
-            [source setError:error];
-        }
-        else {
-            
-            [source setResult:nil];
-        }
-    }];
-    
-    return source.task;
-}
-
 - (BFTask *)sendSystemMessageAboutAddingToDialog:(QBChatDialog *)chatDialog toUsersIDs:(NSArray *)usersIDs withText:(NSString *)text {
     
     BFTaskCompletionSource* source = [BFTaskCompletionSource taskCompletionSource];
