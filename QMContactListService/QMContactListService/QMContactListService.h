@@ -40,8 +40,8 @@ typedef void(^QMCacheCollection)(NSArray * _Nullable collection);
  *
  *  @return QMContactListService instance
  */
-- (nullable instancetype)initWithServiceManager:(id<QMServiceManagerProtocol>)serviceManager
-                                   cacheDataSource:(nullable id<QMContactListServiceCacheDataSource>)cacheDataSource;
+- (instancetype)initWithServiceManager:(id<QMServiceManagerProtocol>)serviceManager
+                       cacheDataSource:(nullable id<QMContactListServiceCacheDataSource>)cacheDataSource;
 
 /**
  *  Add instance that confirms contact list service multicaste protocol

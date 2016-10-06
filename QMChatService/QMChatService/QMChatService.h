@@ -89,8 +89,8 @@ typedef NS_ENUM(NSUInteger, QMChatConnectionState) {
  *
  *  @return Return QMChatService instance
  */
-- (nullable instancetype)initWithServiceManager:(id<QMServiceManagerProtocol>)serviceManager
-                                cacheDataSource:(nullable id<QMChatServiceCacheDataSource>)cacheDataSource;
+- (instancetype)initWithServiceManager:(id<QMServiceManagerProtocol>)serviceManager
+                       cacheDataSource:(nullable id<QMChatServiceCacheDataSource>)cacheDataSource;
 /**
  *  Add delegate (Multicast)
  *
@@ -745,8 +745,8 @@ typedef NS_ENUM(NSUInteger, QMChatConnectionState) {
  *  @see In order to know how to work with BFTask's see documentation https://github.com/BoltsFramework/Bolts-iOS#bolts
  */
 - (BFTask *)sendNotificationMessageAboutAddingOccupants:(NSArray QB_GENERIC(NSNumber *) *)occupantsIDs
-                                                          toDialog:(QBChatDialog *)chatDialog
-                                              withNotificationText:(NSString *)notificationText;
+                                               toDialog:(QBChatDialog *)chatDialog
+                                   withNotificationText:(NSString *)notificationText;
 
 /**
  *  Sending notification message about leaving dialog using Bolts.
@@ -759,7 +759,7 @@ typedef NS_ENUM(NSUInteger, QMChatConnectionState) {
  *  @see In order to know how to work with BFTask's see documentation https://github.com/BoltsFramework/Bolts-iOS#bolts
  */
 - (BFTask *)sendNotificationMessageAboutLeavingDialog:(QBChatDialog *)chatDialog
-                                            withNotificationText:(NSString *)notificationText;
+                                 withNotificationText:(NSString *)notificationText;
 
 /**
  *  Sending notification message about changing dialog photo using Bolts.
@@ -772,7 +772,7 @@ typedef NS_ENUM(NSUInteger, QMChatConnectionState) {
  *  @see In order to know how to work with BFTask's see documentation https://github.com/BoltsFramework/Bolts-iOS#bolts
  */
 - (BFTask *)sendNotificationMessageAboutChangingDialogPhoto:(QBChatDialog *)chatDialog
-                                                  withNotificationText:(NSString *)notificationText;
+                                       withNotificationText:(NSString *)notificationText;
 
 /**
  *  Sending notification message about changing dialog name.
@@ -785,7 +785,7 @@ typedef NS_ENUM(NSUInteger, QMChatConnectionState) {
  *  @see In order to know how to work with BFTask's see documentation https://github.com/BoltsFramework/Bolts-iOS#bolts
  */
 - (BFTask *)sendNotificationMessageAboutChangingDialogName:(QBChatDialog *)chatDialog
-                                                 withNotificationText:(NSString *)notificationText;
+                                      withNotificationText:(NSString *)notificationText;
 
 /**
  *  Send message with a specific message type to dialog with identifier using Bolts.
@@ -805,10 +805,10 @@ typedef NS_ENUM(NSUInteger, QMChatConnectionState) {
  *  @see In order to know how to work with BFTask's see documentation https://github.com/BoltsFramework/Bolts-iOS#bolts
  */
 - (BFTask *)sendMessage:(QBChatMessage *)message
-                              type:(QMMessageType)type
-                          toDialog:(QBChatDialog *)dialog
-                     saveToHistory:(BOOL)saveToHistory
-                     saveToStorage:(BOOL)saveToStorage;
+                   type:(QMMessageType)type
+               toDialog:(QBChatDialog *)dialog
+          saveToHistory:(BOOL)saveToHistory
+          saveToStorage:(BOOL)saveToStorage;
 
 /**
  *  Send message to dialog with identifier using Bolts.
@@ -823,9 +823,9 @@ typedef NS_ENUM(NSUInteger, QMChatConnectionState) {
  *  @see In order to know how to work with BFTask's see documentation https://github.com/BoltsFramework/Bolts-iOS#bolts
  */
 - (BFTask *)sendMessage:(QBChatMessage *)message
-                        toDialogID:(NSString *)dialogID
-                     saveToHistory:(BOOL)saveToHistory
-                     saveToStorage:(BOOL)saveToStorage;
+             toDialogID:(NSString *)dialogID
+          saveToHistory:(BOOL)saveToHistory
+          saveToStorage:(BOOL)saveToStorage;
 
 /**
  *  Send message to using Bolts.
@@ -840,9 +840,9 @@ typedef NS_ENUM(NSUInteger, QMChatConnectionState) {
  *  @see In order to know how to work with BFTask's see documentation https://github.com/BoltsFramework/Bolts-iOS#bolts
  */
 - (BFTask *)sendMessage:(QBChatMessage *)message
-                          toDialog:(QBChatDialog *)dialog
-                     saveToHistory:(BOOL)saveToHistory
-                     saveToStorage:(BOOL)saveToStorage;
+               toDialog:(QBChatDialog *)dialog
+          saveToHistory:(BOOL)saveToHistory
+          saveToStorage:(BOOL)saveToStorage;
 
 /**
  *  Send attachment message to dialog using Bolts.
@@ -856,8 +856,8 @@ typedef NS_ENUM(NSUInteger, QMChatConnectionState) {
  *  @see In order to know how to work with BFTask's see documentation https://github.com/BoltsFramework/Bolts-iOS#bolts
  */
 - (BFTask *)sendAttachmentMessage:(QBChatMessage *)attachmentMessage
-                                    toDialog:(QBChatDialog *)dialog
-                         withAttachmentImage:(UIImage *)image;
+                         toDialog:(QBChatDialog *)dialog
+              withAttachmentImage:(UIImage *)image;
 
 /**
  *  Mark message as delivered.

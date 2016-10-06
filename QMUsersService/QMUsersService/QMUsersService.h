@@ -30,8 +30,8 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @return QMUsersService instance
  */
-- (nullable instancetype)initWithServiceManager:(id<QMServiceManagerProtocol>)serviceManager
-                                cacheDataSource:(nullable id<QMUsersServiceCacheDataSource>)cacheDataSource;
+- (instancetype)initWithServiceManager:(id<QMServiceManagerProtocol>)serviceManager
+                       cacheDataSource:(nullable id<QMUsersServiceCacheDataSource>)cacheDataSource;
 
 /**
  *  Add instance that confirms users service multicaste protocol.
