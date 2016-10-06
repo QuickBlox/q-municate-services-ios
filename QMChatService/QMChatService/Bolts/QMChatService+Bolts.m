@@ -11,6 +11,7 @@
 #import "QMSLog.h"
 
 #define kQMLoadedAllMessages @1
+
 static NSString *const kQMChatServiceDomain = @"com.q-municate.chatservice";
 
 @interface QMChatService()
@@ -28,7 +29,7 @@ static NSString *const kQMChatServiceDomain = @"com.q-municate.chatservice";
 
 - (BFTask *)connect {
     
-    BFTaskCompletionSource* source = [BFTaskCompletionSource taskCompletionSource];
+    BFTaskCompletionSource *source = [BFTaskCompletionSource taskCompletionSource];
     
     if ([QBChat instance].isConnected) {
         [source setResult:nil];
