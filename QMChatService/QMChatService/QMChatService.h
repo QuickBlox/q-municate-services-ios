@@ -331,6 +331,15 @@ typedef NS_ENUM(NSUInteger, QMChatConnectionState) {
                       completion:(nullable void(^)(QBResponse *response, NSArray QB_GENERIC(QBChatMessage *) * _Nullable messages))completion;
 
 /**
+ *  Fetch messages with chat dialog id.
+ *
+ *  @param chatDialogID    Chat dialog id.
+ *  @param extendedRequest Set of request parameters. http://quickblox.com/developers/SimpleSample-chat_users-ios#Filters
+ *  @param completion      Block with response instance and array of chat messages if request succeded or nil if failed.
+ */
+- (void)messagesWithChatDialogID:(QB_NONNULL NSString *)chatDialogID extendedRequest:(QB_NULLABLE NSDictionary *)parameters completion:(void(^QB_NULLABLE_S)(QBResponse *QB_NONNULL_S response, NSArray QB_GENERIC(QBChatMessage *) *QB_NULLABLE_S messages))completion;
+
+/**
  *  Loads messages that are older than oldest message in cache.
  *
  *  @param chatDialogID Chat dialog identifier
@@ -338,6 +347,15 @@ typedef NS_ENUM(NSUInteger, QMChatConnectionState) {
  */
 - (void)earlierMessagesWithChatDialogID:(NSString *)chatDialogID
                              completion:(nullable void(^)(QBResponse *response, NSArray QB_GENERIC(QBChatMessage *) * _Nullable messages))completion;
+
+/**
+ *  Loads messages that are older than oldest message in cache.
+ *
+ *  @param chatDialogID    Chat dialog identifier
+ *  @param extendedRequest Set of request parameters. http://quickblox.com/developers/SimpleSample-chat_users-ios#Filters
+ *  @param completion      Block with response instance and array of chat messages if request succeded or nil if failed
+ */
+- (void)earlierMessagesWithChatDialogID:(QB_NONNULL NSString *)chatDialogID extendedRequest:(QB_NULLABLE NSDictionary *)parameters completion:(void(^QB_NULLABLE_S)(QBResponse *QB_NONNULL_S response, NSArray QB_GENERIC(QBChatMessage *) *QB_NULLABLE_S messages))completion;
 
 #pragma mark - Fetch dialogs
 

@@ -939,6 +939,10 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 }
 
 - (void)messagesWithChatDialogID:(NSString *)chatDialogID completion:(void(^)(QBResponse *response, NSArray *messages))completion {
+    [self messagesWithChatDialogID:chatDialogID extendedRequest:nil completion:completion];
+}
+
+- (void)messagesWithChatDialogID:(NSString *)chatDialogID extendedRequest:(NSDictionary *)parameters completion:(void(^)(QBResponse *response, NSArray *messages))completion {
     
     NSMutableDictionary *parameters = [@{@"sort_desc" : @"date_sent"} mutableCopy];
     
@@ -973,10 +977,26 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
         __typeof(weakSelf)strongSelf = weakSelf;
         
         QBResponsePage *page = [QBResponsePage responsePageWithLimit:strongSelf.chatMessagesPerPage];
+        NSMutableDictionary *extendedRequestParameters = parameters.mutableCopy;
+
+        if (extendedRequestParameters[@"sort_desc"] == nil) {
+            extendedRequestParameters[@"sort_desc"] = @"date_sent";
+        }
+
+        NSDate *lastMessagesLoadDate = self.lastMessagesLoadDate[chatDialogID];
         QBChatMessage *lastMessage = [strongSelf.messagesMemoryStorage lastMessageFromDialogID:chatDialogID];
-        
+
+        if (lastMessagesLoadDate == nil && lastMessage != nil) {
+
+            lastMessagesLoadDate = lastMessage.dateSent;
+        }
+
+        if (extendedRequestParameters[@"date_sent[gte]"] == nil) {
+            extendedRequestParameters[@"date_sent[gte]"] = @([lastMessagesLoadDate timeIntervalSince1970]);
+        }
+
         [QBRequest messagesWithDialogID:chatDialogID
-                        extendedRequest:extendedParameters
+                        extendedRequest:extendedRequestParameters
                                 forPage:page
                            successBlock:^(QBResponse *response, NSArray *messages, QBResponsePage *page) {
                                
@@ -1049,6 +1069,10 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 }
 
 - (void)earlierMessagesWithChatDialogID:(NSString *)chatDialogID completion:(void(^)(QBResponse *response, NSArray *messages))completion {
+    [self earlierMessagesWithChatDialogID:chatDialogID extendedRequest:nil completion:completion];
+}
+
+- (void)earlierMessagesWithChatDialogID:(NSString *)chatDialogID extendedRequest:(NSDictionary *)parameters completion:(void(^)(QBResponse *response, NSArray *messages))completion {
     
     if ([self.messagesMemoryStorage isEmptyForDialogID:chatDialogID]) {
         
@@ -1060,14 +1084,23 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     QBChatMessage *oldestMessage = [self.messagesMemoryStorage oldestMessageForDialogID:chatDialogID];
     NSString *oldestMessageDate = [NSString stringWithFormat:@"%ld", (long)[oldestMessage.dateSent timeIntervalSince1970]];
     QBResponsePage *page = [QBResponsePage responsePageWithLimit:self.chatMessagesPerPage];
-    
-    NSDictionary *extendedRequest = @{@"date_sent[lte]": oldestMessageDate,
-                                      @"sort_desc" : @"date_sent",
-                                      @"_id[lt]" : oldestMessage.ID};
-    
+
+    NSMutableDictionary *extendedRequestParameters = parameters.mutableCopy;
+    if (extendedRequestParameters[@"date_sent[lte]"] == nil) {
+        extendedRequestParameters[@"date_sent[lte]"] = oldestMessageDate;
+    }
+
+    if (extendedRequestParameters[@"sort_desc"] == nil) {
+        extendedRequestParameters[@"sort_desc"] = @"date_sent";
+    }
+
+    if (extendedRequestParameters[@"_id[lt]"] == nil) {
+        extendedRequestParameters[@"_id[lt]"] = oldestMessage.ID;
+    }
+
     __weak __typeof(self) weakSelf = self;
     
-    [QBRequest messagesWithDialogID:chatDialogID extendedRequest:extendedRequest forPage:page successBlock:^(QBResponse *response, NSArray *messages, QBResponsePage *page) {
+    [QBRequest messagesWithDialogID:chatDialogID extendedRequest:extendedRequestParameters forPage:page successBlock:^(QBResponse *response, NSArray *messages, QBResponsePage *page) {
         
         if ([messages count] > 0) {
             
