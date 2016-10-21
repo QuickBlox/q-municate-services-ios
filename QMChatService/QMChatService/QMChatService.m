@@ -1261,7 +1261,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 #pragma mark -
 #pragma mark QMDeferredQueueManagerDelegate
 
-- (void)deferredQueueManager:(QB_NONNULL QMDeferredQueueManager *)queueManager performActionWithMessage:(QB_NONNULL QBChatMessage *)message withCompletion:(QBChatCompletionBlock)completion {
+- (void)deferredQueueManager:(QMDeferredQueueManager *)queueManager performActionWithMessage:(QBChatMessage *)message withCompletion:(QBChatCompletionBlock)completion {
     
     QBChatDialog *dialog = [self.dialogsMemoryStorage chatDialogWithID:message.dialogID];
     
@@ -1536,15 +1536,6 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
         if (completion) completion(nil);
     });
     
-}
-- (void)sendSystemMessageAboutAddingToDialog:(QBChatDialog *)chatDialog
-                                  toUsersIDs:(NSArray *)usersIDs
-                                  completion:(QBChatCompletionBlock)completion
-{
-    [self sendSystemMessageAboutAddingToDialog:chatDialog
-                                    toUsersIDs:usersIDs
-                                      withText:nil
-                                    completion:completion];
 }
 
 - (void)sendMessageAboutAcceptingContactRequest:(BOOL)accept
