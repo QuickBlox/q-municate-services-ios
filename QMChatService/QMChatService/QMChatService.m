@@ -651,48 +651,54 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
         
         [QBRequest dialogsForPage:responsePage
                   extendedRequest:extendedRequest
-                     successBlock:^(QBResponse *response, NSArray *dialogObjects, NSSet *dialogsUsersIDs, QBResponsePage *page)
+                     successBlock:^(QBResponse *response, NSArray *dialogs, NSSet *dialogsUsersIDs, QBResponsePage *page)
          {
              
              NSArray *memoryStorageDialogs = [strongSelf.dialogsMemoryStorage unsortedDialogs];
-             NSMutableArray *newDialogs = dialogObjects.mutableCopy;
-             NSMutableArray *existentDialogs = dialogObjects.mutableCopy;
+             NSMutableArray *newDialogs = [dialogs mutableCopy];
+             NSMutableArray *existentDialogs = [dialogs mutableCopy];
              
              [newDialogs removeObjectsInArray:memoryStorageDialogs];
              [existentDialogs removeObjectsInArray:newDialogs];
              
-             [strongSelf.dialogsMemoryStorage addChatDialogs:dialogObjects andJoin:strongSelf.isAutoJoinEnabled];
+             [strongSelf.dialogsMemoryStorage addChatDialogs:dialogs andJoin:strongSelf.isAutoJoinEnabled];
              
              if (newDialogs.count > 0) {
                  
                  if ([strongSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddChatDialogsToMemoryStorage:)]) {
-                     [strongSelf.multicastDelegate chatService:strongSelf didAddChatDialogsToMemoryStorage:newDialogs.copy];
+                     [strongSelf.multicastDelegate chatService:strongSelf didAddChatDialogsToMemoryStorage:[newDialogs copy]];
                  }
              }
              
              if (existentDialogs.count > 0) {
                  
                  if ([strongSelf.multicastDelegate respondsToSelector:@selector(chatService:didUpdateChatDialogsInMemoryStorage:)]) {
-                     [strongSelf.multicastDelegate chatService:strongSelf didUpdateChatDialogsInMemoryStorage:existentDialogs.copy];
+                     [strongSelf.multicastDelegate chatService:strongSelf didUpdateChatDialogsInMemoryStorage:[existentDialogs copy]];
                  }
              }
              
              BOOL cancel;
-             responsePage.skip += dialogObjects.count;
+             page.skip += dialogs.count;
              
-             if (page.totalEntries <= responsePage.skip) {
+             if (page.totalEntries <= page.skip) {
+                 
                  cancel = YES;
              }
              
-             iterationBlock(response, dialogObjects, dialogsUsersIDs, &cancel);
+             iterationBlock(response, dialogs, dialogsUsersIDs, &cancel);
              
              if (!cancel) {
+                 
                  t_request(page);
              }
              else {
+                 
                  if (completion) {
+                     
                      completion(response);
                  }
+                 
+                 t_request = nil;
              }
              
          } errorBlock:^(QBResponse *response) {
@@ -700,12 +706,13 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
              [strongSelf.serviceManager handleErrorResponse:response];
              
              if (completion) {
+                 
                  completion(response);
              }
+             
+             t_request = nil;
          }];
-        
     };
-    
     
     t_request = [request copy];
     request([QBResponsePage responsePageWithLimit:limit]);
