@@ -117,7 +117,7 @@ static QMUsersCache *_usersCacheInstance = nil;
         CDUser *cachedUser = [CDUser QM_findFirstWithPredicate:IS(@"id", @(user.ID)) inContext:context];
         [cachedUser QM_deleteEntityInContext:context];
         
-        [context saveToPersistentStoreAndWait];
+        [context QM_saveToPersistentStoreAndWait];
         
         return nil;
     }];
@@ -132,7 +132,7 @@ static QMUsersCache *_usersCacheInstance = nil;
         
         [CDUser QM_truncateAllInContext:context];
         
-        [context saveToPersistentStoreAndWait];
+        [context QM_saveToPersistentStoreAndWait];
         return nil;
     }];
 }
