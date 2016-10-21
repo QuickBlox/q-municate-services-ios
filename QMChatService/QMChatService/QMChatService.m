@@ -638,7 +638,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     
     __weak __typeof(self)weakSelf = self;
     __block void(^t_request)(QBResponsePage *responsePage);
-    void(^request)(QBResponsePage *responsePage) = ^(QBResponsePage *responsePage){
+    void(^request)(QBResponsePage *responsePage) = ^(QBResponsePage *responsePage) {
         
         __typeof(weakSelf)strongSelf = weakSelf;
         
@@ -948,22 +948,20 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 
 - (void)messagesWithChatDialogID:(NSString *)chatDialogID completion:(void(^)(QBResponse *response, NSArray *messages))completion {
     
-    NSMutableDictionary *parameters = [@{@"sort_desc" : @"date_sent"} mutableCopy];
-    
-    NSDate *lastMessagesLoadDate = self.lastMessagesLoadDate[chatDialogID];
-    QBChatMessage *lastMessage = [self.messagesMemoryStorage lastMessageFromDialogID:chatDialogID];
-    
-    if (lastMessagesLoadDate == nil && lastMessage != nil) {
-        
-        lastMessagesLoadDate = lastMessage.dateSent;
-    }
-    
-    parameters[@"date_sent[gte]"] = @([lastMessagesLoadDate timeIntervalSince1970]);
-    
-    [self messagesWithChatDialogID:chatDialogID extendedRequest:parameters completion:completion];
+    [self messagesWithChatDialogID:chatDialogID extendedRequest:nil iterationBlock:nil completion:completion];
 }
 
 - (void)messagesWithChatDialogID:(NSString *)chatDialogID extendedRequest:(NSDictionary *)extendedParameters completion:(void(^)(QBResponse *response, NSArray *messages))completion {
+    
+    [self messagesWithChatDialogID:chatDialogID extendedRequest:extendedParameters iterationBlock:nil completion:completion];
+}
+
+- (void)messagesWithChatDialogID:(NSString *)chatDialogID iterationBlock:(void (^)(QBResponse *response, NSArray *messages, BOOL *stop))iterationBlock completion:(void (^)(QBResponse *response, NSArray *messages))completion {
+    
+    [self messagesWithChatDialogID:chatDialogID extendedRequest:nil iterationBlock:iterationBlock completion:completion];
+}
+
+- (void)messagesWithChatDialogID:(NSString *)chatDialogID extendedRequest:(NSDictionary *)extendedParameters iterationBlock:(void (^)(QBResponse *response, NSArray *messages, BOOL *stop))iterationBlock completion:(void (^)(QBResponse *response, NSArray *messages))completion {
     
     dispatch_group_t messagesLoadGroup = dispatch_group_create();
     if ([[self.messagesMemoryStorage messagesWithDialogID:chatDialogID] count] == 0) {
@@ -981,79 +979,115 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
         __typeof(weakSelf)strongSelf = weakSelf;
         
         QBResponsePage *page = [QBResponsePage responsePageWithLimit:strongSelf.chatMessagesPerPage];
-        QBChatMessage *lastMessage = [strongSelf.messagesMemoryStorage lastMessageFromDialogID:chatDialogID];
+        NSMutableArray *allMessages = [[NSMutableArray alloc] init];
         
-        [QBRequest messagesWithDialogID:chatDialogID
-                        extendedRequest:extendedParameters
-                                forPage:page
-                           successBlock:^(QBResponse *response, NSArray *messages, QBResponsePage *page)
-         {
-             
-             strongSelf.lastMessagesLoadDate[chatDialogID] = [NSDate date];
-             NSArray* sortedMessages = [[messages reverseObjectEnumerator] allObjects];
-             
-             if ([sortedMessages count] > 0) {
+        NSDictionary *extendedRequest = extendedParameters.count > 0 ? extendedParameters : [strongSelf parametersForMessagesUsingDialogID:chatDialogID];
+        
+        __block void(^t_request)(QBResponsePage *responsePage, NSDictionary *parameters);
+        void(^request)(QBResponsePage *responsePage, NSDictionary *parameters) = ^(QBResponsePage *responsePage, NSDictionary *parameters) {
+            
+            QBChatMessage *lastMessage = [strongSelf.messagesMemoryStorage lastMessageFromDialogID:chatDialogID];
+            [QBRequest messagesWithDialogID:chatDialogID
+                            extendedRequest:parameters
+                                    forPage:responsePage
+                               successBlock:^(QBResponse *response, NSArray *messages, QBResponsePage *page)
+             {
                  
-                 if (lastMessage == nil) {
+                 strongSelf.lastMessagesLoadDate[chatDialogID] = [NSDate date];
+                 NSArray *sortedMessages = [[messages reverseObjectEnumerator] allObjects];
+                 [allMessages addObjectsFromArray:sortedMessages];
+                 
+                 if ([sortedMessages count] > 0) {
                      
-                     [strongSelf.messagesMemoryStorage replaceMessages:sortedMessages forDialogID:chatDialogID];
-                     
-                     if ([strongSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddMessagesToMemoryStorage:forDialogID:)]) {
+                     if (lastMessage == nil) {
                          
-                         [strongSelf.multicastDelegate chatService:strongSelf didAddMessagesToMemoryStorage:sortedMessages forDialogID:chatDialogID];
+                         [strongSelf.messagesMemoryStorage replaceMessages:sortedMessages forDialogID:chatDialogID];
+                         
+                         if ([strongSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddMessagesToMemoryStorage:forDialogID:)]) {
+                             
+                             [strongSelf.multicastDelegate chatService:strongSelf didAddMessagesToMemoryStorage:sortedMessages forDialogID:chatDialogID];
+                         }
+                     }
+                     else {
+                         
+                         NSArray *memoryStorageMessages = [strongSelf.messagesMemoryStorage messagesWithDialogID:chatDialogID];
+                         NSMutableArray *newMessages = sortedMessages.mutableCopy;
+                         NSMutableArray *existentMessages = sortedMessages.mutableCopy;
+                         
+                         [newMessages removeObjectsInArray:memoryStorageMessages];
+                         [existentMessages removeObjectsInArray:newMessages];
+                         
+                         [strongSelf.messagesMemoryStorage addMessages:sortedMessages forDialogID:chatDialogID];
+                         
+                         if (newMessages.count > 0) {
+                             
+                             if ([strongSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddMessagesToMemoryStorage:forDialogID:)]) {
+                                 
+                                 [strongSelf.multicastDelegate chatService:strongSelf didAddMessagesToMemoryStorage:[newMessages copy] forDialogID:chatDialogID];
+                             }
+                         }
+                         
+                         if (existentMessages.count > 0) {
+                             
+                             if ([strongSelf.multicastDelegate respondsToSelector:@selector(chatService:didUpdateMessages:forDialogID:)]) {
+                                 
+                                 [strongSelf.multicastDelegate chatService:strongSelf didUpdateMessages:[existentMessages copy] forDialogID:chatDialogID];
+                             }
+                         }
+                     }
+                 }
+                 
+                 BOOL cancel;
+                 NSUInteger numberOfMessages = messages.count;
+                 page.skip += numberOfMessages;
+                 
+                 if (lastMessage == nil // if last message is not existent, loading only determined amount of messages
+                     || numberOfMessages < page.limit) {
+                     
+                     cancel = YES;
+                 }
+                 
+                 iterationBlock(response, sortedMessages, &cancel);
+                 
+                 if (!cancel) {
+                     
+                     t_request(page, parameters);
+                 }
+                 else {
+                     
+                     if (completion) {
+                         
+                         completion(response, [allMessages copy]);
+                     }
+                     
+                     t_request = nil;
+                 }
+                 
+             } errorBlock:^(QBResponse *response) {
+                 
+                 // case where we may have deleted dialog from another device
+                 if (response.status == QBResponseStatusCodeNotFound || response.status == 403) {
+                     [weakSelf.dialogsMemoryStorage deleteChatDialogWithID:chatDialogID];
+                     
+                     if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didDeleteChatDialogWithIDFromMemoryStorage:)]) {
+                         [weakSelf.multicastDelegate chatService:weakSelf didDeleteChatDialogWithIDFromMemoryStorage:chatDialogID];
                      }
                  }
                  else {
                      
-                     NSArray *memoryStorageMessages = [strongSelf.messagesMemoryStorage messagesWithDialogID:chatDialogID];
-                     NSMutableArray *newMessages = sortedMessages.mutableCopy;
-                     NSMutableArray *existentMessages = sortedMessages.mutableCopy;
-                     
-                     [newMessages removeObjectsInArray:memoryStorageMessages];
-                     [existentMessages removeObjectsInArray:newMessages];
-                     
-                     [strongSelf.messagesMemoryStorage addMessages:sortedMessages forDialogID:chatDialogID];
-                     
-                     if (newMessages.count > 0) {
-                         
-                         if ([strongSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddMessagesToMemoryStorage:forDialogID:)]) {
-                             
-                             [strongSelf.multicastDelegate chatService:strongSelf didAddMessagesToMemoryStorage:newMessages forDialogID:chatDialogID];
-                         }
-                     }
-                     
-                     if (existentMessages.count > 0) {
-                         
-                         if ([strongSelf.multicastDelegate respondsToSelector:@selector(chatService:didUpdateMessages:forDialogID:)]) {
-                             
-                             [strongSelf.multicastDelegate chatService:strongSelf didUpdateMessages:existentMessages forDialogID:chatDialogID];
-                         }
-                     }
+                     [weakSelf.serviceManager handleErrorResponse:response];
                  }
-             }
-             
-             if (completion) {
-                 completion(response, sortedMessages);
-             }
-         } errorBlock:^(QBResponse *response) {
-             
-             // case where we may have deleted dialog from another device
-             if (response.status == QBResponseStatusCodeNotFound || response.status == 403) {
-                 [weakSelf.dialogsMemoryStorage deleteChatDialogWithID:chatDialogID];
                  
-                 if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didDeleteChatDialogWithIDFromMemoryStorage:)]) {
-                     [weakSelf.multicastDelegate chatService:weakSelf didDeleteChatDialogWithIDFromMemoryStorage:chatDialogID];
+                 if (completion) {
+                     completion(response, nil);
                  }
-             }
-             else {
                  
-                 [weakSelf.serviceManager handleErrorResponse:response];
-             }
-             
-             if (completion) {
-                 completion(response, nil);
-             }
-         }];
+                 t_request = nil;
+             }];
+        };
+        
+        t_request = [request copy];
+        request(page, extendedRequest);
     });
 }
 
@@ -1670,6 +1704,23 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     dialog.lastMessageUserID = message.senderID;
     dialog.lastMessageText = message.text;
     dialog.lastMessageDate = message.dateSent;
+}
+
+- (NSDictionary *)parametersForMessagesUsingDialogID:(NSString *)chatDialogID {
+    
+    NSMutableDictionary *parameters = [@{@"sort_desc" : @"date_sent"} mutableCopy];
+    
+    NSDate *lastMessagesLoadDate = self.lastMessagesLoadDate[chatDialogID];
+    QBChatMessage *lastMessage = [self.messagesMemoryStorage lastMessageFromDialogID:chatDialogID];
+    
+    if (lastMessagesLoadDate == nil && lastMessage != nil) {
+        
+        lastMessagesLoadDate = lastMessage.dateSent;
+    }
+    
+    parameters[@"date_sent[gte]"] = @([lastMessagesLoadDate timeIntervalSince1970]);
+    
+    return [parameters copy];
 }
 
 @end
