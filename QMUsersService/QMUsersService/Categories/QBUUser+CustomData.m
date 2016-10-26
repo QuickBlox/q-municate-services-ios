@@ -49,13 +49,25 @@ NSString *const kQMIsImportKey = @"is_import";
     if (jsonData) {
         
         NSDictionary *representationObject = [NSJSONSerialization JSONObjectWithData:jsonData
-                                                                             options:NSJSONReadingMutableContainers
+                                                                             options:nil
                                                                                error:&error];
-        return representationObject.mutableCopy;
+        
+        NSMutableDictionary *mutableObject = [representationObject mutableCopy];
+        
+        // removing possible null values
+        [representationObject enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL * __unused stop) {
+            
+            if (obj == [NSNull null]) {
+                
+                [mutableObject removeObjectForKey:key];
+            }
+        }];
+        
+        return mutableObject;
     }
     else {
         
-        return @{}.mutableCopy;
+        return [[NSMutableDictionary alloc] init];
     }
 }
 
@@ -63,7 +75,7 @@ NSString *const kQMIsImportKey = @"is_import";
     
     NSError *error = nil;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:self.context
-                                                       options:NSJSONWritingPrettyPrinted
+                                                       options:nil
                                                          error:&error];
     
     self.customData = [[NSString alloc] initWithData:jsonData

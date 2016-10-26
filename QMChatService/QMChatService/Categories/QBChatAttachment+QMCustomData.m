@@ -38,7 +38,7 @@
                                                          error:&error];
     
     self.data = [[NSString alloc] initWithData:jsonData
-                                            encoding:NSUTF8StringEncoding];
+                                      encoding:NSUTF8StringEncoding];
 }
 
 #pragma mark - Private
@@ -51,9 +51,21 @@
     if (jsonData) {
         
         NSDictionary *representationObject = [NSJSONSerialization JSONObjectWithData:jsonData
-                                                                             options:NSJSONReadingMutableContainers
+                                                                             options:nil
                                                                                error:&error];
-        return [representationObject mutableCopy];
+        
+        NSMutableDictionary *mutableObject = [representationObject mutableCopy];
+        
+        // removing possible null values
+        [representationObject enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL * __unused stop) {
+            
+            if (obj == [NSNull null]) {
+                
+                [mutableObject removeObjectForKey:key];
+            }
+        }];
+        
+        return mutableObject;
     }
     else {
         
