@@ -39,7 +39,7 @@
     
     if (error != nil) {
         
-        QMSLog(@"Error serializing error: %@", error);
+        QMSLog(@"Error serializing JSON: %@", error);
         return;
     }
     
@@ -59,6 +59,12 @@
         NSDictionary *representationObject = [NSJSONSerialization JSONObjectWithData:jsonData
                                                                              options:nil
                                                                                error:&error];
+        
+        if (error != nil) {
+            
+            QMSLog(@"Error serializing JSON: %@", error);
+            return [[NSMutableDictionary alloc] init];
+        }
         
         NSMutableDictionary *mutableObject = [representationObject mutableCopy];
         
