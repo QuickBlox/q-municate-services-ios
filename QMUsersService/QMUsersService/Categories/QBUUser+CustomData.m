@@ -55,7 +55,7 @@ NSString *const kQMIsImportKey = @"is_import";
         
         if (error != nil) {
             
-            QMSLog(@"Error serializing JSON: %@", error);
+            QMSLog(@"Error serializing data to JSON: %@", error);
             return [[NSMutableDictionary alloc] init];
         }
         
@@ -87,7 +87,7 @@ NSString *const kQMIsImportKey = @"is_import";
     
     if (error != nil) {
         
-        QMSLog(@"Error serializing JSON: %@", error);
+        QMSLog(@"Error serializing JSON to data: %@", error);
         return;
     }
     

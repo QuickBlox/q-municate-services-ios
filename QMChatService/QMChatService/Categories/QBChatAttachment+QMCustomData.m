@@ -39,7 +39,7 @@
     
     if (error != nil) {
         
-        QMSLog(@"Error serializing JSON: %@", error);
+        QMSLog(@"Error serializing data to JSON: %@", error);
         return;
     }
     
@@ -62,7 +62,7 @@
         
         if (error != nil) {
             
-            QMSLog(@"Error serializing JSON: %@", error);
+            QMSLog(@"Error serializing JSON to data: %@", error);
             return [[NSMutableDictionary alloc] init];
         }
         
