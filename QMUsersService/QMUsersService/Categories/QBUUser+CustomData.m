@@ -50,7 +50,7 @@ NSString *const kQMIsImportKey = @"is_import";
     if (jsonData) {
         
         NSDictionary *representationObject = [NSJSONSerialization JSONObjectWithData:jsonData
-                                                                             options:nil
+                                                                             options:0
                                                                                error:&error];
         
         if (error != nil) {
@@ -82,7 +82,7 @@ NSString *const kQMIsImportKey = @"is_import";
     
     NSError *error = nil;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:self.context
-                                                       options:nil
+                                                       options:0
                                                          error:&error];
     
     if (error != nil) {
