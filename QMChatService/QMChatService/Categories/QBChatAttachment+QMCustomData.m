@@ -7,8 +7,8 @@
 //
 
 #import "QBChatAttachment+QMCustomData.h"
-
 #import <objc/runtime.h>
+#import "QMSLog.h"
 
 @implementation QBChatAttachment (QMCustomData)
 
@@ -36,6 +36,12 @@
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:self.context
                                                        options:nil
                                                          error:&error];
+    
+    if (error != nil) {
+        
+        QMSLog(@"Error serializing error: %@", error);
+        return;
+    }
     
     self.data = [[NSString alloc] initWithData:jsonData
                                       encoding:NSUTF8StringEncoding];

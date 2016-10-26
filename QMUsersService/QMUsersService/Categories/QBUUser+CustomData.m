@@ -8,6 +8,7 @@
 
 #import "QBUUser+CustomData.h"
 #import <objc/runtime.h>
+#import "QMSLog.h"
 
 NSString *const kQMAvatarUrlKey = @"avatar_url";
 NSString *const kQMStatusKey = @"status";
@@ -77,6 +78,12 @@ NSString *const kQMIsImportKey = @"is_import";
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:self.context
                                                        options:nil
                                                          error:&error];
+    
+    if (error != nil) {
+        
+        QMSLog(@"Error serializing error: %@", error);
+        return;
+    }
     
     self.customData = [[NSString alloc] initWithData:jsonData
                                             encoding:NSUTF8StringEncoding];
