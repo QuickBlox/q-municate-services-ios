@@ -570,6 +570,9 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
             }
         }
         else {
+            
+            [self.messagesMemoryStorage updateMessage:message];
+            
             if ([self.multicastDelegate respondsToSelector:@selector(chatService:didUpdateMessage:forDialogID:)]) {
                 
                 [self.multicastDelegate chatService:self didUpdateMessage:message forDialogID:message.dialogID];
