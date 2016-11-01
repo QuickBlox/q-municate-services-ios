@@ -605,6 +605,9 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     NSParameterAssert(dialog.type != QBChatDialogTypePrivate);
     
     if (dialog.isJoined) {
+        if (completion) {
+            completion(nil);
+        }
         return;
     }
     
