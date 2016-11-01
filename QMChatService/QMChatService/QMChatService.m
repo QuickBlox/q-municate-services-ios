@@ -1353,24 +1353,12 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
                    completion:(QBChatCompletionBlock)completion
 {
     
-    __weak __typeof(self)weakSelf = self;
     [self.chatAttachmentService uploadAndSendAttachmentMessage:attachmentMessage
                                                       toDialog:dialog
                                                withChatService:self
                                              withAttachedImage:image
                                                     completion:^(NSError *error)
      {
-         __typeof(weakSelf)strongSelf = weakSelf;
-         if (!error) {
-             
-             [strongSelf updateLastMessageParamsForChatDialog:dialog withMessage:attachmentMessage];
-             dialog.updatedAt = attachmentMessage.dateSent;
-             
-             if ([strongSelf.multicastDelegate respondsToSelector:@selector(chatService:didUpdateChatDialogInMemoryStorage:)]) {
-                 [strongSelf.multicastDelegate chatService:strongSelf didUpdateChatDialogInMemoryStorage:dialog];
-             }
-         }
-         
          if (completion) {
              completion(error);
          }
