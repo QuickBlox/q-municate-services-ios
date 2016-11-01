@@ -1353,12 +1353,6 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
                    completion:(QBChatCompletionBlock)completion
 {
     
-    [self.messagesMemoryStorage addMessage:attachmentMessage forDialogID:dialog.ID];
-    
-    if ([self.multicastDelegate respondsToSelector:@selector(chatService:didAddMessageToMemoryStorage:forDialogID:)]) {
-        [self.multicastDelegate chatService:self didAddMessageToMemoryStorage:attachmentMessage forDialogID:dialog.ID];
-    }
-    
     __weak __typeof(self)weakSelf = self;
     [self.chatAttachmentService uploadAndSendAttachmentMessage:attachmentMessage
                                                       toDialog:dialog
