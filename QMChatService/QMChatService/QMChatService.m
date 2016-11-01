@@ -428,7 +428,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
         if (message.dialogUpdateType != QMDialogUpdateTypeNone) {
             
             NSDate *updatedAt = nil;
-            if (message.deletedOccupantsIDs.count > 0) {
+            if (message.deletedOccupantsIDs.count > 0 || message.addedOccupantsIDs.count > 0) {
                 // using date sent of message due to dialogUpdatedAt being not server synchronized when user is leaving
                 updatedAt = message.dateSent;
             }
