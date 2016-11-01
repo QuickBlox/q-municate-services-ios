@@ -332,12 +332,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
         QBChatDialog *dialogToAdd = message.dialog;
         
         [self updateLastMessageParamsForChatDialog:dialogToAdd withMessage:message];
-        
-        [self updateDialog:dialogToAdd
-                  withDate:message.dateSent
-              withSelector:NSStringFromSelector(_cmd)];
-        
-        //dialogToAdd.updatedAt = message.dateSent;
+        dialogToAdd.updatedAt = message.dateSent;
         
         __weak __typeof(self)weakSelf = self;
         [self.dialogsMemoryStorage addChatDialog:dialogToAdd andJoin:self.isAutoJoinEnabled completion:^(QBChatDialog *addedDialog, NSError *error) {
@@ -364,7 +359,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
         
         return;
     }
-    NSLog(@"handleChatMessage date send = %@",message.dateSent);
+    
     QBChatDialog *chatDialogToUpdate = [self.dialogsMemoryStorage chatDialogWithID:message.dialogID];
     
     if (message.messageType == QMMessageTypeText) {
@@ -391,11 +386,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
         
         // updating dialog last message params
         [self updateLastMessageParamsForChatDialog:chatDialogToUpdate withMessage:message];
-        [self updateDialog:chatDialogToUpdate
-                  withDate:message.dateSent
-                   message:message
-              withSelector:NSStringFromSelector(_cmd)];
-       // chatDialogToUpdate.updatedAt = message.dateSent;
+        chatDialogToUpdate.updatedAt = message.dateSent;
         
         if (shouldSaveDialog) {
             
@@ -447,7 +438,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
             }
             
             if ([chatDialogToUpdate.updatedAt compare:updatedAt] != NSOrderedDescending) {
-           //     [chatDialogToUpdate.updatedAt timeIntervalSinceDate:updatedAt]
+                
                 switch (message.dialogUpdateType) {
                         
                     case QMDialogUpdateTypeName:
@@ -479,20 +470,12 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
                     case QMDialogUpdateTypeNone:
                         break;
                 }
-                [self updateDialog:chatDialogToUpdate
-                          withDate:updatedAt
-                           message:message
-                      withSelector:NSStringFromSelector(_cmd)];
-                //    chatDialogToUpdate.updatedAt = updatedAt;
+                
+                chatDialogToUpdate.updatedAt = updatedAt;
             }
             else {
                 
-                
-                [self updateDialog:chatDialogToUpdate
-                          withDate:message.dateSent
-                           message:message
-                      withSelector:NSStringFromSelector(_cmd)];
-                //  chatDialogToUpdate.updatedAt = message.dateSent;
+                chatDialogToUpdate.updatedAt = message.dateSent;
             }
         }
         // old custom parameters handling
@@ -513,11 +496,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
                 chatDialogToUpdate.occupantIDs = message.dialog.occupantIDs;
             }
             
-            //chatDialogToUpdate.updatedAt = message.dateSent;
-            [self updateDialog:chatDialogToUpdate
-                      withDate:message.dateSent
-             message:message
-                  withSelector:NSStringFromSelector(_cmd)];
+            chatDialogToUpdate.updatedAt = message.dateSent;
         }
         
         if (message.senderID != currentUserID && ![message.addedOccupantsIDs containsObject:@(currentUserID)]) {
@@ -544,11 +523,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
             
             // updating dialog last message params
             [self updateLastMessageParamsForChatDialog:chatDialogToUpdate withMessage:message];
-            [self updateDialog:chatDialogToUpdate
-                      withDate:message.dateSent
-             message:message
-                  withSelector:NSStringFromSelector(_cmd)];
-            //chatDialogToUpdate.updatedAt = message.dateSent;
+            chatDialogToUpdate.updatedAt = message.dateSent;
             
             if ([self.multicastDelegate respondsToSelector:@selector(chatService:didUpdateChatDialogInMemoryStorage:)]) {
                 
@@ -571,11 +546,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
             
             // updating dialog last message params
             [self updateLastMessageParamsForChatDialog:chatDialogToUpdate withMessage:message];
-            [self updateDialog:chatDialogToUpdate
-                      withDate:message.dateSent
-             message:message
-                  withSelector:NSStringFromSelector(_cmd)];
-         //   chatDialogToUpdate.updatedAt = message.dateSent;
+            chatDialogToUpdate.updatedAt = message.dateSent;
             
             [self.dialogsMemoryStorage addChatDialog:chatDialogToUpdate andJoin:NO completion:nil];
             if ([self.multicastDelegate respondsToSelector:@selector(chatService:didAddChatDialogToMemoryStorage:)]) {
@@ -610,11 +581,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
         
         [self updateLastMessageParamsForChatDialog:chatDialogToUpdate withMessage:message];
         
-        //chatDialogToUpdate.updatedAt = message.dateSent;
-        [self updateDialog:chatDialogToUpdate
-                  withDate:message.dateSent
-         message:message
-              withSelector:NSStringFromSelector(_cmd)];
+        chatDialogToUpdate.updatedAt = message.dateSent;
         
         if (chatDialogToUpdate != nil && [self.multicastDelegate respondsToSelector:@selector(chatService:didUpdateChatDialogInMemoryStorage:)]) {
             
@@ -1321,10 +1288,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
                 }
                 
                 [strongSelf updateLastMessageParamsForChatDialog:dialog withMessage:message];
-                [self updateDialog:dialog
-                          withDate:message.dateSent
-                      withSelector:NSStringFromSelector(_cmd)];
-                //dialog.updatedAt = message.dateSent;
+                dialog.updatedAt = message.dateSent;
                 
                 if ([strongSelf.multicastDelegate respondsToSelector:@selector(chatService:didUpdateChatDialogInMemoryStorage:)]) {
                     [strongSelf.multicastDelegate chatService:strongSelf didUpdateChatDialogInMemoryStorage:dialog];
@@ -1389,12 +1353,24 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
                    completion:(QBChatCompletionBlock)completion
 {
     
+    __weak __typeof(self)weakSelf = self;
     [self.chatAttachmentService uploadAndSendAttachmentMessage:attachmentMessage
                                                       toDialog:dialog
                                                withChatService:self
                                              withAttachedImage:image
                                                     completion:^(NSError *error)
      {
+         __typeof(weakSelf)strongSelf = weakSelf;
+         if (!error) {
+             
+             [strongSelf updateLastMessageParamsForChatDialog:dialog withMessage:attachmentMessage];
+             dialog.updatedAt = attachmentMessage.dateSent;
+             
+             if ([strongSelf.multicastDelegate respondsToSelector:@selector(chatService:didUpdateChatDialogInMemoryStorage:)]) {
+                 [strongSelf.multicastDelegate chatService:strongSelf didUpdateChatDialogInMemoryStorage:dialog];
+             }
+         }
+         
          if (completion) {
              completion(error);
          }
@@ -1749,32 +1725,6 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     parameters[@"date_sent[gte]"] = @([lastMessagesLoadDate timeIntervalSince1970]);
     
     return [parameters copy];
-}
-- (void)updateDialog:(QBChatDialog *)dialog
-            withDate:(NSDate *)dateToUpdate
-             message:(QBChatMessage *)message
-        withSelector:(NSString *)selector {
-//    QMSLog(@"___________________________________");
-//    QMSLog(@"Date Before = %@",dialog.updatedAt);
-//    QMSLog(@"Date After  = %@",dateToUpdate);
-//    NSTimeInterval interval = [dialog.updatedAt timeIntervalSinceDate:dateToUpdate];
-//    if (interval > 0) {
-//        QMSLog(@"!!!Date Before later then date after");
-//        if (message != nil) {
-//            QMSLog(@"Message = %@",message);
-//        }
-//    }
-//
-//    QMSLog(@"Interval = %f", interval);
-//    QMSLog(@"Selector = %@", selector);
-    dialog.updatedAt = dateToUpdate;
- //   QMSLog(@"____________________________________");
-}
-- (void)updateDialog:(QBChatDialog *)dialog
-            withDate:(NSDate *)dateToUpdate
-        withSelector:(NSString *)selector {
-    [self updateDialog:dialog withDate:dateToUpdate message:nil withSelector:selector];
-
 }
 
 @end
