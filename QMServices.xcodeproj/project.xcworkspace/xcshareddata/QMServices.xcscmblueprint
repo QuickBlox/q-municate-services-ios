@@ -20,7 +20,7 @@
     "958932E9D08E4465709D54DB1E7CECF23B0F442E" : "qmunicate-services-ios\/Submodules\/MagicalRecord",
     "A670EF64B516360FDFADDE04B3B3446E684984BD" : "",
     "8884BD3B878631A1500EC9895E6A3CF4CB0AB3DB" : "qmunicate-services-ios\/Submodules\/MagicalRecord\/Tests\/Vendor\/Expecta",
-    "D160C3FE7B115E6635EB21EBE93000EBA4B81BC8" : "QMServices"
+    "D160C3FE7B115E6635EB21EBE93000EBA4B81BC8" : "q-municate-services-ios\/"
   },
   "DVTSourceControlWorkspaceBlueprintNameKey" : "QMServices",
   "DVTSourceControlWorkspaceBlueprintVersion" : 204,
