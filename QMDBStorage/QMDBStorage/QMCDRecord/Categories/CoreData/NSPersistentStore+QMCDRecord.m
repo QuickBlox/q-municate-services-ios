@@ -24,7 +24,7 @@
 
     if (storeURL == nil)
     {
-        NSString *storePath = [QM_defaultApplicationStorePath() stringByAppendingPathComponent:storeFileName];
+        NSString *storePath = [QM_storePathForApplicationGroupIdentifier(@"group.com.quickblox.qmunicate") stringByAppendingPathComponent:storeFileName];
         storeURL = [NSURL fileURLWithPath:storePath];
     }
 
@@ -35,7 +35,9 @@
 {
 	NSArray *paths = [NSArray arrayWithObjects:
                       QM_defaultApplicationStorePath(),
-                      QM_userDocumentsPath(), nil];
+                      QM_userDocumentsPath(),
+                      QM_storePathForApplicationGroupIdentifier(@"group.com.quickblox.qmunicate"),
+                      nil];
     NSFileManager *fm = [[NSFileManager alloc] init];
 
     for (NSString *path in paths)
@@ -173,6 +175,11 @@
 
 @end
 
+NSString *QM_storePathForApplicationGroupIdentifier(NSString *groupidentifier)
+{
+    NSURL *directory = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:groupidentifier];
+    return directory.path;
+}
 
 NSString *QM_defaultApplicationStorePath(void)
 {
