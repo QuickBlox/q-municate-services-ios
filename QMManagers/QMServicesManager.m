@@ -158,7 +158,7 @@
 
 - (NSString *)appGroupIdentifier {
     
-    return  @"group.com.quickblox.qmunicate";
+    return @"";
 }
 
 - (BOOL)isAuthorized {
