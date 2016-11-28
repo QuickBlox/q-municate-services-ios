@@ -37,9 +37,12 @@
 
 + (instancetype) stackWithStoreNamed:(NSString *)name model:(NSManagedObjectModel *)model
 {
-    return [[self alloc] initWithStoreNamed:name model:model];
+    return [self stackWithStoreNamed:name model:model applicationGroupIdentifier:nil];
 }
-
++ (instancetype) stackWithStoreNamed:(NSString *)name model:(NSManagedObjectModel *)model applicationGroupIdentifier:(NSString *)appGroupIdentifier
+{
+    return [[self alloc] initWithStoreNamed:name model:model applicationGroupIdentifier:appGroupIdentifier];
+}
 + (instancetype) stackWithStoreAtURL:(NSURL *)url model:(NSManagedObjectModel *)model
 {
     return [[self alloc] initWithStoreAtURL:url model:model];
@@ -80,7 +83,12 @@
 
 - (instancetype) initWithStoreNamed:(NSString *)name model:(NSManagedObjectModel *)model
 {
-    NSURL *storeURL = [NSPersistentStore QM_fileURLForStoreName:name];
+    return [self initWithStoreNamed:name model:model applicationGroupIdentifier:nil];
+}
+
+- (instancetype) initWithStoreNamed:(NSString *)name model:(NSManagedObjectModel *)model applicationGroupIdentifier:(NSString *)appGroupIdentifier
+{
+    NSURL *storeURL = [NSPersistentStore QM_fileURLForStoreName:name applicationGroupIdentifier:appGroupIdentifier];
     return [self initWithStoreAtURL:storeURL model:model];
 }
 

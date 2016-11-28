@@ -26,10 +26,17 @@ static QMChatCache *_chatCacheInstance = nil;
 #pragma mark - Configure store
 
 + (void)setupDBWithStoreNamed:(NSString *)storeName {
+    
+    [self setupDBWithStoreNamed:storeName applicationGroupIdentifier:nil];
+}
 
++ (void)setupDBWithStoreNamed:(NSString *)storeName applicationGroupIdentifier:(NSString *)appGroupIdentifier {
     NSManagedObjectModel *model = [NSManagedObjectModel QM_newModelNamed:@"QMChatServiceModel.momd" inBundleNamed:@"QMChatCacheModel.bundle" fromClass:[self class]];
     
-    _chatCacheInstance = [[QMChatCache alloc] initWithStoreNamed:storeName model:model queueLabel:"com.qmunicate.QMChatCacheBackgroundQueue"];
+    _chatCacheInstance = [[QMChatCache alloc] initWithStoreNamed:storeName
+                                                           model:model
+                                                      queueLabel:"com.qmunicate.QMChatCacheBackgroundQueue"
+                                      applicationGroupIdentifier:appGroupIdentifier];
 }
 
 + (void)cleanDBWithStoreName:(NSString *)name {

@@ -32,6 +32,10 @@
  */
 + (NSURL *) QM_fileURLForStoreName:(NSString *)storeFileName;
 
+
++ (NSURL *) QM_fileURLForStoreName:(NSString *)storeFileName applicationGroupIdentifier:(NSString *)appGroupIdentifier;
+
+
 /**
  Uses the result of `+ QM_fileURLForStoreName:`, but returns nil if the store file does not exist at the returned URL.
 

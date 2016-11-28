@@ -22,18 +22,28 @@
 
 @implementation QMDBStorage
 
-- (instancetype)initWithStoreNamed:(NSString *)storeName model:(NSManagedObjectModel *)model queueLabel:(const char *)queueLabel {
+- (instancetype)initWithStoreNamed:(NSString *)storeName model:(NSManagedObjectModel *)model queueLabel:(const char *)queueLabel applicationGroupIdentifier:(NSString *)appGroupIdentifier {
     
     self = [self init];
     if (self) {
         
         self.queue = dispatch_queue_create(queueLabel, DISPATCH_QUEUE_SERIAL);
         //Create Chat coredata stack
-		self.stack = [AutoMigratingQMCDRecordStack stackWithStoreNamed:storeName model:model];
-		[QMCDRecordStack setDefaultStack:self.stack];
+        self.stack = [AutoMigratingQMCDRecordStack stackWithStoreNamed:storeName model:model applicationGroupIdentifier:appGroupIdentifier];
+        
+        [QMCDRecordStack setDefaultStack:self.stack];
     }
     
     return self;
+    
+}
+
+- (instancetype)initWithStoreNamed:(NSString *)storeName model:(NSManagedObjectModel *)model queueLabel:(const char *)queueLabel {
+    
+    return [self initWithStoreNamed:storeName
+                              model:model
+                         queueLabel:queueLabel
+         applicationGroupIdentifier:nil];
 }
 
 + (void)setupDBWithStoreNamed:(NSString *)storeName {

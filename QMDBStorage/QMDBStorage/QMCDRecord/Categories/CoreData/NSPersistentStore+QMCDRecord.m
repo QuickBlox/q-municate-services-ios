@@ -18,38 +18,53 @@
     return [self QM_fileURLForStoreName:[QMCDRecord defaultStoreName]];
 }
 
-+ (NSURL *) QM_fileURLForStoreName:(NSString *)storeFileName;
-{
-    NSURL *storeURL = [self QM_fileURLForStoreNameIfExistsOnDisk:storeFileName];
++ (NSURL *) QM_fileURLForStoreName:(NSString *)storeFileName {
+    return [self QM_fileURLForStoreName:storeFileName applicationGroupIdentifier:nil];
+}
 
++ (NSURL *) QM_fileURLForStoreName:(NSString *)storeFileName applicationGroupIdentifier:(NSString *)appGroupIdentifier
+
+{
+    NSURL *storeURL = [self QM_fileURLForStoreNameIfExistsOnDisk:storeFileName applicationGroupIdentifier:appGroupIdentifier];
+    
     if (storeURL == nil)
     {
-        NSString *storePath = [QM_storePathForApplicationGroupIdentifier(@"group.com.quickblox.qmunicate") stringByAppendingPathComponent:storeFileName];
+        NSString *storePath = QM_defaultApplicationStorePath();
+        
+        if (appGroupIdentifier.length
+            && QM_storePathForApplicationGroupIdentifier(appGroupIdentifier).length > 0) {
+            
+            storePath = [QM_storePathForApplicationGroupIdentifier(appGroupIdentifier) stringByAppendingPathComponent:storeFileName];
+        }
+        
         storeURL = [NSURL fileURLWithPath:storePath];
     }
-
+    
     return storeURL;
 }
 
-+ (NSURL *) QM_fileURLForStoreNameIfExistsOnDisk:(NSString *)storeFileName;
++ (NSURL *) QM_fileURLForStoreNameIfExistsOnDisk:(NSString *)storeFileName applicationGroupIdentifier:(NSString *)appGroupIdentifier
 {
-	NSArray *paths = [NSArray arrayWithObjects:
-                      QM_defaultApplicationStorePath(),
-                      QM_userDocumentsPath(),
-                      QM_storePathForApplicationGroupIdentifier(@"group.com.quickblox.qmunicate"),
-                      nil];
+    
+    NSMutableArray *paths = [NSMutableArray arrayWithArray:@[QM_defaultApplicationStorePath(),QM_userDocumentsPath()]];
+    
+    if (appGroupIdentifier.length
+        && QM_storePathForApplicationGroupIdentifier(appGroupIdentifier).length > 0) {
+        [paths addObject:QM_storePathForApplicationGroupIdentifier(appGroupIdentifier)];
+    }
+    
     NSFileManager *fm = [[NSFileManager alloc] init];
-
-    for (NSString *path in paths)
+    
+    for (NSString *path in paths.copy)
     {
         NSString *filepath = [path stringByAppendingPathComponent:storeFileName];
-
+        
         if ([fm fileExistsAtPath:filepath])
         {
             return [NSURL fileURLWithPath:filepath];
         }
     }
-
+    
     return nil;
 }
 
