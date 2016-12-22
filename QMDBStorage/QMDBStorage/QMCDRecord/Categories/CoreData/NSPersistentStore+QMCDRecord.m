@@ -45,15 +45,17 @@
 
 + (NSURL *) QM_fileURLForStoreNameIfExistsOnDisk:(NSString *)storeFileName applicationGroupIdentifier:(NSString *)appGroupIdentifier
 {
+    NSFileManager *fm = [[NSFileManager alloc] init];
     
-    NSMutableArray *paths = [NSMutableArray arrayWithArray:@[QM_defaultApplicationStorePath(),QM_userDocumentsPath()]];
+    NSMutableArray *paths = [NSMutableArray array];
     
     if (appGroupIdentifier.length
         && QM_storePathForApplicationGroupIdentifier(appGroupIdentifier).length > 0) {
         [paths addObject:QM_storePathForApplicationGroupIdentifier(appGroupIdentifier)];
     }
-    
-    NSFileManager *fm = [[NSFileManager alloc] init];
+    else {
+        [paths arrayByAddingObjectsFromArray:@[QM_defaultApplicationStorePath(),QM_userDocumentsPath()]];
+    }
     
     for (NSString *path in paths.copy)
     {
@@ -142,6 +144,52 @@
 - (BOOL) QM_removePersistentStoreFiles;
 {
     return [[self class] QM_removePersistentStoreFilesAtURL:self.URL];
+}
+
++ (NSDictionary *)QM_migrationOptionsForStoreName:(NSString *)storeFileName applicationGroupIdentifier:(NSString *)appGroupIdentifier
+{
+    NSMutableDictionary *options = [NSMutableDictionary dictionary];
+    
+    BOOL needMigrate = NO;
+    BOOL needDeleteOld  = NO;
+    
+    
+    NSURL *sourceURL = [self QM_fileURLForStoreName:storeFileName];
+    
+    NSURL *groupURL = [self QM_fileURLForStoreName:storeFileName applicationGroupIdentifier:appGroupIdentifier];
+    
+    NSURL *targetURL =  nil;
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    
+    if ([fileManager fileExistsAtPath:[sourceURL path]]) {
+        targetURL = sourceURL;
+        needMigrate = true;
+    }
+    
+    if ([fileManager fileExistsAtPath:[groupURL path]]) {
+        needMigrate = false;
+        targetURL = groupURL;
+        
+       if ([fileManager fileExistsAtPath:[sourceURL path]]) {
+            needDeleteOld = true;
+        }
+    }
+    
+    if (targetURL == nil) {
+        targetURL = groupURL;
+    }
+
+    options[QMCDRecordShouldMigrateKey] = @(needMigrate);
+    options[QMCDRecordShouldDeleteOldDBKey] = @(needDeleteOld);
+    
+    if (sourceURL != nil) {
+    options[QMCDRecordSourceURLKey] = sourceURL;
+    }
+    if (targetURL != nil) {
+    options[QMCDRecordTargetURLKey] = targetURL;
+    }
+    
+    return options.copy;
 }
 
 + (BOOL) QM_removePersistentStoreFilesAtURL:(NSURL*)url;
