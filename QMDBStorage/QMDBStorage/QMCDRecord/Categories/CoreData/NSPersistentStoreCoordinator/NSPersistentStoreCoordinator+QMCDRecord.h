@@ -9,6 +9,10 @@
 #import "NSPersistentStore+QMCDRecord.h"
 
 extern NSString * const QMCDRecordShouldDeletePersistentStoreOnModelMismatchKey;
+extern NSString * const QMCDRecordShouldMigrateKey;
+extern NSString * const QMCDRecordShouldDeleteOldDBKey;
+extern NSString * const QMCDRecordTargetURLKey;
+extern NSString * const QMCDRecordSourceURLKey;
 
 @interface NSPersistentStoreCoordinator (QMCDRecord)
 

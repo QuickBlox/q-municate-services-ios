@@ -11,6 +11,13 @@
 
 NSString * const QMCDRecordShouldDeletePersistentStoreOnModelMismatchKey = @"QMCDRecordShouldDeletePersistentStoreOnModelMistachKey";
 
+NSString * const QMCDRecordShouldMigrateKey = @"QMCDRecordShouldMigrateKey";
+NSString * const QMCDRecordShouldDeleteOldDBKey = @"QMCDRecordShouldDeleteOldDBKey";
+
+NSString * const QMCDRecordTargetURLKey = @"QMCDRecordTargetURLKey";
+NSString * const QMCDRecordSourceURLKey = @"QMCDRecordSourceURLKey";
+NSString * const QMCDRecordGroupURLKey = @"QMCDRecordGroupURLKey";
+
 @implementation NSPersistentStoreCoordinator (QMCDRecord)
 
 + (void) QM_createPathToStoreFileIfNeccessary:(NSURL *)urlForStore
@@ -72,6 +79,9 @@ NSString * const QMCDRecordShouldDeletePersistentStoreOnModelMismatchKey = @"QMC
     @try {
         
         NSError *error = nil;
+        BOOL needMigrate = [options[QMCDRecordShouldMigrateKey] boolValue];
+        BOOL needDeleteOldStore = [options[QMCDRecordShouldDeleteOldDBKey] boolValue];
+        
         NSPersistentStore *store = [self addPersistentStoreWithType:NSSQLiteStoreType
                                                       configuration:nil
                                                                 URL:url
@@ -87,6 +97,27 @@ NSString * const QMCDRecordShouldDeletePersistentStoreOnModelMismatchKey = @"QMC
             QMCDLogError(@"Unable to setup store at URL: %@", url);
             [[error QM_coreDataDescription] QM_logToConsole];
         }
+        
+        if (needMigrate) {
+            
+            NSError *error = nil;
+            NSURL *migrationURL = options[QMCDRecordGroupURLKey];
+            [self migratePersistentStore:store
+                                   toURL:nil
+                                 options:options
+                                withType:NSSQLiteStoreType
+                                   error:&error];
+            if (error) {
+                QMCDLogError(@"Unable to migrate store at URL: %@", url);
+                [[error QM_coreDataDescription] QM_logToConsole];
+            }
+            
+            
+        }
+        if (needDeleteOldStore) {
+            [NSPersistentStore QM_removePersistentStoreFilesAtURL:options[QMCDRecordSourceURLKey]];
+        }
+        
         return store;
     }
     @catch (NSException *exception)
