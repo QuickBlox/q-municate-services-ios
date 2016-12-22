@@ -88,13 +88,13 @@
 
 - (instancetype) initWithStoreNamed:(NSString *)name model:(NSManagedObjectModel *)model applicationGroupIdentifier:(NSString *)appGroupIdentifier
 {
-    //NSURL *storeURL = [NSPersistentStore QM_fileURLForStoreName:name applicationGroupIdentifier:appGroupIdentifier];
+    NSURL *storeURL = [NSPersistentStore QM_fileURLForStoreName:name applicationGroupIdentifier:appGroupIdentifier];
     //return [self initWithStoreAtURL:storeURL model:model];
 
     NSDictionary *options = [NSPersistentStore QM_migrationOptionsForStoreName:name
                                                     applicationGroupIdentifier:appGroupIdentifier];
-    
-    return [self initWithStoreAtURL:options[QMCDRecordTargetURLKey] model:model options:options];
+    NSURL *targedtURL = options[QMCDRecordTargetURLKey];
+    return [self initWithStoreAtURL:targedtURL model:model options:options];
 }
 
 - (instancetype) initWithStoreAtURL:(NSURL *)url model:(NSManagedObjectModel *)model
