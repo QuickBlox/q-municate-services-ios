@@ -88,17 +88,32 @@
 
 - (instancetype) initWithStoreNamed:(NSString *)name model:(NSManagedObjectModel *)model applicationGroupIdentifier:(NSString *)appGroupIdentifier
 {
-    NSURL *storeURL = [NSPersistentStore QM_fileURLForStoreName:name applicationGroupIdentifier:appGroupIdentifier];
-    return [self initWithStoreAtURL:storeURL model:model];
+    //NSURL *storeURL = [NSPersistentStore QM_fileURLForStoreName:name applicationGroupIdentifier:appGroupIdentifier];
+    //return [self initWithStoreAtURL:storeURL model:model];
+
+    NSDictionary *options = [NSPersistentStore QM_migrationOptionsForStoreName:name
+                                                    applicationGroupIdentifier:appGroupIdentifier];
+    
+    return [self initWithStoreAtURL:options[QMCDRecordTargetURLKey] model:model options:options];
 }
 
 - (instancetype) initWithStoreAtURL:(NSURL *)url model:(NSManagedObjectModel *)model
 {
-    NSParameterAssert(url);
+    return [self initWithStoreAtURL:url
+                              model:model
+                            options:nil];
+}
 
+- (instancetype) initWithStoreAtURL:(NSURL *)url model:(NSManagedObjectModel *)model options:(NSDictionary *)options
+{
+    NSParameterAssert(url);
+    
     self = [super init];
-    if (self)
-    {
+    
+    if (self) {
+        if (options != nil) {
+            _storeOptions = options;
+        }
         _storeURL = url;
         self.model = model;
     }
