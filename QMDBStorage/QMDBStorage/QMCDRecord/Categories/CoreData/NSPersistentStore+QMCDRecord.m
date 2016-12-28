@@ -23,13 +23,12 @@
 }
 
 + (NSURL *) QM_fileURLForStoreName:(NSString *)storeFileName applicationGroupIdentifier:(NSString *)appGroupIdentifier
-
 {
     NSURL *storeURL = [self QM_fileURLForStoreNameIfExistsOnDisk:storeFileName applicationGroupIdentifier:appGroupIdentifier];
     
     if (storeURL == nil)
     {
-        NSString *storePath = QM_defaultApplicationStorePath();
+        NSString *storePath = [QM_defaultApplicationStorePath() stringByAppendingPathComponent:storeFileName];
         
         if (appGroupIdentifier.length
             && QM_storePathForApplicationGroupIdentifier(appGroupIdentifier).length > 0) {
@@ -54,7 +53,7 @@
         [paths addObject:QM_storePathForApplicationGroupIdentifier(appGroupIdentifier)];
     }
     else {
-        [paths arrayByAddingObjectsFromArray:@[QM_defaultApplicationStorePath(),QM_userDocumentsPath()]];
+        [paths addObjectsFromArray:@[QM_defaultApplicationStorePath(),QM_userDocumentsPath()]];
     }
     
     for (NSString *path in paths.copy)
@@ -156,14 +155,19 @@
     
     NSURL *sourceURL = [self QM_fileURLForStoreName:storeFileName];
     
+    if (appGroupIdentifier.length == 0) {
+        return @{QMCDRecordTargetURLKey : sourceURL};
+    }
+    
     NSURL *groupURL = [self QM_fileURLForStoreName:storeFileName applicationGroupIdentifier:appGroupIdentifier];
     
     NSURL *targetURL =  nil;
+    
     NSFileManager *fileManager = [NSFileManager defaultManager];
     
     if ([fileManager fileExistsAtPath:[sourceURL path]]) {
         targetURL = sourceURL;
-        needMigrate = true;
+        needMigrate = YES;
     }
     
     if ([fileManager fileExistsAtPath:[groupURL path]]) {
@@ -188,7 +192,9 @@
     if (targetURL != nil) {
     options[QMCDRecordTargetURLKey] = targetURL;
     }
-    
+    if (groupURL != nil) {
+        options[QMCDRecordGroupURLKey] = groupURL;
+    }
     return options.copy;
 }
 

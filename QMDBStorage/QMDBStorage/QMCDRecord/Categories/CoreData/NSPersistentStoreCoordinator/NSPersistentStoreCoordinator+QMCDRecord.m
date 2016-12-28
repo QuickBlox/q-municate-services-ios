@@ -85,7 +85,7 @@ NSString * const QMCDRecordGroupURLKey = @"QMCDRecordGroupURLKey";
         NSPersistentStore *store = [self addPersistentStoreWithType:NSSQLiteStoreType
                                                       configuration:nil
                                                                 URL:url
-                                                            options:options
+                                                            options:[NSDictionary QM_autoMigrationOptions]
                                                               error:&error];
         
         if ([options QM_shouldDeletePersistentStoreOnModelMismatch] && store == nil && error != nil)
@@ -103,8 +103,8 @@ NSString * const QMCDRecordGroupURLKey = @"QMCDRecordGroupURLKey";
             NSError *error = nil;
             NSURL *migrationURL = options[QMCDRecordGroupURLKey];
             [self migratePersistentStore:store
-                                   toURL:nil
-                                 options:options
+                                   toURL:migrationURL
+                                 options:[NSDictionary QM_autoMigrationOptions]
                                 withType:NSSQLiteStoreType
                                    error:&error];
             if (error) {
