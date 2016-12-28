@@ -53,7 +53,12 @@
 
 + (void)cleanDBWithStoreName:(NSString *)name {
     
-    NSURL *storeUrl = [NSPersistentStore QM_fileURLForStoreName:name];
+    [self cleanDBWithStoreName:name applicationGroupIdentifier:nil];
+}
+
++ (void)cleanDBWithStoreName:(NSString *)name applicationGroupIdentifier:(NSString *)appGroupIdentifier {
+    
+    NSURL *storeUrl = [NSPersistentStore QM_fileURLForStoreNameIfExistsOnDisk:name applicationGroupIdentifier:appGroupIdentifier];
     
     if (storeUrl) {
         

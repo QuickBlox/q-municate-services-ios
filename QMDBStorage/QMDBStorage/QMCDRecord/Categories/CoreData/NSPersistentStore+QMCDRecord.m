@@ -152,10 +152,10 @@
     BOOL needMigrate = NO;
     BOOL needDeleteOld  = NO;
     
-    
     NSURL *sourceURL = [self QM_fileURLForStoreName:storeFileName];
     
     if (appGroupIdentifier.length == 0) {
+        
         return @{QMCDRecordTargetURLKey : sourceURL};
     }
     
@@ -171,11 +171,11 @@
     }
     
     if ([fileManager fileExistsAtPath:[groupURL path]]) {
-        needMigrate = false;
+        needMigrate = NO;
         targetURL = groupURL;
         
        if ([fileManager fileExistsAtPath:[sourceURL path]]) {
-            needDeleteOld = true;
+            needDeleteOld = YES;
         }
     }
     
