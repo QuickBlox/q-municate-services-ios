@@ -24,18 +24,16 @@
 
 - (instancetype)initWithStoreNamed:(NSString *)storeName model:(NSManagedObjectModel *)model queueLabel:(const char *)queueLabel applicationGroupIdentifier:(NSString *)appGroupIdentifier {
     
-    self = [self init];
+    self = [super init];
+    
     if (self) {
         
         self.queue = dispatch_queue_create(queueLabel, DISPATCH_QUEUE_SERIAL);
         //Create Chat coredata stack
         self.stack = [AutoMigratingQMCDRecordStack stackWithStoreNamed:storeName model:model applicationGroupIdentifier:appGroupIdentifier];
-        
-        [QMCDRecordStack setDefaultStack:self.stack];
     }
-    
+
     return self;
-    
 }
 
 - (instancetype)initWithStoreNamed:(NSString *)storeName model:(NSManagedObjectModel *)model queueLabel:(const char *)queueLabel {
@@ -78,7 +76,10 @@
 - (NSManagedObjectContext *)bgContext {
     
     if (!_bgContext) {
-        _bgContext = [NSManagedObjectContext QM_confinementContextWithParent:self.stack.context];
+        NSManagedObjectContext *context = [NSManagedObjectContext QM_context];
+        [context setParentContext:self.stack.context];
+        
+        _bgContext = context;
     }
     
     return _bgContext;

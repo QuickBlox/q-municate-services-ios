@@ -147,17 +147,18 @@
 
 + (NSDictionary *)QM_migrationOptionsForStoreName:(NSString *)storeFileName applicationGroupIdentifier:(NSString *)appGroupIdentifier
 {
-    NSMutableDictionary *options = [NSMutableDictionary dictionary];
-    
-    BOOL needMigrate = NO;
-    BOOL needDeleteOld  = NO;
-    
+
     NSURL *sourceURL = [self QM_fileURLForStoreName:storeFileName];
     
     if (appGroupIdentifier.length == 0) {
         
         return @{QMCDRecordTargetURLKey : sourceURL};
     }
+    
+    NSMutableDictionary *options = [NSMutableDictionary dictionary];
+    
+    BOOL needMigrate = NO;
+    BOOL needDeleteOld  = NO;
     
     NSURL *groupURL = [self QM_fileURLForStoreName:storeFileName applicationGroupIdentifier:appGroupIdentifier];
     
