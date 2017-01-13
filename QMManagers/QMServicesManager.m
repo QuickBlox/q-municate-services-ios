@@ -42,7 +42,7 @@
     self = [super init];
     if (self) {
         
-        [QMChatCache setupDBWithStoreNamed:@"sample-cache"];
+        [QMChatCache setupDBWithStoreNamed:@"sample-cache" applicationGroupIdentifier:[self appGroupIdentifier]];
         [QMChatCache instance].messagesLimitPerDialog = kQMMessagesLimitPerDialog;
         
         _authService = [[QMAuthService alloc] initWithServiceManager:self];
@@ -55,7 +55,7 @@
         // or you are using our Enterprise feature to manage group chat dialogs without join being required.
         _chatService.enableAutoJoin = YES;
         
-        [QMUsersCache setupDBWithStoreNamed:@"qb-users-cache"];
+        [QMUsersCache setupDBWithStoreNamed:@"qb-users-cache" applicationGroupIdentifier:[self appGroupIdentifier]];
         _usersService = [[QMUsersService alloc] initWithServiceManager:self cacheDataSource:self];
         [_usersService addDelegate:self];
         
@@ -156,6 +156,11 @@
     
 }
 
+- (NSString *)appGroupIdentifier {
+    
+    return @"";
+}
+
 - (BOOL)isAuthorized {
     
     return self.authService.isAuthorized;
@@ -217,21 +222,12 @@
 
 - (void)chatServiceChatDidConnect:(QMChatService *)chatService {
     
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-    
-    [self joinAllGroupDialogsIfNeededWithCompletion:^{
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    }];
+    [self joinAllGroupDialogsIfNeededWithCompletion:NULL];
 }
 
 - (void)chatServiceChatDidReconnect:(QMChatService *)chatService {
     
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-    
-    [self joinAllGroupDialogsIfNeededWithCompletion:^{
-        
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    }];
+   [self joinAllGroupDialogsIfNeededWithCompletion:NULL];
 }
 
 #pragma mark QMChatServiceCache delegate
