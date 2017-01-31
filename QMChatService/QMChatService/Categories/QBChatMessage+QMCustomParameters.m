@@ -19,6 +19,7 @@ NSString const *kQMCustomParameterMessageType = @"notification_type";
 NSString const *kQMCustomParameterChatMessageID = @"chat_message_id";
 NSString const *kQMCustomParameterMessageStatus = @"chat_message_status";
 
+static NSString * const kQMChatAudioMessageTypeName = @"audio";
 static NSString * const kQMChatLocationMessageTypeName = @"location";
 static NSString * const kQMLocationLatitudeKey = @"lat";
 static NSString * const kQMLocationLongitudeKey = @"lng";
@@ -411,6 +412,23 @@ NSString const *kQMCustomParameterDialogDeletedOccupantsIDs = @"deleted_occupant
     }];
     
     return locationAttachment;
+}
+
+#pragma mark - Media
+
+- (BOOL)isAudioMessage {
+    
+   __block BOOL isAudioMessage = NO;
+    
+    [self.attachments enumerateObjectsUsingBlock:^(QBChatAttachment * _Nonnull obj, NSUInteger __unused idx, BOOL * _Nonnull stop) {
+        
+        if ([obj.type isEqualToString:kQMChatAudioMessageTypeName]) {
+            isAudioMessage = YES;
+            *stop = YES;
+        }
+    }];
+    
+    return isAudioMessage;
 }
 
 @end
