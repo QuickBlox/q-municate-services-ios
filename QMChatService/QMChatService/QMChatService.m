@@ -9,6 +9,7 @@
 #import "QMChatService.h"
 #import "QBChatMessage+QMCustomParameters.h"
 #import "QMSLog.h"
+#import "QMChatMediaItem.h"
 
 const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
@@ -1360,6 +1361,22 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
                                                       toDialog:dialog
                                                withChatService:self
                                              withAttachedImage:image
+                                                    completion:^(NSError *error)
+     {
+         if (completion) {
+             completion(error);
+         }
+     }];
+}
+
+- (void)sendAttachmentMessage:(QBChatMessage *)attachmentMessage
+                     toDialog:(QBChatDialog *)dialog
+                withMediaItem:(QMChatMediaItem *)mediaItem
+                   completion:(nullable QBChatCompletionBlock)completion {
+    [self.chatAttachmentService uploadAndSendAttachmentMessage:attachmentMessage
+                                                      toDialog:dialog
+                                               withChatService:self
+                                                 withMediaItem:mediaItem
                                                     completion:^(NSError *error)
      {
          if (completion) {

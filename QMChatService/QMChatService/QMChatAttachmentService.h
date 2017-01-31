@@ -97,8 +97,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)localImageForAttachmentMessage:(QBChatMessage *)attachmentMessage completion:(nullable void(^)(NSError * _Nullable error, UIImage * _Nullable image))completion;
 
-- (void)uploadAndSendAttachmentMessage:(QBChatMessage *)message toDialog:(QBChatDialog *)dialog withChatService:(QMChatService *)chatService withAttachedMediaAtUrl:(NSURL *)mediaURL completion:(nullable QBChatCompletionBlock)completion;
-
 - (void)mediaURLForAttachmentMessage:(QBChatMessage *)attachmentMessage completion:(nullable void(^)(NSError * _Nullable error, NSURL *mediaURL))completion;
 
 - (void)uploadAndSendAttachmentMessage:(QBChatMessage *)message toDialog:(QBChatDialog *)dialog withChatService:(QMChatService *)chatService withMediaItem:(QMChatMediaItem *)mediaItem completion:(nullable QBChatCompletionBlock)completion;

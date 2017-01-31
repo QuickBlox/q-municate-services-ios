@@ -350,7 +350,7 @@ typedef NS_ENUM(NSUInteger, QMChatConnectionState) {
  *  @param extendedRequest  extended parameters
  *  @param iterationBlock   iteration block (pagination handling)
  *  @param completion       Block with response instance and array of chat messages that were already iterated in iteration block
- * 
+ *
  *  @discussion Pass nil or empty dictionary into extendedRequest to load only newest messages from latest message in cache.
  */
 - (void)messagesWithChatDialogID:(NSString *)chatDialogID
@@ -460,6 +460,10 @@ typedef NS_ENUM(NSUInteger, QMChatConnectionState) {
 - (void)sendAttachmentMessage:(QBChatMessage *)attachmentMessage
                      toDialog:(QBChatDialog *)dialog
           withAttachmentImage:(UIImage *)image
+                   completion:(nullable QBChatCompletionBlock)completion;
+- (void)sendAttachmentMessage:(QBChatMessage *)attachmentMessage
+                     toDialog:(QBChatDialog *)dialog
+                withMediaItem:(QMChatMediaItem *)mediaItem
                    completion:(nullable QBChatCompletionBlock)completion;
 
 #pragma mark - mark as delivered
