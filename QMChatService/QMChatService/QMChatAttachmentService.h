@@ -11,6 +11,7 @@
 
 @class QMChatService;
 @class QMChatAttachmentService;
+@class QMChatMediaItem;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -95,6 +96,12 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param completion             local image or nil if no image
  */
 - (void)localImageForAttachmentMessage:(QBChatMessage *)attachmentMessage completion:(nullable void(^)(NSError * _Nullable error, UIImage * _Nullable image))completion;
+
+- (void)uploadAndSendAttachmentMessage:(QBChatMessage *)message toDialog:(QBChatDialog *)dialog withChatService:(QMChatService *)chatService withAttachedMediaAtUrl:(NSURL *)mediaURL completion:(nullable QBChatCompletionBlock)completion;
+
+- (void)mediaURLForAttachmentMessage:(QBChatMessage *)attachmentMessage completion:(nullable void(^)(NSError * _Nullable error, NSURL *mediaURL))completion;
+
+- (void)uploadAndSendAttachmentMessage:(QBChatMessage *)message toDialog:(QBChatDialog *)dialog withChatService:(QMChatService *)chatService withMediaItem:(QMChatMediaItem *)mediaItem completion:(nullable QBChatCompletionBlock)completion;
 
 @end
 
