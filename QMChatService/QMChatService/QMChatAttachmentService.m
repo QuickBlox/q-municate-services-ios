@@ -11,8 +11,7 @@
 #import "QBChatMessage+QMCustomParameters.h"
 
 #import "QMSLog.h"
-#import "QMChatMediaItem.h"
-#import "QBChatAttachment+QMChatMediaItem.h"
+
 
 @interface QMChatAttachmentService()
 
@@ -265,6 +264,7 @@ static NSString* attachmentPath(QBChatAttachment *attachment) {
     QBChatAttachment *attachment = [attachmentMessage.attachments firstObject];
     
     // checking attachment in storage
+    
     if (self.attachmentsStorage[attachment.ID] != nil) {
         if (completion) {
             completion(nil, self.attachmentsStorage[attachment.ID]);
@@ -359,119 +359,119 @@ static NSString* attachmentPath(QBChatAttachment *attachment) {
     }];
 }
 
-- (void)mediaURLForAttachmentMessage:(QBChatMessage *)attachmentMessage completion:(nullable void(^)(NSError * _Nullable error, NSURL *mediaURL))completion {
-    
-    if (attachmentMessage.attachmentStatus == QMMessageAttachmentStatusLoading || attachmentMessage.attachmentStatus == QMMessageAttachmentStatusError) {
-        return;
-    }
-    
-    QBChatAttachment *attachment = [attachmentMessage.attachments firstObject];
-    
-    // checking attachment in cache
-    NSString *path = attachmentPath(attachment);
-    if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
-        
-        if (completion) completion(nil, [NSURL fileURLWithPath:path]);
-        return;
-    }
-    
-    // loading attachment from server
-    [self changeMessageAttachmentStatus:QMMessageAttachmentStatusLoading forMessage:attachmentMessage];
-    
-    NSString *attachmentID = attachment.ID;
-    
-    __weak __typeof(self)weakSelf = self;
-    [QBRequest downloadFileWithUID:attachment.ID successBlock:^(QBResponse *response, NSData *fileData) {
-        
-        __typeof(weakSelf)strongSelf = weakSelf;
-        NSError *error;
-        
-        [strongSelf saveMediaData:fileData chatAttachment:attachment error:&error];
-        
-        NSString *path = attachmentPath(attachment);
-        
-        [strongSelf changeMessageAttachmentStatus:QMMessageAttachmentStatusLoaded forMessage:attachmentMessage];
-        
-        if (completion) {
-            completion(nil, [NSURL fileURLWithPath:path]);
-        }
-        
-    } statusBlock:^(QBRequest *request, QBRequestStatus *status) {
-        
-        __typeof(weakSelf)strongSelf = weakSelf;
-        if ([strongSelf.delegate respondsToSelector:@selector(chatAttachmentService:didChangeLoadingProgress:forChatAttachment:)]) {
-            [strongSelf.delegate chatAttachmentService:strongSelf didChangeLoadingProgress:status.percentOfCompletion forChatAttachment:attachment];
-        }
-        
-    } errorBlock:^(QBResponse *response) {
-        
-        __typeof(weakSelf)strongSelf = weakSelf;
-        if (response.status == QBResponseStatusCodeNotFound) {
-            
-            [strongSelf changeMessageAttachmentStatus:QMMessageAttachmentStatusError forMessage:attachmentMessage];
-        }
-        else {
-            
-            [strongSelf changeMessageAttachmentStatus:QMMessageAttachmentStatusNotLoaded forMessage:attachmentMessage];
-        }
-        
-        if (completion) {
-            completion(response.error.error, nil);
-        }
-    }];
-}
-
-- (void)uploadAndSendAttachmentMessage:(QBChatMessage *)message toDialog:(QBChatDialog *)dialog withChatService:(QMChatService *)chatService withMediaItem:(QMChatMediaItem *)mediaItem completion:(nullable QBChatCompletionBlock)completion {
-    
-    [self changeMessageAttachmentStatus:QMMessageAttachmentStatusLoading forMessage:message];
-    
-    NSData *mediaData = [NSData dataWithContentsOfFile:mediaItem.localURL];
-    
-    __weak __typeof(self)weakSelf = self;
-    NSString *mediaName = mediaItem.name;
-    NSString *mediaMimeType = [mediaItem stringMIMEType];
-    NSString *mediaContentType = [mediaItem stringMediaType];
-    
-    [QBRequest TUploadFile:mediaData
-                  fileName:mediaName
-               contentType:mediaMimeType
-                  isPublic:NO
-              successBlock:^(QBResponse *response, QBCBlob *blob) {
-                  __typeof(weakSelf)strongSelf = weakSelf;
-                  
-                  QBChatAttachment *attachment = [QBChatAttachment new];
-                  attachment.type = mediaContentType;
-                  attachment.ID = blob.UID;
-                  attachment.url = [blob privateUrl];
-                  
-                  message.attachments = @[attachment];
-                  message.text = [NSString stringWithFormat:@"Attachment %@",mediaItem.stringMediaType];
-                  
-                  NSData *videoData = [NSData dataWithContentsOfURL:mediaItem.localURL];
-                  
-                  [strongSelf saveMediaData:videoData chatAttachment:attachment error:nil];
-                  
-                  [strongSelf changeMessageAttachmentStatus:QMMessageAttachmentStatusLoaded forMessage:message];
-                  
-                  [chatService sendMessage:message type:QMMessageTypeText toDialog:dialog saveToHistory:YES saveToStorage:YES completion:completion];
-                  
-              } statusBlock:^(QBRequest *request, QBRequestStatus *status) {
-                  
-                  __typeof(weakSelf)strongSelf = weakSelf;
-                  if ([strongSelf.delegate respondsToSelector:@selector(chatAttachmentService:didChangeUploadingProgress:forMessage:)]) {
-                      [strongSelf.delegate chatAttachmentService:strongSelf didChangeUploadingProgress:status.percentOfCompletion forMessage:message];
-                  }
-                  
-              } errorBlock:^(QBResponse *response) {
-                  
-                  __typeof(weakSelf)strongSelf = weakSelf;
-                  [strongSelf changeMessageAttachmentStatus:QMMessageAttachmentStatusNotLoaded forMessage:message];
-                  
-                  if (completion) {
-                      completion(response.error.error);
-                  }
-              }];
-}
+//- (void)mediaURLForAttachmentMessage:(QBChatMessage *)attachmentMessage completion:(nullable void(^)(NSError * _Nullable error, NSURL *mediaURL))completion {
+//    
+//    if (attachmentMessage.attachmentStatus == QMMessageAttachmentStatusLoading || attachmentMessage.attachmentStatus == QMMessageAttachmentStatusError) {
+//        return;
+//    }
+//    
+//    QBChatAttachment *attachment = [attachmentMessage.attachments firstObject];
+//    
+//    // checking attachment in cache
+//    NSString *path = attachmentPath(attachment);
+//    if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
+//        
+//        if (completion) completion(nil, [NSURL fileURLWithPath:path]);
+//        return;
+//    }
+//    
+//    // loading attachment from server
+//    [self changeMessageAttachmentStatus:QMMessageAttachmentStatusLoading forMessage:attachmentMessage];
+//    
+//    NSString *attachmentID = attachment.ID;
+//    
+//    __weak __typeof(self)weakSelf = self;
+//    [QBRequest downloadFileWithUID:attachment.ID successBlock:^(QBResponse *response, NSData *fileData) {
+//        
+//        __typeof(weakSelf)strongSelf = weakSelf;
+//        NSError *error;
+//        
+//        [strongSelf saveMediaData:fileData chatAttachment:attachment error:&error];
+//        
+//        NSString *path = attachmentPath(attachment);
+//        
+//        [strongSelf changeMessageAttachmentStatus:QMMessageAttachmentStatusLoaded forMessage:attachmentMessage];
+//        
+//        if (completion) {
+//            completion(nil, [NSURL fileURLWithPath:path]);
+//        }
+//        
+//    } statusBlock:^(QBRequest *request, QBRequestStatus *status) {
+//        
+//        __typeof(weakSelf)strongSelf = weakSelf;
+//        if ([strongSelf.delegate respondsToSelector:@selector(chatAttachmentService:didChangeLoadingProgress:forChatAttachment:)]) {
+//            [strongSelf.delegate chatAttachmentService:strongSelf didChangeLoadingProgress:status.percentOfCompletion forChatAttachment:attachment];
+//        }
+//        
+//    } errorBlock:^(QBResponse *response) {
+//        
+//        __typeof(weakSelf)strongSelf = weakSelf;
+//        if (response.status == QBResponseStatusCodeNotFound) {
+//            
+//            [strongSelf changeMessageAttachmentStatus:QMMessageAttachmentStatusError forMessage:attachmentMessage];
+//        }
+//        else {
+//            
+//            [strongSelf changeMessageAttachmentStatus:QMMessageAttachmentStatusNotLoaded forMessage:attachmentMessage];
+//        }
+//        
+//        if (completion) {
+//            completion(response.error.error, nil);
+//        }
+//    }];
+//}
+//
+//- (void)uploadAndSendAttachmentMessage:(QBChatMessage *)message toDialog:(QBChatDialog *)dialog withChatService:(QMChatService *)chatService withMediaItem:(QMChatMediaItem *)mediaItem completion:(nullable QBChatCompletionBlock)completion {
+//    
+//    [self changeMessageAttachmentStatus:QMMessageAttachmentStatusLoading forMessage:message];
+//    
+//    NSData *mediaData = [NSData dataWithContentsOfFile:mediaItem.localURL];
+//    
+//    __weak __typeof(self)weakSelf = self;
+//    NSString *mediaName = mediaItem.name;
+//    NSString *mediaMimeType = [mediaItem stringMIMEType];
+//    NSString *mediaContentType = [mediaItem stringMediaType];
+//    
+//    [QBRequest TUploadFile:mediaData
+//                  fileName:mediaName
+//               contentType:mediaMimeType
+//                  isPublic:NO
+//              successBlock:^(QBResponse *response, QBCBlob *blob) {
+//                  __typeof(weakSelf)strongSelf = weakSelf;
+//                  
+//                  QBChatAttachment *attachment = [QBChatAttachment new];
+//                  attachment.type = mediaContentType;
+//                  attachment.ID = blob.UID;
+//                  attachment.url = [blob privateUrl];
+//                  
+//                  message.attachments = @[attachment];
+//                  message.text = [NSString stringWithFormat:@"Attachment %@",mediaItem.stringMediaType];
+//                  
+//                  NSData *videoData = [NSData dataWithContentsOfURL:mediaItem.localURL];
+//                  
+//                  [strongSelf saveMediaData:videoData chatAttachment:attachment error:nil];
+//                  
+//                  [strongSelf changeMessageAttachmentStatus:QMMessageAttachmentStatusLoaded forMessage:message];
+//                  
+//                  [chatService sendMessage:message type:QMMessageTypeText toDialog:dialog saveToHistory:YES saveToStorage:YES completion:completion];
+//                  
+//              } statusBlock:^(QBRequest *request, QBRequestStatus *status) {
+//                  
+//                  __typeof(weakSelf)strongSelf = weakSelf;
+//                  if ([strongSelf.delegate respondsToSelector:@selector(chatAttachmentService:didChangeUploadingProgress:forMessage:)]) {
+//                      [strongSelf.delegate chatAttachmentService:strongSelf didChangeUploadingProgress:status.percentOfCompletion forMessage:message];
+//                  }
+//                  
+//              } errorBlock:^(QBResponse *response) {
+//                  
+//                  __typeof(weakSelf)strongSelf = weakSelf;
+//                  [strongSelf changeMessageAttachmentStatus:QMMessageAttachmentStatusNotLoaded forMessage:message];
+//                  
+//                  if (completion) {
+//                      completion(response.error.error);
+//                  }
+//              }];
+//}
 
 
 @end
