@@ -72,6 +72,30 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (BOOL)isLocationMessage;
 
+/**
+ *  This method is used to determine if the message data item is media attachment.
+ *
+ *  @return A boolean value specifying whether or not this is a message with media attachment.
+ *  Return `YES` if this item is a media attachment, and `NO` if it is a text message.
+ */
+- (BOOL)isMediaAttachment;
+
+/**
+ *  This method is used to determine if the message data item is audio attachment.
+ *
+ *  @return A boolean value specifying whether or not this is a message with audio attachment.
+ *  Return `YES` if this item is a audio attachment, and `NO` if it is a text message.
+ */
+- (BOOL)isAudioAttachment;
+
+/**
+ *  This method is used to determine if the message data item is video attachment.
+ *
+ *  @return A boolean value specifying whether or not this is a message with video attachment.
+ *  Return `YES` if this item is a video attachment, and `NO` if it is a text message.
+ */
+- (BOOL)isVideoAttachment;
+
 @end
 
 NS_ASSUME_NONNULL_END
