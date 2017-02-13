@@ -6,10 +6,15 @@
 //  Copyright (c) 2015 Quickblox. All rights reserved.
 //
 
+
 #import "QMChatService.h"
 #import "QBChatMessage+QMCustomParameters.h"
 #import "QMSLog.h"
-#import "QMChatMediaItem.h"
+#import "QMMediaService.h"
+#import "QMMediaStoreService.h"
+#import "QMMediaUploadService.h"
+#import "QMMediaDownloadService.h"
+#import "QMMediaServiceDelegate.h"
 
 const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
@@ -24,7 +29,9 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 @property (weak, nonatomic) id <QMChatServiceCacheDataSource> cacheDataSource;
 @property (strong, nonatomic) QMDialogsMemoryStorage *dialogsMemoryStorage;
 @property (strong, nonatomic) QMMessagesMemoryStorage *messagesMemoryStorage;
+
 @property (strong, nonatomic) QMChatAttachmentService *chatAttachmentService;
+@property (strong, nonatomic) QMMediaService *mediaService;
 
 @property (weak, nonatomic)   BFTask* loadEarlierMessagesTask;
 @property (strong, nonatomic) NSMutableDictionary *loadedAllMessages;
@@ -71,6 +78,14 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     self.messagesMemoryStorage = [[QMMessagesMemoryStorage alloc] init];
     self.messagesMemoryStorage.delegate = self.deferredQueueManager;
     self.chatAttachmentService = [[QMChatAttachmentService alloc] init];
+    self.mediaService = [[QMMediaService alloc] init];
+    QMMediaStoreService *mediaStoreService = [QMMediaStoreService new];
+    QMMediaUploadService *mediaUploadService = [QMMediaUploadService new];
+    QMMediaDownloadService *mediaDownloadService = [QMMediaDownloadService new];
+    
+    self.mediaService.storeService = mediaStoreService;
+    self.mediaService.downloadService = mediaDownloadService;
+    self.mediaService.uploadService = mediaUploadService;
     
     [QBChat.instance addDelegate:self];
 }
@@ -1351,6 +1366,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     [self sendMessage:message type:QMMessageTypeText toDialog:dialog saveToHistory:saveToHistory saveToStorage:saveToStorage completion:completion];
 }
 
+
 - (void)sendAttachmentMessage:(QBChatMessage *)attachmentMessage
                      toDialog:(QBChatDialog *)dialog
           withAttachmentImage:(UIImage *)image
@@ -1371,18 +1387,22 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 
 - (void)sendAttachmentMessage:(QBChatMessage *)attachmentMessage
                      toDialog:(QBChatDialog *)dialog
-                withMediaItem:(QMChatMediaItem *)mediaItem
+                withMediaItem:(QMMediaItem *)mediaItem
                    completion:(nullable QBChatCompletionBlock)completion {
-    [self.chatAttachmentService uploadAndSendAttachmentMessage:attachmentMessage
-                                                      toDialog:dialog
-                                               withChatService:self
-                                                 withMediaItem:mediaItem
-                                                    completion:^(NSError *error)
-     {
-         if (completion) {
-             completion(error);
-         }
-     }];
+    
+
+    
+    [self.mediaService sendMessage:attachmentMessage
+                          toDialog:dialog
+                   withChatService:self
+                         withMedia:mediaItem
+                        completion:completion];
+    
+    [self.mediaService addUploadListenerForMessageWithID:attachmentMessage.ID completionBlock:^(QMMediaItem *mediaItem, NSError *error) {
+        
+    } progressBlock:^(float progress) {
+        
+    }];
 }
 
 #pragma mark - mark as delivered

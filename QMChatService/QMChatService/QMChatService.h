@@ -13,6 +13,10 @@
 #import "QMChatAttachmentService.h"
 #import "QMChatTypes.h"
 #import "QMChatConstants.h"
+#import "QMMediaService.h"
+#import "QMMediaServiceDelegate.h"
+
+@class QMMediaItem;
 
 @protocol QMChatServiceDelegate;
 @protocol QMChatServiceCacheDataSource;
@@ -80,6 +84,9 @@ typedef NS_ENUM(NSUInteger, QMChatConnectionState) {
  *  Attachment Service
  */
 @property (strong, nonatomic, readonly) QMChatAttachmentService *chatAttachmentService;
+
+@property (strong, nonatomic, readonly) QMMediaService *mediaService;
+
 
 /**
  *  Init chat service
@@ -461,9 +468,10 @@ typedef NS_ENUM(NSUInteger, QMChatConnectionState) {
                      toDialog:(QBChatDialog *)dialog
           withAttachmentImage:(UIImage *)image
                    completion:(nullable QBChatCompletionBlock)completion;
+
 - (void)sendAttachmentMessage:(QBChatMessage *)attachmentMessage
                      toDialog:(QBChatDialog *)dialog
-                withMediaItem:(QMChatMediaItem *)mediaItem
+                withMediaItem:(QMMediaItem *)mediaItem
                    completion:(nullable QBChatCompletionBlock)completion;
 
 #pragma mark - mark as delivered
