@@ -58,7 +58,9 @@
     NSAssert(data.length, @"No data");
     
     BOOL sucess = [self saveData:data forMediaItem:mediaItem error:nil];
+    
     if (sucess) {
+        mediaItem.localURL = [NSURL fileURLWithPath:mediaPath(mediaItem.mediaID)];
         NSMutableDictionary *storage = [self storageForContentType:[mediaItem stringMediaType]];
         storage[mediaItem.mediaID] = mediaItem;
     }
@@ -171,7 +173,7 @@ static NSString* mediaPath(NSString *mediaID) {
     forMediaItem:(QMMediaItem *)mediaItem
            error:(NSError **)errorPtr {
     
-    return [mediaData writeToFile:mediaPath(mediaItem.mediaID)
+    BOOL isSucceed = [mediaData writeToFile:mediaPath(mediaItem.mediaID)
                           options:NSDataWritingAtomic
                             error:errorPtr];
 }
