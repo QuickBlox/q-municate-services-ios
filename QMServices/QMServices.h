@@ -28,6 +28,4 @@
 #import "QMUsersCache.h"
 #import "QMUsersService.h"
 
-#import "QMServicesManager.h"
-
 #import "QMMediaItem.h"

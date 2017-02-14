@@ -14,7 +14,6 @@
 #import "QMChatTypes.h"
 #import "QMChatConstants.h"
 #import "QMMediaService.h"
-#import "QMMediaServiceDelegate.h"
 
 @class QMMediaItem;
 
@@ -177,7 +176,6 @@ typedef NS_ENUM(NSUInteger, QMChatConnectionState) {
  */
 - (void)createPrivateChatDialogWithOpponentID:(NSUInteger)opponentID
                                    completion:(nullable void(^)(QBResponse *response, QBChatDialog * _Nullable createdDialog))completion;
-
 #pragma mark - Edit dialog methods
 
 /**

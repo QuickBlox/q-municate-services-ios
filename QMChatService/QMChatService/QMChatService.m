@@ -14,7 +14,6 @@
 #import "QMMediaStoreService.h"
 #import "QMMediaUploadService.h"
 #import "QMMediaDownloadService.h"
-#import "QMMediaServiceDelegate.h"
 
 const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
@@ -1398,11 +1397,11 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
                          withMedia:mediaItem
                         completion:completion];
     
-    [self.mediaService addUploadListenerForMessageWithID:attachmentMessage.ID completionBlock:^(QMMediaItem *mediaItem, NSError *error) {
-        
-    } progressBlock:^(float progress) {
-        
-    }];
+//    [self.mediaService addUploadListenerForMessageWithID:attachmentMessage.ID completionBlock:^(QMMediaItem *mediaItem, NSError *error) {
+//        
+//    } progressBlock:^(float progress) {
+//        
+//    }];
 }
 
 #pragma mark - mark as delivered

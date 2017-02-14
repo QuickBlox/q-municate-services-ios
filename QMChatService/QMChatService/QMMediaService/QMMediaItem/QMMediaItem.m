@@ -16,7 +16,6 @@
 
 
 #import "QMMediaItem.h"
-#import <Quickblox/QBChatAttachment.h>
 
 @interface QMMediaItem()
 

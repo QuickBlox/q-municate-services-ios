@@ -271,10 +271,6 @@ void (^globalDownloadCompletionBlock)(NSString *messageID, NSString *mediaID, NS
     //Inform the handlers
     [handlers enumerateObjectsUsingBlock:^(QMMediaWebHandler *handler, NSUInteger idx, BOOL *stop) {
         
-        [handlers enumerateObjectsUsingBlock:^(QMMediaWebHandler *handler, NSUInteger idx, BOOL *stop) {
-            
-        }];
-        
     }];
 };
 
