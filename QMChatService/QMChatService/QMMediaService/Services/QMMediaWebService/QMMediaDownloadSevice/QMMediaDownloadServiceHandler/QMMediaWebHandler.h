@@ -18,18 +18,18 @@
 @property (nonatomic, copy) QMMediaRestCompletionBlock completionBlock;
 @property (nonatomic, copy) QMMediaErrorBlock errorBlock;
 
-@property (nonatomic, weak) id<QMMediaDownloadDelegate> delegate;
+@property (nonatomic, weak) id <QMMediaDownloadDelegate> delegate;
 
 + (QMMediaWebHandler *)downloadingHandlerWithID:(NSString *)handlerID
-                                            progressBlock:(QMMediaProgressBlock)progressBlock
-                                          completionBlock:(QMMediaRestCompletionBlock)completionBlock;
+                                completionBlock:(QMMediaRestCompletionBlock)completionBlock
+                                  progressBlock:(QMMediaProgressBlock)progressBlock;
 
 + (QMMediaWebHandler *)downloadingHandlerWithID:(NSString *)handlerID
-                                                 delegate:(id<QMMediaDownloadDelegate>)delegate;
+                                       delegate:(id<QMMediaDownloadDelegate>)delegate;
 
 + (QMMediaWebHandler *)uploadingHandlerWithID:(NSString *)handlerID
-                              progressBlock:(QMMediaProgressBlock)progressBlock
-                            completionBlock:(QMMediaRestCompletionBlock)completionBlock;
+                              completionBlock:(QMMediaRestCompletionBlock)completionBlock
+                                progressBlock:(QMMediaProgressBlock)progressBlock;
 
 
 

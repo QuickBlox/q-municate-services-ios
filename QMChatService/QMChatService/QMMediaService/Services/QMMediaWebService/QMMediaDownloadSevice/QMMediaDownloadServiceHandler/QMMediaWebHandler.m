@@ -16,8 +16,8 @@
 @implementation QMMediaWebHandler
 
 + (QMMediaWebHandler *)downloadingHandlerWithID:(NSString *)handlerID
-                                  progressBlock:(QMMediaProgressBlock)progressBlock
-                                completionBlock:(QMMediaRestCompletionBlock)completionBlock {
+                                completionBlock:(QMMediaRestCompletionBlock)completionBlock
+                                  progressBlock:(QMMediaProgressBlock)progressBlock {
     
     QMMediaWebHandler *mediaHandler = [QMMediaWebHandler new];
     mediaHandler.handlerID = handlerID;
@@ -27,9 +27,9 @@
     return mediaHandler;
 }
 
-
 + (QMMediaWebHandler *)downloadingHandlerWithMediaID:(NSString *)handlerID
                                             delegate:(id<QMMediaDownloadDelegate>)delegate {
+    
     QMMediaWebHandler *mediaHandler = [QMMediaWebHandler new];
     
     mediaHandler.handlerID = handlerID;
@@ -39,8 +39,8 @@
 }
 
 + (QMMediaWebHandler *)uploadingHandlerWithID:(NSString *)handlerID
-                                progressBlock:(QMMediaProgressBlock)progressBlock
-                              completionBlock:(QMMediaRestCompletionBlock)completionBlock {
+                              completionBlock:(QMMediaRestCompletionBlock)completionBlock
+                                progressBlock:(QMMediaProgressBlock)progressBlock {
     
     QMMediaWebHandler *mediaHandler = [QMMediaWebHandler new];
     mediaHandler.handlerID = handlerID;
