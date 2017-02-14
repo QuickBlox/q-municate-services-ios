@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol  QMMediaServiceDelegate;
+#import "QMMediaServiceDelegate.h"
 
 @interface QMMediaService : NSObject <QMMediaServiceDelegate>
 

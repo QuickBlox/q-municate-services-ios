@@ -16,12 +16,10 @@
 @protocol QMMediaDownloadServiceDelegate;
 @protocol QMMediaUploadServiceDelegate;
 
-@protocol QMMediaServiceOutputDelegate;
-@protocol QMMediaModelDelegate;
+typedef void (^QMMediaCompletionBlock)(QMMediaItem *);
 
 typedef void (^QMMessageUploadProgressBlock)(float progress);
 typedef void (^QMMessageUploadCompletionBlock)(QMMediaItem *mediaItem, NSError *error);
-typedef void (^QMMediaCompletionBlock)(QMMediaItem *);
 
 @protocol QMMediaServiceDelegate <NSObject>
 
@@ -42,6 +40,7 @@ typedef void (^QMMediaCompletionBlock)(QMMediaItem *);
 - (void)addUploadListenerForMessageWithID:(NSString *)messageID
                           completionBlock:(QMMessageUploadCompletionBlock)completionBlock
                             progressBlock:(QMMessageUploadProgressBlock)progressBlock;
+
 @optional
 
 - (BOOL)isReadyToPlay:(NSString *)mediaID contentType:(NSString *)contentType;

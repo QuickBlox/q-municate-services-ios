@@ -7,18 +7,18 @@
 //
 
 #import "QMMediaService.h"
+
 #import "QMChatService.h"
-#import "QMMediaServiceDelegate.h"
 
 #import "QMMediaStoreServiceDelegate.h"
 #import "QMMediaDownloadServiceDelegate.h"
 #import "QMMediaUploadServiceDelegate.h"
 
 #import "QMMediaItem.h"
+
 #import "QMSLog.h"
 #import "EXTScope.h"
 
-#import <QuickBlox/QBMulticastDelegate.h>
 #import "QMMediaDownloadDelegate.h"
 #import "QMMediaWebServiceDelegate.h"
 #import "QMMediaWebHandler.h"
@@ -32,15 +32,16 @@
 @property (nonatomic, weak) id<QMMediaDownloadDelegate> delegate;
 
 + (QMMessageUploadHandler *)uploadingHandlerWithID:(NSString *)handlerID
-                                  progressBlock:(QMMessageUploadProgressBlock)progressBlock
-                                completionBlock:(QMMessageUploadCompletionBlock)completionBlock;
+                                   completionBlock:(QMMessageUploadCompletionBlock)completionBlock
+                                     progressBlock:(QMMessageUploadProgressBlock)progressBlock;
+
 @end
 
 @implementation QMMessageUploadHandler
 
 + (QMMessageUploadHandler *)uploadingHandlerWithID:(NSString *)handlerID
-                                progressBlock:(QMMessageUploadProgressBlock)progressBlock
-                              completionBlock:(QMMessageUploadCompletionBlock)completionBlock {
+                                   completionBlock:(QMMessageUploadCompletionBlock)completionBlock
+                                     progressBlock:(QMMessageUploadProgressBlock)progressBlock {
     
     QMMessageUploadHandler *mediaHandler = [QMMessageUploadHandler new];
     mediaHandler.handlerID = handlerID;
@@ -56,6 +57,7 @@
 
 @property (strong, nonatomic) NSMutableDictionary *messageUploadHandlers;
 @property (strong, nonatomic) NSMutableDictionary *messageDownloadHandlers;
+@property (strong, nonatomic) dispatch_queue_t barrierQueue;
 
 @end
 
@@ -76,6 +78,7 @@
     if (self = [super init]) {
         _messageUploadHandlers = [NSMutableDictionary dictionary];
         _messageDownloadHandlers = [NSMutableDictionary dictionary];
+        _barrierQueue = dispatch_queue_create("com.quickblox.QMMediaService", DISPATCH_QUEUE_CONCURRENT);
     }
     
     return self;
@@ -84,20 +87,30 @@
 
 //MARK: - QMMediaServiceDelegate
 
-- (void)addUploadListenerForMessageWithID:(NSString *)messageID completionBlock:(QMMessageUploadCompletionBlock)completionBlock progressBlock:(QMMessageUploadProgressBlock)progressBlock {
+- (void)addUploadListenerForMessageWithID:(NSString *)messageID
+                          completionBlock:(QMMessageUploadCompletionBlock)completionBlock
+                            progressBlock:(QMMessageUploadProgressBlock)progressBlock {
     
-    NSMutableArray *handlers = [self.messageUploadHandlers objectForKey:messageID];
+    __weak typeof(self) weakSelf = self;
     
-    if (handlers == nil) {
-        handlers = [NSMutableArray new];
-    }
+    dispatch_barrier_sync(self.barrierQueue, ^{
+        
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        
+        NSMutableArray *handlers = [self.messageUploadHandlers objectForKey:messageID];
+        
+        if (handlers == nil) {
+            handlers = [NSMutableArray new];
+        }
+        
+        QMMessageUploadHandler *handler = [QMMessageUploadHandler uploadingHandlerWithID:messageID
+                                                                         completionBlock:completionBlock
+                                                                           progressBlock:progressBlock];
+        
+        [handlers addObject:handler];
+        [self.messageUploadHandlers setObject:handlers forKey:messageID];
+    });
     
-    QMMessageUploadHandler *handler = [QMMessageUploadHandler uploadingHandlerWithID:messageID
-                                                                       progressBlock:progressBlock
-                                                                     completionBlock:completionBlock];
-    
-    [handlers addObject:handler];
-    [self.messageUploadHandlers setObject:handlers forKey:messageID];
 }
 
 - (void)mediaForMessage:(QBChatMessage *)message
@@ -114,6 +127,7 @@
             [self.downloadService downloadMediaItemWithID:attachment.ID withCompletionBlock:^(NSString *mediaID, NSData *data, NSError *error) {
                 
                 QMMediaItem *item = nil;
+                
                 if (!error) {
                     QMMediaItem *item = [[QMMediaItem alloc] init];
                     [item updateWithAttachment:attachment];
@@ -124,10 +138,11 @@
                         completion(@[item]);
                     }
                 }
-            
+                
                 globalDownloadCompletionBlock(message.ID, mediaID, data, error, self);
                 
             } progressBlock:^(float progress) {
+                
                 globalDownloadProgressBlock(message.ID, attachment.ID, progress, self);
             }];
         }
@@ -200,49 +215,46 @@
     return [self.storeService isReadyToPlay:mediaID contentType:contentType];
 }
 
-//- (NSData *)dataForItem:(QMMediaItem *)item {
-//    
-//    if (item.data) {
-//        return item.data;
-//    }
-//    if (item.localURL != nil) {
-//        NSData *data = [NSData dataWithContentsOfURL:item.localURL];
-//        return data;
-//    }
-//    
-//    return nil;
-//}
-
-
 //MARK:-  Global Blocks
 
 void (^globalUploadProgressBlock)(NSString *messageID,float progress, QMMediaService *mediaService) =
 ^(NSString *messageID, float progress, QMMediaService *mediaService) {
     
-    NSMutableArray *handlers = [mediaService.messageUploadHandlers objectForKey:messageID];
+    __block NSArray *handlers;
+    
+    dispatch_sync(mediaService.barrierQueue, ^{
+        handlers = [[mediaService.messageUploadHandlers objectForKey:messageID] copy];
+    });
+    
     //Inform the handlers
     [handlers enumerateObjectsUsingBlock:^(QMMessageUploadHandler *handler, NSUInteger idx, BOOL *stop) {
-        
-        if(handler.progressBlock) {
-            handler.progressBlock(progress);
-        }
-        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if(handler.progressBlock) {
+                handler.progressBlock(progress);
+            }
+        });
     }];
 };
 
 void (^globalUploadCompletionBlock)(NSString *messageID, QMMediaItem *mediaItem, NSError *error, QMMediaService *mediaService) =
 ^(NSString *messageID, QMMediaItem *mediaItem, NSError *error, QMMediaService *mediaService)
 {
-    NSMutableArray *handlers = [mediaService.messageUploadHandlers objectForKey:messageID];
+    __block NSArray *handlers;
+    
+    dispatch_barrier_sync(mediaService.barrierQueue, ^{
+        handlers = [[mediaService.messageUploadHandlers objectForKey:messageID] copy];
+        [mediaService.messageUploadHandlers removeObjectForKey:messageID];
+    });
+    
     //Inform the handlers
     [handlers enumerateObjectsUsingBlock:^(QMMessageUploadHandler *handler, NSUInteger idx, BOOL *stop) {
-        
-        if (handler.completionBlock) {
-            handler.completionBlock(mediaItem,error);
-        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (handler.completionBlock) {
+                handler.completionBlock(mediaItem,error);
+            }
+        });
     }];
     
-    [mediaService.messageUploadHandlers removeObjectForKey:messageID];
 };
 
 
@@ -251,8 +263,6 @@ void (^globalDownloadProgressBlock)(NSString *messageID, NSString *mediaID, floa
 {
     
 };
-
-
 
 void (^globalDownloadCompletionBlock)(NSString *messageID, NSString *mediaID, NSData *mediaData, NSError *error, QMMediaService *mediaService) =
 ^(NSString *messageID, NSString *mediaID, NSData *mediaData, NSError *error, QMMediaService *mediaService)
@@ -269,23 +279,12 @@ void (^globalDownloadCompletionBlock)(NSString *messageID, NSString *mediaID, NS
 };
 
 - (void)addUploadingListenerForMessage:(QBChatMessage *)message
-                   withCompletionBlock:(void(^)(NSError *))completionBlock
-                         progressBlock:(void(^)(float progress))progressBlock {
+                       completionBlock:(QMMessageUploadCompletionBlock)completionBlock
+                         progressBlock:(QMMessageUploadProgressBlock)progressBlock {
     
-    NSMutableArray *handlers = [self.messageUploadHandlers objectForKey:message.ID];
-    
-    if (handlers == nil) {
-        handlers = [NSMutableArray new];
-    }
-    
-    QMMediaWebHandler *handler = [QMMediaWebHandler downloadingHandlerWithID:message.ID
-                                                               progressBlock:progressBlock
-                                                             completionBlock:^(NSString *mediaID, NSData *data, NSError *error) {
-                                                                 completionBlock(error);
-                                                             }];
-    
-    [handlers addObject:handler];
-    [self.messageUploadHandlers setObject:handlers forKey:message.ID];
+    [self addUploadListenerForMessageWithID:message.ID
+                            completionBlock:completionBlock
+                              progressBlock:progressBlock];
 }
 
 
