@@ -26,6 +26,8 @@
 @property (strong, nonatomic) QMChatAttachmentService *attachmentService;
 @property (strong, nonatomic) NSMutableDictionary *downloadHandlers;
 
+@property (strong, nonatomic) dispatch_queue_t barrierQueue;
+
 @end
 
 @implementation QMMediaDownloadService
@@ -42,6 +44,7 @@
         _multicastDelegate = (id <QMMediaDownloadDelegate>)[[QBMulticastDelegate alloc] init];
         _attachmentService = [[QMChatAttachmentService alloc] init];
         _downloadHandlers = [NSMutableDictionary dictionary];
+        _barrierQueue = dispatch_queue_create("com.quickblox.QMMediaDownloadService", DISPATCH_QUEUE_CONCURRENT);
         
     }
     
@@ -84,32 +87,48 @@
 - (void)addListenerToMediaItemWithID:(NSString *)mediaID
                             delegate:(id <QMMediaDownloadDelegate>)delegate {
     
-    NSMutableArray *handlers = [self.downloadHandlers objectForKey:mediaID];
+    __weak typeof(self) weakSelf = self;
     
-    if (handlers == nil) {
-        handlers = [NSMutableArray new];
-    }
-    
-    QMMediaWebHandler *handler = [QMMediaWebHandler downloadingHandlerWithID:mediaID delegate:delegate];
-    
-    [handlers addObject:handler];
-    [self.downloadHandlers setObject:handlers forKey:mediaID];
+    dispatch_barrier_sync(self.barrierQueue, ^{
+        
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        NSMutableArray *handlers = self.downloadHandlers[mediaID];
+        
+        if (handlers == nil) {
+            handlers = [NSMutableArray new];
+        }
+        
+        QMMediaWebHandler *handler = [QMMediaWebHandler downloadingHandlerWithID:mediaID
+                                                                        delegate:delegate];
+        
+        [handlers addObject:handler];
+        strongSelf.downloadHandlers[mediaID] = handlers;
+    });
 }
 
 - (void)addListenerToMediaItemWithID:(NSString *)mediaID
                  withCompletionBlock:(QMMediaRestCompletionBlock)completionBlock
                        progressBlock:(QMMediaProgressBlock)progressBlock {
     
-    NSMutableArray *handlers = [self.downloadHandlers objectForKey:mediaID];
+    __weak typeof(self) weakSelf = self;
     
-    if (handlers == nil) {
-        handlers = [NSMutableArray new];
-    }
-    
-    QMMediaWebHandler *handler = [QMMediaWebHandler downloadingHandlerWithID:mediaID progressBlock:progressBlock completionBlock:completionBlock];
-    
-    [handlers addObject:handler];
-    [self.downloadHandlers setObject:handlers forKey:mediaID];
+    dispatch_barrier_sync(self.barrierQueue, ^{
+        
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        
+        NSMutableArray *handlers = self.downloadHandlers[mediaID];
+        
+        if (handlers == nil) {
+            handlers = [NSMutableArray new];
+        }
+        
+        QMMediaWebHandler *handler = [QMMediaWebHandler downloadingHandlerWithID:mediaID
+                                                                 completionBlock:completionBlock
+                                                                   progressBlock:progressBlock];
+        
+        [handlers addObject:handler];
+        strongSelf.downloadHandlers[mediaID] = handlers;
+    });
 }
 
 
@@ -118,17 +137,25 @@
 void (^globalProgressBlock)(NSString *mediaID, float progress, QMMediaDownloadService *downloadService) =
 ^(NSString *mediaID, float progress, QMMediaDownloadService *downloadService)
 {
-    NSMutableArray *handlers = [downloadService.downloadHandlers objectForKey:mediaID];
+    
+    __block NSArray *handlers;
+    
+    dispatch_sync(downloadService.barrierQueue, ^{
+        handlers = [[downloadService.downloadHandlers objectForKey:mediaID] copy];
+    });
+    
     //Inform the handlers
     [handlers enumerateObjectsUsingBlock:^(QMMediaWebHandler *handler, NSUInteger idx, BOOL *stop) {
         
-        if(handler.progressBlock) {
-            handler.progressBlock(progress);
-        }
-        
-        if([handler.delegate respondsToSelector:@selector(didUpdateDownloadingProgress:forMediaWithID:)]) {
-            [handler.delegate didUpdateDownloadingProgress:progress forMediaWithID:mediaID];
-        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if(handler.progressBlock) {
+                handler.progressBlock(progress);
+            }
+            
+            if([handler.delegate respondsToSelector:@selector(didUpdateDownloadingProgress:forMediaWithID:)]) {
+                [handler.delegate didUpdateDownloadingProgress:progress forMediaWithID:mediaID];
+            }
+        });
     }];
     
     [downloadService.multicastDelegate didUpdateDownloadingProgress:progress forMediaWithID:mediaID];
@@ -138,21 +165,27 @@ void (^globalProgressBlock)(NSString *mediaID, float progress, QMMediaDownloadSe
 void (^globalCompletionBlock)(NSString *mediaID, NSData *data, NSError *error, QMMediaDownloadService *downloadService) =
 ^(NSString *mediaID, NSData *data, NSError *error, QMMediaDownloadService *downloadService)
 {
-    NSMutableArray *handlers = [downloadService.downloadHandlers objectForKey:mediaID];
-
+    __block NSArray *handlers;
+    
+    dispatch_barrier_sync(downloadService.barrierQueue, ^{
+        handlers = [[downloadService.downloadHandlers objectForKey:mediaID] copy];
+        [downloadService.downloadHandlers removeObjectForKey:mediaID];
+    });
+    
     [handlers enumerateObjectsUsingBlock:^(QMMediaWebHandler *handler, NSUInteger idx, BOOL *stop) {
         
-        if (handler.completionBlock) {
-            handler.completionBlock(mediaID, data, error);
-        }
-        
-        if ([handler.delegate respondsToSelector:@selector(didEndDownloadingMediaWithID:mediaData:error:)]) {
-            [handler.delegate didEndDownloadingMediaWithID:mediaID mediaData:data error:error];
-        }
-        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            if (handler.completionBlock) {
+                handler.completionBlock(mediaID, data, error);
+            }
+            
+            if ([handler.delegate respondsToSelector:@selector(didEndDownloadingMediaWithID:mediaData:error:)]) {
+                [handler.delegate didEndDownloadingMediaWithID:mediaID mediaData:data error:error];
+            }
+        });
     }];
     
-    [downloadService.downloadHandlers removeObjectForKey:mediaID];
     
     [downloadService.multicastDelegate didEndDownloadingMediaWithID:mediaID mediaData:data error:error];
 };
