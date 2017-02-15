@@ -11,7 +11,8 @@
 
 @class QMChatService;
 @class QMChatAttachmentService;
-@class QMChatMediaItem;
+@class QMMediaItem;
+@class QMMediaService;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -54,10 +55,29 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface QMChatAttachmentService : NSObject
 
+@property (nonatomic, strong) QMMediaService *mediaService;
+
+
+/**
+ *  Add delegate (Multicast)
+ *
+ *  @param delegate Instance confirmed QMChatServiceDelegate protocol
+ */
+- (void)addDelegate:(id <QMChatAttachmentServiceDelegate>)delegate;
+
+/**
+ *  Remove delegate from observed list
+ *
+ *  @param delegate Instance confirmed QMChatServiceDelegate protocol
+ */
+- (void)removeDelegate:(id <QMChatAttachmentServiceDelegate>)delegate;
+
 /**
  *  Chat attachment service delegate
+ *
+ *  @warning *Deprecated in QMServices 0.4.7:* Use 'addDelegate:' instead.
  */
-@property (nonatomic, weak, nullable) id<QMChatAttachmentServiceDelegate> delegate;
+@property (nonatomic, weak, nullable) id<QMChatAttachmentServiceDelegate> delegate DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.4.7. Use 'addDelegate:' instead.");
 
 /**
  *  Upload and send attachment message to dialog.
@@ -68,7 +88,11 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param image        Attachment image
  *  @param completion   Send message result
  */
-- (void)uploadAndSendAttachmentMessage:(QBChatMessage *)message toDialog:(QBChatDialog *)dialog withChatService:(QMChatService *)chatService withAttachedImage:(UIImage *)image completion:(nullable QBChatCompletionBlock)completion;
+- (void)uploadAndSendAttachmentMessage:(QBChatMessage *)message
+                              toDialog:(QBChatDialog *)dialog
+                       withChatService:(QMChatService *)chatService
+                     withAttachedImage:(UIImage *)image
+                            completion:(nullable QBChatCompletionBlock)completion;
 
 /**
  *  Get image by attachment message.
@@ -87,7 +111,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param attachmentMessage message with attachment
  *  @param completion        fetched image or error if failed
  */
-- (void)imageForAttachmentMessage:(QBChatMessage *)attachmentMessage completion:(nullable void(^)(NSError * _Nullable error, UIImage * _Nullable image))completion;
+- (void)imageForAttachmentMessage:(QBChatMessage *)attachmentMessage
+                       completion:(nullable void(^)(NSError * _Nullable error, UIImage * _Nullable image))completion;
 
 /**
  *  Get image local image by attachment message.
@@ -95,7 +120,34 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param attachmentMessage      message with attachment
  *  @param completion             local image or nil if no image
  */
-- (void)localImageForAttachmentMessage:(QBChatMessage *)attachmentMessage completion:(nullable void(^)(NSError * _Nullable error, UIImage * _Nullable image))completion;
+- (void)localImageForAttachmentMessage:(QBChatMessage *)attachmentMessage
+                            completion:(nullable void(^)(NSError * _Nullable error, UIImage * _Nullable image))completion;
+
+//MARK: - Media
+
+/**
+ *  Upload and send attachment message to dialog.
+ *
+ *  @param message      QBChatMessage instance
+ *  @param dialog       QBChatDialog instance
+ *  @param chatService  QMChatService instance
+ *  @param mediaItem    QMMediaItem instance
+ *  @param completion   Send message result
+ */
+- (void)uploadAndSendAttachmentMessage:(QBChatMessage *)message
+                              toDialog:(QBChatDialog *)dialog
+                       withChatService:(QMChatService *)chatService
+                             mediaItem:(QMMediaItem *)mediaItem
+                            completion:(nullable QBChatCompletionBlock)completion;
+
+/**
+ *  Get media item by attachment message.
+ *
+ *  @param attachmentMessage message with attachment
+ *  @param completion        fetched media item or error if failed
+ */
+- (void)mediaItemForAttachmentMessage:(QBChatMessage *)message
+                           completion:(nullable void(^)(QMMediaItem * _Nullable mediaItem, NSError * _Nullable error))completion;
 
 @end
 
