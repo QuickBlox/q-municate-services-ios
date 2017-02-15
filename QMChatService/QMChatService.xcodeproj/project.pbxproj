@@ -19,6 +19,7 @@
 		E0883F151E50D37200C9E8AD /* QMMediaDownloadService.m in Sources */ = {isa = PBXBuildFile; fileRef = E0883F001E50D37200C9E8AD /* QMMediaDownloadService.m */; };
 		E0883F161E50D37200C9E8AD /* QMMediaWebHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = E0883F061E50D37200C9E8AD /* QMMediaWebHandler.m */; };
 		E0883F171E50D37200C9E8AD /* QMMediaUploadService.m in Sources */ = {isa = PBXBuildFile; fileRef = E0883F0A1E50D37200C9E8AD /* QMMediaUploadService.m */; };
+		E097E3CE1E538391005F2E4E /* QMMediaError.m in Sources */ = {isa = PBXBuildFile; fileRef = E097E3CD1E538391005F2E4E /* QMMediaError.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +40,7 @@
 		5861948D1D2C0243007FA393 /* QBChatAttachment+QMCustomData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "QBChatAttachment+QMCustomData.m"; sourceTree = "<group>"; };
 		8620BC5A1B0F7E0A005ED359 /* Quickblox.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; lineEnding = 0; name = Quickblox.xcconfig; path = ../Quickblox.xcconfig; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.xcconfig; };
 		E022F58F1E51ABEB00C15B93 /* QMMediaServiceDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMMediaServiceDelegate.h; sourceTree = "<group>"; };
+		E0452D631E545E39004BC4F7 /* QMMediaBlocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMMediaBlocks.h; sourceTree = "<group>"; };
 		E0883EF31E50D37200C9E8AD /* QMMediaItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMMediaItem.h; sourceTree = "<group>"; };
 		E0883EF41E50D37200C9E8AD /* QMMediaItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMMediaItem.m; sourceTree = "<group>"; };
 		E0883EF51E50D37200C9E8AD /* QMMediaService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMMediaService.h; sourceTree = "<group>"; };
@@ -52,11 +54,12 @@
 		E0883F031E50D37200C9E8AD /* QMMediaDownloadServiceDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMMediaDownloadServiceDelegate.h; sourceTree = "<group>"; };
 		E0883F051E50D37200C9E8AD /* QMMediaWebHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMMediaWebHandler.h; sourceTree = "<group>"; };
 		E0883F061E50D37200C9E8AD /* QMMediaWebHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMMediaWebHandler.m; sourceTree = "<group>"; };
-		E0883F071E50D37200C9E8AD /* QMRestAPIBlocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMRestAPIBlocks.h; sourceTree = "<group>"; };
 		E0883F091E50D37200C9E8AD /* QMMediaUploadService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMMediaUploadService.h; sourceTree = "<group>"; };
 		E0883F0A1E50D37200C9E8AD /* QMMediaUploadService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMMediaUploadService.m; sourceTree = "<group>"; };
 		E0883F0B1E50D37200C9E8AD /* QMMediaUploadServiceDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMMediaUploadServiceDelegate.h; sourceTree = "<group>"; };
 		E0883F0D1E50D37200C9E8AD /* QMMediaWebServiceDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMMediaWebServiceDelegate.h; sourceTree = "<group>"; };
+		E097E3CC1E538391005F2E4E /* QMMediaError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMMediaError.h; sourceTree = "<group>"; };
+		E097E3CD1E538391005F2E4E /* QMMediaError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMMediaError.m; sourceTree = "<group>"; };
 		FB2CFA0A1AF0DD6400E7F3D2 /* QMChatTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = QMChatTypes.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -146,6 +149,8 @@
 		E0883EF11E50D37200C9E8AD /* QMMediaService */ = {
 			isa = PBXGroup;
 			children = (
+				E0452D631E545E39004BC4F7 /* QMMediaBlocks.h */,
+				E097E3CB1E538391005F2E4E /* QMMediaError */,
 				E022F58E1E51ABEB00C15B93 /* QMMediaServiceDelegate */,
 				E0883EF21E50D37200C9E8AD /* QMMediaItem */,
 				E0883EF51E50D37200C9E8AD /* QMMediaService.h */,
@@ -200,7 +205,6 @@
 				E0883F001E50D37200C9E8AD /* QMMediaDownloadService.m */,
 				E0883F011E50D37200C9E8AD /* QMMediaDownloadServiceDelegates */,
 				E0883F041E50D37200C9E8AD /* QMMediaDownloadServiceHandler */,
-				E0883F071E50D37200C9E8AD /* QMRestAPIBlocks.h */,
 			);
 			path = QMMediaDownloadSevice;
 			sourceTree = "<group>";
@@ -239,6 +243,15 @@
 				E0883F0D1E50D37200C9E8AD /* QMMediaWebServiceDelegate.h */,
 			);
 			path = QMMediaWebDelegate;
+			sourceTree = "<group>";
+		};
+		E097E3CB1E538391005F2E4E /* QMMediaError */ = {
+			isa = PBXGroup;
+			children = (
+				E097E3CC1E538391005F2E4E /* QMMediaError.h */,
+				E097E3CD1E538391005F2E4E /* QMMediaError.m */,
+			);
+			path = QMMediaError;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -303,6 +316,7 @@
 				55F41E371A0A4C3B008D1C68 /* QMDialogsMemoryStorage.m in Sources */,
 				E0883F121E50D37200C9E8AD /* QMMediaItem.m in Sources */,
 				E0883F161E50D37200C9E8AD /* QMMediaWebHandler.m in Sources */,
+				E097E3CE1E538391005F2E4E /* QMMediaError.m in Sources */,
 				E0883F131E50D37200C9E8AD /* QMMediaService.m in Sources */,
 				55F5FA571A289B4B004490FB /* QMMessagesMemoryStorage.m in Sources */,
 				E0883F171E50D37200C9E8AD /* QMMediaUploadService.m in Sources */,

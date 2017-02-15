@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "QMChatTypes.h"
 
 @interface QMMediaError : NSObject
 

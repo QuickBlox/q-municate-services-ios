@@ -8,24 +8,25 @@
 
 #import "QMMediaError.h"
 
+
 @implementation QMMediaError
 
 + (instancetype)errorWithResponse:(QBResponse *)response {
     return  [[self alloc] initWithResponse:response];
 }
 
-- (instancetype)initWithResponse:(QBResponse *)response {
+- (instancetype)initWithResponse:(QBResponse *)response {
     
     if (self = [super init]) {
         
         _error = response.error.error;
         
         if (response.status == QBResponseStatusCodeNotFound) {
-            _attachmentStatus = QMMessageAttachmentStatusError
+            _attachmentStatus = QMMessageAttachmentStatusError;
             
         }
         else {
-            _attachmentStatus = QMMessageAttachmentStatusNotLoaded
+            _attachmentStatus = QMMessageAttachmentStatusNotLoaded;
         }
     }
     
