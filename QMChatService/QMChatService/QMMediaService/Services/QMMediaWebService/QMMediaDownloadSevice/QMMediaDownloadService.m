@@ -6,25 +6,26 @@
 //  Copyright © 2017 quickblox. All rights reserved.
 //
 
-#import "EXTScope.h"
-
 #import "QMMediaDownloadServiceDelegate.h"
 #import "QMMediaDownloadDelegate.h"
 
+
 #import "QMMediaDownloadService.h"
 
-#import "QMRestAPIBlocks.h"
+#import "QMMediaBlocks.h"
 
 #import "QMMediaWebHandler.h"
 
 #import <QuickBlox/QBMulticastDelegate.h>
 #import "QMSLog.h"
 
+#import "QMMediaError.h"
+
 @interface QMMediaDownloadService()
 
 @property (strong, nonatomic) QBMulticastDelegate <QMMediaDownloadDelegate> *multicastDelegate;
-@property (strong, nonatomic) QMChatAttachmentService *attachmentService;
 @property (strong, nonatomic) NSMutableDictionary *downloadHandlers;
+
 
 @property (strong, nonatomic) dispatch_queue_t barrierQueue;
 
@@ -42,7 +43,6 @@
     if (self = [super init]) {
         
         _multicastDelegate = (id <QMMediaDownloadDelegate>)[[QBMulticastDelegate alloc] init];
-        _attachmentService = [[QMChatAttachmentService alloc] init];
         _downloadHandlers = [NSMutableDictionary dictionary];
         _barrierQueue = dispatch_queue_create("com.quickblox.QMMediaDownloadService", DISPATCH_QUEUE_CONCURRENT);
         
@@ -56,7 +56,10 @@
             withCompletionBlock:(QMMediaRestCompletionBlock)completionBlock
                   progressBlock:(QMMediaProgressBlock)progressBlock {
     
-    [self addListenerToMediaItemWithID:mediaID withCompletionBlock:completionBlock progressBlock:progressBlock];
+    [self addListenerToMediaItemWithID:mediaID
+                   withCompletionBlock:completionBlock
+                         progressBlock:progressBlock];
+    
     [self downloadMediaItemWithID:mediaID delegate:nil];
 }
 
@@ -68,6 +71,7 @@
     }
     
     [QBRequest downloadFileWithUID:mediaID  successBlock:^(QBResponse *response, NSData *fileData) {
+        
         if (fileData) {
             globalCompletionBlock(mediaID, fileData, nil, self);
         }
@@ -76,8 +80,9 @@
         globalProgressBlock(mediaID,status.percentOfCompletion, self);
         
     } errorBlock:^(QBResponse *response) {
+        QMMediaError *error = [QMMediaError errorWithResponse:response];
+        globalCompletionBlock(nil, nil, error, self);
         
-        globalCompletionBlock(mediaID, nil, response.error.error, self);
     }];
 }
 
@@ -162,8 +167,8 @@ void (^globalProgressBlock)(NSString *mediaID, float progress, QMMediaDownloadSe
 };
 
 
-void (^globalCompletionBlock)(NSString *mediaID, NSData *data, NSError *error, QMMediaDownloadService *downloadService) =
-^(NSString *mediaID, NSData *data, NSError *error, QMMediaDownloadService *downloadService)
+void (^globalCompletionBlock)(NSString *mediaID, NSData *data, QMMediaError *error, QMMediaDownloadService *downloadService) =
+^(NSString *mediaID, NSData *data, QMMediaError *error, QMMediaDownloadService *downloadService)
 {
     __block NSArray *handlers;
     

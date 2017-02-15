@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "QMMediaBlocks.h"
 
 @class QMMediaItem;
 @class QMChatService;
@@ -15,11 +15,6 @@
 @protocol QMMediaStoreServiceDelegate;
 @protocol QMMediaDownloadServiceDelegate;
 @protocol QMMediaUploadServiceDelegate;
-
-typedef void (^QMMediaCompletionBlock)(QMMediaItem *);
-
-typedef void (^QMMessageUploadProgressBlock)(float progress);
-typedef void (^QMMessageUploadCompletionBlock)(QMMediaItem *mediaItem, NSError *error);
 
 @protocol QMMediaServiceDelegate <NSObject>
 
@@ -43,7 +38,7 @@ typedef void (^QMMessageUploadCompletionBlock)(QMMediaItem *mediaItem, NSError *
 
 @optional
 
-- (BOOL)isReadyToPlay:(NSString *)mediaID contentType:(NSString *)contentType;
+- (BOOL)isReadyToPlay:(QMMediaItem *)item;
 
 @end
 

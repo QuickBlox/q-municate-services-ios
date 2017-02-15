@@ -10,7 +10,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "QMRestAPIBlocks.h"
+#import "QMMediaBlocks.h"
 
 @protocol QMMediaUploadDelegate;
 

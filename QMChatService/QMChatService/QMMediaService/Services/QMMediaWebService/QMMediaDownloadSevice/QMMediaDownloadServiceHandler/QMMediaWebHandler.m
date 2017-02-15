@@ -28,7 +28,7 @@
 }
 
 + (QMMediaWebHandler *)downloadingHandlerWithMediaID:(NSString *)handlerID
-                                            delegate:(id<QMMediaDownloadDelegate>)delegate {
+                                            delegate:(id <QMMediaDownloadDelegate>)delegate {
     
     QMMediaWebHandler *mediaHandler = [QMMediaWebHandler new];
     
@@ -51,3 +51,20 @@
 }
 
 @end
+
+@implementation QMMessageUploadHandler
+
++ (QMMessageUploadHandler *)uploadingHandlerWithID:(NSString *)handlerID
+                                   completionBlock:(QMMessageUploadCompletionBlock)completionBlock
+                                     progressBlock:(QMMessageUploadProgressBlock)progressBlock {
+    
+    QMMessageUploadHandler *mediaHandler = [QMMessageUploadHandler new];
+    mediaHandler.handlerID = handlerID;
+    mediaHandler.progressBlock = progressBlock;
+    mediaHandler.completionBlock = completionBlock;
+    
+    return mediaHandler;
+}
+
+@end
+

@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "QMRestAPIBlocks.h"
+#import "QMMediaBlocks.h"
 
 @protocol QMMediaDownloadDelegate;
 
@@ -25,13 +25,27 @@
                                   progressBlock:(QMMediaProgressBlock)progressBlock;
 
 + (QMMediaWebHandler *)downloadingHandlerWithID:(NSString *)handlerID
-                                       delegate:(id<QMMediaDownloadDelegate>)delegate;
+                                       delegate:(id <QMMediaDownloadDelegate>)delegate;
 
 + (QMMediaWebHandler *)uploadingHandlerWithID:(NSString *)handlerID
                               completionBlock:(QMMediaRestCompletionBlock)completionBlock
                                 progressBlock:(QMMediaProgressBlock)progressBlock;
 
 
+
+@end
+
+@interface QMMessageUploadHandler : NSObject
+
+@property (nonatomic, copy) NSString *handlerID;
+@property (nonatomic, copy) QMMessageUploadProgressBlock progressBlock;
+@property (nonatomic, copy) QMMessageUploadCompletionBlock completionBlock;
+
+@property (nonatomic, weak) id <QMMediaDownloadDelegate> delegate;
+
++ (QMMessageUploadHandler *)uploadingHandlerWithID:(NSString *)handlerID
+                                   completionBlock:(QMMessageUploadCompletionBlock)completionBlock
+                                     progressBlock:(QMMessageUploadProgressBlock)progressBlock;
 
 @end
 

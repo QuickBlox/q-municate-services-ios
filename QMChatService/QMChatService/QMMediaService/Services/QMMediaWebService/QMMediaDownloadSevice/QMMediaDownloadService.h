@@ -7,10 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <QMServicesDevelopment/QMServices.h>
 #import <QuickBlox/QBMulticastDelegate.h> 
 #import "QMMediaDownloadServiceDelegate.h"
 
+
 @interface QMMediaDownloadService : NSObject <QMMediaDownloadServiceDelegate>
+
 
 @end

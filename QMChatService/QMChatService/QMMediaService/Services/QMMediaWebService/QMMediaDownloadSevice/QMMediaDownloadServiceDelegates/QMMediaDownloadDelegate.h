@@ -6,6 +6,8 @@
 //  Copyright © 2017 quickblox. All rights reserved.
 //
 
+@class QMMediaError;
+
 @protocol QMMediaDownloadDelegate <NSObject>
 
 - (void)didStartDownloadingMediaWithID:(NSString *)mediaID;
@@ -15,6 +17,6 @@
 
 - (void)didEndDownloadingMediaWithID:(NSString *)mediaID
                            mediaData:(NSData *)mediaData
-                               error:(NSError *)error;
+                               error:(QMMediaError *)error;
 
 @end
