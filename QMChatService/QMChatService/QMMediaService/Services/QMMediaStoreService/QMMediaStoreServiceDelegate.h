@@ -9,12 +9,12 @@
 #import <Foundation/Foundation.h>
 
 @class QMMediaItem;
+
 @class  QBChatAttachment;
 
 @protocol  QMMediaStoreServiceDelegate <NSObject>
 
 - (BOOL)saveMediaItem:(QMMediaItem *)mediaItem;
-- (void)updateMediaItem:(QMMediaItem *)mediaItem;
 
 - (BOOL)isReadyToPlay:(NSString *)mediaID contentType:(NSString *)contentType;
 

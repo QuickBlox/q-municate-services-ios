@@ -11,13 +11,16 @@
 #import "QMMediaItem.h"
 #import "QMSLog.h"
 
-
+#import <AVKit/AVKit.h>
+#import <AVFoundation/AVFoundation.h>
 
 @interface QMMediaStoreService()
 
 @property (strong, nonatomic) NSMutableDictionary *audioMediaMemoryStorage;
 @property (strong, nonatomic) NSMutableDictionary *videoMediaMemoryStorage;
 @property (strong, nonatomic) NSMutableDictionary *imageMediaMemoryStorage;
+
+@property (strong, nonatomic) NSMutableDictionary *imagePreviewMemoryStorage;
 
 @end
 
@@ -35,6 +38,8 @@
         _audioMediaMemoryStorage = [NSMutableDictionary dictionary];
         _videoMediaMemoryStorage = [NSMutableDictionary dictionary];
         _imageMediaMemoryStorage = [NSMutableDictionary dictionary];
+        
+        _imagePreviewMemoryStorage = [NSMutableDictionary dictionary];
     }
     
     return self;
@@ -60,10 +65,16 @@
     BOOL sucess = [self saveData:data forMediaItem:mediaItem error:nil];
     
     if (sucess) {
+        
         mediaItem.localURL = [NSURL fileURLWithPath:mediaPath(mediaItem.mediaID)];
+        
         NSMutableDictionary *storage = [self storageForContentType:[mediaItem stringMediaType]];
         storage[mediaItem.mediaID] = mediaItem;
+        
+        mediaItem.duration = [self durationForItem:mediaItem];
+        mediaItem.thumbnailImage = [self thumbnailForItem:mediaItem];
     }
+    
     return sucess;
 }
 
@@ -174,8 +185,9 @@ static NSString* mediaPath(NSString *mediaID) {
            error:(NSError **)errorPtr {
     
     BOOL isSucceed = [mediaData writeToFile:mediaPath(mediaItem.mediaID)
-                          options:NSDataWritingAtomic
-                            error:errorPtr];
+                                    options:NSDataWritingAtomic
+                                      error:errorPtr];
+    return isSucceed;
 }
 
 - (NSData *)dataForMediaItem:(QMMediaItem *)item {
@@ -190,5 +202,58 @@ static NSString* mediaPath(NSString *mediaID) {
     
     return nil;
 }
+
+
+- (UIImage *)thumbnailForItem:(QMMediaItem *)mediaItem {
+    
+    NSAssert(mediaItem.localURL, @"media item should have local URL");
+    
+    if (mediaItem.contentType == QMMediaContentTypeCustom) {
+        return nil;
+    }
+    
+    UIImage *image = self.imagePreviewMemoryStorage[mediaItem.mediaID];
+    
+    if (image) {
+        
+        return image;
+    }
+    else {
+        NSURL *localURL = mediaItem.localURL;
+        
+        AVURLAsset *asset = [AVURLAsset URLAssetWithURL:localURL options:nil];
+        AVAssetImageGenerator *generator = [[AVAssetImageGenerator alloc] initWithAsset:asset];
+        generator.appliesPreferredTrackTransform = YES;
+        CMTime time = [asset duration]; time.value = 0;
+        
+        NSError *error = nil;
+        CMTime actualTime;
+        
+        CGImageRef imageRef = [generator copyCGImageAtTime:time actualTime:&actualTime error:&error];
+        UIImage *thumbnail = [[UIImage alloc] initWithCGImage:imageRef];
+        CGImageRelease(imageRef);
+        
+        self.imagePreviewMemoryStorage[mediaItem.mediaID] = thumbnail;
+        
+        return thumbnail;
+    }
+}
+
+
+- (NSInteger)durationForItem:(QMMediaItem *)mediaItem {
+    
+    NSAssert(mediaItem.localURL, @"media item should have local URL");
+    
+    NSInteger duration = 0;
+    
+    if (mediaItem.contentType != QMMediaContentTypeCustom) {
+        
+        AVURLAsset *asset = [AVURLAsset URLAssetWithURL:mediaItem.localURL options:nil];
+        duration = (NSInteger) round(CMTimeGetSeconds(asset.duration));
+    }
+    
+    return duration;
+}
+
 
 @end
