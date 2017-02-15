@@ -18,12 +18,16 @@ typedef NS_ENUM(NSInteger, QMMediaContentType) {
 
 @interface QMMediaItem : NSObject <NSCopying, NSCoding>
 
-@property (copy, nonatomic) NSString *mediaID;
+@property (nonatomic, copy) NSString *mediaID;
 
-@property (copy, nonatomic) NSString *name;
-@property (copy, nonatomic) NSURL *localURL;
-@property (copy, nonatomic) NSURL *remoteURL;
-@property (strong, nonatomic) NSData *data;
+@property (nonatomic, copy) NSURL *localURL;
+@property (nonatomic, copy) NSString *name;
+@property (nonatomic, copy) NSURL *remoteURL;
+@property (nonatomic, strong) NSData *data;
+
+//
+@property (nonatomic, assign) NSInteger duration;
+@property (nonatomic, strong) UIImage *thumbnailImage;
 
 @property (assign ,nonatomic, readonly) QMMediaContentType contentType;
 
@@ -32,8 +36,8 @@ typedef NS_ENUM(NSInteger, QMMediaContentType) {
 - (void)updateWithAttachment:(QBChatAttachment *)attachment;
 
 - (instancetype)initWithName:(NSString *)name
-                         localURL:(NSURL *)localURL
-                        remoteURL:(NSURL *)remoteURL
+                    localURL:(NSURL *)localURL
+                   remoteURL:(NSURL *)remoteURL
                  contentType:(QMMediaContentType)contentType;
 
 - (instancetype)initWithName:(NSString *)name
