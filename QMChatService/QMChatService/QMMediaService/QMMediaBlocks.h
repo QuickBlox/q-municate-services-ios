@@ -6,9 +6,15 @@
 //  Copyright © 2017 quickblox. All rights reserved.
 //
 
+#import "QMChatTypes.h"
+
 @class QMMediaItem;
 @class QBCBlob;
 @class QMMediaError;
+
+typedef void (^QMAttachmentMessageStatusBlock)(QMMessageAttachmentStatus status, QBChatMessage *message);
+
+typedef void (^QMAttachmentMesssageUploadProgressBlock)(float progress, QBChatMessage *message);
 
 typedef void (^QMMediaRestCompletionBlock)(NSString *mediaID, NSData *data, QMMediaError *error);
 typedef void (^QMMediaProgressBlock)(float progress);

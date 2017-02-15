@@ -10,10 +10,6 @@
 #import "QMChatService.h"
 #import "QBChatMessage+QMCustomParameters.h"
 #import "QMSLog.h"
-#import "QMMediaService.h"
-#import "QMMediaStoreService.h"
-#import "QMMediaUploadService.h"
-#import "QMMediaDownloadService.h"
 
 const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
@@ -30,7 +26,6 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 @property (strong, nonatomic) QMMessagesMemoryStorage *messagesMemoryStorage;
 
 @property (strong, nonatomic) QMChatAttachmentService *chatAttachmentService;
-@property (strong, nonatomic) QMMediaService *mediaService;
 
 @property (weak, nonatomic)   BFTask* loadEarlierMessagesTask;
 @property (strong, nonatomic) NSMutableDictionary *loadedAllMessages;
@@ -76,15 +71,8 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     self.dialogsMemoryStorage = [[QMDialogsMemoryStorage alloc] init];
     self.messagesMemoryStorage = [[QMMessagesMemoryStorage alloc] init];
     self.messagesMemoryStorage.delegate = self.deferredQueueManager;
-    self.chatAttachmentService = [[QMChatAttachmentService alloc] init];
-    self.mediaService = [[QMMediaService alloc] init];
-    QMMediaStoreService *mediaStoreService = [QMMediaStoreService new];
-    QMMediaUploadService *mediaUploadService = [QMMediaUploadService new];
-    QMMediaDownloadService *mediaDownloadService = [QMMediaDownloadService new];
     
-    self.mediaService.storeService = mediaStoreService;
-    self.mediaService.downloadService = mediaDownloadService;
-    self.mediaService.uploadService = mediaUploadService;
+    self.chatAttachmentService = [[QMChatAttachmentService alloc] init];
     
     [QBChat.instance addDelegate:self];
 }
@@ -1397,11 +1385,6 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
                          withMedia:mediaItem
                         completion:completion];
     
-//    [self.mediaService addUploadListenerForMessageWithID:attachmentMessage.ID completionBlock:^(QMMediaItem *mediaItem, NSError *error) {
-//        
-//    } progressBlock:^(float progress) {
-//        
-//    }];
 }
 
 #pragma mark - mark as delivered
