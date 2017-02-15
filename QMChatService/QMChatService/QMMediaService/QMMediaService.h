@@ -14,6 +14,7 @@
 
 @interface QMMediaService : NSObject <QMMediaServiceDelegate>
 
-@property (readonly, strong ,nonatomic) QMChatAttachmentService *attachmentService;
+@property (copy, nonatomic) QMAttachmentMessageStatusBlock onMessageDidChangeAttachmentStatus;
+@property (copy, nonatomic) QMAttachmentMesssageUploadProgressBlock onMessageDidChangeUploadingProgress;
 
 @end

@@ -24,7 +24,7 @@
 
 
 - (void)mediaForMessage:(QBChatMessage *)message
-    withCompletionBlock:(void(^)(NSArray<QMMediaItem *> *mediaArray))completion;
+    withCompletionBlock:(void(^)(QMMediaItem *mediaItem, NSError *error))completion;
 
 - (void)sendMessage:(QBChatMessage *)message
            toDialog:(QBChatDialog *)dialog
@@ -35,6 +35,13 @@
 - (void)addUploadListenerForMessageWithID:(NSString *)messageID
                           completionBlock:(QMMessageUploadCompletionBlock)completionBlock
                             progressBlock:(QMMessageUploadProgressBlock)progressBlock;
+
+- (void)addDownloadListenerForItemWithID:(NSString *)mediaItemID
+                         completionBlock:(QMMediaRestCompletionBlock)completionBlock
+                           progressBlock:(QMMediaProgressBlock)progressBlock;
+
+- (void)addStatusListenerForMessageWithID:(NSString *)messageID
+                              statusBlock:(void(^)(QMMessageAttachmentStatus))statusBlock;
 
 @optional
 

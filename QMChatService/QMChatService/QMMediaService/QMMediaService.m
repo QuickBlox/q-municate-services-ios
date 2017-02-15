@@ -29,6 +29,8 @@
 
 @property (strong, nonatomic) NSMutableDictionary *messageUploadHandlers;
 @property (strong, nonatomic) NSMutableDictionary *messageDownloadHandlers;
+@property (strong, nonatomic) NSMutableDictionary *messageStatusHandlers;
+
 @property (strong, nonatomic) dispatch_queue_t barrierQueue;
 
 @end
@@ -39,6 +41,7 @@
 @synthesize storeService = _storeService;
 @synthesize downloadService = _downloadService;
 @synthesize uploadService = _uploadService;
+
 
 //MARK: - NSObject
 
@@ -92,6 +95,21 @@
     
 }
 
+- (void)addDownloadListenerForItemWithID:(NSString *)mediaItemID
+                         completionBlock:(QMMediaRestCompletionBlock)completionBlock
+                           progressBlock:(QMMediaProgressBlock)progressBlock {
+    
+    [self.downloadService addListenerToMediaItemWithID:mediaItemID
+                                   withCompletionBlock:completionBlock
+                                         progressBlock:progressBlock];
+}
+
+- (void)addStatusListenerForMessageWithID:(NSString *)messageID
+                              statusBlock:(void(^)(QMMessageAttachmentStatus))statusBlock {
+    
+
+}
+
 - (void)addUploadingListenerForMessage:(QBChatMessage *)message
                        completionBlock:(QMMessageUploadCompletionBlock)completionBlock
                          progressBlock:(QMMessageUploadProgressBlock)progressBlock {
@@ -126,7 +144,7 @@
 
 
 - (void)mediaForMessage:(QBChatMessage *)message
-    withCompletionBlock:(void(^)(NSArray<QMMediaItem *> *array))completion {
+    withCompletionBlock:(void(^)(QMMediaItem *mediaItem, NSError *error))completion {
     
     if (message.attachmentStatus == QMMessageAttachmentStatusLoading || message.attachmentStatus == QMMessageAttachmentStatusError) {
         return;
@@ -138,7 +156,6 @@
         
         //Check for item in local storage
         QMMediaItem *mediaItem = [self.storeService mediaItemFromAttachment:attachment];
-        
         
         if (!mediaItem) {
             
@@ -164,17 +181,18 @@
                     
                     [strongSelf changeMessageAttachmentStatus:QMMessageAttachmentStatusLoaded forMessage:message];
                     
-                    if (completion) {
-                        completion(@[item]);
-                    }
                 }
                 else {
+                    
                     [strongSelf changeMessageAttachmentStatus:error.attachmentStatus forMessage:message];
                 }
+                
+                completion(item, error.error);
                 
                 globalDownloadCompletionBlock(message.ID, mediaID, data, error, strongSelf);
                 
             } progressBlock:^(float progress) {
+                
                 __strong typeof(weakSelf) strongSelf = weakSelf;
                 globalDownloadProgressBlock(message.ID, attachment.ID, progress, strongSelf);
             }];
@@ -182,7 +200,7 @@
         else {
             
             if (completion) {
-                completion(@[mediaItem]);
+                completion(mediaItem, nil);
             }
         }
         
@@ -260,7 +278,7 @@
 }
 
 //MARK:-  Global Blocks
-//MARK:  Global Blocks
+
 void (^globalUploadProgressBlock)(NSString *messageID,float progress, QMMediaService *mediaService) =
 ^(NSString *messageID, float progress, QMMediaService *mediaService) {
     
@@ -320,17 +338,23 @@ void (^globalDownloadCompletionBlock)(NSString *messageID, NSString *mediaID, NS
 
 - (void)changeMessageAttachmentStatus:(QMMessageAttachmentStatus)status forMessage:(QBChatMessage *)message {
     
-    message.attachmentStatus = status;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (self.onMessageDidChangeAttachmentStatus) {
+            self.onMessageDidChangeAttachmentStatus(status, message);
+        }
+       
+    });
+    
+}
+
+- (void)changeMessageUploadingProgress:(float)progress forMessage:(QBChatMessage *)message {
     
     dispatch_async(dispatch_get_main_queue(), ^{
         
-        if ([self.attachmentService.delegate respondsToSelector:@selector(chatAttachmentService:didChangeAttachmentStatus:forMessage:)]) {
-            [self.attachmentService.delegate chatAttachmentService:self.attachmentService didChangeAttachmentStatus:status forMessage:message];
+        if (self.onMessageDidChangeUploadingProgress) {
+            self.onMessageDidChangeUploadingProgress(progress, message);
         }
-        
     });
 }
-
-
 
 @end
