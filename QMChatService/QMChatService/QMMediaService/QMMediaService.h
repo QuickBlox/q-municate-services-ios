@@ -10,7 +10,10 @@
 
 #import "QMMediaServiceDelegate.h"
 
+@class QMChatAttachmentService;
+
 @interface QMMediaService : NSObject <QMMediaServiceDelegate>
 
+@property (readonly, strong ,nonatomic) QMChatAttachmentService *attachmentService;
 
 @end
