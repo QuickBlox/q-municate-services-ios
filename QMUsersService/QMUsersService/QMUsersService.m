@@ -45,6 +45,10 @@
     self.usersMemoryStorage = [[QMUsersMemoryStorage alloc] init];
 }
 
+- (void)free {
+    
+    [self.usersMemoryStorage free];
+}
 #pragma mark - Tasks
 
 - (BFTask *)loadFromCache {
