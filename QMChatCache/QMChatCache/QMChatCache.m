@@ -91,7 +91,7 @@ static QMChatCache *_chatCacheInstance = nil;
 
     }];
 }
-- (void)dialogsSortedBy:(NSString *)sortTerm ascending:(BOOL)ascending completion:(void(^)(NSArray *dialogs))completion {
+- (void)dialogsSortedBy:(NSString *)sortTerm ascending:(BOOL)ascending completion:(void(^)(NSArray<QBChatDialog *> *dialogs))completion {
     
     [self dialogsSortedBy:sortTerm ascending:ascending withPredicate:nil completion:completion];
 }
@@ -112,7 +112,7 @@ static QMChatCache *_chatCacheInstance = nil;
     }];
 }
 
-- (void)dialogsSortedBy:(NSString *)sortTerm ascending:(BOOL)ascending withPredicate:(NSPredicate *)predicate completion:(void(^)(NSArray *dialogs))completion {
+- (void)dialogsSortedBy:(NSString *)sortTerm ascending:(BOOL)ascending withPredicate:(NSPredicate *)predicate completion:(void(^)(NSArray<QBChatDialog *>  *dialogs))completion {
     
     __weak __typeof(self)weakSelf = self;
     
@@ -263,12 +263,12 @@ static QMChatCache *_chatCacheInstance = nil;
 
 #pragma mark Fetch Messages
 
-- (void)messagesWithDialogId:(NSString *)dialogId sortedBy:(NSString *)sortTerm ascending:(BOOL)ascending completion:(void(^)(NSArray *messages))completion {
+- (void)messagesWithDialogId:(NSString *)dialogId sortedBy:(NSString *)sortTerm ascending:(BOOL)ascending completion:(void(^)(NSArray<QBChatMessage *> *messages))completion {
     
     [self messagesWithPredicate:IS(@"dialogID", dialogId) sortedBy:sortTerm ascending:ascending completion:completion];
 }
 
-- (void)messagesWithPredicate:(NSPredicate *)predicate sortedBy:(NSString *)sortTerm ascending:(BOOL)ascending completion:(void(^)(NSArray *messages))completion {
+- (void)messagesWithPredicate:(NSPredicate *)predicate sortedBy:(NSString *)sortTerm ascending:(BOOL)ascending completion:(void(^)(NSArray<QBChatMessage *> *messages))completion {
     
     __weak __typeof(self)weakSelf = self;
     [self async:^(NSManagedObjectContext *context) {

@@ -277,36 +277,6 @@
 
 @end
 
-
-@implementation NSManagedObject (QMCDRecordDeprecatedShortHand)
-
-+ (instancetype) createInContext:(NSManagedObjectContext *)context
-{
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    return [self QM_createInContext:context];
-#pragma clang diagnostic pop
-}
-
-- (BOOL) deleteInContext:(NSManagedObjectContext *)context
-{
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    return [self QM_deleteInContext:context];
-#pragma clang diagnostic pop
-}
-
-- (instancetype) inContextIfTempObject:(NSManagedObjectContext *)otherContext
-{
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    return [self QM_inContextIfTempObject:otherContext];
-#pragma clang diagnostic pop
-}
-
-@end
-
-
 @implementation NSManagedObject (QMCDRequestsShortHand)
 
 + (NSUInteger) defaultBatchSize;

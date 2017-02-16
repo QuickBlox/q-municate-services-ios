@@ -35,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param storeName Store name
  */
 + (void)setupDBWithStoreNamed:(NSString *)storeName ;
-+ (void)setupDBWithStoreNamed:(NSString *)storeName applicationGroupIdentifier:(NSString *)appGroupIdentifier;
++ (void)setupDBWithStoreNamed:(NSString *)storeName applicationGroupIdentifier:(nullable NSString *)appGroupIdentifier;
 /**
  *  Clean clean chat cache with store name
  *

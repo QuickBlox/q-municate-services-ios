@@ -230,20 +230,6 @@
 
 @end
 
-#pragma mark - Deprecated Methods
-@implementation NSPersistentStore (QMCDRecordDeprecated)
-
-+ (NSURL *) QM_defaultURLForStoreName:(NSString *)storeFileName;
-{
-    return [self QM_fileURLForStoreName:storeFileName];
-}
-
-+ (NSURL *) QM_urlForStoreName:(NSString *)storeFileName;
-{
-    return [self QM_fileURLForStoreNameIfExistsOnDisk:storeFileName];
-}
-
-@end
 
 NSString *QM_storePathForApplicationGroupIdentifier(NSString *groupidentifier)
 {

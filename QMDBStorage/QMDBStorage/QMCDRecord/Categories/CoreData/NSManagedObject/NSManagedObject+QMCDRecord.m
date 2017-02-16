@@ -340,23 +340,3 @@
 
 @end
 
-#pragma mark - Deprecated Methods
-@implementation NSManagedObject (QMCDRecordDeprecated)
-
-+ (instancetype) QM_createInContext:(NSManagedObjectContext *)context
-{
-    return [self QM_createEntityInContext:context];
-}
-
-- (BOOL) QM_deleteInContext:(NSManagedObjectContext *)context
-{
-    return [self QM_deleteEntityInContext:context];
-}
-
-- (instancetype) QM_inContextIfTempObject:(NSManagedObjectContext *)otherContext;
-{
-    return [self QM_inContextIfTemporaryObject:otherContext];
-}
-
-@end
-

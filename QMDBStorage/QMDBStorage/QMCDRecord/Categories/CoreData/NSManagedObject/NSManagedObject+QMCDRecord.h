@@ -7,7 +7,6 @@
 #import <CoreData/CoreData.h>
 #import "QMCDRecord.h"
 #import "QMCDRecordMOGeneratorProtocol.h"
-#import "QMCDRecordDeprecated.h"
 
 @protocol QMCDRecordManagedObjectProtocol <NSObject>
 
@@ -261,13 +260,5 @@
  @since Available in v3.0 and later.
  */
 - (BOOL) QM_isValidForUpdate;
-
-@end
-
-@interface NSManagedObject (QMCDRecordDeprecated)
-
-+ (instancetype) QM_createInContext:(NSManagedObjectContext *)context QM_DEPRECATED_IN_3_0_PLEASE_USE("QM_createEntityInContext:");
-- (instancetype) QM_inContextIfTempObject:(NSManagedObjectContext *)otherContext QM_DEPRECATED_IN_3_0_PLEASE_USE("QM_inContextIfTemporaryObject:");
-- (BOOL) QM_deleteInContext:(NSManagedObjectContext *)context QM_DEPRECATED_IN_3_0_PLEASE_USE("QM_deleteEntityInContext:");
 
 @end

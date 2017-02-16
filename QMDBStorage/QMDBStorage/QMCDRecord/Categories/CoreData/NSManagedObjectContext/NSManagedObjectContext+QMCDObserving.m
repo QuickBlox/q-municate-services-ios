@@ -162,18 +162,3 @@ NSString * const QMCDRecordDidMergeChangesFromiCloudNotification = @"kQMCDRecord
 }
 
 @end
-
-#pragma mark - Deprecated Methods — DO NOT USE
-@implementation NSManagedObjectContext (QMCDObservingDeprecated)
-
-- (void)QM_observeContext:(NSManagedObjectContext *)otherContext
-{
-    [self QM_observeContextDidSave:otherContext];
-}
-
-- (void)QM_stopObservingContext:(NSManagedObjectContext *)otherContext
-{
-    [self QM_stopObservingContextDidSave:otherContext];
-}
-
-@end
