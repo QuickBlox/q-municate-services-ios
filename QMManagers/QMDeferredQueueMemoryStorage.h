@@ -18,13 +18,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)removeMessage:(QBChatMessage *)message;
 
-- (void)addMessages:(NSArray QB_GENERIC(QBChatMessage *) *)messages;
-- (void)removeMessages:(NSArray QB_GENERIC(QBChatMessage *) *)messages;
+- (void)addMessages:(NSArray<QBChatMessage *> *)messages;
+- (void)removeMessages:(NSArray<QBChatMessage *> *)messages;
 
 - (BOOL)containsMessage:(QBChatMessage *)message;
 
-- (NSArray QB_GENERIC(QBChatMessage *) *)messages;
-- (NSArray QB_GENERIC(QBChatMessage *) *)messagesSortedWithDescriptors:(NSArray QB_GENERIC(NSSortDescriptor*) *)descriptors;
+- (NSArray<QBChatMessage *> *)messages;
+- (NSArray<QBChatMessage *> *)messagesSortedWithDescriptors:(NSArray <NSSortDescriptor *> *)descriptors;
 
 @end
 

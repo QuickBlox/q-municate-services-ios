@@ -57,7 +57,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param contactListItems Array of QBContactListItem instances
  *  @param completion       Completion block is called after update or insert operation is completed
  */
-- (void)insertOrUpdateContactListWithItems:(NSArray QB_GENERIC(QBContactListItem *) *)contactListItems
+- (void)insertOrUpdateContactListWithItems:(NSArray<QBContactListItem *> *)contactListItems
                                 completion:(nullable dispatch_block_t)completion;
 
 /**
@@ -91,7 +91,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param completion Completion block that is called after the fetch has completed. Returns an array of QBContactListItem instances
  */
-- (void)contactListItems:(nullable void(^)(NSArray QB_GENERIC(QBContactListItem *) *contactListItems))completion;
+- (void)contactListItems:(nullable void(^)(NSArray<QBContactListItem *> *contactListItems))completion;
 
 /**
  *  Fetch contact list item wiht user ID
