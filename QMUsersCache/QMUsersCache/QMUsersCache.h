@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (nullable QMUsersCache *)instance;
 
-+ (void)setupDBWithStoreNamed:(NSString *)storeName applicationGroupIdentifier:(NSString *)appGroupIdentifier;
++ (void)setupDBWithStoreNamed:(NSString *)storeName applicationGroupIdentifier:(nullable NSString *)appGroupIdentifier;
 
 #pragma mark - Insert/Update/Delete users in cache
 
