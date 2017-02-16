@@ -29,7 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param dialogs QBChatDialog items
  *  @param join YES to join in dialog immediately
  */
-- (void)addChatDialogs:(NSArray QB_GENERIC(QBChatDialog *) *)dialogs andJoin:(BOOL)join;
+- (void)addChatDialogs:(NSArray<QBChatDialog *> *)dialogs andJoin:(BOOL)join;
 
 /**
  *  Delete dialog from memory storage
@@ -61,7 +61,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @return Array of QBChatDialog items
  */
-- (NSArray QB_GENERIC(QBChatDialog *) *)unreadDialogs;
+- (NSArray<QBChatDialog *> *)unreadDialogs;
 
 /**
  *  Get all dialogs with specific user ids.
@@ -70,14 +70,14 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @return array of finded QBChatDialog's
  */
-- (NSArray QB_GENERIC(QBChatDialog *) *)chatDialogsWithUsersIDs:(NSArray QB_GENERIC(NSNumber *) *)usersIDs;
+- (NSArray<QBChatDialog *> *)chatDialogsWithUsersIDs:(NSArray<NSNumber *> *)usersIDs;
 
 /**
  *  Get all dialogs in memory storage
  *
  *  @return Array of QBChatDialog items
  */
-- (NSArray QB_GENERIC(QBChatDialog *) *)unsortedDialogs;
+- (NSArray<QBChatDialog *> *)unsortedDialogs;
 
 /**
  *  Get all dialogs in memory storage sorted by last message date
@@ -86,7 +86,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @return Array of QBChatDialog items
  */
-- (NSArray QB_GENERIC(QBChatDialog *) *)dialogsSortByLastMessageDateWithAscending:(BOOL)ascending;
+- (NSArray<QBChatDialog *> *)dialogsSortByLastMessageDateWithAscending:(BOOL)ascending;
 
 /**
  *  Get all dialogs in memory storage sorted by updated at
@@ -95,7 +95,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @return Array of QBChatDialog items
  */
-- (NSArray QB_GENERIC(QBChatDialog *) *)dialogsSortByUpdatedAtWithAscending:(BOOL)ascending;
+- (NSArray<QBChatDialog *> *)dialogsSortByUpdatedAtWithAscending:(BOOL)ascending;
 
 /**
  *  Get all dialogs in memory storage sorted by sort descriptors
@@ -104,7 +104,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @return Array of QBChatDialog items
  */
-- (NSArray QB_GENERIC(QBChatDialog *) *)dialogsWithSortDescriptors:(NSArray QB_GENERIC(NSSortDescriptor *) *)descriptors;
+- (NSArray<QBChatDialog *> *)dialogsWithSortDescriptors:(NSArray <NSSortDescriptor *> *)descriptors;
 
 @end
 

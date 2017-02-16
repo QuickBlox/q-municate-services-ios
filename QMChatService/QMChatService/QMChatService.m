@@ -16,7 +16,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 #define kChatServiceSaveToHistoryTrue @"1"
 #define kQMLoadedAllMessages          @1
 
-@interface QMChatService() <QBChatDelegate, QMDeferredQueueManagerDelegate>
+@interface QMChatService()<QBChatDelegate, QMDeferredQueueManagerDelegate>
 
 @property (assign, nonatomic, readwrite) QMChatConnectionState chatConnectionState;
 @property (strong, nonatomic) QBMulticastDelegate <QMChatServiceDelegate, QMChatConnectionDelegate> *multicastDelegate;

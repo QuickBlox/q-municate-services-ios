@@ -80,7 +80,7 @@ static QMChatCache *_chatCacheInstance = nil;
 
 #pragma mark Fetch Dialogs
 
-- (void)allDialogsWithCompletion:(nullable void(^)(NSArray QB_GENERIC(QBChatDialog *) * _Nullable dialogs))completion {
+- (void)allDialogsWithCompletion:(nullable void(^)(NSArray<QBChatDialog *> * _Nullable dialogs))completion {
     __weak __typeof(self)weakSelf = self;
     
     [self async:^(NSManagedObjectContext *context) {
