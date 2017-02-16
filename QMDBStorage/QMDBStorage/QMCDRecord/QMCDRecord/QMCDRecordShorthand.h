@@ -1,6 +1,5 @@
 #ifdef QM_SHORTHAND
 
-#import "QMCDRecordDeprecated.h"
 #import "NSManagedObjectContext+QMCDSaves.h"
 
 
@@ -102,16 +101,6 @@
 - (void) awakeFromCreation;
 
 @end
-
-
-@interface NSManagedObject (QMCDRecordDeprecatedShortHand)
-
-+ (instancetype) createInContext:(NSManagedObjectContext *)context QM_DEPRECATED_IN_3_0_PLEASE_USE("createEntityInContext:");
-- (BOOL) deleteInContext:(NSManagedObjectContext *)context QM_DEPRECATED_IN_3_0_PLEASE_USE("deleteEntityInContext:");
-- (instancetype) inContextIfTempObject:(NSManagedObjectContext *)otherContext QM_DEPRECATED_IN_3_0_PLEASE_USE("inContextIfTemporaryObject:");
-
-@end
-
 
 @interface NSManagedObject (QMCDRequestsShortHand)
 

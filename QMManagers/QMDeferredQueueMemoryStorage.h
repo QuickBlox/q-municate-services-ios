@@ -18,9 +18,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)removeMessage:(QBChatMessage *)message;
 
-- (void)addMessages:(NSArray<QBChatMessage *> *)messages;
-- (void)removeMessages:(NSArray<QBChatMessage *> *)messages;
-
 - (BOOL)containsMessage:(QBChatMessage *)message;
 
 - (NSArray<QBChatMessage *> *)messages;

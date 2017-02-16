@@ -7,7 +7,6 @@
 //
 
 #import <CoreData/CoreData.h>
-#import "QMCDRecordDeprecated.h"
 
 extern NSString * const QMCDRecordDidMergeChangesFromiCloudNotification;
 
@@ -77,13 +76,6 @@ extern NSString * const QMCDRecordDidMergeChangesFromiCloudNotification;
  @since Available in v2.0 and later.
  */
 - (void) QM_stopObservingiCloudChangesInCoordinator:(NSPersistentStoreCoordinator *)coordinator;
-
-@end
-
-@interface NSManagedObjectContext (QMCDObservingDeprecated)
-
-- (void) QM_observeContext:(NSManagedObjectContext *)otherContext QM_DEPRECATED_IN_3_0_PLEASE_USE("QM_observeContextDidSave:");
-- (void) QM_stopObservingContext:(NSManagedObjectContext *)otherContext QM_DEPRECATED_IN_3_0_PLEASE_USE("QM_stopObservingContextDidSave");
 
 @end
 

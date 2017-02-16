@@ -68,7 +68,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     self.multicastDelegate = (id<QMChatServiceDelegate, QMChatConnectionDelegate>)[[QBMulticastDelegate alloc] init];
     self.dialogsMemoryStorage = [[QMDialogsMemoryStorage alloc] init];
     self.messagesMemoryStorage = [[QMMessagesMemoryStorage alloc] init];
-    self.messagesMemoryStorage.delegate = self.deferredQueueManager;
+    self.messagesMemoryStorage.delegate = (id<QMMemoryTemporaryQueueDelegate>)self.deferredQueueManager;
     self.chatAttachmentService = [[QMChatAttachmentService alloc] init];
     
     [QBChat.instance addDelegate:self];
@@ -1321,7 +1321,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     
     [self sendMessage:message
              toDialog:dialog
-        saveToHistory:message.saveToHistory
+        saveToHistory:message.saveToHistory.integerValue
         saveToStorage:YES
            completion:completion];
 }

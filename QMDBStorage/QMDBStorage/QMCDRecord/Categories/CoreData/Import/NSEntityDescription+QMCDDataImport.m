@@ -14,7 +14,7 @@
 - (NSManagedObject *) QM_createInstanceInContext:(NSManagedObjectContext *)context;
 {
     Class relatedClass = NSClassFromString([self managedObjectClassName]);
-    NSManagedObject *newInstance = [relatedClass QM_createInContext:context];
+    NSManagedObject *newInstance = [relatedClass QM_createEntityInContext:context];
 
     return newInstance;
 }

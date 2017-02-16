@@ -6,7 +6,6 @@
 //
 
 #import "QMCDRecord.h"
-#import "QMCDRecordDeprecated.h"
 
 @interface NSPersistentStore (QMCDRecord)
 
@@ -36,17 +35,6 @@
 + (NSURL *) QM_fileURLForStoreName:(NSString *)storeFileName applicationGroupIdentifier:(NSString *)appGroupIdentifier;
 
 + (NSDictionary *)QM_migrationOptionsForStoreName:(NSString *)storeFileName applicationGroupIdentifier:(NSString *)appGroupIdentifier;
-
-/**
- Uses the result of `+ QM_fileURLForStoreName:`, but returns nil if the store file does not exist at the returned URL.
-
- @param storeFileName Filename that you'd like to use. This should include a valid file extension.
-
- @return URL to proposed persistent store file if it exists, otherwise nil
-
- @since Available in v2.3 and later.
- */
-+ (NSURL *) QM_fileURLForStoreNameIfExistsOnDisk:(NSString *)storeFileName;
 
 /**
  Uses the result of `+ QM_fileURLForStoreName: applicationGroupIdentifier:`, but returns nil if the store file does not exist at the returned URL.
@@ -84,12 +72,5 @@
  @since Available in v2.3 and later.
  */
 + (BOOL) QM_removePersistentStoreFilesAtURL:(NSURL*)url;
-
-@end
-
-@interface NSPersistentStore (QMCDRecordDeprecated)
-
-+ (NSURL *) QM_defaultURLForStoreName:(NSString *)storeFileName QM_DEPRECATED_IN_3_0_PLEASE_USE("QM_fileURLForStoreName:");
-+ (NSURL *) QM_urlForStoreName:(NSString *)storeFileName QM_DEPRECATED_IN_3_0_PLEASE_USE("QM_fileURLForStoreNameIfExistsOnDisk:");
 
 @end

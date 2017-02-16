@@ -131,7 +131,6 @@
 		558666601A122DBC00927430 /* QMCDRecord+Setup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = "QMCDRecord+Setup.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		558666611A122DBC00927430 /* QMCDRecord+VersionInformation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QMCDRecord+VersionInformation.h"; sourceTree = "<group>"; };
 		558666621A122DBC00927430 /* QMCDRecord+VersionInformation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "QMCDRecord+VersionInformation.m"; sourceTree = "<group>"; };
-		558666631A122DBC00927430 /* QMCDRecordDeprecated.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMCDRecordDeprecated.h; sourceTree = "<group>"; };
 		558666641A122DBC00927430 /* QMCDRecordInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMCDRecordInternal.h; sourceTree = "<group>"; };
 		558666651A122DBC00927430 /* QMCDRecordInternal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = QMCDRecordInternal.m; sourceTree = "<group>"; };
 		558666661A122DBC00927430 /* QMCDRecordLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = QMCDRecordLogging.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -313,7 +312,6 @@
 				558666601A122DBC00927430 /* QMCDRecord+Setup.m */,
 				558666611A122DBC00927430 /* QMCDRecord+VersionInformation.h */,
 				558666621A122DBC00927430 /* QMCDRecord+VersionInformation.m */,
-				558666631A122DBC00927430 /* QMCDRecordDeprecated.h */,
 				558666641A122DBC00927430 /* QMCDRecordInternal.h */,
 				558666651A122DBC00927430 /* QMCDRecordInternal.m */,
 				558666661A122DBC00927430 /* QMCDRecordLogging.h */,

@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class BFTask;
 
-@protocol QMDeferredQueueManagerDelegate;
+@protocol QMDeferredQueueManagerDelegate, QMMemoryTemporaryQueueDelegate;
 
 typedef NS_ENUM(NSUInteger, QMMessageStatus) {
     QMMessageStatusSent = 0,
@@ -22,7 +22,7 @@ typedef NS_ENUM(NSUInteger, QMMessageStatus) {
     QMMessageStatusNotSent
 };
 
-@interface QMDeferredQueueManager : NSObject
+@interface QMDeferredQueueManager : NSObject 
 
 @property (nonatomic, assign) NSTimeInterval autoSendTimeInterval;
 @property (nonatomic, assign) NSUInteger maxDeferredActionsCount;

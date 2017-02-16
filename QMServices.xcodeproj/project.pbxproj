@@ -23,7 +23,6 @@
 
 /* Begin PBXBuildFile section */
 		2CE107F71B594BD800379D96 /* QMServicesManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 2CE107F51B594BD800379D96 /* QMServicesManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		2CE107F81B594BD800379D96 /* QMServicesManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CE107F61B594BD800379D96 /* QMServicesManager.m */; };
 		55013A801A1F68280030C134 /* QMServices.m in Sources */ = {isa = PBXBuildFile; fileRef = 55013A7F1A1F68280030C134 /* QMServices.m */; };
 		55013AEC1A1F72350030C134 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55013AEB1A1F72350030C134 /* Foundation.framework */; };
 		55A3651C1A2744A800C792C0 /* libQMAuthService.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 55A364E51A27378F00C792C0 /* libQMAuthService.a */; };
@@ -38,11 +37,8 @@
 		86E40FF11BDA4C50002B0496 /* libQMUsersCache.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 86F9CD721BDA28110021B6F0 /* libQMUsersCache.a */; };
 		86E40FF21BDA4C50002B0496 /* libQMUsersService.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 86F9CD571BDA27ED0021B6F0 /* libQMUsersService.a */; };
 		E0C3C38B1D632766003C0FB8 /* QMDeferredQueueManager.h in Headers */ = {isa = PBXBuildFile; fileRef = E0C3C3891D632766003C0FB8 /* QMDeferredQueueManager.h */; };
-		E0C3C38C1D632766003C0FB8 /* QMDeferredQueueManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E0C3C38A1D632766003C0FB8 /* QMDeferredQueueManager.m */; };
 		E0C3C3951D632789003C0FB8 /* QMDeferredAction.h in Headers */ = {isa = PBXBuildFile; fileRef = E0C3C3931D632789003C0FB8 /* QMDeferredAction.h */; };
-		E0C3C3961D632789003C0FB8 /* QMDeferredAction.m in Sources */ = {isa = PBXBuildFile; fileRef = E0C3C3941D632789003C0FB8 /* QMDeferredAction.m */; };
 		E0C3C3991D632FA9003C0FB8 /* QMDeferredQueueMemoryStorage.h in Headers */ = {isa = PBXBuildFile; fileRef = E0C3C3971D632FA9003C0FB8 /* QMDeferredQueueMemoryStorage.h */; };
-		E0C3C39A1D632FA9003C0FB8 /* QMDeferredQueueMemoryStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = E0C3C3981D632FA9003C0FB8 /* QMDeferredQueueMemoryStorage.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -604,10 +600,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E0C3C39A1D632FA9003C0FB8 /* QMDeferredQueueMemoryStorage.m in Sources */,
-				E0C3C38C1D632766003C0FB8 /* QMDeferredQueueManager.m in Sources */,
-				E0C3C3961D632789003C0FB8 /* QMDeferredAction.m in Sources */,
-				2CE107F81B594BD800379D96 /* QMServicesManager.m in Sources */,
 				55013A801A1F68280030C134 /* QMServices.m in Sources */,
 				584AFDCD1D13F462007D286D /* QMSLog.m in Sources */,
 			);
