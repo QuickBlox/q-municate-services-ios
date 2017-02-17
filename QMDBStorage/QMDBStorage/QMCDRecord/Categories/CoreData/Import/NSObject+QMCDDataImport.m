@@ -14,7 +14,7 @@ NSUInteger const kQMCDRecordImportMaximumAttributeFailoverDepth = 10;
 
 @implementation NSObject (QMCDRecordDataImport)
 
-- (NSString *) QM_lookupKeyForProperty:(NSPropertyDescription *)propertyDescription;
+- (NSString *)QM_lookupKeyForProperty:(NSPropertyDescription *)propertyDescription;
 {
     NSString *attributeName = [propertyDescription name];
     NSDictionary *userInfo = [propertyDescription userInfo];
@@ -36,13 +36,13 @@ NSUInteger const kQMCDRecordImportMaximumAttributeFailoverDepth = 10;
     return value != nil ? lookupKey : nil;
 }
 
-- (id) QM_valueForAttribute:(NSAttributeDescription *)attributeInfo
+- (id)QM_valueForAttribute:(NSAttributeDescription *)attributeInfo
 {
     NSString *lookupKey = [self QM_lookupKeyForProperty:attributeInfo];
     return lookupKey ? [self valueForKeyPath:lookupKey] : nil;
 }
 
-- (NSString *) QM_lookupKeyForRelationship:(NSRelationshipDescription *)relationshipInfo
+- (NSString *)QM_lookupKeyForRelationship:(NSRelationshipDescription *)relationshipInfo
 {
     NSEntityDescription *destinationEntity = [relationshipInfo destinationEntity];
     if (destinationEntity == nil) 
@@ -57,7 +57,7 @@ NSUInteger const kQMCDRecordImportMaximumAttributeFailoverDepth = 10;
     return lookupKey;
 }
 
-- (id) QM_relatedValueForRelationship:(NSRelationshipDescription *)relationshipInfo
+- (id)QM_relatedValueForRelationship:(NSRelationshipDescription *)relationshipInfo
 {
     NSString *lookupKey = [self QM_lookupKeyForRelationship:relationshipInfo];
     return lookupKey ? [self valueForKeyPath:lookupKey] : nil;

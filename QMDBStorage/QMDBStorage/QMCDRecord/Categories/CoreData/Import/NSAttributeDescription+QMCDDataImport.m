@@ -14,18 +14,18 @@
 
 @implementation NSAttributeDescription (QMCDRecordDataImport)
 
-- (NSString *) QM_primaryKey;
+- (NSString *)QM_primaryKey;
 {
     return nil;
 }
 
-- (id) QM_colorValueForKeyPath:(NSString *)keyPath fromObjectData:(id)objectData;
+- (id)QM_colorValueForKeyPath:(NSString *)keyPath fromObjectData:(id)objectData;
 {
     id value = [objectData valueForKeyPath:keyPath];
     return MRColorFromString(value);
 }
 
-- (NSDate *) QM_dateValueForKeyPath:(NSString *)keyPath fromObjectData:(id)objectData;
+- (NSDate *)QM_dateValueForKeyPath:(NSString *)keyPath fromObjectData:(id)objectData;
 {
     id value = [objectData valueForKeyPath:keyPath];
     if (![value isKindOfClass:[NSDate class]])
@@ -50,7 +50,7 @@
     return value;
 }
 
-- (NSNumber *) QM_numberValueForKeyPath:(NSString *)keyPath fromObjectData:(id)objectData;
+- (NSNumber *)QM_numberValueForKeyPath:(NSString *)keyPath fromObjectData:(id)objectData;
 {
     id value = [objectData valueForKeyPath:keyPath];
     if (![value isKindOfClass:[NSNumber class]])
@@ -60,19 +60,19 @@
     return value;
 }
 
-- (NSNumber *) QM_booleanValueForKeyPath:(NSString *)keyPath fromObjectData:(id)objectData;
+- (NSNumber *)QM_booleanValueForKeyPath:(NSString *)keyPath fromObjectData:(id)objectData;
 {
     id value = [objectData valueForKeyPath:keyPath];
     return @([value boolValue]);
 }
 
-- (NSString *) QM_stringValueForKeyPath:(NSString *)keyPath fromObjectData:(id)objectData;
+- (NSString *)QM_stringValueForKeyPath:(NSString *)keyPath fromObjectData:(id)objectData;
 {
     id value = [objectData valueForKeyPath:keyPath];
     return [value description];
 }
 
-- (BOOL) QM_isNumericAttributeType;
+- (BOOL)QM_isNumericAttributeType;
 {
     NSAttributeType attributeType = [self attributeType];
     return
@@ -84,25 +84,25 @@
     attributeType == NSFloatAttributeType;
 }
 
-- (BOOL) QM_isStringAttributeType;
+- (BOOL)QM_isStringAttributeType;
 {
     NSAttributeType attributeType = [self attributeType];
     return attributeType == NSStringAttributeType;
 }
 
-- (BOOL) QM_isDateAttributeType;
+- (BOOL)QM_isDateAttributeType;
 {
     NSAttributeType attributeType = [self attributeType];
     return attributeType == NSDateAttributeType;
 }
 
-- (BOOL) QM_isBooleanAttributeType;
+- (BOOL)QM_isBooleanAttributeType;
 {
     NSAttributeType attributeType = [self attributeType];
     return attributeType == NSBooleanAttributeType;
 }
 
-- (BOOL) QM_isColorAttributeType;
+- (BOOL)QM_isColorAttributeType;
 {
     BOOL isColorAttributeType = NO;
     NSString *desiredAttributeType = [[self userInfo] valueForKey:kQMCDRecordImportAttributeValueClassNameKey];
@@ -113,7 +113,7 @@
     return isColorAttributeType;
 }
 
-- (id) QM_valueForKeyPath:(NSString *)keyPath fromObjectData:(id)objectData;
+- (id)QM_valueForKeyPath:(NSString *)keyPath fromObjectData:(id)objectData;
 {
     id value = [objectData valueForKeyPath:keyPath];
     if ([value isEqual:[NSNull null]])
@@ -144,7 +144,7 @@
     return value;   
 }
 
-- (BOOL) QM_shouldUseDefaultValueIfNoValuePresent;
+- (BOOL)QM_shouldUseDefaultValueIfNoValuePresent;
 {
     return [[[self userInfo] objectForKey:kQMCDRecordImportAttributeUseDefaultValueWhenNotPresent] boolValue];
 }

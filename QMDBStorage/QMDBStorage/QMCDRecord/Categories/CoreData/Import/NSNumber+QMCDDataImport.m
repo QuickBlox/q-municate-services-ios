@@ -12,17 +12,17 @@
 
 @implementation NSNumber (QMCDRecordDataImport)
 
-- (id) QM_relatedValueForRelationship:(NSRelationshipDescription *)relationshipInfo
+- (id)QM_relatedValueForRelationship:(NSRelationshipDescription *)relationshipInfo
 {
     return self;
 }
 
-- (NSString *) QM_lookupKeyForProperty:(NSPropertyDescription *)propertyDescription
+- (NSString *)QM_lookupKeyForProperty:(NSPropertyDescription *)propertyDescription
 {
     return nil;
 }
 
-- (NSDate *) QM_dateWithFormat:(NSString *)dateFormat;
+- (NSDate *)QM_dateWithFormat:(NSString *)dateFormat;
 {
     return MRDateFromNumber(self, [dateFormat isEqualToString:kQMCDRecordImportUnixTimeString]);
 }

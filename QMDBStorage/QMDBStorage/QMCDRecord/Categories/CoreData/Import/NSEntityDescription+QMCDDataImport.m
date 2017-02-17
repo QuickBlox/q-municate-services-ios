@@ -11,7 +11,7 @@
 
 @implementation NSEntityDescription (QMCDRecordDataImport)
 
-- (NSManagedObject *) QM_createInstanceInContext:(NSManagedObjectContext *)context;
+- (NSManagedObject *)QM_createInstanceInContext:(NSManagedObjectContext *)context;
 {
     Class relatedClass = NSClassFromString([self managedObjectClassName]);
     NSManagedObject *newInstance = [relatedClass QM_createEntityInContext:context];
@@ -19,7 +19,7 @@
     return newInstance;
 }
 
-- (NSAttributeDescription *) QM_attributeDescriptionForName:(NSString *)name;
+- (NSAttributeDescription *)QM_attributeDescriptionForName:(NSString *)name;
 {
     __block NSAttributeDescription *description = nil;
 
@@ -37,14 +37,14 @@
     return description;
 }
 
-- (NSAttributeDescription *) QM_primaryAttributeToRelateBy;
+- (NSAttributeDescription *)QM_primaryAttributeToRelateBy;
 {
     NSString *lookupKey = [[self userInfo] valueForKey:kQMCDRecordImportRelationshipLinkedByKey] ?: MRPrimaryKeyNameFromString([self name]);
 
     return [self QM_attributeDescriptionForName:lookupKey];
 }
 
-- (NSAttributeDescription *) QM_primaryAttribute;
+- (NSAttributeDescription *)QM_primaryAttribute;
 {
     NSString *lookupKey = [[self userInfo] valueForKey:kQMCDRecordImportDistinctAttributeKey];
     return [self QM_attributeDescriptionForName:lookupKey];

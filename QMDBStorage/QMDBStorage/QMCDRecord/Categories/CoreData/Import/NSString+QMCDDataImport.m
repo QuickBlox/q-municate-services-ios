@@ -12,7 +12,7 @@
 
 @implementation NSString (QMCDRecordDataImport)
 
-- (NSString *) QM_capitalizedFirstCharacterString;
+- (NSString *)QM_capitalizedFirstCharacterString;
 {
     if ([self length] > 0)
     {
@@ -22,12 +22,12 @@
     return self;
 }
 
-- (id) QM_relatedValueForRelationship:(NSRelationshipDescription *)relationshipInfo
+- (id)QM_relatedValueForRelationship:(NSRelationshipDescription *)relationshipInfo
 {
     return self;
 }
 
-- (NSString *) QM_lookupKeyForProperty:(NSPropertyDescription *)propertyDescription
+- (NSString *)QM_lookupKeyForProperty:(NSPropertyDescription *)propertyDescription
 {
     return nil;
 }

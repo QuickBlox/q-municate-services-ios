@@ -8,10 +8,10 @@
 
 @interface NSObject (QMCDRecordDataImport)
 
-- (NSString *) QM_lookupKeyForProperty:(NSPropertyDescription *)propertyDescription;
-- (id) QM_valueForAttribute:(NSAttributeDescription *)attributeInfo;
+- (NSString *)QM_lookupKeyForProperty:(NSPropertyDescription *)propertyDescription;
+- (id)QM_valueForAttribute:(NSAttributeDescription *)attributeInfo;
 
-- (NSString *) QM_lookupKeyForRelationship:(NSRelationshipDescription *)relationshipInfo;
-- (id) QM_relatedValueForRelationship:(NSRelationshipDescription *)relationshipInfo;
+- (NSString *)QM_lookupKeyForRelationship:(NSRelationshipDescription *)relationshipInfo;
+- (id)QM_relatedValueForRelationship:(NSRelationshipDescription *)relationshipInfo;
 
 @end

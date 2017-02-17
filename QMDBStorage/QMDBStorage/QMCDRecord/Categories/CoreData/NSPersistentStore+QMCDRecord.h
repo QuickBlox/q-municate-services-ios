@@ -18,7 +18,7 @@
 
  @since Available in v2.3 and later.
  */
-+ (NSURL *) QM_defaultLocalStoreUrl;
++ (NSURL *)QM_defaultLocalStoreUrl;
 
 /**
  Given the provided filename, return a URL to the default location for storing persistent stores. By default this is in the application support directory, ie: `/Users/${USER}/Library/Application Support/${MY_APPLICATION_NAME}/{$storeFileName}`
@@ -29,10 +29,10 @@
 
  @since Available in v2.3 and later.
  */
-+ (NSURL *) QM_fileURLForStoreName:(NSString *)storeFileName;
++ (NSURL *)QM_fileURLForStoreName:(NSString *)storeFileName;
 
 
-+ (NSURL *) QM_fileURLForStoreName:(NSString *)storeFileName applicationGroupIdentifier:(NSString *)appGroupIdentifier;
++ (NSURL *)QM_fileURLForStoreName:(NSString *)storeFileName applicationGroupIdentifier:(NSString *)appGroupIdentifier;
 
 + (NSDictionary *)QM_migrationOptionsForStoreName:(NSString *)storeFileName applicationGroupIdentifier:(NSString *)appGroupIdentifier;
 
@@ -43,13 +43,13 @@
  
  @return URL to proposed persistent store file if it exists, otherwise nil
  */
-+ (NSURL *) QM_fileURLForStoreNameIfExistsOnDisk:(NSString *)storeFileName applicationGroupIdentifier:(NSString *)appGroupIdentifier;
++ (NSURL *)QM_fileURLForStoreNameIfExistsOnDisk:(NSString *)storeFileName applicationGroupIdentifier:(NSString *)appGroupIdentifier;
 
-+ (NSURL *) QM_cloudURLForUbiqutiousContainer:(NSString *)bucketName;
++ (NSURL *)QM_cloudURLForUbiqutiousContainer:(NSString *)bucketName;
 
-- (NSArray *) QM_sqliteURLs;
+- (NSArray *)QM_sqliteURLs;
 
-- (BOOL) QM_copyToURL:(NSURL *)destinationUrl error:(NSError **)error;
+- (BOOL)QM_copyToURL:(NSURL *)destinationUrl error:(NSError **)error;
 
 /**
  Removes the store files for this persistent store.
@@ -60,7 +60,7 @@
 
  @since Available in v2.3 and later.
  */
-- (BOOL) QM_removePersistentStoreFiles;
+- (BOOL)QM_removePersistentStoreFiles;
 
 /**
  Removes the persistent store files at the specified URL, as well as any sidecar files that are present, such as STORENAME.sqlite-shm and STORENAME.sqlite-wal
@@ -71,6 +71,6 @@
 
  @since Available in v2.3 and later.
  */
-+ (BOOL) QM_removePersistentStoreFilesAtURL:(NSURL*)url;
++ (BOOL)QM_removePersistentStoreFilesAtURL:(NSURL*)url;
 
 @end

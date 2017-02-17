@@ -13,7 +13,7 @@
 
 @implementation NSRelationshipDescription (QMCDRecordDataImport)
 
-- (NSString *) QM_primaryKey;
+- (NSString *)QM_primaryKey;
 {
     NSString *primaryKeyName = [[self userInfo] valueForKey:kQMCDRecordImportDistinctAttributeKey] ?: 
     MRPrimaryKeyNameFromString([[self destinationEntity] name]);

@@ -8,9 +8,9 @@
 
 @interface NSAttributeDescription (QMCDRecordDataImport)
 
-- (NSString *) QM_primaryKey;
-- (id) QM_valueForKeyPath:(NSString *)keyPath fromObjectData:(id)objectData;
+- (NSString *)QM_primaryKey;
+- (id)QM_valueForKeyPath:(NSString *)keyPath fromObjectData:(id)objectData;
 
-- (BOOL) QM_shouldUseDefaultValueIfNoValuePresent;
+- (BOOL)QM_shouldUseDefaultValueIfNoValuePresent;
 
 @end

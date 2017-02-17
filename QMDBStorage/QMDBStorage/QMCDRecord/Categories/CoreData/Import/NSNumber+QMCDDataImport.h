@@ -8,8 +8,8 @@
 
 @interface NSNumber (QMCDRecordDataImport)
 
-- (NSString *) QM_lookupKeyForProperty:(NSPropertyDescription *)propertyDescription;
-- (id) QM_relatedValueForRelationship:(NSRelationshipDescription *)relationshipInfo;
+- (NSString *)QM_lookupKeyForProperty:(NSPropertyDescription *)propertyDescription;
+- (id)QM_relatedValueForRelationship:(NSRelationshipDescription *)relationshipInfo;
 
 /**
  If possible, converts the current number into a data using the specified format string.
@@ -21,6 +21,6 @@
 
  @since Available in v3.0 and later.
  */
-- (NSDate *) QM_dateWithFormat:(NSString *)dateFormat;
+- (NSDate *)QM_dateWithFormat:(NSString *)dateFormat;
 
 @end

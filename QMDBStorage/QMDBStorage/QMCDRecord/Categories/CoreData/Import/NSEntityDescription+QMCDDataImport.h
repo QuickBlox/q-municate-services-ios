@@ -47,6 +47,6 @@
  */
 - (NSAttributeDescription *)QM_primaryAttributeToRelateBy;
 
-- (NSAttributeDescription *) QM_primaryAttribute;
+- (NSAttributeDescription *)QM_primaryAttribute;
 
 @end

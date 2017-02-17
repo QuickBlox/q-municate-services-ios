@@ -8,6 +8,6 @@
 
 @interface NSRelationshipDescription (QMCDRecordDataImport)
 
-- (NSString *) QM_primaryKey;
+- (NSString *)QM_primaryKey;
 
 @end

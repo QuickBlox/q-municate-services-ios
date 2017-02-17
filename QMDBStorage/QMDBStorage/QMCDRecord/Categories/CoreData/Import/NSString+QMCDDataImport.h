@@ -15,7 +15,7 @@
 
  @since Available in v1.8.3 and later.
  */
-- (NSString *) QM_capitalizedFirstCharacterString;
+- (NSString *)QM_capitalizedFirstCharacterString;
 
 /**
  If possible, converts the current string into a data using the specified format string. 
@@ -27,6 +27,6 @@
 
  @since Available in v3.0 and later.
  */
-- (NSDate *) QM_dateWithFormat:(NSString *)dateFormat;
+- (NSDate *)QM_dateWithFormat:(NSString *)dateFormat;
 
 @end
