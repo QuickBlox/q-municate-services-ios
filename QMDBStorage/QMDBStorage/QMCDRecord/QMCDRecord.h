@@ -23,8 +23,6 @@
 #import "ClassicSQLiteQMCDRecordStack.h"
 #import "ClassicWithBackgroundCoordinatorSQLiteQMCDRecordStack.h"
 
-#import "InMemoryQMCDRecordStack.h"
-
 #import "AutoMigratingQMCDRecordStack.h"
 #import "AutoMigratingWithSourceAndTargetModelQMCDRecordStack.h"
 #import "ManuallyMigratingQMCDRecordStack.h"
@@ -42,7 +40,6 @@
 #import "NSPersistentStoreCoordinator+QMCDRecord.h"
 #import "NSPersistentStoreCoordinator+QMCDAutoMigrations.h"
 #import "NSPersistentStoreCoordinator+QMCDManualMigrations.h"
-#import "NSPersistentStoreCoordinator+QMCDInMemoryStoreAdditions.h"
 
 #import "NSManagedObjectModel+QMCDRecord.h"
 #import "NSPersistentStore+QMCDRecord.h"
