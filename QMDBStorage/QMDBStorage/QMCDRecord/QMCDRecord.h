@@ -44,7 +44,6 @@
 #import "NSManagedObjectModel+QMCDRecord.h"
 #import "NSPersistentStore+QMCDRecord.h"
 
-#import "QMCDImportFunctions.h"
 #import "NSError+QMCDRecordErrorHandling.h"
 
 
