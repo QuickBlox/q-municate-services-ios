@@ -57,11 +57,6 @@
 - (id)QM_minValueFor:(NSString *)property;
 - (id)QM_maxValueFor:(NSString *)property;
 
-+ (id)QM_aggregateOperation:(NSString *)function
-                onAttribute:(NSString *)attributeName
-              withPredicate:(NSPredicate *)predicate
-                  inContext:(NSManagedObjectContext *)context;
-
 /**
  Supports aggregating values using a key-value collection operator that can be grouped by an attribute.
  See https://developer.apple.com/library/ios/documentation/cocoa/conceptual/KeyValueCoding/Articles/CollectionOperators.html for a list of valid collection operators.

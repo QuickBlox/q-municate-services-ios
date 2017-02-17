@@ -8,7 +8,6 @@
 
 #import "QMCDRecordStack.h"
 #import "NSManagedObject+QMCDAggregation.h"
-#import "NSEntityDescription+QMCDDataImport.h"
 #import "NSManagedObjectContext+QMCDRecord.h"
 #import "NSManagedObject+QMCDRequests.h"
 #import "NSManagedObject+QMCDRecord.h"
@@ -97,38 +96,6 @@
     
     return [self QM_objectWithMinValueFor:property
                                 inContext:self.managedObjectContext];
-}
-
-+ (id)QM_aggregateOperation:(NSString *)function
-                onAttribute:(NSString *)attributeName
-              withPredicate:(NSPredicate *)predicate
-                  inContext:(NSManagedObjectContext *)context {
-    
-    NSExpression *ex =
-    [NSExpression expressionForFunction:function
-                              arguments:
-     [NSArray arrayWithObject:[NSExpression expressionForKeyPath:attributeName]]];
-    
-    NSExpressionDescription *ed = [[NSExpressionDescription alloc] init];
-    [ed setName:@"result"];
-    [ed setExpression:ex];
-    
-    // determine the type of attribute, required to set the expression return type
-    NSAttributeDescription *attributeDescription =
-    [[self QM_entityDescriptionInContext:context]
-     QM_attributeDescriptionForName:attributeName];
-    
-    [ed setExpressionResultType:[attributeDescription attributeType]];
-    NSArray *properties = [NSArray arrayWithObject:ed];
-    
-    NSFetchRequest *request = [self QM_requestAllWithPredicate:predicate];
-    [request setPropertiesToFetch:properties];
-    [request setResultType:NSDictionaryResultType];
-    
-    NSDictionary *resultsDictionary =
-    [self QM_executeFetchRequestAndReturnFirstObject:request inContext:context];
-    
-    return [resultsDictionary objectForKey:@"result"];
 }
 
 + (NSArray *)QM_aggregateOperation:(NSString *)collectionOperator
