@@ -11,7 +11,7 @@
 
 #pragma mark - Entity Information
 
-+ (NSString *) QM_entityName;
++ (NSString *)QM_entityName;
 {
     NSString *entityName;
 
@@ -31,23 +31,14 @@
     return entityName;
 }
 
-+ (NSEntityDescription *) QM_entityDescription
-{
-	return [self QM_entityDescriptionInContext:[[QMCDRecordStack defaultStack] context]];
-}
 
-+ (NSEntityDescription *) QM_entityDescriptionInContext:(NSManagedObjectContext *)context
++ (NSEntityDescription *)QM_entityDescriptionInContext:(NSManagedObjectContext *)context
 {
     NSString *entityName = [self QM_entityName];
     return [NSEntityDescription entityForName:entityName inManagedObjectContext:context];
 }
 
-+ (NSArray *) QM_propertiesNamed:(NSArray *)properties
-{
-    return [self QM_propertiesNamed:properties inContext:[[QMCDRecordStack defaultStack] context]];
-}
-
-+ (NSArray *) QM_propertiesNamed:(NSArray *)properties inContext:(NSManagedObjectContext *)context
++ (NSArray *)QM_propertiesNamed:(NSArray *)properties inContext:(NSManagedObjectContext *)context
 {
 	NSEntityDescription *description = [self QM_entityDescriptionInContext:context];
 	NSMutableArray *propertiesWanted = [NSMutableArray array];
@@ -74,7 +65,7 @@
 
 #pragma mark - Fetch Requests
 
-+ (NSArray *) QM_executeFetchRequest:(NSFetchRequest *)request inContext:(NSManagedObjectContext *)context
++ (NSArray *)QM_executeFetchRequest:(NSFetchRequest *)request inContext:(NSManagedObjectContext *)context
 {
     __block NSArray *results = nil;
     void (^requestBlock)(void) = ^{
@@ -99,12 +90,7 @@
 	return results;
 }
 
-+ (NSArray *) QM_executeFetchRequest:(NSFetchRequest *)request
-{
-	return [self QM_executeFetchRequest:request inContext:[[QMCDRecordStack defaultStack] context]];
-}
-
-+ (id) QM_executeFetchRequestAndReturnFirstObject:(NSFetchRequest *)request inContext:(NSManagedObjectContext *)context
++ (id)QM_executeFetchRequestAndReturnFirstObject:(NSFetchRequest *)request inContext:(NSManagedObjectContext *)context
 {
 	[request setFetchLimit:1];
 
@@ -116,24 +102,14 @@
 	return [results objectAtIndex:0];
 }
 
-+ (id) QM_executeFetchRequestAndReturnFirstObject:(NSFetchRequest *)request
-{
-	return [self QM_executeFetchRequestAndReturnFirstObject:request inContext:[[QMCDRecordStack defaultStack] context]];
-}
-
 #pragma mark - Creating Entities
 
-+ (instancetype) QM_createEntity
-{
-	return [self QM_createEntityInContext:[[QMCDRecordStack defaultStack] context]];
-}
-
-+ (instancetype) QM_createEntityInContext:(NSManagedObjectContext *)context
++ (instancetype)QM_createEntityInContext:(NSManagedObjectContext *)context
 {
     return [self QM_createEntityWithDescription:nil inContext:context];
 }
 
-+ (instancetype) QM_createEntityWithDescription:(NSEntityDescription *)entityDescription inContext:(NSManagedObjectContext *)context
++ (instancetype)QM_createEntityWithDescription:(NSEntityDescription *)entityDescription inContext:(NSManagedObjectContext *)context
 {
     NSEntityDescription *entity = entityDescription;
 
@@ -153,24 +129,24 @@
     return managedObject;
 }
 
-- (BOOL) QM_isTemporaryObject;
+- (BOOL)QM_isTemporaryObject;
 {
     return [[self objectID] isTemporaryID];
 }
 
 #pragma mark - Deleting Entities
 
-- (BOOL) QM_isEntityDeleted
+- (BOOL)QM_isEntityDeleted
 {
     return [self isDeleted] || [self managedObjectContext] == nil;
 }
 
-- (BOOL) QM_deleteEntity
+- (BOOL)QM_deleteEntity
 {
 	return [self QM_deleteEntityInContext:[self managedObjectContext]];
 }
 
-- (BOOL) QM_deleteEntityInContext:(NSManagedObjectContext *)context
+- (BOOL)QM_deleteEntityInContext:(NSManagedObjectContext *)context
 {
     NSError *retrieveExistingObjectError;
     NSManagedObject *objectInContext = [context existingObjectWithID:[self objectID] error:&retrieveExistingObjectError];
@@ -182,12 +158,7 @@
     return [objectInContext QM_isEntityDeleted];
 }
 
-+ (BOOL) QM_deleteAllMatchingPredicate:(NSPredicate *)predicate
-{
-    return [self QM_deleteAllMatchingPredicate:predicate inContext:[[QMCDRecordStack defaultStack] context]];
-}
-
-+ (BOOL) QM_deleteAllMatchingPredicate:(NSPredicate *)predicate inContext:(NSManagedObjectContext *)context
++ (BOOL)QM_deleteAllMatchingPredicate:(NSPredicate *)predicate inContext:(NSManagedObjectContext *)context
 {
     NSFetchRequest *request = [self QM_requestAllWithPredicate:predicate];
     [request setReturnsObjectsAsFaults:YES];
@@ -203,13 +174,7 @@
 	return YES;
 }
 
-+ (BOOL) QM_truncateAll
-{
-    [self QM_truncateAllInContext:[[QMCDRecordStack defaultStack] context]];
-    return YES;
-}
-
-+ (BOOL) QM_truncateAllInContext:(NSManagedObjectContext *)context
++ (BOOL)QM_truncateAllInContext:(NSManagedObjectContext *)context
 {
     NSFetchRequest *request = [self QM_requestAll];
     [request setReturnsObjectsAsFaults:YES];
@@ -225,17 +190,17 @@
 
 #pragma mark - Sorting Entities
 
-+ (NSArray *) QM_ascendingSortDescriptors:(NSArray *)attributesToSortBy
++ (NSArray *)QM_ascendingSortDescriptors:(NSArray *)attributesToSortBy
 {
 	return [self QM_sortAscending:YES attributes:attributesToSortBy];
 }
 
-+ (NSArray *) QM_descendingSortDescriptors:(NSArray *)attributesToSortBy
++ (NSArray *)QM_descendingSortDescriptors:(NSArray *)attributesToSortBy
 {
 	return [self QM_sortAscending:NO attributes:attributesToSortBy];
 }
 
-+ (NSArray *) QM_sortAscending:(BOOL)ascending attributes:(NSArray *)attributesToSortBy
++ (NSArray *)QM_sortAscending:(BOOL)ascending attributes:(NSArray *)attributesToSortBy
 {
 	NSMutableArray *attributes = [NSMutableArray array];
 
@@ -250,12 +215,12 @@
 
 #pragma mark - Working Across Contexts
 
-- (void) QM_refresh;
+- (void)QM_refresh;
 {
     [[self managedObjectContext] refreshObject:self mergeChanges:YES];
 }
 
-- (void) QM_obtainPermanentObjectID;
+- (void)QM_obtainPermanentObjectID;
 {
     if ([[self objectID] isTemporaryID])
     {
@@ -269,7 +234,7 @@
     }
 }
 
-- (instancetype) QM_inContext:(NSManagedObjectContext *)otherContext;
+- (instancetype)QM_inContext:(NSManagedObjectContext *)otherContext;
 {
     NSManagedObject *inContext = nil;
     NSManagedObjectID *objectID = [self objectID];
@@ -299,7 +264,7 @@
     return inContext;
 }
 
-- (instancetype) QM_inContextIfTemporaryObject:(NSManagedObjectContext *)otherContext
+- (instancetype)QM_inContextIfTemporaryObject:(NSManagedObjectContext *)otherContext
 {
     NSManagedObjectID *objectID = [self objectID];
     if ([objectID isTemporaryID])
@@ -314,7 +279,7 @@
 
 #pragma mark - Validation
 
-- (BOOL) QM_isValidForInsert;
+- (BOOL)QM_isValidForInsert;
 {
     NSError *error = nil;
     BOOL isValid = [self validateForInsert:&error];
@@ -326,7 +291,7 @@
     return isValid;
 }
 
-- (BOOL) QM_isValidForUpdate;
+- (BOOL)QM_isValidForUpdate;
 {
     NSError *error = nil;
     BOOL isValid = [self validateForUpdate:&error];
