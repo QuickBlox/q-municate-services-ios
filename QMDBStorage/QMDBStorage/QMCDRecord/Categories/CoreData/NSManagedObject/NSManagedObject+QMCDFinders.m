@@ -234,7 +234,9 @@
     NSFetchRequest *request = [self QM_requestAllSortedBy:sortBy
                                                 ascending:ascending
                                             withPredicate:searchTerm];
-    [request setPropertiesToFetch:[self QM_propertiesNamed:attributes]];
+    
+    [request setPropertiesToFetch:[self QM_propertiesNamed:attributes
+                                                 inContext:context]];
     
     return [self QM_executeFetchRequestAndReturnFirstObject:request
                                                   inContext:context];
