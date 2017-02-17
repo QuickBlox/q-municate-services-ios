@@ -58,10 +58,6 @@
 #import "NSEntityDescription+QMCDDataImport.h"
 #import "NSError+QMCDRecordErrorHandling.h"
 
-#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
-#import "NSManagedObject+QMCDFetching.h"
-#import "NSFetchedResultsController+QMCDFetching.h"
-#endif
 
 #define QM_SHORTHAND 1
 #import "QMCDRecordShorthand.h"
