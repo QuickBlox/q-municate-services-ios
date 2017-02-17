@@ -21,9 +21,6 @@
 @property (nonatomic, assign) BOOL saveOnApplicationWillTerminate;
 @property (nonatomic, assign) BOOL saveOnApplicationWillResignActive;
 
-+ (instancetype) defaultStack;
-+ (void) setDefaultStack:(QMCDRecordStack *)stack;
-
 + (instancetype) stack;
 
 - (void) reset;

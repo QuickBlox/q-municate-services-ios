@@ -15,7 +15,7 @@ NSString * const QMCDRecordDidMergeChangesFromiCloudNotification = @"kQMCDRecord
 
 @implementation NSManagedObjectContext (QMCDObserving)
 
-- (void) QM_performBlock:(void(^)(void))block;
+- (void)QM_performBlock:(void(^)(void))block;
 {
     if ([self concurrencyType] == NSConfinementConcurrencyType)
     {
@@ -27,7 +27,7 @@ NSString * const QMCDRecordDidMergeChangesFromiCloudNotification = @"kQMCDRecord
     }
 }
 
-- (void) QM_performBlockAndWait:(void(^)(void))block;
+- (void)QM_performBlockAndWait:(void(^)(void))block;
 {
     if ([self concurrencyType] == NSConfinementConcurrencyType)
     {
@@ -41,7 +41,7 @@ NSString * const QMCDRecordDidMergeChangesFromiCloudNotification = @"kQMCDRecord
 
 #pragma mark - Context Observation Helpers
 
-- (void) QM_observeContextDidSave:(NSManagedObjectContext *)otherContext
+- (void)QM_observeContextDidSave:(NSManagedObjectContext *)otherContext
 {
     if (self == otherContext) return;
 
@@ -52,7 +52,7 @@ NSString * const QMCDRecordDidMergeChangesFromiCloudNotification = @"kQMCDRecord
                              object:otherContext];
 }
 
-- (void) QM_observeContextOnMainThread:(NSManagedObjectContext *)otherContext
+- (void)QM_observeContextOnMainThread:(NSManagedObjectContext *)otherContext
 {
     if (self == otherContext) return;
 
@@ -63,7 +63,7 @@ NSString * const QMCDRecordDidMergeChangesFromiCloudNotification = @"kQMCDRecord
                              object:otherContext];
 }
 
-- (void) QM_stopObservingContextDidSave:(NSManagedObjectContext *)otherContext
+- (void)QM_stopObservingContextDidSave:(NSManagedObjectContext *)otherContext
 {
     if (self == otherContext) return;
 
@@ -74,7 +74,7 @@ NSString * const QMCDRecordDidMergeChangesFromiCloudNotification = @"kQMCDRecord
 }
 
 
-- (void) QM_observeContextDidSaveAndSaveChangesToSelf:(NSManagedObjectContext *)otherContext
+- (void)QM_observeContextDidSaveAndSaveChangesToSelf:(NSManagedObjectContext *)otherContext
 {
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
 
@@ -84,7 +84,7 @@ NSString * const QMCDRecordDidMergeChangesFromiCloudNotification = @"kQMCDRecord
                              object:otherContext];
 }
 
-- (void) QM_mergeChangesFromNotificationAndSaveChangesToSelfOnly:(NSNotification *)notification
+- (void)QM_mergeChangesFromNotificationAndSaveChangesToSelfOnly:(NSNotification *)notification
 {
     QMCDLogVerbose(@"Merging changes to %@context%@", [self isEqual:[[QMCDRecordStack defaultStack] context]] ? @"*** DEFAULT *** " : @"", ([NSThread isMainThread] ? @" *** on Main Thread ***" : @"Background Thread"));
 
@@ -94,7 +94,7 @@ NSString * const QMCDRecordDidMergeChangesFromiCloudNotification = @"kQMCDRecord
 
 #pragma mark - Context iCloud Merge Helpers
 
-- (void) QM_mergeChangesFromiCloud:(NSNotification *)notification;
+- (void)QM_mergeChangesFromiCloud:(NSNotification *)notification;
 {
     void (^mergeBlock)(void) = ^{
         
@@ -113,7 +113,7 @@ NSString * const QMCDRecordDidMergeChangesFromiCloudNotification = @"kQMCDRecord
     [self QM_performBlock:mergeBlock];
 }
 
-- (void) QM_mergeChangesFromNotification:(NSNotification *)notification;
+- (void)QM_mergeChangesFromNotification:(NSNotification *)notification;
 {
     NSManagedObjectContext *fromContext = [notification object];
 
@@ -129,7 +129,7 @@ NSString * const QMCDRecordDidMergeChangesFromiCloudNotification = @"kQMCDRecord
     [self QM_performBlock:mergeBlock];
 }
 
-- (void) QM_mergeChangesOnMainThread:(NSNotification *)notification;
+- (void)QM_mergeChangesOnMainThread:(NSNotification *)notification;
 {
 	if ([NSThread isMainThread])
 	{
@@ -143,7 +143,7 @@ NSString * const QMCDRecordDidMergeChangesFromiCloudNotification = @"kQMCDRecord
 	}
 }
 
-- (void) QM_observeiCloudChangesInCoordinator:(NSPersistentStoreCoordinator *)coordinator;
+- (void)QM_observeiCloudChangesInCoordinator:(NSPersistentStoreCoordinator *)coordinator;
 {
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
     [notificationCenter addObserver:self
@@ -153,7 +153,7 @@ NSString * const QMCDRecordDidMergeChangesFromiCloudNotification = @"kQMCDRecord
     
 }
 
-- (void) QM_stopObservingiCloudChangesInCoordinator:(NSPersistentStoreCoordinator *)coordinator;
+- (void)QM_stopObservingiCloudChangesInCoordinator:(NSPersistentStoreCoordinator *)coordinator;
 {
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
     [notificationCenter removeObserver:self

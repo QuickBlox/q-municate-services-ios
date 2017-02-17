@@ -10,10 +10,7 @@
 
 @interface NSPersistentStoreCoordinator (QMCDManualMigrations)
 
-- (NSPersistentStore *) QM_addManuallyMigratingSqliteStoreAtURL:(NSURL *)url;
-- (NSPersistentStore *) QM_addManuallyMigratingSqliteStoreNamed:(NSString *)storeFileName;
-
-+ (NSPersistentStoreCoordinator *) QM_coordinatorWithManuallyMigratingSqliteStoreNamed:(NSString *)storeFileName;
-+ (NSPersistentStoreCoordinator *) QM_coordinatorWithManuallyMigratingSqliteStoreAtURL:(NSURL *)url;
+- (NSPersistentStore *)QM_addManuallyMigratingSqliteStoreAtURL:(NSURL *)url;
+- (NSPersistentStore *)QM_addManuallyMigratingSqliteStoreNamed:(NSString *)storeFileName;
 
 @end
