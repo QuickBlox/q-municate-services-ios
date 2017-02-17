@@ -14,35 +14,16 @@
 
 @implementation NSPersistentStoreCoordinator (QMCDManualMigrations)
 
-- (NSPersistentStore *) QM_addManuallyMigratingSqliteStoreNamed:(NSString *)storeFileName;
+- (NSPersistentStore *)QM_addManuallyMigratingSqliteStoreNamed:(NSString *)storeFileName;
 {
     NSDictionary *options = [NSDictionary QM_manualMigrationOptions];
     return [self QM_addSqliteStoreNamed:storeFileName withOptions:options];
 }
 
-- (NSPersistentStore *) QM_addManuallyMigratingSqliteStoreAtURL:(NSURL *)url;
+- (NSPersistentStore *)QM_addManuallyMigratingSqliteStoreAtURL:(NSURL *)url;
 {
     NSDictionary *options = [NSDictionary QM_manualMigrationOptions];
     return [self QM_addSqliteStoreAtURL:url withOptions:options];
 }
 
-+ (NSPersistentStoreCoordinator *) QM_coordinatorWithManuallyMigratingSqliteStoreNamed:(NSString *)storeFileName;
-{
-    NSManagedObjectModel *model = [[QMCDRecordStack defaultStack] model];
-    NSPersistentStoreCoordinator *coordinator = [[self alloc] initWithManagedObjectModel:model];
-
-    [coordinator QM_addManuallyMigratingSqliteStoreNamed:storeFileName];
-
-    return coordinator;
-}
-
-+ (NSPersistentStoreCoordinator *) QM_coordinatorWithManuallyMigratingSqliteStoreAtURL:(NSURL *)url;
-{
-    NSManagedObjectModel *model = [[QMCDRecordStack defaultStack] model];
-    NSPersistentStoreCoordinator *coordinator = [[self alloc] initWithManagedObjectModel:model];
-
-    [coordinator QM_addManuallyMigratingSqliteStoreAtURL:url];
-
-    return coordinator;
-}
 @end
