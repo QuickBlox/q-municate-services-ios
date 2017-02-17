@@ -19,7 +19,7 @@ NSArray *QM_NSSortDescriptorsFromString(NSString *string, BOOL defaultAscendingV
 
 #pragma mark - Global Options
 
-+ (void) QM_setDefaultBatchSize:(NSUInteger)newBatchSize
++ (void)QM_setDefaultBatchSize:(NSUInteger)newBatchSize
 {
 	@synchronized(self)
 	{
@@ -27,20 +27,20 @@ NSArray *QM_NSSortDescriptorsFromString(NSString *string, BOOL defaultAscendingV
 	}
 }
 
-+ (NSUInteger) QM_defaultBatchSize
++ (NSUInteger)QM_defaultBatchSize
 {
 	return defaultBatchSize;
 }
 
 #pragma mark - Fetch Request Creation
 
-+ (NSFetchRequest *) QM_requestAll
++ (NSFetchRequest *)QM_requestAll
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[self QM_entityName]];
     return request;
 }
 
-+ (NSFetchRequest *) QM_requestAllWithPredicate:(NSPredicate *)predicate;
++ (NSFetchRequest *)QM_requestAllWithPredicate:(NSPredicate *)predicate;
 {
     NSFetchRequest *request = [self QM_requestAll];
     [request setPredicate:predicate];
@@ -48,7 +48,7 @@ NSArray *QM_NSSortDescriptorsFromString(NSString *string, BOOL defaultAscendingV
     return request;
 }
 
-+ (NSFetchRequest *) QM_requestAllWhere:(NSString *)attributeName isEqualTo:(id)value;
++ (NSFetchRequest *)QM_requestAllWhere:(NSString *)attributeName isEqualTo:(id)value;
 {
     NSFetchRequest *request = [self QM_requestAll];
     [request setPredicate:[NSPredicate predicateWithFormat:@"%K = %@", attributeName, value]];
@@ -56,7 +56,7 @@ NSArray *QM_NSSortDescriptorsFromString(NSString *string, BOOL defaultAscendingV
     return request;
 }
 
-+ (NSFetchRequest *) QM_requestFirstWithPredicate:(NSPredicate *)predicate;
++ (NSFetchRequest *)QM_requestFirstWithPredicate:(NSPredicate *)predicate;
 {
     NSFetchRequest *request = [self QM_requestAll];
     [request setPredicate:predicate];
@@ -65,7 +65,7 @@ NSArray *QM_NSSortDescriptorsFromString(NSString *string, BOOL defaultAscendingV
     return request;
 }
 
-+ (NSFetchRequest *) QM_requestFirstByAttribute:(NSString *)attributeName withValue:(id)value;
++ (NSFetchRequest *)QM_requestFirstByAttribute:(NSString *)attributeName withValue:(id)value;
 {
     NSFetchRequest *request = [self QM_requestAllWhere:attributeName isEqualTo:value];
     [request setFetchLimit:1];
@@ -73,14 +73,14 @@ NSArray *QM_NSSortDescriptorsFromString(NSString *string, BOOL defaultAscendingV
     return request;
 }
 
-+ (NSFetchRequest *) QM_requestAllSortedBy:(NSString *)sortTerm ascending:(BOOL)ascending;
++ (NSFetchRequest *)QM_requestAllSortedBy:(NSString *)sortTerm ascending:(BOOL)ascending;
 {
     return [self QM_requestAllSortedBy:sortTerm
                              ascending:ascending
                          withPredicate:nil];
 }
 
-+ (NSFetchRequest *) QM_requestAllSortedBy:(NSString *)sortTerm ascending:(BOOL)ascending withPredicate:(NSPredicate *)predicate;
++ (NSFetchRequest *)QM_requestAllSortedBy:(NSString *)sortTerm ascending:(BOOL)ascending withPredicate:(NSPredicate *)predicate;
 {
 	NSFetchRequest *request = [self QM_requestAll];
 	if (predicate)

@@ -14,7 +14,7 @@
 
 @implementation NSManagedObjectContext (QMCDSaves)
 
-- (BOOL) QM_saveOnlySelfAndWait;
+- (BOOL)QM_saveOnlySelfAndWait;
 {
     __block BOOL saveResult = NO;
 
@@ -25,7 +25,7 @@
     return saveResult;
 }
 
-- (BOOL) QM_saveOnlySelfAndWaitWithError:(NSError **)error;
+- (BOOL)QM_saveOnlySelfAndWaitWithError:(NSError **)error;
 {
     __block BOOL saveResult = NO;
     __block NSError *saveError;
@@ -42,17 +42,17 @@
     return saveResult;
 }
 
-- (void) QM_saveOnlySelfWithCompletion:(MRSaveCompletionHandler)completion;
+- (void)QM_saveOnlySelfWithCompletion:(MRSaveCompletionHandler)completion;
 {
     [self QM_saveWithOptions:MRContextSaveOptionsNone completion:completion];
 }
 
-- (void) QM_saveToPersistentStoreWithCompletion:(MRSaveCompletionHandler)completion;
+- (void)QM_saveToPersistentStoreWithCompletion:(MRSaveCompletionHandler)completion;
 {
     [self QM_saveWithOptions:MRContextSaveOptionsSaveParentContexts completion:completion];
 }
 
-- (BOOL) QM_saveToPersistentStoreAndWait;
+- (BOOL)QM_saveToPersistentStoreAndWait;
 {
     __block BOOL saveResult = NO;
 
@@ -64,7 +64,7 @@
     return saveResult;
 }
 
-- (BOOL) QM_saveToPersistentStoreAndWaitWithError:(NSError **)error;
+- (BOOL)QM_saveToPersistentStoreAndWaitWithError:(NSError **)error;
 {
     __block BOOL saveResult = NO;
     __block NSError *saveError;
@@ -83,7 +83,7 @@
     return saveResult;
 }
 
-- (void) QM_saveWithOptions:(MRContextSaveOptions)saveOptions completion:(MRSaveCompletionHandler)completion;
+- (void)QM_saveWithOptions:(MRContextSaveOptions)saveOptions completion:(MRSaveCompletionHandler)completion;
 {
     BOOL saveParentContexts = ((saveOptions & MRContextSaveOptionsSaveParentContexts) == MRContextSaveOptionsSaveParentContexts);
     BOOL saveSynchronously = ((saveOptions & MRContextSaveOptionsSaveSynchronously) == MRContextSaveOptionsSaveSynchronously);

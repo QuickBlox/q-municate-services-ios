@@ -24,7 +24,7 @@ extern NSString * const QMCDRecordDidMergeChangesFromiCloudNotification;
 
  @since Available in v3.0 and later.
  */
-- (void) QM_observeContextDidSave:(NSManagedObjectContext *)otherContext;
+- (void)QM_observeContextDidSave:(NSManagedObjectContext *)otherContext;
 
 /**
  Stops merging changes from the supplied context into self.
@@ -33,7 +33,7 @@ extern NSString * const QMCDRecordDidMergeChangesFromiCloudNotification;
 
  @since Available in v3.0 and later.
  */
-- (void) QM_stopObservingContextDidSave:(NSManagedObjectContext *)otherContext;
+- (void)QM_stopObservingContextDidSave:(NSManagedObjectContext *)otherContext;
 
 /**
  Merges changes from another context into self on the main thread.
@@ -42,7 +42,7 @@ extern NSString * const QMCDRecordDidMergeChangesFromiCloudNotification;
 
  @since Available in v2.0 and later.
  */
-- (void) QM_observeContextOnMainThread:(NSManagedObjectContext *)otherContext;
+- (void)QM_observeContextOnMainThread:(NSManagedObjectContext *)otherContext;
 
 /**
  Merges changes from another context into self, saving after each change.
@@ -53,7 +53,7 @@ extern NSString * const QMCDRecordDidMergeChangesFromiCloudNotification;
  
  @since Available in v3.0 and later.
  */
-- (void) QM_observeContextDidSaveAndSaveChangesToSelf:(NSManagedObjectContext *)otherContext;
+- (void)QM_observeContextDidSaveAndSaveChangesToSelf:(NSManagedObjectContext *)otherContext;
 
 /**
  Merges changes from the supplied persistent store coordinator into self in response to changes from iCloud.
@@ -64,7 +64,7 @@ extern NSString * const QMCDRecordDidMergeChangesFromiCloudNotification;
 
  @since Available in v2.0 and later.
  */
-- (void) QM_observeiCloudChangesInCoordinator:(NSPersistentStoreCoordinator *)coordinator;
+- (void)QM_observeiCloudChangesInCoordinator:(NSPersistentStoreCoordinator *)coordinator;
 
 /**
  Stops observation and merging of changes from the supplied persistent store coordinator in response to changes from iCloud.
@@ -75,7 +75,7 @@ extern NSString * const QMCDRecordDidMergeChangesFromiCloudNotification;
 
  @since Available in v2.0 and later.
  */
-- (void) QM_stopObservingiCloudChangesInCoordinator:(NSPersistentStoreCoordinator *)coordinator;
+- (void)QM_stopObservingiCloudChangesInCoordinator:(NSPersistentStoreCoordinator *)coordinator;
 
 @end
 

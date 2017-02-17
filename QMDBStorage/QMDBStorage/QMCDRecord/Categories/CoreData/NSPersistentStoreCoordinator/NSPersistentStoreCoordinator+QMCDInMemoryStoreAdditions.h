@@ -10,11 +10,11 @@
 
 @interface NSPersistentStoreCoordinator (QMCDInMemoryStoreAdditions)
 
-+ (NSPersistentStoreCoordinator *) QM_coordinatorWithInMemoryStore;
-+ (NSPersistentStoreCoordinator *) QM_coordinatorWithInMemoryStoreWithModel:(NSManagedObjectModel *)model;
-+ (NSPersistentStoreCoordinator *) QM_coordinatorWithInMemoryStoreWithModel:(NSManagedObjectModel *)model withOptions:(NSDictionary *)options;
++ (NSPersistentStoreCoordinator *)QM_coordinatorWithInMemoryStore;
++ (NSPersistentStoreCoordinator *)QM_coordinatorWithInMemoryStoreWithModel:(NSManagedObjectModel *)model;
++ (NSPersistentStoreCoordinator *)QM_coordinatorWithInMemoryStoreWithModel:(NSManagedObjectModel *)model withOptions:(NSDictionary *)options;
 
-- (NSPersistentStore *) QM_addInMemoryStore;
-- (NSPersistentStore *) QM_addInMemoryStoreWithOptions:(NSDictionary *)options;
+- (NSPersistentStore *)QM_addInMemoryStore;
+- (NSPersistentStore *)QM_addInMemoryStoreWithOptions:(NSDictionary *)options;
 
 @end
