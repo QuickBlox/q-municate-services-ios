@@ -14,7 +14,6 @@
 
 #import "QMCDRecordInternal.h"
 #import "QMCDRecord+Options.h"
-#import "QMCDRecord+Setup.h"
 #import "QMCDRecord+VersionInformation.h"
 
 #import "QMCDRecordStack.h"
