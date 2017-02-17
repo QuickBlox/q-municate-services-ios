@@ -46,8 +46,4 @@
 
 #import "NSError+QMCDRecordErrorHandling.h"
 
-
-#define QM_SHORTHAND 1
-#import "QMCDRecordShorthand.h"
-
 #endif // ifdef __OBJC__
