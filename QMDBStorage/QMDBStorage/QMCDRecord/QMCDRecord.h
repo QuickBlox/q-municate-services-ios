@@ -49,13 +49,6 @@
 #import "NSPersistentStore+QMCDRecord.h"
 
 #import "QMCDImportFunctions.h"
-#import "NSManagedObject+QMCDDataImport.h"
-#import "NSNumber+QMCDDataImport.h"
-#import "NSObject+QMCDDataImport.h"
-#import "NSString+QMCDDataImport.h"
-#import "NSAttributeDescription+QMCDDataImport.h"
-#import "NSRelationshipDescription+QMCDDataImport.h"
-#import "NSEntityDescription+QMCDDataImport.h"
 #import "NSError+QMCDRecordErrorHandling.h"
 
 
