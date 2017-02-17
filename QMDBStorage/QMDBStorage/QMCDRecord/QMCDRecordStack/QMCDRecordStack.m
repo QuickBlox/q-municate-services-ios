@@ -13,8 +13,6 @@
 #import "NSManagedObjectModel+QMCDRecord.h"
 #import "QMCDRecordLogging.h"
 
-static QMCDRecordStack *defaultStack;
-
 @interface QMCDRecordStack ()
 
 @property (nonatomic, strong) NSNotificationCenter *applicationWillTerminate;
@@ -40,19 +38,6 @@ static QMCDRecordStack *defaultStack;
     [status appendFormat:@"Context:         %@\n", [[self context] QM_description]];
 
     return status;
-}
-
-+ (instancetype) defaultStack
-{
-    NSAssert(defaultStack, @"No Default Stack Found. Did you forget to setup QMCDRecord?");
-    return defaultStack;
-}
-
-+ (void) setDefaultStack:(QMCDRecordStack *)stack
-{
-    defaultStack = stack;
-    [stack loadStack];
-    QMCDLogVerbose(@"Default Core Data Stack Initialized: %@", stack);
 }
 
 + (instancetype) stack
