@@ -17,17 +17,11 @@ extern NSString * const QMCDRecordGroupURLKey;
 
 @interface NSPersistentStoreCoordinator (QMCDRecord)
 
-+ (NSPersistentStoreCoordinator *)QM_newPersistentStoreCoordinator NS_RETURNS_RETAINED;
-
-+ (NSPersistentStoreCoordinator *)QM_coordinatorWithPersistentStore:(NSPersistentStore *)persistentStore;
 + (NSPersistentStoreCoordinator *)QM_coordinatorWithPersistentStore:(NSPersistentStore *)persistentStore andModel:(NSManagedObjectModel *)model;
 + (NSPersistentStoreCoordinator *)QM_coordinatorWithPersistentStore:(NSPersistentStore *)persistentStore andModel:(NSManagedObjectModel *)model withOptions:(NSDictionary *)options;
 
-+ (NSPersistentStoreCoordinator *)QM_coordinatorWithSqliteStoreNamed:(NSString *)storeFileName;
-+ (NSPersistentStoreCoordinator *)QM_coordinatorWithSqliteStoreNamed:(NSString *)storeFileName withOptions:(NSDictionary *)options;
 + (NSPersistentStoreCoordinator *)QM_coordinatorWithSqliteStoreNamed:(NSString *)storeFileName andModel:(NSManagedObjectModel *)model withOptions:(NSDictionary *)options;
 
-+ (NSPersistentStoreCoordinator *)QM_coordinatorWithSqliteStoreAtURL:(NSURL *)url;
 + (NSPersistentStoreCoordinator *)QM_coordinatorWithSqliteStoreAtURL:(NSURL *)url andModel:(NSManagedObjectModel *)model;
 + (NSPersistentStoreCoordinator *)QM_coordinatorWithSqliteStoreAtURL:(NSURL *)url andModel:(NSManagedObjectModel *)model withOptions:(NSDictionary *)options;
 

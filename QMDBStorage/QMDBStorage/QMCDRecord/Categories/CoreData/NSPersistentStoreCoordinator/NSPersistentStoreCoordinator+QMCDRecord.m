@@ -127,21 +127,7 @@ NSString * const QMCDRecordGroupURLKey = @"QMCDRecordGroupURLKey";
     return nil;
 }
 
-+ (NSPersistentStoreCoordinator *)QM_newPersistentStoreCoordinator
-{
-	NSPersistentStoreCoordinator *coordinator = [self QM_coordinatorWithSqliteStoreNamed:[QMCDRecord defaultStoreName]];
-
-    return coordinator;
-}
-
 #pragma mark - Persistent Store Initializers
-
-//+ (NSPersistentStoreCoordinator *)QM_coordinatorWithPersistentStore:(NSPersistentStore *)persistentStore
-//{
-//    NSManagedObjectModel *defaultStackModel = [[QMCDRecordStack defaultStack] model];
-//
-//    return [self QM_coordinatorWithPersistentStore:persistentStore andModel:defaultStackModel];;
-//}
 
 + (NSPersistentStoreCoordinator *)QM_coordinatorWithPersistentStore:(NSPersistentStore *)persistentStore andModel:(NSManagedObjectModel *)model
 {
@@ -159,18 +145,6 @@ NSString * const QMCDRecordGroupURLKey = @"QMCDRecordGroupURLKey";
 
 #pragma mark - Store Name Initializers
 
-+ (NSPersistentStoreCoordinator *)QM_coordinatorWithSqliteStoreNamed:(NSString *)storeFileName
-{
-	return [self QM_coordinatorWithSqliteStoreNamed:storeFileName withOptions:nil];
-}
-//
-//+ (NSPersistentStoreCoordinator *)QM_coordinatorWithSqliteStoreNamed:(NSString *)storeFileName withOptions:(NSDictionary *)options
-//{
-//    NSManagedObjectModel *defaultStackModel = [[QMCDRecordStack defaultStack] model];
-//
-//    return [self QM_coordinatorWithSqliteStoreNamed:storeFileName andModel:defaultStackModel withOptions:options];
-//}
-
 + (NSPersistentStoreCoordinator *)QM_coordinatorWithSqliteStoreNamed:(NSString *)storeFileName andModel:(NSManagedObjectModel *)model withOptions:(NSDictionary *)options
 {
     NSPersistentStoreCoordinator *psc = [[self alloc] initWithManagedObjectModel:model];
@@ -181,13 +155,6 @@ NSString * const QMCDRecordGroupURLKey = @"QMCDRecordGroupURLKey";
 }
 
 #pragma mark - URL Initializers
-
-//+ (NSPersistentStoreCoordinator *)QM_coordinatorWithSqliteStoreAtURL:(NSURL *)url
-//{
-//    NSManagedObjectModel *defaultStackModel = [[QMCDRecordStack defaultStack] model];
-//
-//    return [self QM_coordinatorWithSqliteStoreAtURL:url andModel:defaultStackModel];
-//}
 
 + (NSPersistentStoreCoordinator *)QM_coordinatorWithSqliteStoreAtURL:(NSURL *)url andModel:(NSManagedObjectModel *)model
 {
