@@ -146,11 +146,13 @@ static QMUsersCache *_usersCacheInstance = nil;
 
 - (BFTask *)userWithPredicate:(NSPredicate *) predicate
 {
-    BFTaskCompletionSource* source = [BFTaskCompletionSource taskCompletionSource];
-    
+    BFTaskCompletionSource *source = [BFTaskCompletionSource taskCompletionSource];
+    __weak __typeof(self)weakSelf = self;
     [BFTask taskFromExecutor:[BFExecutor executorWithDispatchQueue:self.queue] withBlock:^id{
         
-        CDUser *user = [CDUser QM_findFirstWithPredicate:predicate];
+        __typeof(self) strongSelf = weakSelf;
+        NSManagedObjectContext* context = [strongSelf backgroundContext];
+        CDUser *user = [CDUser QM_findFirstWithPredicate:predicate inContext:context];
         QBUUser *result = [user toQBUUser];
         
         [source setResult:result];
