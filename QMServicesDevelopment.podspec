@@ -21,7 +21,7 @@ Pod::Spec.new do |s|
   s.ios.frameworks      = "MobileCoreServices", "SystemConfiguration", "AVFoundation", "CoreVideo", "Accelerate", "CoreMedia", "AudioToolbox", "CoreLocation", "CoreData", "CoreGraphics", "CFNetwork", "UIKit"
   s.libraries           = "resolv", "xml2", "stdc++", "z"
   s.xcconfig            = { 'HEADER_SEARCH_PATHS' => '/usr/include/libxml2', "FRAMEWORK_SEARCH_PATHS" => "$(PODS_ROOT)/../../Framework $(PODS_ROOT)/../External"}
-  s.prefix_header_contents = 
+  s.prefix_header_contents =
   '#import <Quickblox/Quickblox.h>
 #import <CoreData/CoreData.h>
 #import <Quickblox/QBMulticastDelegate.h>
@@ -29,5 +29,4 @@ Pod::Spec.new do |s|
 
   s.resource_bundle = {'QMChatCacheModel' => 'QMChatCache/QMChatCache/CoreData/QMChatServiceModel.xcdatamodeld', 'QMContactListCacheModel' => 'QMContactListCache/QMContactListCache/CoreData/QMContactListModel.xcdatamodeld', 'QMUsersCacheModel' => 'QMUsersCache/QMUsersCache/CoreData/QMUsersModel.xcdatamodeld'}
   s.dependency "Bolts",  '>= 1.5.0'
-s.dependency "QuickBlox"
 end
