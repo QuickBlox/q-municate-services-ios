@@ -17,7 +17,7 @@ NSString * const QMCDRecordDidMergeChangesFromiCloudNotification = @"kQMCDRecord
 
 - (void)QM_performBlock:(void(^)(void))block;
 {
-    if ([self concurrencyType] == NSConfinementConcurrencyType)
+    if ([self concurrencyType] == NSPrivateQueueConcurrencyType)
     {
         block();
     }
@@ -29,7 +29,7 @@ NSString * const QMCDRecordDidMergeChangesFromiCloudNotification = @"kQMCDRecord
 
 - (void)QM_performBlockAndWait:(void(^)(void))block;
 {
-    if ([self concurrencyType] == NSConfinementConcurrencyType)
+    if ([self concurrencyType] == NSPrivateQueueConcurrencyType)
     {
         block();
     }
@@ -86,7 +86,7 @@ NSString * const QMCDRecordDidMergeChangesFromiCloudNotification = @"kQMCDRecord
 
 - (void)QM_mergeChangesFromNotificationAndSaveChangesToSelfOnly:(NSNotification *)notification
 {
-    QMCDLogVerbose(@"Merging changes to %@context%@", [self isEqual:[[QMCDRecordStack defaultStack] context]] ? @"*** DEFAULT *** " : @"", ([NSThread isMainThread] ? @" *** on Main Thread ***" : @"Background Thread"));
+//    QMCDLogVerbose(@"Merging changes to %@context%@", [self isEqual:[[QMCDRecordStack defaultStack] context]] ? @"*** DEFAULT *** " : @"", ([NSThread isMainThread] ? @" *** on Main Thread ***" : @"Background Thread"));
 
     [self mergeChangesFromContextDidSaveNotification:notification];
     [self QM_saveOnlySelfAndWait];

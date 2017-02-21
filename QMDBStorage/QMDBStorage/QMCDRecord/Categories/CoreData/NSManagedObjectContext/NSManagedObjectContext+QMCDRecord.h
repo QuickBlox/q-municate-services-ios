@@ -17,9 +17,6 @@ extern NSString * const QMCDRecordDidMergeChangesFromiCloudNotification;
 + (NSManagedObjectContext *)QM_mainQueueContext;
 + (NSManagedObjectContext *)QM_privateQueueContext;
 
-+ (NSManagedObjectContext *)QM_confinementContext;
-+ (NSManagedObjectContext *)QM_confinementContextWithParent:(NSManagedObjectContext *)parentContext;
-
 + (NSManagedObjectContext *)QM_privateQueueContextWithStoreCoordinator:(NSPersistentStoreCoordinator *)coordinator NS_RETURNS_RETAINED;
 
 - (NSString *)QM_description;

@@ -39,14 +39,6 @@
     [super reset];
 }
 
-- (NSManagedObjectContext *) newConfinementContext;
-{
-    //TODO: need to setup backgroundContext -> context merges via NSNC, and unsubscribe automatically
-    NSManagedObjectContext *backgroundContext = [NSManagedObjectContext QM_confinementContext];
-    [backgroundContext setPersistentStoreCoordinator:self.backgroundCoordinator];
-    return backgroundContext;
-}
-
 - (NSPersistentStoreCoordinator *)backgroundCoordinator;
 {
     if (_backgroundCoordinator == nil)

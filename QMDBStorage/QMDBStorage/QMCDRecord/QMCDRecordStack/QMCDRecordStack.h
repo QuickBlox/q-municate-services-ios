@@ -25,8 +25,6 @@
 
 - (void) reset;
 
-- (NSManagedObjectContext *) newConfinementContext;
-
 - (void) setModelFromClass:(Class)modelClass;
 - (void) setModelNamed:(NSString *)modelName;
 

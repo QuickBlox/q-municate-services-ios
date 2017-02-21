@@ -9,6 +9,7 @@
 #import "QMDBStorage.h"
 
 #import "QMSLog.h"
+#import "QMCDRecord.h"
 
 @interface QMDBStorage ()
 
@@ -16,27 +17,48 @@
 
 @property (strong, nonatomic) dispatch_queue_t queue;
 @property (strong, nonatomic) QMCDRecordStack *stack;
-@property (strong, nonatomic) NSManagedObjectContext *bgContext;
 
 @end
 
 @implementation QMDBStorage
 
-- (instancetype)initWithStoreNamed:(NSString *)storeName model:(NSManagedObjectModel *)model queueLabel:(const char *)queueLabel applicationGroupIdentifier:(NSString *)appGroupIdentifier {
+
+- (instancetype)initWithStoreNamed:(NSString *)storeName
+                             model:(NSManagedObjectModel *)model
+                        queueLabel:(const char *)queueLabel
+        applicationGroupIdentifier:(NSString *)appGroupIdentifier {
     
     self = [super init];
     
     if (self) {
         
-        self.queue = dispatch_queue_create(queueLabel, DISPATCH_QUEUE_SERIAL);
-        //Create Chat coredata stack
-        self.stack = [AutoMigratingQMCDRecordStack stackWithStoreNamed:storeName model:model applicationGroupIdentifier:appGroupIdentifier];
+        _stack = [AutoMigratingQMCDRecordStack stackWithStoreNamed:storeName
+                                                             model:model
+                                        applicationGroupIdentifier:appGroupIdentifier];
+        NSManagedObjectContext *context = [NSManagedObjectContext QM_privateQueueContext];
+        [context setParentContext:self.stack.context];
+        
+        _backgroundSaveContext = context;
+        
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            
+            [QMCDRecord setLoggingLevel:QMCDRecordLoggingLevelVerbose];
+        });
     }
 
     return self;
 }
 
-- (instancetype)initWithStoreNamed:(NSString *)storeName model:(NSManagedObjectModel *)model queueLabel:(const char *)queueLabel {
+
+- (NSManagedObjectContext *)context {
+    
+    return self.stack.context;
+}
+
+- (instancetype)initWithStoreNamed:(NSString *)storeName
+                             model:(NSManagedObjectModel *)model
+                        queueLabel:(const char *)queueLabel {
     
     return [self initWithStoreNamed:storeName
                               model:model
@@ -46,6 +68,11 @@
 
 + (void)setupDBWithStoreNamed:(NSString *)storeName {
     
+    NSAssert(nil, @"must be overloaded");
+}
+
++ (void)setupDBWithStoreNamed:(NSString *)storeName
+   applicationGroupIdentifier:(nullable NSString *)appGroupIdentifier {
     NSAssert(nil, @"must be overloaded");
 }
 
@@ -73,41 +100,25 @@
     }
 }
 
-- (NSManagedObjectContext *)bgContext {
+- (void)async:(void(^)(NSManagedObjectContext *backgroundContext))block {
     
-    if (!_bgContext) {
-        NSManagedObjectContext *context = [NSManagedObjectContext QM_context];
-        [context setParentContext:self.stack.context];
-        
-        _bgContext = context;
-    }
-    
-    return _bgContext;
-}
-
-- (void)async:(void(^)(NSManagedObjectContext *context))block {
-    
-    dispatch_async(self.queue, ^{
-        block(self.bgContext);
-    });
-}
-
-- (void)sync:(void(^)(NSManagedObjectContext *context))block {
-    
-    dispatch_sync(self.queue, ^{
-        block(self.bgContext);
-    });
+    [_backgroundSaveContext performBlock:^{
+        block(_backgroundSaveContext);
+    }];
 }
 
 - (void)save:(dispatch_block_t)completion {
     
     [self async:^(NSManagedObjectContext *context) {
         
-        [context QM_saveToPersistentStoreAndWait];
+        [context QM_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
+            
+            if (completion) {
+                
+                dispatch_async(dispatch_get_main_queue(), completion);
+            }
+        }];
         
-        if (completion) {
-            DO_AT_MAIN(completion());
-        }
     }];
 }
 

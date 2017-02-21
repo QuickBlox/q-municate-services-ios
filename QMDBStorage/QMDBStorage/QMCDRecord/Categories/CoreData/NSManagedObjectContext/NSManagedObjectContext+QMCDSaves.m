@@ -90,7 +90,7 @@
 
     __block BOOL hasChanges = NO;
 
-    if ([self concurrencyType] == NSConfinementConcurrencyType)
+    if ([self concurrencyType] == NSPrivateQueueConcurrencyType)
     {
         hasChanges = [self hasChanges];
     }
@@ -121,6 +121,7 @@
     }
 
     void (^saveBlock)(void) = ^{
+        
         NSString *optionsSummary = @"";
         optionsSummary = [optionsSummary stringByAppendingString:saveParentContexts ? @"Save Parents,":@""];
         optionsSummary = [optionsSummary stringByAppendingString:saveSynchronously ? @"Sync Save":@""];
@@ -132,6 +133,17 @@
 
         @try
         {
+            
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-variable"
+            NSUInteger numberOfInsertedObjects = [[self insertedObjects] count];
+            NSUInteger numberOfUpdatedObjects = [[self updatedObjects] count];
+            NSUInteger numberOfDeletedObjects = [[self deletedObjects] count];
+#pragma clang diagnostic pop
+            
+            QMCDLogVerbose(@"Objects - Inserted %tu, Updated %tu, Deleted %tu", numberOfInsertedObjects, numberOfUpdatedObjects, numberOfDeletedObjects);
+            
+
             saved = [self save:&error];
         }
         @catch(NSException *exception)
@@ -156,15 +168,6 @@
                 else {
                     QMCDLogInfo(@"→ Finished saving: %@", [self QM_description]);
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-variable"
-                    NSUInteger numberOfInsertedObjects = [[self insertedObjects] count];
-                    NSUInteger numberOfUpdatedObjects = [[self updatedObjects] count];
-                    NSUInteger numberOfDeletedObjects = [[self deletedObjects] count];
-#pragma clang diagnostic pop
-                    
-                    QMCDLogVerbose(@"Objects - Inserted %tu, Updated %tu, Deleted %tu", numberOfInsertedObjects, numberOfUpdatedObjects, numberOfDeletedObjects);
-
                     if (completion) {
                         completion(saved, error);
                     }
@@ -173,7 +176,7 @@
         }
     };
 
-    if ([self concurrencyType] == NSConfinementConcurrencyType)
+    if ([self concurrencyType] == NSPrivateQueueConcurrencyType)
     {
         saveBlock();
     }

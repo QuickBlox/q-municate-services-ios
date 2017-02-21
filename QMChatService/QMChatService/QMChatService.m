@@ -93,10 +93,6 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
                 
                 [weakSelf.dialogsMemoryStorage addChatDialogs:userDialogs andJoin:NO];
                 
-                if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddChatDialogsToMemoryStorage:)]) {
-                    [weakSelf.multicastDelegate chatService:weakSelf didAddChatDialogsToMemoryStorage:collection];
-                }
-                
                 NSMutableSet *dialogsUsersIDs = [NSMutableSet set];
                 for (QBChatDialog *dialog in userDialogs) {
                     [dialogsUsersIDs addObjectsFromArray:dialog.occupantIDs];
@@ -128,9 +124,9 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
                 
                 [weakSelf.messagesMemoryStorage addMessages:collection forDialogID:dialogID];
                 
-                if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddMessagesToMemoryStorage:forDialogID:)]) {
-                    [weakSelf.multicastDelegate chatService:weakSelf didAddMessagesToMemoryStorage:collection forDialogID:dialogID];
-                }
+//                if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddMessagesToMemoryStorage:forDialogID:)]) {
+//                    [weakSelf.multicastDelegate chatService:weakSelf didAddMessagesToMemoryStorage:collection forDialogID:dialogID];
+//                }
             }
             
             if (completion) {
@@ -1775,7 +1771,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
         lastMessagesLoadDate = lastMessage.dateSent;
     }
     
-    parameters[@"date_sent[gte]"] = @([lastMessagesLoadDate timeIntervalSince1970]);
+    parameters[@"date_sent[gt]"] = @([lastMessagesLoadDate timeIntervalSince1970]);
     
     return [parameters copy];
 }

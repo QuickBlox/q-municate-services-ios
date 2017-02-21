@@ -43,6 +43,9 @@
 + (instancetype)QM_findFirstWithPredicate:(NSPredicate *)searchTerm
                                 inContext:(NSManagedObjectContext *)context;
 
++ (NSManagedObjectID *)QM_findFirstIDWithPredicate:(NSPredicate *)searchTerm
+                                         inContext:(NSManagedObjectContext *)context;
+
 + (instancetype)QM_findFirstWithPredicate:(NSPredicate *)searchterm
                                  sortedBy:(NSString *)property
                                 ascending:(BOOL)ascending

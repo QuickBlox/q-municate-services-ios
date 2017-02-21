@@ -79,14 +79,16 @@
         }
     };
 
-    if ([context concurrencyType] == NSConfinementConcurrencyType)
+    if ([context concurrencyType] == NSPrivateQueueConcurrencyType)
     {
         requestBlock();
     }
     else
     {
+        
         [context performBlockAndWait:requestBlock];
     }
+    
 	return results;
 }
 
@@ -118,7 +120,6 @@
         entity = [self QM_entityDescriptionInContext:context];
     }
 
-//    [NSEntityDescription insertNewObjectForEntityForName:[entity name] inManagedObjectContext:context];
     NSManagedObject *managedObject = [[self alloc] initWithEntity:entity insertIntoManagedObjectContext:context];
 
     if ([managedObject respondsToSelector:@selector(QM_awakeFromCreation)])

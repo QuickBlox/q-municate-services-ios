@@ -42,6 +42,7 @@
 - (void)updateWithQBChatMessage:(QBChatMessage *)message {
     
     self.messageID = message.ID;
+    
     self.createAt = message.createdAt;
     self.updateAt = message.updatedAt;
     self.delayed = @(message.delayed);

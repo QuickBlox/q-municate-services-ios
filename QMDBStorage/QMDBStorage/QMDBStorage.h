@@ -13,10 +13,7 @@
 #define LIKE_C(attrName, attrVal) [NSPredicate predicateWithFormat:@"%K like[c] %@", attrName, attrVal]
 #define IS(attrName, attrVal) [NSPredicate predicateWithFormat:@"%K == %@", attrName, attrVal]
 
-#define START_LOG_TIME double startTime = CFAbsoluteTimeGetCurrent();
-#define END_LOG_TIME NSLog(@"%s %f", __PRETTY_FUNCTION__, CFAbsoluteTimeGetCurrent()-startTime);
-
-#define DO_AT_MAIN(x) dispatch_async(dispatch_get_main_queue(), ^{ x; });
+//#define DO_AT_MAIN(x) dispatch_async(dispatch_get_main_queue(), ^{ x; });
 
 #import "QMCDRecord.h"
 
@@ -24,6 +21,8 @@
 
 @property (strong, nonatomic, readonly) dispatch_queue_t queue;
 @property (strong, nonatomic, readonly) QMCDRecordStack *stack;
+@property (strong, nonatomic, readonly) NSManagedObjectContext *context;
+@property (strong, nonatomic, readonly) NSManagedObjectContext *backgroundSaveContext;
 
 - (instancetype)initWithStoreNamed:(NSString *)storeName
                              model:(NSManagedObjectModel *)model
@@ -38,7 +37,10 @@
  * @param name - filename
  */
 
-+ (void)setupDBWithStoreNamed:(NSString *)storeName;
++ (void)setupDBWithStoreNamed:(NSString *)storeName ;
+
++ (void)setupDBWithStoreNamed:(NSString *)storeName
+   applicationGroupIdentifier:(nullable NSString *)appGroupIdentifier;
 
 /**
  * @brief Clean data base with store name
@@ -50,13 +52,7 @@
  * @brief Perform operation in CoreData thread
  */
 
-- (void)async:(void(^)(NSManagedObjectContext *context))block;
-- (void)sync:(void(^)(NSManagedObjectContext *context))block;
+- (void)async:(void(^)(NSManagedObjectContext *backgroundContext))block;
 
-/**
- * @brief Save to persistent store (async)
- */
-
-- (void)save:(dispatch_block_t)completion;
 
 @end

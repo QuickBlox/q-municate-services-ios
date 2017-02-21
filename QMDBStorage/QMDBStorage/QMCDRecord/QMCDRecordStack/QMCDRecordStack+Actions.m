@@ -42,40 +42,40 @@ dispatch_queue_t QM_saveQueue()
 
 #pragma mark - Asynchronous saving
 
-- (void) saveWithBlock:(void(^)(NSManagedObjectContext *localContext))block;
-{
-    [self saveWithBlock:block identifier:NSStringFromSelector(_cmd) completion:nil];
-}
+//- (void) saveWithBlock:(void(^)(NSManagedObjectContext *localContext))block;
+//{
+//    [self saveWithBlock:block identifier:NSStringFromSelector(_cmd) completion:nil];
+//}
+//
+//- (void) saveWithIdentifier:(NSString *)identifier block:(void(^)(NSManagedObjectContext *))block;
+//{
+//    [self saveWithBlock:block identifier:identifier completion:nil];
+//}
+//
+//- (void) saveWithBlock:(void(^)(NSManagedObjectContext *localContext))block completion:(MRSaveCompletionHandler)completion;
+//{
+//    [self saveWithBlock:block identifier:NSStringFromSelector(_cmd) completion:completion];
+//}
 
-- (void) saveWithIdentifier:(NSString *)identifier block:(void(^)(NSManagedObjectContext *))block;
-{
-    [self saveWithBlock:block identifier:identifier completion:nil];
-}
-
-- (void) saveWithBlock:(void(^)(NSManagedObjectContext *localContext))block completion:(MRSaveCompletionHandler)completion;
-{
-    [self saveWithBlock:block identifier:NSStringFromSelector(_cmd) completion:completion];
-}
-
-- (void) saveWithBlock:(void (^)(NSManagedObjectContext *))block identifier:(NSString *)contextWorkingName completion:(MRSaveCompletionHandler)completion;
-{
-    NSParameterAssert(block);
-    QMCDLogVerbose(@"Dispatching save request: %@", contextWorkingName);
-    dispatch_async(QM_saveQueue(), ^{
-        @autoreleasepool
-        {
-            QMCDLogVerbose(@"%@ save starting", contextWorkingName);
-            
-            NSManagedObjectContext *localContext = [self newConfinementContext];
-            [localContext QM_setWorkingName:contextWorkingName];
-            
-            block(localContext);
-
-            MRContextSaveOptions saveOptions = (MRContextSaveOptions)(MRContextSaveOptionsSaveParentContexts | MRContextSaveOptionsSaveSynchronously);
-            [localContext QM_saveWithOptions:saveOptions completion:completion];
-        }
-    });
-}
+//- (void) saveWithBlock:(void (^)(NSManagedObjectContext *))block identifier:(NSString *)contextWorkingName completion:(MRSaveCompletionHandler)completion;
+//{
+//    NSParameterAssert(block);
+//    QMCDLogVerbose(@"Dispatching save request: %@", contextWorkingName);
+//    dispatch_async(QM_saveQueue(), ^{
+//        @autoreleasepool
+//        {
+//            QMCDLogVerbose(@"%@ save starting", contextWorkingName);
+//            
+//            NSManagedObjectContext *localContext = [self newConfinementContext];
+//            [localContext QM_setWorkingName:contextWorkingName];
+//            
+//            block(localContext);
+//
+//            MRContextSaveOptions saveOptions = (MRContextSaveOptions)(MRContextSaveOptionsSaveParentContexts | MRContextSaveOptionsSaveSynchronously);
+//            [localContext QM_saveWithOptions:saveOptions completion:completion];
+//        }
+//    });
+//}
 
 #pragma mark - Synchronous saving
 
@@ -83,34 +83,34 @@ dispatch_queue_t QM_saveQueue()
 {
     return [self saveWithBlockAndWait:block error:nil];
 }
-
-- (BOOL) saveWithBlockAndWait:(void(^)(NSManagedObjectContext *localContext))block error:(NSError **)error;
-{
-    NSParameterAssert(block);
-    NSManagedObjectContext *localContext = [self newConfinementContext];
-
-    block(localContext);
-
-    if (NO == [localContext hasChanges])
-    {
-        QMCDLogInfo(@"NO CHANGES IN ** %@ ** CONTEXT - NOT SAVING", [localContext QM_workingName]);
-
-        return YES;
-    }
-
-    __block BOOL saveSuccess = YES;
-
-    MRContextSaveOptions saveOptions = (MRContextSaveOptions)(MRContextSaveOptionsSaveParentContexts | MRContextSaveOptionsSaveSynchronously);
-    [localContext QM_saveWithOptions:saveOptions completion:^(BOOL localSuccess, NSError *localSaveError) {
-        saveSuccess = localSuccess;
-
-        if (error != nil)
-        {
-            *error = localSaveError;
-        }
-    }];
-
-    return saveSuccess;
-}
+//
+//- (BOOL) saveWithBlockAndWait:(void(^)(NSManagedObjectContext *localContext))block error:(NSError **)error;
+//{
+//    NSParameterAssert(block);
+//    NSManagedObjectContext *localContext = [self newConfinementContext];
+//
+//    block(localContext);
+//
+//    if (NO == [localContext hasChanges])
+//    {
+//        QMCDLogInfo(@"NO CHANGES IN ** %@ ** CONTEXT - NOT SAVING", [localContext QM_workingName]);
+//
+//        return YES;
+//    }
+//
+//    __block BOOL saveSuccess = YES;
+//
+//    MRContextSaveOptions saveOptions = (MRContextSaveOptions)(MRContextSaveOptionsSaveParentContexts | MRContextSaveOptionsSaveSynchronously);
+//    [localContext QM_saveWithOptions:saveOptions completion:^(BOOL localSuccess, NSError *localSaveError) {
+//        saveSuccess = localSuccess;
+//
+//        if (error != nil)
+//        {
+//            *error = localSaveError;
+//        }
+//    }];
+//
+//    return saveSuccess;
+//}
 
 @end

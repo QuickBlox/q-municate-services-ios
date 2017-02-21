@@ -201,6 +201,15 @@
                                                   inContext:context];
 }
 
++ (NSManagedObjectID *)QM_findFirstIDWithPredicate:(NSPredicate *)searchTerm
+                                         inContext:(NSManagedObjectContext *)context {
+    
+    NSFetchRequest *request = [self QM_requestFirstWithPredicate:searchTerm];
+    request.resultType = NSManagedObjectIDResultType;
+    return [self QM_executeFetchRequestAndReturnFirstObject:request
+                                                  inContext:context];
+}
+
 + (instancetype)QM_findFirstWithPredicate:(NSPredicate *)searchTerm
                                  sortedBy:(NSString *)property
                                 ascending:(BOOL)ascending

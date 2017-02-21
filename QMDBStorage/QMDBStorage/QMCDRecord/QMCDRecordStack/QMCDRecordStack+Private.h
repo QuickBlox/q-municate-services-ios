@@ -13,7 +13,6 @@
 - (NSPersistentStoreCoordinator *) createCoordinator;
 - (NSPersistentStoreCoordinator *) createCoordinatorWithOptions:(NSDictionary *)options;
 
-- (NSManagedObjectContext *) createConfinementContext;
-- (void) loadStack;
+- (void)loadStack;
 
 @end

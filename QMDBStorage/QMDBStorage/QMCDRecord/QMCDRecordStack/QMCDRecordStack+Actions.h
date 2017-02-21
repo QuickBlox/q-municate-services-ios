@@ -16,11 +16,11 @@ dispatch_queue_t QM_saveQueue(void);
 
 /* For all background saving operations. These calls will be sent to a different thread/queue.
  */
-- (void) saveWithBlock:(void(^)(NSManagedObjectContext *localContext))block;
-- (void) saveWithBlock:(void(^)(NSManagedObjectContext *localContext))block completion:(MRSaveCompletionHandler)completion;
-- (void) saveWithBlock:(void (^)(NSManagedObjectContext *))block identifier:(NSString *)contextWorkingName completion:(MRSaveCompletionHandler)completion;
+//- (void) saveWithBlock:(void(^)(NSManagedObjectContext *localContext))block;
+//- (void) saveWithBlock:(void(^)(NSManagedObjectContext *localContext))block completion:(MRSaveCompletionHandler)completion;
+//- (void) saveWithBlock:(void (^)(NSManagedObjectContext *))block identifier:(NSString *)contextWorkingName completion:(MRSaveCompletionHandler)completion;
 
-- (void) saveWithIdentifier:(NSString *)identifier block:(void(^)(NSManagedObjectContext *))block;
+//- (void) saveWithIdentifier:(NSString *)identifier block:(void(^)(NSManagedObjectContext *))block;
 
 
 /**

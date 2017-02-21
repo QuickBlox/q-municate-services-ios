@@ -45,8 +45,8 @@
     return [[self alloc] init];
 }
 
-- (void) loadStack
-{
+- (void) loadStack {
+    
     NSManagedObjectContext *context = [self context];
     NSString *stackType = NSStringFromClass([self class]);
 #pragma unused(stackType)
@@ -62,29 +62,29 @@
 #endif
 }
 
-- (void) setModelFromClass:(Class)modelClass
-{
+- (void)setModelFromClass:(Class)modelClass {
+    
     NSBundle *bundle = [NSBundle bundleForClass:modelClass];
     NSManagedObjectModel *model = [NSManagedObjectModel mergedModelFromBundles:[NSArray arrayWithObject:bundle]];
     [self setModel:model];
 }
 
-- (void) setModelNamed:(NSString *)modelName
-{
+- (void)setModelNamed:(NSString *)modelName {
+    
     NSManagedObjectModel *model = [NSManagedObjectModel QM_managedObjectModelNamed:modelName];
     [self setModel:model];
 }
 
-- (void) reset
-{
+- (void) reset {
+    
     self.context = nil;
     self.model = nil;
     self.coordinator = nil;
     self.store = nil;
 }
 
-- (NSManagedObjectContext *) context
-{
+- (NSManagedObjectContext *) context {
+    
     if (_context == nil)
     {
         _context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
@@ -95,33 +95,16 @@
     return _context;
 }
 
-- (NSString *) stackName
-{
-    if (_stackName == nil)
-    {
+- (NSString *) stackName {
+    
+    if (_stackName == nil) {
         _stackName = [NSString stringWithFormat:@"%@ [%p]", NSStringFromClass([self class]), self];
     }
     return _stackName;
 }
 
-- (NSManagedObjectContext *) createConfinementContext
-{
-    NSManagedObjectContext *context = [NSManagedObjectContext QM_confinementContext];
-    NSString *workingName = [[context QM_workingName] stringByAppendingFormat:@" (%@)", [self stackName]];
-    [context QM_setWorkingName:workingName];
-    [context setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
-    return context;
-}
-
-- (NSManagedObjectContext *) newConfinementContext
-{
-    NSManagedObjectContext *context = [self createConfinementContext];
-
-    return context;
-}
-
-- (NSManagedObjectModel *) model
-{
+- (NSManagedObjectModel *) model {
+    
     if (_model == nil)
     {
         _model = [NSManagedObjectModel QM_mergedObjectModelFromMainBundle];
@@ -129,8 +112,8 @@
     return _model;
 }
 
-- (NSPersistentStoreCoordinator *)coordinator
-{
+- (NSPersistentStoreCoordinator *)coordinator {
+    
     if (_coordinator == nil)
     {
         _coordinator = [self createCoordinator];
@@ -139,21 +122,21 @@
     return _coordinator;
 }
 
-- (NSPersistentStoreCoordinator *) createCoordinator
-{
+- (NSPersistentStoreCoordinator *) createCoordinator {
+    
     return [self createCoordinatorWithOptions:nil];
 }
 
-- (NSPersistentStoreCoordinator *) createCoordinatorWithOptions:(NSDictionary *)options
-{
+- (NSPersistentStoreCoordinator *) createCoordinatorWithOptions:(NSDictionary *)options {
+    
     QMCDLogError(@"%@ must be overridden in %@", NSStringFromSelector(_cmd), NSStringFromClass([self class]));
     return nil;
 }
 
 #pragma mark - Handle System Notifications
 
-- (BOOL) saveOnApplicationWillResignActive
-{
+- (BOOL) saveOnApplicationWillResignActive {
+    
     return self.applicationWillResignActive != nil;
 }
 

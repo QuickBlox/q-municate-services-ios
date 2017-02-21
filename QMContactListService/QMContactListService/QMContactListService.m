@@ -59,26 +59,21 @@ static inline BOOL isContactListEmpty(QBContactList *contactList) {
 
 - (void)loadCachedData {
     
-    dispatch_group_t loadCacheGroup = dispatch_group_create();
     __weak __typeof(self)weakSelf = self;
     
     if ([self.cacheDataSource respondsToSelector:@selector(cachedContactListItems:)]) {
         
-        dispatch_group_enter(loadCacheGroup);
+        
         [self.cacheDataSource cachedContactListItems:^(NSArray *collection) {
             
             [weakSelf.contactListMemoryStorage updateWithContactListItems:collection];
-            dispatch_group_leave(loadCacheGroup);
         }];
     }
     
-    dispatch_group_notify(loadCacheGroup, dispatch_get_main_queue(), ^{
-        
-        __typeof(weakSelf)strongSelf = weakSelf;
-        if ([strongSelf.multicastDelegate respondsToSelector:@selector(contactListServiceDidLoadCache)]) {
-            [strongSelf.multicastDelegate contactListServiceDidLoadCache];
-        }
-    });
+    
+    if ([self.multicastDelegate respondsToSelector:@selector(contactListServiceDidLoadCache)]) {
+        [self.multicastDelegate contactListServiceDidLoadCache];
+    }
 }
 
 #pragma mark - Add Remove multicaste delegate

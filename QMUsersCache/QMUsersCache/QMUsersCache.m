@@ -15,11 +15,6 @@
 
 static QMUsersCache *_usersCacheInstance = nil;
 
-- (NSManagedObjectContext *)backgroundContext
-{
-    return self.stack.context;
-}
-
 #pragma mark - Singleton
 
 + (QMUsersCache *)instance
@@ -67,18 +62,18 @@ static QMUsersCache *_usersCacheInstance = nil;
 {
     __weak __typeof(self)weakSelf = self;
     
-    return [BFTask taskFromExecutor:[BFExecutor executorWithDispatchQueue:self.queue] withBlock:^id{
-        __typeof(self) strongSelf = weakSelf;
-        
-        NSManagedObjectContext* context = [strongSelf backgroundContext];
-        
+    BFTaskCompletionSource *source = [BFTaskCompletionSource taskCompletionSource];
+
+    [self async:^(NSManagedObjectContext *backgroundContext) {
+       
         NSMutableArray *toInsert = [NSMutableArray array];
         NSMutableArray *toUpdate = [NSMutableArray array];
         
         //To Insert / Update
         for (QBUUser *user in users) {
             
-            CDUser *cachedUser = [CDUser QM_findFirstWithPredicate:IS(@"id", @(user.ID)) inContext:context];
+            
+            CDUser *cachedUser = [CDUser QM_findFirstWithPredicate:IS(@"id", @(user.ID)) inContext:backgroundContext];
             
             if (cachedUser) {
                 
@@ -96,30 +91,42 @@ static QMUsersCache *_usersCacheInstance = nil;
         
         if (toUpdate.count > 0) {
             
-            [strongSelf updateUsers:toUpdate inContext:context];
+            [weakSelf updateUsers:toUpdate inContext:backgroundContext];
         }
         
         if (toInsert.count > 0) {
             
-            [strongSelf insertUsers:toInsert inContext:context];
-        }
-        
-        if (toInsert.count + toUpdate.count > 0) {
-            [context QM_saveToPersistentStoreAndWait];
+            [weakSelf insertUsers:toInsert inContext:backgroundContext];
         }
         
         QMSLog(@"[%@] Users to insert %tu, update %tu", NSStringFromClass([weakSelf class]), toInsert.count, toUpdate.count);
         
-        return nil;
+        if ([backgroundContext hasChanges]) {
+            
+            [backgroundContext QM_saveOnlySelfWithCompletion:^(BOOL success, NSError *error) {
+                
+                [source setResult:nil];
+            }];
+        }
+        else {
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+                [source setResult:nil];
+            });
+        }
     }];
+    
+    return source.task;
 }
 
 - (BFTask *)deleteUser:(QBUUser *)user
 {
     __weak __typeof(self)weakSelf = self;
+    
     return [BFTask taskFromExecutor:[BFExecutor executorWithDispatchQueue:self.queue] withBlock:^id{
         __typeof(self) strongSelf = weakSelf;
-        NSManagedObjectContext* context = [strongSelf backgroundContext];
+        NSManagedObjectContext* context = [strongSelf backgroundSaveContext];
         
         CDUser *cachedUser = [CDUser QM_findFirstWithPredicate:IS(@"id", @(user.ID)) inContext:context];
         [cachedUser QM_deleteEntityInContext:context];
@@ -135,7 +142,7 @@ static QMUsersCache *_usersCacheInstance = nil;
     __weak __typeof(self)weakSelf = self;
     return [BFTask taskFromExecutor:[BFExecutor executorWithDispatchQueue:self.queue] withBlock:^id{
         __typeof(self) strongSelf = weakSelf;
-        NSManagedObjectContext* context = [strongSelf backgroundContext];
+        NSManagedObjectContext* context = [strongSelf backgroundSaveContext];
         
         [CDUser QM_truncateAllInContext:context];
         
@@ -151,7 +158,7 @@ static QMUsersCache *_usersCacheInstance = nil;
     [BFTask taskFromExecutor:[BFExecutor executorWithDispatchQueue:self.queue] withBlock:^id{
         
         __typeof(self) strongSelf = weakSelf;
-        NSManagedObjectContext* context = [strongSelf backgroundContext];
+        NSManagedObjectContext* context = [strongSelf backgroundSaveContext];
         CDUser *user = [CDUser QM_findFirstWithPredicate:predicate inContext:context];
         QBUUser *result = [user toQBUUser];
         
@@ -170,21 +177,12 @@ static QMUsersCache *_usersCacheInstance = nil;
 
 - (BFTask *)usersWithPredicate:(NSPredicate *)predicate sortedBy:(NSString *)sortTerm ascending:(BOOL)ascending
 {
-    __weak __typeof(self)weakSelf = self;
     BFTaskCompletionSource* source = [BFTaskCompletionSource taskCompletionSource];
     
-    [BFTask taskFromExecutor:[BFExecutor executorWithDispatchQueue:self.queue] withBlock:^id{
-        __typeof(self) strongSelf = weakSelf;
-        
-        NSManagedObjectContext* context = [strongSelf backgroundContext];
-        
-        NSArray *users = [CDUser QM_findAllSortedBy:sortTerm ascending:ascending withPredicate:predicate inContext:context];
-        NSArray *result = [weakSelf convertCDUsertsToQBUsers:users];
-        
-        [source setResult:result];
-        
-        return nil;
-    }];
+    NSArray *users = [CDUser QM_findAllSortedBy:sortTerm ascending:ascending withPredicate:predicate inContext:self.context];
+    NSArray *result = [self convertCDUsertsToQBUsers:users];
+    
+    [source setResult:result];
     
     return source.task;
 }
