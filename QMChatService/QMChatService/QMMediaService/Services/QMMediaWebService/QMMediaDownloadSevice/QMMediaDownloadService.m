@@ -60,7 +60,21 @@
                    withCompletionBlock:completionBlock
                          progressBlock:progressBlock];
     
-    [self downloadMediaItemWithID:mediaID delegate:nil];
+    [QBRequest downloadFileWithUID:mediaID  successBlock:^(QBResponse *response, NSData *fileData) {
+        
+        if (fileData) {
+            
+            globalCompletionBlock(mediaID, fileData, nil, self);
+        }
+    } statusBlock:^(QBRequest *request, QBRequestStatus *status) {
+        
+        globalProgressBlock(mediaID, status.percentOfCompletion, self);
+        
+    } errorBlock:^(QBResponse *response) {
+        
+        QMMediaError *error = [QMMediaError errorWithResponse:response];
+        globalCompletionBlock(mediaID, nil, error, self);
+    }];
 }
 
 - (void)downloadMediaItemWithID:(NSString *)mediaID
@@ -81,7 +95,7 @@
         
     } errorBlock:^(QBResponse *response) {
         QMMediaError *error = [QMMediaError errorWithResponse:response];
-        globalCompletionBlock(nil, nil, error, self);
+        globalCompletionBlock(mediaID, nil, error, self);
         
     }];
 }
