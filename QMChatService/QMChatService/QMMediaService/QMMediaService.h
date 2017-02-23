@@ -9,6 +9,9 @@
 #import <Foundation/Foundation.h>
 
 #import "QMMediaServiceDelegate.h"
+#import "QMMediaStoreServiceDelegate.h"
+#import "QMMediaDownloadServiceDelegate.h"
+#import "QMMediaUploadServiceDelegate.h"
 
 @class QMChatAttachmentService;
 
@@ -16,5 +19,13 @@
 
 @property (copy, nonatomic) QMAttachmentMessageStatusBlock onMessageDidChangeAttachmentStatus;
 @property (copy, nonatomic) QMAttachmentMesssageUploadProgressBlock onMessageDidChangeUploadingProgress;
+@property (copy, nonatomic) QMAttachmentDownloadProgressBlock onMessageDidChangeDownloadingProgress;
+
+- (void)subscribeToItemWithID:(NSString *)itemID
+                    messageID:(NSString *)messageID
+                downloadBlock:(void(^)(float))downloadBlock
+                  uploadBlock:(void(^)(float))uploadBlock
+                      success:(void(^)(QMMediaItem *))successBlock
+                        error:(void(^)(NSError *))error;
 
 @end

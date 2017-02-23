@@ -13,8 +13,8 @@
 @class QMMediaError;
 
 typedef void (^QMAttachmentMessageStatusBlock)(QMMessageAttachmentStatus status, QBChatMessage *message);
-
 typedef void (^QMAttachmentMesssageUploadProgressBlock)(float progress, QBChatMessage *message);
+typedef void (^QMAttachmentDownloadProgressBlock)(float progress, QBChatMessage *message, QBChatAttachment *attachment);
 
 typedef void (^QMMediaRestCompletionBlock)(NSString *mediaID, NSData *data, QMMediaError *error);
 typedef void (^QMMediaProgressBlock)(float progress);

@@ -15,13 +15,14 @@
 @protocol QMMediaStoreServiceDelegate;
 @protocol QMMediaDownloadServiceDelegate;
 @protocol QMMediaUploadServiceDelegate;
+@protocol QMMediaInfoServiceDelegate;
 
 @protocol QMMediaServiceDelegate <NSObject>
 
 @property (nonatomic, strong) id <QMMediaStoreServiceDelegate> storeService;
 @property (nonatomic, strong) id <QMMediaDownloadServiceDelegate> downloadService;
 @property (nonatomic, strong) id <QMMediaUploadServiceDelegate> uploadService;
-
+@property (nonatomic, strong) id <QMMediaInfoServiceDelegate> mediaInfoService;
 
 - (void)mediaForMessage:(QBChatMessage *)message
     withCompletionBlock:(void(^)(QMMediaItem *mediaItem, NSError *error))completion;
@@ -31,6 +32,8 @@
     withChatService:(QMChatService *)chatService
           withMedia:(QMMediaItem *)mediaItem
          completion:(QBChatCompletionBlock)completion;
+
+- (QMMediaItem *)cachedMediaForMessage:(QBChatMessage *)message;
 
 - (void)addUploadListenerForMessageWithID:(NSString *)messageID
                           completionBlock:(QMMessageUploadCompletionBlock)completionBlock
