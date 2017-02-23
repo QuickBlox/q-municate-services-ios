@@ -14,7 +14,7 @@
 #define QM_DESERIALIZE_INTEGER(var_name, decoder)	var_name = [decoder decodeIntegerForKey:@#var_name]
 #define QM_DESERIALIZE_INT(var_name, decoder)	    var_name = [decoder decodeIntForKey:@#var_name]
 
-
+#import "QBChatAttachment+QMCustomData.h"
 #import "QMMediaItem.h"
 
 @interface QMMediaItem()
@@ -42,10 +42,27 @@
     self.remoteURL = [NSURL URLWithString:attachment.url];
     
     if ([attachment.type isEqualToString:@"audio"]) {
+        
         self.contentType = QMMediaContentTypeAudio;
+        
+        CGFloat duration = [attachment.context[@"duration"] floatValue];
+        if (duration > 0) {
+            self.duration = duration;
+        }
     }
+    
     else if ([attachment.type isEqualToString:@"video"]) {
+        
         self.contentType = QMMediaContentTypeVideo;
+        
+        NSDictionary *size = attachment.context[@"size"];
+        
+        if (size) {
+            
+            CGFloat width = [size[@"width"] doubleValue];
+            CGFloat height = [size[@"height"] doubleValue];
+            self.videoSize = CGSizeMake(width, height);
+        }
     }
 }
 
@@ -103,25 +120,25 @@
     return stringMIMEType;
 }
 
-- (NSString *)stringMediaType {
+- (NSString *)stringContentType {
     
-    NSString *stringMediaType = nil;
+    NSString *stringContentType = nil;
     
     switch (self.contentType) {
         case QMMediaContentTypeAudio:
-            stringMediaType = @"audio";
+            stringContentType = @"audio";
             break;
             
         case QMMediaContentTypeVideo:
-            stringMediaType = @"video";
+            stringContentType = @"video";
             break;
             
         default:
-            stringMediaType = @"";
+            stringContentType = @"";
             break;
     }
     
-    return stringMediaType;
+    return stringContentType;
 }
 
 - (NSString *)extension {
@@ -170,14 +187,15 @@
 
 - (NSString *)description {
     
-    return [NSString stringWithFormat:@"<%@: %p; name = %@; localURL = %@; remote = %@; mediaType = %@; mimeType = %@;>",
+    return [NSString stringWithFormat:@"<%@: %p; name = %@; localURL = %@; remote = %@; mediaType = %@; mimeType = %@; duration = %f>",
             NSStringFromClass([self class]),
             self,
             self.name,
             self.localURL,
             self.remoteURL,
-            [self stringMediaType],
-            [self stringMIMEType]
+            [self stringContentType],
+            [self stringMIMEType],
+            self.duration
             ];
 }
 
@@ -232,6 +250,41 @@
     QM_SERIALIZE_OBJECT(_name, aCoder);
     QM_SERIALIZE_INT(_contentType, aCoder);
     QM_SERIALIZE_INTEGER(_mediaDuration, aCoder);
+}
+
+- (void)setIsReady:(BOOL)isReady {
+    
+    if (_isReady != isReady) {
+        
+        _isReady = isReady;
+        
+        if (isReady &&_onReadyBlock){
+            _onReadyBlock();
+        }
+    }
+}
+
+
+- (NSDictionary *)metaData {
+    
+    NSMutableDictionary *metaData = [NSMutableDictionary new];
+    
+    if  (self.contentType == QMMediaContentTypeAudio || self.contentType == QMMediaContentTypeVideo) {
+        
+        if (self.duration > 0) {
+            metaData[@"duration"] = @(self.duration);
+        }
+        
+        if (self.contentType == QMMediaContentTypeVideo && !CGSizeEqualToSize(self.videoSize, CGSizeZero)) {
+            
+            metaData[@"width"] = @(self.videoSize.width);
+            metaData[@"height" ] = @(self.videoSize.height);
+        }
+    }
+    
+    if (metaData.allKeys.count) {
+        return metaData.copy;
+    }
 }
 
 @end
