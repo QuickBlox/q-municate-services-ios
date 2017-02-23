@@ -16,7 +16,7 @@
 
 - (BOOL)saveMediaItem:(QMMediaItem *)mediaItem;
 
-- (BOOL)isReadyToPlay:(NSString *)mediaID contentType:(NSString *)contentType;
+- (void)updateMediaItem:(QMMediaItem *)mediaItem;
 
 - (QMMediaItem *)mediaItemFromAttachment:(QBChatAttachment *)attachment;
 
