@@ -21,6 +21,7 @@ NSString const *kQMCustomParameterMessageStatus = @"chat_message_status";
 
 static NSString * const kQMChatAudioMessageTypeName = @"audio";
 static NSString * const kQMChatVideoMessageTypeName = @"video";
+static NSString * const kQMChatImageMessageTypeName = @"image";
 
 static NSString * const kQMChatLocationMessageTypeName = @"location";
 static NSString * const kQMLocationLatitudeKey = @"lat";
@@ -355,6 +356,8 @@ NSString const *kQMCustomParameterDialogDeletedOccupantsIDs = @"deleted_occupant
     return self.attachments.count > 0 || self.attachmentStatus == QMMessageAttachmentStatusLoading;
 }
 
+
+
 #pragma mark - Location
 
 - (CLLocationCoordinate2D)locationCoordinate {
@@ -418,11 +421,6 @@ NSString const *kQMCustomParameterDialogDeletedOccupantsIDs = @"deleted_occupant
 
 #pragma mark - Media
 
-- (BOOL)isMediaAttachment {
-    
-    return [self isAudioAttachment] || [self isVideoAttachment];
-}
-
 - (BOOL)isVideoAttachment {
     
     __block BOOL isVideoAttachment = NO;
@@ -451,6 +449,21 @@ NSString const *kQMCustomParameterDialogDeletedOccupantsIDs = @"deleted_occupant
     }];
     
     return isAudioAttachment;
+}
+
+- (BOOL)isImageAttachment {
+    
+    __block BOOL isImageAttachment = NO;
+    
+    [self.attachments enumerateObjectsUsingBlock:^(QBChatAttachment * _Nonnull obj, NSUInteger __unused idx, BOOL * _Nonnull stop) {
+        
+        if ([obj.type isEqualToString:kQMChatImageMessageTypeName]) {
+            isImageAttachment = YES;
+            *stop = YES;
+        }
+    }];
+    
+    return isImageAttachment;
 }
 
 @end
