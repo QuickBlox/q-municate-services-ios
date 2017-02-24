@@ -25,6 +25,7 @@
 @property (nonatomic, strong) id <QMMediaInfoServiceDelegate> mediaInfoService;
 
 - (void)mediaForMessage:(QBChatMessage *)message
+           attachmentID:(NSString *)attachmentID
     withCompletionBlock:(void(^)(QMMediaItem *mediaItem, NSError *error))completion;
 
 - (void)sendMessage:(QBChatMessage *)message
@@ -33,7 +34,7 @@
           withMedia:(QMMediaItem *)mediaItem
          completion:(QBChatCompletionBlock)completion;
 
-- (QMMediaItem *)cachedMediaForMessage:(QBChatMessage *)message;
+- (QMMediaItem *)cachedMediaForMessage:(QBChatMessage *)message attachmentID:(NSString *)attachmentID;
 
 - (void)addUploadListenerForMessageWithID:(NSString *)messageID
                           completionBlock:(QMMessageUploadCompletionBlock)completionBlock

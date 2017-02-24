@@ -28,6 +28,8 @@
 @property (strong, nonatomic) NSMutableDictionary *messageDownloadHandlers;
 @property (strong, nonatomic) NSMutableDictionary *messageStatusHandlers;
 
+@property (strong, nonatomic) NSMutableArray *mediaItemsInProgress;
+
 @property (strong, nonatomic) dispatch_queue_t barrierQueue;
 
 @end
@@ -38,7 +40,7 @@
 @synthesize storeService = _storeService;
 @synthesize downloadService = _downloadService;
 @synthesize uploadService = _uploadService;
-
+@synthesize mediaInfoService = _mediaInfoService;
 
 //MARK: - NSObject
 
@@ -48,7 +50,7 @@
         
         _messageUploadHandlers = [NSMutableDictionary dictionary];
         _messageDownloadHandlers = [NSMutableDictionary dictionary];
-        
+        _mediaItemsInProgress = [NSMutableArray array];
         _barrierQueue = dispatch_queue_create("com.quickblox.QMMediaService", DISPATCH_QUEUE_CONCURRENT);
     }
     
@@ -148,7 +150,7 @@
         [self.downloadService addListenerToMediaItemWithID:attachment.ID withCompletionBlock:^(NSString *mediaID, NSData *data, QMMediaError *error) {
             
             __strong typeof(weakSelf) strongSelf = weakSelf;
-            globalDownloadCompletionBlock(message.ID, mediaID, data, error.error, strongSelf);
+            globalDownloadCompletionBlock(message.ID, mediaID, data, error, strongSelf);
             
         } progressBlock:^(float progress) {
             
@@ -159,28 +161,36 @@
 }
 
 
-- (QMMediaItem *)cachedMediaForMessage:(QBChatMessage *)message {
+- (QMMediaItem *)cachedMediaForMessage:(QBChatMessage *)message attachmentID:(NSString *)attachmentID {
     
     QMMediaItem *mediaItem = nil;
     
-    if (message.attachmentStatus == QMMessageAttachmentStatusLoading || message.attachmentStatus == QMMessageAttachmentStatusError) {
+    if ([self.mediaItemsInProgress containsObject:attachmentID]) {
         return  nil;
     }
-    
     else if (message.attachments.count) {
+        QBChatAttachment *currentAttachment = nil;
+        for (QBChatAttachment *attachment in message.attachments) {
+            if ([attachment.ID isEqualToString:attachmentID]) {
+                currentAttachment = attachment;
+                break;
+            }
+        }
         
-        QBChatAttachment *attachment = message.attachments[0];
-        mediaItem = [self.storeService mediaItemFromAttachment:attachment];
+        if (currentAttachment) {
+            mediaItem = [self.storeService mediaItemFromAttachment:currentAttachment];
+        }
     }
     
     return mediaItem;
 }
 
 - (void)mediaForMessage:(QBChatMessage *)message
+           attachmentID:(NSString *)attachmentID
     withCompletionBlock:(void(^)(QMMediaItem *mediaItem, NSError *error))completion {
     
     
-    if (message.attachmentStatus == QMMessageAttachmentStatusLoading || message.attachmentStatus == QMMessageAttachmentStatusError) {
+    if ([self.mediaItemsInProgress containsObject:attachmentID]) {
         return;
     }
     
@@ -196,11 +206,13 @@
             // loading attachment from server
             [self changeMessageAttachmentStatus:QMMessageAttachmentStatusLoading forMessage:message];
             
-            
+            [self.mediaItemsInProgress addObject:attachmentID];
             __weak typeof(self) weakSelf = self;
             
             [self.downloadService downloadMediaItemWithID:attachment.ID
                                       withCompletionBlock:^(NSString *mediaID, NSData *data, QMMediaError *error) {
+                                          
+                                          [self.mediaItemsInProgress removeObject:mediaID];
                                           
                                           __strong typeof(weakSelf) strongSelf = weakSelf;
                                           
@@ -223,13 +235,11 @@
                                           
                                           completion(item, error.error);
                                           
-                                          globalDownloadCompletionBlock(message.ID, mediaID, data, error, strongSelf);
-                                          
                                       } progressBlock:^(float progress) {
                                           
                                           __strong typeof(weakSelf) strongSelf = weakSelf;
                                           [strongSelf changeDownloadingProgress:progress forMessage:message attachment:attachment];
-                                          globalDownloadProgressBlock(message.ID, attachment.ID, progress, strongSelf);
+                                          
                                       }];
         }
         else {
@@ -277,9 +287,8 @@
                             }
                             
                             message.attachments = messageAttachments.copy;
-
+                            
                             if (error && completion) {
-                                
                                 
                                 [strongSelf changeMessageAttachmentStatus:QMMessageAttachmentStatusNotLoaded forMessage:message];
                                 completion(error);
@@ -293,7 +302,7 @@
                             
                             [mediaItem updateWithAttachment:attachment];
                             
-    
+                            
                             message.attachments = @[attachment];
                             
                             message.text = [NSString stringWithFormat:@"Attachment %@",[mediaItem stringContentType]];
@@ -302,7 +311,7 @@
                             
                             globalUploadCompletionBlock(message.ID, mediaItem, error, strongSelf);
                             
-                             [strongSelf changeMessageAttachmentStatus:QMMessageAttachmentStatusLoaded forMessage:message];
+                            [strongSelf changeMessageAttachmentStatus:QMMessageAttachmentStatusLoaded forMessage:message];
                             
                             [chatService sendMessage:message toDialog:dialog saveToHistory:YES saveToStorage:YES completion:completion];
                             
@@ -333,7 +342,7 @@
 
 
 //- (BOOL)isReadyToUse:(QBChatAttachment *)attachment {
-//    
+//
 //    return [self.storeService isReadyToUse:attachment ];
 //}
 

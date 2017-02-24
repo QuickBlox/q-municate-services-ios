@@ -282,9 +282,7 @@
         }
     }
     
-    if (metaData.allKeys.count) {
-        return metaData.copy;
-    }
+    return metaData.allKeys.count ? metaData.copy : nil;
 }
 
 @end
