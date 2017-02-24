@@ -7,8 +7,9 @@
 //
 
 @class QMMediaItem;
+
 @protocol QMMediaInfoServiceDelegate <NSObject>
 
-- (void)thumbnailImageForMediaItem:(QMMediaItem *)mediaItem completion:(void(^)(UIImage *thumbnailImage))completion;
-
+- (void)imageForMedia:(QMMediaItem *)mediaItem completion:(void(^)(UIImage *thumbnailImage))completion;
+- (void)duration:(QMMediaItem *)mediaItem completion:(void(^)(NSTimeInterval duration))completion;
 @end

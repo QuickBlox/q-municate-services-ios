@@ -8,47 +8,86 @@
 
 #import "QMMediaInfoService.h"
 #import "QMMediaItem.h"
+
 @interface QMMediaInfoService()
 
+@property (strong, nonatomic) NSMutableDictionary *imagesMemoryStorage;
+
+@property (strong, nonatomic) NSMutableArray *imagesInProcess;
+@property (strong, nonatomic) NSMutableArray *durationInProcess;
+
 @end
+
 @implementation QMMediaInfoService
 
-- (void)thumbnailImageForMediaItem:(QMMediaItem *)mediaItem completion:(void (^)(UIImage *))completion {
+//MARK: - NSObject
+- (instancetype)init {
+    if (self = [super init]) {
+        _imagesMemoryStorage = [NSMutableDictionary dictionary];
+        _imagesInProcess = [NSMutableArray array];
+        _durationInProcess = [NSMutableArray array];
+    }
+    return self;
+}
 
-    AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:mediaItem.localURL options:nil];
-    AVAssetImageGenerator *generator = [[AVAssetImageGenerator alloc] initWithAsset:asset];
+
+- (void)imageForMedia:(QMMediaItem *)mediaItem completion:(void (^)(UIImage *))completion {
+    if (mediaItem.contentType != QMMediaContentTypeImage && mediaItem.contentType != QMMediaContentTypeVideo) {
+        completion(nil);
+    }
+    if ([self.imagesInProcess containsObject:mediaItem.localURL.path]) {
+        return;
+    }
     
-    generator.appliesPreferredTrackTransform = YES;
-    
-    CMTime time = [asset duration];
-    time.value = 0;
-    
-    AVAssetImageGeneratorCompletionHandler handler = ^(CMTime __unused requestedTime, CGImageRef im, CMTime __unused actualTime, AVAssetImageGeneratorResult result, NSError *error){
-        if (result != AVAssetImageGeneratorSucceeded) {
+    UIImage *image = self.imagesMemoryStorage[mediaItem.localURL.path];
+    if (image) {
+        completion(image);
+    }
+    else {
+        [self.imagesInProcess addObject:mediaItem.localURL.path];
+        AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:mediaItem.localURL options:nil];
+        AVAssetImageGenerator *generator = [[AVAssetImageGenerator alloc] initWithAsset:asset];
+        
+        generator.appliesPreferredTrackTransform = YES;
+        
+        CMTime time = [asset duration];
+        time.value = 0;
+        
+        AVAssetImageGeneratorCompletionHandler handler = ^(CMTime __unused requestedTime, CGImageRef im, CMTime __unused actualTime, AVAssetImageGeneratorResult result, NSError *error){
             
-            dispatch_async(dispatch_get_main_queue(), ^{
+            if (result != AVAssetImageGeneratorSucceeded) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (completion) {
+                        [self.imagesInProcess removeObject:mediaItem.localURL.path];
+                        completion(nil);
+                    }
+                });
                 
-                if (completion) {
-                    completion(nil);
-                }
-            });
-        }
-        else {
-            
-            UIImage *image = [UIImage imageWithCGImage:im];
-            
-            if (image) {
-                image = [self resizedImageFromImage:image];
             }
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if (completion) {
-                    completion(image);
-                }
-            });
-        }
-    };
-    
-    [generator generateCGImagesAsynchronouslyForTimes:@[[NSValue valueWithBytes:&time objCType:@encode(CMTime)]] completionHandler:handler];
+            else {
+                
+                UIImage *image = [UIImage imageWithCGImage:im];
+                
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                    
+                    UIImage *thumbnail = nil;
+                    
+                    if (image) {
+                        thumbnail = [self resizedImageFromImage:image];
+                    }
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        if (completion) {
+                            [self.imagesInProcess removeObject:mediaItem.localURL.path];
+                            self.imagesMemoryStorage[mediaItem.localURL.path] = thumbnail;
+                            completion(thumbnail);
+                        }
+                    });
+                });
+            }
+        };
+        
+        [generator generateCGImagesAsynchronouslyForTimes:@[[NSValue valueWithBytes:&time objCType:@encode(CMTime)]] completionHandler:handler];
+    }
 }
 
 - (UIImage *)resizedImageFromImage:(UIImage *)image {
@@ -67,22 +106,36 @@
     return resizedImage;
 }
 
-- (NSTimeInterval)durationForItem:(QMMediaItem *)mediaItem {
+- (void)duration:(QMMediaItem *)mediaItem completion:(void(^)(NSTimeInterval duration))completion {
     
     NSAssert(mediaItem.localURL, @"media item should have local URL");
     
-    NSTimeInterval duration = 0;
+    NSTimeInterval __block duration = 0;
     
-    if (mediaItem.contentType == QMMediaContentTypeAudio || mediaItem.contentType == QMMediaContentTypeVideo) {
-        
+    if (mediaItem.contentType == QMMediaContentTypeAudio) {// || mediaItem.contentType == QMMediaContentTypeVideo) {
+        NSDictionary *options = @{AVURLAssetPreferPreciseDurationAndTimingKey: @YES};
         NSURL *assetURL = mediaItem.localURL;
         
-        AVAsset *asset = [[AVURLAsset alloc] initWithURL:assetURL options:nil];
-        duration = CMTimeGetSeconds(asset.duration);
+        AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:assetURL options:nil];
+        
+//      Float64 duration =  CMTimeGetSeconds(asset.duration);
+//        NSLog(@"duration = %f",duration);
+//                    return;
+        [asset loadValuesAsynchronouslyForKeys:@[@"duration"] completionHandler:^{
+            NSError *error;
+            
+            AVKeyValueStatus status = ([asset statusOfValueForKey:@"duration" error:&error]);
+            if (status == AVKeyValueStatusLoaded) {
+                
+                
+            }
+            else {
+                NSLog(@"error = %@",error);
+            }
+        }];
     }
-    
-    return duration;
 }
+
 
 - (CGSize)videoSizeForItem:(QMMediaItem *)item {
     
