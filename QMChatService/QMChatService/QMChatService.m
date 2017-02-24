@@ -70,7 +70,6 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     self.messagesMemoryStorage = [[QMMessagesMemoryStorage alloc] init];
     self.messagesMemoryStorage.delegate = (id<QMMemoryTemporaryQueueDelegate>)self.deferredQueueManager;
     self.chatAttachmentService = [[QMChatAttachmentService alloc] init];
-    
     [QBChat.instance addDelegate:self];
 }
 
@@ -1366,6 +1365,17 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
              completion(error);
          }
      }];
+}
+- (void)sendAttachmentMessage:(QBChatMessage *)attachmentMessage
+                     toDialog:(QBChatDialog *)dialog
+                withMediaItem:(QMMediaItem *)mediaItem
+                   completion:(nullable QBChatCompletionBlock)completion {
+    
+    [self.chatAttachmentService uploadAndSendAttachmentMessage:attachmentMessage
+                                                      toDialog:dialog
+                                               withChatService:self
+                                                     mediaItem:mediaItem
+                                                    completion:completion];
 }
 
 #pragma mark - mark as delivered

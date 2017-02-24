@@ -48,6 +48,10 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)chatAttachmentService:(QMChatAttachmentService *)chatAttachmentService didChangeUploadingProgress:(CGFloat)progress forMessage:(QBChatMessage *)message;
 
+@optional
+
+- (void)chatAttachmentService:(QMChatAttachmentService *)chatAttachmentService didChangeLoadingProgress:(CGFloat)progress forMessage:(QBChatMessage *)message attachment:(QBChatAttachment *)attachment;
+
 @end
 
 /**
@@ -144,9 +148,11 @@ NS_ASSUME_NONNULL_BEGIN
  *  Get media item by attachment message.
  *
  *  @param attachmentMessage message with attachment
- *  @param completion        fetched media item or error if failed
+ *  @param attachmentID      attachment id
+ *  @param completion        fetched QMMediaItem instance or error if failed
  */
 - (void)mediaItemForAttachmentMessage:(QBChatMessage *)message
+                         attachmentID:(NSString *)attachmentID
                            completion:(nullable void(^)(QMMediaItem * _Nullable mediaItem, NSError * _Nullable error))completion;
 
 @end

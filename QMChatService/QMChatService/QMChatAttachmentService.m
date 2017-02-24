@@ -18,7 +18,7 @@
 #import "QMMediaStoreService.h"
 #import "QMMediaUploadService.h"
 #import "QMMediaDownloadService.h"
-
+#import "QMMediaInfoService.h"
 
 @interface QMChatAttachmentService()
 
@@ -76,10 +76,12 @@ static NSString* attachmentPath(QBChatAttachment *attachment) {
         QMMediaStoreService *mediaStoreService = [QMMediaStoreService new];
         QMMediaUploadService *mediaUploadService = [QMMediaUploadService new];
         QMMediaDownloadService *mediaDownloadService = [QMMediaDownloadService new];
+        QMMediaInfoService *mediaInfoService = [QMMediaInfoService new];
         
         _mediaService.storeService = mediaStoreService;
         _mediaService.downloadService = mediaDownloadService;
         _mediaService.uploadService = mediaUploadService;
+        _mediaService.mediaInfoService = mediaInfoService;
         
         __weak __typeof(self)weakSelf = self;
         [_mediaService setOnMessageDidChangeAttachmentStatus:^(QMMessageAttachmentStatus status, QBChatMessage *message) {
@@ -94,6 +96,15 @@ static NSString* attachmentPath(QBChatAttachment *attachment) {
             
             if ([strongSelf.multicastDelegate respondsToSelector:@selector(chatAttachmentService:didChangeUploadingProgress:forMessage:)]) {
                 [strongSelf.multicastDelegate chatAttachmentService:strongSelf didChangeUploadingProgress:progress forMessage:message];
+            }
+        }];
+        
+        [_mediaService setOnMessageDidChangeDownloadingProgress:^(float progress, QBChatMessage *message, QBChatAttachment *attachment) {
+            
+            __typeof(weakSelf)strongSelf = weakSelf;
+            
+            if ([strongSelf.multicastDelegate respondsToSelector:@selector(chatAttachmentService:didChangeLoadingProgress:forMessage:attachment:)]) {
+                [strongSelf.multicastDelegate chatAttachmentService:strongSelf didChangeLoadingProgress:progress forMessage:message attachment:attachment];
             }
         }];
     }
@@ -380,9 +391,11 @@ static NSString* attachmentPath(QBChatAttachment *attachment) {
 }
 
 - (void)mediaItemForAttachmentMessage:(QBChatMessage *)message
+                         attachmentID:(NSString *)attachmentID
                            completion:(void(^)(QMMediaItem *mediaItem, NSError *error))completion {
     
     [self.mediaService mediaForMessage:message
+                          attachmentID:attachmentID
                    withCompletionBlock:completion];
 }
 

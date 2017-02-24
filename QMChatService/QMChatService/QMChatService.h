@@ -84,8 +84,6 @@ typedef NS_ENUM(NSUInteger, QMChatConnectionState) {
  */
 @property (strong, nonatomic, readonly) QMChatAttachmentService *chatAttachmentService;
 
-@property (strong, nonatomic, readonly) QMMediaService *mediaService;
-
 
 /**
  *  Init chat service
