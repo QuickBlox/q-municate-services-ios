@@ -69,52 +69,26 @@ static QMContactListCache *_chatCacheInstance = nil;
                                   completion:completion];
 }
 
-- (void)insertOrUpdateContactListWithItems:(NSArray *)contactListItems
+- (void)insertOrUpdateContactListWithItems:(NSArray<QBContactListItem *> *)contactListItems
                                 completion:(dispatch_block_t)completion {
     
-    [self async:^(NSManagedObjectContext *backgroundContext) {
+    [self saveContext:^(NSManagedObjectContext *ctx) {
         
-        //To Insert / Update
         for (QBContactListItem *contactListItem in contactListItems) {
             
-            CDContactListItemID *itemID =
-            [CDContactListItem QM_findFirstIDWithPredicate:IS(@"userID", @(contactListItem.userID))
-                                                 inContext:backgroundContext];
-            if (itemID) {
-                
-                CDContactListItem *item = [backgroundContext objectWithID:itemID];
-                [item updateWithQBContactListItem:contactListItem];
-            }
-            else {
-                
-                CDContactListItem *cdContactListItem = [CDContactListItem QM_createEntityInContext:backgroundContext];
-                [cdContactListItem updateWithQBContactListItem:contactListItem];
-            }
+            CDContactListItem *item =
+            [CDContactListItem QM_findFirstOrCreateByAttribute:@"userID"
+                                                     withValue:@(contactListItem.userID)
+                                                     inContext:ctx];
+            
+            [item updateWithQBContactListItem:contactListItem];
         }
         
         QMSLog(@"[%@] ContactListItems to insert %tu, update %tu", NSStringFromClass([self class]),
-               backgroundContext.insertedObjects.count,
-               backgroundContext.updatedObjects.count);
+               ctx.insertedObjects.count,
+               ctx.updatedObjects.count);
         
-        if ([backgroundContext hasChanges]) {
-            
-            [backgroundContext QM_saveOnlySelfWithCompletion:^(BOOL success, NSError *error) {
-                
-                if (completion) {
-                    completion();
-                }
-            }];
-        }
-        else {
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                
-                if (completion) {
-                    completion();
-                }
-            });
-        }
-    }];
+    } save:completion];
 }
 
 - (void)insertOrUpdateContactListItemsWithContactList:(QBContactList *)contactList
@@ -132,28 +106,24 @@ static QMContactListCache *_chatCacheInstance = nil;
 - (void)deleteContactListItem:(QBContactListItem *)contactListItem
                    completion:(dispatch_block_t)completion {
     
-
-    [self async:^(NSManagedObjectContext *backgroundContext) {
+    
+    [self saveContext:^(NSManagedObjectContext *ctx) {
         
         CDContactListItem *cdContactListItem =
         [CDContactListItem QM_findFirstWithPredicate:IS(@"userID", @(contactListItem.userID))
-                                           inContext:backgroundContext];
-        [cdContactListItem QM_deleteEntityInContext:backgroundContext];
-        [backgroundContext QM_saveOnlySelfWithCompletion:^(BOOL success, NSError *error) {
-            completion();
-        }];
-    }];
+                                           inContext:ctx];
+        [cdContactListItem QM_deleteEntityInContext:ctx];
+        
+    } save:completion];
 }
 
 - (void)deleteContactList:(dispatch_block_t)completion {
     
-    [self async:^(NSManagedObjectContext *backgroundContext) {
+    [self saveContext:^(NSManagedObjectContext *ctx) {
         
-        [CDContactListItem QM_truncateAllInContext:backgroundContext];
-        [backgroundContext QM_saveOnlySelfWithCompletion:^(BOOL success, NSError *error) {
-            completion();
-        }];
-    }];
+        [CDContactListItem QM_truncateAllInContext:ctx];
+        
+    } save:completion];
 }
 
 #pragma mark Fetch ContactList operations

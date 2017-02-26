@@ -35,10 +35,6 @@
         _stack = [AutoMigratingQMCDRecordStack stackWithStoreNamed:storeName
                                                              model:model
                                         applicationGroupIdentifier:appGroupIdentifier];
-        NSManagedObjectContext *context = [NSManagedObjectContext QM_privateQueueContext];
-        [context setParentContext:self.stack.context];
-        
-        _backgroundSaveContext = context;
         
         static dispatch_once_t onceToken;
         dispatch_once(&onceToken, ^{
@@ -100,26 +96,17 @@
     }
 }
 
-- (void)async:(void(^)(NSManagedObjectContext *backgroundContext))block {
+- (void)saveContext:(void (^)(NSManagedObjectContext *ctx))context
+               save:(dispatch_block_t)save {
     
-    [_backgroundSaveContext performBlock:^{
-        block(_backgroundSaveContext);
+    NSManagedObjectContext *privateContext =
+    [NSManagedObjectContext QM_privateQueueContext];
+    [privateContext setParentContext:self.stack.context];
+    context(privateContext);
+    [privateContext QM_saveOnlySelfWithCompletion:^(BOOL success, NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (save) save();
+        });
     }];
 }
-
-- (void)save:(dispatch_block_t)completion {
-    
-    [self async:^(NSManagedObjectContext *context) {
-        
-        [context QM_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
-            
-            if (completion) {
-                
-                dispatch_async(dispatch_get_main_queue(), completion);
-            }
-        }];
-        
-    }];
-}
-
 @end

@@ -19,10 +19,8 @@
 
 @interface QMDBStorage : NSObject
 
-@property (strong, nonatomic, readonly) dispatch_queue_t queue;
 @property (strong, nonatomic, readonly) QMCDRecordStack *stack;
 @property (strong, nonatomic, readonly) NSManagedObjectContext *context;
-@property (strong, nonatomic, readonly) NSManagedObjectContext *backgroundSaveContext;
 
 - (instancetype)initWithStoreNamed:(NSString *)storeName
                              model:(NSManagedObjectModel *)model
@@ -48,11 +46,7 @@
 
 + (void)cleanDBWithStoreName:(NSString *)name;
 
-/**
- * @brief Perform operation in CoreData thread
- */
-
-- (void)async:(void(^)(NSManagedObjectContext *backgroundContext))block;
-
+- (void)saveContext:(void (^)(NSManagedObjectContext *ctx))context
+               save:(dispatch_block_t)save;
 
 @end
