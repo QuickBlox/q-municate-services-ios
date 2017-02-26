@@ -35,17 +35,19 @@
     if (mediaItem.contentType != QMMediaContentTypeImage && mediaItem.contentType != QMMediaContentTypeVideo) {
         completion(nil);
     }
-    if ([self.imagesInProcess containsObject:mediaItem.localURL.path]) {
+    
+    
+    if ([self.imagesInProcess containsObject:mediaItem.remoteURL.path]) {
         return;
     }
     
-    UIImage *image = self.imagesMemoryStorage[mediaItem.localURL.path];
+    UIImage *image = self.imagesMemoryStorage[mediaItem.remoteURL.path];
     if (image) {
         completion(image);
     }
     else {
-        [self.imagesInProcess addObject:mediaItem.localURL.path];
-        AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:mediaItem.localURL options:nil];
+        [self.imagesInProcess addObject:mediaItem.remoteURL.path];
+        AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:mediaItem.remoteURL options:nil];
         AVAssetImageGenerator *generator = [[AVAssetImageGenerator alloc] initWithAsset:asset];
         
         generator.appliesPreferredTrackTransform = YES;
@@ -58,7 +60,7 @@
             if (result != AVAssetImageGeneratorSucceeded) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     if (completion) {
-                        [self.imagesInProcess removeObject:mediaItem.localURL.path];
+                        [self.imagesInProcess removeObject:mediaItem.remoteURL.path];
                         completion(nil);
                     }
                 });
@@ -77,8 +79,8 @@
                     }
                     dispatch_async(dispatch_get_main_queue(), ^{
                         if (completion) {
-                            [self.imagesInProcess removeObject:mediaItem.localURL.path];
-                            self.imagesMemoryStorage[mediaItem.localURL.path] = thumbnail;
+                            [self.imagesInProcess removeObject:mediaItem.remoteURL.path];
+                            self.imagesMemoryStorage[mediaItem.remoteURL.path] = thumbnail;
                             completion(thumbnail);
                         }
                     });
@@ -108,19 +110,16 @@
 
 - (void)duration:(QMMediaItem *)mediaItem completion:(void(^)(NSTimeInterval duration))completion {
     
-    NSAssert(mediaItem.localURL, @"media item should have local URL");
+  //  NSAssert(mediaItem.localURL, @"media item should have local URL");
     
     NSTimeInterval __block duration = 0;
     
     if (mediaItem.contentType == QMMediaContentTypeAudio) {// || mediaItem.contentType == QMMediaContentTypeVideo) {
         NSDictionary *options = @{AVURLAssetPreferPreciseDurationAndTimingKey: @YES};
-        NSURL *assetURL = mediaItem.localURL;
+        NSURL *assetURL = mediaItem.remoteURL;
         
         AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:assetURL options:nil];
         
-//      Float64 duration =  CMTimeGetSeconds(asset.duration);
-//        NSLog(@"duration = %f",duration);
-//                    return;
         [asset loadValuesAsynchronouslyForKeys:@[@"duration"] completionHandler:^{
             NSError *error;
             
@@ -149,5 +148,21 @@
         return CGSizeZero;
     }
 }
+
+- (void)getMediaInfo:(QMMediaItem *)mediaItem completion:(QMMediaInfo *)mediaInfo {
+    
+    //check for cached mediaItem
+    
+    
+    //get media info from url asset
+    NSURL *remoteURL = mediaItem.remoteURL;
+    
+    if (remoteURL.path.length > 0) {
+        
+    
+    }
+    
+}
+
 
 @end
