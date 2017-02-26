@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "QMMediaInfoServiceDelegate.h"
+#import "QMMediaInfo.h"
 
 @interface QMMediaInfoService : NSObject <QMMediaInfoServiceDelegate>
 

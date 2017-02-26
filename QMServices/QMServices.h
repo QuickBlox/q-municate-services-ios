@@ -29,3 +29,5 @@
 #import "QMUsersService.h"
 
 #import "QMMediaItem.h"
+
+#import "QMMediaService.h"

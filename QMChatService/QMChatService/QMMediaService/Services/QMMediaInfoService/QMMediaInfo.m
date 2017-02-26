@@ -7,6 +7,7 @@
 //
 
 #import "QMMediaInfo.h"
+#import "QMMediaItem.h"
 
 typedef NS_ENUM(NSUInteger, CTVideoViewDownloadStrategy) {
     CTVideoViewDownloadStrategyNoDownload, // no download
@@ -50,12 +51,33 @@ typedef NS_ENUM(NSUInteger, CTVideoViewPlayControlDirection) {
     CTVideoViewPlayControlDirectionMoveForward,
     CTVideoViewPlayControlDirectionMoveBackward,
 };
+@protocol CTVideoViewOperationDelegate <NSObject>
 
+@optional
+- (void)videoViewWillStartPrepare;
+- (void)videoViewDidFinishPrepare;
+- (void)videoViewDidFailPrepareWithError:(NSError *)error;
+
+- (void)videoViewWillStartPlaying;;
+- (void)videoViewDidStartPlaying; // will call this method when the video is **really** playing.
+- (void)videoViewStalledWhilePlaying;
+- (void)videoViewDidFinishPlaying;
+
+- (void)videoViewWillPause;
+- (void)videoViewDidPause;
+
+- (void)videoViewWillStop;
+- (void)videoViewDidStop;
+
+@end
 
 
 static void * kCTVideoViewKVOContext = &kCTVideoViewKVOContext;
 
+
 @interface QMMediaInfo ()
+
+@property (nonatomic, strong) AVURLAsset *asset;
 
 @property (nonatomic, assign) BOOL isVideoUrlChanged;
 
@@ -63,10 +85,9 @@ static void * kCTVideoViewKVOContext = &kCTVideoViewKVOContext;
 @property (nonatomic, assign, readwrite) CTVideoViewVideoUrlType videoUrlType;
 @property (nonatomic, strong, readwrite) NSURL *actualVideoPlayingUrl;
 @property (nonatomic, assign, readwrite) CTVideoViewVideoUrlType actualVideoUrlType;
+@property (nonatomic, weak) id<CTVideoViewOperationDelegate> operationDelegate;
 
-@property (nonatomic, strong, readwrite) AVPlayer *player;
-@property (nonatomic, strong, readwrite) AVURLAsset *asset;
-@property (nonatomic, strong, readwrite) AVPlayerItem *playerItem;
+@property (copy, nonatomic) void(^completion)(NSError *error);
 
 @end
 
@@ -80,137 +101,145 @@ NSString * const kCTVideoViewKVOKeyPathPlayerItemStatus = @"player.currentItem.s
 NSString * const kCTVideoViewKVOKeyPathPlayerItemDuration = @"player.currentItem.duration";
 NSString * const kCTVideoViewKVOKeyPathLayerReadyForDisplay = @"layer.readyForDisplay";
 
-#pragma mark - private methods
+
+//MARK - NSObject
++ (instancetype)infoFromMediaItem:(QMMediaItem *)mediaItem {
+    
+    QMMediaInfo *mediaInfo = [[QMMediaInfo alloc] init];
+    NSURL *mediaURL = nil;
+    
+    if (mediaItem.localURL) {
+        
+        mediaURL = mediaItem.localURL;
+        mediaInfo.actualVideoUrlType = CTVideoViewVideoUrlTypeNative;
+    }
+    else if (mediaItem.remoteURL) {
+        
+        mediaURL = mediaItem.remoteURL;
+        mediaInfo.actualVideoUrlType = CTVideoViewVideoUrlTypeRemote;
+    }
+    
+    NSDictionary *options = @{ AVURLAssetPreferPreciseDurationAndTimingKey : @YES };
+    AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:mediaURL options:options];
+    
+    mediaInfo.asset = asset;
+    return mediaInfo;
+}
+
+- (void)prepareWithCompletion:(void(^)(NSError *error))completionBLock {
+    
+    if (self.completion) {
+        self.completion = nil;
+    }
+    self.completion = [completionBLock copy];
+    
+    NSArray *requestedKeys = @[@"playable", @"tracks", @"duration"];
+    
+    /* Tells the asset to load the values of any of the specified keys that are not already loaded. */
+    [self.asset loadValuesAsynchronouslyForKeys:requestedKeys completionHandler:
+     ^{
+         dispatch_async(dispatch_get_main_queue(), ^{
+             
+             [self prepareToPlayAsset:self.asset withKeys:requestedKeys];
+         });
+     }];
+}
+
+- (void)prepareToPlayAsset:(AVURLAsset *)asset withKeys:(NSArray *)requestedKeys
+{
+    /* Make sure that the value of each key has loaded successfully. */
+    for (NSString *thisKey in requestedKeys)
+    {
+        NSError *error = nil;
+        AVKeyValueStatus keyStatus = [asset statusOfValueForKey:thisKey error:&error];
+        if (keyStatus == AVKeyValueStatusFailed)
+        {
+            if (self.completion)
+            {
+                self.completion(error);
+            }
+            
+        }
+        /* If you are also implementing -[AVAsset cancelLoading], add your code here to bail out properly in the case of cancellation. */
+    }
+    
+    NSError *error;
+    
+    if ([asset statusOfValueForKey:@"duration" error:&error] == AVKeyValueStatusLoaded) {
+        if (self.durationObserver) {
+            self.durationObserver(CMTimeGetSeconds(asset.duration));
+        }
+        self.duration = CMTimeGetSeconds(asset.duration);
+    }
+    
+    
+    CGFloat videoWidth = [[[asset tracksWithMediaType:AVMediaTypeVideo] firstObject] naturalSize].width;
+    CGFloat videoHeight = [[[asset tracksWithMediaType:AVMediaTypeVideo] firstObject] naturalSize].height;
+    
+    if (self.sizeObserver) {
+        self.sizeObserver(CGSizeMake(videoWidth, videoHeight));
+    }
+    self.mediaSize = CGSizeMake(videoWidth, videoHeight);
+    
+    self.isReady = asset.isPlayable;
+    
+    if (self.completion) {
+        self.completion(nil);
+    }
+}
+
 - (void)asynchronouslyLoadURLAsset:(AVAsset *)asset
 {
-    if ([self.operationDelegate respondsToSelector:@selector(videoViewWillStartPrepare:)]) {
-        [self.operationDelegate videoViewWillStartPrepare:self];
-    }
-    WeakSelf;
-    [asset loadValuesAsynchronouslyForKeys:@[@"tracks", @"duration", @"playable"] completionHandler:^{
+    
+    __weak __typeof__(self) weakSelf = self;
+    
+    [self.asset loadValuesAsynchronouslyForKeys:@[@"tracks", @"duration", @"playable"] completionHandler:^{
         dispatch_async(dispatch_get_main_queue(), ^{
-            StrongSelf;
+            __typeof__(self) strongSelf = weakSelf;
+            NSError *error;
+            if ([asset statusOfValueForKey:@"duration" error:&error] == AVKeyValueStatusFailed) {
+                
+            }
+            
+            CGFloat videoWidth = [[[asset tracksWithMediaType:AVMediaTypeVideo] firstObject] naturalSize].width;
+            CGFloat videoHeight = [[[asset tracksWithMediaType:AVMediaTypeVideo] firstObject] naturalSize].height;
+            
+            if (self.sizeObserver) {
+                self.sizeObserver(CGSizeMake(videoWidth, videoHeight));
+            }
             
             strongSelf.isVideoUrlChanged = NO;
-            if (asset != strongSelf.asset && asset != strongSelf.assetToPlay) {
+            if (asset != strongSelf.asset) {
                 return;
             }
             
-            NSError *error = nil;
+            error = nil;
             if ([asset statusOfValueForKey:@"tracks" error:&error] == AVKeyValueStatusFailed) {
                 strongSelf.prepareStatus = CTVideoViewPrepareStatusPrepareFailed;
-                [self showCoverView];
-                [self showRetryButton];
-                if ([strongSelf.operationDelegate respondsToSelector:@selector(videoViewDidFailPrepare:error:)]) {
-                    [strongSelf.operationDelegate videoViewDidFailPrepare:strongSelf error:error];
+                
+                if ([strongSelf.operationDelegate respondsToSelector:@selector(videoViewDidFailPrepareWithError:)]) {
+                    [strongSelf.operationDelegate videoViewDidFailPrepareWithError:error];
                 }
                 return;
             }
             
-            if (strongSelf.shouldChangeOrientationToFitVideo) {
-                CGFloat videoWidth = [[[asset tracksWithMediaType:AVMediaTypeVideo] firstObject] naturalSize].width;
-                CGFloat videoHeight = [[[asset tracksWithMediaType:AVMediaTypeVideo] firstObject] naturalSize].height;
-                
-                if ([asset CTVideoView_isVideoPortraint]) {
-                    if (videoWidth < videoHeight) {
-                        if (strongSelf.transform.b != 1 || strongSelf.transform.c != -1) {
-                            strongSelf.playerLayer.transform = CATransform3DMakeRotation(90.0 / 180.0 * M_PI, 0.0, 0.0, 1.0);
-                            strongSelf.playerLayer.frame = CGRectMake(0, 0, strongSelf.frame.size.height, strongSelf.frame.size.width);
-                        }
-                    }
-                } else {
-                    if (videoWidth > videoHeight) {
-                        if (strongSelf.transform.b != 1 || strongSelf.transform.c != -1) {
-                            strongSelf.playerLayer.transform = CATransform3DMakeRotation(90.0 / 180.0 * M_PI, 0.0, 0.0, 1.0);
-                            strongSelf.playerLayer.frame = CGRectMake(0, 0, strongSelf.frame.size.height, strongSelf.frame.size.width);
-                        }
-                    }
-                }
-            }
             
-            strongSelf.playerItem = [AVPlayerItem playerItemWithAsset:asset];
-            strongSelf.prepareStatus = CTVideoViewPrepareStatusPrepareFinished;
-            
-            if (strongSelf.shouldPlayAfterPrepareFinished) {
-                [strongSelf play];
-            }
-            
-            if ([strongSelf.operationDelegate respondsToSelector:@selector(videoViewDidFinishPrepare:)]) {
-                [strongSelf.operationDelegate videoViewDidFinishPrepare:strongSelf];
+            if ([strongSelf.operationDelegate respondsToSelector:@selector(videoViewDidFinishPrepare)]) {
+                [strongSelf.operationDelegate videoViewDidFinishPrepare];
             }
         });
     }];
 }
 
-#pragma mark - KVO
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context
-{
-    if (context != &kCTVideoViewKVOContext) {
-        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-        return;
-    }
-    
-    if ([keyPath isEqualToString:kCTVideoViewKVOKeyPathPlayerItemStatus]) {
-        NSNumber *newStatusAsNumber = change[NSKeyValueChangeNewKey];
-        AVPlayerItemStatus newStatus = [newStatusAsNumber isKindOfClass:[NSNumber class]] ? newStatusAsNumber.integerValue : AVPlayerItemStatusUnknown;
-        
-        if (newStatus == AVPlayerItemStatusFailed) {
-            DLog(@"%@", self.player.currentItem.error);
-        }
-    }
-    
-    if ([keyPath isEqualToString:kCTVideoViewKVOKeyPathPlayerItemDuration]) {
-        [self durationDidLoadedWithChange:change];
-    }
-    
-    if ([keyPath isEqualToString:kCTVideoViewKVOKeyPathLayerReadyForDisplay]) {
-        if ([change[@"new"] boolValue] == YES) {
-            [self setNeedsDisplay];
-            if (self.prepareStatus == CTVideoViewPrepareStatusPrepareFinished) {
-                if ([self.operationDelegate respondsToSelector:@selector(videoViewDidFinishPrepare:)]) {
-                    [self.operationDelegate videoViewDidFinishPrepare:self];
-                }
-            }
-        }
-    }
-}
 
-#pragma mark - Notification
-- (void)didReceiveAVPlayerItemDidPlayToEndTimeNotification:(NSNotification *)notification
-{
-    if (notification.object == self.player.currentItem) {
-        if (self.shouldReplayWhenFinish) {
-            [self replay];
-        } else {
-            [self.player seekToTime:kCMTimeZero];
-            [self showPlayButton];
-        }
-        
-        if ([self.operationDelegate respondsToSelector:@selector(videoViewDidFinishPlaying:)]) {
-            [self.operationDelegate videoViewDidFinishPlaying:self];
-        }
-    }
-}
 
-- (void)didReceiveAVPlayerItemPlaybackStalledNotification:(NSNotification *)notification
-{
-    if (notification.object == self.player.currentItem) {
-        if (self.stalledStrategy == CTVideoViewStalledStrategyPlay) {
-            [self play];
-        }
-        if (self.stalledStrategy == CTVideoViewStalledStrategyDelegateCallback) {
-            if ([self.operationDelegate respondsToSelector:@selector(videoViewStalledWhilePlaying:)]) {
-                [self.operationDelegate videoViewStalledWhilePlaying:self];
-            }
-        }
-    }
-}
+
 
 #pragma mark - getters and setters
-- (void)setAssetToPlay:(AVAsset *)assetToPlay
+- (void)setAsset:(AVURLAsset *)asset
 {
-    _assetToPlay = assetToPlay;
-    if (assetToPlay) {
+    _asset = asset;
+    if (asset) {
         self.isVideoUrlChanged = YES;
         self.prepareStatus = CTVideoViewPrepareStatusNotPrepared;
         self.videoUrlType = CTVideoViewVideoUrlTypeAsset;

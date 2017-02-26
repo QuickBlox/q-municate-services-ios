@@ -8,14 +8,15 @@
 
 #import "QMMediaInfoService.h"
 #import "QMMediaItem.h"
+#import "QMMediaInfo.h"
 
 @interface QMMediaInfoService()
 
 @property (strong, nonatomic) NSMutableDictionary *imagesMemoryStorage;
+@property (strong, nonatomic) NSMutableDictionary *mediaInfoMemoryStorage;
 
-@property (strong, nonatomic) NSMutableArray *imagesInProcess;
-@property (strong, nonatomic) NSMutableArray *durationInProcess;
-
+@property (strong, nonatomic) NSMutableArray *mediaInProcess;
+@property (strong, nonatomic) NSMutableArray *imagesInProcess;;
 @end
 
 @implementation QMMediaInfoService
@@ -23,13 +24,19 @@
 //MARK: - NSObject
 - (instancetype)init {
     if (self = [super init]) {
+        
         _imagesMemoryStorage = [NSMutableDictionary dictionary];
+        _mediaInfoMemoryStorage = [NSMutableDictionary dictionary];
+        _mediaInProcess = [NSMutableArray array];
         _imagesInProcess = [NSMutableArray array];
-        _durationInProcess = [NSMutableArray array];
+        
     }
     return self;
 }
 
+- (void)isReadyToPlay:(QMMediaItem *)mediaItem completion:(void (^)(BOOL))completion {
+    
+}
 
 - (void)imageForMedia:(QMMediaItem *)mediaItem completion:(void (^)(UIImage *))completion {
     if (mediaItem.contentType != QMMediaContentTypeImage && mediaItem.contentType != QMMediaContentTypeVideo) {
@@ -42,11 +49,14 @@
     }
     
     UIImage *image = self.imagesMemoryStorage[mediaItem.remoteURL.path];
+    
     if (image) {
         completion(image);
     }
     else {
+        
         [self.imagesInProcess addObject:mediaItem.remoteURL.path];
+        
         AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:mediaItem.remoteURL options:nil];
         AVAssetImageGenerator *generator = [[AVAssetImageGenerator alloc] initWithAsset:asset];
         
@@ -108,58 +118,48 @@
     return resizedImage;
 }
 
-- (void)duration:(QMMediaItem *)mediaItem completion:(void(^)(NSTimeInterval duration))completion {
-    
-  //  NSAssert(mediaItem.localURL, @"media item should have local URL");
-    
-    NSTimeInterval __block duration = 0;
-    
-    if (mediaItem.contentType == QMMediaContentTypeAudio) {// || mediaItem.contentType == QMMediaContentTypeVideo) {
-        NSDictionary *options = @{AVURLAssetPreferPreciseDurationAndTimingKey: @YES};
-        NSURL *assetURL = mediaItem.remoteURL;
-        
-        AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:assetURL options:nil];
-        
-        [asset loadValuesAsynchronouslyForKeys:@[@"duration"] completionHandler:^{
-            NSError *error;
-            
-            AVKeyValueStatus status = ([asset statusOfValueForKey:@"duration" error:&error]);
-            if (status == AVKeyValueStatusLoaded) {
-                
-                
-            }
-            else {
-                NSLog(@"error = %@",error);
-            }
-        }];
-    }
-}
-
-
-- (CGSize)videoSizeForItem:(QMMediaItem *)item {
-    
-    AVURLAsset *asset = [AVURLAsset URLAssetWithURL:item.localURL options:nil];
-    NSArray *tracks = [asset tracksWithMediaType:AVMediaTypeVideo];
-    if (tracks.count) {
-        AVAssetTrack *track = [tracks objectAtIndex:0];
-        return track.naturalSize;
-    }
-    else {
-        return CGSizeZero;
-    }
-}
-
-- (void)getMediaInfo:(QMMediaItem *)mediaItem completion:(QMMediaInfo *)mediaInfo {
+- (void)mediaInfoForItem:(QMMediaItem *)mediaItem completion:(void(^)(QMMediaInfo *))completion {
     
     //check for cached mediaItem
     
+    if (!mediaItem.mediaID) {
+        
+        QMMediaInfo *localMediaInfo = [QMMediaInfo infoFromMediaItem:mediaItem];
+        [localMediaInfo prepareWithCompletion:^(NSError *error) {
+            
+            if (completion) {
+                completion(localMediaInfo);
+            }
+        }];
+        
+        return;
+    }
+
+    NSString *remoteUrlKey = mediaItem.remoteURL.path;
     
-    //get media info from url asset
-    NSURL *remoteURL = mediaItem.remoteURL;
+    QMMediaInfo *info = self.mediaInfoMemoryStorage[remoteUrlKey];
+    
+    if (info) {
+        completion(info);
+    }
+    else {
+        //get media info from url asset
+        NSURL *remoteURL = mediaItem.remoteURL;
     
     if (remoteURL.path.length > 0) {
         
-    
+        
+        QMMediaInfo *mediaInfo = [QMMediaInfo infoFromMediaItem:mediaItem];
+        [mediaInfo prepareWithCompletion:^(NSError *error) {
+            
+            self.mediaInfoMemoryStorage[remoteUrlKey] = mediaInfo;
+            
+            if (completion) {
+                completion(mediaInfo);
+            }
+        }];
+        
+    }
     }
     
 }
