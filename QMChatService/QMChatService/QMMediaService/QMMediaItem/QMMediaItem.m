@@ -24,7 +24,19 @@
 @end
 
 @implementation QMMediaItem
+
 //MARK: Class methods
++ (instancetype)mediaItemWithAttachment:(QBChatAttachment *)attachment {
+    QMMediaItem *item = [[QMMediaItem alloc] init];
+    [item updateWithAttachment:attachment];
+    return item;
+}
++ (instancetype)mediaItemWithImage:(UIImage *)image {
+    
+    QMMediaItem *item = [[QMMediaItem alloc] initWithName:@"image" localURL:nil remoteURL:nil contentType:QMMediaContentTypeImage];
+    item.thumbnailImage = image;
+    return item;
+}
 
 + (instancetype)videoItemWithURL:(NSURL *)itemURL {
     
@@ -63,6 +75,9 @@
             CGFloat height = [size[@"height"] doubleValue];
             self.videoSize = CGSizeMake(width, height);
         }
+    }
+    else if ([attachment.type isEqualToString:@"image"]) {
+        self.contentType = QMMediaContentTypeImage;
     }
 }
 
@@ -112,6 +127,10 @@
             stringMIMEType = @"video/mp4";
             break;
             
+        case QMMediaContentTypeImage:
+            stringMIMEType = @"image/png";
+            break;
+            
         default:
             stringMIMEType = @"";
             break;
@@ -133,6 +152,9 @@
             stringContentType = @"video";
             break;
             
+        case QMMediaContentTypeImage:
+            stringContentType = @"image";
+            break;
         default:
             stringContentType = @"";
             break;
@@ -216,7 +238,9 @@
     copy.name  = [self.name copyWithZone:zone];
     copy.contentType = self.contentType;
     copy.mediaDuration = self.mediaDuration;
-    
+    if (_thumbnailImage) {
+        copy.thumbnailImage = [[UIImage allocWithZone: zone] initWithCGImage: (__bridge CGImageRef _Nonnull)(self.thumbnailImage.CIImage)];
+    }
     return copy;
 }
 

@@ -52,13 +52,11 @@ typedef NS_ENUM(NSInteger, QMMediaContentType) {
                    remoteURL:(NSURL *)remoteURL
                  contentType:(QMMediaContentType)contentType;
 
-- (instancetype)initWithName:(NSString *)name
-                        data:(NSData *)data
-                   remoteURL:(NSURL *)remoteURL
-                 contentType:(QMMediaContentType)contentType;
 
 + (instancetype)videoItemWithURL:(NSURL *)itemURL;
 + (instancetype)audioItemWithURL:(NSURL *)itemURL;
++ (instancetype)mediaItemWithImage:(UIImage *)image;
++ (instancetype)mediaItemWithAttachment:(QBChatAttachment *)attachment;
 
 - (NSString *)stringContentType;
 - (NSString *)stringMIMEType;
