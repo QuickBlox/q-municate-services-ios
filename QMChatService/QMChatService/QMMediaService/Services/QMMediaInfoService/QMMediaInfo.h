@@ -18,10 +18,10 @@ typedef void (^QMMediaSizeObserver)(CGSize size);
 @property (copy, nonatomic) QMMediaDurationObserver durationObserver;
 @property (copy, nonatomic) QMMediaSizeObserver sizeObserver;
 
-@property (assign, nonatomic) CGSize mediaSize;
-@property (assign, nonatomic) NSTimeInterval duration;
-@property (assign, nonatomic) BOOL isReady;
-@property (assign, nonatomic) UIImage *image;
+@property (assign, nonatomic, readonly) CGSize mediaSize;
+@property (assign, nonatomic, readonly) NSTimeInterval duration;
+@property (assign, nonatomic, readonly) BOOL isReady;
+@property (assign, nonatomic, readonly) UIImage *image;
 
 + (instancetype)infoFromMediaItem:(QMMediaItem *)mediaItem;
 - (void)prepareWithCompletion:(void(^)(NSError *error))completionBLock;

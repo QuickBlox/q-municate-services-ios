@@ -11,6 +11,7 @@
 
 @class QMMediaItem;
 @class QMChatService;
+@class QMMediaInfo;
 
 @protocol QMMediaStoreServiceDelegate;
 @protocol QMMediaDownloadServiceDelegate;
@@ -36,16 +37,8 @@
 
 - (QMMediaItem *)cachedMediaForMessage:(QBChatMessage *)message attachmentID:(NSString *)attachmentID;
 
-- (void)addUploadListenerForMessageWithID:(NSString *)messageID
-                          completionBlock:(QMMessageUploadCompletionBlock)completionBlock
-                            progressBlock:(QMMessageUploadProgressBlock)progressBlock;
-
-- (void)addDownloadListenerForItemWithID:(NSString *)mediaItemID
-                         completionBlock:(QMMediaRestCompletionBlock)completionBlock
-                           progressBlock:(QMMediaProgressBlock)progressBlock;
-
-- (void)addStatusListenerForMessageWithID:(NSString *)messageID
-                              statusBlock:(void(^)(QMMessageAttachmentStatus))statusBlock;
+- (void)imageForMediaItem:(QMMediaItem *)mediaItem  completion:(void(^)(UIImage *image))completion;
+- (void)mediaInfoForItem:(QMMediaItem *)mediaItem completion:(void(^)(QMMediaInfo *mediainfo, UIImage *image))completion;
 
 @optional
 

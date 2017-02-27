@@ -8,7 +8,6 @@
 
 #import "QMMediaInfoService.h"
 #import "QMMediaItem.h"
-#import "QMMediaInfo.h"
 
 @interface QMMediaInfoService()
 
@@ -39,6 +38,8 @@
 }
 
 - (void)imageForMedia:(QMMediaItem *)mediaItem completion:(void (^)(UIImage *))completion {
+    
+    
     if (mediaItem.contentType != QMMediaContentTypeImage && mediaItem.contentType != QMMediaContentTypeVideo) {
         completion(nil);
     }
@@ -68,6 +69,7 @@
         AVAssetImageGeneratorCompletionHandler handler = ^(CMTime __unused requestedTime, CGImageRef im, CMTime __unused actualTime, AVAssetImageGeneratorResult result, NSError *error){
             
             if (result != AVAssetImageGeneratorSucceeded) {
+                
                 dispatch_async(dispatch_get_main_queue(), ^{
                     if (completion) {
                         [self.imagesInProcess removeObject:mediaItem.remoteURL.path];
@@ -148,8 +150,8 @@
     
     if (remoteURL.path.length > 0) {
         
-        
         QMMediaInfo *mediaInfo = [QMMediaInfo infoFromMediaItem:mediaItem];
+        
         [mediaInfo prepareWithCompletion:^(NSError *error) {
             
             self.mediaInfoMemoryStorage[remoteUrlKey] = mediaInfo;
