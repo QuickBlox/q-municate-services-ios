@@ -15,30 +15,6 @@ NSString * const QMCDRecordDidMergeChangesFromiCloudNotification = @"kQMCDRecord
 
 @implementation NSManagedObjectContext (QMCDObserving)
 
-- (void)QM_performBlock:(void(^)(void))block;
-{
-    if ([self concurrencyType] == NSPrivateQueueConcurrencyType)
-    {
-        block();
-    }
-    else
-    {
-        [self performBlock:block];
-    }
-}
-
-- (void)QM_performBlockAndWait:(void(^)(void))block;
-{
-    if ([self concurrencyType] == NSPrivateQueueConcurrencyType)
-    {
-        block();
-    }
-    else
-    {
-        [self performBlockAndWait:block];
-    }
-}
-
 #pragma mark - Context Observation Helpers
 
 - (void)QM_observeContextDidSave:(NSManagedObjectContext *)otherContext
@@ -110,7 +86,8 @@ NSString * const QMCDRecordDidMergeChangesFromiCloudNotification = @"kQMCDRecord
                                           object:self
                                         userInfo:[notification userInfo]];
     };
-    [self QM_performBlock:mergeBlock];
+    
+    [self performBlock:mergeBlock];
 }
 
 - (void)QM_mergeChangesFromNotification:(NSNotification *)notification;
@@ -126,7 +103,7 @@ NSString * const QMCDRecordDidMergeChangesFromiCloudNotification = @"kQMCDRecord
         [self mergeChangesFromContextDidSaveNotification:notification];
     };
 
-    [self QM_performBlock:mergeBlock];
+    [self performBlock:mergeBlock];
 }
 
 - (void)QM_mergeChangesOnMainThread:(NSNotification *)notification;
