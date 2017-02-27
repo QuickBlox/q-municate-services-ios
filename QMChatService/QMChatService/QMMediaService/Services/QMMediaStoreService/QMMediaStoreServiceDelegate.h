@@ -19,5 +19,6 @@
 - (void)updateMediaItem:(QMMediaItem *)mediaItem;
 
 - (QMMediaItem *)mediaItemFromAttachment:(QBChatAttachment *)attachment;
+- (void)localImageFromMediaItem:(QMMediaItem *)item completion:(void(^)(UIImage *image))completion;
 
 @end
