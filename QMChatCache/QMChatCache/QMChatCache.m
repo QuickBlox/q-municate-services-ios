@@ -87,7 +87,7 @@ static QMChatCache *_chatCacheInstance = nil;
 
 - (void)allDialogsWithCompletion:(void(^)(NSArray<QBChatDialog *> *dialogs))completion {
     
-    NSArray *cdChatDialogs = [CDDialog QM_findAllInContext:self.context];
+    NSArray *cdChatDialogs = [CDDialog QM_findAllInContext:self.mainQueueContext];
     NSArray *allDialogs = [self dialogsFromCache:cdChatDialogs];
     
     completion(allDialogs);
@@ -108,7 +108,7 @@ static QMChatCache *_chatCacheInstance = nil;
     
     CDDialog *dialog = [CDDialog QM_findFirstByAttribute:@"dialogID"
                                                withValue:dialogID
-                                               inContext:self.context];
+                                               inContext:self.mainQueueContext];
     completion([dialog toQBChatDialog]);
 }
 
@@ -121,7 +121,7 @@ static QMChatCache *_chatCacheInstance = nil;
     [CDDialog QM_findAllSortedBy:sortTerm
                        ascending:ascending
                    withPredicate:predicate
-                       inContext:self.context];
+                       inContext:self.mainQueueContext];
     
     NSArray<QBChatDialog *> *allDialogs = [self dialogsFromCache:cdChatDialogs];
     completion(allDialogs);
@@ -136,7 +136,7 @@ static QMChatCache *_chatCacheInstance = nil;
 
 - (void)insertOrUpdateDialogs:(NSArray *)dialogs completion:(dispatch_block_t)completion {
     
-    [self saveContext:^(NSManagedObjectContext *ctx) {
+    [self save:^(NSManagedObjectContext *ctx) {
         
         for (QBChatDialog *dialog in dialogs) {
             
@@ -157,25 +157,23 @@ static QMChatCache *_chatCacheInstance = nil;
                ctx.insertedObjects.count,
                ctx.updatedObjects.count);
         
-    } save:completion];
+    } finish:completion];
 }
 
 - (void)deleteDialogWithID:(NSString *)dialogID
                 completion:(dispatch_block_t)completion {
     
-    [self saveContext:^(NSManagedObjectContext *ctx) {
-        
+    [self save:^(NSManagedObjectContext *ctx) {
         [CDDialog QM_deleteAllMatchingPredicate:IS(@"dialogID", dialogID)
                                       inContext:ctx];
-        
-    } save:completion];
+    } finish:completion];
 }
 
 - (void)deleteAllDialogsWithCompletion:(dispatch_block_t)completion {
     
-    [self saveContext:^(NSManagedObjectContext *ctx) {
+    [self save:^(NSManagedObjectContext *ctx) {
         [CDDialog QM_truncateAllInContext:ctx];
-    } save:completion];
+    } finish:completion];
 }
 
 #pragma mark -
@@ -231,7 +229,7 @@ static QMChatCache *_chatCacheInstance = nil;
     [CDMessage QM_findAllSortedBy:sortTerm
                         ascending:ascending
                     withPredicate:predicate
-                        inContext:self.context];
+                        inContext:self.mainQueueContext];
     
     if (messages.count > 0) {
         
@@ -254,7 +252,7 @@ static QMChatCache *_chatCacheInstance = nil;
         return;
     }
     
-    [self saveContext:^(NSManagedObjectContext *ctx) {
+    [self save:^(NSManagedObjectContext *ctx) {
         
         NSPredicate *messagePredicate = IS(@"dialogID", dialogID);
         
@@ -274,7 +272,7 @@ static QMChatCache *_chatCacheInstance = nil;
             
         }
         
-    } save:completion];
+    } finish:completion];
 }
 
 #pragma mark Insert / Update / Delete
@@ -305,7 +303,7 @@ static QMChatCache *_chatCacheInstance = nil;
                   withDialogId:(NSString *)dialogID
                     completion:(dispatch_block_t)completion {
     
-    [self saveContext:^(NSManagedObjectContext *ctx) {
+    [self save:^(NSManagedObjectContext *ctx) {
         
         for (QBChatMessage *message in messages) {
             
@@ -321,7 +319,7 @@ static QMChatCache *_chatCacheInstance = nil;
                ctx.insertedObjects.count,
                ctx.updatedObjects.count);
         
-    } save:completion];
+    } finish:completion];
     
     //    [weakSelf save:^{
     //
@@ -340,16 +338,16 @@ static QMChatCache *_chatCacheInstance = nil;
 - (void)deleteMessage:(QBChatMessage *)message
            completion:(dispatch_block_t)completion {
     
-    [self saveContext:^(NSManagedObjectContext *ctx) {
+    [self save:^(NSManagedObjectContext *ctx) {
         [CDMessage QM_deleteAllMatchingPredicate:IS(@"messageID", message.ID)
                                        inContext:ctx];
-    } save:completion];
+    } finish:completion];
 }
 
 - (void)deleteMessages:(NSArray *)messages
             completion:(dispatch_block_t)completion {
     
-    [self saveContext:^(NSManagedObjectContext *ctx) {
+    [self save:^(NSManagedObjectContext *ctx) {
         
         for (QBChatMessage *message in messages) {
             
@@ -361,24 +359,24 @@ static QMChatCache *_chatCacheInstance = nil;
             [messageToDelete QM_deleteEntityInContext:ctx];
         }
         
-    } save:completion];
+    } finish:completion];
 }
 
 - (void)deleteMessageWithDialogID:(NSString *)dialogID
                        completion:(dispatch_block_t)completion {
     
-    [self saveContext:^(NSManagedObjectContext *ctx) {
+    [self save:^(NSManagedObjectContext *ctx) {
         
         [CDMessage QM_deleteAllMatchingPredicate:IS(@"dialogID", dialogID)
                                        inContext:ctx];
-    } save:completion];
+    } finish:completion];
 }
 
 - (void)deleteAllMessagesWithCompletion:(dispatch_block_t)completion {
     
-    [self saveContext:^(NSManagedObjectContext *ctx) {
+    [self save:^(NSManagedObjectContext *ctx) {
         [CDMessage QM_truncateAllInContext:ctx];
-    } save:completion];
+    } finish:completion];
 }
 
 @end
