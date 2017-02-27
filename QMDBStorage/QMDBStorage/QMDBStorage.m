@@ -15,13 +15,15 @@
 
 #define QM_LOGGING_ENABLED 1
 
-@property (strong, nonatomic) dispatch_queue_t queue;
 @property (strong, nonatomic) QMCDRecordStack *stack;
+
+@property (strong, nonatomic) NSManagedObjectContext *saveContext;
 
 @end
 
 @implementation QMDBStorage
 
+@dynamic mainQueueContext;
 
 - (instancetype)initWithStoreNamed:(NSString *)storeName
                              model:(NSManagedObjectModel *)model
@@ -40,16 +42,51 @@
         dispatch_once(&onceToken, ^{
             
             [QMCDRecord setLoggingLevel:QMCDRecordLoggingLevelVerbose];
+            
         });
+        
+        NSManagedObjectContext *general = [NSManagedObjectContext QM_privateQueueContext];
+        [general setPersistentStoreCoordinator:self.stack.coordinator];
+        
+        self.stack.context = general;
+        
+        _saveContext = [NSManagedObjectContext QM_privateQueueContext];
+        [_saveContext setParentContext:self.stack.context];
     }
-
+    
     return self;
 }
 
-
-- (NSManagedObjectContext *)context {
+- (NSManagedObjectContext *)mainQueueContext {
     
-    return self.stack.context;
+    NSManagedObjectContext *mainContext =
+    [NSManagedObjectContext QM_mainQueueContext];
+    [mainContext setParentContext:self.stack.context];
+    
+    return mainContext;
+}
+
+- (void)perfomBackgroundQueue:(void (^)(NSManagedObjectContext *ctx))block {
+    
+    NSManagedObjectContext *backgroundContext =
+    [NSManagedObjectContext QM_privateQueueContext];
+    [backgroundContext setParentContext:self.stack.context];
+    
+    block(backgroundContext);
+}
+
+- (void)save:(void (^)(NSManagedObjectContext *ctx))block
+      finish:(dispatch_block_t)finish {
+    
+    [_saveContext performBlock:^{
+        
+        if (block) block(_saveContext);
+        [_saveContext QM_saveToPersistentStoreAndWait];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (finish) finish();
+        });
+    }];
 }
 
 - (instancetype)initWithStoreNamed:(NSString *)storeName
@@ -77,9 +114,12 @@
     [self cleanDBWithStoreName:name applicationGroupIdentifier:nil];
 }
 
-+ (void)cleanDBWithStoreName:(NSString *)name applicationGroupIdentifier:(NSString *)appGroupIdentifier {
++ (void)cleanDBWithStoreName:(NSString *)name
+  applicationGroupIdentifier:(NSString *)appGroupIdentifier {
     
-    NSURL *storeUrl = [NSPersistentStore QM_fileURLForStoreNameIfExistsOnDisk:name applicationGroupIdentifier:appGroupIdentifier];
+    NSURL *storeUrl =
+    [NSPersistentStore QM_fileURLForStoreNameIfExistsOnDisk:name
+                                 applicationGroupIdentifier:appGroupIdentifier];
     
     if (storeUrl) {
         
@@ -96,17 +136,4 @@
     }
 }
 
-- (void)saveContext:(void (^)(NSManagedObjectContext *ctx))context
-               save:(dispatch_block_t)save {
-    
-    NSManagedObjectContext *privateContext =
-    [NSManagedObjectContext QM_privateQueueContext];
-    [privateContext setParentContext:self.stack.context];
-    context(privateContext);
-    [privateContext QM_saveOnlySelfWithCompletion:^(BOOL success, NSError *error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (save) save();
-        });
-    }];
-}
 @end

@@ -8,19 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
-#define CONTAINS(attrName, attrVal) [NSPredicate predicateWithFormat:@"self.%K CONTAINS %@", attrName, attrVal]
-#define LIKE(attrName, attrVal) [NSPredicate predicateWithFormat:@"%K like %@", attrName, attrVal]
-#define LIKE_C(attrName, attrVal) [NSPredicate predicateWithFormat:@"%K like[c] %@", attrName, attrVal]
 #define IS(attrName, attrVal) [NSPredicate predicateWithFormat:@"%K == %@", attrName, attrVal]
-
-//#define DO_AT_MAIN(x) dispatch_async(dispatch_get_main_queue(), ^{ x; });
 
 #import "QMCDRecord.h"
 
 @interface QMDBStorage : NSObject
 
-@property (strong, nonatomic, readonly) QMCDRecordStack *stack;
-@property (strong, nonatomic, readonly) NSManagedObjectContext *context;
+@property (strong, nonatomic, readonly) NSManagedObjectContext *mainQueueContext;
 
 - (instancetype)initWithStoreNamed:(NSString *)storeName
                              model:(NSManagedObjectModel *)model
@@ -34,8 +28,7 @@
  * @brief Load CoreData(Sqlite) file
  * @param name - filename
  */
-
-+ (void)setupDBWithStoreNamed:(NSString *)storeName ;
++ (void)setupDBWithStoreNamed:(NSString *)storeName;
 
 + (void)setupDBWithStoreNamed:(NSString *)storeName
    applicationGroupIdentifier:(nullable NSString *)appGroupIdentifier;
@@ -43,10 +36,11 @@
 /**
  * @brief Clean data base with store name
  */
-
 + (void)cleanDBWithStoreName:(NSString *)name;
 
-- (void)saveContext:(void (^)(NSManagedObjectContext *ctx))context
-               save:(dispatch_block_t)save;
+- (void)perfomBackgroundQueue:(void (^)(NSManagedObjectContext *ctx))block;
+
+- (void)save:(void (^)(NSManagedObjectContext *ctx))block
+      finish:(dispatch_block_t)finish;
 
 @end
