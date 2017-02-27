@@ -67,7 +67,7 @@ static QMUsersCache *_usersCacheInstance = nil;
     BFTaskCompletionSource *source =
     [BFTaskCompletionSource taskCompletionSource];
     
-    [self saveContext:^(NSManagedObjectContext *ctx) {
+    [self save:^(NSManagedObjectContext *ctx) {
         //To Insert / Update
         for (QBUUser *user in users) {
             
@@ -84,7 +84,7 @@ static QMUsersCache *_usersCacheInstance = nil;
                ctx.insertedObjects.count,
                ctx.updatedObjects.count);
         
-    } save:^{
+    } finish:^{
         [source setResult:nil];
     }];
     
@@ -95,11 +95,11 @@ static QMUsersCache *_usersCacheInstance = nil;
     
     BFTaskCompletionSource *source = [BFTaskCompletionSource taskCompletionSource];
     
-    [self saveContext:^(NSManagedObjectContext *ctx) {
+    [self save:^(NSManagedObjectContext *ctx) {
         
         [CDUser QM_deleteAllMatchingPredicate:IS(@"id", @(user.ID))
                                     inContext:ctx];
-    } save:^{
+    } finish:^{
         
         [source setResult:nil];
     }];
@@ -109,13 +109,14 @@ static QMUsersCache *_usersCacheInstance = nil;
 
 - (BFTask *)deleteAllUsers {
     
-    BFTaskCompletionSource *source = [BFTaskCompletionSource taskCompletionSource];
+    BFTaskCompletionSource *source =
+    [BFTaskCompletionSource taskCompletionSource];
     
-    [self saveContext:^(NSManagedObjectContext *ctx) {
+    [self save:^(NSManagedObjectContext *ctx) {
         
         [CDUser QM_truncateAllInContext:ctx];
         
-    } save:^{
+    } finish:^{
         
         [source setResult:nil];
     }];
@@ -125,16 +126,14 @@ static QMUsersCache *_usersCacheInstance = nil;
 
 - (BFTask *)userWithPredicate:(NSPredicate *)predicate {
     
-    BFTaskCompletionSource *source = [BFTaskCompletionSource taskCompletionSource];
+    BFTaskCompletionSource *source =
+    [BFTaskCompletionSource taskCompletionSource];
     
-    [self saveContext:^(NSManagedObjectContext *ctx) {
+    [self perfomBackgroundQueue:^(NSManagedObjectContext *ctx) {
         
-        QBUUser *result = [[CDUser QM_findFirstWithPredicate:predicate
-                                                   inContext:ctx] toQBUUser];
-        [source setResult:result];
-        
-    } save:^{
-        
+        CDUser *user = [CDUser QM_findFirstWithPredicate:predicate
+                                                   inContext:ctx];
+        [source setResult:[user toQBUUser]];
     }];
     
     return source.task;
@@ -148,6 +147,17 @@ static QMUsersCache *_usersCacheInstance = nil;
                           ascending:ascending];
 }
 
+- (NSArray <QBUUser*> *)allUsers {
+
+    NSArray<CDUser *> *users =
+    [CDUser QM_findAllInContext:self.mainQueueContext];
+    
+    NSArray<QBUUser *> *result =
+    [self convertCDUsertsToQBUsers:users];
+    
+    return result;
+}
+
 - (BFTask *)usersWithPredicate:(NSPredicate *)predicate
                       sortedBy:(NSString *)sortTerm
                      ascending:(BOOL)ascending {
@@ -155,16 +165,19 @@ static QMUsersCache *_usersCacheInstance = nil;
     BFTaskCompletionSource *source =
     [BFTaskCompletionSource taskCompletionSource];
     
-    NSArray<CDUser *> *users =
-    [CDUser QM_findAllSortedBy:sortTerm
-                     ascending:ascending
-                 withPredicate:predicate
-                     inContext:self.context];
-    
-    NSArray<QBUUser *> *result =
-    [self convertCDUsertsToQBUsers:users];
-    
-    [source setResult:result];
+    [self perfomBackgroundQueue:^(NSManagedObjectContext *ctx) {
+        
+        NSArray<CDUser *> *users =
+        [CDUser QM_findAllSortedBy:sortTerm
+                         ascending:ascending
+                     withPredicate:predicate
+                         inContext:ctx];
+        
+        NSArray<QBUUser *> *result =
+        [self convertCDUsertsToQBUsers:users];
+        
+        [source setResult:result];
+    }];
     
     return source.task;
 }

@@ -52,6 +52,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Fetch users
 
+- (NSArray <QBUUser*> *)allUsers;
+
 /**
  *  Fetch user with predicate
  *
