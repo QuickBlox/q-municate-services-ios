@@ -327,12 +327,7 @@
 
 - (void)cachedUsersWithCompletion:(QMCacheCollection)block {
     
-    [[QMUsersCache.instance usersSortedBy:@"id" ascending:YES] continueWithExecutor:[BFExecutor mainThreadExecutor]
-                                                                          withBlock:^id(BFTask *task) {
-                                                                              
-                                                                              if (block) block(task.result);
-                                                                              return nil;
-                                                                          }];
+    block([QMUsersCache.instance allUsers]);
 }
 
 #pragma mark - QMUsersServiceDelegate
