@@ -65,34 +65,28 @@
 
 #pragma mark - Fetch Requests
 
-+ (NSArray *)QM_executeFetchRequest:(NSFetchRequest *)request inContext:(NSManagedObjectContext *)context
-{
-    __block NSArray *results = nil;
-    void (^requestBlock)(void) = ^{
-
++ (NSArray *)QM_executeFetchRequest:(NSFetchRequest *)request
+                          inContext:(NSManagedObjectContext *)context {
+    
+    
+   __block NSArray *results = nil;
+    
+    [context performBlockAndWait:^{
+        
         NSError *error = nil;
         results = [context executeFetchRequest:request error:&error];
-
+        
         if (results == nil)
         {
             [[error QM_coreDataDescription] QM_logToConsole];
         }
-    };
-
-    if ([context concurrencyType] == NSPrivateQueueConcurrencyType)
-    {
-        requestBlock();
-    }
-    else
-    {
-        
-        [context performBlockAndWait:requestBlock];
-    }
+    }];
     
 	return results;
 }
 
-+ (id)QM_executeFetchRequestAndReturnFirstObject:(NSFetchRequest *)request inContext:(NSManagedObjectContext *)context
++ (id)QM_executeFetchRequestAndReturnFirstObject:(NSFetchRequest *)request
+                                       inContext:(NSManagedObjectContext *)context
 {
 	[request setFetchLimit:1];
 
