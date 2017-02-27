@@ -52,7 +52,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Load users to memory storage from disc cache.
  */
-- (BFTask <NSArray<QBUUser *> *> *)loadFromCache;
+//- (BFTask <NSArray<QBUUser *> *> *)loadFromCache;
 
 #pragma mark - Intelligent fetch
 
