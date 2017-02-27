@@ -72,7 +72,7 @@ static QMContactListCache *_chatCacheInstance = nil;
 - (void)insertOrUpdateContactListWithItems:(NSArray<QBContactListItem *> *)contactListItems
                                 completion:(dispatch_block_t)completion {
     
-    [self saveContext:^(NSManagedObjectContext *ctx) {
+    [self save:^(NSManagedObjectContext *ctx) {
         
         for (QBContactListItem *contactListItem in contactListItems) {
             
@@ -88,7 +88,7 @@ static QMContactListCache *_chatCacheInstance = nil;
                ctx.insertedObjects.count,
                ctx.updatedObjects.count);
         
-    } save:completion];
+    } finish:completion];
 }
 
 - (void)insertOrUpdateContactListItemsWithContactList:(QBContactList *)contactList
@@ -106,24 +106,17 @@ static QMContactListCache *_chatCacheInstance = nil;
 - (void)deleteContactListItem:(QBContactListItem *)contactListItem
                    completion:(dispatch_block_t)completion {
     
-    
-    [self saveContext:^(NSManagedObjectContext *ctx) {
-        
-        CDContactListItem *cdContactListItem =
-        [CDContactListItem QM_findFirstWithPredicate:IS(@"userID", @(contactListItem.userID))
-                                           inContext:ctx];
-        [cdContactListItem QM_deleteEntityInContext:ctx];
-        
-    } save:completion];
+    [self save:^(NSManagedObjectContext *ctx) {
+        [CDContactListItem QM_deleteAllMatchingPredicate:IS(@"userID", @(contactListItem.userID))
+                                               inContext:ctx];
+    } finish:completion];
 }
 
 - (void)deleteContactList:(dispatch_block_t)completion {
     
-    [self saveContext:^(NSManagedObjectContext *ctx) {
-        
+    [self save:^(NSManagedObjectContext *ctx) {
         [CDContactListItem QM_truncateAllInContext:ctx];
-        
-    } save:completion];
+    } finish:completion];
 }
 
 #pragma mark Fetch ContactList operations
@@ -143,7 +136,7 @@ static QMContactListCache *_chatCacheInstance = nil;
 
 - (void)contactListItems:(void(^)(NSArray<QBContactListItem *> *contactListItems))completion {
     
-    NSArray *cached = [CDContactListItem QM_findAllInContext:self.context];
+    NSArray *cached = [CDContactListItem QM_findAllInContext:self.mainQueueContext];
     NSArray *contactListItems = [self contactItemsFromCache:cached];
     completion(contactListItems);
 }
@@ -152,7 +145,7 @@ static QMContactListCache *_chatCacheInstance = nil;
     
     CDContactListItem *cachedContactListItem =
     [CDContactListItem QM_findFirstWithPredicate:IS(@"userID", @(userID))
-                                       inContext:self.context];
+                                       inContext:self.mainQueueContext];
     
     QBContactListItem *item = [cachedContactListItem toQBContactListItem];
     

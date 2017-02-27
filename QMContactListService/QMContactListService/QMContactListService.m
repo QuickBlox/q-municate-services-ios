@@ -102,7 +102,6 @@ static inline BOOL isContactListEmpty(QBContactList *contactList) {
     [self.contactListMemoryStorage updateWithContactList:contactList];
     
     if ([self.multicastDelegate respondsToSelector:@selector(contactListService:contactListDidChange:)]) {
-        
         [self.multicastDelegate contactListService:self contactListDidChange:contactList];
     }
 }
@@ -110,7 +109,6 @@ static inline BOOL isContactListEmpty(QBContactList *contactList) {
 - (void)chatDidReceiveContactItemActivity:(NSUInteger)userID isOnline:(BOOL)isOnline status:(NSString *)status {
     
     if ([self.multicastDelegate respondsToSelector:@selector(contactListService:didReceiveContactItemActivity:isOnline:status:)]) {
-        
         [self.multicastDelegate contactListService:self didReceiveContactItemActivity:userID isOnline:isOnline status:status];
     }
 }
