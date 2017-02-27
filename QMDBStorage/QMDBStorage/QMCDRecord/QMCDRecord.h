@@ -20,8 +20,6 @@
 #import "QMCDRecordStack+Actions.h"
 #import "SQLiteQMCDRecordStack.h"
 #import "SQLiteWithSavingContextQMCDRecordStack.h"
-#import "ClassicSQLiteQMCDRecordStack.h"
-#import "ClassicWithBackgroundCoordinatorSQLiteQMCDRecordStack.h"
 
 #import "AutoMigratingQMCDRecordStack.h"
 #import "AutoMigratingWithSourceAndTargetModelQMCDRecordStack.h"
