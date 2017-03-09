@@ -17,8 +17,8 @@ static QMUsersCache *_usersCacheInstance = nil;
 
 #pragma mark - Singleton
 
-+ (QMUsersCache *)instance
-{
++ (QMUsersCache *)instance {
+    
     NSAssert(_usersCacheInstance, @"You must first perform @selector(setupDBWithStoreNamed:)");
     return _usersCacheInstance;
 }
@@ -37,7 +37,6 @@ static QMUsersCache *_usersCacheInstance = nil;
     _usersCacheInstance =
     [[QMUsersCache alloc] initWithStoreNamed:storeName
                                        model:model
-                                  queueLabel:"com.qmservices.QMUsersCacheQueue"
                   applicationGroupIdentifier:appGroupIdentifier];
 }
 
@@ -129,7 +128,7 @@ static QMUsersCache *_usersCacheInstance = nil;
     BFTaskCompletionSource *source =
     [BFTaskCompletionSource taskCompletionSource];
     
-    [self perfomBackgroundQueue:^(NSManagedObjectContext *ctx) {
+    [self performMainQueue:^(NSManagedObjectContext *ctx) {
         
         CDUser *user = [CDUser QM_findFirstWithPredicate:predicate
                                                    inContext:ctx];
@@ -149,11 +148,10 @@ static QMUsersCache *_usersCacheInstance = nil;
 
 - (NSArray <QBUUser*> *)allUsers {
 
-    NSArray<CDUser *> *users =
-    [CDUser QM_findAllInContext:self.mainQueueContext];
-    
-    NSArray<QBUUser *> *result =
-    [self convertCDUsertsToQBUsers:users];
+    __block NSArray<QBUUser *> *result = nil;
+    [self performMainQueue:^(NSManagedObjectContext *ctx) {
+        result = [[CDUser QM_findAllInContext:ctx] toQBUUsers];
+    }];
     
     return result;
 }
@@ -165,35 +163,19 @@ static QMUsersCache *_usersCacheInstance = nil;
     BFTaskCompletionSource *source =
     [BFTaskCompletionSource taskCompletionSource];
     
-    [self perfomBackgroundQueue:^(NSManagedObjectContext *ctx) {
+    [self performMainQueue:^(NSManagedObjectContext *ctx) {
         
-        NSArray<CDUser *> *users =
+        NSArray<CDUser *> *result =
         [CDUser QM_findAllSortedBy:sortTerm
                          ascending:ascending
                      withPredicate:predicate
                          inContext:ctx];
         
-        NSArray<QBUUser *> *result =
-        [self convertCDUsertsToQBUsers:users];
-        
-        [source setResult:result];
+        [source setResult:[result toQBUUsers]];
     }];
     
     return source.task;
 }
 
-- (NSArray<QBUUser *> *)convertCDUsertsToQBUsers:(NSArray *)cdUsers {
-    
-    NSMutableArray<QBUUser *> *users =
-    [NSMutableArray arrayWithCapacity:cdUsers.count];
-    
-    for (CDUser *user in cdUsers) {
-        
-        QBUUser *qbUser = [user toQBUUser];
-        [users addObject:qbUser];
-    }
-    
-    return users;
-}
 
 @end

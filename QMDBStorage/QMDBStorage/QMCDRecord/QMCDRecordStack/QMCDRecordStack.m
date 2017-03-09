@@ -15,39 +15,105 @@
 
 @interface QMCDRecordStack ()
 
+@property (nonatomic, strong) NSManagedObjectContext *privateWriterContext;
+@property (nonatomic, strong) NSManagedObjectContext *mainContext;
+
+
 @property (nonatomic, strong) NSNotificationCenter *applicationWillTerminate;
 @property (nonatomic, strong) NSNotificationCenter *applicationWillResignActive;
+@property (nonatomic, copy, readwrite) NSURL *storeURL;
 
 @end
 
 @implementation QMCDRecordStack
 
-- (void)dealloc;
-{
+- (void)dealloc {
+    
     [self reset];
 }
 
-- (NSString *) description
-{
+- (NSString *)description {
+    
     NSMutableString *status = [NSMutableString stringWithString:@"\n"];
-
+    
     [status appendFormat:@"Stack:           %@ (%p)\n", NSStringFromClass([self class]), self];
-    [status appendFormat:@"Model:           %@\n", [[self model] entityVersionHashesByName]];
-    [status appendFormat:@"Coordinator:     %@\n", [self coordinator]];
-    [status appendFormat:@"Store:           %@\n", [self store]];
-    [status appendFormat:@"Context:         %@\n", [[self context] QM_description]];
-
+    [status appendFormat:@"Model:           %@\n", [self.model entityVersionHashesByName]];
+    [status appendFormat:@"Coordinator:     %@\n", self.coordinator];
+    [status appendFormat:@"Store:           %@\n", self.store];
+    [status appendFormat:@"Context:         %@\n", [self.privateWriterContext QM_description]];
+    
     return status;
 }
 
-+ (instancetype) stack
-{
++ (instancetype) stack {
+    
     return [[self alloc] init];
 }
 
-- (void) loadStack {
++ (instancetype)stackWithStoreNamed:(NSString *)name
+                              model:(NSManagedObjectModel *)model
+         applicationGroupIdentifier:(NSString *)appGroupIdentifier {
     
-    NSManagedObjectContext *context = [self context];
+    NSDictionary *options =
+    [NSPersistentStore QM_migrationOptionsForStoreName:name
+                            applicationGroupIdentifier:appGroupIdentifier];
+    
+    return [[self alloc] initWithStoreAtURL:options[QMCDRecordTargetURLKey]
+                                      model:model
+                                    options:options];
+}
+
+- (instancetype)initWithStoreAtURL:(NSURL *)url
+                             model:(NSManagedObjectModel *)model
+                           options:(NSDictionary *)options {
+    
+    NSParameterAssert(url);
+    self = [super init];
+    
+    if (self) {
+        
+        _storeOptions = options;
+        _storeURL = url;
+        _model = model;
+        
+        [self loadStack];
+    }
+    
+    return self;
+}
+
+- (NSDictionary *)defaultStoreOptions {
+    
+    NSDictionary *options =
+    @{
+      QMCDRecordShouldDeletePersistentStoreOnModelMismatchKey : @(self.shouldDeletePersistentStoreOnModelMismatch) };
+    
+    return options;
+}
+
+- (NSPersistentStoreCoordinator *)createCoordinator {
+    
+    return [self createCoordinatorWithOptions:[self defaultStoreOptions]];
+}
+
+- (NSPersistentStoreCoordinator *) createCoordinatorWithOptions:(NSDictionary *)options {
+    
+    QMCDLogVerbose(@"Loading Store at URL: %@", self.storeURL);
+    NSPersistentStoreCoordinator *coordinator =
+    [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self model]];
+    
+    NSMutableDictionary *storeOptions = [[self defaultStoreOptions] mutableCopy];
+    [storeOptions addEntriesFromDictionary:self.storeOptions];
+    
+    [coordinator QM_addAutoMigratingSqliteStoreAtURL:self.storeURL withOptions:storeOptions];
+    
+    return coordinator;
+}
+
+
+- (void)loadStack {
+    
+    NSManagedObjectContext *context = [self privateWriterContext];
     NSString *stackType = NSStringFromClass([self class]);
 #pragma unused(stackType)
     NSAssert(context, @"No NSManagedObjectContext for stack [%@]", stackType);
@@ -55,8 +121,7 @@
     NSAssert([self store], @"No NSPersistentStore initialized for stack [%@]", stackType);
     NSAssert([self coordinator], @"No NSPersistentStoreCoodinator initialized for stack [%@]", stackType);
 #ifndef DEBUG
-    if (context == nil)
-    {
+    if (context == nil) {
         QMCDLogError(@"No NSManagedObjectContext for stack [%@]", stackType);
     }
 #endif
@@ -75,27 +140,30 @@
     [self setModel:model];
 }
 
-- (void) reset {
+- (void)reset {
     
-    self.context = nil;
+    self.privateWriterContext = nil;
     self.model = nil;
     self.coordinator = nil;
     self.store = nil;
 }
 
-- (NSManagedObjectContext *) context {
+- (NSManagedObjectContext *)privateWriterContext {
     
-    if (_context == nil)
-    {
-        _context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
-        [_context setPersistentStoreCoordinator:[self coordinator]];
-        [_context setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
-        [_context QM_setWorkingName:[NSString stringWithFormat:@"Main Queue Context (%@)", [self stackName]]];
+    if (!_privateWriterContext) {
+        
+        _privateWriterContext =
+        [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+        
+        _privateWriterContext.persistentStoreCoordinator = self.coordinator;
+        _privateWriterContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+        [_privateWriterContext QM_setWorkingName:[NSString stringWithFormat:@"Private Queue Context (%@)", [self stackName]]];
     }
-    return _context;
+    
+    return _privateWriterContext;
 }
 
-- (NSString *) stackName {
+- (NSString *)stackName {
     
     if (_stackName == nil) {
         _stackName = [NSString stringWithFormat:@"%@ [%p]", NSStringFromClass([self class]), self];
@@ -103,10 +171,9 @@
     return _stackName;
 }
 
-- (NSManagedObjectModel *) model {
+- (NSManagedObjectModel *)model {
     
-    if (_model == nil)
-    {
+    if (_model == nil) {
         _model = [NSManagedObjectModel QM_mergedObjectModelFromMainBundle];
     }
     return _model;
@@ -122,31 +189,20 @@
     return _coordinator;
 }
 
-- (NSPersistentStoreCoordinator *) createCoordinator {
-    
-    return [self createCoordinatorWithOptions:nil];
-}
-
-- (NSPersistentStoreCoordinator *) createCoordinatorWithOptions:(NSDictionary *)options {
-    
-    QMCDLogError(@"%@ must be overridden in %@", NSStringFromSelector(_cmd), NSStringFromClass([self class]));
-    return nil;
-}
-
 #pragma mark - Handle System Notifications
 
-- (BOOL) saveOnApplicationWillResignActive {
+- (BOOL)saveOnApplicationWillResignActive {
     
     return self.applicationWillResignActive != nil;
 }
 
-- (void) setSaveOnApplicationWillResignActive:(BOOL)save
-{
+- (void)setSaveOnApplicationWillResignActive:(BOOL)save {
+    
     [self setApplicationWillTerminate:save ? [NSNotificationCenter defaultCenter] : nil];
 }
 
--(void)setApplicationWillResignActive:(NSNotificationCenter *)applicationWillResignActive
-{
+-(void)setApplicationWillResignActive:(NSNotificationCenter *)applicationWillResignActive {
+    
     NSString *notificationName = nil;
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
     notificationName = UIApplicationWillTerminateNotification;
@@ -154,27 +210,27 @@
     notificationName = NSApplicationWillTerminateNotification;
 #endif
     [_applicationWillResignActive removeObserver:self
-                                         name:notificationName
-                                       object:nil];
+                                            name:notificationName
+                                          object:nil];
     _applicationWillResignActive = applicationWillResignActive;
     [_applicationWillResignActive addObserver:self
-                                  selector:@selector(autoSaveHandle:)
-                                      name:notificationName
-                                    object:nil];
+                                     selector:@selector(autoSaveHandle:)
+                                         name:notificationName
+                                       object:nil];
 }
 
-- (BOOL) saveOnApplicationWillTerminate
-{
+- (BOOL)saveOnApplicationWillTerminate {
+    
     return self.applicationWillTerminate != nil;
 }
 
-- (void) setSaveOnApplicationWillTerminate:(BOOL)save
-{
+- (void) setSaveOnApplicationWillTerminate:(BOOL)save {
+    
     [self setApplicationWillTerminate:save ? [NSNotificationCenter defaultCenter] : nil];
 }
 
-- (void) setApplicationWillTerminate:(NSNotificationCenter *)willTerminate
-{
+- (void)setApplicationWillTerminate:(NSNotificationCenter *)willTerminate {
+    
     NSString *notificationName = nil;
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
     notificationName = UIApplicationWillTerminateNotification;
@@ -186,14 +242,14 @@
                                        object:nil];
     _applicationWillTerminate = willTerminate;
     [_applicationWillTerminate addObserver:self
-                           selector:@selector(autoSaveHandle:)
-                               name:notificationName
-                             object:nil];
+                                  selector:@selector(autoSaveHandle:)
+                                      name:notificationName
+                                    object:nil];
 }
 
-- (void) autoSaveHandle:(NSNotification *)notification
-{
-    [[self context] QM_saveToPersistentStoreAndWait];
+- (void)autoSaveHandle:(NSNotification *)notification {
+    
+    [self.privateWriterContext QM_saveToPersistentStoreAndWait];
 }
 
 @end

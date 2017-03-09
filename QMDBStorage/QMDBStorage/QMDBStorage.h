@@ -10,15 +10,21 @@
 
 #define IS(attrName, attrVal) [NSPredicate predicateWithFormat:@"%K == %@", attrName, attrVal]
 
+#define cd_dispatch_main_async_safe(block)\
+    if ([NSThread isMainThread]) {\
+        block();\
+    } else {\
+        dispatch_async(dispatch_get_main_queue(), block);\
+    }
+
 #import "QMCDRecord.h"
 
 @interface QMDBStorage : NSObject
 
-@property (strong, nonatomic, readonly) NSManagedObjectContext *mainQueueContext;
+@property (strong, nonatomic) QMCDRecordStack *stack;
 
 - (instancetype)initWithStoreNamed:(NSString *)storeName
                              model:(NSManagedObjectModel *)model
-                        queueLabel:(const char *)queueLabel
         applicationGroupIdentifier:(NSString *)appGroupIdentifier;
 
 - (instancetype)initWithStoreNamed:(NSString *)storeName
@@ -38,8 +44,8 @@
  */
 + (void)cleanDBWithStoreName:(NSString *)name;
 
-- (void)perfomBackgroundQueue:(void (^)(NSManagedObjectContext *ctx))block;
-
+- (void)performBackgroundQueue:(void (^)(NSManagedObjectContext *ctx))block;
+- (void)performMainQueue:(void (^)(NSManagedObjectContext *ctx))block;
 - (void)save:(void (^)(NSManagedObjectContext *ctx))block
       finish:(dispatch_block_t)finish;
 

@@ -8,22 +8,11 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-#ifndef NS_BLOCKS_AVAILABLE
-#warning QMCDRecord requires blocks
-#endif
-
 #import "QMCDRecordInternal.h"
 #import "QMCDRecord+Options.h"
 #import "QMCDRecord+VersionInformation.h"
 
 #import "QMCDRecordStack.h"
-#import "QMCDRecordStack+Actions.h"
-#import "SQLiteQMCDRecordStack.h"
-#import "SQLiteWithSavingContextQMCDRecordStack.h"
-
-#import "AutoMigratingQMCDRecordStack.h"
-#import "AutoMigratingWithSourceAndTargetModelQMCDRecordStack.h"
-#import "ManuallyMigratingQMCDRecordStack.h"
 
 #import "NSArray+QMCDRecord.h"
 

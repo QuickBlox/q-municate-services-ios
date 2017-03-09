@@ -40,7 +40,6 @@ static QMChatCache *_chatCacheInstance = nil;
     
     _chatCacheInstance = [[QMChatCache alloc] initWithStoreNamed:storeName
                                                            model:model
-                                                      queueLabel:"com.qmunicate.QMChatCacheBackgroundQueue"
                                       applicationGroupIdentifier:appGroupIdentifier];
 }
 
@@ -66,31 +65,63 @@ static QMChatCache *_chatCacheInstance = nil;
     return self;
 }
 
-#pragma mark -
-#pragma mark Dialogs
-#pragma mark -
+//MARK: - Fetch Dialogs
 
-- (NSArray *)dialogsFromCache:(NSArray *)cachedDialogs {
+//MARK: Main queue
+
+- (QBChatDialog *)dialogByID:(NSString *)dialogID {
     
-    NSMutableArray *qbChatDialogs = [NSMutableArray arrayWithCapacity:cachedDialogs.count];
+    __block QBChatDialog *result = nil;
+    [self performMainQueue:^(NSManagedObjectContext *ctx) {
+        result = [[CDDialog QM_findFirstByAttribute:@"dialogID"
+                                          withValue:dialogID
+                                          inContext:ctx] toQBChatDialog];
+    }];
     
-    for (CDDialog *dialog in cachedDialogs) {
-        
-        QBChatDialog *result = [dialog toQBChatDialog];
-        [qbChatDialogs addObject:result];
-    }
-    
-    return qbChatDialogs;
+    return result;
 }
 
-#pragma mark Fetch Dialogs
+- (NSArray<QBChatDialog *> *)allDialogs {
+    
+    __block NSArray<QBChatDialog *> *result = nil;
+    [self performMainQueue:^(NSManagedObjectContext *ctx) {
+        result = [[CDDialog QM_findAllInContext:ctx] toQBChatDialogs];
+    }];
+    
+    return result;
+}
+
+- (NSArray<QBChatDialog *> *)dialogsSortedBy:(NSString *)sortTerm
+                                   ascending:(BOOL)ascending
+                               withPredicate:(NSPredicate *)predicate {
+    
+    __block NSArray<QBChatDialog *> *result = nil;
+    [self performMainQueue:^(NSManagedObjectContext *ctx) {
+        result = [[CDDialog QM_findAllSortedBy:sortTerm
+                                     ascending:ascending
+                                 withPredicate:nil
+                                     inContext:ctx] toQBChatDialogs];
+    }];
+    
+    return result;
+}
+
+//MARK: Background queue
 
 - (void)allDialogsWithCompletion:(void(^)(NSArray<QBChatDialog *> *dialogs))completion {
     
-    NSArray *cdChatDialogs = [CDDialog QM_findAllInContext:self.mainQueueContext];
-    NSArray *allDialogs = [self dialogsFromCache:cdChatDialogs];
-    
-    completion(allDialogs);
+    [self performBackgroundQueue:^(NSManagedObjectContext *ctx) {
+        
+        NSArray<QBChatDialog *> *result =
+        [[CDDialog QM_findAllInContext:ctx] toQBChatDialogs];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            if (completion) {
+                completion(result);
+            }
+        });
+    }];
 }
 
 - (void)dialogsSortedBy:(NSString *)sortTerm
@@ -103,62 +134,61 @@ static QMChatCache *_chatCacheInstance = nil;
                completion:completion];
 }
 
-- (void)dialogByID:(NSString *)dialogID
-        completion:(void (^)(QBChatDialog *cachedDialog))completion {
-    
-    CDDialog *dialog = [CDDialog QM_findFirstByAttribute:@"dialogID"
-                                               withValue:dialogID
-                                               inContext:self.mainQueueContext];
-    completion([dialog toQBChatDialog]);
-}
-
 - (void)dialogsSortedBy:(NSString *)sortTerm
               ascending:(BOOL)ascending
           withPredicate:(NSPredicate *)predicate
              completion:(void(^)(NSArray<QBChatDialog *> *dialogs))completion {
     
-    NSArray<CDDialog *> *cdChatDialogs =
-    [CDDialog QM_findAllSortedBy:sortTerm
-                       ascending:ascending
-                   withPredicate:predicate
-                       inContext:self.mainQueueContext];
-    
-    NSArray<QBChatDialog *> *allDialogs = [self dialogsFromCache:cdChatDialogs];
-    completion(allDialogs);
+    [self performBackgroundQueue:^(NSManagedObjectContext *ctx) {
+        
+        NSArray<CDDialog *> *result =
+        [[CDDialog QM_findAllSortedBy:sortTerm
+                            ascending:ascending
+                        withPredicate:predicate
+                            inContext:ctx] toQBChatDialogs];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            if (completion) {
+                completion(result);
+            }
+        });
+    }];
 }
 
-#pragma mark Insert / Update / Delete
+//MARK: - Insert / Update
 
-- (void)insertOrUpdateDialog:(QBChatDialog *)dialog completion:(dispatch_block_t)completion {
+- (void)insertOrUpdateDialog:(QBChatDialog *)dialog
+                  completion:(dispatch_block_t)completion {
     
-    [self insertOrUpdateDialogs:@[dialog] completion:completion];
+    [self insertOrUpdateDialogs:@[dialog]
+                     completion:completion];
 }
 
-- (void)insertOrUpdateDialogs:(NSArray *)dialogs completion:(dispatch_block_t)completion {
+- (void)insertOrUpdateDialogs:(NSArray *)dialogs
+                   completion:(dispatch_block_t)completion {
     
     [self save:^(NSManagedObjectContext *ctx) {
         
         for (QBChatDialog *dialog in dialogs) {
             
-            CDDialog *cachedDialog = [CDDialog QM_findFirstOrCreateByAttribute:@"dialogID"
-                                                                     withValue:dialog.ID
-                                                                     inContext:ctx];
-            
-            //            if (![dialog.updatedAt isEqualToDate:tDialog.updatedAt] ||
-            //                dialog.unreadMessagesCount != tDialog.unreadMessagesCount) {
-            //
-            //                [cachedDialog updateWithQBChatDialog:dialog];
-            //            }
-            
+            CDDialog *cachedDialog =
+            [CDDialog QM_findFirstOrCreateByAttribute:@"dialogID"
+                                            withValue:dialog.ID
+                                            inContext:ctx];
             [cachedDialog updateWithQBChatDialog:dialog];
         }
         
-        QMSLog(@"[%@] Dialogs to insert %tu, update %tu", NSStringFromClass([self class]),
+        
+        QMSLog(@"[%@] Dialogs to insert %tu, update %tu",
+               NSStringFromClass([self class]),
                ctx.insertedObjects.count,
                ctx.updatedObjects.count);
         
     } finish:completion];
 }
+
+//MARK: Delete
 
 - (void)deleteDialogWithID:(NSString *)dialogID
                 completion:(dispatch_block_t)completion {
@@ -176,36 +206,7 @@ static QMChatCache *_chatCacheInstance = nil;
     } finish:completion];
 }
 
-#pragma mark -
-#pragma mark  Messages
-#pragma mark -
-
-- (NSArray<QBChatMessage *> *)messagesWithChachedMessages:(NSArray<CDMessage *> *)cached {
-    
-    NSParameterAssert(cached.count > 0);
-    
-    NSMutableArray<QBChatMessage *> *messages =
-    [NSMutableArray arrayWithCapacity:cached.count];
-    
-    for (CDMessage *message in cached) {
-        
-        QBChatMessage *QBChatMessage = [message toQBChatMessage];
-        [messages addObject:QBChatMessage];
-    }
-    
-    return [messages copy];
-}
-
-#pragma mark Fetch Messages
-
-
-- (NSArray<QBChatMessage *> *)messagesWithDialogId:(NSString *)dialogId
-                                          sortedBy:(NSString *)sortTerm
-                                         ascending:(BOOL)ascending {
-    
-    return nil;
-    
-}
+//MARK: - Messages
 
 - (void)messagesWithDialogId:(NSString *)dialogId
                     sortedBy:(NSString *)sortTerm
@@ -223,22 +224,18 @@ static QMChatCache *_chatCacheInstance = nil;
                     ascending:(BOOL)ascending
                    completion:(void(^)(NSArray<QBChatMessage *> *messages))completion {
     
-    __weak __typeof(self)weakSelf = self;
     
-    NSArray<CDMessage *> *messages =
-    [CDMessage QM_findAllSortedBy:sortTerm
-                        ascending:ascending
-                    withPredicate:predicate
-                        inContext:self.mainQueueContext];
-    
-    if (messages.count > 0) {
+    [self performMainQueue:^(NSManagedObjectContext *ctx) {
         
-        completion([weakSelf messagesWithChachedMessages:messages]);
-    }
-    else {
-        
-        completion(@[]);
-    }
+        NSArray<CDMessage *> *result =
+        [CDMessage QM_findAllSortedBy:sortTerm
+                            ascending:ascending
+                        withPredicate:predicate
+                            inContext:ctx];
+        if (completion) {
+            completion([result toQBChatMessages]);
+        }
+    }];
 }
 
 #pragma mark Messages Limit
@@ -269,7 +266,6 @@ static QMChatCache *_chatCacheInstance = nil;
             for (CDMessage *oldestMessage in oldestMessagesForDialogID) {
                 [ctx deleteObject:oldestMessage];
             }
-            
         }
         
     } finish:completion];
@@ -313,6 +309,31 @@ static QMChatCache *_chatCacheInstance = nil;
                                              inContext:ctx];
             
             [procMessage updateWithQBChatMessage:message];
+        }
+        
+        if (self.messagesLimitPerDialog != NSNotFound ) {
+            
+            NSPredicate *messagePredicate = IS(@"dialogID", dialogID);
+            NSUInteger count =
+            [CDMessage QM_countOfEntitiesWithPredicate:messagePredicate
+                                             inContext:ctx];
+            
+//            self.messagesLimitPerDialog
+            
+            if (count > self.messagesLimitPerDialog) {
+                
+                NSFetchRequest *oldestMessageRequest = [NSFetchRequest fetchRequestWithEntityName:[CDMessage entityName]];
+                
+                oldestMessageRequest.fetchOffset = self.messagesLimitPerDialog;
+                oldestMessageRequest.predicate = messagePredicate;
+                oldestMessageRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"dateSend" ascending:NO]];
+                
+                NSArray *oldestMessagesForDialogID = [CDMessage QM_executeFetchRequest:oldestMessageRequest inContext:ctx];
+                
+                for (CDMessage *oldestMessage in oldestMessagesForDialogID) {
+                    [ctx deleteObject:oldestMessage];
+                }
+            }
         }
         
         QMSLog(@"[%@] Messages to insert %tu, update %tu", NSStringFromClass([self class]),
