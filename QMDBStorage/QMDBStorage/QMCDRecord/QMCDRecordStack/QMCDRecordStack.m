@@ -105,11 +105,10 @@
     NSMutableDictionary *storeOptions = [[self defaultStoreOptions] mutableCopy];
     [storeOptions addEntriesFromDictionary:self.storeOptions];
     
-    [coordinator QM_addAutoMigratingSqliteStoreAtURL:self.storeURL withOptions:storeOptions];
+    [coordinator QM_addSqliteStoreAtURL:self.storeURL withOptions:storeOptions];
     
     return coordinator;
 }
-
 
 - (void)loadStack {
     
