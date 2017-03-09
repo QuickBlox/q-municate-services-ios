@@ -26,7 +26,6 @@
 
 #import "NSPersistentStoreCoordinator+QMCDRecord.h"
 #import "NSPersistentStoreCoordinator+QMCDAutoMigrations.h"
-#import "NSPersistentStoreCoordinator+QMCDManualMigrations.h"
 
 #import "NSManagedObjectModel+QMCDRecord.h"
 #import "NSPersistentStore+QMCDRecord.h"
