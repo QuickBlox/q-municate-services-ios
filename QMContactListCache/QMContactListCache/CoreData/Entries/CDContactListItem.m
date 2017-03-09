@@ -24,3 +24,23 @@
 }
 
 @end
+
+@implementation NSArray(CDContactListItemConverter)
+
+- (NSArray<QBContactListItem *> *)toQBContactListItems {
+    
+    NSMutableArray<QBContactListItem *> *contactListItems =
+    [NSMutableArray arrayWithCapacity:self.count];
+    
+    for (CDContactListItem *item in self) {
+        
+        QBContactListItem *result = [item toQBContactListItem];
+        [contactListItems addObject:result];
+    }
+    
+    return [contactListItems copy];
+    
+}
+
+
+@end

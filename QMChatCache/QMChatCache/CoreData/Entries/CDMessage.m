@@ -88,3 +88,21 @@
 }
 
 @end
+
+@implementation NSArray(CDMessage)
+
+- (NSArray<CDMessage *> *)toQBChatMessages {
+    
+    NSMutableArray<QBChatMessage *> *result =
+    [NSMutableArray arrayWithCapacity:self.count];
+    
+    for (CDMessage *cache in self) {
+        
+        QBChatMessage *message = [cache toQBChatMessage];
+        [result addObject:message];
+    }
+    
+    return [result copy];
+}
+
+@end

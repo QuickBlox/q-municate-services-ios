@@ -54,5 +54,22 @@
 	self.lastRequestAt = user.lastRequestAt;
 }
 
+@end
+
+@implementation NSArray(CDUser)
+
+- (NSArray<CDUser *> *)toQBUUsers {
+    
+    NSMutableArray<QBUUser *> *result =
+    [NSMutableArray arrayWithCapacity:self.count];
+    
+    for (CDUser *cache in self) {
+        
+        QBUUser *user = [cache toQBUUser];
+        [result addObject:user];
+    }
+    
+    return [result copy];
+}
 
 @end

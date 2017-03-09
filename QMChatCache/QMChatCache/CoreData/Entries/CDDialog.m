@@ -1,9 +1,5 @@
 #import "CDDialog.h"
 
-@interface CDDialog ()
-
-@end
-
 @implementation CDDialog
 
 - (QBChatDialog *)toQBChatDialog {
@@ -41,5 +37,24 @@
     self.userID = @(dialog.userID);
     self.data = dialog.data;
 }
+
+@end
+
+@implementation NSArray(CDDialog)
+
+- (NSArray<CDDialog *> *)toQBChatDialogs  {
+    
+    NSMutableArray<CDDialog *> *result =
+    [NSMutableArray arrayWithCapacity:self.count];
+    
+    for (CDDialog *cache in self) {
+        
+        QBChatDialog *dialog = [cache toQBChatDialog];
+        [result addObject:dialog];
+    }
+    
+    return [result copy];
+}
+
 
 @end
