@@ -42,7 +42,7 @@
 
 @implementation NSArray(CDDialog)
 
-- (NSArray<CDDialog *> *)toQBChatDialogs  {
+- (NSArray<QBChatDialog *> *)toQBChatDialogs  {
     
     NSMutableArray<CDDialog *> *result =
     [NSMutableArray arrayWithCapacity:self.count];

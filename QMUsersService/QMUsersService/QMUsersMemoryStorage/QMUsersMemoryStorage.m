@@ -41,7 +41,7 @@ const struct QMUsersSearchKeyStruct QMUsersSearchKey = {
 
 - (void)addUser:(QBUUser *)user {
     
-    NSString *key = [NSString stringWithFormat:@"%li", user.ID];
+    NSString *key = [NSString stringWithFormat:@"%tu", user.ID];
     self.users[key] = user;
 }
 
@@ -55,7 +55,7 @@ const struct QMUsersSearchKeyStruct QMUsersSearchKey = {
 
 - (QBUUser *)userWithID:(NSUInteger)userID {
     
-    NSString *stingID = [NSString stringWithFormat:@"%li", userID];
+    NSString *stingID = [NSString stringWithFormat:@"%tu", userID];
     QBUUser *user = self.users[stingID];
     
     return user;

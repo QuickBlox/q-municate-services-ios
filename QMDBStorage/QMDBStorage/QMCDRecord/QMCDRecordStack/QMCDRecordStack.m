@@ -63,6 +63,13 @@
                                     options:options];
 }
 
++ (instancetype)stackWithStoreNamed:(NSString *)name
+                              model:(NSManagedObjectModel *)model {
+    return [[self class] stackWithStoreNamed:name
+                                       model:model
+                  applicationGroupIdentifier:nil];
+}
+
 - (instancetype)initWithStoreAtURL:(NSURL *)url
                              model:(NSManagedObjectModel *)model
                            options:(NSDictionary *)options {

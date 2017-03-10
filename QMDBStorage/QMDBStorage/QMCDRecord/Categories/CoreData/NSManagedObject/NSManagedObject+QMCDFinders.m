@@ -142,33 +142,6 @@
     return result;
 }
 
-+ (id)QM_findLargestValueForAttribute:(NSString *)attribute
-                        withPredicate:(NSPredicate *)predicate
-                            inContext:(NSManagedObjectContext *)context {
-    
-    NSFetchRequest *request = [self QM_requestAllSortedBy:attribute
-                                                ascending:NO];
-    request.fetchLimit = 1;
-    [request setResultType:NSDictionaryResultType];
-    [request setPropertiesToFetch:@[attribute]];
-    [request setPredicate:predicate];
-    
-    NSDictionary *results =
-    [self QM_executeFetchRequestAndReturnFirstObject:request
-                                           inContext:context];
-    id value = [results valueForKey:attribute];
-    
-    return value;
-}
-
-+ (id)QM_findLargestValueForAttribute:(NSString *)attribute
-                            inContext:(NSManagedObjectContext *)context {
-    
-    return [self QM_findLargestValueForAttribute:attribute
-                                   withPredicate:nil
-                                       inContext:context];
-}
-
 + (id)QM_findSmallestValueForAttribute:(NSString *)attribute
                              inContext:(NSManagedObjectContext *)context {
     

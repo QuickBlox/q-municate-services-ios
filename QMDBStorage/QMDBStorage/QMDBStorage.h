@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "QMCDRecord.h"
 
 #define IS(attrName, attrVal) [NSPredicate predicateWithFormat:@"%K == %@", attrName, attrVal]
 
@@ -17,7 +18,7 @@
         dispatch_async(dispatch_get_main_queue(), block);\
     }
 
-#import "QMCDRecord.h"
+NS_ASSUME_NONNULL_BEGIN
 
 @interface QMDBStorage : NSObject
 
@@ -50,3 +51,5 @@
       finish:(dispatch_block_t)finish;
 
 @end
+
+NS_ASSUME_NONNULL_END

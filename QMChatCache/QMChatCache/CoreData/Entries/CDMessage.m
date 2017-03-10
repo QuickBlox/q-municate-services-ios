@@ -91,7 +91,7 @@
 
 @implementation NSArray(CDMessage)
 
-- (NSArray<CDMessage *> *)toQBChatMessages {
+- (NSArray<QBChatMessage *> *)toQBChatMessages {
     
     NSMutableArray<QBChatMessage *> *result =
     [NSMutableArray arrayWithCapacity:self.count];

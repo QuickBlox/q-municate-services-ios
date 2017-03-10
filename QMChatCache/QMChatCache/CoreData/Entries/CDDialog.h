@@ -9,6 +9,6 @@
 
 @interface NSArray(CDDialog)
 
-- (NSArray<CDDialog *> *)toQBChatDialogs;
+- (NSArray<QBChatDialog *> *)toQBChatDialogs;
 
 @end

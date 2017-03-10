@@ -160,7 +160,7 @@ static QMChatCache *_chatCacheInstance = nil;
     
     [self performBackgroundQueue:^(NSManagedObjectContext *ctx) {
         
-        NSArray<CDDialog *> *result =
+        NSArray<QBChatDialog *> *result =
         [[CDDialog QM_findAllSortedBy:sortTerm
                             ascending:ascending
                         withPredicate:predicate

@@ -413,6 +413,8 @@
                       
                       [source setError:response.error.error];
                   }];
+    
+    return source.task;
 }
 
 #pragma mark - Search

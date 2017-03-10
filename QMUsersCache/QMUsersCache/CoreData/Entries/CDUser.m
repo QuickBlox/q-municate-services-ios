@@ -36,11 +36,11 @@
 
 - (void)updateWithQBUser:(QBUUser *)user {
 	
-    self.idValue = user.ID;
+    self.idValue = (int32_t)user.ID;
 	self.updatedAt = user.updatedAt;
 	self.createdAt = user.createdAt;
-	self.externalUserIDValue = user.externalUserID;
-	self.blobIDValue = user.blobID;
+	self.externalUserIDValue = (int32_t)user.externalUserID;
+	self.blobIDValue = (int32_t)user.blobID;
 	self.facebookID = user.facebookID;
 	self.twitterID = user.twitterID;
 	self.fullName = user.fullName;

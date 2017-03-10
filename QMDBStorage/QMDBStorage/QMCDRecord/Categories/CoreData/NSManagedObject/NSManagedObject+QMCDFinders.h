@@ -71,34 +71,27 @@
 + (instancetype)QM_findFirstOrCreateByAttribute:(NSString *)attribute
                                       withValue:(id)searchValue
                                       inContext:(NSManagedObjectContext *)context;
-//
-//+ (id)QM_findLargestValueForAttribute:(NSString *)attribute
-//                            inContext:(NSManagedObjectContext *)context;
-//
-//+ (id)QM_findLargestValueForAttribute:(NSString *)attribute
-//                        withPredicate:(NSPredicate *)predicate
-//                            inContext:(NSManagedObjectContext *)context;
-//
-//+ (id)QM_findSmallestValueForAttribute:(NSString *)attribute
-//                             inContext:(NSManagedObjectContext *)context;
 
-//+ (id)QM_selectAttribute:(NSString *)attribute
-//               ascending:(BOOL)ascending
-//               inContext:(NSManagedObjectContext *)context;
-//
-//+ (id)QM_selectAttribute:(NSString *)attribute
-//               ascending:(BOOL)ascending
-//           withPredicate:(NSPredicate *)predicate
-//               inContext:(NSManagedObjectContext *)context;
-//
-//+ (NSArray *)QM_findByAttribute:(NSString *)attribute
-//                      withValue:(id)searchValue
-//                      inContext:(NSManagedObjectContext *)context;
-//
-//+ (NSArray *)QM_findByAttribute:(NSString *)attribute
-//                      withValue:(id)searchValue
-//                     andOrderBy:(NSString *)sortTerm
-//                      ascending:(BOOL)ascending
-//                      inContext:(NSManagedObjectContext *)context;
++ (id)QM_findSmallestValueForAttribute:(NSString *)attribute
+                             inContext:(NSManagedObjectContext *)context;
+
++ (id)QM_selectAttribute:(NSString *)attribute
+               ascending:(BOOL)ascending
+               inContext:(NSManagedObjectContext *)context;
+
++ (id)QM_selectAttribute:(NSString *)attribute
+               ascending:(BOOL)ascending
+           withPredicate:(NSPredicate *)predicate
+               inContext:(NSManagedObjectContext *)context;
+
++ (NSArray *)QM_findByAttribute:(NSString *)attribute
+                      withValue:(id)searchValue
+                      inContext:(NSManagedObjectContext *)context;
+
++ (NSArray *)QM_findByAttribute:(NSString *)attribute
+                      withValue:(id)searchValue
+                     andOrderBy:(NSString *)sortTerm
+                      ascending:(BOOL)ascending
+                      inContext:(NSManagedObjectContext *)context;
 
 @end

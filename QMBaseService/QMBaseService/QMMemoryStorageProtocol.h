@@ -9,8 +9,6 @@
 #import <Foundation/Foundation.h>
 
 @protocol QMMemoryStorageProtocol <NSObject>
-
-@property (assign, nonatomic, readonly) NSUInteger count;
 /**
  *  This method used for clean all storage data in memory
  */

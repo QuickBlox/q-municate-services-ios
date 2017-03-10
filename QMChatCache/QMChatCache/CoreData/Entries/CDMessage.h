@@ -9,6 +9,6 @@
 
 @interface NSArray(CDMessage)
 
-- (NSArray<CDMessage *> *)toQBChatMessages;
+- (NSArray<QBChatMessage *> *)toQBChatMessages;
 
 @end
