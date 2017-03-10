@@ -15,19 +15,12 @@
 @protocol QMMediaDownloadServiceDelegate <NSObject>
 
 - (void)downloadMediaItemWithID:(NSString *)mediaID
-                       delegate:(id <QMMediaDownloadDelegate>)delegate;
-
-- (void)downloadMediaItemWithID:(NSString *)mediaID
             withCompletionBlock:(QMMediaRestCompletionBlock)completionBlock
                   progressBlock:(QMMediaProgressBlock)progressBlock;
 
-- (void)addListenerToMediaItemWithID:(NSString *)mediaID
-                 withCompletionBlock:(QMMediaRestCompletionBlock)completionBlock
-                       progressBlock:(QMMediaProgressBlock)progressBlock;
 
-- (void)addListenerToMediaItemWithID:(NSString *)mediaID
-                            delegate:(id <QMMediaDownloadDelegate>)delegate;
-
+- (BFTask<QMMediaItem *>*)downloadMediaItemForAttachment:(QBChatAttachment *)attachment
+                                           progressBlock:(QMMediaProgressBlock)progressBlock;
 
 @end
 

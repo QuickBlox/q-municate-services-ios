@@ -38,11 +38,6 @@
 - (QMMediaItem *)cachedMediaForMessage:(QBChatMessage *)message attachmentID:(NSString *)attachmentID;
 
 - (void)imageForMediaItem:(QMMediaItem *)mediaItem  completion:(void(^)(UIImage *image))completion;
-- (void)mediaInfoForItem:(QMMediaItem *)mediaItem completion:(void(^)(QMMediaInfo *mediainfo, UIImage *image))completion;
-
-@optional
-
-- (BOOL)isReadyToPlay:(QMMediaItem *)item;
 
 @end
 

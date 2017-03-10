@@ -18,9 +18,11 @@
     NSDictionary *metaInfo = [mediaItem metaData];
     
     if (metaInfo != nil) {
+        
         for (NSString *key in metaInfo.allKeys) {
             self.context[key] = metaInfo[key];
         }
+
         [self synchronize];
     }
 }

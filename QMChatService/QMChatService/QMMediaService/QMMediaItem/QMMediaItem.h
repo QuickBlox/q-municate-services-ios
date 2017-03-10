@@ -19,31 +19,22 @@ typedef NS_ENUM(NSInteger, QMMediaContentType) {
 
 @interface QMMediaItem : NSObject <NSCopying, NSCoding>
 
-@property (nonatomic, copy) NSString *mediaID;
+@property (copy, nonatomic) NSString *mediaID;
 
-@property (nonatomic, copy) NSURL *localURL;
-@property (nonatomic, copy) NSURL *remoteURL;
+@property (copy, nonatomic) NSURL *localURL;
+@property (copy, nonatomic) NSURL *remoteURL;
 
-@property (nonatomic, copy) NSString *name;
+@property (copy, nonatomic) NSString *name;
 
-@property (nonatomic, strong) NSData *data;
+@property (strong, nonatomic) NSData *data;
 
-@property (assign,nonatomic) BOOL isReady;
+@property (copy, nonatomic)  NSString *extension;
 
-@property (strong, nonatomic) NSDictionary *metaData;
-
-@property (assign,nonatomic) BOOL isLoaded;
-//
-@property (assign, nonatomic) Float64 duration;
-@property (assign, nonatomic) UIImage *thumbnailImage;//video
-//
-@property (assign, nonatomic) CGSize videoSize;
+@property (assign, nonatomic) NSTimeInterval mediaDuration;
+@property (strong, nonatomic) UIImage *image;
+@property (assign, nonatomic) CGSize mediaSize;
 
 @property (assign, nonatomic, readonly) QMMediaContentType contentType;
-
-@property (nonatomic, assign) NSUInteger mediaDuration;
-;
-@property (copy, nonatomic) void(^onReadyBlock)(void);
 
 - (void)updateWithAttachment:(QBChatAttachment *)attachment;
 
@@ -52,7 +43,6 @@ typedef NS_ENUM(NSInteger, QMMediaContentType) {
                    remoteURL:(NSURL *)remoteURL
                  contentType:(QMMediaContentType)contentType;
 
-
 + (instancetype)videoItemWithURL:(NSURL *)itemURL;
 + (instancetype)audioItemWithURL:(NSURL *)itemURL;
 + (instancetype)mediaItemWithImage:(UIImage *)image;
@@ -60,8 +50,7 @@ typedef NS_ENUM(NSInteger, QMMediaContentType) {
 
 - (NSString *)stringContentType;
 - (NSString *)stringMIMEType;
-- (NSString *)extension;
 
-
+- (NSDictionary *)metaData;
 
 @end

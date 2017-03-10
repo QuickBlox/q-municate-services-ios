@@ -21,4 +21,6 @@
 @property (copy, nonatomic) QMAttachmentMesssageUploadProgressBlock onMessageDidChangeUploadingProgress;
 @property (copy, nonatomic) QMAttachmentDownloadProgressBlock onMessageDidChangeDownloadingProgress;
 
+- (QMMediaItem *)placeholderMediaForMessage:(QBChatMessage *)message;
+
 @end

@@ -48,34 +48,33 @@
 
 //MARK: - QMMediaStoreServiceDelegate
 
-- (void)localImageFromMediaItem:(QMMediaItem *)item completion:(void(^)(UIImage *image))completion {
+- (void)localImageFromMediaItem:(QMMediaItem *)mediaItem completion:(void(^)(UIImage *image))completion {
     
-    NSString *mediaID = item.mediaID;
-    NSString *contentType = [item stringContentType];
-    
-    if (self.imagesMemoryStorage[item.mediaID] != nil) {
+    if (self.imagesMemoryStorage[mediaItem.mediaID] != nil) {
         if (completion) {
-            completion(self.imagesMemoryStorage[item.mediaID]);
+            completion(self.imagesMemoryStorage[mediaItem.mediaID]);
         }
         return;
     }
     
     // checking attachment in cache
-    NSString *path = mediaPath(mediaID, contentType);
+    NSString *path = mediaPath(mediaItem);
+    
     if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             
             NSError *error;
+            
             NSData *data = [NSData dataWithContentsOfFile:path options:NSDataReadingMappedIfSafe error:&error];
             
             UIImage *image = [UIImage imageWithData:data];
             
-            if (image != nil) {
-                self.imagesMemoryStorage[mediaID] = image;
-            }
-            
             dispatch_async(dispatch_get_main_queue(), ^{
+                
+                if (image != nil) {
+                    self.imagesMemoryStorage[mediaItem.mediaID] = image;
+                }
                 if (completion) {
                     completion(image);
                 }
@@ -86,13 +85,18 @@
     }
 }
 
+
+
 - (BOOL)saveMediaItem:(QMMediaItem *)mediaItem {
     
     NSAssert(mediaItem.mediaID, @"No media ID");
     
     if (mediaItem.contentType == QMMediaContentTypeVideo) {
+        
         NSMutableDictionary *storage = [self memoryStorageForContentType:[mediaItem stringContentType]];
+        
         storage[mediaItem.mediaID] = mediaItem;
+        
         return YES;
     }
     else {
@@ -101,11 +105,13 @@
         
         NSAssert(data.length, @"No data");
         
-        BOOL sucess = [self saveData:data forMediaItem:mediaItem error:nil];
+        BOOL sucess = [self saveData:data
+                        forMediaItem:mediaItem
+                               error:nil];
         
         if (sucess) {
             
-            mediaItem.localURL = [NSURL fileURLWithPath:mediaPath(mediaItem.mediaID, mediaItem.stringContentType)];
+            mediaItem.localURL = [NSURL fileURLWithPath:mediaPath(mediaItem)];
             
             NSMutableDictionary *storage = [self memoryStorageForContentType:[mediaItem stringContentType]];
             storage[mediaItem.mediaID] = mediaItem;
@@ -132,29 +138,33 @@
     
     NSMutableDictionary *storage = [self memoryStorageForContentType:contentType];
     
-    QMMediaItem *item = storage[mediaID];
+    QMMediaItem *mediaItem = storage[mediaID];
     
-    if (item) {
-        return item;
+    if (mediaItem) {
+        return mediaItem;
     }
     else {
         
-        NSString *path = mediaPath(mediaID, contentType);
-      
+    
+         mediaItem = [QMMediaItem new];
+         [mediaItem updateWithAttachment:attachment];
+        NSString *path = mediaPath(mediaItem);
+        
         if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
-            
+    
             NSURL *localURL = [NSURL fileURLWithPath:path];
-            item = [QMMediaItem new];
-            [item updateWithAttachment:attachment];
-            NSMutableDictionary *storage = [self memoryStorageForContentType:contentType];
+           
+            mediaItem.localURL = localURL;
+            [mediaItem updateWithAttachment:attachment];
             
-            storage[mediaID] = item;
+            NSMutableDictionary *storage = [self memoryStorageForContentType:contentType];
+            storage[mediaID] = mediaItem;
+            return mediaItem;
         }
         
-        return item;
+        return nil;
     }
 }
-
 
 //MARK: - Helpers
 
@@ -203,26 +213,14 @@ static NSString* mediaCacheDir() {
 }
 
 
-static NSString* mediaPath(NSString *mediaID, NSString *contentType) {
-    
-    return [mediaCacheDir() stringByAppendingPathComponent:[NSString stringWithFormat:@"media-%@%@", mediaID,extension(contentType)]];
-}
+//static NSString* mediaItemPath(NSString *mediaID, NSString *contentType) {
+//
+//    return [mediaCacheDir() stringByAppendingPathComponent:[NSString stringWithFormat:@"media-%@%@", mediaID,extension(contentType)]];
+//}
 
-static NSString* extension(NSString *contentType) {
+static NSString* mediaPath(QMMediaItem *mediaItem) {
     
-    NSString *extension = nil;
-    
-    if ([contentType isEqualToString:@"audio"]) {
-        extension = @".m4a";
-    }
-    else if ([contentType isEqualToString:@"video"]) {
-        extension = @".mp4";
-    }
-    else if ([contentType isEqualToString:@"image"]) {
-        extension = @".png";
-    }
-    
-    return extension;
+    return [mediaCacheDir() stringByAppendingPathComponent:[NSString stringWithFormat:@"media-%@.%@", mediaItem.mediaID, mediaItem.extension]];
 }
 
 
@@ -230,7 +228,7 @@ static NSString* extension(NSString *contentType) {
     forMediaItem:(QMMediaItem *)mediaItem
            error:(NSError **)errorPtr {
     
-    BOOL isSucceed = [mediaData writeToFile:mediaPath(mediaItem.mediaID, mediaItem.stringContentType)
+    BOOL isSucceed = [mediaData writeToFile:mediaPath(mediaItem)
                                     options:NSDataWritingAtomic
                                       error:errorPtr];
     return isSucceed;
@@ -238,14 +236,15 @@ static NSString* extension(NSString *contentType) {
 
 - (NSData *)dataForMediaItem:(QMMediaItem *)item {
     
-        if (item.data) {
-            return item.data;
-        }
-        
-        if (item.localURL != nil) {
-            NSData *data = [NSData dataWithContentsOfURL:item.localURL];
-            return data;
-        }
+    if (item.data) {
+        return item.data;
+    }
+    
+    if (item.localURL != nil) {
+        NSData *data = [NSData dataWithContentsOfURL:item.localURL];
+        return data;
+    }
+    
     return nil;
 }
 

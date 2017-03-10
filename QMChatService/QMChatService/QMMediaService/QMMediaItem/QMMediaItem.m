@@ -24,6 +24,7 @@
 @end
 
 @implementation QMMediaItem
+@dynamic extension;
 
 //MARK: Class methods
 + (instancetype)mediaItemWithAttachment:(QBChatAttachment *)attachment {
@@ -34,7 +35,7 @@
 + (instancetype)mediaItemWithImage:(UIImage *)image {
     
     QMMediaItem *item = [[QMMediaItem alloc] initWithName:@"image" localURL:nil remoteURL:nil contentType:QMMediaContentTypeImage];
-    item.thumbnailImage = image;
+    item.image = image;
     return item;
 }
 
@@ -51,36 +52,42 @@
 - (void)updateWithAttachment:(QBChatAttachment *)attachment {
     
     self.mediaID = attachment.ID;
-    self.remoteURL = [NSURL URLWithString:attachment.url];
-    
-    if ([attachment.type isEqualToString:@"audio"]) {
-        
-        self.contentType = QMMediaContentTypeAudio;
-        
-        CGFloat duration = [attachment.context[@"duration"] floatValue];
-        if (duration > 0) {
-            self.duration = duration;
-        }
+    if (attachment.url.length) {
+        self.remoteURL = [self remoteURLWithString:attachment.url];
     }
     
+    if ([attachment.type isEqualToString:@"audio"]) {
+        self.contentType = QMMediaContentTypeAudio;
+    }
     else if ([attachment.type isEqualToString:@"video"]) {
         
         self.contentType = QMMediaContentTypeVideo;
-        
-        NSDictionary *size = attachment.context[@"size"];
-        
-        if (size) {
-            
-            CGFloat width = [size[@"width"] doubleValue];
-            CGFloat height = [size[@"height"] doubleValue];
-            self.videoSize = CGSizeMake(width, height);
-        }
     }
     else if ([attachment.type isEqualToString:@"image"]) {
         self.contentType = QMMediaContentTypeImage;
     }
+    
+    NSDictionary *size = attachment.context[@"size"];
+    
+    if (size) {
+        
+        CGFloat width = [size[@"width"] doubleValue];
+        CGFloat height = [size[@"height"] doubleValue];
+        self.mediaSize = CGSizeMake(width, height);
+    }
+    if (attachment.context[@"duration"]) {
+        self.mediaDuration = [attachment.context[@"duration"] doubleValue];
+    }
+    
 }
-
+- (NSURL *)remoteURL {
+    
+    NSURLComponents *components = [NSURLComponents componentsWithURL:_remoteURL
+                                             resolvingAgainstBaseURL:false];
+    
+    components.query = [NSString stringWithFormat:@"token=%@",[QBSession currentSession].sessionDetails.token];
+    return components.URL;
+}
 //MARK: Initialize
 - (instancetype)initWithName:(NSString *)name
                     localURL:(NSURL *)localURL
@@ -164,6 +171,7 @@
 }
 
 - (NSString *)extension {
+    
     NSString *stringMediaType = nil;
     
     switch (self.contentType) {
@@ -175,8 +183,9 @@
             stringMediaType = @"mp4";
             break;
             
+        case QMMediaContentTypeImage:
         default:
-            stringMediaType = @"";
+            stringMediaType = @"png";
             break;
     }
     
@@ -209,7 +218,7 @@
 
 - (NSString *)description {
     
-    return [NSString stringWithFormat:@"<%@: %p; name = %@; localURL = %@; remote = %@; mediaType = %@; mimeType = %@; duration = %f>",
+    return [NSString stringWithFormat:@"<%@: %p; name = %@; localURL = %@; remoteURL = %@; mediaType = %@; mimeType = %@; duration = %f> ; size = %@",
             NSStringFromClass([self class]),
             self,
             self.name,
@@ -217,7 +226,8 @@
             self.remoteURL,
             [self stringContentType],
             [self stringMIMEType],
-            self.duration
+            self.mediaDuration,
+            NSStringFromCGSize(self.mediaSize)
             ];
 }
 
@@ -276,18 +286,6 @@
     QM_SERIALIZE_INTEGER(_mediaDuration, aCoder);
 }
 
-- (void)setIsReady:(BOOL)isReady {
-    
-    if (_isReady != isReady) {
-        
-        _isReady = isReady;
-        
-        if (isReady &&_onReadyBlock){
-            _onReadyBlock();
-        }
-    }
-}
-
 
 - (NSDictionary *)metaData {
     
@@ -295,18 +293,28 @@
     
     if  (self.contentType == QMMediaContentTypeAudio || self.contentType == QMMediaContentTypeVideo) {
         
-        if (self.duration > 0) {
-            metaData[@"duration"] = @(self.duration);
+        if (self.mediaDuration > 0) {
+            metaData[@"duration"] = @(self.mediaDuration);
         }
+    }
+    if ((self.contentType == QMMediaContentTypeVideo
+         || self.contentType == QMMediaContentTypeImage) && !CGSizeEqualToSize(self.mediaSize, CGSizeZero)) {
         
-        if (self.contentType == QMMediaContentTypeVideo && !CGSizeEqualToSize(self.videoSize, CGSizeZero)) {
-            
-            metaData[@"width"] = @(self.videoSize.width);
-            metaData[@"height" ] = @(self.videoSize.height);
-        }
+        metaData[@"width"] = @(self.mediaSize.width);
+        metaData[@"height" ] = @(self.mediaSize.height);
     }
     
     return metaData.allKeys.count ? metaData.copy : nil;
 }
+
+- (NSURL *)remoteURLWithString:(NSString *)stringURL {
+    
+    NSURLComponents *components = [NSURLComponents componentsWithString:stringURL];
+    components.queryItems = nil;
+    return components.URL;
+}
+
+
+
 
 @end

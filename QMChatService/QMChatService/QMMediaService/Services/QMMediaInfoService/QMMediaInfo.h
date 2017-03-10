@@ -11,6 +11,14 @@
 typedef void(^QMMediaDurationObserver)(NSTimeInterval timeInterval);
 typedef void (^QMMediaSizeObserver)(CGSize size);
 
+typedef NS_ENUM(NSUInteger, QMVideoItemPrepareStatus) {
+    QMVideoItemPrepareStatusNotInitiated,
+    QMVideoItemPrepareStatusNotPrepared,
+    QMVideoItemPrepareStatusPreparing,
+    QMVideoItemPrepareStatusPrepareFinished,
+    QMVideoItemPrepareStatusPrepareFailed,
+};
+
 @class QMMediaItem;
 
 @interface QMMediaInfo : NSObject
@@ -20,8 +28,10 @@ typedef void (^QMMediaSizeObserver)(CGSize size);
 
 @property (assign, nonatomic, readonly) CGSize mediaSize;
 @property (assign, nonatomic, readonly) NSTimeInterval duration;
-@property (assign, nonatomic, readonly) BOOL isReady;
-@property (assign, nonatomic, readonly) UIImage *image;
+
+@property (strong, nonatomic, readonly) UIImage *image;
+@property (nonatomic, strong, readonly) AVPlayerItem *playerItem;
+@property (assign, nonatomic, readonly) QMVideoItemPrepareStatus prepareStatus;
 
 + (instancetype)infoFromMediaItem:(QMMediaItem *)mediaItem;
 - (void)prepareWithCompletion:(void(^)(NSError *error))completionBLock;

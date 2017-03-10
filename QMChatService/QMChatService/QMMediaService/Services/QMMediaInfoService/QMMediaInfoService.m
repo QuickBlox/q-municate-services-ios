@@ -8,6 +8,8 @@
 
 #import "QMMediaInfoService.h"
 #import "QMMediaItem.h"
+#import <AVKit/AVKit.h>
+
 
 @interface QMMediaInfoService()
 
@@ -15,7 +17,9 @@
 @property (strong, nonatomic) NSMutableDictionary *mediaInfoMemoryStorage;
 
 @property (strong, nonatomic) NSMutableArray *mediaInProcess;
-@property (strong, nonatomic) NSMutableArray *imagesInProcess;;
+@property (strong, nonatomic) NSMutableArray *imagesInProcess;
+@property (strong, nonatomic) dispatch_queue_t imageQueue;
+
 @end
 
 @implementation QMMediaInfoService
@@ -26,55 +30,32 @@
         
         _imagesMemoryStorage = [NSMutableDictionary dictionary];
         _mediaInfoMemoryStorage = [NSMutableDictionary dictionary];
+        
         _mediaInProcess = [NSMutableArray array];
         _imagesInProcess = [NSMutableArray array];
-        
+        _imageQueue = dispatch_queue_create("Image queue",DISPATCH_QUEUE_SERIAL);
     }
     return self;
 }
 
-- (void)isReadyToPlay:(QMMediaItem *)mediaItem completion:(void (^)(BOOL))completion {
-    
-}
 
-- (void)imageForMedia:(QMMediaItem *)mediaItem completion:(void (^)(UIImage *))completion {
+- (void)thumbnailForMediaWithURL:(NSURL *)url completion:(void(^)(UIImage *))completion {
     
-    
-    if (mediaItem.contentType != QMMediaContentTypeImage && mediaItem.contentType != QMMediaContentTypeVideo) {
-        completion(nil);
-    }
-    
-    
-    if ([self.imagesInProcess containsObject:mediaItem.remoteURL.path]) {
-        return;
-    }
-    
-    UIImage *image = self.imagesMemoryStorage[mediaItem.remoteURL.path];
-    
-    if (image) {
-        completion(image);
-    }
-    else {
+    dispatch_async(self.imageQueue, ^{
         
-        [self.imagesInProcess addObject:mediaItem.remoteURL.path];
+        AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:url options:nil];
         
-        AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:mediaItem.remoteURL options:nil];
         AVAssetImageGenerator *generator = [[AVAssetImageGenerator alloc] initWithAsset:asset];
         
-        generator.appliesPreferredTrackTransform = YES;
-        
-        CMTime time = [asset duration];
-        time.value = 0;
+        CMTime time = CMTimeMake(0, 1);
         
         AVAssetImageGeneratorCompletionHandler handler = ^(CMTime __unused requestedTime, CGImageRef im, CMTime __unused actualTime, AVAssetImageGeneratorResult result, NSError *error){
             
             if (result != AVAssetImageGeneratorSucceeded) {
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    if (completion) {
-                        [self.imagesInProcess removeObject:mediaItem.remoteURL.path];
-                        completion(nil);
-                    }
+                    
+                    completion(nil);
                 });
                 
             }
@@ -82,25 +63,53 @@
                 
                 UIImage *image = [UIImage imageWithCGImage:im];
                 
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                UIImage *thumbnail = nil;
+                
+                if (image) {
+                    thumbnail = [self resizedImageFromImage:image];
+                }
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
                     
-                    UIImage *thumbnail = nil;
+                    completion(thumbnail);
                     
-                    if (image) {
-                        thumbnail = [self resizedImageFromImage:image];
-                    }
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        if (completion) {
-                            [self.imagesInProcess removeObject:mediaItem.remoteURL.path];
-                            self.imagesMemoryStorage[mediaItem.remoteURL.path] = thumbnail;
-                            completion(thumbnail);
-                        }
-                    });
                 });
+                
             }
         };
         
-        [generator generateCGImagesAsynchronouslyForTimes:@[[NSValue valueWithBytes:&time objCType:@encode(CMTime)]] completionHandler:handler];
+        
+        [generator generateCGImagesAsynchronouslyForTimes:@[[NSValue valueWithBytes:&time objCType:@encode(CMTime)]]
+                                        completionHandler:handler];
+    });
+}
+
+
+- (void)thumbnailImageForMedia:(QMMediaItem *)mediaItem completion:(void (^)(UIImage *))completion {
+    
+    
+    NSString *remoteUrlKey = [mediaItem.remoteURL.lastPathComponent stringByDeletingPathExtension];
+    
+    if (mediaItem.contentType != QMMediaContentTypeImage && mediaItem.contentType != QMMediaContentTypeVideo) {
+        completion(nil);
+    }
+    
+    if ([self.imagesInProcess containsObject:remoteUrlKey]) {
+        return;
+    }
+    
+    UIImage *image = self.imagesMemoryStorage[remoteUrlKey];
+    
+    if (image) {
+        completion(image);
+    }
+    else {
+        
+        [self.imagesInProcess addObject:remoteUrlKey];
+        [self thumbnailForMediaWithURL:mediaItem.remoteURL completion:^(UIImage *image) {
+            [self.imagesInProcess removeObject:remoteUrlKey];
+            completion(image);
+        }];
     }
 }
 
@@ -120,51 +129,48 @@
     return resizedImage;
 }
 
-- (void)mediaInfoForItem:(QMMediaItem *)mediaItem completion:(void(^)(QMMediaInfo *))completion {
+- (void)mediaInfoForItem:(QMMediaItem *)mediaItem completion:(void(^)(QMMediaInfo *, NSError *))completion {
     
-    //check for cached mediaItem
+    NSString *mediaID = mediaItem.mediaID;
     
-    if (!mediaItem.mediaID) {
+    if (mediaID.length == 0) {
         
         QMMediaInfo *localMediaInfo = [QMMediaInfo infoFromMediaItem:mediaItem];
         [localMediaInfo prepareWithCompletion:^(NSError *error) {
             
             if (completion) {
-                completion(localMediaInfo);
+                completion(localMediaInfo,error);
             }
         }];
         
         return;
     }
-
-    NSString *remoteUrlKey = mediaItem.remoteURL.path;
     
-    QMMediaInfo *info = self.mediaInfoMemoryStorage[remoteUrlKey];
     
-    if (info) {
-        completion(info);
+    if ([self.mediaInProcess containsObject:mediaID]) {
+        return;
     }
     else {
-        //get media info from url asset
-        NSURL *remoteURL = mediaItem.remoteURL;
+        [self.mediaInProcess addObject:mediaID];
+    }
     
-    if (remoteURL.path.length > 0) {
+    QMMediaInfo *info = self.mediaInfoMemoryStorage[mediaID];
+    
+    if (info) {
+        completion(info,nil);
+    }
+    else {
         
         QMMediaInfo *mediaInfo = [QMMediaInfo infoFromMediaItem:mediaItem];
         
         [mediaInfo prepareWithCompletion:^(NSError *error) {
-            
-            self.mediaInfoMemoryStorage[remoteUrlKey] = mediaInfo;
-            
+            self.mediaInfoMemoryStorage[mediaID] = mediaInfo;
             if (completion) {
-                completion(mediaInfo);
+                [self.mediaInProcess removeObject:mediaID];
+                completion(mediaInfo,error);
             }
         }];
-        
     }
-    }
-    
 }
-
 
 @end

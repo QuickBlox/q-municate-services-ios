@@ -23,6 +23,12 @@ static NSString * const kQMChatAudioMessageTypeName = @"audio";
 static NSString * const kQMChatVideoMessageTypeName = @"video";
 static NSString * const kQMChatImageMessageTypeName = @"image";
 
+
+static NSString * const kQMMediaWidthKey = @"width";
+static NSString * const kQMMediaHeightKey = @"height";
+static NSString * const kQMMediaSizeKey = @"size";
+static NSString * const kQMMediaDurationKey = @"duration";
+
 static NSString * const kQMChatLocationMessageTypeName = @"location";
 static NSString * const kQMLocationLatitudeKey = @"lat";
 static NSString * const kQMLocationLongitudeKey = @"lng";
@@ -357,7 +363,6 @@ NSString const *kQMCustomParameterDialogDeletedOccupantsIDs = @"deleted_occupant
 }
 
 
-
 #pragma mark - Location
 
 - (CLLocationCoordinate2D)locationCoordinate {
@@ -386,6 +391,7 @@ NSString const *kQMCustomParameterDialogDeletedOccupantsIDs = @"deleted_occupant
     
     self.attachments = @[locationAttachment];
 }
+
 
 - (BOOL)isLocationMessage {
     

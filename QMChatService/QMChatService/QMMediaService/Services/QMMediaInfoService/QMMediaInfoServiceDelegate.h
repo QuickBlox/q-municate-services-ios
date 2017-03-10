@@ -11,9 +11,10 @@
 
 @protocol QMMediaInfoServiceDelegate <NSObject>
 
-- (void)mediaInfoForItem:(QMMediaItem *)mediaItem completion:(void(^)(QMMediaInfo *))completion;
+- (void)mediaInfoForItem:(QMMediaItem *)mediaItem completion:(void(^)(QMMediaInfo *mediaInfo, NSError *error))completion;
 - (void)isReadyToPlay:(QMMediaItem *)mediaItem completion:(void(^)(BOOL))completion;
 
-- (void)imageForMedia:(QMMediaItem *)mediaItem completion:(void (^)(UIImage *))completion;
+- (void)thumbnailImageForMedia:(QMMediaItem *)mediaItem completion:(void (^)(UIImage *))completion;
+- (void)thumbnailForMediaWithURL:(NSURL *)url completion:(void(^)(UIImage *))completion;
 
 @end

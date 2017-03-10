@@ -23,6 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic) QMMessageAttachmentStatus attachmentStatus;
 @property (assign, nonatomic) CLLocationCoordinate2D locationCoordinate;
 
+
 /**
  *  Dialog
  */

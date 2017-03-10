@@ -20,6 +20,8 @@
 #import "QMSLog.h"
 
 #import "QMMediaError.h"
+#import "QMMediaItem.h"
+
 
 @interface QMMediaDownloadService()
 
@@ -56,47 +58,50 @@
             withCompletionBlock:(QMMediaRestCompletionBlock)completionBlock
                   progressBlock:(QMMediaProgressBlock)progressBlock {
     
-    [self addListenerToMediaItemWithID:mediaID
-                   withCompletionBlock:completionBlock
-                         progressBlock:progressBlock];
     
     [QBRequest downloadFileWithUID:mediaID  successBlock:^(QBResponse *response, NSData *fileData) {
         
         if (fileData) {
             
-            globalCompletionBlock(mediaID, fileData, nil, self);
+            completionBlock(mediaID, fileData, nil);
         }
     } statusBlock:^(QBRequest *request, QBRequestStatus *status) {
         
-        globalProgressBlock(mediaID, status.percentOfCompletion, self);
+        progressBlock(status.percentOfCompletion);
         
     } errorBlock:^(QBResponse *response) {
         
         QMMediaError *error = [QMMediaError errorWithResponse:response];
-        globalCompletionBlock(mediaID, nil, error, self);
+        completionBlock(mediaID, nil, error);
     }];
 }
 
-- (void)downloadMediaItemWithID:(NSString *)mediaID
-                       delegate:(id <QMMediaDownloadDelegate>)delegate {
+
+- (BFTask<QMMediaItem *>*)downloadMediaItemForAttachment:(QBChatAttachment *)attachment
+                                           progressBlock:(QMMediaProgressBlock)progressBlock {
     
-    if (delegate) {
-        [self.multicastDelegate addDelegate:delegate];
-    }
+    BFTaskCompletionSource *source = [BFTaskCompletionSource taskCompletionSource];
     
-    [QBRequest downloadFileWithUID:mediaID  successBlock:^(QBResponse *response, NSData *fileData) {
-        
-        if (fileData) {
-            globalCompletionBlock(mediaID, fileData, nil, self);
+    [self downloadMediaItemWithID:attachment.ID withCompletionBlock:^(NSString *mediaID, NSData *data, QMMediaError *error) {
+        if (error) {
+            [source setError:error];
         }
-    } statusBlock:^(QBRequest *request, QBRequestStatus *status) {
+        else {
+            
+            QMMediaItem * item = [[QMMediaItem alloc] init];
+            item.data = data;
+            [item updateWithAttachment:attachment];
+            
+            if (item == QMMediaContentTypeImage) {
+                UIImage *image = [UIImage imageWithData:data];
+            }
+            [source setResult:item];
+        }
         
-        globalProgressBlock(mediaID,status.percentOfCompletion, self);
-        
-    } errorBlock:^(QBResponse *response) {
-        QMMediaError *error = [QMMediaError errorWithResponse:response];
-        globalCompletionBlock(mediaID, nil, error, self);
-        
+    } progressBlock:^(float progress) {
+        if (progressBlock) {
+            progressBlock(progress);
+        }
     }];
 }
 
@@ -116,9 +121,9 @@
         if (handlers == nil) {
             handlers = [NSMutableArray new];
         }
-        
-        QMMediaWebHandler *handler = [QMMediaWebHandler downloadingHandlerWithID:mediaID
-                                                                        delegate:delegate];
+        QMMediaWebHandler *handler ;
+        //        QMMediaWebHandler *handler = [QMMediaWebHandler downloadingHandlerWithID:mediaID
+        //                                                                        delegate:delegate];
         
         [handlers addObject:handler];
         strongSelf.downloadHandlers[mediaID] = handlers;
