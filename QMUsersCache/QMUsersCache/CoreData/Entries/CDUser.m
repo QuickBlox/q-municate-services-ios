@@ -14,12 +14,12 @@
 	
 	QBUUser *qbUser = [QBUUser user];
 	
-	qbUser.ID = self.id.integerValue;
+	qbUser.ID = self.idValue;
 	qbUser.updatedAt = self.updatedAt;
 	qbUser.createdAt = self.createdAt;
 	
-	qbUser.externalUserID = self.externalUserID.integerValue;
-	qbUser.blobID = self.blobID.integerValue;
+    qbUser.externalUserID = self.externalUserIDValue;
+    qbUser.blobID = self.blobIDValue;
 	qbUser.facebookID = self.facebookID;
 	qbUser.twitterID = self.twitterID;
 	qbUser.fullName = self.fullName;
@@ -36,12 +36,11 @@
 
 - (void)updateWithQBUser:(QBUUser *)user {
 	
-	self.id = @(user.ID);
+    self.idValue = user.ID;
 	self.updatedAt = user.updatedAt;
 	self.createdAt = user.createdAt;
-	self.externalUserID = @(user.externalUserID);
-	self.blobID = @(user.blobID);
-	
+	self.externalUserIDValue = user.externalUserID;
+	self.blobIDValue = user.blobID;
 	self.facebookID = user.facebookID;
 	self.twitterID = user.twitterID;
 	self.fullName = user.fullName;
