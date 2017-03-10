@@ -49,7 +49,7 @@
                            inContext:(NSManagedObjectContext *)context {
     
     NSFetchRequest *request = [self QM_requestAll];
-    [request setPredicate:searchTerm];
+    request.predicate = searchTerm;
     
     return [self QM_executeFetchRequest:request
                               inContext:context];
@@ -85,13 +85,6 @@
             [NSString stringWithFormat:@"@unionOfObjects.%@", attribute]];
 }
 
-+ (instancetype)QM_findFirstInContext:(NSManagedObjectContext *)context {
-    NSFetchRequest *request = [self QM_requestAll];
-    
-    return [self QM_executeFetchRequestAndReturnFirstObject:request
-                                                  inContext:context];
-}
-
 + (instancetype)QM_findFirstByAttribute:(NSString *)attribute
                               withValue:(id)searchValue
                               inContext:(NSManagedObjectContext *)context {
@@ -113,7 +106,8 @@
     NSSortDescriptor *sortDescriptor =
     [[NSSortDescriptor alloc] initWithKey:orderedBy
                                 ascending:ascending];
-    [request setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+    
+    [request setSortDescriptors:@[sortDescriptor]];
     
     return [self QM_executeFetchRequestAndReturnFirstObject:request
                                                   inContext:context];
@@ -125,7 +119,7 @@
     
     NSFetchRequest *request = [self QM_requestAllSortedBy:attribute
                                                 ascending:ascending];
-    [request setFetchLimit:1];
+    request.fetchLimit = 1;
     
     return [self QM_executeFetchRequestAndReturnFirstObject:request
                                                   inContext:context];
