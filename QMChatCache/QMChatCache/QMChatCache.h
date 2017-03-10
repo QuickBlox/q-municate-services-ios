@@ -93,6 +93,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark Fetch dialog operations
 
+- (void)dialogByID:(NSString *)dialogID
+        completion:(void (^)(QBChatDialog *dialog))completion;
+
 - (void)allDialogsWithCompletion:(nullable void(^)(NSArray<QBChatDialog *> * _Nullable dialogs))completion;
 /**
  *   Fetch all cached dialogs

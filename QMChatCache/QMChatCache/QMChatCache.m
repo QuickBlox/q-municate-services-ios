@@ -110,6 +110,23 @@ static QMChatCache *_chatCacheInstance = nil;
 
 //MARK: Background queue
 
+- (void)dialogByID:(NSString *)dialogID
+        completion:(void (^)(QBChatDialog *dialog))completion {
+    
+    [self performBackgroundQueue:^(NSManagedObjectContext *ctx) {
+        
+        QBChatDialog *result =
+        [[CDDialog QM_findFirstByAttribute:@"dialogID"
+                                 withValue:dialogID
+                                 inContext:ctx] toQBChatDialog];
+        if (completion) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completion(result);
+            });
+        }
+    }];
+}
+
 - (void)allDialogsWithCompletion:(void(^)(NSArray<QBChatDialog *> *dialogs))completion {
     
     [self performBackgroundQueue:^(NSManagedObjectContext *ctx) {
