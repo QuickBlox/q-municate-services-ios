@@ -54,10 +54,10 @@
 - (void)loadFromCache {
     
     if ([self.cacheDataSource respondsToSelector:@selector(cachedUsersWithCompletion:)]) {
-        
+
         __weak __typeof(self)weakSelf = self;
+        
         [self.cacheDataSource cachedUsersWithCompletion:^(NSArray *collection) {
-            
             if (collection.count > 0) {
                 
                 [weakSelf.usersMemoryStorage addUsers:collection];
@@ -537,20 +537,17 @@
         
         if (mutableNewUsers.count > 0 &&
             [self.multicastDelegate respondsToSelector:@selector(usersService:didAddUsers:)]) {
-            
             [self.multicastDelegate usersService:self didAddUsers:mutableNewUsers.copy];
         }
         
         if (mutableUpdatedUsers.count > 0 &&
             [self.multicastDelegate respondsToSelector:@selector(usersService:didUpdateUsers:)]) {
-            
             [self.multicastDelegate usersService:self didUpdateUsers:mutableUpdatedUsers.copy];
         }
     }
     else {
         
         if ([self.multicastDelegate respondsToSelector:@selector(usersService:didAddUsers:)]) {
-            
             [self.multicastDelegate usersService:self didAddUsers:loadedUsers];
         }
         
