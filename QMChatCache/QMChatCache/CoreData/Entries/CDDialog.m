@@ -4,7 +4,9 @@
 
 - (QBChatDialog *)toQBChatDialog {
     
-    QBChatDialog *dialog = [[QBChatDialog alloc] initWithDialogID:self.dialogID type:self.dialogType.intValue];
+    QBChatDialog *dialog =
+    [[QBChatDialog alloc] initWithDialogID:self.dialogID
+                                      type:self.dialogType.intValue];
     
     dialog.createdAt = self.createdAt;
     dialog.name = self.name;
@@ -22,7 +24,8 @@
 }
 
 - (void)updateWithQBChatDialog:(QBChatDialog *)dialog {
-	NSAssert(dialog.type != 0, @"dialog type is undefined");
+    
+    NSAssert(dialog.type != 0, @"dialog type is undefined");
     
     self.dialogID = dialog.ID;
     self.dialogTypeValue = dialog.type;
