@@ -70,14 +70,12 @@
 + (NSArray *)QM_executeFetchRequest:(NSFetchRequest *)request
                           inContext:(NSManagedObjectContext *)context {
     
-    
     __block NSArray *results = nil;
-    
     [context performBlockAndWait:^{
         
         NSError *error = nil;
-        results = [context executeFetchRequest:request error:&error];
-        
+        results = [context executeFetchRequest:request
+                                         error:&error];
         if (results == nil) {
             
             [[error QM_coreDataDescription] QM_logToConsole];
@@ -91,7 +89,8 @@
                                        inContext:(NSManagedObjectContext *)context {
     [request setFetchLimit:1];
     
-    NSArray *results = [self QM_executeFetchRequest:request inContext:context];
+    NSArray *results = [self QM_executeFetchRequest:request
+                                          inContext:context];
     if ([results count] == 0) {
         return nil;
     }
@@ -103,7 +102,8 @@
 
 + (instancetype)QM_createEntityInContext:(NSManagedObjectContext *)context {
     
-    return [self QM_createEntityWithDescription:nil inContext:context];
+    return [self QM_createEntityWithDescription:nil
+                                      inContext:context];
 }
 
 + (instancetype)QM_createEntityWithDescription:(NSEntityDescription *)entityDescription
@@ -112,11 +112,11 @@
     NSEntityDescription *entity = entityDescription;
     
     if (!entity) {
-        
         entity = [self QM_entityDescriptionInContext:context];
     }
     
-    NSManagedObject *managedObject = [[self alloc] initWithEntity:entity insertIntoManagedObjectContext:context];
+    NSManagedObject *managedObject = [[self alloc] initWithEntity:entity
+                                   insertIntoManagedObjectContext:context];
     
     if ([managedObject respondsToSelector:@selector(QM_awakeFromCreation)]) {
         [managedObject QM_awakeFromCreation];
@@ -195,11 +195,15 @@
 }
 
 + (NSArray *)QM_sortAscending:(BOOL)ascending attributes:(NSArray *)attributesToSortBy {
-    NSMutableArray *attributes = [NSMutableArray array];
     
-    for (NSString *attributeName in attributesToSortBy)
-    {
-        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:attributeName ascending:ascending];
+    NSMutableArray *attributes =
+    [NSMutableArray arrayWithCapacity:attributesToSortBy.count];
+    
+    for (NSString *attributeName in attributesToSortBy) {
+        
+        NSSortDescriptor *sortDescriptor =
+        [[NSSortDescriptor alloc] initWithKey:attributeName
+                                    ascending:ascending];
         [attributes addObject:sortDescriptor];
     }
     
@@ -208,76 +212,80 @@
 
 #pragma mark - Working Across Contexts
 
-- (void)QM_refresh;
-{
+- (void)QM_refresh {
+    
     [[self managedObjectContext] refreshObject:self mergeChanges:YES];
 }
 
-- (void)QM_obtainPermanentObjectID;
-{
-    if ([[self objectID] isTemporaryID])
-    {
+- (void)QM_obtainPermanentObjectID {
+    
+    if (self.objectID.isTemporaryID) {
         NSError *error = nil;
         
-        BOOL success = [[self managedObjectContext] obtainPermanentIDsForObjects:[NSArray arrayWithObject:self] error:&error];
-        if (!success)
-        {
+        BOOL success = [[self managedObjectContext] obtainPermanentIDsForObjects:@[self]
+                                                                           error:&error];
+        if (!success){
             [[error QM_coreDataDescription] QM_logToConsole];
         }
     }
 }
 
-- (instancetype)QM_inContext:(NSManagedObjectContext *)otherContext;
-{
+- (instancetype)QM_inContext:(NSManagedObjectContext *)otherContext {
+    
     NSManagedObject *inContext = nil;
-    NSManagedObjectID *objectID = [self objectID];
-    if (otherContext == [self managedObjectContext])
-    {
+    NSManagedObjectID *objectID = self.objectID;
+    
+    if (otherContext == self.managedObjectContext) {
+        
         inContext = self;
     }
-    else if ([objectID isTemporaryID])
-    {
-        NSString *reason = [NSString stringWithFormat:@"Cannot load a temporary object '%@' [%@] across managed object contexts. Please obtain a permanent ID for this object first.", self, [self objectID]];
-        @throw [NSException exceptionWithName:NSObjectInaccessibleException reason:reason userInfo:@{@"object" : self}];
+    else if (objectID.isTemporaryID) {
+        
+        NSString *reason = [NSString stringWithFormat:@"Cannot load a temporary object '%@' [%@] across managed object contexts. Please obtain a permanent ID for this object first.",
+                            self, objectID];
+        
+        @throw [NSException exceptionWithName:NSObjectInaccessibleException
+                                       reason:reason
+                                     userInfo:@{@"object" : self}];
     }
-    else
-    {
+    else {
+        
         inContext = [otherContext objectRegisteredForID:objectID];  //see if its already there
-        if (inContext == nil)
-        {
-            NSError *error = nil;
-            inContext = [otherContext existingObjectWithID:objectID error:&error];
+        
+        if (!inContext) {
             
-            if (inContext == nil)
-            {
-                QMCDLogWarn(@"Did not find object %@ in context '%@': %@", self, [otherContext QM_description], error);
+            NSError *error = nil;
+            inContext = [otherContext existingObjectWithID:objectID
+                                                     error:&error];
+            if (!inContext) {
+                QMCDLogWarn(@"Did not find object %@ in context '%@': %@",
+                            self, [otherContext QM_description], error);
             }
         }
     }
     return inContext;
 }
 
-- (instancetype)QM_inContextIfTemporaryObject:(NSManagedObjectContext *)otherContext
-{
-    NSManagedObjectID *objectID = [self objectID];
-    if ([objectID isTemporaryID])
-    {
+- (instancetype)QM_inContextIfTemporaryObject:(NSManagedObjectContext *)otherContext {
+    
+    if (self.objectID.isTemporaryID) {
+        
         return self;
     }
-    else
-    {
+    else {
+        
         return [self QM_inContext:otherContext];
     }
 }
 
 #pragma mark - Validation
 
-- (BOOL)QM_isValidForInsert;
-{
+- (BOOL)QM_isValidForInsert {
+    
     NSError *error = nil;
     BOOL isValid = [self validateForInsert:&error];
-    if (!isValid)
-    {
+    
+    if (!isValid) {
         [[error QM_coreDataDescription] QM_logToConsole];
     }
     
@@ -288,8 +296,8 @@
     
     NSError *error = nil;
     BOOL isValid = [self validateForUpdate:&error];
-    if (!isValid)
-    {
+    
+    if (!isValid) {
         [[error QM_coreDataDescription] QM_logToConsole];
     }
     
