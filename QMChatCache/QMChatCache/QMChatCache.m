@@ -34,13 +34,15 @@ static QMChatCache *_chatCacheInstance = nil;
 + (void)setupDBWithStoreNamed:(NSString *)storeName
    applicationGroupIdentifier:(NSString *)appGroupIdentifier {
     
-    NSManagedObjectModel *model = [NSManagedObjectModel QM_newModelNamed:@"QMChatServiceModel.momd"
-                                                           inBundleNamed:@"QMChatCacheModel.bundle"
-                                                               fromClass:[self class]];
+    NSManagedObjectModel *model =
+    [NSManagedObjectModel QM_newModelNamed:@"QMChatServiceModel.momd"
+                             inBundleNamed:@"QMChatCacheModel.bundle"
+                                 fromClass:[self class]];
     
-    _chatCacheInstance = [[QMChatCache alloc] initWithStoreNamed:storeName
-                                                           model:model
-                                      applicationGroupIdentifier:appGroupIdentifier];
+    _chatCacheInstance =
+    [[QMChatCache alloc] initWithStoreNamed:storeName
+                                      model:model
+                 applicationGroupIdentifier:appGroupIdentifier];
 }
 
 + (void)cleanDBWithStoreName:(NSString *)name {
@@ -224,16 +226,18 @@ static QMChatCache *_chatCacheInstance = nil;
                     ascending:(BOOL)ascending
                    completion:(void(^)(NSArray<QBChatMessage *> *messages))completion {
     
-    
-    [self performMainQueue:^(NSManagedObjectContext *ctx) {
+    [self performBackgroundQueue:^(NSManagedObjectContext *ctx) {
         
-        NSArray<CDMessage *> *result =
-        [CDMessage QM_findAllSortedBy:sortTerm
-                            ascending:ascending
-                        withPredicate:predicate
-                            inContext:ctx];
+        NSArray<QBChatMessage *> *result =
+        [[CDMessage QM_findAllSortedBy:sortTerm
+                             ascending:ascending
+                         withPredicate:predicate
+                             inContext:ctx] toQBChatMessages];
         if (completion) {
-            completion([result toQBChatMessages]);
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completion(result);
+            });
         }
     }];
 }
@@ -318,7 +322,7 @@ static QMChatCache *_chatCacheInstance = nil;
             [CDMessage QM_countOfEntitiesWithPredicate:messagePredicate
                                              inContext:ctx];
             
-//            self.messagesLimitPerDialog
+            //            self.messagesLimitPerDialog
             
             if (count > self.messagesLimitPerDialog) {
                 
@@ -341,19 +345,6 @@ static QMChatCache *_chatCacheInstance = nil;
                ctx.updatedObjects.count);
         
     } finish:completion];
-    
-    //    [weakSelf save:^{
-    //
-    ////        if ([toInsert count] > 0) {
-    ////
-    ////            [weakSelf checkMessagesLimitForDialogWithID:dialogID withCompletion:completion];
-    ////        }
-    ////        else {
-    ////
-    ////        }
-    //        if (completion) completion();
-    //    }];
-    
 }
 
 - (void)deleteMessage:(QBChatMessage *)message
@@ -387,7 +378,6 @@ static QMChatCache *_chatCacheInstance = nil;
                        completion:(dispatch_block_t)completion {
     
     [self save:^(NSManagedObjectContext *ctx) {
-        
         [CDMessage QM_deleteAllMatchingPredicate:IS(@"dialogID", dialogID)
                                        inContext:ctx];
     } finish:completion];
