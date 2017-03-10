@@ -81,15 +81,6 @@
     }];
 }
 
-- (instancetype)initWithStoreNamed:(NSString *)storeName
-                             model:(NSManagedObjectModel *)model
-                        queueLabel:(const char *)queueLabel {
-    
-    return [self initWithStoreNamed:storeName
-                              model:model
-         applicationGroupIdentifier:nil];
-}
-
 + (void)setupDBWithStoreNamed:(NSString *)storeName {
     
     NSAssert(nil, @"must be overloaded");

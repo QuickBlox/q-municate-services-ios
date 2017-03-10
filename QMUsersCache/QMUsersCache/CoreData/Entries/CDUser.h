@@ -9,7 +9,7 @@
 
 @interface NSArray(CDUser)
 
-- (NSArray<CDUser *> *)toQBUUsers;
+- (NSArray<QBUUser *> *)toQBUUsers;
 
 @end
 

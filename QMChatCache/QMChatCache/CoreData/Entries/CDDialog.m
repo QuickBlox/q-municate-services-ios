@@ -12,10 +12,10 @@
     dialog.lastMessageText = self.lastMessageText;
     dialog.lastMessageDate = self.lastMessageDate;
     dialog.updatedAt = self.updatedAt;
-    dialog.lastMessageUserID = self.lastMessageUserID.integerValue;
-    dialog.unreadMessagesCount = self.unreadMessagesCount.integerValue;
+    dialog.lastMessageUserID = self.lastMessageUserIDValue;
+    dialog.unreadMessagesCount = self.unreadMessagesCountValue;
     dialog.occupantIDs = self.occupantsIDs;
-    dialog.userID = self.userID.unsignedIntegerValue;
+    dialog.userID = self.userIDValue;
     dialog.data = self.data;
     
     return dialog;
@@ -25,16 +25,16 @@
 	NSAssert(dialog.type != 0, @"dialog type is undefined");
     
     self.dialogID = dialog.ID;
-    self.dialogType = @(dialog.type);
+    self.dialogTypeValue = dialog.type;
     self.name = dialog.name;
     self.photo = dialog.photo;
     self.lastMessageText = dialog.lastMessageText;
     self.lastMessageDate = dialog.lastMessageDate;
     self.updatedAt = dialog.updatedAt;
-    self.lastMessageUserID = @(dialog.lastMessageUserID);
-    self.unreadMessagesCount = @(dialog.unreadMessagesCount);
+    self.lastMessageUserIDValue = (int32_t)dialog.lastMessageUserID;
+    self.unreadMessagesCountValue = (int32_t)dialog.unreadMessagesCount;
     self.occupantsIDs = dialog.occupantIDs;
-    self.userID = @(dialog.userID);
+    self.userIDValue = (int32_t)dialog.userID;
     self.data = dialog.data;
 }
 
@@ -44,7 +44,7 @@
 
 - (NSArray<QBChatDialog *> *)toQBChatDialogs  {
     
-    NSMutableArray<CDDialog *> *result =
+    NSMutableArray<QBChatDialog *> *result =
     [NSMutableArray arrayWithCapacity:self.count];
     
     for (CDDialog *cache in self) {
@@ -55,6 +55,5 @@
     
     return [result copy];
 }
-
 
 @end

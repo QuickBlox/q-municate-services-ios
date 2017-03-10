@@ -36,9 +36,6 @@
 + (instancetype)QM_findFirstWithPredicate:(NSPredicate *)searchTerm
                                 inContext:(NSManagedObjectContext *)context;
 
-+ (NSManagedObjectID *)QM_findFirstIDWithPredicate:(NSPredicate *)searchTerm
-                                         inContext:(NSManagedObjectContext *)context;
-
 + (instancetype)QM_findFirstWithPredicate:(NSPredicate *)searchterm
                                  sortedBy:(NSString *)property
                                 ascending:(BOOL)ascending
@@ -71,18 +68,6 @@
 + (instancetype)QM_findFirstOrCreateByAttribute:(NSString *)attribute
                                       withValue:(id)searchValue
                                       inContext:(NSManagedObjectContext *)context;
-
-+ (id)QM_findSmallestValueForAttribute:(NSString *)attribute
-                             inContext:(NSManagedObjectContext *)context;
-
-+ (id)QM_selectAttribute:(NSString *)attribute
-               ascending:(BOOL)ascending
-               inContext:(NSManagedObjectContext *)context;
-
-+ (id)QM_selectAttribute:(NSString *)attribute
-               ascending:(BOOL)ascending
-           withPredicate:(NSPredicate *)predicate
-               inContext:(NSManagedObjectContext *)context;
 
 + (NSArray *)QM_findByAttribute:(NSString *)attribute
                       withValue:(id)searchValue

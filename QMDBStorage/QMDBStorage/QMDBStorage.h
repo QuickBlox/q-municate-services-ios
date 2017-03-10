@@ -26,11 +26,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithStoreNamed:(NSString *)storeName
                              model:(NSManagedObjectModel *)model
-        applicationGroupIdentifier:(NSString *)appGroupIdentifier;
+        applicationGroupIdentifier:(nullable NSString *)appGroupIdentifier;
 
-- (instancetype)initWithStoreNamed:(NSString *)storeName
-                             model:(NSManagedObjectModel *)model
-                        queueLabel:(const char *)queueLabel;
 /**
  * @brief Load CoreData(Sqlite) file
  * @param name - filename

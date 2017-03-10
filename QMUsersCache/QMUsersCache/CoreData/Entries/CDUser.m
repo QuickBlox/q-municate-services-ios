@@ -57,7 +57,7 @@
 
 @implementation NSArray(CDUser)
 
-- (NSArray<CDUser *> *)toQBUUsers {
+- (NSArray<QBUUser *> *)toQBUUsers {
     
     NSMutableArray<QBUUser *> *result =
     [NSMutableArray arrayWithCapacity:self.count];
