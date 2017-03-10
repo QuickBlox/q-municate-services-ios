@@ -68,7 +68,6 @@ static QMContactListCache *_chatCacheInstance = nil;
         [CDContactListItem QM_findFirstOrCreateByAttribute:@"userID"
                                                  withValue:@(contactListItem.userID)
                                                  inContext:ctx];
-        
         [item updateWithQBContactListItem:contactListItem];
         
         QMSLog(@"[%@] ContactListItems to insert %tu, update %tu", NSStringFromClass([self class]),
@@ -89,7 +88,6 @@ static QMContactListCache *_chatCacheInstance = nil;
             [CDContactListItem QM_findFirstOrCreateByAttribute:@"userID"
                                                      withValue:@(contactListItem.userID)
                                                      inContext:ctx];
-            
             [item updateWithQBContactListItem:contactListItem];
         }
         
@@ -130,22 +128,31 @@ static QMContactListCache *_chatCacheInstance = nil;
 
 - (void)contactListItems:(void(^)(NSArray<QBContactListItem *> *contactListItems))completion {
     
-    [self performMainQueue:^(NSManagedObjectContext *ctx) {
+    [self performBackgroundQueue:^(NSManagedObjectContext *ctx) {
         
-        NSArray<CDContactListItem *> *cached = [CDContactListItem QM_findAllInContext:ctx];
-        completion([cached toQBContactListItems]);
+        NSArray<QBContactListItem *> *result =
+        [[CDContactListItem QM_findAllInContext:ctx] toQBContactListItems];
+        
+        if (completion) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completion(result);
+            });
+        }
     }];
 }
 
 - (void)contactListItemWithUserID:(NSUInteger)userID completion:(void(^)(QBContactListItem *))completion {
     
-    [self performMainQueue:^(NSManagedObjectContext *ctx) {
+    [self performBackgroundQueue:^(NSManagedObjectContext *ctx) {
         
-        CDContactListItem *cachedContactListItem =
-        [CDContactListItem QM_findFirstWithPredicate:IS(@"userID", @(userID))
-                                           inContext:ctx];
-        QBContactListItem *item = [cachedContactListItem toQBContactListItem];
-        completion(item);
+        QBContactListItem *result =
+        [[CDContactListItem QM_findFirstWithPredicate:IS(@"userID", @(userID))
+                                           inContext:ctx] toQBContactListItem];
+        if (completion) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completion(result);
+            });
+        }
     }];
 }
 
