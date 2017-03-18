@@ -18,10 +18,8 @@
             withCompletionBlock:(QMMediaRestCompletionBlock)completionBlock
                   progressBlock:(QMMediaProgressBlock)progressBlock;
 
-
-- (BFTask<QMMediaItem *>*)downloadMediaItemForAttachment:(QBChatAttachment *)attachment
-                                           progressBlock:(QMMediaProgressBlock)progressBlock;
-
+- (BFTask<NSData *> *)downloadMediaItemWithID:(NSString *)mediaID
+                                progressBlock:(QMMediaProgressBlock)progressBlock;
 @end
 
 

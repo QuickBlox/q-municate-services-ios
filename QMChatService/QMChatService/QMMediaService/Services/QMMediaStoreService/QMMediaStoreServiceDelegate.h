@@ -12,13 +12,14 @@
 
 @class  QBChatAttachment;
 
-@protocol  QMMediaStoreServiceDelegate <NSObject>
+@protocol QMMediaStoreServiceDelegate <NSObject>
 
-- (BOOL)saveMediaItem:(QMMediaItem *)mediaItem;
+- (NSURL *)saveMediaItem:(QMMediaItem *)mediaItem;
 
 - (void)updateMediaItem:(QMMediaItem *)mediaItem;
 
 - (QMMediaItem *)mediaItemFromAttachment:(QBChatAttachment *)attachment;
-- (void)localImageFromMediaItem:(QMMediaItem *)item completion:(void(^)(UIImage *image))completion;
+
+- (void)localImageForMediaItem:(QMMediaItem *)item completion:(void(^)(UIImage *image))completion;
 
 @end

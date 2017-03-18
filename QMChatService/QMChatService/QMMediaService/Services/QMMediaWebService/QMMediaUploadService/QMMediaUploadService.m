@@ -34,7 +34,28 @@
         
         completionBlock(nil, response.error.error);
     }];
-
+    
 }
+
+- (BFTask *)uploadMediaWithData:(NSData *)data
+                       mimeType:(NSString *)mimeType
+                  progressBlock:(QMMediaProgressBlock)progressBlock {
+    
+    BFTaskCompletionSource *source = [BFTaskCompletionSource taskCompletionSource];
+    
+    [self uploadMediaWithData:data mimeType:mimeType withCompletionBlock:^(QBCBlob *blob, NSError *error) {
+        if (error) {
+            [source setError:error];
+        }
+        else {
+            [source setResult:blob];
+        }
+    } progressBlock:^(float progress) {
+        progressBlock(progress);
+    }];
+    
+    return source.task;
+}
+
 
 @end

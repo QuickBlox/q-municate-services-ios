@@ -48,9 +48,11 @@
 
 //MARK: - QMMediaStoreServiceDelegate
 
-- (void)localImageFromMediaItem:(QMMediaItem *)mediaItem completion:(void(^)(UIImage *image))completion {
+- (void)localImageForMediaItem:(QMMediaItem *)mediaItem
+                    completion:(void(^)(UIImage *image))completion {
     
     if (self.imagesMemoryStorage[mediaItem.mediaID] != nil) {
+        
         if (completion) {
             completion(self.imagesMemoryStorage[mediaItem.mediaID]);
         }
@@ -65,9 +67,7 @@
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             
             NSError *error;
-            
             NSData *data = [NSData dataWithContentsOfFile:path options:NSDataReadingMappedIfSafe error:&error];
-            
             UIImage *image = [UIImage imageWithData:data];
             
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -80,14 +80,12 @@
                 }
             });
         });
-        
-        return;
     }
 }
 
 
 
-- (BOOL)saveMediaItem:(QMMediaItem *)mediaItem {
+- (NSURL *)saveMediaItem:(QMMediaItem *)mediaItem {
     
     NSAssert(mediaItem.mediaID, @"No media ID");
     
@@ -95,12 +93,12 @@
         
         NSMutableDictionary *storage = [self memoryStorageForContentType:[mediaItem stringContentType]];
         
-        storage[mediaItem.mediaID] = mediaItem;
+        [storage setObject:mediaItem forKey:mediaItem.mediaID];
         
-        return YES;
+        return nil;
     }
     else {
-        
+
         NSData *data = [self dataForMediaItem:mediaItem];
         
         NSAssert(data.length, @"No data");
@@ -108,18 +106,19 @@
         BOOL sucess = [self saveData:data
                         forMediaItem:mediaItem
                                error:nil];
+        NSURL *localURL = nil;
         
         if (sucess) {
-            
-            mediaItem.localURL = [NSURL fileURLWithPath:mediaPath(mediaItem)];
-            
+            localURL = [NSURL fileURLWithPath:mediaPath(mediaItem)];
+            mediaItem.localURL = localURL;
             NSMutableDictionary *storage = [self memoryStorageForContentType:[mediaItem stringContentType]];
-            storage[mediaItem.mediaID] = mediaItem;
+            [storage setObject:mediaItem forKey:mediaItem.mediaID];
         }
         
-        return sucess;
+        return localURL;
     }
 }
+
 
 - (void)updateMediaItem:(QMMediaItem *)mediaItem {
     
@@ -145,17 +144,12 @@
     }
     else {
         
-    
-         mediaItem = [QMMediaItem new];
-         [mediaItem updateWithAttachment:attachment];
+        mediaItem = [QMMediaItem mediaItemWithAttachment:attachment];
         NSString *path = mediaPath(mediaItem);
         
         if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
-    
-            NSURL *localURL = [NSURL fileURLWithPath:path];
-           
-            mediaItem.localURL = localURL;
-            [mediaItem updateWithAttachment:attachment];
+            
+            mediaItem.localURL = [NSURL fileURLWithPath:path];
             
             NSMutableDictionary *storage = [self memoryStorageForContentType:contentType];
             storage[mediaID] = mediaItem;
@@ -170,7 +164,7 @@
 
 - (NSMutableDictionary *)memoryStorageForContentType:(NSString *)contentType {
     
-    NSAssert(contentType.length > 0, @"Should specify contetn type");
+    NSAssert(contentType.length > 0, @" Content type should be specified");
     
     NSMutableDictionary *storage = nil;
     
@@ -212,11 +206,6 @@ static NSString* mediaCacheDir() {
     return mediaCacheDirString;
 }
 
-
-//static NSString* mediaItemPath(NSString *mediaID, NSString *contentType) {
-//
-//    return [mediaCacheDir() stringByAppendingPathComponent:[NSString stringWithFormat:@"media-%@%@", mediaID,extension(contentType)]];
-//}
 
 static NSString* mediaPath(QMMediaItem *mediaItem) {
     
