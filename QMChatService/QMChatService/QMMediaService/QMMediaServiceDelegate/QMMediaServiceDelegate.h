@@ -39,5 +39,7 @@
 
 - (void)imageForMediaItem:(QMMediaItem *)mediaItem  completion:(void(^)(UIImage *image))completion;
 
+
+
 @end
 

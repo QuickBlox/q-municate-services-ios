@@ -6,90 +6,143 @@
 //
 
 
-#define QM_SERIALIZE_OBJECT(var_name, coder)		[coder encodeObject:var_name forKey:@#var_name]
-#define QM_SERIALIZE_INTEGER(var_name, coder)	    [coder encodeInteger:var_name forKey:@#var_name]
-#define QM_SERIALIZE_INT(var_name, coder)	        [coder encodeInt:var_name forKey:@#var_name]
-
-#define QM_DESERIALIZE_OBJECT(var_name, decoder)	var_name = [decoder decodeObjectForKey:@#var_name]
-#define QM_DESERIALIZE_INTEGER(var_name, decoder)	var_name = [decoder decodeIntegerForKey:@#var_name]
-#define QM_DESERIALIZE_INT(var_name, decoder)	    var_name = [decoder decodeIntForKey:@#var_name]
-
 #import "QBChatAttachment+QMCustomData.h"
 #import "QMMediaItem.h"
 
 @interface QMMediaItem()
 
 @property (assign, nonatomic) QMMediaContentType contentType;
+@property (strong, nonatomic) QBChatAttachment *attachment;
 
 @end
 
 @implementation QMMediaItem
+@synthesize attachment = _attachment;
+@synthesize remoteURL = _remoteURL;
 @dynamic extension;
+
 
 //MARK: Class methods
 + (instancetype)mediaItemWithAttachment:(QBChatAttachment *)attachment {
+    
     QMMediaItem *item = [[QMMediaItem alloc] init];
-    [item updateWithAttachment:attachment];
+    item.attachment = attachment;
+    
     return item;
 }
+
 + (instancetype)mediaItemWithImage:(UIImage *)image {
     
-    QMMediaItem *item = [[QMMediaItem alloc] initWithName:@"image" localURL:nil remoteURL:nil contentType:QMMediaContentTypeImage];
+    QMMediaItem *item = [[QMMediaItem alloc] initWithName:@"Image attachment" data:nil localURL:nil remoteURL:nil contentType:QMMediaContentTypeImage];
     item.image = image;
     return item;
 }
 
-+ (instancetype)videoItemWithURL:(NSURL *)itemURL {
++ (instancetype)videoItemWithFileURL:(NSURL *)itemURL {
     
-    return [[QMMediaItem alloc] initWithName:@"video" localURL:itemURL remoteURL:nil contentType:QMMediaContentTypeVideo];
+    return [[QMMediaItem alloc] initWithName:@"Video attachment" data:nil localURL:itemURL  remoteURL:nil contentType:QMMediaContentTypeVideo];
 }
 
-+ (instancetype)audioItemWithURL:(NSURL *)itemURL {
++ (instancetype)audioItemWithFileURL:(NSURL *)itemURL {
     
-    return [[QMMediaItem alloc] initWithName:@"audio" localURL:itemURL remoteURL:nil contentType:QMMediaContentTypeAudio];
+    return [[QMMediaItem alloc] initWithName:@"Voice message" data:nil  localURL:itemURL remoteURL:nil contentType:QMMediaContentTypeAudio];
 }
-
-- (void)updateWithAttachment:(QBChatAttachment *)attachment {
+- (void)setMediaID:(NSString *)mediaID {
+    _mediaID = mediaID;
+    self.attachment.ID = mediaID;
+}
+- (void)setName:(NSString *)name {
     
-    self.mediaID = attachment.ID;
-    if (attachment.url.length) {
-        self.remoteURL = [self remoteURLWithString:attachment.url];
+}
+- (void)setAttachment:(QBChatAttachment *)attachment {
+    
+    if (_attachment) {
+        return;
     }
     
+    _attachment = attachment;
+    
+    _mediaID = attachment.ID;
+    
+//    if (attachment.url.length) {
+//        self.remoteURL = [self remoteURLWithString:attachment.url];
+//    }
+//    
     if ([attachment.type isEqualToString:@"audio"]) {
-        self.contentType = QMMediaContentTypeAudio;
+        _contentType = QMMediaContentTypeAudio;
     }
     else if ([attachment.type isEqualToString:@"video"]) {
         
-        self.contentType = QMMediaContentTypeVideo;
+        _contentType = QMMediaContentTypeVideo;
     }
     else if ([attachment.type isEqualToString:@"image"]) {
-        self.contentType = QMMediaContentTypeImage;
+        _contentType = QMMediaContentTypeImage;
     }
     
-    NSDictionary *size = attachment.context[@"size"];
+    CGFloat width = [attachment.context[@"width"] doubleValue];
+    CGFloat height = [attachment.context[@"height"] doubleValue];
     
-    if (size) {
-        
-        CGFloat width = [size[@"width"] doubleValue];
-        CGFloat height = [size[@"height"] doubleValue];
+    CGSize size = CGSizeMake(width, height);
+    
+    if (!CGSizeEqualToSize(size, CGSizeZero)) {
+
         self.mediaSize = CGSizeMake(width, height);
     }
+    
     if (attachment.context[@"duration"]) {
         self.mediaDuration = [attachment.context[@"duration"] doubleValue];
     }
+}
+
+- (void)setRemoteURL:(NSURL *)remoteURL {
+    _attachment.url = [remoteURL absoluteString];
+    _remoteURL = remoteURL;
+}
+
+- (NSString *)nameForContentType:(QMMediaContentType)contentType {
+    
+    NSString *stringMIMEType = nil;
+    
+    switch (self.contentType) {
+        case QMMediaContentTypeAudio:
+            stringMIMEType = @"audio/caf";
+            break;
+            
+        case QMMediaContentTypeVideo:
+            stringMIMEType = @"video/mp4";
+            break;
+            
+        case QMMediaContentTypeImage:
+            stringMIMEType = @"image/png";
+            break;
+            
+        default:
+            stringMIMEType = @"";
+            break;
+    }
+    
+    return stringMIMEType;
     
 }
+
 - (NSURL *)remoteURL {
+    if (_mediaID.length == 0) {
+        return nil;
+    }
     
-    NSURLComponents *components = [NSURLComponents componentsWithURL:_remoteURL
+    NSString *apiEndpoint = [QBSettings apiEndpoint];
+    
+    NSURLComponents *components = [NSURLComponents componentsWithURL:[NSURL URLWithString:apiEndpoint]
                                              resolvingAgainstBaseURL:false];
-    
+    components.path = [NSString stringWithFormat:@"/blobs/%@", _mediaID];
     components.query = [NSString stringWithFormat:@"token=%@",[QBSession currentSession].sessionDetails.token];
+    _remoteURL = components.URL;
     return components.URL;
 }
+
 //MARK: Initialize
 - (instancetype)initWithName:(NSString *)name
+                        data:(NSData *)data
                     localURL:(NSURL *)localURL
                    remoteURL:(NSURL *)remoteURL
                  contentType:(QMMediaContentType)contentType {
@@ -100,26 +153,15 @@
         _localURL = [localURL copy];
         _remoteURL = [remoteURL copy];
         _contentType = contentType;
+        _data = data;
+        _attachment = [QBChatAttachment new];
+        _attachment.type = [self stringContentType];
+        _attachment.url = [remoteURL absoluteString];
     }
     
     return self;
 }
 
-- (instancetype)initWithName:(NSString *)name
-                        data:(NSData *)data
-                   remoteURL:(NSURL *)remoteURL
-                 contentType:(QMMediaContentType)contentType {
-    
-    if (self = [super init]) {
-        
-        _name = [name copy];
-        _remoteURL = [remoteURL copy];
-        _data = [data copy];
-        _contentType = contentType;
-    }
-    
-    return self;
-}
 
 - (NSString *)stringMIMEType {
     
@@ -176,7 +218,7 @@
     
     switch (self.contentType) {
         case QMMediaContentTypeAudio:
-            stringMediaType = @"mp3";
+            stringMediaType = @"m4a";
             break;
             
         case QMMediaContentTypeVideo:
@@ -184,7 +226,6 @@
             break;
             
         case QMMediaContentTypeImage:
-        default:
             stringMediaType = @"png";
             break;
     }
@@ -236,83 +277,54 @@
     return [self.localURL hash];
 }
 
+- (void)setMediaDuration:(NSTimeInterval)mediaDuration {
+    
+    if (_mediaDuration != mediaDuration) {
+        _mediaDuration = mediaDuration;
+        
+        _attachment.context[@"duration"] = @(self.mediaDuration);
+        [_attachment synchronize];
+    }
+}
+
+- (void)setMediaSize:(CGSize)mediaSize {
+    
+    if (!CGSizeEqualToSize(_mediaSize, mediaSize)) {
+        _mediaSize = mediaSize;
+       _attachment.context[@"width"] = @(self.mediaSize.width);
+       _attachment.context[@"height"] = @(self.mediaSize.height);
+        
+        [_attachment synchronize];
+    }
+}
+
+//- (NSURL *)remoteURL {
+//    
+//    NSURLComponents *components = [NSURLComponents componentsWithString:stringURL];
+//    components.queryItems = nil;
+//    return components.URL;
+//}
+
 //MARK: - NSCopying
 
 - (id)copyWithZone:(NSZone *)zone {
     
     QMMediaItem *copy = [[[self class] allocWithZone:zone] init];
-    
+
     copy.mediaID  = [self.mediaID copyWithZone:zone];
     copy.localURL = [self.localURL copyWithZone:zone];
-    copy.remoteURL = [self.localURL copyWithZone:zone];
+    copy.remoteURL = [self.remoteURL copyWithZone:zone];
     copy.name  = [self.name copyWithZone:zone];
     copy.contentType = self.contentType;
     copy.mediaDuration = self.mediaDuration;
-    if (_thumbnailImage) {
-        copy.thumbnailImage = [[UIImage allocWithZone: zone] initWithCGImage: (__bridge CGImageRef _Nonnull)(self.thumbnailImage.CIImage)];
-    }
+    copy.mediaSize = self.mediaSize;
+    copy.attachment = [self.attachment copyWithZone:zone];
+    copy.image = self.image;
+    
     return copy;
 }
 
-//MARK: - NSCoding
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wobjc-designated-initializers"
-- (instancetype)initWithCoder:(NSCoder *)aDecoder {
-    
-    self = [super init];
-    
-    if (self) {
-        
-        QM_DESERIALIZE_OBJECT(_mediaID, aDecoder);
-        QM_DESERIALIZE_OBJECT(_localURL, aDecoder);
-        QM_DESERIALIZE_OBJECT(_remoteURL, aDecoder);
-        QM_DESERIALIZE_OBJECT(_name, aDecoder);
-        QM_DESERIALIZE_INT(_contentType, aDecoder);
-        QM_DESERIALIZE_INTEGER(_mediaDuration, aDecoder);
-    }
-    
-    return self;
-}
-#pragma clang diagnostic pop
-
-- (void)encodeWithCoder:(NSCoder *)aCoder{
-    
-    QM_SERIALIZE_OBJECT(_mediaID, aCoder);
-    QM_SERIALIZE_OBJECT(_localURL, aCoder);
-    QM_SERIALIZE_OBJECT(_remoteURL, aCoder);
-    QM_SERIALIZE_OBJECT(_name, aCoder);
-    QM_SERIALIZE_INT(_contentType, aCoder);
-    QM_SERIALIZE_INTEGER(_mediaDuration, aCoder);
-}
-
-
-- (NSDictionary *)metaData {
-    
-    NSMutableDictionary *metaData = [NSMutableDictionary new];
-    
-    if  (self.contentType == QMMediaContentTypeAudio || self.contentType == QMMediaContentTypeVideo) {
-        
-        if (self.mediaDuration > 0) {
-            metaData[@"duration"] = @(self.mediaDuration);
-        }
-    }
-    if ((self.contentType == QMMediaContentTypeVideo
-         || self.contentType == QMMediaContentTypeImage) && !CGSizeEqualToSize(self.mediaSize, CGSizeZero)) {
-        
-        metaData[@"width"] = @(self.mediaSize.width);
-        metaData[@"height" ] = @(self.mediaSize.height);
-    }
-    
-    return metaData.allKeys.count ? metaData.copy : nil;
-}
-
-- (NSURL *)remoteURLWithString:(NSString *)stringURL {
-    
-    NSURLComponents *components = [NSURLComponents componentsWithString:stringURL];
-    components.queryItems = nil;
-    return components.URL;
-}
 
 
 

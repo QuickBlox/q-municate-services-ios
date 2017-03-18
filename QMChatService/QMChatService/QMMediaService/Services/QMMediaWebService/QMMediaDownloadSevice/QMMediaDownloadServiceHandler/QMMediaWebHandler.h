@@ -24,9 +24,6 @@
                                 completionBlock:(QMMediaRestCompletionBlock)completionBlock
                                   progressBlock:(QMMediaProgressBlock)progressBlock;
 
-+ (QMMediaWebHandler *)downloadingHandlerWithID:(NSString *)handlerID
-                                       delegate:(id <QMMediaDownloadDelegate>)delegate;
-
 + (QMMediaWebHandler *)uploadingHandlerWithID:(NSString *)handlerID
                               completionBlock:(QMMediaRestCompletionBlock)completionBlock
                                 progressBlock:(QMMediaProgressBlock)progressBlock;

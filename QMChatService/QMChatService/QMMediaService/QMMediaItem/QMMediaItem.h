@@ -8,6 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
+#define QM_SERIALIZE_OBJECT(var_name, coder)		[coder encodeObject:var_name forKey:@#var_name]
+#define QM_SERIALIZE_INTEGER(var_name, coder)	    [coder encodeInteger:var_name forKey:@#var_name]
+#define QM_SERIALIZE_INT(var_name, coder)	        [coder encodeInt:var_name forKey:@#var_name]
+
+#define QM_DESERIALIZE_OBJECT(var_name, decoder)	var_name = [decoder decodeObjectForKey:@#var_name]
+#define QM_DESERIALIZE_INTEGER(var_name, decoder)	var_name = [decoder decodeIntegerForKey:@#var_name]
+#define QM_DESERIALIZE_INT(var_name, decoder)	    var_name = [decoder decodeIntForKey:@#var_name]
+
+
 typedef NS_ENUM(NSInteger, QMMediaContentType) {
     QMMediaContentTypeAudio,
     QMMediaContentTypeVideo,
@@ -17,7 +26,9 @@ typedef NS_ENUM(NSInteger, QMMediaContentType) {
 
 @class QBChatAttachment;
 
-@interface QMMediaItem : NSObject <NSCopying, NSCoding>
+@interface QMMediaItem : NSObject <NSCopying>
+
+@property (strong, nonatomic, readonly) QBChatAttachment *attachment;
 
 @property (copy, nonatomic) NSString *mediaID;
 
@@ -28,29 +39,28 @@ typedef NS_ENUM(NSInteger, QMMediaContentType) {
 
 @property (strong, nonatomic) NSData *data;
 
-@property (copy, nonatomic)  NSString *extension;
-
 @property (assign, nonatomic) NSTimeInterval mediaDuration;
-@property (strong, nonatomic) UIImage *image;
 @property (assign, nonatomic) CGSize mediaSize;
 
-@property (assign, nonatomic, readonly) QMMediaContentType contentType;
-
-- (void)updateWithAttachment:(QBChatAttachment *)attachment;
+@property (strong, nonatomic) UIImage *image;
 
 - (instancetype)initWithName:(NSString *)name
+                        data:(NSData *)data
                     localURL:(NSURL *)localURL
                    remoteURL:(NSURL *)remoteURL
                  contentType:(QMMediaContentType)contentType;
 
-+ (instancetype)videoItemWithURL:(NSURL *)itemURL;
-+ (instancetype)audioItemWithURL:(NSURL *)itemURL;
+
++ (instancetype)videoItemWithFileURL:(NSURL *)itemURL;
++ (instancetype)audioItemWithFileURL:(NSURL *)itemURL;
 + (instancetype)mediaItemWithImage:(UIImage *)image;
 + (instancetype)mediaItemWithAttachment:(QBChatAttachment *)attachment;
+
+@property (copy, nonatomic, readonly)  NSString *extension;
+@property (assign, nonatomic, readonly) QMMediaContentType contentType;
 
 - (NSString *)stringContentType;
 - (NSString *)stringMIMEType;
 
-- (NSDictionary *)metaData;
 
 @end
