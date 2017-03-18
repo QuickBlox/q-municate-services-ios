@@ -14,163 +14,191 @@
 @interface QMMediaInfoService()
 
 @property (strong, nonatomic) NSMutableDictionary *imagesMemoryStorage;
-@property (strong, nonatomic) NSMutableDictionary *mediaInfoMemoryStorage;
 
-@property (strong, nonatomic) NSMutableArray *mediaInProcess;
-@property (strong, nonatomic) NSMutableArray *imagesInProcess;
-@property (strong, nonatomic) dispatch_queue_t imageQueue;
+@property (strong, nonatomic) NSMutableDictionary *mediaInfoInProcess;
+@property (strong, nonatomic) NSMutableDictionary *imagesInProcess;
 
 @end
 
 @implementation QMMediaInfoService
 
 //MARK: - NSObject
+
 - (instancetype)init {
+    
     if (self = [super init]) {
-        
-        _imagesMemoryStorage = [NSMutableDictionary dictionary];
-        _mediaInfoMemoryStorage = [NSMutableDictionary dictionary];
-        
-        _mediaInProcess = [NSMutableArray array];
-        _imagesInProcess = [NSMutableArray array];
-        _imageQueue = dispatch_queue_create("Image queue",DISPATCH_QUEUE_SERIAL);
+        _mediaInfoInProcess = [NSMutableDictionary dictionary];
     }
+    
     return self;
 }
 
-
-- (void)thumbnailForMediaWithURL:(NSURL *)url completion:(void(^)(UIImage *))completion {
+- (void)saveThumbnailImage:(UIImage *)thumbnailImage forMediaItem:(QMMediaItem *)mediaItem {
     
-    dispatch_async(self.imageQueue, ^{
-        
-        AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:url options:nil];
-        
-        AVAssetImageGenerator *generator = [[AVAssetImageGenerator alloc] initWithAsset:asset];
-        
-        CMTime time = CMTimeMake(0, 1);
-        
-        AVAssetImageGeneratorCompletionHandler handler = ^(CMTime __unused requestedTime, CGImageRef im, CMTime __unused actualTime, AVAssetImageGeneratorResult result, NSError *error){
-            
-            if (result != AVAssetImageGeneratorSucceeded) {
-                
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    
-                    completion(nil);
-                });
-                
-            }
-            else {
-                
-                UIImage *image = [UIImage imageWithCGImage:im];
-                
-                UIImage *thumbnail = nil;
-                
-                if (image) {
-                    thumbnail = [self resizedImageFromImage:image];
-                }
-                
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    
-                    completion(thumbnail);
-                    
-                });
-                
-            }
-        };
-        
-        
-        [generator generateCGImagesAsynchronouslyForTimes:@[[NSValue valueWithBytes:&time objCType:@encode(CMTime)]]
-                                        completionHandler:handler];
-    });
-}
-
-
-- (void)thumbnailImageForMedia:(QMMediaItem *)mediaItem completion:(void (^)(UIImage *))completion {
+    NSString *imageKey = mediaItem.mediaID;
     
-    
-    NSString *remoteUrlKey = [mediaItem.remoteURL.lastPathComponent stringByDeletingPathExtension];
-    
-    if (mediaItem.contentType != QMMediaContentTypeImage && mediaItem.contentType != QMMediaContentTypeVideo) {
-        completion(nil);
-    }
-    
-    if ([self.imagesInProcess containsObject:remoteUrlKey]) {
-        return;
-    }
-    
-    UIImage *image = self.imagesMemoryStorage[remoteUrlKey];
-    
-    if (image) {
-        completion(image);
-    }
-    else {
-        
-        [self.imagesInProcess addObject:remoteUrlKey];
-        [self thumbnailForMediaWithURL:mediaItem.remoteURL completion:^(UIImage *image) {
-            [self.imagesInProcess removeObject:remoteUrlKey];
-            completion(image);
-        }];
+    if (imageKey.length > 0) {
+        self.imagesMemoryStorage[imageKey] = thumbnailImage;
+        [self saveData:UIImagePNGRepresentation(thumbnailImage)
+                forKey:imageKey
+                 error:nil];
     }
 }
 
-- (UIImage *)resizedImageFromImage:(UIImage *)image {
-    
-    CGFloat largestSide = image.size.width > image.size.height ? image.size.width : image.size.height;
-    CGFloat scaleCoefficient = largestSide / 560.0f;
-    CGSize newSize = CGSizeMake(image.size.width / scaleCoefficient, image.size.height / scaleCoefficient);
-    
-    UIGraphicsBeginImageContext(newSize);
-    
-    [image drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
-    UIImage *resizedImage = UIGraphicsGetImageFromCurrentImageContext();
-    
-    UIGraphicsEndImageContext();
-    
-    return resizedImage;
-}
-
-- (void)mediaInfoForItem:(QMMediaItem *)mediaItem completion:(void(^)(QMMediaInfo *, NSError *))completion {
+- (void)mediaInfoForItem:(QMMediaItem *)mediaItem completion:(void(^)(NSTimeInterval duration, CGSize size, UIImage *image, NSError *error))completion {
     
     NSString *mediaID = mediaItem.mediaID;
     
     if (mediaID.length == 0) {
         
         QMMediaInfo *localMediaInfo = [QMMediaInfo infoFromMediaItem:mediaItem];
-        [localMediaInfo prepareWithCompletion:^(NSError *error) {
-            
+        [localMediaInfo prepareWithCompletion:^(NSTimeInterval duration, CGSize mediaSize, UIImage *image, NSError *error) {
             if (completion) {
-                completion(localMediaInfo,error);
+                completion(duration, mediaSize, image, error);
             }
         }];
-        
         return;
     }
     
+    [self cancelInfoOperationForKey:mediaID];
     
-    if ([self.mediaInProcess containsObject:mediaID]) {
-        return;
-    }
-    else {
-        [self.mediaInProcess addObject:mediaID];
-    }
-    
-    QMMediaInfo *info = self.mediaInfoMemoryStorage[mediaID];
-    
-    if (info) {
-        completion(info,nil);
-    }
-    else {
+    if (mediaItem.image == nil) {
+        __weak typeof(self) weakSelf = self;
         
-        QMMediaInfo *mediaInfo = [QMMediaInfo infoFromMediaItem:mediaItem];
-        
-        [mediaInfo prepareWithCompletion:^(NSError *error) {
-            self.mediaInfoMemoryStorage[mediaID] = mediaInfo;
-            if (completion) {
-                [self.mediaInProcess removeObject:mediaID];
-                completion(mediaInfo,error);
-            }
+        [self localThumbnailForMediaItem:mediaItem completion:^(UIImage *image) {
+            mediaItem.image = image;
+            __strong typeof(weakSelf) strongSelf = weakSelf;
+            QMMediaInfo *mediaInfo = [QMMediaInfo infoFromMediaItem:mediaItem];
+            [[[strongSelf class] mediaInfoOperations] setObject:mediaInfo forKey:mediaID];
+            
+            [mediaInfo prepareWithCompletion:^(NSTimeInterval duration, CGSize mediaSize, UIImage *image, NSError *error) {
+                if (completion) {
+                    if (image) {
+                        [strongSelf saveThumbnailImage:image forMediaItem:mediaItem];
+                    }
+                    completion(duration, mediaSize, image, error);
+                }
+            }];
+            
         }];
     }
 }
 
+- (void)localThumbnailForMediaItem:(QMMediaItem *)mediaItem
+                    completion:(void(^)(UIImage *image))completion {
+    
+    NSString *mediaID = mediaItem.mediaID;
+    if (mediaID == nil) {
+        completion(nil);
+        return;
+    }
+    if (self.imagesMemoryStorage[mediaItem.mediaID] != nil) {
+        
+        if (completion) {
+            completion(self.imagesMemoryStorage[mediaID]);
+        }
+        return;
+    }
+    
+    // checking attachment in cache
+    NSString *path = thumbnailPath(mediaID);
+    
+    if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
+           dispatch_async(dispatch_get_main_queue(), ^{
+      //  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+            
+            NSError *error;
+            NSData *data = [NSData dataWithContentsOfFile:path options:NSDataReadingMappedIfSafe error:&error];
+            UIImage *image = [UIImage imageWithData:data];
+            
+        
+                
+                if (image != nil) {
+                    self.imagesMemoryStorage[mediaItem.mediaID] = image;
+                }
+                if (completion) {
+                    completion(image);
+                }
+      //      });
+    });
+    }
+    else {
+        if (completion) {
+            completion(nil);
+        }
+    }
+}
+
+- (void)cancellAllInfoOperations {
+    
+    NSEnumerator *enumerator = [[[self class] mediaInfoOperations] keyEnumerator];
+    
+    NSString *mediaID = nil;
+    
+    while (mediaID = [enumerator nextObject]) {
+        
+        QMMediaInfo *mediaInfo = [[[self class] mediaInfoOperations] objectForKey:mediaID];
+        [mediaInfo cancel];
+    }
+}
+
+
+- (void)cancelInfoOperationForKey:(NSString *)key {
+    
+    QMMediaInfo *mediaInfo = [[[self class] mediaInfoOperations] objectForKey:key];
+    if (mediaInfo) {
+        [mediaInfo cancel];
+    }
+}
+
+static NSString *thumbnailCacheDir() {
+    
+    static NSString *thumbnailCacheDir;
+    
+    if (!thumbnailCacheDir) {
+        
+        NSString *cacheDir = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
+        thumbnailCacheDir = [cacheDir stringByAppendingPathComponent:@"Thumbnails"];
+        
+        static dispatch_once_t onceToken;
+        
+        dispatch_once(&onceToken, ^{
+            if (![[NSFileManager defaultManager] fileExistsAtPath:thumbnailCacheDir]) {
+                [[NSFileManager defaultManager] createDirectoryAtPath:thumbnailCacheDir withIntermediateDirectories:NO attributes:nil error:nil];
+            }
+        });
+    }
+    
+    return thumbnailCacheDir;
+}
+
+
+static NSString* thumbnailPath(NSString *key) {
+    
+    return [thumbnailCacheDir() stringByAppendingPathComponent:[NSString stringWithFormat:@"thumbnail-%@", key]];
+}
+
+
+- (BOOL)saveData:(NSData *)mediaData
+          forKey:(NSString *)key
+           error:(NSError **)errorPtr {
+    
+    BOOL isSucceed = [mediaData writeToFile:thumbnailPath(key)
+                                    options:NSDataWritingAtomic
+                                      error:errorPtr];
+    return isSucceed;
+}
+
++ (NSMapTable *)mediaInfoOperations {
+    
+    static NSMapTable *mediaInfoOperations = nil;
+    
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        
+        mediaInfoOperations = [NSMapTable strongToWeakObjectsMapTable];
+    });
+    
+    return mediaInfoOperations;
+}
 @end

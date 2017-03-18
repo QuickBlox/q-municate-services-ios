@@ -7,14 +7,13 @@
 //
 
 @class QMMediaItem;
-@class QMMediaInfo;
 
 @protocol QMMediaInfoServiceDelegate <NSObject>
 
-- (void)mediaInfoForItem:(QMMediaItem *)mediaItem completion:(void(^)(QMMediaInfo *mediaInfo, NSError *error))completion;
-- (void)isReadyToPlay:(QMMediaItem *)mediaItem completion:(void(^)(BOOL))completion;
+- (void)mediaInfoForItem:(QMMediaItem *)mediaItem completion:(void(^)(NSTimeInterval duration, CGSize mediaSize, UIImage *image, NSError *error))completion;
+- (void)saveThumbnailImage:(UIImage *)thumbnailImage forMediaItem:(QMMediaItem *)mediaItem;
 
-- (void)thumbnailImageForMedia:(QMMediaItem *)mediaItem completion:(void (^)(UIImage *))completion;
-- (void)thumbnailForMediaWithURL:(NSURL *)url completion:(void(^)(UIImage *))completion;
+- (void)cancellAllInfoOperations;
+- (void)cancelInfoOperationForKey:(NSString *)key;
 
 @end
