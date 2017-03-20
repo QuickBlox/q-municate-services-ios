@@ -227,7 +227,7 @@
 
 - (void)chatServiceChatDidReconnect:(QMChatService *)chatService {
     
-    [self joinAllGroupDialogsIfNeededWithCompletion:NULL];
+   [self joinAllGroupDialogsIfNeededWithCompletion:NULL];
 }
 
 #pragma mark QMChatServiceCache delegate
@@ -301,11 +301,10 @@
 
 - (void)cachedDialogs:(QMCacheCollection)block {
     
-    NSArray<QBChatDialog *> *dialogs =
-    [[QMChatCache instance] dialogsSortedBy:CDDialogAttributes.lastMessageDate
-                                  ascending:YES
-                              withPredicate:nil];
-    block(dialogs);
+    [QMChatCache.instance dialogsSortedBy:CDDialogAttributes.lastMessageDate ascending:YES completion:^(NSArray *dialogs) {
+        
+        block(dialogs);
+    }];
 }
 
 - (void)cachedDialogWithID:(NSString *)dialogID completion:(void (^)(QBChatDialog *dialog))completion {
@@ -318,10 +317,7 @@
 
 - (void)cachedMessagesWithDialogID:(NSString *)dialogID block:(QMCacheCollection)block {
     
-    [QMChatCache.instance messagesWithDialogId:dialogID
-                                      sortedBy:CDMessageAttributes.messageID
-                                     ascending:YES
-                                    completion:^(NSArray *array) {
+    [QMChatCache.instance messagesWithDialogId:dialogID sortedBy:CDMessageAttributes.messageID ascending:YES completion:^(NSArray *array) {
         
         block(array);
     }];
