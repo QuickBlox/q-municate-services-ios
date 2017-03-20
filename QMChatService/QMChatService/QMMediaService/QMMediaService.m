@@ -16,7 +16,6 @@
 
 #import "QMSLog.h"
 
-#import "QMMediaWebServiceDelegate.h"
 #import "QMMediaWebHandler.h"
 #import "QMMediaInfoService.h"
 
@@ -242,12 +241,9 @@
                                       }
                                       
                                       mediaItem.mediaID = blob.UID;
-                                      mediaItem.remoteURL = [NSURL URLWithString:[blob privateUrl]];
                                       mediaItem.data = data;
-                                      
                                       message.attachments = @[mediaItem.attachment];
                                       message.text = [NSString stringWithFormat:@"Attachment %@",[mediaItem stringContentType]];
-                                      
                                       
                                       NSURL *localURL = [strongSelf.storeService saveMediaItem:mediaItem];
                                       if (localURL != nil) {
