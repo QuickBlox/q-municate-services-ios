@@ -39,6 +39,11 @@
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
 		return keyPaths;
 	}
+	if ([key isEqualToString:@"sizeValue"]) {
+		NSSet *affectingKey = [NSSet setWithObject:@"size"];
+		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
+		return keyPaths;
+	}
 	if ([key isEqualToString:@"widthValue"]) {
 		NSSet *affectingKey = [NSSet setWithObject:@"width"];
 		keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKey];
@@ -72,21 +77,21 @@
 
 @dynamic height;
 
-- (int64_t)heightValue {
+- (int32_t)heightValue {
 	NSNumber *result = [self height];
-	return [result longLongValue];
+	return [result intValue];
 }
 
-- (void)setHeightValue:(int64_t)value_ {
+- (void)setHeightValue:(int32_t)value_ {
 	[self setHeight:@(value_)];
 }
 
-- (int64_t)primitiveHeightValue {
+- (int32_t)primitiveHeightValue {
 	NSNumber *result = [self primitiveHeight];
-	return [result longLongValue];
+	return [result intValue];
 }
 
-- (void)setPrimitiveHeightValue:(int64_t)value_ {
+- (void)setPrimitiveHeightValue:(int32_t)value_ {
 	[self setPrimitiveHeight:@(value_)];
 }
 
@@ -96,25 +101,45 @@
 
 @dynamic name;
 
+@dynamic size;
+
+- (int64_t)sizeValue {
+	NSNumber *result = [self size];
+	return [result longLongValue];
+}
+
+- (void)setSizeValue:(int64_t)value_ {
+	[self setSize:@(value_)];
+}
+
+- (int64_t)primitiveSizeValue {
+	NSNumber *result = [self primitiveSize];
+	return [result longLongValue];
+}
+
+- (void)setPrimitiveSizeValue:(int64_t)value_ {
+	[self setPrimitiveSize:@(value_)];
+}
+
 @dynamic url;
 
 @dynamic width;
 
-- (double)widthValue {
+- (int32_t)widthValue {
 	NSNumber *result = [self width];
-	return [result doubleValue];
+	return [result intValue];
 }
 
-- (void)setWidthValue:(double)value_ {
+- (void)setWidthValue:(int32_t)value_ {
 	[self setWidth:@(value_)];
 }
 
-- (double)primitiveWidthValue {
+- (int32_t)primitiveWidthValue {
 	NSNumber *result = [self primitiveWidth];
-	return [result doubleValue];
+	return [result intValue];
 }
 
-- (void)setPrimitiveWidthValue:(double)value_ {
+- (void)setPrimitiveWidthValue:(int32_t)value_ {
 	[self setPrimitiveWidth:@(value_)];
 }
 
@@ -140,6 +165,9 @@
 }
 + (NSString *)name {
 	return @"name";
+}
++ (NSString *)size {
+	return @"size";
 }
 + (NSString *)url {
 	return @"url";

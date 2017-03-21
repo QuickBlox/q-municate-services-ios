@@ -11,7 +11,11 @@
     attachment.url = self.url;
     attachment.type = self.mimeType;
     attachment.data = self.data;
-   
+    attachment.width = self.width.unsignedIntegerValue;
+    attachment.height = self.height.unsignedIntegerValue;
+    attachment.size = self.size.unsignedIntegerValue;
+    attachment.duration = self.duration.doubleValue;
+    
     return attachment;
 }
 
@@ -22,6 +26,10 @@
     self.url = attachment.url;
     self.mimeType = attachment.type;
     self.data = attachment.data;
+    self.width = @(attachment.width);
+    self.height = @(attachment.height);
+    self.size = @(attachment.size);
+    self.duration = @(attachment.duration);
 }
 
 @end

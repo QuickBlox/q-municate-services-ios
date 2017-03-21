@@ -3,12 +3,13 @@
     <entity name="CDAttachment" representedClassName="CDAttachment" syncable="YES">
         <attribute name="data" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="duration" optional="YES" attributeType="Double" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="height" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="height" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="mimeType" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="size" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="width" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="width" optional="YES" attributeType="Integer 32" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="message" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDMessage" inverseName="attachments" inverseEntity="CDMessage" syncable="YES"/>
     </entity>
     <entity name="CDDialog" representedClassName="CDDialog" syncable="YES">
@@ -48,7 +49,7 @@
     </entity>
     <entity name="CDPreview" representedClassName="CDPreview" syncable="YES" codeGenerationType="class"/>
     <elements>
-        <element name="CDAttachment" positionX="-333" positionY="-96" width="128" height="180"/>
+        <element name="CDAttachment" positionX="-333" positionY="-96" width="128" height="195"/>
         <element name="CDDialog" positionX="-713" positionY="-217" width="128" height="270"/>
         <element name="CDMessage" positionX="-567" positionY="-216" width="128" height="285"/>
         <element name="CDPreview" positionX="-522" positionY="-81" width="128" height="45"/>

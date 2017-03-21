@@ -34,6 +34,27 @@
  */
 @property (nonatomic, copy, nullable) NSString *ID;
 
+
+/**
+ *  Width of attachment (for video/image).
+ */
+@property (nonatomic, assign) NSUInteger width;
+
+/**
+ *  Height of attachment (for video/image).
+ */
+@property (nonatomic, assign) NSUInteger height;
+
+/**
+ *  Duration in seconds (for video/audio).
+ */
+@property (nonatomic, assign) double duration;
+
+/**
+ *  Size of attachment in bytes.
+ */
+@property (nonatomic, assign) NSUInteger size;
+
 /**
  *  Any addictional data.
  */
