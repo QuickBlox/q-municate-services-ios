@@ -15,30 +15,6 @@ NSString * const QMCDRecordDidMergeChangesFromiCloudNotification = @"kQMCDRecord
 
 @implementation NSManagedObjectContext (QMCDObserving)
 
-- (void)QM_performBlock:(void(^)(void))block;
-{
-    if ([self concurrencyType] == NSConfinementConcurrencyType)
-    {
-        block();
-    }
-    else
-    {
-        [self performBlock:block];
-    }
-}
-
-- (void)QM_performBlockAndWait:(void(^)(void))block;
-{
-    if ([self concurrencyType] == NSConfinementConcurrencyType)
-    {
-        block();
-    }
-    else
-    {
-        [self performBlockAndWait:block];
-    }
-}
-
 #pragma mark - Context Observation Helpers
 
 - (void)QM_observeContextDidSave:(NSManagedObjectContext *)otherContext
@@ -86,7 +62,7 @@ NSString * const QMCDRecordDidMergeChangesFromiCloudNotification = @"kQMCDRecord
 
 - (void)QM_mergeChangesFromNotificationAndSaveChangesToSelfOnly:(NSNotification *)notification
 {
-    QMCDLogVerbose(@"Merging changes to %@context%@", [self isEqual:[[QMCDRecordStack defaultStack] context]] ? @"*** DEFAULT *** " : @"", ([NSThread isMainThread] ? @" *** on Main Thread ***" : @"Background Thread"));
+//    QMCDLogVerbose(@"Merging changes to %@context%@", [self isEqual:[[QMCDRecordStack defaultStack] context]] ? @"*** DEFAULT *** " : @"", ([NSThread isMainThread] ? @" *** on Main Thread ***" : @"Background Thread"));
 
     [self mergeChangesFromContextDidSaveNotification:notification];
     [self QM_saveOnlySelfAndWait];
@@ -110,7 +86,8 @@ NSString * const QMCDRecordDidMergeChangesFromiCloudNotification = @"kQMCDRecord
                                           object:self
                                         userInfo:[notification userInfo]];
     };
-    [self QM_performBlock:mergeBlock];
+    
+    [self performBlock:mergeBlock];
 }
 
 - (void)QM_mergeChangesFromNotification:(NSNotification *)notification;
@@ -126,7 +103,7 @@ NSString * const QMCDRecordDidMergeChangesFromiCloudNotification = @"kQMCDRecord
         [self mergeChangesFromContextDidSaveNotification:notification];
     };
 
-    [self QM_performBlock:mergeBlock];
+    [self performBlock:mergeBlock];
 }
 
 - (void)QM_mergeChangesOnMainThread:(NSNotification *)notification;

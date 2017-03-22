@@ -145,7 +145,8 @@
     return [[self class] QM_removePersistentStoreFilesAtURL:self.URL];
 }
 
-+ (NSDictionary *)QM_migrationOptionsForStoreName:(NSString *)storeFileName applicationGroupIdentifier:(NSString *)appGroupIdentifier
++ (NSDictionary *)QM_migrationOptionsForStoreName:(NSString *)storeFileName
+                       applicationGroupIdentifier:(NSString *)appGroupIdentifier
 {
 
     NSURL *sourceURL = [self QM_fileURLForStoreName:storeFileName];

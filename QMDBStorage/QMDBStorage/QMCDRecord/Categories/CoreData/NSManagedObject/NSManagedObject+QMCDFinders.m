@@ -49,48 +49,12 @@
                            inContext:(NSManagedObjectContext *)context {
     
     NSFetchRequest *request = [self QM_requestAll];
-    [request setPredicate:searchTerm];
+    request.predicate = searchTerm;
     
     return [self QM_executeFetchRequest:request
                               inContext:context];
 }
 
-+ (id)QM_selectAttribute:(NSString *)attribute
-               ascending:(BOOL)ascending
-               inContext:(NSManagedObjectContext *)context {
-    
-    NSFetchRequest *request = [self QM_requestAllSortedBy:attribute
-                                                ascending:ascending];
-    [request setResultType:NSDictionaryResultType];
-    [request setPropertiesToFetch:[NSArray arrayWithObject:attribute]];
-    NSArray *results = [self QM_executeFetchRequest:request inContext:context];
-    
-    return [results valueForKeyPath:
-            [NSString stringWithFormat:@"@unionOfObjects.%@", attribute]];
-}
-
-+ (id)QM_selectAttribute:(NSString *)attribute
-               ascending:(BOOL)ascending
-           withPredicate:(NSPredicate *)predicate
-               inContext:(NSManagedObjectContext *)context {
-    
-    NSFetchRequest *request = [self QM_requestAllSortedBy:attribute
-                                                ascending:ascending
-                                            withPredicate:predicate];
-    [request setResultType:NSDictionaryResultType];
-    [request setPropertiesToFetch:[NSArray arrayWithObject:attribute]];
-    NSArray *results = [self QM_executeFetchRequest:request inContext:context];
-    
-    return [results valueForKeyPath:
-            [NSString stringWithFormat:@"@unionOfObjects.%@", attribute]];
-}
-
-+ (instancetype)QM_findFirstInContext:(NSManagedObjectContext *)context {
-    NSFetchRequest *request = [self QM_requestAll];
-    
-    return [self QM_executeFetchRequestAndReturnFirstObject:request
-                                                  inContext:context];
-}
 
 + (instancetype)QM_findFirstByAttribute:(NSString *)attribute
                               withValue:(id)searchValue
@@ -113,7 +77,8 @@
     NSSortDescriptor *sortDescriptor =
     [[NSSortDescriptor alloc] initWithKey:orderedBy
                                 ascending:ascending];
-    [request setSortDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+    
+    request.sortDescriptors = @[sortDescriptor];
     
     return [self QM_executeFetchRequestAndReturnFirstObject:request
                                                   inContext:context];
@@ -125,7 +90,7 @@
     
     NSFetchRequest *request = [self QM_requestAllSortedBy:attribute
                                                 ascending:ascending];
-    [request setFetchLimit:1];
+    request.fetchLimit = 1;
     
     return [self QM_executeFetchRequestAndReturnFirstObject:request
                                                   inContext:context];
@@ -148,50 +113,6 @@
     return result;
 }
 
-+ (id)QM_findLargestValueForAttribute:(NSString *)attribute
-                        withPredicate:(NSPredicate *)predicate
-                            inContext:(NSManagedObjectContext *)context {
-    
-    NSFetchRequest *request = [self QM_requestAllSortedBy:attribute
-                                                ascending:NO];
-    request.fetchLimit = 1;
-    [request setResultType:NSDictionaryResultType];
-    [request setPropertiesToFetch:@[attribute]];
-    [request setPredicate:predicate];
-    
-    NSDictionary *results =
-    [self QM_executeFetchRequestAndReturnFirstObject:request
-                                           inContext:context];
-    id value = [results valueForKey:attribute];
-    
-    return value;
-}
-
-+ (id)QM_findLargestValueForAttribute:(NSString *)attribute
-                            inContext:(NSManagedObjectContext *)context {
-    
-    return [self QM_findLargestValueForAttribute:attribute
-                                   withPredicate:nil
-                                       inContext:context];
-}
-
-+ (id)QM_findSmallestValueForAttribute:(NSString *)attribute
-                             inContext:(NSManagedObjectContext *)context {
-    
-    NSFetchRequest *request = [self QM_requestAllSortedBy:attribute
-                                                ascending:YES];
-    request.fetchLimit = 1;
-    [request setResultType:NSDictionaryResultType];
-    [request setPropertiesToFetch:@[attribute]];
-    
-    NSDictionary *results =
-    [self QM_executeFetchRequestAndReturnFirstObject:request
-                                           inContext:context];
-    id value = [results valueForKey:attribute];
-    
-    return value;
-}
-
 + (instancetype)QM_findFirstWithPredicate:(NSPredicate *)searchTerm
                                 inContext:(NSManagedObjectContext *)context {
     
@@ -205,6 +126,7 @@
                                  sortedBy:(NSString *)property
                                 ascending:(BOOL)ascending
                                 inContext:(NSManagedObjectContext *)context {
+    
     NSFetchRequest *request = [self QM_requestAllSortedBy:property
                                                 ascending:ascending
                                             withPredicate:searchTerm];

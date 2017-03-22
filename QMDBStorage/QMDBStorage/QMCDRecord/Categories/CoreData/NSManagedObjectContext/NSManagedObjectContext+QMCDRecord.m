@@ -15,7 +15,6 @@ NSString * QM_concurrencyStringFromType(NSManagedObjectContextConcurrencyType ty
 {
     if (type == NSPrivateQueueConcurrencyType) { return @"Private Queue"; }
     if (type == NSMainQueueConcurrencyType) { return @"Main Queue"; }
-    if (type == NSConfinementConcurrencyType) {return @"Confinement"; }
 
     return @"Unknown Concurrency";
 }
@@ -64,20 +63,6 @@ static NSString * const kQMCDRecordNSManagedObjectContextWorkingName = @"kNSMana
 + (NSManagedObjectContext *)QM_context;
 {
     return [self QM_privateQueueContext];
-}
-
-+ (NSManagedObjectContext *)QM_confinementContext;
-{
-    NSManagedObjectContext *context = [[self alloc] initWithConcurrencyType:NSConfinementConcurrencyType];
-    [context QM_setWorkingName:@"Confinement"];
-    return context;
-}
-
-+ (NSManagedObjectContext *)QM_confinementContextWithParent:(NSManagedObjectContext *)parentContext;
-{
-    NSManagedObjectContext *context = [self QM_confinementContext];
-    [context setParentContext:parentContext];
-    return context;
 }
 
 + (NSManagedObjectContext *)QM_mainQueueContext;

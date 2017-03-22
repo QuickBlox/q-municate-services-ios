@@ -6,7 +6,6 @@
 
 #import <CoreData/CoreData.h>
 #import "QMCDRecord.h"
-#import "QMCDRecordMOGeneratorProtocol.h"
 
 @protocol QMCDRecordManagedObjectProtocol <NSObject>
 
@@ -23,7 +22,7 @@
  
  @since Available in v1.0 and later.
  */
-@interface NSManagedObject (QMCDRecord) <QMCDRecordMOGeneratorProtocol, QMCDRecordManagedObjectProtocol>
+@interface NSManagedObject (QMCDRecord)<QMCDRecordManagedObjectProtocol>
 
 /**
  @name Entity Information

@@ -23,12 +23,7 @@
  */
 @interface NSManagedObject (QMCDFinders) <QMCDFinderExtensions>
 
-
 + (NSArray *)QM_findAllInContext:(NSManagedObjectContext *)context;
-
-+ (NSArray *)QM_findAllSortedBy:(NSString *)sortTerm
-                      ascending:(BOOL)ascending
-                      inContext:(NSManagedObjectContext *)context;
 
 + (NSArray *)QM_findAllSortedBy:(NSString *)sortTerm
                       ascending:(BOOL)ascending
@@ -37,8 +32,6 @@
 
 + (NSArray *)QM_findAllWithPredicate:(NSPredicate *)searchTerm
                            inContext:(NSManagedObjectContext *)context;
-
-+ (instancetype)QM_findFirstInContext:(NSManagedObjectContext *)context;
 
 + (instancetype)QM_findFirstWithPredicate:(NSPredicate *)searchTerm
                                 inContext:(NSManagedObjectContext *)context;
@@ -75,25 +68,6 @@
 + (instancetype)QM_findFirstOrCreateByAttribute:(NSString *)attribute
                                       withValue:(id)searchValue
                                       inContext:(NSManagedObjectContext *)context;
-
-+ (id)QM_findLargestValueForAttribute:(NSString *)attribute
-                            inContext:(NSManagedObjectContext *)context;
-
-+ (id)QM_findLargestValueForAttribute:(NSString *)attribute
-                        withPredicate:(NSPredicate *)predicate
-                            inContext:(NSManagedObjectContext *)context;
-
-+ (id)QM_findSmallestValueForAttribute:(NSString *)attribute
-                             inContext:(NSManagedObjectContext *)context;
-
-+ (id)QM_selectAttribute:(NSString *)attribute
-               ascending:(BOOL)ascending
-               inContext:(NSManagedObjectContext *)context;
-
-+ (id)QM_selectAttribute:(NSString *)attribute
-               ascending:(BOOL)ascending
-           withPredicate:(NSPredicate *)predicate
-               inContext:(NSManagedObjectContext *)context;
 
 + (NSArray *)QM_findByAttribute:(NSString *)attribute
                       withValue:(id)searchValue

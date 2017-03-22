@@ -16,8 +16,6 @@
 		558666911A122DBC00927430 /* NSManagedObjectContext+QMCDSaves.m in Sources */ = {isa = PBXBuildFile; fileRef = 558666421A122DBC00927430 /* NSManagedObjectContext+QMCDSaves.m */; };
 		558666921A122DBC00927430 /* NSManagedObjectModel+QMCDRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = 558666441A122DBC00927430 /* NSManagedObjectModel+QMCDRecord.m */; };
 		558666931A122DBC00927430 /* NSPersistentStore+QMCDRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = 558666461A122DBC00927430 /* NSPersistentStore+QMCDRecord.m */; };
-		558666941A122DBC00927430 /* NSPersistentStoreCoordinator+QMCDAutoMigrations.m in Sources */ = {isa = PBXBuildFile; fileRef = 5586664A1A122DBC00927430 /* NSPersistentStoreCoordinator+QMCDAutoMigrations.m */; };
-		558666961A122DBC00927430 /* NSPersistentStoreCoordinator+QMCDManualMigrations.m in Sources */ = {isa = PBXBuildFile; fileRef = 5586664E1A122DBC00927430 /* NSPersistentStoreCoordinator+QMCDManualMigrations.m */; };
 		558666971A122DBC00927430 /* NSPersistentStoreCoordinator+QMCDRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = 558666501A122DBC00927430 /* NSPersistentStoreCoordinator+QMCDRecord.m */; };
 		558666981A122DBC00927430 /* NSArray+QMCDRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = 558666531A122DBC00927430 /* NSArray+QMCDRecord.m */; };
 		558666991A122DBC00927430 /* NSDictionary+QMCDRecordAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 558666551A122DBC00927430 /* NSDictionary+QMCDRecordAdditions.m */; };
@@ -26,15 +24,7 @@
 		5586669D1A122DBC00927430 /* QMCDRecord+Options.m in Sources */ = {isa = PBXBuildFile; fileRef = 5586665E1A122DBC00927430 /* QMCDRecord+Options.m */; };
 		5586669F1A122DBC00927430 /* QMCDRecord+VersionInformation.m in Sources */ = {isa = PBXBuildFile; fileRef = 558666621A122DBC00927430 /* QMCDRecord+VersionInformation.m */; };
 		558666A01A122DBC00927430 /* QMCDRecordInternal.m in Sources */ = {isa = PBXBuildFile; fileRef = 558666651A122DBC00927430 /* QMCDRecordInternal.m */; };
-		558666A21A122DBC00927430 /* AutoMigratingQMCDRecordStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 5586666D1A122DBC00927430 /* AutoMigratingQMCDRecordStack.m */; };
-		558666A31A122DBC00927430 /* AutoMigratingWithSourceAndTargetModelQMCDRecordStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 5586666F1A122DBC00927430 /* AutoMigratingWithSourceAndTargetModelQMCDRecordStack.m */; };
-		558666A41A122DBC00927430 /* ClassicSQLiteQMCDRecordStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 558666711A122DBC00927430 /* ClassicSQLiteQMCDRecordStack.m */; };
-		558666A51A122DBC00927430 /* ClassicWithBackgroundCoordinatorSQLiteQMCDRecordStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 558666731A122DBC00927430 /* ClassicWithBackgroundCoordinatorSQLiteQMCDRecordStack.m */; };
-		558666A71A122DBC00927430 /* ManuallyMigratingQMCDRecordStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 558666771A122DBC00927430 /* ManuallyMigratingQMCDRecordStack.m */; };
-		558666A81A122DBC00927430 /* QMCDRecordStack+Actions.m in Sources */ = {isa = PBXBuildFile; fileRef = 558666791A122DBC00927430 /* QMCDRecordStack+Actions.m */; };
 		558666A91A122DBC00927430 /* QMCDRecordStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 5586667C1A122DBC00927430 /* QMCDRecordStack.m */; };
-		558666AA1A122DBC00927430 /* SQLiteQMCDRecordStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 5586667E1A122DBC00927430 /* SQLiteQMCDRecordStack.m */; };
-		558666AB1A122DBC00927430 /* SQLiteWithSavingContextQMCDRecordStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 558666801A122DBC00927430 /* SQLiteWithSavingContextQMCDRecordStack.m */; };
 		5590F23D1A0B87AB00C5044F /* QMDBStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 5590F23C1A0B87AB00C5044F /* QMDBStorage.m */; };
 		5590F2FC1A0BA58800C5044F /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5590F2FB1A0BA58800C5044F /* CoreData.framework */; };
 		5590F2FE1A0BA5C000C5044F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5590F2FD1A0BA5C000C5044F /* UIKit.framework */; };
@@ -72,10 +62,6 @@
 		558666451A122DBC00927430 /* NSPersistentStore+QMCDRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = "NSPersistentStore+QMCDRecord.h"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		558666461A122DBC00927430 /* NSPersistentStore+QMCDRecord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = "NSPersistentStore+QMCDRecord.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		558666471A122DBC00927430 /* NSPersistentStore+QMCDRecordPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSPersistentStore+QMCDRecordPrivate.h"; sourceTree = "<group>"; };
-		558666491A122DBC00927430 /* NSPersistentStoreCoordinator+QMCDAutoMigrations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = "NSPersistentStoreCoordinator+QMCDAutoMigrations.h"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		5586664A1A122DBC00927430 /* NSPersistentStoreCoordinator+QMCDAutoMigrations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = "NSPersistentStoreCoordinator+QMCDAutoMigrations.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		5586664D1A122DBC00927430 /* NSPersistentStoreCoordinator+QMCDManualMigrations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = "NSPersistentStoreCoordinator+QMCDManualMigrations.h"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		5586664E1A122DBC00927430 /* NSPersistentStoreCoordinator+QMCDManualMigrations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = "NSPersistentStoreCoordinator+QMCDManualMigrations.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		5586664F1A122DBC00927430 /* NSPersistentStoreCoordinator+QMCDRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = "NSPersistentStoreCoordinator+QMCDRecord.h"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		558666501A122DBC00927430 /* NSPersistentStoreCoordinator+QMCDRecord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = "NSPersistentStoreCoordinator+QMCDRecord.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		558666521A122DBC00927430 /* NSArray+QMCDRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+QMCDRecord.h"; sourceTree = "<group>"; };
@@ -93,27 +79,9 @@
 		558666641A122DBC00927430 /* QMCDRecordInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMCDRecordInternal.h; sourceTree = "<group>"; };
 		558666651A122DBC00927430 /* QMCDRecordInternal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = QMCDRecordInternal.m; sourceTree = "<group>"; };
 		558666661A122DBC00927430 /* QMCDRecordLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = QMCDRecordLogging.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		558666671A122DBC00927430 /* QMCDRecordMOGeneratorProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMCDRecordMOGeneratorProtocol.h; sourceTree = "<group>"; };
 		5586666A1A122DBC00927430 /* QMCDRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = QMCDRecord.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		5586666C1A122DBC00927430 /* AutoMigratingQMCDRecordStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = AutoMigratingQMCDRecordStack.h; sourceTree = "<group>"; };
-		5586666D1A122DBC00927430 /* AutoMigratingQMCDRecordStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AutoMigratingQMCDRecordStack.m; sourceTree = "<group>"; };
-		5586666E1A122DBC00927430 /* AutoMigratingWithSourceAndTargetModelQMCDRecordStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = AutoMigratingWithSourceAndTargetModelQMCDRecordStack.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		5586666F1A122DBC00927430 /* AutoMigratingWithSourceAndTargetModelQMCDRecordStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AutoMigratingWithSourceAndTargetModelQMCDRecordStack.m; sourceTree = "<group>"; };
-		558666701A122DBC00927430 /* ClassicSQLiteQMCDRecordStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = ClassicSQLiteQMCDRecordStack.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		558666711A122DBC00927430 /* ClassicSQLiteQMCDRecordStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ClassicSQLiteQMCDRecordStack.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		558666721A122DBC00927430 /* ClassicWithBackgroundCoordinatorSQLiteQMCDRecordStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = ClassicWithBackgroundCoordinatorSQLiteQMCDRecordStack.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		558666731A122DBC00927430 /* ClassicWithBackgroundCoordinatorSQLiteQMCDRecordStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ClassicWithBackgroundCoordinatorSQLiteQMCDRecordStack.m; sourceTree = "<group>"; };
-		558666761A122DBC00927430 /* ManuallyMigratingQMCDRecordStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = ManuallyMigratingQMCDRecordStack.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		558666771A122DBC00927430 /* ManuallyMigratingQMCDRecordStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ManuallyMigratingQMCDRecordStack.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		558666781A122DBC00927430 /* QMCDRecordStack+Actions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = "QMCDRecordStack+Actions.h"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		558666791A122DBC00927430 /* QMCDRecordStack+Actions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = "QMCDRecordStack+Actions.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		5586667A1A122DBC00927430 /* QMCDRecordStack+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = "QMCDRecordStack+Private.h"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		5586667B1A122DBC00927430 /* QMCDRecordStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = QMCDRecordStack.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		5586667C1A122DBC00927430 /* QMCDRecordStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = QMCDRecordStack.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		5586667D1A122DBC00927430 /* SQLiteQMCDRecordStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = SQLiteQMCDRecordStack.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		5586667E1A122DBC00927430 /* SQLiteQMCDRecordStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = SQLiteQMCDRecordStack.m; sourceTree = "<group>"; };
-		5586667F1A122DBC00927430 /* SQLiteWithSavingContextQMCDRecordStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = SQLiteWithSavingContextQMCDRecordStack.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		558666801A122DBC00927430 /* SQLiteWithSavingContextQMCDRecordStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = SQLiteWithSavingContextQMCDRecordStack.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		5590F23A1A0B87AB00C5044F /* QMDBStorage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = QMDBStorage.h; sourceTree = "<group>"; };
 		5590F23C1A0B87AB00C5044F /* QMDBStorage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = QMDBStorage.m; sourceTree = "<group>"; };
 		5590F2FB1A0BA58800C5044F /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.1.sdk/System/Library/Frameworks/CoreData.framework; sourceTree = DEVELOPER_DIR; };
@@ -203,10 +171,6 @@
 		558666481A122DBC00927430 /* NSPersistentStoreCoordinator */ = {
 			isa = PBXGroup;
 			children = (
-				558666491A122DBC00927430 /* NSPersistentStoreCoordinator+QMCDAutoMigrations.h */,
-				5586664A1A122DBC00927430 /* NSPersistentStoreCoordinator+QMCDAutoMigrations.m */,
-				5586664D1A122DBC00927430 /* NSPersistentStoreCoordinator+QMCDManualMigrations.h */,
-				5586664E1A122DBC00927430 /* NSPersistentStoreCoordinator+QMCDManualMigrations.m */,
 				5586664F1A122DBC00927430 /* NSPersistentStoreCoordinator+QMCDRecord.h */,
 				558666501A122DBC00927430 /* NSPersistentStoreCoordinator+QMCDRecord.m */,
 			);
@@ -236,7 +200,6 @@
 				558666641A122DBC00927430 /* QMCDRecordInternal.h */,
 				558666651A122DBC00927430 /* QMCDRecordInternal.m */,
 				558666661A122DBC00927430 /* QMCDRecordLogging.h */,
-				558666671A122DBC00927430 /* QMCDRecordMOGeneratorProtocol.h */,
 			);
 			path = QMCDRecord;
 			sourceTree = "<group>";
@@ -244,25 +207,8 @@
 		5586666B1A122DBC00927430 /* QMCDRecordStack */ = {
 			isa = PBXGroup;
 			children = (
-				5586666C1A122DBC00927430 /* AutoMigratingQMCDRecordStack.h */,
-				5586666D1A122DBC00927430 /* AutoMigratingQMCDRecordStack.m */,
-				5586666E1A122DBC00927430 /* AutoMigratingWithSourceAndTargetModelQMCDRecordStack.h */,
-				5586666F1A122DBC00927430 /* AutoMigratingWithSourceAndTargetModelQMCDRecordStack.m */,
-				558666701A122DBC00927430 /* ClassicSQLiteQMCDRecordStack.h */,
-				558666711A122DBC00927430 /* ClassicSQLiteQMCDRecordStack.m */,
-				558666721A122DBC00927430 /* ClassicWithBackgroundCoordinatorSQLiteQMCDRecordStack.h */,
-				558666731A122DBC00927430 /* ClassicWithBackgroundCoordinatorSQLiteQMCDRecordStack.m */,
-				558666761A122DBC00927430 /* ManuallyMigratingQMCDRecordStack.h */,
-				558666771A122DBC00927430 /* ManuallyMigratingQMCDRecordStack.m */,
-				558666781A122DBC00927430 /* QMCDRecordStack+Actions.h */,
-				558666791A122DBC00927430 /* QMCDRecordStack+Actions.m */,
-				5586667A1A122DBC00927430 /* QMCDRecordStack+Private.h */,
 				5586667B1A122DBC00927430 /* QMCDRecordStack.h */,
 				5586667C1A122DBC00927430 /* QMCDRecordStack.m */,
-				5586667D1A122DBC00927430 /* SQLiteQMCDRecordStack.h */,
-				5586667E1A122DBC00927430 /* SQLiteQMCDRecordStack.m */,
-				5586667F1A122DBC00927430 /* SQLiteWithSavingContextQMCDRecordStack.h */,
-				558666801A122DBC00927430 /* SQLiteWithSavingContextQMCDRecordStack.m */,
 			);
 			path = QMCDRecordStack;
 			sourceTree = "<group>";
@@ -361,18 +307,13 @@
 			files = (
 				5586669D1A122DBC00927430 /* QMCDRecord+Options.m in Sources */,
 				5586669A1A122DBC00927430 /* NSError+QMCDRecordErrorHandling.m in Sources */,
-				558666A71A122DBC00927430 /* ManuallyMigratingQMCDRecordStack.m in Sources */,
-				558666A31A122DBC00927430 /* AutoMigratingWithSourceAndTargetModelQMCDRecordStack.m in Sources */,
 				558666A91A122DBC00927430 /* QMCDRecordStack.m in Sources */,
 				558666891A122DBC00927430 /* NSManagedObject+QMCDAggregation.m in Sources */,
 				5586668D1A122DBC00927430 /* NSManagedObject+QMCDRecord.m in Sources */,
 				558666921A122DBC00927430 /* NSManagedObjectModel+QMCDRecord.m in Sources */,
 				558666931A122DBC00927430 /* NSPersistentStore+QMCDRecord.m in Sources */,
 				5586668E1A122DBC00927430 /* NSManagedObject+QMCDRequests.m in Sources */,
-				558666A41A122DBC00927430 /* ClassicSQLiteQMCDRecordStack.m in Sources */,
 				5590F23D1A0B87AB00C5044F /* QMDBStorage.m in Sources */,
-				558666AB1A122DBC00927430 /* SQLiteWithSavingContextQMCDRecordStack.m in Sources */,
-				558666A81A122DBC00927430 /* QMCDRecordStack+Actions.m in Sources */,
 				5586668F1A122DBC00927430 /* NSManagedObjectContext+QMCDObserving.m in Sources */,
 				558666971A122DBC00927430 /* NSPersistentStoreCoordinator+QMCDRecord.m in Sources */,
 				558666981A122DBC00927430 /* NSArray+QMCDRecord.m in Sources */,
@@ -380,12 +321,7 @@
 				5586669F1A122DBC00927430 /* QMCDRecord+VersionInformation.m in Sources */,
 				5586669B1A122DBC00927430 /* QMCDMigrationManager.m in Sources */,
 				558666A01A122DBC00927430 /* QMCDRecordInternal.m in Sources */,
-				558666941A122DBC00927430 /* NSPersistentStoreCoordinator+QMCDAutoMigrations.m in Sources */,
-				558666961A122DBC00927430 /* NSPersistentStoreCoordinator+QMCDManualMigrations.m in Sources */,
-				558666A21A122DBC00927430 /* AutoMigratingQMCDRecordStack.m in Sources */,
-				558666A51A122DBC00927430 /* ClassicWithBackgroundCoordinatorSQLiteQMCDRecordStack.m in Sources */,
 				558666901A122DBC00927430 /* NSManagedObjectContext+QMCDRecord.m in Sources */,
-				558666AA1A122DBC00927430 /* SQLiteQMCDRecordStack.m in Sources */,
 				558666991A122DBC00927430 /* NSDictionary+QMCDRecordAdditions.m in Sources */,
 				5586668C1A122DBC00927430 /* NSManagedObject+QMCDFinders.m in Sources */,
 			);
