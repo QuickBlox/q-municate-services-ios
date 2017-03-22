@@ -86,19 +86,20 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
         [self.cacheDataSource cachedDialogs:^(NSArray *collection) {
             
             if (collection.count > 0) {
-                // We need only current users dialog
-                
-                NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%lu IN self.occupantIDs", weakSelf.serviceManager.currentUser.ID];
-                NSArray *userDialogs = [collection filteredArrayUsingPredicate:predicate];
-                
-                [weakSelf.dialogsMemoryStorage addChatDialogs:userDialogs andJoin:NO];
+
+                [weakSelf.dialogsMemoryStorage addChatDialogs:collection
+                                                      andJoin:NO];
                 
                 NSMutableSet *dialogsUsersIDs = [NSMutableSet set];
-                for (QBChatDialog *dialog in userDialogs) {
+                
+                for (QBChatDialog *dialog in collection) {
                     [dialogsUsersIDs addObjectsFromArray:dialog.occupantIDs];
                 }
+                
                 if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didLoadChatDialogsFromCache:withUsers:)]) {
-                    [weakSelf.multicastDelegate chatService:weakSelf didLoadChatDialogsFromCache:userDialogs withUsers:dialogsUsersIDs.copy];
+                    [weakSelf.multicastDelegate chatService:weakSelf
+                                didLoadChatDialogsFromCache:collection
+                                                  withUsers:dialogsUsersIDs.copy];
                 }
             }
             
@@ -124,9 +125,9 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
                 
                 [weakSelf.messagesMemoryStorage addMessages:collection forDialogID:dialogID];
                 
-//                if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddMessagesToMemoryStorage:forDialogID:)]) {
-//                    [weakSelf.multicastDelegate chatService:weakSelf didAddMessagesToMemoryStorage:collection forDialogID:dialogID];
-//                }
+                if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddMessagesToMemoryStorage:forDialogID:)]) {
+                    [weakSelf.multicastDelegate chatService:weakSelf didAddMessagesToMemoryStorage:collection forDialogID:dialogID];
+                }
             }
             
             if (completion) {
@@ -514,7 +515,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
              || message.messageType == QMMessageTypeRejectContactRequest
              || message.messageType == QMMessageTypeDeleteContactRequest) {
         
-        if (chatDialogToUpdate != nil) {
+        if (chatDialogToUpdate) {
             
             chatDialogToUpdate.unreadMessagesCount++;
             
@@ -528,8 +529,8 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
         }
         else {
             
-            chatDialogToUpdate = [[QBChatDialog alloc] initWithDialogID:message.dialogID type:QBChatDialogTypePrivate];
-            
+            chatDialogToUpdate = [[QBChatDialog alloc] initWithDialogID:message.dialogID
+                                                                   type:QBChatDialogTypePrivate];
             NSUInteger opponentID = message.senderID;
             
             if (message.senderID == self.serviceManager.currentUser.ID) {
@@ -539,7 +540,6 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
             
             chatDialogToUpdate.occupantIDs = @[@(self.serviceManager.currentUser.ID), @(opponentID)];
             chatDialogToUpdate.unreadMessagesCount++;
-            
             // updating dialog last message params
             [self updateLastMessageParamsForChatDialog:chatDialogToUpdate withMessage:message];
             chatDialogToUpdate.updatedAt = message.dateSent;

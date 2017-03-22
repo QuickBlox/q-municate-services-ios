@@ -159,7 +159,7 @@
 
 - (NSArray *)dialogsWithSortDescriptors:(NSArray *)descriptors {
     
-    NSArray *sortedDialogs =  [self.dialogs.allValues sortedArrayUsingDescriptors:descriptors];
+    NSArray *sortedDialogs = [self.dialogs.allValues sortedArrayUsingDescriptors:descriptors];
     
     return sortedDialogs;
 }
@@ -169,6 +169,12 @@
 - (void)free {
     
     [self.dialogs removeAllObjects];
+}
+
+- (NSString *)description {
+    
+    return [NSString stringWithFormat:@"<%@ %p> dialogs: %tu",
+            NSStringFromClass(self.class), self, _dialogs.count];
 }
 
 @end
