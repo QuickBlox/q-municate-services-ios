@@ -21,14 +21,9 @@
 @property (copy, nonatomic) QMAttachmentMessageStatusBlock onMessageDidChangeAttachmentStatus;
 @property (copy, nonatomic) QMAttachmentMesssageUploadProgressBlock onMessageDidChangeUploadingProgress;
 @property (copy, nonatomic) QMAttachmentDownloadProgressBlock onMessageDidChangeDownloadingProgress;
-@property (weak, nonatomic) id <QMMediaServiceDelegate> delegate;
+@property (copy, nonatomic) QMAttachmentMessageDidStartUploading onMessageDidStartUploading;
 
 - (QMMediaItem *)placeholderMediaForMessage:(QBChatMessage *)message;
 
 @end
 
-@protocol QMMediaServiceDelegate <NSObject>
-
-- (void)mediaService:(QMMediaService *)mediaService didUpdateMediaItem:(QMMediaItem *)mediaItem;
-
-@end

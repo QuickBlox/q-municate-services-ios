@@ -9,14 +9,16 @@
 #import "QMMediaInfoService.h"
 #import "QMMediaItem.h"
 #import <AVKit/AVKit.h>
+#import "QMImageOperation.h"
 
 
 @interface QMMediaInfoService()
 
 @property (strong, nonatomic) NSMutableDictionary *imagesMemoryStorage;
 
-@property (strong, nonatomic) NSMutableDictionary *mediaInfoInProcess;
+@property (strong, nonatomic) NSMutableDictionary *mediaInfoMemoryStorage;
 @property (strong, nonatomic) NSMutableDictionary *imagesInProcess;
+@property (strong, nonatomic) NSOperationQueue *imagesOperationQueue;
 
 @end
 
@@ -27,7 +29,9 @@
 - (instancetype)init {
     
     if (self = [super init]) {
-        _mediaInfoInProcess = [NSMutableDictionary dictionary];
+        _mediaInfoMemoryStorage = [NSMutableDictionary dictionary];
+        _imagesOperationQueue = [[NSOperationQueue alloc] init];
+        _imagesOperationQueue.maxConcurrentOperationCount  = 3;
     }
     
     return self;
@@ -37,11 +41,57 @@
     
     NSString *imageKey = mediaItem.mediaID;
     
-    if (imageKey.length > 0) {
+    if (imageKey.length > 0 && thumbnailImage) {
         self.imagesMemoryStorage[imageKey] = thumbnailImage;
         [self saveData:UIImagePNGRepresentation(thumbnailImage)
                 forKey:imageKey
                  error:nil];
+    }
+}
+
+- (QMMediaInfo *)cachedMediaInfoForItem:(QMMediaItem *)mediaItem {
+    
+    QMMediaInfo *mediaInfo = self.mediaInfoMemoryStorage[mediaItem.mediaID];
+    return mediaInfo;
+}
+
+
+
+- (void)thumbnailImageForMedia:(QMMediaItem *)mediaItem completion:(void(^)(UIImage *image, NSError *error))completion {
+    NSString *imageKey = mediaItem.mediaID;
+    
+    if (self.imagesMemoryStorage[imageKey]) {
+        UIImage *image = self.imagesMemoryStorage[imageKey];
+        completion(image, nil);
+        return;
+    }
+    else {
+        __weak typeof(self) weakSelf = self;
+        
+        [self localThumbnailForMediaItem:mediaItem completion:^(UIImage *image) {
+            if (!image) {
+                __strong typeof(weakSelf) strongSelf = weakSelf;
+                for (QMImageOperation *op in [strongSelf.imagesOperationQueue operations]) {
+                    if ([op.mediaItem.mediaID isEqualToString:mediaItem.mediaID]) {
+                        [op cancel];
+                    }
+                }
+                
+                QMImageOperation *imageOperation = [[QMImageOperation alloc] initWithMediaItem:mediaItem completionHandler:^(UIImage * _Nullable image, NSError * _Nullable error) {
+                        if (completion) {
+                            [strongSelf saveThumbnailImage:image forMediaItem:mediaItem];
+                            completion(image, error);
+                        }
+                }];
+                
+                [strongSelf.imagesOperationQueue addOperation:imageOperation];
+                NSLog(@"operations count = %d", [strongSelf.imagesOperationQueue operationCount]);
+            }
+            else {
+                self.imagesMemoryStorage[mediaItem.mediaID] = image;
+                completion(image, nil);
+            }
+        }];
     }
 }
 
@@ -72,10 +122,14 @@
             [[[strongSelf class] mediaInfoOperations] setObject:mediaInfo forKey:mediaID];
             
             [mediaInfo prepareWithCompletion:^(NSTimeInterval duration, CGSize mediaSize, UIImage *image, NSError *error) {
+                if (!error) {
+                    strongSelf.mediaInfoMemoryStorage[mediaItem.mediaID] = mediaInfo;
+                }
                 if (completion) {
                     if (image) {
                         [strongSelf saveThumbnailImage:image forMediaItem:mediaItem];
                     }
+                    [[[self class] mediaInfoOperations] removeObjectForKey:mediaID];
                     completion(duration, mediaSize, image, error);
                 }
             }];
@@ -85,7 +139,7 @@
 }
 
 - (void)localThumbnailForMediaItem:(QMMediaItem *)mediaItem
-                    completion:(void(^)(UIImage *image))completion {
+                        completion:(void(^)(UIImage *image))completion {
     
     NSString *mediaID = mediaItem.mediaID;
     if (mediaID == nil) {
@@ -104,23 +158,21 @@
     NSString *path = thumbnailPath(mediaID);
     
     if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
-           dispatch_async(dispatch_get_main_queue(), ^{
-      //  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
             
             NSError *error;
             NSData *data = [NSData dataWithContentsOfFile:path options:NSDataReadingMappedIfSafe error:&error];
             UIImage *image = [UIImage imageWithData:data];
             
-        
-                
+            dispatch_async(dispatch_get_main_queue(), ^{
                 if (image != nil) {
                     self.imagesMemoryStorage[mediaItem.mediaID] = image;
                 }
                 if (completion) {
                     completion(image);
                 }
-      //      });
-    });
+            });
+        });
     }
     else {
         if (completion) {
@@ -148,6 +200,7 @@
     QMMediaInfo *mediaInfo = [[[self class] mediaInfoOperations] objectForKey:key];
     if (mediaInfo) {
         [mediaInfo cancel];
+        [[[self class] mediaInfoOperations] objectForKey:key];
     }
 }
 
@@ -189,16 +242,16 @@ static NSString* thumbnailPath(NSString *key) {
     return isSucceed;
 }
 
-+ (NSMapTable *)mediaInfoOperations {
++ (NSMutableDictionary *)mediaInfoOperations {
     
-    static NSMapTable *mediaInfoOperations = nil;
+    static NSMutableDictionary *mediaInfoOperations = nil;
     
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         
-        mediaInfoOperations = [NSMapTable strongToWeakObjectsMapTable];
+        mediaInfoOperations = [NSMutableDictionary dictionary];
     });
-    
+    NSLog(@"mediaInfoOperations = %d",mediaInfoOperations.count);
     return mediaInfoOperations;
 }
 @end

@@ -47,22 +47,43 @@
                                                  localURL:nil
                                                 remoteURL:nil
                                               contentType:contentType];
+    item.attachment = attachment;
+
     
-    CGFloat width = [attachment.context[@"width"] doubleValue];
-    CGFloat height = [attachment.context[@"height"] doubleValue];
-    
-    CGSize size = CGSizeMake(width, height);
-    
-    if (!CGSizeEqualToSize(size, CGSizeZero)) {
-        item.mediaSize = CGSizeMake(width, height);
-    }
-    
-    if (attachment.context[@"duration"]) {
-        item.mediaDuration = [attachment.context[@"duration"] doubleValue];
-    }
     
     return item;
 }
+
+- (void)updateWithAttachment:(QBChatAttachment *)attachment {
+    
+    _name = attachment.name;
+    _mediaID = attachment.ID;
+    
+    QMMediaContentType contentType;
+    
+    if ([attachment.type isEqualToString:@"audio"]) {
+        contentType = QMMediaContentTypeAudio;
+    }
+    else if ([attachment.type isEqualToString:@"video"]) {
+        
+        contentType = QMMediaContentTypeVideo;
+    }
+    else if ([attachment.type isEqualToString:@"image"]) {
+        contentType = QMMediaContentTypeImage;
+    }
+    
+    _contentType = contentType;
+    
+    CGSize size = CGSizeMake(attachment.width, attachment.height);
+    
+    if (!CGSizeEqualToSize(size, CGSizeZero)) {
+        _mediaSize = size;
+    }
+    
+    _mediaDuration = attachment.duration;
+}
+
+
 
 + (instancetype)mediaItemWithImage:(UIImage *)image {
     
@@ -108,35 +129,9 @@
     if (_attachment) {
         return;
     }
-    
     _attachment = attachment;
     
-    _mediaID = attachment.ID;
-    
-    if ([attachment.type isEqualToString:@"audio"]) {
-        _contentType = QMMediaContentTypeAudio;
-    }
-    else if ([attachment.type isEqualToString:@"video"]) {
-        
-        _contentType = QMMediaContentTypeVideo;
-    }
-    else if ([attachment.type isEqualToString:@"image"]) {
-        _contentType = QMMediaContentTypeImage;
-    }
-    
-    CGFloat width = [attachment.context[@"width"] doubleValue];
-    CGFloat height = [attachment.context[@"height"] doubleValue];
-    
-    CGSize size = CGSizeMake(width, height);
-    
-    if (!CGSizeEqualToSize(size, CGSizeZero)) {
-        
-        self.mediaSize = CGSizeMake(width, height);
-    }
-    
-    if (attachment.context[@"duration"]) {
-        self.mediaDuration = [attachment.context[@"duration"] doubleValue];
-    }
+    [self updateWithAttachment:attachment];
 }
 
 
@@ -214,15 +209,13 @@
         
         
         if (_mediaDuration > 0) {
-            _attachment.context[@"duration"] = @(_mediaDuration);
-            [_attachment synchronize];
+            _attachment.duration = _mediaDuration;
         }
         
-        if (!CGSizeEqualToSize(_mediaSize, _mediaSize)) {
-            _attachment.context[@"width"] = @(_mediaSize.width);
-            _attachment.context[@"height"] = @(_mediaSize.height);
-            
-            [_attachment synchronize];
+        
+        if (!CGSizeEqualToSize(_mediaSize, CGSizeZero)) {
+            _attachment.height = _mediaSize.height;
+            _attachment.width = _mediaSize.width;
         }
     }
     
@@ -294,6 +287,10 @@
         case QMMediaContentTypeImage:
             stringMediaType = @"png";
             break;
+            
+        default:
+            stringMediaType = @"";
+            break;
     }
     
     return stringMediaType;
@@ -347,46 +344,30 @@
     
     if (_mediaDuration != mediaDuration) {
         _mediaDuration = mediaDuration;
-        
-        _attachment.context[@"duration"] = @(self.mediaDuration);
-        [_attachment synchronize];
+        _attachment.duration = mediaDuration;
     }
 }
 
 - (void)setMediaSize:(CGSize)mediaSize {
     
     if (!CGSizeEqualToSize(_mediaSize, mediaSize)) {
-        _mediaSize = mediaSize;
-        _attachment.context[@"width"] = @(self.mediaSize.width);
-        _attachment.context[@"height"] = @(self.mediaSize.height);
         
-        [_attachment synchronize];
+        _mediaSize = mediaSize;
+        _attachment.width = self.mediaSize.width;
+        _attachment.height = self.mediaSize.height;
     }
 }
 
-
-//MARK: - NSCopying
-
-- (id)copyWithZone:(NSZone *)zone {
-    
-    QMMediaItem *copy = [[[self class] allocWithZone:zone] init];
-    
-    copy.mediaID  = [self.mediaID copyWithZone:zone];
-    copy.localURL = [self.localURL copyWithZone:zone];
-    copy.remoteURL = [self.remoteURL copyWithZone:zone];
-    copy.name  = [self.name copyWithZone:zone];
-    copy.contentType = self.contentType;
-    copy.mediaDuration = self.mediaDuration;
-    copy.mediaSize = self.mediaSize;
-    copy.attachment = [self.attachment copyWithZone:zone];
-    copy.image = self.image;
-    
-    return copy;
+- (BOOL)isReady {
+    if (self.contentType == QMMediaContentTypeImage) {
+        return YES;
+    }
+   else  if (self.contentType == QMMediaContentTypeAudio) {
+        return self.mediaDuration > 0;
+    }
+    else if (self.contentType == QMMediaContentTypeVideo) {
+        return self.mediaDuration > 0 && self.image != nil;
+    }
 }
-
-
-
-
-
 
 @end

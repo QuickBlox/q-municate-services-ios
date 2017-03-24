@@ -15,6 +15,8 @@
 typedef void (^QMAttachmentMessageStatusBlock)(QMMessageAttachmentStatus status, QBChatMessage *message);
 typedef void (^QMAttachmentMesssageUploadProgressBlock)(float progress, QBChatMessage *message);
 typedef void (^QMAttachmentDownloadProgressBlock)(float progress, QBChatMessage *message, QBChatAttachment *attachment);
+typedef void (^QMAttachmentMessageDidStartUploading)(QBChatMessage *message);
+
 
 typedef void (^QMAttachmentDownloadProgressBlock)(float progress, QBChatMessage *message, QBChatAttachment *attachment);
 

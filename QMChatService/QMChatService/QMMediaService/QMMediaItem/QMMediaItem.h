@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 typedef NS_ENUM(NSInteger, QMMediaContentType) {
-    QMMediaContentTypeAudio,
+    QMMediaContentTypeAudio = 1,
     QMMediaContentTypeVideo,
     QMMediaContentTypeImage,
     QMMediaContentTypeCustom
@@ -52,5 +52,6 @@ typedef NS_ENUM(NSInteger, QMMediaContentType) {
 
 - (NSString *)stringContentType;
 - (NSString *)stringMIMEType;
+- (BOOL)isReady;
 
 @end

@@ -42,24 +42,4 @@
 }
 
 
-- (BFTask *)downloadMediaItemWithID:(NSString *)mediaID
-                      progressBlock:(QMMediaProgressBlock)progressBlock {
-    
-    BFTaskCompletionSource *source = [BFTaskCompletionSource taskCompletionSource];
-    
-    [self downloadMediaItemWithID:mediaID withCompletionBlock:^(NSString *mediaID, NSData *data, QMMediaError *error) {
-        if (error) {
-            [source setError:error];
-        }
-        else {
-            [source setResult:data];
-        }
-    } progressBlock:^(float progress) {
-        progressBlock(progress);
-    }];
-    
-    return source.task;
-}
-
-
 @end

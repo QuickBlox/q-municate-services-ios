@@ -29,5 +29,4 @@ Pod::Spec.new do |s|
 
   s.resource_bundle = {'QMChatCacheModel' => 'QMChatCache/QMChatCache/CoreData/QMChatServiceModel.xcdatamodeld', 'QMContactListCacheModel' => 'QMContactListCache/QMContactListCache/CoreData/QMContactListModel.xcdatamodeld', 'QMUsersCacheModel' => 'QMUsersCache/QMUsersCache/CoreData/QMUsersModel.xcdatamodeld'}
   s.dependency "Bolts",  '>= 1.5.0'
-s.dependency "QuickBlox"
 end

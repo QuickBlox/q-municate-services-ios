@@ -72,7 +72,7 @@
     }
     
     else if (message.attachments.count) {
-
+        
         QBChatAttachment *currentAttachment = nil;
         for (QBChatAttachment *attachment in message.attachments) {
             if ([attachment.ID isEqualToString:attachmentID]) {
@@ -99,11 +99,8 @@
         return;
     }
     
-    if ([self.mediaItemsInProgress containsObject:attachmentID]) {
-        return;
-    }
-    
     if (message.attachments.count) {
+        
         
         QBChatAttachment *attachment = message.attachments[0];
         
@@ -114,7 +111,7 @@
             
             mediaItem = [QMMediaItem mediaItemWithAttachment:attachment];
             
-            if (mediaItem.contentType != QMMediaContentTypeVideo) {
+            if ([self shouldDownloadContentForType:mediaItem.contentType]) {
                 
                 // loading attachment from server
                 [self changeMessageAttachmentStatus:QMMessageAttachmentStatusLoading forMessage:message];
@@ -129,21 +126,31 @@
                                               
                                               if (!error) {
                                                   mediaItem.data = data;
-                                                  mediaItem.localURL = [strongSelf.storeService saveMediaItem:mediaItem];
                                                   
-                                                  [strongSelf changeMessageAttachmentStatus:QMMessageAttachmentStatusLoaded forMessage:message];
-                                                  [strongSelf.mediaItemsInProgress removeObject:mediaID];
-                                                  [strongSelf getFullMediaInfoForItem:mediaItem withCompletion:^(NSTimeInterval duration, CGSize size, UIImage *image, NSError *error) {
-                                                      if (!error) {
-                                                          if (image) {
-                                                              mediaItem.image = image;
-                                                          }
-                                                          mediaItem.mediaDuration = duration;
-                                                          mediaItem.mediaSize = size;
-                                                      }
-                                                      [strongSelf.storeService saveMediaItem:mediaItem];
+                                                  dispatch_block_t completionBlock = ^{
+                                                      mediaItem.localURL = [strongSelf.storeService saveMediaItem:mediaItem];
+                                                      [strongSelf.mediaItemsInProgress removeObject:mediaID];
+                                                      [strongSelf changeMessageAttachmentStatus:QMMessageAttachmentStatusLoaded forMessage:message];
                                                       completion(mediaItem, nil);
-                                                  }];
+                                                  };
+                                                  /*
+                                                   if (![mediaItem isReady]) {
+                                                   [strongSelf getFullMediaInfoForItem:mediaItem withCompletion:^(NSTimeInterval duration, CGSize size, UIImage *image, NSError *error) {
+                                                   if (!error) {
+                                                   if (image) {
+                                                   mediaItem.image = image;
+                                                   }
+                                                   mediaItem.mediaDuration = duration;
+                                                   mediaItem.mediaSize = size;
+                                                   }
+                                                   
+                                                   completionBlock();
+                                                   
+                                                   }];
+                                                   }
+                                                   else {*/
+                                                  completionBlock();
+                                                  
                                               }
                                               else {
                                                   
@@ -160,27 +167,47 @@
                                           }];
             }
             else {
-                
-                __weak typeof(self) weakSelf = self;
-                [self getFullMediaInfoForItem:mediaItem withCompletion:^(NSTimeInterval duration, CGSize size, UIImage *image, NSError *error) {
-                    __strong typeof(weakSelf) strongSelf = weakSelf;
-                    if (!error) {
-                        if (image) {
-                            mediaItem.image = image;
+                if (mediaItem.contentType == QMMediaContentTypeVideo) {
+                 /*  __weak typeof(self) weakSelf = self;
+                    
+                     [self getFullMediaInfoForItem:mediaItem withCompletion:^(NSTimeInterval duration, CGSize size, UIImage *image, NSError *error) {
+                     __strong typeof(weakSelf) strongSelf = weakSelf;
+                     if (!error) {
+                     if (image) {
+                     mediaItem.image = image;
+                     }
+                     mediaItem.mediaDuration = duration;
+                     mediaItem.mediaSize = size;
+                     }
+                     [strongSelf.storeService saveMediaItem:mediaItem];
+                     completion(mediaItem, nil);
+                     }];
+                     */
+                    /*
+                     [self.mediaItemsInProgress addObject:attachmentID];
+                     
+                     
+                     
+                    
+                    NSLog(@"remoteURL = %@", mediaItem.remoteURL);
+                    
+                    [self.mediaInfoService thumbnailImageForMedia:mediaItem completion:^(UIImage *image, NSError *error) {
+                        __strong typeof(weakSelf) strongSelf = weakSelf;
+                        if (!error) {
+                            if (image) {
+                                mediaItem.image = image;
+                            }
                         }
-                        mediaItem.mediaDuration = duration;
-                        mediaItem.mediaSize = size;
-                    }
-                    [strongSelf.storeService saveMediaItem:mediaItem];
+                        //   [strongSelf.storeService saveMediaItem:mediaItem];
+                        completion(mediaItem, nil);
+                    }];
+                    */
                     completion(mediaItem, nil);
-                }];
-                
+                }
             }
         }
         else {
-            
             if (completion) {
-                
                 completion(mediaItem, nil);
             }
         }
@@ -188,6 +215,34 @@
     }
 }
 
+- (void)getThumbnailImageForTime:(NSURL *)url withCompletion:(void(^)(UIImage *))completion
+{
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
+    dispatch_async(queue, ^{
+        __block UIImage *thumb ;
+        AVPlayerItem *playerItem = [AVPlayerItem playerItemWithURL:url];
+        AVAssetImageGenerator *_generator;
+        _generator = [AVAssetImageGenerator assetImageGeneratorWithAsset:playerItem.asset];
+        
+        AVAssetImageGeneratorCompletionHandler handler = ^(CMTime requestedTime, CGImageRef image, CMTime actualTime, AVAssetImageGeneratorResult result, NSError *error) {
+            if (result == AVAssetImageGeneratorSucceeded) {
+                thumb = [UIImage imageWithCGImage:image];
+                NSLog(@"Succesfully generater the thumbnail!!!");
+            } else {
+                NSLog(@"Failed to generater the thumbnail!!!");
+                NSLog(@"Error : %@",error.localizedDescription);
+                
+            }
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completion(thumb);
+            });
+        };
+        
+        [_generator generateCGImagesAsynchronouslyForTimes:[NSArray arrayWithObject:[NSValue valueWithCMTime:CMTimeMakeWithSeconds(2,1)]] completionHandler:handler];
+        
+    });
+    
+}
 //MARK: Sending message
 
 - (void)sendMessage:(QBChatMessage *)message
@@ -197,6 +252,7 @@
          completion:(QBChatCompletionBlock)completion {
     
     __weak __typeof(self)weakSelf = self;
+    
     
     [self getFullMediaInfoForItem:mediaItem withCompletion:^(NSTimeInterval duration, CGSize size, UIImage *image, NSError *error) {
         
@@ -241,9 +297,10 @@
                                       }
                                       
                                       mediaItem.mediaID = blob.UID;
+                                      mediaItem.attachment.size = blob.size;
                                       mediaItem.data = data;
                                       message.attachments = @[mediaItem.attachment];
-                                      message.text = [NSString stringWithFormat:@"Attachment %@",[mediaItem stringContentType]];
+                                      message.text = [NSString stringWithFormat:@"%@ attachment", [[mediaItem stringContentType] capitalizedString]];
                                       
                                       NSURL *localURL = [strongSelf.storeService saveMediaItem:mediaItem];
                                       if (localURL != nil) {
@@ -334,19 +391,20 @@
     
     if (mediaItem.contentType == QMMediaContentTypeVideo || mediaItem.contentType == QMMediaContentTypeAudio) {
         
-        __weak typeof(self) weakSelf = self;
-        
         [self.mediaInfoService mediaInfoForItem:mediaItem completion:^(NSTimeInterval duration, CGSize mediaSize, UIImage *image, NSError *error) {
-            __strong typeof(weakSelf) strongSelf = weakSelf;
             
             completion(duration, mediaSize, image, error);
         }];
         
     }
     else {
-        completion(0, CGSizeZero,nil, nil);
+        completion(0, CGSizeZero,mediaItem.image, nil);
     }
     
+}
+
+- (BOOL)shouldDownloadContentForType:(QMMediaContentType)mediaContentType {
+    return mediaContentType == QMMediaContentTypeImage || mediaContentType == QMMediaContentTypeAudio;
 }
 
 

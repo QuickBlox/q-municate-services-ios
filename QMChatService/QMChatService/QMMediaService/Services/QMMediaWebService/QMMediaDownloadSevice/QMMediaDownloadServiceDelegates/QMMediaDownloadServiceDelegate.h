@@ -10,16 +10,12 @@
 
 #import "QMMediaBlocks.h"
 
-@protocol QMMediaDownloadDelegate;
-
 @protocol QMMediaDownloadServiceDelegate <NSObject>
 
 - (void)downloadMediaItemWithID:(NSString *)mediaID
             withCompletionBlock:(QMMediaRestCompletionBlock)completionBlock
                   progressBlock:(QMMediaProgressBlock)progressBlock;
 
-- (BFTask<NSData *> *)downloadMediaItemWithID:(NSString *)mediaID
-                                progressBlock:(QMMediaProgressBlock)progressBlock;
 @end
 
 

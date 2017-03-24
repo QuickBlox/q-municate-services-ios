@@ -22,6 +22,7 @@ typedef NS_ENUM(NSUInteger, QMVideoUrlType) {
 @property (strong, nonatomic) NSURL *assetURL;
 
 @property (assign, nonatomic) QMMediaContentType mediaContentType;
+@property (strong, nonatomic) AVAssetImageGenerator *imageGenerator;
 
 @property (copy, nonatomic) void(^completion)(NSTimeInterval duration, CGSize size, UIImage *image, NSError *error);
 
@@ -86,12 +87,22 @@ typedef NS_ENUM(NSUInteger, QMVideoUrlType) {
     mediaInfo.mediaContentType = mediaItem.contentType;
     mediaInfo.thumbnailImage = mediaItem.image;
     
-    if (mediaItem.mediaDuration > 0 && !CGSizeEqualToSize(mediaItem.mediaSize, CGSizeZero) && mediaItem.image) {
+    if (mediaItem.mediaDuration > 0) {
         mediaInfo.duration = mediaItem.mediaDuration;
+    }
+    
+    if (!CGSizeEqualToSize(mediaItem.mediaSize, CGSizeZero)) {
         mediaInfo.mediaSize = mediaItem.mediaSize;
-        mediaInfo.prepareStatus = QMMediaPrepareStatusPrepareFinished;
+    }
+    if (mediaItem.image) {
         mediaInfo.thumbnailImage = mediaItem.image;
     }
+    
+    if ([mediaItem isReady]) {
+        mediaInfo.prepareStatus = QMMediaPrepareStatusPrepareFinished;
+    }
+    
+    //mediaInfo.playerItem = [AVPlayerItem playerItemWithAsset:[mediaInfo getAssetInternal]];
     
     return mediaInfo;
 }
@@ -110,6 +121,7 @@ typedef NS_ENUM(NSUInteger, QMVideoUrlType) {
         dispatch_async(self.assetQueue, ^{
             [self.asset cancelLoading];
         });
+        [self.imageGenerator cancelAllCGImageGeneration];
     }
 }
 
@@ -142,7 +154,7 @@ typedef NS_ENUM(NSUInteger, QMVideoUrlType) {
         
         NSArray *requestedKeys = @[@"tracks", @"duration", @"playable"];
         [asset loadValuesAsynchronouslyForKeys:requestedKeys completionHandler:^{
-            dispatch_async(self.assetQueue, ^(void) {
+            dispatch_async(strongSelf.assetQueue, ^(void) {
                 [strongSelf prepareAsset:asset withKeys:requestedKeys];
             });
         }];
@@ -151,23 +163,24 @@ typedef NS_ENUM(NSUInteger, QMVideoUrlType) {
 
 
 
-- (void)generateThumbnailFromAsset:(AVAsset*)thumbnailAsset withSize:(CGSize)size
+- (void)generateThumbnailFromAsset:(AVURLAsset *)thumbnailAsset withSize:(CGSize)size
                  completionHandler:(void (^)(UIImage *thumbnail))handler
 {
-    AVAssetImageGenerator *imageGenerator = [[AVAssetImageGenerator alloc] initWithAsset:thumbnailAsset];
+    _imageGenerator = [[AVAssetImageGenerator alloc] initWithAsset:thumbnailAsset];
     
-    imageGenerator.appliesPreferredTrackTransform = YES;
+    _imageGenerator.appliesPreferredTrackTransform = YES;
     
     if (!CGSizeEqualToSize(size, CGSizeZero)) {
-        imageGenerator.maximumSize = size;
-    }
-    else {
-        imageGenerator.maximumSize = CGSizeMake(480, 480);
+        
+        BOOL isVerticalVideo = size.width < size.height;
+        
+        size = isVerticalVideo ? CGSizeMake(142.0, 270.0) : CGSizeMake(270.0, 142.0);;
     }
 
-    NSValue *imageTimeValue = [NSValue valueWithCMTime:CMTimeMake(self.duration < 5 ? ceil(self.duration/2) : 4, 1)];
+        
+    NSValue *imageTimeValue = [NSValue valueWithCMTime:CMTimeMake(0, 1)];
     
-    [imageGenerator generateCGImagesAsynchronouslyForTimes:[NSArray arrayWithObject:imageTimeValue] completionHandler:
+    [_imageGenerator generateCGImagesAsynchronouslyForTimes:[NSArray arrayWithObject:imageTimeValue] completionHandler:
      ^(CMTime requestedTime, CGImageRef image, CMTime actualTime, AVAssetImageGeneratorResult result, NSError *error)
      {
          if (result == AVAssetImageGeneratorFailed) {
@@ -180,6 +193,7 @@ typedef NS_ENUM(NSUInteger, QMVideoUrlType) {
              UIImage *thumbUIImage = nil;
              if (image) {
                  thumbUIImage = [[UIImage alloc] initWithCGImage:image];
+                 CFRelease(image);
              }
              
              if (handler) {
@@ -190,34 +204,35 @@ typedef NS_ENUM(NSUInteger, QMVideoUrlType) {
 }
 
 - (void)prepareAsset:(AVURLAsset *)asset withKeys:(NSArray *)requestedKeys {
-    
-    // Make sure that the value of each key has loaded successfully.
-    for (NSString *thisKey in requestedKeys) {
-        NSError *error = nil;
-        AVKeyValueStatus keyStatus = [asset statusOfValueForKey:thisKey error:&error];
-        if (keyStatus == AVKeyValueStatusFailed) {
-            
-            self.prepareStatus = QMMediaPrepareStatusPrepareFailed;
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                
-                if (self.completion) {
-                    self.completion(0, CGSizeZero, nil, error);
-                }
-            });
-        }
-    }
+    /*
+     // Make sure that the value of each key has loaded successfully.
+     for (NSString *thisKey in requestedKeys) {
+     NSError *error = nil;
+     AVKeyValueStatus keyStatus = [asset statusOfValueForKey:thisKey error:&error];
+     if (keyStatus == AVKeyValueStatusFailed) {
+     
+     self.prepareStatus = QMMediaPrepareStatusPrepareFailed;
+     
+     dispatch_async(dispatch_get_main_queue(), ^{
+     
+     if (self.completion) {
+     self.completion(0, CGSizeZero, nil, error);
+     }
+     });
+     }
+     }
+     */
     
     NSTimeInterval duration = CMTimeGetSeconds(asset.duration);
     CGSize mediaSize = CGSizeZero;
     
     if (self.mediaContentType == QMMediaContentTypeVideo) {
-    
+        
         CGFloat videoWidth = [[[asset tracksWithMediaType:AVMediaTypeVideo] firstObject] naturalSize].width;
         CGFloat videoHeight = [[[asset tracksWithMediaType:AVMediaTypeVideo] firstObject] naturalSize].height;
         
         mediaSize = CGSizeMake(videoWidth, videoHeight);
-
+        
         
         if (self.thumbnailImage == nil) {
             
@@ -226,7 +241,7 @@ typedef NS_ENUM(NSUInteger, QMVideoUrlType) {
                     self.prepareStatus = QMMediaPrepareStatusPrepareFinished;
                     self.duration = duration;
                     self.mediaSize = mediaSize;
-                    self.playerItem = [AVPlayerItem playerItemWithAsset:asset];
+                    //  self.playerItem = [AVPlayerItem playerItemWithAsset:asset];
                     self.thumbnailImage = thumbnail;
                     if (self.completion) {
                         self.completion(duration, mediaSize, thumbnail, nil);
@@ -241,7 +256,7 @@ typedef NS_ENUM(NSUInteger, QMVideoUrlType) {
                 self.prepareStatus = QMMediaPrepareStatusPrepareFinished;
                 self.duration = duration;
                 self.mediaSize = mediaSize;
-                self.playerItem = [AVPlayerItem playerItemWithAsset:asset];
+                //  self.playerItem = [AVPlayerItem playerItemWithAsset:asset];
                 if (self.completion) {
                     self.completion(duration, mediaSize, self.thumbnailImage , nil);
                 }
@@ -257,7 +272,7 @@ typedef NS_ENUM(NSUInteger, QMVideoUrlType) {
             self.prepareStatus = QMMediaPrepareStatusPrepareFinished;
             self.duration = duration;
             self.mediaSize = mediaSize;
-            self.playerItem = [AVPlayerItem playerItemWithAsset:asset];
+            // self.playerItem = [AVPlayerItem playerItemWithAsset:asset];
             
             if (self.completion) {
                 self.completion(duration, mediaSize, nil, nil);
