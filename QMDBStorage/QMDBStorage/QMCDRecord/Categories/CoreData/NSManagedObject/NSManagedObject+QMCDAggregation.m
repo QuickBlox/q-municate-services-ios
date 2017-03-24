@@ -46,6 +46,8 @@
     
     NSError *error = nil;
     NSFetchRequest *request = [self QM_requestAll];
+    request.includesPendingChanges = YES;
+    
     [request setPredicate:searchFilter];
     
     NSUInteger count = [context countForFetchRequest:request error:&error];

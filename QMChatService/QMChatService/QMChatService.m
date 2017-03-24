@@ -86,7 +86,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
         [self.cacheDataSource cachedDialogs:^(NSArray *collection) {
             
             if (collection.count > 0) {
-
+                
                 [weakSelf.dialogsMemoryStorage addChatDialogs:collection
                                                       andJoin:NO];
                 
@@ -124,10 +124,6 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
                 }
                 
                 [weakSelf.messagesMemoryStorage addMessages:collection forDialogID:dialogID];
-                
-                if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddMessagesToMemoryStorage:forDialogID:)]) {
-                    [weakSelf.multicastDelegate chatService:weakSelf didAddMessagesToMemoryStorage:collection forDialogID:dialogID];
-                }
             }
             
             if (completion) {
@@ -1299,7 +1295,6 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
                     if ([strongSelf.multicastDelegate respondsToSelector:@selector(chatService:didUpdateMessage:forDialogID:)]) {
                         [strongSelf.multicastDelegate chatService:strongSelf didUpdateMessage:message forDialogID:dialog.ID];
                     }
-                    
                 }
                 
                 [strongSelf updateLastMessageParamsForChatDialog:dialog withMessage:message];
@@ -1314,7 +1309,6 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
         else {
             
             [strongSelf.deferredQueueManager addOrUpdateMessage:message];
-            
         }
         
         if (completion) {

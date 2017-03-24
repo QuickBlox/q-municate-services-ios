@@ -41,6 +41,13 @@
                                 ascending:(BOOL)ascending
                                 inContext:(NSManagedObjectContext *)context;
 
++ (NSArray *)QM_findAllSortedBy:(NSString *)sortTerm
+                      ascending:(BOOL)ascending
+                  withPredicate:(NSPredicate *)searchTerm
+                         offset:(NSUInteger)offset
+                          limit:(NSUInteger)limit
+                      inContext:(NSManagedObjectContext *)context;
+
 + (instancetype)QM_findFirstWithPredicate:(NSPredicate *)searchTerm
                     andRetrieveAttributes:(NSArray *)attributes
                                 inContext:(NSManagedObjectContext *)context;

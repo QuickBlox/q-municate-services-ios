@@ -227,6 +227,26 @@ static QMChatCache *_chatCacheInstance = nil;
 
 //MARK: - Messages
 
+- (NSArray<QBChatMessage *> *)messagesWithDialogId:(NSString *)dialogId
+                                          sortedBy:(NSString *)sortTerm
+                                         ascending:(BOOL)ascending {
+    
+    __block NSArray<QBChatMessage *> *result = nil;
+    
+    [self performMainQueue:^(NSManagedObjectContext *ctx) {
+        
+        result = result =
+        [[CDMessage QM_findAllSortedBy:sortTerm
+                             ascending:ascending
+                         withPredicate:IS(@"dialogID", dialogId)
+                                offset:0
+                                 limit:self.messagesLimitPerDialog
+                             inContext:ctx] toQBChatMessages];
+    }];
+    
+    return result;
+}
+
 - (void)messagesWithDialogId:(NSString *)dialogId
                     sortedBy:(NSString *)sortTerm
                    ascending:(BOOL)ascending
@@ -249,6 +269,8 @@ static QMChatCache *_chatCacheInstance = nil;
         [[CDMessage QM_findAllSortedBy:sortTerm
                              ascending:ascending
                          withPredicate:predicate
+                                offset:0
+                                 limit:self.messagesLimitPerDialog
                              inContext:ctx] toQBChatMessages];
         if (completion) {
             
@@ -257,39 +279,6 @@ static QMChatCache *_chatCacheInstance = nil;
             });
         }
     }];
-}
-
-#pragma mark Messages Limit
-
-- (void)checkMessagesLimitForDialogWithID:(NSString *)dialogID
-                           withCompletion:(dispatch_block_t)completion {
-    
-    if (self.messagesLimitPerDialog == NSNotFound) {
-        
-        if (completion) completion();
-        return;
-    }
-    
-    [self save:^(NSManagedObjectContext *ctx) {
-        
-        NSPredicate *messagePredicate = IS(@"dialogID", dialogID);
-        
-        if ([CDMessage QM_countOfEntitiesWithPredicate:messagePredicate inContext:ctx] > self.messagesLimitPerDialog) {
-            
-            NSFetchRequest *oldestMessageRequest = [NSFetchRequest fetchRequestWithEntityName:[CDMessage entityName]];
-            
-            oldestMessageRequest.fetchOffset = self.messagesLimitPerDialog;
-            oldestMessageRequest.predicate = messagePredicate;
-            oldestMessageRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"dateSend" ascending:NO]];
-            
-            NSArray *oldestMessagesForDialogID = [CDMessage QM_executeFetchRequest:oldestMessageRequest inContext:ctx];
-            
-            for (CDMessage *oldestMessage in oldestMessagesForDialogID) {
-                [ctx deleteObject:oldestMessage];
-            }
-        }
-        
-    } finish:completion];
 }
 
 #pragma mark Insert / Update / Delete
@@ -330,31 +319,6 @@ static QMChatCache *_chatCacheInstance = nil;
                                              inContext:ctx];
             
             [procMessage updateWithQBChatMessage:message];
-        }
-        
-        if (self.messagesLimitPerDialog != NSNotFound ) {
-            
-            NSPredicate *messagePredicate = IS(@"dialogID", dialogID);
-            NSUInteger count =
-            [CDMessage QM_countOfEntitiesWithPredicate:messagePredicate
-                                             inContext:ctx];
-            
-            //            self.messagesLimitPerDialog
-            
-            if (count > self.messagesLimitPerDialog) {
-                
-                NSFetchRequest *oldestMessageRequest = [NSFetchRequest fetchRequestWithEntityName:[CDMessage entityName]];
-                
-                oldestMessageRequest.fetchOffset = self.messagesLimitPerDialog;
-                oldestMessageRequest.predicate = messagePredicate;
-                oldestMessageRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"dateSend" ascending:NO]];
-                
-                NSArray *oldestMessagesForDialogID = [CDMessage QM_executeFetchRequest:oldestMessageRequest inContext:ctx];
-                
-                for (CDMessage *oldestMessage in oldestMessagesForDialogID) {
-                    [ctx deleteObject:oldestMessage];
-                }
-            }
         }
         
         QMSLog(@"[%@] Messages to insert %tu, update %tu", NSStringFromClass([self class]),

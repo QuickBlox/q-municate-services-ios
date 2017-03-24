@@ -200,6 +200,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark Fetch Messages operations
 
+- (NSArray<QBChatMessage *> *)messagesWithDialogId:(NSString *)dialogId
+                                          sortedBy:(NSString *)sortTerm
+                                         ascending:(BOOL)ascending;
+
 /**
  *  Fetch cached messages with dialog id and filtering with predicate
  *
@@ -210,7 +214,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)messagesWithDialogId:(NSString *)dialogId
                     sortedBy:(NSString *)sortTerm
                    ascending:(BOOL)ascending
-                  completion:(nullable void(^)(NSArray<QBChatMessage *> * _Nullable messages))completion;
+                  completion:(void(^)(NSArray<QBChatMessage *> *messages))completion;
 
 /**
  *  Fetch messages
@@ -223,7 +227,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)messagesWithPredicate:(NSPredicate *)predicate
                      sortedBy:(NSString *)sortTerm
                     ascending:(BOOL)ascending
-                   completion:(nullable void(^)(NSArray<QBChatMessage *> * _Nullable messages))completion;
+                   completion:(void(^)(NSArray<QBChatMessage *> *messages))completion;
 
 @end
 
