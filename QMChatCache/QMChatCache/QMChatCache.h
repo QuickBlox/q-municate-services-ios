@@ -35,7 +35,6 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param storeName Store name
  */
 + (void)setupDBWithStoreNamed:(NSString *)storeName ;
-+ (void)setupDBWithStoreNamed:(NSString *)storeName applicationGroupIdentifier:(nullable NSString *)appGroupIdentifier;
 /**
  *  Clean clean chat cache with store name
  *
@@ -79,8 +78,23 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)deleteAllDialogsWithCompletion:(nullable dispatch_block_t)completion;
 
+/**
+ Dialog by specific ID
+
+ @param dialogID QBChatDialog identificator
+ @return Returns requested dialog or nil if not found
+ */
+- (nullable QBChatDialog *)dialogByID:(NSString *)dialogID;
+
+- (NSArray<QBChatDialog *> *)allDialogs;
+- (NSArray<QBChatDialog *> *)dialogsSortedBy:(NSString *)sortTerm
+                                   ascending:(BOOL)ascending
+                               withPredicate:(NSPredicate *)predicate;
+
 #pragma mark Fetch dialog operations
 
+- (void)dialogByID:(NSString *)dialogID
+        completion:(void (^)(QBChatDialog *dialog))completion;
 
 - (void)allDialogsWithCompletion:(nullable void(^)(NSArray<QBChatDialog *> * _Nullable dialogs))completion;
 /**
@@ -90,16 +104,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param ascending  `YES` if the attribute should be sorted ascending, `NO` for descending.
  *  @param completion Completion block that is called after the fetch has completed. Returns an array of QBChatDialog instances
  */
-- (void)dialogsSortedBy:(NSString *)sortTerm ascending:(BOOL)ascending completion:(nullable void(^)(NSArray<QBChatDialog *> * _Nullable dialogs))completion;
-
-/**
- *  Fetch dialog by specific ID
- *
- *  @param dialogID   dialog identificator
- *  @param completion Completion block that is called after the fetch has completed. Returns requested dialog or nil if not found
- */
-- (void)dialogByID:(NSString *)dialogID completion:(nullable void(^)(QBChatDialog * _Nullable cachedDialog))completion;
-
+- (void)dialogsSortedBy:(NSString *)sortTerm
+              ascending:(BOOL)ascending
+             completion:(nullable void(^)(NSArray<QBChatDialog *> * _Nullable dialogs))completion;
 /**
  *  Fetch cached dialogs with predicate
  *
@@ -123,7 +130,10 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param predicate  Predicate to evaluate objects against
  *  @param completion Completion block that is called after the fetch has completed. Returns an array of QBChatDialog instances
  */
-- (void)dialogsSortedBy:(NSString *)sortTerm ascending:(BOOL)ascending withPredicate:(nullable NSPredicate *)predicate completion:(nullable void(^)(NSArray<QBChatDialog *> * _Nullable dialogs))completion;
+- (void)dialogsSortedBy:(NSString *)sortTerm
+              ascending:(BOOL)ascending
+          withPredicate:(nullable NSPredicate *)predicate
+             completion:(nullable void(^)(NSArray<QBChatDialog *> * _Nullable dialogs))completion;
 
 #pragma mark -
 #pragma mark  Messages
@@ -197,8 +207,10 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param predicate  Predicate to evaluate objects against
  *  @param completion returns an array of QBChatMessages instances
  */
-
-- (void)messagesWithDialogId:(NSString *)dialogId sortedBy:(NSString *)sortTerm ascending:(BOOL)ascending completion:(nullable void(^)(NSArray<QBChatMessage *> * _Nullable messages))completion;
+- (void)messagesWithDialogId:(NSString *)dialogId
+                    sortedBy:(NSString *)sortTerm
+                   ascending:(BOOL)ascending
+                  completion:(nullable void(^)(NSArray<QBChatMessage *> * _Nullable messages))completion;
 
 /**
  *  Fetch messages
@@ -208,7 +220,10 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param ascending  `YES` if the attribute should be sorted ascending, `NO` for descending.
  *  @param completion Completion block that is called after the fetch has completed. Returns an array of QBChatMessage instances
  */
-- (void)messagesWithPredicate:(NSPredicate *)predicate sortedBy:(NSString *)sortTerm ascending:(BOOL)ascending completion:(nullable void(^)(NSArray<QBChatMessage *> * _Nullable messages))completion;
+- (void)messagesWithPredicate:(NSPredicate *)predicate
+                     sortedBy:(NSString *)sortTerm
+                    ascending:(BOOL)ascending
+                   completion:(nullable void(^)(NSArray<QBChatMessage *> * _Nullable messages))completion;
 
 @end
 

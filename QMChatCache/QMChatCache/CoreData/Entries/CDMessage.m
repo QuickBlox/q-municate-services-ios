@@ -42,6 +42,7 @@
 - (void)updateWithQBChatMessage:(QBChatMessage *)message {
     
     self.messageID = message.ID;
+    
     self.createAt = message.createdAt;
     self.updateAt = message.updatedAt;
     self.delayed = @(message.delayed);
@@ -84,6 +85,24 @@
 - (id)objectsWithBinaryData:(NSData *)data {
     
     return [NSKeyedUnarchiver unarchiveObjectWithData:data];
+}
+
+@end
+
+@implementation NSArray(CDMessage)
+
+- (NSArray<QBChatMessage *> *)toQBChatMessages {
+    
+    NSMutableArray<QBChatMessage *> *result =
+    [NSMutableArray arrayWithCapacity:self.count];
+    
+    for (CDMessage *cache in self) {
+        
+        QBChatMessage *message = [cache toQBChatMessage];
+        [result addObject:message];
+    }
+    
+    return [result copy];
 }
 
 @end
