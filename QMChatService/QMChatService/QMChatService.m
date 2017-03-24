@@ -939,10 +939,22 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 
 #pragma mark - Messages histroy
 
+- (void)updateMessageLocally:(QBChatMessage *)message {
+    
+    NSAssert(message.dialogID, @"Message must have a dialog ID.");
+    
+    [self.messagesMemoryStorage updateMessage:message];
+    
+    if ([self.multicastDelegate respondsToSelector:@selector(chatService:didUpdateMessage:forDialogID:)]) {
+        [self.multicastDelegate chatService:self didUpdateMessage:message forDialogID:message.dialogID];
+    }
+}
+
 - (void)deleteMessageLocally:(QBChatMessage *)message {
     NSAssert(message.dialogID, @"Message must have a dialog ID.");
     
     [self deleteMessagesLocally:@[message] forDialogID:message.dialogID];
+    
 }
 
 - (void)deleteMessagesLocally:(NSArray *)messages forDialogID:(NSString *)dialogID {

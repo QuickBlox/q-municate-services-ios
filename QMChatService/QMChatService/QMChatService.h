@@ -299,6 +299,13 @@ typedef NS_ENUM(NSUInteger, QMChatConnectionState) {
 #pragma mark - Fetch messages
 
 /**
+ *  Updating message in cache and memory storage.
+ *
+ *  @param message message to update
+ */
+- (void)updateMessageLocally:(QBChatMessage *)message;
+
+/**
  *  Deleting message from cache and memory storage.
  *
  *  @param message message to delete
