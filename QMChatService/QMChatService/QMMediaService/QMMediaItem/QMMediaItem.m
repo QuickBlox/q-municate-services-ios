@@ -368,6 +368,8 @@
     else if (self.contentType == QMMediaContentTypeVideo) {
         return self.mediaDuration > 0 && self.image != nil;
     }
+    
+    return YES;
 }
 
 @end

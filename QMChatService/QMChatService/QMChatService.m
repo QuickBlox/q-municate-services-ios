@@ -86,7 +86,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
         [self.cacheDataSource cachedDialogs:^(NSArray *collection) {
             
             if (collection.count > 0) {
-
+                
                 [weakSelf.dialogsMemoryStorage addChatDialogs:collection
                                                       andJoin:NO];
                 
@@ -1372,6 +1372,23 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
         saveToStorage:saveToStorage
            completion:completion];
 }
+
+- (void)sendAttachmentMessage:(QBChatMessage *)attachmentMessage
+                     toDialog:(QBChatDialog *)dialog
+                withMediaItem:(QMMediaItem *)mediaItem
+                   completion:(nullable QBChatCompletionBlock)completion {
+    
+    [self.chatAttachmentService uploadAndSendAttachmentMessage:attachmentMessage
+                                                      toDialog:dialog
+                                               withChatService:self
+                                                     mediaItem:mediaItem
+                                                    completion:^(NSError * _Nullable error) {
+                                                        if (completion) {
+                                                            completion(error);
+                                                        }
+                                                    }];
+}
+
 
 - (void)sendAttachmentMessage:(QBChatMessage *)attachmentMessage
                      toDialog:(QBChatDialog *)dialog
