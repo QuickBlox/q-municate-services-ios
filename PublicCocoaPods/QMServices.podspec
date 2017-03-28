@@ -4,14 +4,14 @@
 #
 #  To learn more about Podspec attributes see http://docs.cocoapods.org/specification.html
 #  To see working Podspecs in the CocoaPods repo see https://github.com/CocoaPods/Specs/
-#   
+#
 #  To submit use `pod trunk push QMServices.podspec --verbose --use-libraries --allow-warnings`
 #
 
 
 Pod::Spec.new do |s|
   s.name         = "QMServices"
-  s.version      = "0.4.5"
+  s.version      = "0.4.6"
   s.summary      = "Easy-to-use services for Quickblox SDK, for speeding up development of iOS chat applications."
   s.homepage     = "https://github.com/QuickBlox/q-municate-services-ios"
   s.license      = { :type => 'BSD', :file => 'LICENSE.txt' }
@@ -23,7 +23,7 @@ Pod::Spec.new do |s|
   s.frameworks = "CoreData"
   s.requires_arc = true
   s.xcconfig = { "FRAMEWORK_SEARCH_PATHS" => "$(PODS_ROOT)/QuickBlox/" }
-  s.prefix_header_contents = 
+  s.prefix_header_contents =
   '#import <Quickblox/Quickblox.h>
 #import <CoreData/CoreData.h>
 #import <Quickblox/QBMulticastDelegate.h>
