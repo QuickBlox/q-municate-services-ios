@@ -24,6 +24,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 @property (strong, nonatomic) QMDialogsMemoryStorage *dialogsMemoryStorage;
 @property (strong, nonatomic) QMMessagesMemoryStorage *messagesMemoryStorage;
 @property (strong, nonatomic) QMChatAttachmentService *chatAttachmentService;
+@property (strong, nonatomic) QMDeferredQueueManager *deferredQueueManager;
 
 @property (weak, nonatomic)   BFTask* loadEarlierMessagesTask;
 @property (strong, nonatomic) NSMutableDictionary *loadedAllMessages;
@@ -72,6 +73,21 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     self.chatAttachmentService = [[QMChatAttachmentService alloc] init];
     
     [QBChat.instance addDelegate:self];
+}
+
+#pragma mark - deferredQueueManager
+
+- (QMDeferredQueueManager *)deferredQueueManager {
+
+    static QMDeferredQueueManager *manager = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+
+        manager = [[QMDeferredQueueManager alloc] init];
+        [manager addDelegate:self];
+    });
+
+    return manager;
 }
 
 #pragma mark - Load cached data
