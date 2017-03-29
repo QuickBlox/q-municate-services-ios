@@ -11,8 +11,6 @@
 @interface QMDeferredQueueMemoryStorage()
 
 @property (strong, nonatomic) NSMutableDictionary *messagesInQueue;
-@property (strong, nonatomic) NSMutableDictionary *dialogs;
-@property (strong, nonatomic) NSMutableDictionary *contactRequests;
 
 @end
 
@@ -20,18 +18,14 @@
 
 - (void)dealloc {
     [self.messagesInQueue removeAllObjects];
-    [self.dialogs removeAllObjects];
-    [self.contactRequests removeAllObjects];
 }
 
 - (instancetype)init {
     
     self = [super init];
     if (self) {
-        
-        self.dialogs = [NSMutableDictionary dictionary];
+
         self.messagesInQueue = [NSMutableDictionary dictionary];
-        self.contactRequests = [NSMutableDictionary dictionary];
     }
     return self;
 }
@@ -83,8 +77,6 @@
 
 - (void)free {
     [self.messagesInQueue removeAllObjects];
-    [self.dialogs removeAllObjects];
-    [self.contactRequests removeAllObjects];
 }
 
 @end
