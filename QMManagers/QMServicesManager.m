@@ -218,7 +218,7 @@
     });
 }
 
-#pragma mark - QMChatServiceDelegate
+#pragma mark - QMChatConnectionDelegate
 
 - (void)chatServiceChatDidConnect:(QMChatService *)chatService {
     
@@ -230,7 +230,7 @@
    [self joinAllGroupDialogsIfNeededWithCompletion:NULL];
 }
 
-#pragma mark QMChatServiceCache delegate
+#pragma mark QMChatServiceDelegate
 
 - (void)chatService:(QMChatService *)chatService didAddChatDialogToMemoryStorage:(QBChatDialog *)chatDialog {
     

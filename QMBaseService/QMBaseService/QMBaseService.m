@@ -11,11 +11,9 @@
 #import "QMSLog.h"
 
 
-@interface QMBaseService() <QMDeferredQueueManagerDelegate>
+@interface QMBaseService()
 
 @property (weak, nonatomic) id <QMServiceManagerProtocol> serviceManager;
-
-@property (strong, nonatomic, readwrite) QMDeferredQueueManager *deferredQueueManager;
 
 @end
 
@@ -36,17 +34,6 @@
     
 }
 
-- (QMDeferredQueueManager *)deferredQueueManager {
-    
-    static QMDeferredQueueManager *manager = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        
-        manager = [[QMDeferredQueueManager alloc] init];
-        [manager addDelegate:self];
-    });
-    
-    return manager;
 }
 
 #pragma mark - QMMemoryStorageProtocol

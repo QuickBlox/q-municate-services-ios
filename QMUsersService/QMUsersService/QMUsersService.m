@@ -196,8 +196,8 @@
         BFTaskCompletionSource *source = [BFTaskCompletionSource taskCompletionSource];
         
         QBUUser *user = [strongSelf.usersMemoryStorage userWithExternalID:externalUserID];
-        if (user != nil) {
-            
+        if (!forceLoad && user != nil) {
+
             [source setResult:user];
         }
         else {
