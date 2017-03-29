@@ -1250,7 +1250,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
       saveToStorage:(BOOL)saveToStorage
          completion:(QBChatCompletionBlock)completion
 {
-    message.dateSent = [NSDate date];
+     if (!message.dateSent) message.dateSent = [NSDate date];
     
     //Save to history
     if (saveToHistory) {
