@@ -195,18 +195,25 @@
         
         BFTaskCompletionSource *source = [BFTaskCompletionSource taskCompletionSource];
         
-        QBUUser *user = [strongSelf.usersMemoryStorage userWithExternalID:externalUserID];
-        if (!forceLoad && user != nil) {
 
-            [source setResult:user];
+        QBUUser *foundUser = [strongSelf.usersMemoryStorage userWithExternalID:externalUserID];
+        if (!forceLoad && foundUser != nil) {
+
+            [source setResult:foundUser];
         }
         else {
             
             [QBRequest userWithExternalID:externalUserID
                              successBlock:^(QBResponse *response, QBUUser *user) {
                                  
-                                 [source setResult:user];
                                  
+
+                                 NSArray *result = [strongSelf performUpdateWithLoadedUsers:user ? @[user] : nil
+                                                                                 foundUsers:foundUser ? @[foundUser] : nil
+                                                                              wasLoadForced:forceLoad];
+
+                                 [source setResult:result.firstObject];
+
                              } errorBlock:^(QBResponse *response) {
                                  
                                  [source setError:response.error.error];
