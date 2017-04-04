@@ -9,6 +9,7 @@
 #import "QMChatService.h"
 #import "QBChatMessage+QMCustomParameters.h"
 #import "QMSLog.h"
+#import "QBChatAttachment+QMFactory.h"
 
 const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
@@ -1373,20 +1374,18 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
            completion:completion];
 }
 
+
+
 - (void)sendAttachmentMessage:(QBChatMessage *)attachmentMessage
                      toDialog:(QBChatDialog *)dialog
-                withMediaItem:(QMMediaItem *)mediaItem
+               withAttachment:(QBChatAttachment *)attachment
                    completion:(nullable QBChatCompletionBlock)completion {
     
     [self.chatAttachmentService uploadAndSendAttachmentMessage:attachmentMessage
                                                       toDialog:dialog
                                                withChatService:self
-                                                     mediaItem:mediaItem
-                                                    completion:^(NSError * _Nullable error) {
-                                                        if (completion) {
-                                                            completion(error);
-                                                        }
-                                                    }];
+                                                    attachment:attachment
+                                                    completion:completion];
 }
 
 
@@ -1395,17 +1394,12 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
           withAttachmentImage:(UIImage *)image
                    completion:(QBChatCompletionBlock)completion
 {
+    QBChatAttachment *attachment = [QBChatAttachment mediaAttachmentWithImage:image];
     
-    [self.chatAttachmentService uploadAndSendAttachmentMessage:attachmentMessage
-                                                      toDialog:dialog
-                                               withChatService:self
-                                             withAttachedImage:image
-                                                    completion:^(NSError *error)
-     {
-         if (completion) {
-             completion(error);
-         }
-     }];
+    [self sendAttachmentMessage:attachmentMessage
+                       toDialog:dialog
+                 withAttachment:attachment
+                     completion:completion];
 }
 
 #pragma mark - mark as delivered

@@ -22,19 +22,9 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
 @property (nonatomic, readonly, strong) CDAttachmentID *objectID;
 
+@property (nonatomic, strong, nullable) NSData* customParameters;
+
 @property (nonatomic, strong, nullable) NSString* data;
-
-@property (nonatomic, strong, nullable) NSNumber* duration;
-
-@property (atomic) double durationValue;
-- (double)durationValue;
-- (void)setDurationValue:(double)value_;
-
-@property (nonatomic, strong, nullable) NSNumber* height;
-
-@property (atomic) int32_t heightValue;
-- (int32_t)heightValue;
-- (void)setHeightValue:(int32_t)value_;
 
 @property (nonatomic, strong, nullable) NSString* id;
 
@@ -42,19 +32,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong, nullable) NSString* name;
 
-@property (nonatomic, strong, nullable) NSNumber* size;
-
-@property (atomic) int64_t sizeValue;
-- (int64_t)sizeValue;
-- (void)setSizeValue:(int64_t)value_;
-
 @property (nonatomic, strong, nullable) NSString* url;
-
-@property (nonatomic, strong, nullable) NSNumber* width;
-
-@property (atomic) int32_t widthValue;
-- (int32_t)widthValue;
-- (void)setWidthValue:(int32_t)value_;
 
 @property (nonatomic, strong, nullable) CDMessage *message;
 
@@ -62,20 +40,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface _CDAttachment (CoreDataGeneratedPrimitiveAccessors)
 
+- (NSData*)primitiveCustomParameters;
+- (void)setPrimitiveCustomParameters:(NSData*)value;
+
 - (NSString*)primitiveData;
 - (void)setPrimitiveData:(NSString*)value;
-
-- (NSNumber*)primitiveDuration;
-- (void)setPrimitiveDuration:(NSNumber*)value;
-
-- (double)primitiveDurationValue;
-- (void)setPrimitiveDurationValue:(double)value_;
-
-- (NSNumber*)primitiveHeight;
-- (void)setPrimitiveHeight:(NSNumber*)value;
-
-- (int32_t)primitiveHeightValue;
-- (void)setPrimitiveHeightValue:(int32_t)value_;
 
 - (NSString*)primitiveId;
 - (void)setPrimitiveId:(NSString*)value;
@@ -86,20 +55,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSString*)primitiveName;
 - (void)setPrimitiveName:(NSString*)value;
 
-- (NSNumber*)primitiveSize;
-- (void)setPrimitiveSize:(NSNumber*)value;
-
-- (int64_t)primitiveSizeValue;
-- (void)setPrimitiveSizeValue:(int64_t)value_;
-
 - (NSString*)primitiveUrl;
 - (void)setPrimitiveUrl:(NSString*)value;
-
-- (NSNumber*)primitiveWidth;
-- (void)setPrimitiveWidth:(NSNumber*)value;
-
-- (int32_t)primitiveWidthValue;
-- (void)setPrimitiveWidthValue:(int32_t)value_;
 
 - (CDMessage*)primitiveMessage;
 - (void)setPrimitiveMessage:(CDMessage*)value;
@@ -107,15 +64,12 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @interface CDAttachmentAttributes: NSObject 
++ (NSString *)customParameters;
 + (NSString *)data;
-+ (NSString *)duration;
-+ (NSString *)height;
 + (NSString *)id;
 + (NSString *)mimeType;
 + (NSString *)name;
-+ (NSString *)size;
 + (NSString *)url;
-+ (NSString *)width;
 @end
 
 @interface CDAttachmentRelationships: NSObject

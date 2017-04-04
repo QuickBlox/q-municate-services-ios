@@ -376,27 +376,27 @@ static NSString* attachmentPath(QBChatAttachment *attachment) {
     });
 }
 
-//MARK: - Media item
+
 - (void)uploadAndSendAttachmentMessage:(QBChatMessage *)message
                               toDialog:(QBChatDialog *)dialog
                        withChatService:(QMChatService *)chatService
-                             mediaItem:(QMMediaItem *)mediaItem
+                            attachment:(QBChatAttachment *)attachment
                             completion:(nullable QBChatCompletionBlock)completion {
     
     [self.mediaService sendMessage:message
                           toDialog:dialog
                    withChatService:chatService
-                         withMedia:mediaItem
+                    withAttachment:attachment
                         completion:completion];
 }
 
-- (void)mediaItemForAttachmentMessage:(QBChatMessage *)message
-                         attachmentID:(NSString *)attachmentID
-                           completion:(void(^)(QMMediaItem *mediaItem, NSError *error))completion {
-    
-    [self.mediaService mediaForMessage:message
-                          attachmentID:attachmentID
-                   withCompletionBlock:completion];
-}
+//- (void)mediaItemForAttachmentMessage:(QBChatMessage *)message
+//                         attachmentID:(NSString *)attachmentID
+//                           completion:(void(^)(QMMediaItem *mediaItem, NSError *error))completion {
+//    
+//    [self.mediaService mediaForMessage:message
+//                          attachmentID:attachmentID
+//                   withCompletionBlock:completion];
+//}
 
 @end

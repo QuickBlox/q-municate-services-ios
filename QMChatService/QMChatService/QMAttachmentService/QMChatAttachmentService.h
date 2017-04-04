@@ -91,12 +91,14 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param chatService  QMChatService instance
  *  @param image        Attachment image
  *  @param completion   Send message result
+ *
+ *  @warning *Deprecated in QMServices 0.4.7:* Use 'uploadAndSendAttachmentMessage:toDialog:withChatService:attachment:completion:' instead.
  */
 - (void)uploadAndSendAttachmentMessage:(QBChatMessage *)message
                               toDialog:(QBChatDialog *)dialog
                        withChatService:(QMChatService *)chatService
                      withAttachedImage:(UIImage *)image
-                            completion:(nullable QBChatCompletionBlock)completion;
+                            completion:(nullable QBChatCompletionBlock)completion DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.4.7. Use 'uploadAndSendAttachmentMessage:toDialog:withChatService:attachment:completion:' instead.");;
 
 /**
  *  Get image by attachment message.
@@ -135,13 +137,14 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param message      QBChatMessage instance
  *  @param dialog       QBChatDialog instance
  *  @param chatService  QMChatService instance
- *  @param mediaItem    QMMediaItem instance
+ *  @param attachment   QBChatAttachment instance
  *  @param completion   Send message result
  */
+
 - (void)uploadAndSendAttachmentMessage:(QBChatMessage *)message
                               toDialog:(QBChatDialog *)dialog
                        withChatService:(QMChatService *)chatService
-                             mediaItem:(QMMediaItem *)mediaItem
+                            attachment:(QBChatAttachment *)attachment
                             completion:(nullable QBChatCompletionBlock)completion;
 
 /**

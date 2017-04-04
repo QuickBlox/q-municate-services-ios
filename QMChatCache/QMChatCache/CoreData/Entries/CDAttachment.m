@@ -10,12 +10,11 @@
     attachment.ID = self.id;
     attachment.url = self.url;
     attachment.type = self.mimeType;
-    attachment.data = self.data;
-    attachment.width = self.width.unsignedIntegerValue;
-    attachment.height = self.height.unsignedIntegerValue;
-    attachment.size = self.size.unsignedIntegerValue;
-    attachment.duration = self.duration.doubleValue;
-    
+
+    NSDictionary *customParameters = [self objectsWithBinaryData:self.customParameters];
+    [customParameters enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+        attachment[key] = obj;
+    }];
     return attachment;
 }
 
@@ -25,11 +24,19 @@
     self.id = attachment.ID;
     self.url = attachment.url;
     self.mimeType = attachment.type;
-    self.data = attachment.data;
-    self.width = @(attachment.width);
-    self.height = @(attachment.height);
-    self.size = @(attachment.size);
-    self.duration = @(attachment.duration);
+
+    self.customParameters = [self binaryDataWithObject:attachment.customParameters];
+}
+
+- (NSData *)binaryDataWithObject:(id)object {
+    
+    NSData *binaryData = [NSKeyedArchiver archivedDataWithRootObject:object];
+    return binaryData;
+}
+
+- (id)objectsWithBinaryData:(NSData *)data {
+    
+    return [NSKeyedUnarchiver unarchiveObjectWithData:data];
 }
 
 @end
