@@ -1444,6 +1444,9 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 - (void)readMessage:(QBChatMessage *)message
          completion:(QBChatCompletionBlock)completion {
     
+    if (!message.dialogID) {
+        return;
+    }
     NSAssert(message.dialogID != nil, @"Message must have a dialog ID!");
     
     [self readMessages:@[message] forDialogID:message.dialogID completion:completion];

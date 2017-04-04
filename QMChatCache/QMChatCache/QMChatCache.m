@@ -19,7 +19,8 @@ static QMChatCache *_chatCacheInstance = nil;
 
 + (QMChatCache *)instance {
     
-    NSAssert(_chatCacheInstance, @"You must first perform @selector(setupDBWithStoreNamed:)");
+    NSAssert(_chatCacheInstance,
+             @"You must first perform @selector(setupDBWithStoreNamed:)");
     return _chatCacheInstance;
 }
 
@@ -38,7 +39,6 @@ static QMChatCache *_chatCacheInstance = nil;
     [NSManagedObjectModel QM_newModelNamed:@"QMChatServiceModel.momd"
                              inBundleNamed:@"QMChatCacheModel.bundle"
                                  fromClass:[self class]];
-    
     _chatCacheInstance =
     [[QMChatCache alloc] initWithStoreNamed:storeName
                                       model:model
@@ -68,7 +68,6 @@ static QMChatCache *_chatCacheInstance = nil;
 }
 
 //MARK: - Fetch Dialogs
-
 //MARK: Main queue
 
 - (QBChatDialog *)dialogByID:(NSString *)dialogID {
@@ -321,7 +320,8 @@ static QMChatCache *_chatCacheInstance = nil;
             [procMessage updateWithQBChatMessage:message];
         }
         
-        QMSLog(@"[%@] Messages to insert %tu, update %tu", NSStringFromClass([self class]),
+        QMSLog(@"[%@] Messages to insert %tu, update %tu",
+               NSStringFromClass([self class]),
                ctx.insertedObjects.count,
                ctx.updatedObjects.count);
         
