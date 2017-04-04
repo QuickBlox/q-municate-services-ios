@@ -14,6 +14,8 @@
 #import "QMChatTypes.h"
 #import "QMChatConstants.h"
 #import "QMMediaService.h"
+#import "QMLinkPreviewManager.h"
+#import "QMLinkPreview.h"
 
 @class QMMediaItem;
 
@@ -376,6 +378,7 @@ typedef NS_ENUM(NSUInteger, QMChatConnectionState) {
 - (void)earlierMessagesWithChatDialogID:(NSString *)chatDialogID
                              completion:(nullable void(^)(QBResponse *response, NSArray<QBChatMessage *> * _Nullable messages))completion;
 
+- (void)linkPreviewForURL:(NSURL *)url withCompletion:(QMLinkPreviewCompletionBlock)completion;
 #pragma mark - Fetch dialogs
 
 /**
@@ -471,10 +474,17 @@ typedef NS_ENUM(NSUInteger, QMChatConnectionState) {
                      toDialog:(QBChatDialog *)dialog
           withAttachmentImage:(UIImage *)image
                    completion:(nullable QBChatCompletionBlock)completion;
-
+/**
+ *  Send attachment message to dialog.
+ *
+ *  @param attachmentMessage    QBChatMessage instance with attachment
+ *  @param dialog               dialog instance to send message to
+ *  @param attachment           QBChatAttachment instance to upload
+ *  @param completion           completion block with failure error
+ */
 - (void)sendAttachmentMessage:(QBChatMessage *)attachmentMessage
                      toDialog:(QBChatDialog *)dialog
-                withMediaItem:(QMMediaItem *)mediaItem
+               withAttachment:(QBChatAttachment *)attachment
                    completion:(nullable QBChatCompletionBlock)completion;
 
 #pragma mark - mark as delivered

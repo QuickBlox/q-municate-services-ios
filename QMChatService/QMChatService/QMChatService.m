@@ -10,6 +10,7 @@
 #import "QBChatMessage+QMCustomParameters.h"
 #import "QMSLog.h"
 #import "QBChatAttachment+QMFactory.h"
+#import "QMLinkPreviewManager.h"
 
 const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
@@ -30,6 +31,9 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 @property (strong, nonatomic) NSMutableDictionary *lastMessagesLoadDate;
 @property (strong, nonatomic) NSMutableSet *messagesToRead;
 
+@property (strong, nonatomic) QMLinkPreviewManager *linkPreviewManager;
+
+
 @end
 
 @implementation QMChatService
@@ -43,6 +47,9 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 
 #pragma mark - Configure
 
+- (void)linkPreviewForURL:(NSURL *)url withCompletion:(QMLinkPreviewCompletionBlock)completion {
+    [self.linkPreviewManager linkPreviewForURL:url withCompletion:completion];
+}
 - (instancetype)initWithServiceManager:(id<QMServiceManagerProtocol>)serviceManager
                        cacheDataSource:(id<QMChatServiceCacheDataSource>)cacheDataSource {
     
@@ -54,7 +61,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
         _loadedAllMessages = [NSMutableDictionary dictionary];
         _lastMessagesLoadDate = [NSMutableDictionary dictionary];
         _messagesToRead = [NSMutableSet set];
-        
+      
         if (self.serviceManager.currentUser != nil) {
             [self loadCachedDialogsWithCompletion:nil];
         }
