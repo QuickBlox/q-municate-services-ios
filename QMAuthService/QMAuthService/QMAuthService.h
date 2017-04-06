@@ -41,7 +41,8 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @return Cancelable request
  */
-- (QBRequest *)signUpAndLoginWithUser:(QBUUser *)user completion:(nullable void(^)(QBResponse *response, QBUUser * _Nullable userProfile))completion;
+- (QBRequest *)signUpAndLoginWithUser:(QBUUser *)user
+                           completion:(nullable void(^)(QBResponse *response, QBUUser * _Nullable userProfile))completion;
 
 /**
  *  User login
@@ -51,7 +52,8 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @return Cancelable request
  */
-- (QBRequest *)logInWithUser:(QBUUser *)user completion:(nullable void(^)(QBResponse *response, QBUUser * _Nullable userProfile))completion;
+- (QBRequest *)logInWithUser:(QBUUser *)user
+                  completion:(nullable void(^)(QBResponse *response, QBUUser * _Nullable userProfile))completion;
 
 /**
  *  Login with twitter digits auth headers
@@ -61,7 +63,8 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @return Cancelable request
  */
-- (QBRequest *)loginWithTwitterDigitsAuthHeaders:(NSDictionary *)authHeaders completion:(nullable void(^)(QBResponse *response, QBUUser * _Nullable userProfile))completion;
+- (QBRequest *)loginWithTwitterDigitsAuthHeaders:(NSDictionary *)authHeaders
+                                      completion:(nullable void(^)(QBResponse *response, QBUUser * _Nullable userProfile))completion;
 
 /**
  *  Login with facebook
