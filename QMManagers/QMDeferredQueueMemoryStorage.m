@@ -73,7 +73,6 @@
     return sortedMessages;
 }
 
-
 #pragma mark - QMMemoryStorageProtocol
 
 - (void)free {
