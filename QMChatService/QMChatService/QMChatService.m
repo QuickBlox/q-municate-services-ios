@@ -1243,7 +1243,6 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
       saveToStorage:(BOOL)saveToStorage
          completion:(QBChatCompletionBlock)completion {
     
-    message.dateSent = [NSDate date];
     //Save to history
     if (saveToHistory) {
         message.saveToHistory = kChatServiceSaveToHistoryTrue;
@@ -1358,7 +1357,8 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
       saveToStorage:(BOOL)saveToStorage
          completion:(QBChatCompletionBlock)completion {
     
-    NSAssert(message.messageType == QMMessageTypeText, @"You can only send text messages with this method.");
+    NSAssert(message.messageType == QMMessageTypeText,
+             @"You can only send text messages with this method.");
     
     [self sendMessage:message type:QMMessageTypeText
              toDialog:dialog
@@ -1370,8 +1370,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 - (void)sendAttachmentMessage:(QBChatMessage *)attachmentMessage
                      toDialog:(QBChatDialog *)dialog
           withAttachmentImage:(UIImage *)image
-                   completion:(QBChatCompletionBlock)completion
-{
+                   completion:(QBChatCompletionBlock)completion {
     
     [self.chatAttachmentService uploadAndSendAttachmentMessage:attachmentMessage
                                                       toDialog:dialog
@@ -1433,7 +1432,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     dispatch_group_notify(deliveredGroup, dispatch_get_main_queue(), ^{
         
         if (completion) {
-            
+
             completion(nil);
         }
     });
@@ -1460,7 +1459,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     
     NSAssert(chatDialogToUpdate != nil, @"Dialog wasn't found in memory storage!");
     
-    NSMutableArray * unreadedMessages = [NSMutableArray array];
+    NSMutableArray<QBChatMessage *> * unreadedMessages = [NSMutableArray array];
     
     for (QBChatMessage * message in messages) {
         
@@ -1575,18 +1574,20 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
             continue;
         }
         
-        QBChatMessage *privateMessage = [self systemMessageWithRecipientID:[occupantID integerValue]
-                                                                  withText:text
-                                                                parameters:nil];
+        QBChatMessage *privateMessage =
+        [self systemMessageWithRecipientID:[occupantID integerValue]
+                                  withText:text
+                                parameters:nil];
         
         privateMessage.messageType = QMMessageTypeCreateGroupDialog;
         [privateMessage updateCustomParametersWithDialog:chatDialog];
         
         dispatch_group_enter(notifyGroup);
-        [[QBChat instance] sendSystemMessage:privateMessage completion:^(NSError *error) {
-            
-            dispatch_group_leave(notifyGroup);
-        }];
+        [[QBChat instance] sendSystemMessage:privateMessage
+                                  completion:^(NSError *error)
+         {
+             dispatch_group_leave(notifyGroup);
+         }];
     }
     
     dispatch_group_notify(notifyGroup, dispatch_get_main_queue(), ^{
@@ -1638,15 +1639,17 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 
 - (void)sendNotificationMessageAboutLeavingDialog:(QBChatDialog *)chatDialog
                              withNotificationText:(NSString *)notificationText
-                                       completion:(QBChatCompletionBlock)completion
-{
-    QBChatMessage *notificationMessage = [self notificationMessageAboutUpdateDialogWithType:QMDialogUpdateTypeOccupants
-                                                                           notificationText:notificationText
-                                                                            dialogUpdatedAt:[NSDate date]];
+                                       completion:(QBChatCompletionBlock)completion {
+    
+    QBChatMessage *notificationMessage =
+    [self notificationMessageAboutUpdateDialogWithType:QMDialogUpdateTypeOccupants
+                                      notificationText:notificationText
+                                       dialogUpdatedAt:[NSDate date]];
     
     notificationMessage.deletedOccupantsIDs = @[@(self.serviceManager.currentUser.ID)];
     
-    NSMutableArray *occupantsWithoutCurrentUser = [NSMutableArray arrayWithArray:chatDialog.occupantIDs];
+    NSMutableArray<NSNumber *>  *occupantsWithoutCurrentUser =
+    [NSMutableArray arrayWithArray:chatDialog.occupantIDs];
     [occupantsWithoutCurrentUser removeObject:@(self.serviceManager.currentUser.ID)];
     
     notificationMessage.currentOccupantsIDs = [occupantsWithoutCurrentUser copy];
@@ -1662,7 +1665,6 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 - (void)sendNotificationMessageAboutChangingDialogPhoto:(QBChatDialog *)chatDialog
                                    withNotificationText:(NSString *)notificationText
                                              completion:(QBChatCompletionBlock)completion {
-    
     QBChatMessage *notificationMessage =
     [self notificationMessageAboutUpdateDialogWithType:QMDialogUpdateTypePhoto
                                       notificationText:notificationText
@@ -1680,8 +1682,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 
 - (void)sendNotificationMessageAboutChangingDialogName:(QBChatDialog *)chatDialog
                                   withNotificationText:(NSString *)notificationText
-                                            completion:(QBChatCompletionBlock)completion
-{
+                                            completion:(QBChatCompletionBlock)completion {
     QBChatMessage *notificationMessage =
     [self notificationMessageAboutUpdateDialogWithType:QMDialogUpdateTypeName
                                       notificationText:notificationText
@@ -1707,7 +1708,6 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     message.recipientID = recipientID;
     message.senderID = self.serviceManager.currentUser.ID;
     message.text = text;
-    message.dateSent = [NSDate date];
     
     if (save) {
         message.saveToHistory = kChatServiceSaveToHistoryTrue;

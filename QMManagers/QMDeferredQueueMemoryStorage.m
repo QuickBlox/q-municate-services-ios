@@ -41,7 +41,6 @@
     
     NSAssert(message != nil, @"Message is nil!");
     NSAssert(message.ID != nil, @"Messagewithout identifier!");
-    NSAssert(message.dateSent != nil, @"Message without dateSent!");
     
     QBChatMessage *localMessage = self.messagesInQueue[message.ID];
     
@@ -49,10 +48,6 @@
 
         self.messagesInQueue[message.ID] = message;
     }
-    else {
-        localMessage.dateSent = message.dateSent;
-    }
-    
 }
 
 - (void)removeMessage:(QBChatMessage *)message {

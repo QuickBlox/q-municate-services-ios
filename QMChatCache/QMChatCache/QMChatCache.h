@@ -89,7 +89,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSArray<QBChatDialog *> *)allDialogs;
 - (NSArray<QBChatDialog *> *)dialogsSortedBy:(NSString *)sortTerm
                                    ascending:(BOOL)ascending
-                               withPredicate:(NSPredicate *)predicate;
+                               withPredicate:(nullable NSPredicate *)predicate;
 
 #pragma mark Fetch dialog operations
 

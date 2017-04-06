@@ -255,7 +255,7 @@ typedef NS_ENUM(NSUInteger, QMChatConnectionState) {
  *  @param notificationText notification message body (text)
  *  @param completion       completion block with failure error
  */
-- (void)sendNotificationMessageAboutAddingOccupants:(NSArray<NSNumber *>*)occupantsIDs
+- (void)sendNotificationMessageAboutAddingOccupants:(NSArray<NSNumber *> *)occupantsIDs
                                            toDialog:(QBChatDialog *)chatDialog
                                withNotificationText:(NSString *)notificationText
                                          completion:(nullable QBChatCompletionBlock)completion;
