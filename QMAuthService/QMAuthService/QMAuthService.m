@@ -7,7 +7,6 @@
 //
 
 #import "QMAuthService.h"
-
 #import "QMSLog.h"
 
 static NSString *const kQMFacebookAuthSocialProvider = @"facebook";

@@ -234,7 +234,7 @@ static QMChatCache *_chatCacheInstance = nil;
     
     [self performMainQueue:^(NSManagedObjectContext *ctx) {
         
-        result = result =
+        result =
         [[CDMessage QM_findAllSortedBy:sortTerm
                              ascending:ascending
                          withPredicate:IS(@"dialogID", dialogId)

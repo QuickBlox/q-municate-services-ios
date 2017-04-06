@@ -13,6 +13,7 @@
 #import "QMChatAttachmentService.h"
 #import "QMChatTypes.h"
 #import "QMChatConstants.h"
+#import "QMDeferredQueueManager.h"
 
 @protocol QMChatServiceDelegate;
 @protocol QMChatServiceCacheDataSource;
@@ -80,6 +81,8 @@ typedef NS_ENUM(NSUInteger, QMChatConnectionState) {
  *  Attachment Service
  */
 @property (strong, nonatomic, readonly) QMChatAttachmentService *chatAttachmentService;
+
+@property (strong, nonatomic, readonly) QMDeferredQueueManager *deferredQueueManager;
 
 /**
  *  Init chat service

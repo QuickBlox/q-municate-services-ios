@@ -64,11 +64,13 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 
 - (void)serviceWillStart {
     
-    self.multicastDelegate = (id<QMChatServiceDelegate, QMChatConnectionDelegate>)[[QBMulticastDelegate alloc] init];
-    self.dialogsMemoryStorage = [[QMDialogsMemoryStorage alloc] init];
-    self.messagesMemoryStorage = [[QMMessagesMemoryStorage alloc] init];
-    self.messagesMemoryStorage.delegate = (id<QMMemoryTemporaryQueueDelegate>)self.deferredQueueManager;
-    self.chatAttachmentService = [[QMChatAttachmentService alloc] init];
+    _multicastDelegate = (id<QMChatServiceDelegate, QMChatConnectionDelegate>)[[QBMulticastDelegate alloc] init];
+    _dialogsMemoryStorage = [[QMDialogsMemoryStorage alloc] init];
+    _messagesMemoryStorage = [[QMMessagesMemoryStorage alloc] init];
+    _deferredQueueManager = [[QMDeferredQueueManager alloc] initWithServiceManager:self.serviceManager];
+    [_deferredQueueManager addDelegate:self];
+    _messagesMemoryStorage.delegate = (id<QMMemoryTemporaryQueueDelegate>)self.deferredQueueManager;
+    _chatAttachmentService = [[QMChatAttachmentService alloc] init];
     
     [QBChat.instance addDelegate:self];
 }
@@ -1557,6 +1559,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     [self.messagesMemoryStorage free];
     [self.dialogsMemoryStorage free];
     [self.messagesToRead removeAllObjects];
+    [self.deferredQueueManager free];
 }
 
 #pragma mark - System messages

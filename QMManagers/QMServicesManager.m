@@ -207,6 +207,7 @@
             }];
         }
         else {
+            
             [self.chatService.deferredQueueManager performDeferredActionsForDialogWithID:dialog.ID];
         }
     }
