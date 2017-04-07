@@ -41,8 +41,8 @@
 
 - (void)serviceWillStart {
     
-    self.multicastDelegate = (id<QMUsersServiceDelegate>)[[QBMulticastDelegate alloc] init];
-    self.usersMemoryStorage = [[QMUsersMemoryStorage alloc] init];
+    _multicastDelegate = (id<QMUsersServiceDelegate>)[[QBMulticastDelegate alloc] init];
+    _usersMemoryStorage = [[QMUsersMemoryStorage alloc] init];
 }
 
 - (void)free {
@@ -54,19 +54,19 @@
 - (void)loadFromCache {
     
     if ([self.cacheDataSource respondsToSelector:@selector(cachedUsersWithCompletion:)]) {
-
-        __weak __typeof(self)weakSelf = self;
         
-        [self.cacheDataSource cachedUsersWithCompletion:^(NSArray *collection) {
-            if (collection.count > 0) {
-                
-                [weakSelf.usersMemoryStorage addUsers:collection];
-                
-                if ([weakSelf.multicastDelegate respondsToSelector:@selector(usersService:didLoadUsersFromCache:)]) {
-                    [weakSelf.multicastDelegate usersService:weakSelf didLoadUsersFromCache:collection];
-                }
-            }
-        }];
+        __weak __typeof(self)weakSelf = self;
+        [self.cacheDataSource cachedUsersWithCompletion:^(NSArray *collection)
+         {
+             if (collection.count > 0) {
+                 
+                 [weakSelf.usersMemoryStorage addUsers:collection];
+                 
+                 if ([weakSelf.multicastDelegate respondsToSelector:@selector(usersService:didLoadUsersFromCache:)]) {
+                     [weakSelf.multicastDelegate usersService:weakSelf didLoadUsersFromCache:collection];
+                 }
+             }
+         }];
     }
 }
 
@@ -95,10 +95,11 @@
     
     return [[self getUsersWithIDs:@[@(userID)]
                              page:[self generalResponsePageForCount:1]
-                        forceLoad:forceLoad] continueWithBlock:^id(BFTask *task) {
-        
-        return [BFTask taskWithResult:[task.result firstObject]];
-    }];
+                        forceLoad:forceLoad]
+            continueWithBlock:^id(BFTask *task)
+            {
+                return [BFTask taskWithResult:[task.result firstObject]];
+            }];
 }
 
 - (BFTask *)getUsersWithIDs:(NSArray *)usersIDs {
@@ -115,14 +116,17 @@
                        forceLoad:forceLoad];
 }
 
-- (BFTask *)getUsersWithIDs:(NSArray *)usersIDs page:(QBGeneralResponsePage *)page {
+- (BFTask *)getUsersWithIDs:(NSArray *)usersIDs
+                       page:(QBGeneralResponsePage *)page {
     
     return [self getUsersWithIDs:usersIDs
                             page:page
                        forceLoad:NO];
 }
 
--  (BFTask *)getUsersWithIDs:(NSArray *)usersIDs page:(QBGeneralResponsePage *)page forceLoad:(BOOL)forceLoad {
+-  (BFTask *)getUsersWithIDs:(NSArray *)usersIDs
+                        page:(QBGeneralResponsePage *)page
+                   forceLoad:(BOOL)forceLoad {
     NSParameterAssert(usersIDs);
     NSParameterAssert(page);
     
@@ -135,28 +139,30 @@
         return [BFTask taskWithResult:foundUsers];
     }
     
-    BFTaskCompletionSource *source = [BFTaskCompletionSource taskCompletionSource];
-    NSArray *searchableUsers = forceLoad ? usersIDs : notFoundIDs;
-    
-    [QBRequest usersWithIDs:searchableUsers
-                       page:page
-               successBlock:^(QBResponse *response, QBGeneralResponsePage *page, NSArray *users) {
-                   
-                   NSArray *result = [self performUpdateWithLoadedUsers:users
-                                                             foundUsers:foundUsers
-                                                          wasLoadForced:forceLoad];
-                   [source setResult:result];
-                   
-               } errorBlock:^(QBResponse *response) {
-                   
-                   [source setError:response.error.error];
-               }];
-    
-    return source.task;
-    
+    return make_task(^(BFTaskCompletionSource * _Nonnull source) {
+        
+        NSArray *searchableUsers = forceLoad ? usersIDs : notFoundIDs;
+        
+        [QBRequest usersWithIDs:searchableUsers
+                           page:page
+                   successBlock:^(QBResponse *response,
+                                  QBGeneralResponsePage *page,
+                                  NSArray *users)
+         {
+             NSArray<QBUUser *> *result =
+             [self performUpdateWithLoadedUsers:users
+                                     foundUsers:foundUsers
+                                  wasLoadForced:forceLoad];
+             [source setResult:result];
+             
+         } errorBlock:^(QBResponse *response) {
+             
+             [source setError:response.error.error];
+         }];
+    });
 }
 
-#pragma mark - Get user by External IDs
+//MARK: - Get user by External IDs
 
 - (BFTask *)getUserWithExternalID:(NSUInteger)externalUserID {
     
@@ -166,28 +172,28 @@
 
 - (BFTask *)getUserWithExternalID:(NSUInteger)externalUserID forceLoad:(BOOL)forceLoad {
     
-    BFTaskCompletionSource *source = [BFTaskCompletionSource taskCompletionSource];
-    
-    QBUUser *user = [self.usersMemoryStorage userWithExternalID:externalUserID];
-    
-    if (user != nil) {
+    return make_task(^(BFTaskCompletionSource * _Nonnull source) {
         
-        [source setResult:user];
-    }
-    else {
+        QBUUser *user = [self.usersMemoryStorage userWithExternalID:externalUserID];
         
-        [QBRequest userWithExternalID:externalUserID
-                         successBlock:^(QBResponse *response, QBUUser *user) {
-                             
-                             [source setResult:user];
-                             
-                         } errorBlock:^(QBResponse *response) {
-                             
-                             [source setError:response.error.error];
-                         }];
-    }
-    
-    return source.task;
+        if (user != nil && !forceLoad) {
+            
+            [source setResult:user];
+        }
+        else {
+            
+            [QBRequest userWithExternalID:externalUserID
+                             successBlock:^(QBResponse *response, QBUUser *user)
+             {
+                 
+                 [source setResult:user];
+                 
+             } errorBlock:^(QBResponse *response) {
+                 
+                 [source setError:response.error.error];
+             }];
+        }
+    });
 }
 
 #pragma mark - Get users by emails
@@ -199,21 +205,26 @@
                           forceLoad:NO];
 }
 
-- (BFTask *)getUsersWithEmails:(NSArray *)emails forceLoad:(BOOL)forceLoad {
+- (BFTask *)getUsersWithEmails:(NSArray *)emails
+                     forceLoad:(BOOL)forceLoad {
     
     return [self getUsersWithEmails:emails
                                page:[self generalResponsePageForCount:emails.count]
                           forceLoad:forceLoad];
 }
 
-- (BFTask *)getUsersWithEmails:(NSArray *)emails page:(QBGeneralResponsePage *)page {
+- (BFTask *)getUsersWithEmails:(NSArray *)emails
+                          page:(QBGeneralResponsePage *)page {
     
     return [self getUsersWithEmails:emails
                                page:page
                           forceLoad:NO];
 }
 
-- (BFTask *)getUsersWithEmails:(NSArray *)emails page:(QBGeneralResponsePage *)page forceLoad:(BOOL)forceLoad {
+- (BFTask *)getUsersWithEmails:(NSArray *)emails
+                          page:(QBGeneralResponsePage *)page
+                     forceLoad:(BOOL)forceLoad {
+    
     NSParameterAssert(emails);
     NSParameterAssert(page);
     
@@ -226,28 +237,32 @@
         return [BFTask taskWithResult:foundUsers];
     }
     
-    BFTaskCompletionSource *source = [BFTaskCompletionSource taskCompletionSource];
-    NSArray *searchableUsers = forceLoad ? emails : notFoundEmails;
-    
-    [QBRequest usersWithEmails:searchableUsers
-                          page:page
-                  successBlock:^(QBResponse *response, QBGeneralResponsePage *page, NSArray *users) {
-                      
-                      NSArray *result = [self performUpdateWithLoadedUsers:users
-                                                                foundUsers:foundUsers
-                                                             wasLoadForced:forceLoad];
-                      [source setResult:result];
-                      
-                  } errorBlock:^(QBResponse *response) {
-                      
-                      [source setError:response.error.error];
-                  }];
-    
-    return source.task;
-    
+    return make_task(^(BFTaskCompletionSource * _Nonnull source) {
+        
+        NSArray *searchableUsers = forceLoad ? emails : notFoundEmails;
+        
+        [QBRequest usersWithEmails:searchableUsers
+                              page:page
+                      successBlock:^(QBResponse *response,
+                                     QBGeneralResponsePage *page,
+                                     NSArray<QBUUser *> *users)
+         {
+             NSArray<QBUUser *> *result =
+             [self performUpdateWithLoadedUsers:users
+                                     foundUsers:foundUsers
+                                  wasLoadForced:forceLoad];
+             
+             [source setResult:result];
+             
+         } errorBlock:^(QBResponse *response) {
+             
+             [source setError:response.error.error];
+         }];
+        
+    });
 }
 
-#pragma mark - Get users by Facebook IDs
+//MARK: - Get users by Facebook IDs
 
 - (BFTask *)getUsersWithFacebookIDs:(NSArray *)facebookIDs {
     
@@ -256,21 +271,25 @@
                                forceLoad:NO];
 }
 
-- (BFTask *)getUsersWithFacebookIDs:(NSArray *)facebookIDs forceLoad:(BOOL)forceLoad {
+- (BFTask *)getUsersWithFacebookIDs:(NSArray *)facebookIDs
+                          forceLoad:(BOOL)forceLoad {
     
     return [self getUsersWithFacebookIDs:facebookIDs
                                     page:[self generalResponsePageForCount:facebookIDs.count]
                                forceLoad:forceLoad];
 }
 
-- (BFTask *)getUsersWithFacebookIDs:(NSArray *)facebookIDs page:(QBGeneralResponsePage *)page {
+- (BFTask *)getUsersWithFacebookIDs:(NSArray *)facebookIDs
+                               page:(QBGeneralResponsePage *)page {
     
     return [self getUsersWithFacebookIDs:facebookIDs
                                     page:page
                                forceLoad:NO];
 }
 
-- (BFTask *)getUsersWithFacebookIDs:(NSArray *)facebookIDs page:(QBGeneralResponsePage *)page forceLoad:(BOOL)forceLoad {
+- (BFTask *)getUsersWithFacebookIDs:(NSArray *)facebookIDs
+                               page:(QBGeneralResponsePage *)page
+                          forceLoad:(BOOL)forceLoad {
     
     NSParameterAssert(facebookIDs);
     NSParameterAssert(page);
@@ -284,24 +303,27 @@
         return [BFTask taskWithResult:foundUsers];
     }
     
-    BFTaskCompletionSource *source = [BFTaskCompletionSource taskCompletionSource];
     NSArray *searchableUsers = forceLoad ? facebookIDs : notFoundFacebookIDs;
-    
-    [QBRequest usersWithFacebookIDs:searchableUsers
-                               page:page
-                       successBlock:^(QBResponse *response, QBGeneralResponsePage *page, NSArray *users) {
-                           
-                           NSArray *result = [self performUpdateWithLoadedUsers:users
-                                                                     foundUsers:foundUsers
-                                                                  wasLoadForced:forceLoad];
-                           [source setResult:result];
-                           
-                       } errorBlock:^(QBResponse *response) {
-                           
-                           [source setError:response.error.error];
-                       }];
-    
-    return source.task;
+    return make_task(^(BFTaskCompletionSource * _Nonnull source) {
+        
+        [QBRequest usersWithFacebookIDs:searchableUsers
+                                   page:page
+                           successBlock:^(QBResponse *response,
+                                          QBGeneralResponsePage *page,
+                                          NSArray *users)
+         {
+             NSArray<QBUUser *> *result =
+             [self performUpdateWithLoadedUsers:users
+                                     foundUsers:foundUsers
+                                  wasLoadForced:forceLoad];
+             
+             [source setResult:result];
+             
+         } errorBlock:^(QBResponse *response) {
+             
+             [source setError:response.error.error];
+         }];
+    });
 }
 
 #pragma mark - Get users by Twitter IDs
@@ -313,21 +335,26 @@
                               forceLoad:NO];
 }
 
-- (BFTask *)getUsersWithTwitterIDs:(NSArray *)twitterIDs forceLoad:(BOOL)forceLoad {
+- (BFTask *)getUsersWithTwitterIDs:(NSArray *)twitterIDs
+                         forceLoad:(BOOL)forceLoad {
     
     return [self getUsersWithTwitterIDs:twitterIDs
                                    page:[self generalResponsePageForCount:twitterIDs.count]
                               forceLoad:forceLoad];
 }
 
-- (BFTask *)getUsersWithTwitterIDs:(NSArray *)twitterIDs page:(QBGeneralResponsePage *)page {
+- (BFTask *)getUsersWithTwitterIDs:(NSArray *)twitterIDs
+                              page:(QBGeneralResponsePage *)page {
     
     return [self getUsersWithTwitterIDs:twitterIDs
                                    page:page
                               forceLoad:NO];
 }
 
-- (BFTask *)getUsersWithTwitterIDs:(NSArray *)twitterIDs page:(QBGeneralResponsePage *)page forceLoad:(BOOL)forceLoad {
+- (BFTask *)getUsersWithTwitterIDs:(NSArray *)twitterIDs
+                              page:(QBGeneralResponsePage *)page
+                         forceLoad:(BOOL)forceLoad {
+    
     NSParameterAssert(twitterIDs);
     NSParameterAssert(page);
     
@@ -340,27 +367,31 @@
         return [BFTask taskWithResult:foundUsers];
     }
     
-    BFTaskCompletionSource *source = [BFTaskCompletionSource taskCompletionSource];
     NSArray *searchableUsers = forceLoad ? twitterIDs : notFoundTwitterIDs;
     
-    [QBRequest usersWithTwitterIDs:searchableUsers
-                              page:page
-                      successBlock:^(QBResponse *response, QBGeneralResponsePage *page, NSArray *users) {
-                          
-                          NSArray *result = [self performUpdateWithLoadedUsers:users
-                                                                    foundUsers:foundUsers
-                                                                 wasLoadForced:forceLoad];
-                          [source setResult:result];
-                          
-                      } errorBlock:^(QBResponse *response) {
-                          
-                          [source setError:response.error.error];
-                      }];
-    
-    return source.task;
+    return make_task(^(BFTaskCompletionSource * _Nonnull source) {
+        
+        [QBRequest usersWithTwitterIDs:searchableUsers
+                                  page:page
+                          successBlock:^(QBResponse *response,
+                                         QBGeneralResponsePage *page,
+                                         NSArray *users)
+         {
+             NSArray<QBUUser *> *result =
+             [self performUpdateWithLoadedUsers:users
+                                     foundUsers:foundUsers
+                                  wasLoadForced:forceLoad];
+             
+             [source setResult:result];
+             
+         } errorBlock:^(QBResponse *response) {
+             
+             [source setError:response.error.error];
+         }];
+    });
 }
 
-#pragma mark - Get users by Logins
+//MARK: - Get users by Logins
 
 - (BFTask *)getUsersWithLogins:(NSArray *)logins {
     
@@ -369,21 +400,25 @@
                           forceLoad:NO];
 }
 
-- (BFTask *)getUsersWithLogins:(NSArray *)logins forceLoad:(BOOL)forceLoad {
+- (BFTask *)getUsersWithLogins:(NSArray *)logins
+                     forceLoad:(BOOL)forceLoad {
     
     return [self getUsersWithLogins:logins
                                page:[self generalResponsePageForCount:logins.count]
                           forceLoad:forceLoad];
 }
 
-- (BFTask *)getUsersWithLogins:(NSArray *)logins page:(QBGeneralResponsePage *)page {
+- (BFTask *)getUsersWithLogins:(NSArray *)logins
+                          page:(QBGeneralResponsePage *)page {
     
     return [self getUsersWithLogins:logins
                                page:page
                           forceLoad:NO];
 }
 
-- (BFTask *)getUsersWithLogins:(NSArray *)logins page:(QBGeneralResponsePage *)page forceLoad:(BOOL)forceLoad {
+- (BFTask *)getUsersWithLogins:(NSArray *)logins
+                          page:(QBGeneralResponsePage *)page
+                     forceLoad:(BOOL)forceLoad {
     
     NSParameterAssert(logins);
     NSParameterAssert(page);
@@ -393,31 +428,32 @@
     NSArray *notFoundLogins = searchInfo[QMUsersSearchKey.notFoundSearchValues];
     
     if (!forceLoad && notFoundLogins.count == 0) {
-        
         return [BFTask taskWithResult:foundUsers];
     }
     
-    BFTaskCompletionSource *source = [BFTaskCompletionSource taskCompletionSource];
     NSArray *searchableUsers = forceLoad ? logins : notFoundLogins;
-    
-    [QBRequest usersWithLogins:searchableUsers
-                          page:page
-                  successBlock:^(QBResponse *response, QBGeneralResponsePage *page, NSArray *users) {
-                      
-                      NSArray *result = [self performUpdateWithLoadedUsers:users
-                                                                foundUsers:foundUsers
-                                                             wasLoadForced:forceLoad];
-                      [source setResult:result];
-                      
-                  } errorBlock:^(QBResponse *response) {
-                      
-                      [source setError:response.error.error];
-                  }];
-    
-    return source.task;
+    return make_task(^(BFTaskCompletionSource * _Nonnull source) {
+        
+        [QBRequest usersWithLogins:searchableUsers
+                              page:page
+                      successBlock:^(QBResponse *response,
+                                     QBGeneralResponsePage *page,
+                                     NSArray *users) {
+                          
+                          NSArray *result =
+                          [self performUpdateWithLoadedUsers:users
+                                                  foundUsers:foundUsers
+                                               wasLoadForced:forceLoad];
+                          [source setResult:result];
+                          
+                      } errorBlock:^(QBResponse *response) {
+                          
+                          [source setError:response.error.error];
+                      }];
+    });
 }
 
-#pragma mark - Search
+//MARK: - Search
 
 - (BFTask *)searchUsersWithFullName:(NSString *)searchText {
     
@@ -425,32 +461,33 @@
                                     page:[QBGeneralResponsePage responsePageWithCurrentPage:1 perPage:100]];
 }
 
-- (BFTask *)searchUsersWithFullName:(NSString *)searchText page:(QBGeneralResponsePage *)page
-{
+- (BFTask *)searchUsersWithFullName:(NSString *)searchText
+                               page:(QBGeneralResponsePage *)page {
+    
     NSParameterAssert(searchText);
     NSParameterAssert(page);
     
-    BFTaskCompletionSource *source = [BFTaskCompletionSource taskCompletionSource];
-    
-    [QBRequest usersWithFullName:searchText
-                            page:page
-                    successBlock:^(QBResponse *response, QBGeneralResponsePage *page, NSArray *users) {
-                        
-                        [self.usersMemoryStorage addUsers:users];
-                        
-                        if ([self.multicastDelegate respondsToSelector:@selector(usersService:didAddUsers:)]) {
-                            [self.multicastDelegate usersService:self didAddUsers:users];
-                        }
-                        
-                        [source setResult:users];
-                        
-                    } errorBlock:^(QBResponse *response) {
-                        
-                        [source setError:response.error.error];
-                    }];
-    
-    return source.task;
-    
+    return make_task(^(BFTaskCompletionSource * _Nonnull source) {
+        
+        [QBRequest usersWithFullName:searchText
+                                page:page
+                        successBlock:^(QBResponse *response,
+                                       QBGeneralResponsePage *page,
+                                       NSArray *users)
+         {
+             [self.usersMemoryStorage addUsers:users];
+             
+             if ([self.multicastDelegate respondsToSelector:@selector(usersService:didAddUsers:)]) {
+                 [self.multicastDelegate usersService:self didAddUsers:users];
+             }
+             
+             [source setResult:users];
+             
+         } errorBlock:^(QBResponse *response) {
+             
+             [source setError:response.error.error];
+         }];
+    });
 }
 
 - (BFTask *)searchUsersWithTags:(NSArray *)tags {
@@ -464,26 +501,26 @@
     NSParameterAssert(tags);
     NSParameterAssert(page);
     
-    BFTaskCompletionSource* source = [BFTaskCompletionSource taskCompletionSource];
-    
-    [QBRequest usersWithTags:tags
-                        page:page
-                successBlock:^(QBResponse *response, QBGeneralResponsePage *page, NSArray *users) {
-                    
-                    [self.usersMemoryStorage addUsers:users];
-                    
-                    if ([self.multicastDelegate respondsToSelector:@selector(usersService:didAddUsers:)]) {
-                        [self.multicastDelegate usersService:self didAddUsers:users];
-                    }
-                    
-                    [source setResult:users];
-                    
-                } errorBlock:^(QBResponse *response) {
-                    
-                    [source setError:response.error.error];
-                }];
-    
-    return source.task;
+    return make_task(^(BFTaskCompletionSource * _Nonnull source) {
+        
+        [QBRequest usersWithTags:tags
+                            page:page
+                    successBlock:^(QBResponse *response, QBGeneralResponsePage *page, NSArray *users)
+         {
+             
+             [self.usersMemoryStorage addUsers:users];
+             
+             if ([self.multicastDelegate respondsToSelector:@selector(usersService:didAddUsers:)]) {
+                 [self.multicastDelegate usersService:self didAddUsers:users];
+             }
+             
+             [source setResult:users];
+             
+         } errorBlock:^(QBResponse *response) {
+             
+             [source setError:response.error.error];
+         }];
+    });
 }
 
 - (BFTask *)searchUsersWithPhoneNumbers:(NSArray *)phoneNumbers {
@@ -492,38 +529,41 @@
                                         page:[QBGeneralResponsePage responsePageWithCurrentPage:1 perPage:100]];
 }
 
-- (BFTask *)searchUsersWithPhoneNumbers:(NSArray *)phoneNumbers page:(QBGeneralResponsePage *)page {
+- (BFTask *)searchUsersWithPhoneNumbers:(NSArray *)phoneNumbers
+                                   page:(QBGeneralResponsePage *)page {
+    
     NSParameterAssert(phoneNumbers);
     NSParameterAssert(page);
     
-    
-    BFTaskCompletionSource* source = [BFTaskCompletionSource taskCompletionSource];
-    
-    [QBRequest usersWithPhoneNumbers:phoneNumbers
-                                page:page
-                        successBlock:^(QBResponse *response, QBGeneralResponsePage *page, NSArray *users) {
-                            
-                            [self.usersMemoryStorage addUsers:users];
-                            
-                            if ([self.multicastDelegate respondsToSelector:@selector(usersService:didAddUsers:)]) {
-                                [self.multicastDelegate usersService:self didAddUsers:users];
-                            }
-                            
-                            [source setResult:users];
-                            
-                        } errorBlock:^(QBResponse *response) {
-                            
-                            [source setError:response.error.error];
-                        }];
-    
-    return source.task;
+    return make_task(^(BFTaskCompletionSource * _Nonnull source) {
+        
+        [QBRequest usersWithPhoneNumbers:phoneNumbers
+                                    page:page
+                            successBlock:^(QBResponse *response,
+                                           QBGeneralResponsePage *page,
+                                           NSArray *users)
+         {
+             
+             [self.usersMemoryStorage addUsers:users];
+             
+             if ([self.multicastDelegate respondsToSelector:@selector(usersService:didAddUsers:)]) {
+                 [self.multicastDelegate usersService:self didAddUsers:users];
+             }
+             
+             [source setResult:users];
+             
+         } errorBlock:^(QBResponse *response) {
+             
+             [source setError:response.error.error];
+         }];
+    });
 }
 
 #pragma mark - Helpers
 
-- (NSArray *)performUpdateWithLoadedUsers:(NSArray *)loadedUsers
-                               foundUsers:(NSArray *)foundUsers
-                            wasLoadForced:(BOOL)wasLoadForced {
+- (NSArray<QBUUser *> *)performUpdateWithLoadedUsers:(NSArray<QBUUser *> *)loadedUsers
+                                          foundUsers:(NSArray<QBUUser *> *)foundUsers
+                                       wasLoadForced:(BOOL)wasLoadForced {
     
     [self.usersMemoryStorage addUsers:loadedUsers];
     

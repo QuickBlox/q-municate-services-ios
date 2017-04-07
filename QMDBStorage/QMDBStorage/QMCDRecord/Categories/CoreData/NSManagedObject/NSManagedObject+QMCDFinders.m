@@ -45,6 +45,23 @@
                               inContext:context];
 }
 
++ (NSArray *)QM_findAllSortedBy:(NSString *)sortTerm
+                      ascending:(BOOL)ascending
+                  withPredicate:(NSPredicate *)searchTerm
+                         offset:(NSUInteger)offset
+                          limit:(NSUInteger)limit
+                      inContext:(NSManagedObjectContext *)context {
+    
+    NSFetchRequest *request =
+    [self QM_requestAllSortedBy:sortTerm
+                      ascending:ascending
+                  withPredicate:searchTerm];
+    request.fetchOffset = offset;
+    request.fetchLimit = limit;
+    return [self QM_executeFetchRequest:request
+                              inContext:context];
+}
+
 + (NSArray *)QM_findAllWithPredicate:(NSPredicate *)searchTerm
                            inContext:(NSManagedObjectContext *)context {
     
