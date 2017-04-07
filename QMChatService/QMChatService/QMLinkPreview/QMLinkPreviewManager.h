@@ -7,10 +7,32 @@
 //
 
 @class QMLinkPreview;
-typedef void(^QMLinkPreviewCompletionBlock)(QMLinkPreview *linkPreview, NSError *error);
+@class QMLinkPreviewMemoryStorage;
+
+@protocol QMLinkPreviewManagerDelegate;
+
+typedef void(^QMLinkPreviewCompletionBlock)(BOOL sucess);
+typedef QMLinkPreview *(^QMCacheBlock)(NSString *keyURL);
+
+NS_ASSUME_NONNULL_BEGIN
 
 @interface QMLinkPreviewManager : NSObject
 
-- (void)linkPreviewForURL:(NSURL *)url withCompletion:(QMLinkPreviewCompletionBlock)completion;
+@property (nonatomic, copy) QMCacheBlock cacheBlock;
+@property (nonatomic, strong) QMLinkPreviewMemoryStorage *memoryStorage;
+@property (nonatomic, weak) id <QMLinkPreviewManagerDelegate> delegate;
+
+- (void)downloadLinkPreviewForMessage:(QBChatMessage *)message
+                       withCompletion:(QMLinkPreviewCompletionBlock)completion;
+
+- (QMLinkPreview *)linkPreviewForMessage:(QBChatMessage *)message;
 
 @end
+
+@protocol QMLinkPreviewManagerDelegate <NSObject>
+
+- (void)linkPreviewManager:(QMLinkPreviewManager *)linkPreview didAddLinkPreviewToMemoryStorage:(QMLinkPreview *)linkPreview;
+- (QMLinkPreview *)cachedLinkPreviewForURLKey:(NSString *)urlKey;
+
+@end
+NS_ASSUME_NONNULL_END
