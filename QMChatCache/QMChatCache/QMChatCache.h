@@ -9,8 +9,9 @@
 #import <Foundation/Foundation.h>
 #import "QMDBStorage.h"
 
-NS_ASSUME_NONNULL_BEGIN
+@class QMLinkPreview;
 
+NS_ASSUME_NONNULL_BEGIN
 @interface QMChatCache : QMDBStorage
 
 /**
@@ -90,6 +91,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSArray<QBChatDialog *> *)dialogsSortedBy:(NSString *)sortTerm
                                    ascending:(BOOL)ascending
                                withPredicate:(NSPredicate *)predicate;
+
+- (QMLinkPreview *)linkPreviewForURLKey:(NSString *)urlKey;
 
 #pragma mark Fetch dialog operations
 
@@ -225,6 +228,9 @@ NS_ASSUME_NONNULL_BEGIN
                     ascending:(BOOL)ascending
                    completion:(nullable void(^)(NSArray<QBChatMessage *> * _Nullable messages))completion;
 
+//MARK: - Link Preview operations
+- (void)insertOrUpdateLinkPreview:(QMLinkPreview *)linkPreview
+                       completion:(nullable dispatch_block_t)completion;
 @end
 
 NS_ASSUME_NONNULL_END
