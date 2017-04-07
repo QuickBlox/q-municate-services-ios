@@ -85,7 +85,7 @@ typedef NS_ENUM(NSUInteger, QMChatConnectionState) {
  *  Attachment Service
  */
 @property (strong, nonatomic, readonly) QMChatAttachmentService *chatAttachmentService;
-
+- (void)getLinkPreviewForMessage:(QBChatMessage *)message withCompletion:(QMLinkPreviewCompletionBlock)completion;
 
 /**
  *  Init chat service
@@ -95,6 +95,8 @@ typedef NS_ENUM(NSUInteger, QMChatConnectionState) {
  *
  *  @return Return QMChatService instance
  */
+- (QMLinkPreview *)linkPreviewForMessage:(QBChatMessage *)message;
+
 - (instancetype)initWithServiceManager:(id<QMServiceManagerProtocol>)serviceManager
                        cacheDataSource:(nullable id<QMChatServiceCacheDataSource>)cacheDataSource;
 /**
@@ -983,10 +985,22 @@ typedef NS_ENUM(NSUInteger, QMChatConnectionState) {
  */
 - (void)cachedMessagesWithDialogID:(NSString *)dialogID block:(nullable QMCacheCollection)block;
 
+@optional
+
+- (QMLinkPreview *)cachedLinkPreviewForURLKey:(NSString *)urlKey;
+
 @end
 
 @protocol QMChatServiceDelegate <NSObject>
 @optional
+
+/**
+ *  Is called when link preview instance  added to memory storage.
+ *
+ *  @param chatService instance
+ *  @param linkPreview QMLinkPreview instance
+ */
+- (void)chatService:(QMChatService *)chatService didAddLinkPreviewToMemoryStorage:(QMLinkPreview *)linkPreview;
 
 /**
  *  Is called when ChatDialogs did load from cache.

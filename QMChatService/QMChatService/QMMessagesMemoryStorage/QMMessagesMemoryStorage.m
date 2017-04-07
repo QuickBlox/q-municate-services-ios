@@ -178,7 +178,7 @@
     return [messages containsObject:message];
 }
 
-#pragma mark - QMMemeoryStorageProtocol
+#pragma mark - QMMemoryStorageProtocol
 
 - (void)free {
     
