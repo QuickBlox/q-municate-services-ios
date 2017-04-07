@@ -24,4 +24,10 @@
 - (BFTask <QBCBlob *> *)uploadMediaWithData:(NSData *)data
                                    mimeType:(NSString *)mimeType
                               progressBlock:(QMMediaProgressBlock)progressBlock;
+
+
+- (void)uploadAttachment:(QBChatAttachment *)attachment
+            withCompletionBlock:(QMAttachmentUploadCompletionBlock)completionBlock
+                  progressBlock:(QMMediaProgressBlock)progressBlock;
+
 @end

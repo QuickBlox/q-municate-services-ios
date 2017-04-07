@@ -6,20 +6,19 @@
 //
 //
 
-
 #import <UIKit/UIKit.h>
-
 #import "QMAsynchronousOperation.h"
 
-@class QMMediaItem;
+@class QBChatAttachment;
 
 typedef void(^QMImageOperationCompletionBlock)(UIImage * _Nullable image, NSError * _Nullable error);
 
 @interface QMImageOperation : QMAsynchronousOperation
 
 @property (nullable, copy, nonatomic) QMImageOperationCompletionBlock imageOperationCompletionBlock;
-@property (strong, nonatomic, readonly) QMMediaItem *mediaItem;
+@property (strong, nonatomic, readonly) QBChatAttachment *attachment;
 
-- (instancetype)initWithMediaItem:(QMMediaItem *)mediaItem completionHandler:(QMImageOperationCompletionBlock)completionHandler;
+- (instancetype)initWithAttachment:(QBChatAttachment *)attachment
+                 completionHandler:(QMImageOperationCompletionBlock)completionHandler;
 
 @end

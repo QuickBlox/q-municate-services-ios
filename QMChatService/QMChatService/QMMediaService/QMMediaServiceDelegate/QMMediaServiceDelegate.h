@@ -25,19 +25,17 @@
 @property (nonatomic, strong) id <QMMediaUploadServiceDelegate> uploadService;
 @property (nonatomic, strong) id <QMMediaInfoServiceDelegate> mediaInfoService;
 
-- (void)mediaForMessage:(QBChatMessage *)message
-           attachmentID:(NSString *)attachmentID
-    withCompletionBlock:(void(^)(QMMediaItem *mediaItem, NSError *error))completion;
 
 - (void)sendMessage:(QBChatMessage *)message
            toDialog:(QBChatDialog *)dialog
     withChatService:(QMChatService *)chatService
-          withMedia:(QMMediaItem *)mediaItem
+     withAttachment:(QBChatAttachment *)attachment
          completion:(QBChatCompletionBlock)completion;
 
 - (QMMediaItem *)cachedMediaForMessage:(QBChatMessage *)message attachmentID:(NSString *)attachmentID;
 
 - (void)imageForMediaItem:(QMMediaItem *)mediaItem  completion:(void(^)(UIImage *image))completion;
+
 
 
 

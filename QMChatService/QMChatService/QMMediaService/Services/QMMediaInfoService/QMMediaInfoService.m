@@ -56,9 +56,32 @@
 }
 
 
+- (void)videoThumbnailForAttachment:(QBChatAttachment *)attachment completion:(void(^)(UIImage *image, NSError *error))completion {
+    
+    NSString *key = attachment.ID;
+    if (key == nil) {
+        return;
+    }
+    
+    for (QMImageOperation *op in [self.imagesOperationQueue operations]) {
+        if ([op.attachment.ID isEqualToString:key]) {
+            [op cancel];
+        }
+    }
+    __weak typeof(self) weakSelf = self;
+    
+    QMImageOperation *imageOperation = [[QMImageOperation alloc] initWithAttachment:attachment
+                                                                  completionHandler:^(UIImage * _Nullable image, NSError * _Nullable error) {
+                                                                      if (completion) {
+                                                                          completion(image, error);
+                                                                      }
+                                                                  }];
+    [self.imagesOperationQueue addOperation:imageOperation];
+}
 
-- (void)thumbnailImageForMedia:(QMMediaItem *)mediaItem completion:(void(^)(UIImage *image, NSError *error))completion {
-    NSString *imageKey = mediaItem.mediaID;
+
+- (void)thumbnailImageForMedia:(QBChatAttachment *)attachment completion:(void(^)(UIImage *image, NSError *error))completion {
+    NSString *imageKey = attachment.ID;
     
     if (self.imagesMemoryStorage[imageKey]) {
         UIImage *image = self.imagesMemoryStorage[imageKey];
@@ -68,30 +91,32 @@
     else {
         __weak typeof(self) weakSelf = self;
         
-        [self localThumbnailForMediaItem:mediaItem completion:^(UIImage *image) {
-            if (!image) {
-                __strong typeof(weakSelf) strongSelf = weakSelf;
-                for (QMImageOperation *op in [strongSelf.imagesOperationQueue operations]) {
-                    if ([op.mediaItem.mediaID isEqualToString:mediaItem.mediaID]) {
-                        [op cancel];
-                    }
-                }
-                
-                QMImageOperation *imageOperation = [[QMImageOperation alloc] initWithMediaItem:mediaItem completionHandler:^(UIImage * _Nullable image, NSError * _Nullable error) {
-                        if (completion) {
-                            [strongSelf saveThumbnailImage:image forMediaItem:mediaItem];
-                            completion(image, error);
-                        }
-                }];
-                
-                [strongSelf.imagesOperationQueue addOperation:imageOperation];
-                NSLog(@"operations count = %d", [strongSelf.imagesOperationQueue operationCount]);
-            }
-            else {
-                self.imagesMemoryStorage[mediaItem.mediaID] = image;
-                completion(image, nil);
-            }
-        }];
+        [self localThumbnailForAttachment:attachment
+                               completion:^(UIImage *image) {
+                                   //            if (!image) {
+                                   //                __strong typeof(weakSelf) strongSelf = weakSelf;
+                                   //                for (QMImageOperation *op in [strongSelf.imagesOperationQueue operations]) {
+                                   //                    if ([op.mediaItem.mediaID isEqualToString:attachment.ID]) {
+                                   //                        [op cancel];
+                                   //                    }
+                                   //                }
+                                   //
+                                   //                QMImageOperation *imageOperation = [[QMImageOperation alloc] initWithMediaItem:mediaItem completionHandler:^(UIImage * _Nullable image, NSError * _Nullable error) {
+                                   //                        if (completion) {
+                                   //                            [strongSelf saveThumbnailImage:image forMediaItem:mediaItem];
+                                   //                            completion(image, error);
+                                   //                        }
+                                   //                }];
+                                   //
+                                   //                [strongSelf.imagesOperationQueue addOperation:imageOperation];
+                                   //                NSLog(@"operations count = %d", [strongSelf.imagesOperationQueue operationCount]);
+                                   //            }
+                                   //            else {
+                                   if (image) {
+                                       self.imagesMemoryStorage[attachment.ID] = image;
+                                   }
+                                   completion(image, nil);
+                               }];
     }
 }
 
@@ -101,7 +126,7 @@
     
     if (mediaID.length == 0) {
         
-        QMMediaInfo *localMediaInfo = [QMMediaInfo infoFromMediaItem:mediaItem];
+        QMMediaInfo *localMediaInfo = [QMMediaInfo infoFromAttachment:nil];
         [localMediaInfo prepareWithCompletion:^(NSTimeInterval duration, CGSize mediaSize, UIImage *image, NSError *error) {
             if (completion) {
                 completion(duration, mediaSize, image, error);
@@ -111,51 +136,51 @@
     }
     
     [self cancelInfoOperationForKey:mediaID];
-    
-    if (mediaItem.image == nil) {
-        __weak typeof(self) weakSelf = self;
-        
-        [self localThumbnailForMediaItem:mediaItem completion:^(UIImage *image) {
-            mediaItem.image = image;
-            __strong typeof(weakSelf) strongSelf = weakSelf;
-            QMMediaInfo *mediaInfo = [QMMediaInfo infoFromMediaItem:mediaItem];
-            [[[strongSelf class] mediaInfoOperations] setObject:mediaInfo forKey:mediaID];
-            
-            [mediaInfo prepareWithCompletion:^(NSTimeInterval duration, CGSize mediaSize, UIImage *image, NSError *error) {
-                if (!error) {
-                    strongSelf.mediaInfoMemoryStorage[mediaItem.mediaID] = mediaInfo;
-                }
-                if (completion) {
-                    if (image) {
-                        [strongSelf saveThumbnailImage:image forMediaItem:mediaItem];
-                    }
-                    [[[self class] mediaInfoOperations] removeObjectForKey:mediaID];
-                    completion(duration, mediaSize, image, error);
-                }
-            }];
-            
-        }];
-    }
+    //
+    //    if (mediaItem.image == nil) {
+    //        __weak typeof(self) weakSelf = self;
+    //
+    //        [self localThumbnailForMediaItem:mediaItem completion:^(UIImage *image) {
+    //            mediaItem.image = image;
+    //            __strong typeof(weakSelf) strongSelf = weakSelf;
+    //            QMMediaInfo *mediaInfo = [QMMediaInfo infoFromMediaItem:mediaItem];
+    //            [[[strongSelf class] mediaInfoOperations] setObject:mediaInfo forKey:mediaID];
+    //
+    //            [mediaInfo prepareWithCompletion:^(NSTimeInterval duration, CGSize mediaSize, UIImage *image, NSError *error) {
+    //                if (!error) {
+    //                    strongSelf.mediaInfoMemoryStorage[mediaItem.mediaID] = mediaInfo;
+    //                }
+    //                if (completion) {
+    //                    if (image) {
+    //                        [strongSelf saveThumbnailImage:image forMediaItem:mediaItem];
+    //                    }
+    //                    [[[self class] mediaInfoOperations] removeObjectForKey:mediaID];
+    //                    completion(duration, mediaSize, image, error);
+    //                }
+    //            }];
+    //
+    //        }];
+    //    }
 }
 
-- (void)localThumbnailForMediaItem:(QMMediaItem *)mediaItem
-                        completion:(void(^)(UIImage *image))completion {
+- (void)localThumbnailForAttachment:(QBChatAttachment *)attachment
+                         completion:(void(^)(UIImage *image))completion {
     
-    NSString *mediaID = mediaItem.mediaID;
-    if (mediaID == nil) {
+    
+    if (attachment.ID == nil) {
         completion(nil);
         return;
     }
-    if (self.imagesMemoryStorage[mediaItem.mediaID] != nil) {
+    if (self.imagesMemoryStorage[attachment.ID] != nil) {
         
         if (completion) {
-            completion(self.imagesMemoryStorage[mediaID]);
+            completion(self.imagesMemoryStorage[attachment.ID]);
         }
         return;
     }
     
     // checking attachment in cache
-    NSString *path = thumbnailPath(mediaID);
+    NSString *path = thumbnailPath(attachment.ID);
     
     if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
@@ -166,7 +191,7 @@
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (image != nil) {
-                    self.imagesMemoryStorage[mediaItem.mediaID] = image;
+                    self.imagesMemoryStorage[attachment.ID] = image;
                 }
                 if (completion) {
                     completion(image);
@@ -197,11 +222,7 @@
 
 - (void)cancelInfoOperationForKey:(NSString *)key {
     
-    QMMediaInfo *mediaInfo = [[[self class] mediaInfoOperations] objectForKey:key];
-    if (mediaInfo) {
-        [mediaInfo cancel];
-        [[[self class] mediaInfoOperations] objectForKey:key];
-    }
+    [QMImageOperation cancelOperationWithID:key queue:self.imagesOperationQueue];
 }
 
 static NSString *thumbnailCacheDir() {

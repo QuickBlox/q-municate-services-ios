@@ -24,6 +24,17 @@
 @property (copy, nonatomic) QMAttachmentMessageDidStartUploading onMessageDidStartUploading;
 
 - (QMMediaItem *)placeholderMediaForMessage:(QBChatMessage *)message;
+- (QBChatAttachment *)placeholderAttachment:(NSString *)messageID;
 
+- (void)imageForAttachment:(QBChatAttachment *)attachment
+                   message:(QBChatMessage *)message
+                  withSize:(CGSize)size
+                completion:(void(^)(UIImage *image, NSError *error))completion;
+
+- (void)audioDataForAttachment:(QBChatAttachment *)attachment
+                       message:(QBChatMessage *)message
+                    completion:(void(^)(BOOL isReady, NSError *error))completion;
+
+- (void)cancelOperationsForAttachment:(QBChatAttachment *)attachment;
 @end
 

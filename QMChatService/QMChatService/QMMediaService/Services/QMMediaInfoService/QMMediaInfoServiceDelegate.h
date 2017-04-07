@@ -18,7 +18,13 @@
 - (void)cancellAllInfoOperations;
 - (void)cancelInfoOperationForKey:(NSString *)key;
 
-- (void)localThumbnailForMediaItem:(QMMediaItem *)mediaItem
-                        completion:(void(^)(UIImage *image))completion;
+- (void)localThumbnailForAttachment:(QBChatAttachment *)attachment
+                         completion:(void(^)(UIImage *image))completion;
+
 - (void)thumbnailImageForMedia:(QMMediaItem *)mediaItem completion:(void(^)(UIImage *image, NSError *error))compeltion;
+
+
+- (void)videoThumbnailForAttachment:(QBChatAttachment *)attachment completion:(void(^)(UIImage *image, NSError *error))completion;
+
+
 @end

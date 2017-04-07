@@ -7,27 +7,55 @@
 //
 
 #import "QMImageOperation.h"
-#import "QMMediaItem.h"
-#import "QMMediaInfo.h"
+#import "QBChatAttachment+QMCustomParameters.h"
 
 @interface QMImageOperation()
 
-@property (strong, nonatomic) QMMediaInfo *mediaInfo;
+@property (strong, nonatomic) AVAssetImageGenerator *generator;
 
 @end
 
 
 @implementation QMImageOperation
 
-- (instancetype)initWithMediaItem:(QMMediaItem *)mediaItem completionHandler:(QMImageOperationCompletionBlock)completionHandler {
+- (instancetype)initWithAttachment:(QBChatAttachment *)attachment
+                 completionHandler:(QMImageOperationCompletionBlock)completionHandler {
     
     self = [self init];
     
     if (self) {
-        _mediaItem = mediaItem;
-        _mediaInfo = [QMMediaInfo infoFromMediaItem:mediaItem];
+        _attachment = attachment;
         _imageOperationCompletionBlock = [completionHandler copy];
-        self.name = mediaItem.mediaID;
+
+        self.generator = [AVAssetImageGenerator assetImageGeneratorWithAsset:[AVAsset assetWithURL:[self.attachment remoteURL]]];
+        self.generator.appliesPreferredTrackTransform = YES;
+        self.generator.maximumSize = CGSizeMake(200, 200);
+        
+        __weak typeof(self) weakSelf = self;
+  
+        self.operationBlock = ^{
+            
+            AVAssetImageGeneratorCompletionHandler handler = ^(CMTime requestedTime, CGImageRef image, CMTime actualTime, AVAssetImageGeneratorResult result, NSError *error) {
+                UIImage *thumb = nil;
+                if (result == AVAssetImageGeneratorSucceeded) {
+                    thumb = [UIImage imageWithCGImage:image];
+                    NSLog(@"Succesfully generater the thumbnail!!!");
+                } else {
+                    NSLog(@"Failed to generater the thumbnail!!!");
+                    NSLog(@"Error : %@",error.localizedDescription);
+                }
+             
+                weakSelf.imageOperationCompletionBlock(thumb, error);
+                [weakSelf complete];
+            };
+            
+            [weakSelf.generator generateCGImagesAsynchronouslyForTimes:[NSArray arrayWithObject:[NSValue valueWithCMTime:CMTimeMakeWithSeconds(2,1)]] completionHandler:handler];
+
+        };
+        
+        self.cancellBlock = ^{
+            [weakSelf.generator cancelAllCGImageGeneration];
+        };
     }
     
     return self;
@@ -38,27 +66,7 @@
     NSLog(@"QMImageOperation deallock");
 }
 
-- (void)start
-{
-    [super start];
-    
-    __weak typeof(self) weakSelf = self;
 
-    [self.mediaInfo prepareWithCompletion:^(NSTimeInterval duration, CGSize size, UIImage *image, NSError *error) {
-            __strong typeof(weakSelf) strongSelf = weakSelf;
-        if (strongSelf.imageOperationCompletionBlock) {
-            strongSelf.imageOperationCompletionBlock(image,error);
-        }
-        [strongSelf finish];
-    }];
-}
-
-- (void)cancel {
-    [self.mediaInfo cancel];
-    self.mediaInfo = nil;
-    [super cancel];
-    [self finish];
-}
 
 
 @end

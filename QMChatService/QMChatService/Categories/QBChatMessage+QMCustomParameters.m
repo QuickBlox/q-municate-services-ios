@@ -438,7 +438,7 @@ NSString const *kQMCustomParameterDialogDeletedOccupantsIDs = @"deleted_occupant
 
 - (BOOL)isAudioAttachment {
     
-   __block BOOL isAudioAttachment = NO;
+    __block BOOL isAudioAttachment = NO;
     
     [self.attachments enumerateObjectsUsingBlock:^(QBChatAttachment * _Nonnull obj, NSUInteger __unused idx, BOOL * _Nonnull stop) {
         

@@ -13,33 +13,91 @@
 #import "QMSLog.h"
 #import "QMMediaError.h"
 #import "QMMediaItem.h"
+#import "QMAsynchronousOperation.h"
+
+@interface QMMediaDownloadService()
+
+@property (strong, nonatomic) NSOperationQueue *downloadOperationQueue;
+@property (strong, nonatomic) NSMutableDictionary *downloads;
+
+@end
 
 @implementation QMMediaDownloadService
 
+- (instancetype)init {
+    
+    if (self  = [super init]) {
+        
+        self.downloadOperationQueue = [NSOperationQueue new];
+        self.downloadOperationQueue.maxConcurrentOperationCount = 3;
+        self.downloads = [NSMutableDictionary dictionary];
+    }
+    
+    return self;
+}
+
 - (void)dealloc {
     
+    [self cancellAllDownloads];
     QMSLog(@"%@ - %@",  NSStringFromSelector(_cmd), self);
 }
 
-- (void)downloadMediaItemWithID:(NSString *)mediaID
-            withCompletionBlock:(QMMediaRestCompletionBlock)completionBlock
-                  progressBlock:(QMMediaProgressBlock)progressBlock {
+
+
+- (void)downloadDataForAttachment:(QBChatAttachment *)attachment
+              withCompletionBlock:(QMAttachmentDataCompletionBlock)completionBlock
+                    progressBlock:(QMMediaProgressBlock)progressBlock {
     
-    [QBRequest downloadFileWithUID:mediaID  successBlock:^(QBResponse *response, NSData *fileData) {
+    NSString *attachmentID = attachment.ID;
+    
+    QMAsynchronousOperation *operation = [QMAsynchronousOperation asynchronousOperationWithID:attachmentID queue:self.downloadOperationQueue];
+    
+    __weak typeof(QMAsynchronousOperation) *weakOperation = operation;
+    
+    operation.operationBlock = ^{
         
-        if (fileData) {
-            completionBlock(mediaID, fileData, nil);
+        QBRequest *request = [QBRequest downloadFileWithUID:attachmentID  successBlock:^(QBResponse *response, NSData *fileData) {
+            
+            if (fileData) {
+                completionBlock(attachmentID, fileData, nil);
+            }
+            [weakOperation complete];
+            
+        } statusBlock:^(QBRequest *request, QBRequestStatus *status) {
+            
+            progressBlock(status.percentOfCompletion);
+            
+        } errorBlock:^(QBResponse *response) {
+            
+            QMMediaError *error = [QMMediaError errorWithResponse:response];
+            completionBlock(attachmentID, nil, error);
+            
+            [weakOperation complete];
+        }];
+        @synchronized (self.downloads) {
+            self.downloads[attachmentID] = request;
         }
-    } statusBlock:^(QBRequest *request, QBRequestStatus *status) {
+    };
+    
+    operation.cancellBlock = ^{
         
-        progressBlock(status.percentOfCompletion);
+        @synchronized (self.downloads) {
+            QBRequest *request = self.downloads[attachmentID];
+            [request cancel];
+            [self.downloads removeObjectForKey:attachmentID];
+        }
         
-    } errorBlock:^(QBResponse *response) {
-        
-        QMMediaError *error = [QMMediaError errorWithResponse:response];
-        completionBlock(mediaID, nil, error);
-    }];
+    };
+    
+    [self.downloadOperationQueue addOperation:operation];
 }
 
+- (void)cancellAllDownloads {
+    [QMAsynchronousOperation cancelAllOperationsForQueue:self.downloadOperationQueue];
+}
+
+- (void)cancelDownloadOperationForAttachment:(QBChatAttachment *)attachment {
+    [QMAsynchronousOperation cancelOperationWithID:attachment.ID queue:self.downloadOperationQueue];
+}
 
 @end

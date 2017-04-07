@@ -8,139 +8,57 @@
 
 #import "QMAsynchronousOperation.h"
 
-@interface QMAsynchronousOperation ()
-
-/*
-@property (nonatomic, readwrite, getter = isFinished)  BOOL finished;
-@property (nonatomic, readwrite, getter = isExecuting) BOOL executing;
-@property (nonatomic, strong) id<NSLocking> lock;
- */
-
-@end
-
 @implementation QMAsynchronousOperation
-/*
-@synthesize finished  = _finished;
-@synthesize executing = _executing;
 
-- (instancetype)init {
-    self = [super init];
-    if (self) {
-        self.lock = [[NSRecursiveLock alloc] init];
-    }
-    return self;
-}
-
-- (void)start {
-    if ([self isCancelled]) {
-        self.finished = YES;
-        return;
-    }
-    
-    self.executing = YES;
-    
-    [self main];
-}
-
-- (void)completeOperation {
-    if (self.executing) {
-        self.executing = NO;
-        self.finished = YES;
-    }
-}
-
-#pragma mark - NSOperation properties
-
-- (BOOL)isAsynchronous {
-    return YES;
-}
-
-- (void)setExecuting:(BOOL)executing {
-    [self.lock lock];
-    
-    if (_executing != executing) {
-        [self willChangeValueForKey:@"isExecuting"];
-        _executing = executing;
-        [self didChangeValueForKey:@"isExecuting"];
-    }
-    
-    [self.lock unlock];
-}
-
-- (void)setFinished:(BOOL)finished {
-    [self.lock lock];
-    
-    if (self.isFinished != finished) {
-        [self willChangeValueForKey:@"isFinished"];
-        _finished = finished;
-        [self didChangeValueForKey:@"isFinished"];
-    }
-    
-    [self.lock unlock];
-}
-
-- (BOOL)isExecuting {
-    [self.lock lock];
-    BOOL value = _executing;
-    [self.lock unlock];
-    
-    return value;
-}
-
-- (BOOL)isFinished {
-    [self.lock lock];
-    BOOL value = _finished;
-    [self.lock unlock];
-    
-    return value;
-}
-
-@end
-
-*/
-
-/*
- We need to do old school synthesizing as the compiler has trouble creating the internal ivars.
- */
-@synthesize ready = _ready;
+//@synthesize ready = _ready;
 @synthesize executing = _executing;
 @synthesize finished = _finished;
 
-#pragma mark - Init
+//MARK: - Class methods
 
-- (instancetype)init
-{
-    self = [super init];
++ (instancetype)asynchronousOperationWithID:(NSString *)operationID
+                                      queue:(NSOperationQueue *)queue {
     
-    if (self)
-    {
-        self.ready = YES;
+    QMAsynchronousOperation *operation = [QMAsynchronousOperation new];
+    operation.operationID = operationID;
+    
+    if (operationID.length != 0) {
+        
+        for (QMAsynchronousOperation *operationInQueue in queue.operations) {
+            if ([operationInQueue.operationID isEqualToString:operationID]) {
+                [operation addDependency:operationInQueue];
+            }
+        }
     }
     
-    return self;
+    return operation;
 }
 
-#pragma mark - State
-
-- (void)setReady:(BOOL)ready
-{
-    if (_ready != ready)
-    {
-        [self willChangeValueForKey:NSStringFromSelector(@selector(isReady))];
-        _ready = ready;
-        [self didChangeValueForKey:NSStringFromSelector(@selector(isReady))];
++ (void)cancelOperationWithID:(NSString *)operationID
+                        queue:(NSOperationQueue *)queue {
+    if (operationID.length != 0) {
+        
+        for (QMAsynchronousOperation *operationInQueue in queue.operations) {
+            if ([operationInQueue.operationID isEqualToString:operationID]) {
+                [operationInQueue cancel];
+                [operationInQueue complete];
+            }
+        }
     }
 }
 
-- (BOOL)isReady
-{
-    return _ready;
+
++ (void)cancelAllOperationsForQueue:(NSOperationQueue *)queue {
+    
+    for (QMAsynchronousOperation *operationInQueue in queue.operations) {
+        [operationInQueue cancel];
+        [operationInQueue complete];
+    }
 }
 
-- (void)setExecuting:(BOOL)executing
-{
-    if (_executing != executing)
-    {
+//MARK: - State
+- (void)setExecuting:(BOOL)executing {
+    if (_executing != executing) {
         [self willChangeValueForKey:NSStringFromSelector(@selector(isExecuting))];
         _executing = executing;
         [self didChangeValueForKey:NSStringFromSelector(@selector(isExecuting))];
@@ -172,24 +90,41 @@
     return YES;
 }
 
-#pragma mark - Control
+//MARK: - Control
+- (void)cancel {
+    
+    [super cancel];
+    
+    if (self.cancellBlock) {
+        self.cancellBlock();
+    }
+}
 
-- (void)start
-{
-    if (!self.isExecuting)
-    {
-        self.ready = NO;
-        self.executing = YES;
-        self.finished = NO;
+- (void)main {
+    
+    if (self.operationBlock != nil) {
+        self.operationBlock();
+    }
+    else {
+        [self complete];
+    }
+}
+
+- (void)start {
+    if (self.isCancelled) {
+        self.finished = YES;
+    }
+    else if (!self.isExecuting && !self.isFinished) {
         
+        self.executing = YES;
+        [self main];
         NSLog(@"\"%@\" Operation Started.", self.name);
     }
 }
 
-- (void)finish
-{
-    if (self.isExecuting)
-    {
+- (void)complete {
+    
+    if (self.isExecuting) {
         NSLog(@"\"%@\" Operation Finished.", self.name);
         
         self.executing = NO;

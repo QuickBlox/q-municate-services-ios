@@ -8,9 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-typedef void(^QMMediaDurationObserver)(NSTimeInterval timeInterval);
-typedef void (^QMMediaSizeObserver)(CGSize size);
-
 typedef NS_ENUM(NSUInteger, QMMediaPrepareStatus) {
     
     QMMediaPrepareStatusNotPrepared,
@@ -19,7 +16,7 @@ typedef NS_ENUM(NSUInteger, QMMediaPrepareStatus) {
     QMMediaPrepareStatusPrepareFailed
 };
 
-@class QMMediaItem;
+@class QBChatAttachment;
 
 @interface QMMediaInfo : NSObject
 
@@ -30,7 +27,7 @@ typedef NS_ENUM(NSUInteger, QMMediaPrepareStatus) {
 @property (strong, nonatomic, readonly) AVPlayerItem *playerItem;
 @property (assign, nonatomic, readonly) QMMediaPrepareStatus prepareStatus;
 
-+ (instancetype)infoFromMediaItem:(QMMediaItem *)mediaItem;
++ (instancetype)infoFromAttachment:(QBChatAttachment *)attachment;
 - (void)cancel;
 
 - (void)prepareWithCompletion:(void(^)(NSTimeInterval duration, CGSize size, UIImage *image, NSError *error))completion;

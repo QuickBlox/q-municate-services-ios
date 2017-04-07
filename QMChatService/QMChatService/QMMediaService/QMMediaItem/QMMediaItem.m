@@ -56,31 +56,31 @@
 
 - (void)updateWithAttachment:(QBChatAttachment *)attachment {
     
-    _name = attachment.name;
-    _mediaID = attachment.ID;
-    
-    QMMediaContentType contentType;
-    
-    if ([attachment.type isEqualToString:@"audio"]) {
-        contentType = QMMediaContentTypeAudio;
-    }
-    else if ([attachment.type isEqualToString:@"video"]) {
-        
-        contentType = QMMediaContentTypeVideo;
-    }
-    else if ([attachment.type isEqualToString:@"image"]) {
-        contentType = QMMediaContentTypeImage;
-    }
-    
-    _contentType = contentType;
-    
-    CGSize size = CGSizeMake(attachment.width, attachment.height);
-    
-    if (!CGSizeEqualToSize(size, CGSizeZero)) {
-        _mediaSize = size;
-    }
-    
-    _mediaDuration = attachment.duration;
+//    _name = attachment.name;
+//    _mediaID = attachment.ID;
+//    
+//    QMMediaContentType contentType;
+//    
+//    if ([attachment.type isEqualToString:@"audio"]) {
+//        contentType = QMMediaContentTypeAudio;
+//    }
+//    else if ([attachment.type isEqualToString:@"video"]) {
+//        
+//        contentType = QMMediaContentTypeVideo;
+//    }
+//    else if ([attachment.type isEqualToString:@"image"]) {
+//        contentType = QMMediaContentTypeImage;
+//    }
+//    
+//    _contentType = contentType;
+//    
+//    CGSize size = CGSizeMake(attachment.width, attachment.height);
+//    
+//    if (!CGSizeEqualToSize(size, CGSizeZero)) {
+//        _mediaSize = size;
+//    }
+//    
+//    _mediaDuration = attachment.duration;
 }
 
 
@@ -199,28 +199,7 @@
     return self;
 }
 
-- (QBChatAttachment *)attachment {
-    
-    if (_attachment == nil) {
-        _attachment = [QBChatAttachment new];
-        _attachment.name = _name;
-        _attachment.type = [self stringContentType];
-        _attachment.ID = _mediaID;
-        
-        
-        if (_mediaDuration > 0) {
-            _attachment.duration = _mediaDuration;
-        }
-        
-        
-        if (!CGSizeEqualToSize(_mediaSize, CGSizeZero)) {
-            _attachment.height = _mediaSize.height;
-            _attachment.width = _mediaSize.width;
-        }
-    }
-    
-    return _attachment;
-}
+
 
 - (NSString *)stringMIMEType {
     
@@ -340,23 +319,7 @@
     return [self.localURL hash];
 }
 
-- (void)setMediaDuration:(NSTimeInterval)mediaDuration {
-    
-    if (_mediaDuration != mediaDuration) {
-        _mediaDuration = mediaDuration;
-        _attachment.duration = mediaDuration;
-    }
-}
 
-- (void)setMediaSize:(CGSize)mediaSize {
-    
-    if (!CGSizeEqualToSize(_mediaSize, mediaSize)) {
-        
-        _mediaSize = mediaSize;
-        _attachment.width = self.mediaSize.width;
-        _attachment.height = self.mediaSize.height;
-    }
-}
 
 - (BOOL)isReady {
     if (self.contentType == QMMediaContentTypeImage) {

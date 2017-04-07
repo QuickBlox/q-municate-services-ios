@@ -15,56 +15,56 @@
 
 @implementation QMMediaWebHandler
 
-+ (QMMediaWebHandler *)downloadingHandlerWithID:(NSString *)handlerID
-                                completionBlock:(QMMediaRestCompletionBlock)completionBlock
-                                  progressBlock:(QMMediaProgressBlock)progressBlock {
+//+ (QMMediaWebHandler *)downloadingHandlerWithID:(NSString *)handlerID
+//                                completionBlock:(QMMediaRestCompletionBlock)completionBlock
+//                                  progressBlock:(QMMediaProgressBlock)progressBlock {
+//
+//    QMMediaWebHandler *mediaHandler = [QMMediaWebHandler new];
+//    mediaHandler.handlerID = handlerID;
+//    mediaHandler.progressBlock = progressBlock;
+//    mediaHandler.completionBlock = completionBlock;
+//    
+//    return mediaHandler;
+//}
+//
+//+ (QMMediaWebHandler *)downloadingHandlerWithMediaID:(NSString *)handlerID
+//                                            delegate:(id <QMMediaDownloadDelegate>)delegate {
     
-    QMMediaWebHandler *mediaHandler = [QMMediaWebHandler new];
-    mediaHandler.handlerID = handlerID;
-    mediaHandler.progressBlock = progressBlock;
-    mediaHandler.completionBlock = completionBlock;
-    
-    return mediaHandler;
-}
-
-+ (QMMediaWebHandler *)downloadingHandlerWithMediaID:(NSString *)handlerID
-                                            delegate:(id <QMMediaDownloadDelegate>)delegate {
-    
-    QMMediaWebHandler *mediaHandler = [QMMediaWebHandler new];
-    
-    mediaHandler.handlerID = handlerID;
-    mediaHandler.delegate = delegate;
-    
-    return mediaHandler;
-}
-
-+ (QMMediaWebHandler *)uploadingHandlerWithID:(NSString *)handlerID
-                              completionBlock:(QMMediaRestCompletionBlock)completionBlock
-                                progressBlock:(QMMediaProgressBlock)progressBlock {
-    
-    QMMediaWebHandler *mediaHandler = [QMMediaWebHandler new];
-    mediaHandler.handlerID = handlerID;
-    mediaHandler.progressBlock = progressBlock;
-    mediaHandler.completionBlock = completionBlock;
-    
-    return mediaHandler;
-}
+//    QMMediaWebHandler *mediaHandler = [QMMediaWebHandler new];
+//    
+//    mediaHandler.handlerID = handlerID;
+//    mediaHandler.delegate = delegate;
+//    
+//    return mediaHandler;
+//}
+//
+//+ (QMMediaWebHandler *)uploadingHandlerWithID:(NSString *)handlerID
+//                              completionBlock:(QMMediaRestCompletionBlock)completionBlock
+//                                progressBlock:(QMMediaProgressBlock)progressBlock {
+//    
+//    QMMediaWebHandler *mediaHandler = [QMMediaWebHandler new];
+//    mediaHandler.handlerID = handlerID;
+//    mediaHandler.progressBlock = progressBlock;
+//    mediaHandler.completionBlock = completionBlock;
+//    
+//    return mediaHandler;
+//}
 
 @end
 
 @implementation QMMessageUploadHandler
 
-+ (QMMessageUploadHandler *)uploadingHandlerWithID:(NSString *)handlerID
-                                   completionBlock:(QMMessageUploadCompletionBlock)completionBlock
-                                     progressBlock:(QMMessageUploadProgressBlock)progressBlock {
-    
-    QMMessageUploadHandler *mediaHandler = [QMMessageUploadHandler new];
-    mediaHandler.handlerID = handlerID;
-    mediaHandler.progressBlock = progressBlock;
-    mediaHandler.completionBlock = completionBlock;
-    
-    return mediaHandler;
-}
+//+ (QMMessageUploadHandler *)uploadingHandlerWithID:(NSString *)handlerID
+//                                   completionBlock:(QMMessageUploadCompletionBlock)completionBlock
+//                                     progressBlock:(QMMessageUploadProgressBlock)progressBlock {
+//    
+//    QMMessageUploadHandler *mediaHandler = [QMMessageUploadHandler new];
+//    mediaHandler.handlerID = handlerID;
+//    mediaHandler.progressBlock = progressBlock;
+//    mediaHandler.completionBlock = completionBlock;
+//    
+//    return mediaHandler;
+//}
 
 @end
 

@@ -12,9 +12,12 @@
 
 @protocol QMMediaDownloadServiceDelegate <NSObject>
 
-- (void)downloadMediaItemWithID:(NSString *)mediaID
-            withCompletionBlock:(QMMediaRestCompletionBlock)completionBlock
-                  progressBlock:(QMMediaProgressBlock)progressBlock;
+- (void)downloadDataForAttachment:(QBChatAttachment *)attachment
+              withCompletionBlock:(QMAttachmentDataCompletionBlock)completionBlock
+                    progressBlock:(QMMediaProgressBlock)progressBlock;
+
+- (void)cancellAllDownloads;
+- (void)cancelDownloadOperationForAttachment:(QBChatAttachment *)attachment;
 
 @end
 

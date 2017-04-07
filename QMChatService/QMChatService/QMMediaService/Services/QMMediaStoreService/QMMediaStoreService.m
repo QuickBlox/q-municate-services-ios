@@ -10,18 +10,18 @@
 #import "QMMediaStoreServiceDelegate.h"
 #import "QMMediaItem.h"
 #import "QMSLog.h"
+#import "QMAttachmentsMemoryStorage.h"
+#import "QBChatAttachment+QMCustomParameters.h"
+
 
 #import <AVKit/AVKit.h>
 #import <AVFoundation/AVFoundation.h>
 
 @interface QMMediaStoreService()
 
-@property (strong, nonatomic) NSMutableDictionary *audioMediaMemoryStorage;
-@property (strong, nonatomic) NSMutableDictionary *videoMediaMemoryStorage;
-@property (strong, nonatomic) NSMutableDictionary *imageMediaMemoryStorage;
-
 @property (strong, nonatomic) NSMutableDictionary *imagesMemoryStorage;
-@property (assign, nonatomic) BOOL isCrossplatform;
+@property (strong, nonatomic) QMAttachmentsMemoryStorage *attachmentsMemoryStorage;
+
 @end
 
 @implementation QMMediaStoreService
@@ -35,11 +35,8 @@
     
     if (self = [super init]) {
         
-        _audioMediaMemoryStorage = [NSMutableDictionary dictionary];
-        _videoMediaMemoryStorage = [NSMutableDictionary dictionary];
-        _imageMediaMemoryStorage = [NSMutableDictionary dictionary];
-        
         _imagesMemoryStorage = [NSMutableDictionary dictionary];
+        _attachmentsMemoryStorage = [[QMAttachmentsMemoryStorage alloc] init];
     }
     
     return self;
@@ -48,19 +45,19 @@
 
 //MARK: - QMMediaStoreServiceDelegate
 
-- (void)localImageForMediaItem:(QMMediaItem *)mediaItem
-                    completion:(void(^)(UIImage *image))completion {
+- (void)localImageForAttachment:(QBChatAttachment *)attachment
+                     completion:(void(^)(UIImage *image))completion {
     
-    if (self.imagesMemoryStorage[mediaItem.mediaID] != nil) {
+    if (self.imagesMemoryStorage[attachment.ID] != nil) {
         
         if (completion) {
-            completion(self.imagesMemoryStorage[mediaItem.mediaID]);
+            completion(self.imagesMemoryStorage[attachment.ID]);
         }
         return;
     }
     
     // checking attachment in cache
-    NSString *path = mediaPath(mediaItem);
+    NSString *path = mediaPath(attachment);
     
     if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
         
@@ -73,7 +70,7 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 
                 if (image != nil) {
-                    self.imagesMemoryStorage[mediaItem.mediaID] = image;
+                    self.imagesMemoryStorage[attachment.ID] = image;
                 }
                 if (completion) {
                     completion(image);
@@ -81,109 +78,46 @@
             });
         });
     }
+    else {
+        if (completion) {
+            completion(nil);
+        }
+    }
 }
 
 
-
-- (NSURL *)saveMediaItem:(QMMediaItem *)mediaItem {
+- (void)save:(QBChatAttachment *)attachment {
     
-    NSAssert(mediaItem.mediaID, @"No media ID");
+    NSAssert(attachment.ID, @"No ID");
     
-    if (mediaItem.contentType == QMMediaContentTypeVideo) {
-        
-        NSMutableDictionary *storage = [self memoryStorageForContentType:[mediaItem stringContentType]];
-        
-        [storage setObject:mediaItem forKey:mediaItem.mediaID];
-        
-        return nil;
-    }
-    else {
-
-        NSData *data = [self dataForMediaItem:mediaItem];
+//    if (attachment.contentType == QMAttachmentContentTypeVideo) {
+//        
+//        [self.attachmentsMemoryStorage addAttachment:attachment];
+//    }
+//    else {
+    
+        NSData *data  = [self dataForAttachment:attachment];
         
         NSAssert(data.length, @"No data");
         
         BOOL sucess = [self saveData:data
-                        forMediaItem:mediaItem
+                       forAtatchment:attachment
                                error:nil];
-        NSURL *localURL = nil;
         
         if (sucess) {
-            localURL = [NSURL fileURLWithPath:mediaPath(mediaItem)];
-            mediaItem.localURL = localURL;
-            NSMutableDictionary *storage = [self memoryStorageForContentType:[mediaItem stringContentType]];
-            [storage setObject:mediaItem forKey:mediaItem.mediaID];
+            attachment.localURL =  [NSURL fileURLWithPath:mediaPath(attachment)];
+            [self.attachmentsMemoryStorage addAttachment:attachment];
         }
-        
-        return localURL;
-    }
+    
 }
 
 
-- (void)updateMediaItem:(QMMediaItem *)mediaItem {
-    
-    NSMutableDictionary *memoryStorage = [self memoryStorageForContentType:[mediaItem stringContentType]];
-    QMMediaItem *itemToUpdate = memoryStorage[mediaItem.mediaID];
-    
-    if (itemToUpdate) {
-        memoryStorage[mediaItem.mediaID] = mediaItem;
-    }
+- (void)updateAttachment:(QBChatAttachment *)attachment {
+    [self.attachmentsMemoryStorage addAttachment:attachment];
 }
 
-- (QMMediaItem *)mediaItemFromAttachment:(QBChatAttachment *)attachment {
-    
-    NSString *mediaID = attachment.ID;
-    NSString *contentType = attachment.type;
-    
-    NSMutableDictionary *storage = [self memoryStorageForContentType:contentType];
-    
-    QMMediaItem *mediaItem = storage[mediaID];
-    
-    if (mediaItem) {
-        return mediaItem;
-    }
-    else {
-        
-        mediaItem = [QMMediaItem mediaItemWithAttachment:attachment];
-        NSString *path = mediaPath(mediaItem);
-        
-        if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
-            
-            mediaItem.localURL = [NSURL fileURLWithPath:path];
-            
-            NSMutableDictionary *storage = [self memoryStorageForContentType:contentType];
-            storage[mediaID] = mediaItem;
-            return mediaItem;
-        }
-        
-        return nil;
-    }
-}
 
 //MARK: - Helpers
-
-- (NSMutableDictionary *)memoryStorageForContentType:(NSString *)contentType {
-    
-    NSAssert(contentType.length > 0, @" Content type should be specified");
-    
-    NSMutableDictionary *storage = nil;
-    
-    if ([contentType isEqualToString:@"audio"]) {
-        
-        storage = _audioMediaMemoryStorage;
-    }
-    else if ([contentType isEqualToString:@"video"]) {
-        
-        storage = _videoMediaMemoryStorage;
-    }
-    else if ([contentType isEqualToString:@"image"]) {
-        
-        storage = _imageMediaMemoryStorage;
-    }
-    
-    return storage;
-}
-
 
 static NSString* mediaCacheDir() {
     
@@ -192,7 +126,7 @@ static NSString* mediaCacheDir() {
     if (!mediaCacheDirString) {
         
         NSString *cacheDir = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
-        mediaCacheDirString = [cacheDir stringByAppendingPathComponent:@"Media"];
+        mediaCacheDirString = [cacheDir stringByAppendingPathComponent:@"Attachments"];
         
         static dispatch_once_t onceToken;
         
@@ -207,37 +141,43 @@ static NSString* mediaCacheDir() {
 }
 
 
-static NSString* mediaPath(QMMediaItem *mediaItem) {
+static NSString* mediaPath(QBChatAttachment *attachment) {
     
-    return [mediaCacheDir() stringByAppendingPathComponent:[NSString stringWithFormat:@"media-%@.%@", mediaItem.mediaID, mediaItem.extension]];
+    return [mediaCacheDir() stringByAppendingPathComponent:[NSString stringWithFormat:@"attachment-%@.%@", attachment.ID, [attachment extension]]];
 }
 
+//MARK: - Helpers
 
 - (BOOL)saveData:(NSData *)mediaData
-    forMediaItem:(QMMediaItem *)mediaItem
+   forAtatchment:(QBChatAttachment *)attachment
            error:(NSError **)errorPtr {
     
-    BOOL isSucceed = [mediaData writeToFile:mediaPath(mediaItem)
+    BOOL isSucceed = [mediaData writeToFile:mediaPath(attachment)
                                     options:NSDataWritingAtomic
                                       error:errorPtr];
     return isSucceed;
 }
 
-- (NSData *)dataForMediaItem:(QMMediaItem *)item {
+- (NSData *)dataForAttachment:(QBChatAttachment *)attachment {
     
-    if (item.data) {
-        return item.data;
+    if (attachment.mediaData != nil) {
+        
+        return attachment.mediaData;
     }
     
-    if (item.localURL != nil) {
-        NSData *data = [NSData dataWithContentsOfURL:item.localURL];
+    if (attachment.localURL != nil) {
+        NSData *data = [NSData dataWithContentsOfURL:attachment.localURL];
         return data;
     }
     
     return nil;
 }
 
-
+- (BOOL)isSavedLocally:(QBChatAttachment *)attachment {
+    // checking attachment in cache
+    NSString *path = mediaPath(attachment);
+    return [[NSFileManager defaultManager] fileExistsAtPath:path];
+}
 
 
 

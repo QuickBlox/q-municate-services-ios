@@ -7,8 +7,8 @@
 //
 
 #import "QMMediaInfo.h"
-#import "QMMediaItem.h"
 #import "QMSLog.h"
+#import "QBChatAttachment+QMCustomParameters.h"
 
 typedef NS_ENUM(NSUInteger, QMVideoUrlType) {
     QMVideoUrlTypeRemote,
@@ -21,7 +21,7 @@ typedef NS_ENUM(NSUInteger, QMVideoUrlType) {
 @property (strong ,nonatomic) AVAsset *asset;
 @property (strong, nonatomic) NSURL *assetURL;
 
-@property (assign, nonatomic) QMMediaContentType mediaContentType;
+@property (assign, nonatomic) QMAttachmentContentType contentType;
 @property (strong, nonatomic) AVAssetImageGenerator *imageGenerator;
 
 @property (copy, nonatomic) void(^completion)(NSTimeInterval duration, CGSize size, UIImage *image, NSError *error);
@@ -67,38 +67,38 @@ typedef NS_ENUM(NSUInteger, QMVideoUrlType) {
     return  _asset;
 }
 
-+ (instancetype)infoFromMediaItem:(QMMediaItem *)mediaItem {
++ (instancetype)infoFromAttachment:(QBChatAttachment *)attachment {
     
     QMMediaInfo *mediaInfo = [[QMMediaInfo alloc] init];
     NSURL *mediaURL = nil;
     
-    if (mediaItem.localURL) {
+    if (attachment.localURL) {
         
-        mediaURL = mediaItem.localURL;
+        mediaURL = attachment.localURL;
     }
     
-    else if (mediaItem.remoteURL) {
+    else if (attachment.remoteURL) {
         
-        mediaURL = mediaItem.remoteURL;
+        mediaURL = attachment.remoteURL;
     }
     
     mediaInfo.assetURL = mediaURL;
     mediaInfo.prepareStatus = QMMediaPrepareStatusNotPrepared;
-    mediaInfo.mediaContentType = mediaItem.contentType;
-    mediaInfo.thumbnailImage = mediaItem.image;
+    mediaInfo.contentType = attachment.contentType;
+    mediaInfo.thumbnailImage = attachment.image;
     
-    if (mediaItem.mediaDuration > 0) {
-        mediaInfo.duration = mediaItem.mediaDuration;
+    if (attachment.duration > 0) {
+        mediaInfo.duration = attachment.duration;
     }
     
-    if (!CGSizeEqualToSize(mediaItem.mediaSize, CGSizeZero)) {
-        mediaInfo.mediaSize = mediaItem.mediaSize;
+    if (!CGSizeEqualToSize(CGSizeMake(attachment.width, attachment.height), CGSizeZero)) {
+        mediaInfo.mediaSize = CGSizeMake(attachment.width, attachment.height);
     }
-    if (mediaItem.image) {
-        mediaInfo.thumbnailImage = mediaItem.image;
+    if (attachment.image) {
+        mediaInfo.thumbnailImage = attachment.image;
     }
     
-    if ([mediaItem isReady]) {
+    if ([attachment isReady]) {
         mediaInfo.prepareStatus = QMMediaPrepareStatusPrepareFinished;
     }
     
@@ -226,7 +226,7 @@ typedef NS_ENUM(NSUInteger, QMVideoUrlType) {
     NSTimeInterval duration = CMTimeGetSeconds(asset.duration);
     CGSize mediaSize = CGSizeZero;
     
-    if (self.mediaContentType == QMMediaContentTypeVideo) {
+    if (self.contentType == QMAttachmentContentTypeVideo) {
         
         CGFloat videoWidth = [[[asset tracksWithMediaType:AVMediaTypeVideo] firstObject] naturalSize].width;
         CGFloat videoHeight = [[[asset tracksWithMediaType:AVMediaTypeVideo] firstObject] naturalSize].height;

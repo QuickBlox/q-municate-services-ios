@@ -8,6 +8,7 @@
 #import <Quickblox/Quickblox.h>
 #import "QMMediaUploadService.h"
 #import "QMSLog.h"
+#import "QBChatAttachment+QMCustomParameters.h"
 
 @implementation QMMediaUploadService
 
@@ -57,5 +58,29 @@
     return source.task;
 }
 
+- (void)uploadAttachment:(QBChatAttachment *)attachment
+            withCompletionBlock:(QMAttachmentUploadCompletionBlock)completionBlock
+                  progressBlock:(QMMediaProgressBlock)progressBlock {
+    
+     [QBRequest TUploadFile:attachment.mediaData fileName:attachment.name
+                                    contentType:[attachment stringMIMEType]
+                                       isPublic:NO
+                                   successBlock:^(QBResponse * _Nonnull response, QBCBlob * _Nonnull blob) {
+                                       
+                                       attachment.ID = blob.UID;
+                                       attachment.size = blob.size;
+                                       
+                                       if (completionBlock) {
+                                           completionBlock(nil);
+                                       }
+                                   } statusBlock:^(QBRequest * _Nonnull request, QBRequestStatus * _Nullable status) {
+                                       
+                                       progressBlock(status.percentOfCompletion);
+                                       
+                                   } errorBlock:^(QBResponse * _Nonnull response) {
+                                       
+                                       completionBlock(response.error.error);
+                                   }];
+}
 
 @end

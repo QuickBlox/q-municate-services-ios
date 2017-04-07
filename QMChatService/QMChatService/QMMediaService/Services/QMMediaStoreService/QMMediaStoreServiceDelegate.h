@@ -14,12 +14,13 @@
 
 @protocol QMMediaStoreServiceDelegate <NSObject>
 
-- (NSURL *)saveMediaItem:(QMMediaItem *)mediaItem;
+- (void)updateAttachment:(QBChatAttachment *)attachment;
 
-- (void)updateMediaItem:(QMMediaItem *)mediaItem;
+- (void)localImageForAttachment:(QBChatAttachment *)item
+                     completion:(void(^)(UIImage *image))completion;
 
-- (QMMediaItem *)mediaItemFromAttachment:(QBChatAttachment *)attachment;
+- (void)save:(QBChatAttachment *)attachment;
 
-- (void)localImageForMediaItem:(QMMediaItem *)item completion:(void(^)(UIImage *image))completion;
+- (BOOL)isSavedLocally:(QBChatAttachment *)attachment;
 
 @end

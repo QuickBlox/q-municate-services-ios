@@ -8,6 +8,7 @@
 
 #import <Quickblox/QBChatMessage.h>
 #import "QMChatTypes.h"
+#import "QBChatAttachment+QMCustomParameters.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -96,6 +97,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  Return `YES` if this item is a image attachment, and `NO` if it is a text message.
  */
 - (BOOL)isImageAttachment;
+
+
 
 @end
 
