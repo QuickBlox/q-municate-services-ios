@@ -30,6 +30,8 @@
 		55A621171A0BDC5D001BA470 /* _CDDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = 55A6210F1A0BDC5D001BA470 /* _CDDialog.m */; };
 		55A621181A0BDC5D001BA470 /* _CDMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 55A621111A0BDC5D001BA470 /* _CDMessage.m */; };
 		58BBF3B81CBFA7B400ECC291 /* QMChatCacheModel.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 58BBF3B71CBFA7B400ECC291 /* QMChatCacheModel.bundle */; };
+		E07136AC1E959EF0007DA42E /* _CDLinkPreview.m in Sources */ = {isa = PBXBuildFile; fileRef = E07136AB1E959EF0007DA42E /* _CDLinkPreview.m */; };
+		E07136AF1E959EF8007DA42E /* CDLinkPreview.m in Sources */ = {isa = PBXBuildFile; fileRef = E07136AE1E959EF8007DA42E /* CDLinkPreview.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +71,10 @@
 		8620BC581B0F7D5A005ED359 /* Quickblox.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; lineEnding = 0; name = Quickblox.xcconfig; path = ../Quickblox.xcconfig; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.xcconfig; };
 		B407CFFF1CAD67C9002DFC5A /* QMModel3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = QMModel3.xcdatamodel; sourceTree = "<group>"; };
 		E03B85571E1FD85200AE6DE8 /* QMModel5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = QMModel5.xcdatamodel; sourceTree = "<group>"; };
+		E07136AA1E959EF0007DA42E /* _CDLinkPreview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _CDLinkPreview.h; sourceTree = "<group>"; };
+		E07136AB1E959EF0007DA42E /* _CDLinkPreview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _CDLinkPreview.m; sourceTree = "<group>"; };
+		E07136AD1E959EF8007DA42E /* CDLinkPreview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDLinkPreview.h; sourceTree = "<group>"; };
+		E07136AE1E959EF8007DA42E /* CDLinkPreview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDLinkPreview.m; sourceTree = "<group>"; };
 		E08A520E1E7DB67200EEC846 /* QMModel6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = QMModel6.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -151,6 +157,8 @@
 		55A621041A0BDC5D001BA470 /* Entries */ = {
 			isa = PBXGroup;
 			children = (
+				E07136AD1E959EF8007DA42E /* CDLinkPreview.h */,
+				E07136AE1E959EF8007DA42E /* CDLinkPreview.m */,
 				55A621051A0BDC5D001BA470 /* CDAttachment.h */,
 				55A621061A0BDC5D001BA470 /* CDAttachment.m */,
 				55A621071A0BDC5D001BA470 /* CDDialog.h */,
@@ -164,6 +172,8 @@
 		55A6210B1A0BDC5D001BA470 /* EntriesMachine */ = {
 			isa = PBXGroup;
 			children = (
+				E07136AA1E959EF0007DA42E /* _CDLinkPreview.h */,
+				E07136AB1E959EF0007DA42E /* _CDLinkPreview.m */,
 				55A6210C1A0BDC5D001BA470 /* _CDAttachment.h */,
 				55A6210D1A0BDC5D001BA470 /* _CDAttachment.m */,
 				55A6210E1A0BDC5D001BA470 /* _CDDialog.h */,
@@ -321,8 +331,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				55A621141A0BDC5D001BA470 /* CDDialog.m in Sources */,
+				E07136AC1E959EF0007DA42E /* _CDLinkPreview.m in Sources */,
 				55A621161A0BDC5D001BA470 /* _CDAttachment.m in Sources */,
 				55A621181A0BDC5D001BA470 /* _CDMessage.m in Sources */,
+				E07136AF1E959EF8007DA42E /* CDLinkPreview.m in Sources */,
 				5590F2781A0B8C4200C5044F /* QMChatCache.m in Sources */,
 				55A621131A0BDC5D001BA470 /* CDAttachment.m in Sources */,
 				55A621151A0BDC5D001BA470 /* CDMessage.m in Sources */,
