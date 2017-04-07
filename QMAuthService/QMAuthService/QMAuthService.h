@@ -99,7 +99,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-#pragma mark - Bolts
+//MARK: - Bolts
 
 /**
  *  Bolts methods for QMAuthService

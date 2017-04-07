@@ -16,8 +16,8 @@
 
 @implementation NSManagedObject (QMCDAggregation)
 
-#pragma mark -
-#pragma mark Number of Entities
+//MARK: -
+//MARK: Number of Entities
 
 + (NSNumber *)QM_numberOfEntitiesWithContext:(NSManagedObjectContext *)context {
     

@@ -90,7 +90,7 @@ NSString *const kQMIsImportKey = @"is_import";
 @dynamic status;
 @dynamic isImport;
 
-#pragma mark - Is import
+//MARK: - Is import
 
 - (void)setIsImport:(BOOL)isImport {
     
@@ -104,7 +104,7 @@ NSString *const kQMIsImportKey = @"is_import";
     return isImprot.boolValue;
 }
 
-#pragma mark - Status
+//MARK: - Status
 
 - (void)setStatus:(NSString *)status {
     
@@ -117,7 +117,7 @@ NSString *const kQMIsImportKey = @"is_import";
     return self.context[kQMStatusKey];
 }
 
-#pragma mark - Avatar url
+//MARK: - Avatar url
 
 - (void)setAvatarUrl:(NSString *)avatarUrl {
     

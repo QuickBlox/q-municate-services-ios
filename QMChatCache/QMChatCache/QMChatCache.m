@@ -15,7 +15,7 @@
 
 static QMChatCache *_chatCacheInstance = nil;
 
-#pragma mark - Singleton
+//MARK: - Singleton
 
 + (QMChatCache *)instance {
     
@@ -24,7 +24,7 @@ static QMChatCache *_chatCacheInstance = nil;
     return _chatCacheInstance;
 }
 
-#pragma mark - Configure store
+//MARK: - Configure store
 
 + (void)setupDBWithStoreNamed:(NSString *)storeName {
     
@@ -54,7 +54,7 @@ static QMChatCache *_chatCacheInstance = nil;
     [super cleanDBWithStoreName:name];
 }
 
-#pragma mark - Init
+//MARK: - Init
 
 - (instancetype)init {
     
@@ -280,7 +280,7 @@ static QMChatCache *_chatCacheInstance = nil;
     }];
 }
 
-#pragma mark Insert / Update / Delete
+//MARK: Insert / Update / Delete
 
 - (void)insertOrUpdateMessage:(QBChatMessage *)message
                  withDialogId:(NSString *)dialogID

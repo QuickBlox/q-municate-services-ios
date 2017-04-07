@@ -125,7 +125,7 @@ const struct QMUsersSearchKeyStruct QMUsersSearchKey = {
     return sortedContacts;
 }
 
-#pragma mark - Utils
+//MARK: - Utils
 
 - (NSArray *)usersWithIDs:(NSArray *)IDs withoutID:(NSUInteger)ID {
     
@@ -148,14 +148,14 @@ const struct QMUsersSearchKeyStruct QMUsersSearchKey = {
     return result;
 }
 
-#pragma mark - QMMemoryStorageProtocol
+//MARK: - QMMemoryStorageProtocol
 
 - (void)free {
     
     [self.users removeAllObjects];
 }
 
-#pragma mark - Fetch
+//MARK: - Fetch
 
 - (NSArray *)usersForKeypath:(NSString *)keypath withValues:(NSArray *)values {
     
@@ -189,7 +189,7 @@ const struct QMUsersSearchKeyStruct QMUsersSearchKey = {
     return [self usersForKeypath:kQMQBUUserTwitterIDKeyPath withValues:twitterIDs];
 }
 
-#pragma mark - Filter
+//MARK: - Filter
 
 - (NSDictionary *)valuesForKeypath:(NSString *)keypath byExcludingValues:(NSArray *)values {
     NSParameterAssert(values);

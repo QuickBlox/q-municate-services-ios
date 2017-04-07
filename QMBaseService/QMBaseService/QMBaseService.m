@@ -42,7 +42,7 @@ BFTask *make_task(QMTaskSourceBlock b) {
     
 }
 
-#pragma mark - QMMemoryStorageProtocol
+//MARK: - QMMemoryStorageProtocol
 
 - (void)free {
     

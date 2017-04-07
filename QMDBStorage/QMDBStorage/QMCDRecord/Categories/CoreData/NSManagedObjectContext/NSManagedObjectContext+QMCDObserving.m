@@ -15,7 +15,7 @@ NSString * const QMCDRecordDidMergeChangesFromiCloudNotification = @"kQMCDRecord
 
 @implementation NSManagedObjectContext (QMCDObserving)
 
-#pragma mark - Context Observation Helpers
+//MARK: - Context Observation Helpers
 
 - (void)QM_observeContextDidSave:(NSManagedObjectContext *)otherContext
 {
@@ -68,7 +68,7 @@ NSString * const QMCDRecordDidMergeChangesFromiCloudNotification = @"kQMCDRecord
     [self QM_saveOnlySelfAndWait];
 }
 
-#pragma mark - Context iCloud Merge Helpers
+//MARK: - Context iCloud Merge Helpers
 
 - (void)QM_mergeChangesFromiCloud:(NSNotification *)notification;
 {

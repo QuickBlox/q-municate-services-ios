@@ -33,7 +33,7 @@
     return self;
 }
 
-#pragma mark - Add / Join / Remove
+//MARK: - Add / Join / Remove
 
 static inline void
 updateDialog(QBChatDialog *src, QBChatDialog *res) {
@@ -146,7 +146,7 @@ updateDialog(QBChatDialog *src, QBChatDialog *res) {
     return dialogs;
 }
 
-#pragma mark - Dialogs toos
+//MARK: - Dialogs toos
 
 - (NSArray *)unreadDialogs {
     
@@ -177,7 +177,7 @@ updateDialog(QBChatDialog *src, QBChatDialog *res) {
     return sortedDialogs;
 }
 
-#pragma mark - QMMemoryStorageProtocol
+//MARK: - QMMemoryStorageProtocol
 
 - (void)free {
     

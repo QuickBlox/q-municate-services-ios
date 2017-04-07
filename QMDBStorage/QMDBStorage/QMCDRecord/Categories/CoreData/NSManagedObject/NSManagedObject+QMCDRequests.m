@@ -17,7 +17,7 @@ NSArray *QM_NSSortDescriptorsFromString(NSString *string, BOOL defaultAscendingV
 
 @implementation NSManagedObject (QMCDRequests)
 
-#pragma mark - Global Options
+//MARK: - Global Options
 
 + (void)QM_setDefaultBatchSize:(NSUInteger)newBatchSize {
     
@@ -31,7 +31,7 @@ NSArray *QM_NSSortDescriptorsFromString(NSString *string, BOOL defaultAscendingV
     return defaultBatchSize;
 }
 
-#pragma mark - Fetch Request Creation
+//MARK: - Fetch Request Creation
 
 + (NSFetchRequest *)QM_requestAll {
     

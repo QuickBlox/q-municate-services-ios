@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (nullable QMUsersCache *)instance;
 
-#pragma mark - Insert/Update/Delete users in cache
+//MARK: - Insert/Update/Delete users in cache
 
 /**
  *  Insert/Update user in cache
@@ -50,7 +50,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (BFTask *)deleteAllUsers;
 
-#pragma mark - Fetch users
+//MARK: - Fetch users
 
 - (NSArray <QBUUser*> *)allUsers;
 

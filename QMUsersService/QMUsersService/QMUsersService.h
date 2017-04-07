@@ -47,14 +47,14 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)removeDelegate:(id <QMUsersServiceDelegate>)delegate;
 
-#pragma mark - Tasks
+//MARK: - Tasks
 
 /**
  *  Load users to memory storage from disc cache.
  */
 //- (BFTask <NSArray<QBUUser *> *> *)loadFromCache;
 
-#pragma mark - Intelligent fetch
+//MARK: - Intelligent fetch
 
 /**
  *  Get user by id.
@@ -313,7 +313,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (BFTask <NSArray<QBUUser *> *> *)getUsersWithLogins:(NSArray<NSString *> *)logins page:(QBGeneralResponsePage *)page forceLoad:(BOOL)forceLoad;
 
 
-#pragma mark - Search
+//MARK: - Search
 
 /**
  *  Search for users by full name.
@@ -374,7 +374,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-#pragma mark - Protocols
+//MARK: - Protocols
 
 /**
  *  Data source for QMUsersService

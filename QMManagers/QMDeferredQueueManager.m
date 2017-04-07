@@ -222,8 +222,8 @@
     return self.maxDeferredActionsCount > messagesCount;
 }
 
-#pragma mark -
-#pragma mark QMMemoryTemporaryQueueDelegate
+//MARK: -
+//MARK: QMMemoryTemporaryQueueDelegate
 
 - (NSArray *)localMessagesForDialogWithID:(NSString *)dialogID {
     

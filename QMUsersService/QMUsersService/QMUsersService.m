@@ -49,7 +49,7 @@
     
     [self.usersMemoryStorage free];
 }
-#pragma mark - Tasks
+//MARK: - Tasks
 
 - (void)loadFromCache {
     
@@ -70,7 +70,7 @@
     }
 }
 
-#pragma mark - Add Remove multicaste delegate
+//MARK: - Add Remove multicaste delegate
 
 - (void)addDelegate:(id <QMUsersServiceDelegate>)delegate {
     
@@ -82,8 +82,8 @@
     [self.multicastDelegate removeDelegate:delegate];
 }
 
-#pragma mark - Retrive users
-#pragma mark - Get users by ID
+//MARK: - Retrive users
+//MARK: - Get users by ID
 
 - (BFTask *)getUserWithID:(NSUInteger)userID {
     
@@ -196,7 +196,7 @@
     });
 }
 
-#pragma mark - Get users by emails
+//MARK: - Get users by emails
 
 - (BFTask *)getUsersWithEmails:(NSArray *)emails {
     
@@ -326,7 +326,7 @@
     });
 }
 
-#pragma mark - Get users by Twitter IDs
+//MARK: - Get users by Twitter IDs
 
 - (BFTask *)getUsersWithTwitterIDs:(NSArray *)twitterIDs {
     
@@ -559,7 +559,7 @@
     });
 }
 
-#pragma mark - Helpers
+//MARK: - Helpers
 
 - (NSArray<QBUUser *> *)performUpdateWithLoadedUsers:(NSArray<QBUUser *> *)loadedUsers
                                           foundUsers:(NSArray<QBUUser *> *)foundUsers

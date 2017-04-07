@@ -173,7 +173,7 @@ static NSString *const kQMTwitterAuthSocialProvider  = @"twitter";
     return request;
 }
 
-#pragma mark - Social auth
+//MARK: - Social auth
 
 - (QBRequest *)loginWithTwitterAccessToken:(NSString *)accessToken
                          accessTokenSecret:(NSString *)accessTokenSecret
