@@ -32,7 +32,7 @@
     self = [super initWithServiceManager:serviceManager];
     if (self) {
         
-        self.cacheDataSource = cacheDataSource;
+        _cacheDataSource = cacheDataSource;
         [self loadFromCache];
     }
     

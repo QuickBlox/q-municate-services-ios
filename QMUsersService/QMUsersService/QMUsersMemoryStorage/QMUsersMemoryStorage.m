@@ -33,7 +33,7 @@ const struct QMUsersSearchKeyStruct QMUsersSearchKey = {
     self = [super init];
     if (self) {
         
-        self.users = [NSMutableDictionary dictionary];
+        _users = [NSMutableDictionary dictionary];
     }
     
     return self;

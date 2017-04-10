@@ -21,7 +21,7 @@
     self = [super init];
     if (self) {
         
-        self.datasources = [NSMutableDictionary dictionary];
+        _datasources = [NSMutableDictionary dictionary];
     }
     return self;
 }
