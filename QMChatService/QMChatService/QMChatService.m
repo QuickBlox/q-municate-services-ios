@@ -1805,7 +1805,8 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 
 - (NSDictionary *)parametersForMessagesUsingDialogID:(NSString *)chatDialogID {
     
-    NSMutableDictionary *parameters = [@{@"sort_desc" : @"date_sent"} mutableCopy];
+    NSMutableDictionary *parameters = [@{@"sort_desc" : @"date_sent",
+                                         @"mark_as_read" : @"0"} mutableCopy];
     
     NSDate *lastMessagesLoadDate = self.lastMessagesLoadDate[chatDialogID];
     QBChatMessage *lastMessage = [self.messagesMemoryStorage lastMessageFromDialogID:chatDialogID];
