@@ -47,7 +47,7 @@ static inline BOOL isContactListEmpty(QBContactList *contactList) {
     return self;
 }
 
-#pragma mark - Service will start
+//MARK: - Service will start
 
 - (void)serviceWillStart {
     
@@ -76,7 +76,7 @@ static inline BOOL isContactListEmpty(QBContactList *contactList) {
     }
 }
 
-#pragma mark - Add Remove multicaste delegate
+//MARK: - Add Remove multicaste delegate
 
 - (void)addDelegate:(id <QMContactListServiceDelegate>)delegate {
     
@@ -88,7 +88,7 @@ static inline BOOL isContactListEmpty(QBContactList *contactList) {
     [self.multicastDelegate removeDelegate:delegate];
 }
 
-#pragma mark - QBChatDelegate
+//MARK: - QBChatDelegate
 
 - (void)chatContactListDidChange:(QBContactList *)contactList {
     
@@ -113,7 +113,7 @@ static inline BOOL isContactListEmpty(QBContactList *contactList) {
     }
 }
 
-#pragma mark - ContactList Request
+//MARK: - ContactList Request
 
 - (void)addUserToContactListRequest:(QBUUser *)user completion:(void(^)(BOOL success))completion {
     
@@ -172,7 +172,7 @@ static inline BOOL isContactListEmpty(QBContactList *contactList) {
     }];
 }
 
-#pragma mark - QMUsersMemoryStorageDelegate
+//MARK: - QMUsersMemoryStorageDelegate
 
 - (NSArray *)contactsIDS {
     

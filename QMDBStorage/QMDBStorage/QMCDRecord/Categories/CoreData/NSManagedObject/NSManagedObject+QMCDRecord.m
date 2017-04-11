@@ -9,7 +9,7 @@
 
 @implementation NSManagedObject (QMCDRecord)
 
-#pragma mark - Entity Information
+//MARK: - Entity Information
 
 + (NSString *)QM_entityName {
     
@@ -65,7 +65,7 @@
     return propertiesWanted;
 }
 
-#pragma mark - Fetch Requests
+//MARK: - Fetch Requests
 
 + (NSArray *)QM_executeFetchRequest:(NSFetchRequest *)request
                           inContext:(NSManagedObjectContext *)context {
@@ -98,7 +98,7 @@
     return [results objectAtIndex:0];
 }
 
-#pragma mark - Creating Entities
+//MARK: - Creating Entities
 
 + (instancetype)QM_createEntityInContext:(NSManagedObjectContext *)context {
     
@@ -129,7 +129,7 @@
     return [[self objectID] isTemporaryID];
 }
 
-#pragma mark - Deleting Entities
+//MARK: - Deleting Entities
 
 - (BOOL)QM_isEntityDeleted {
     return [self isDeleted] || [self managedObjectContext] == nil;
@@ -182,7 +182,7 @@
     return YES;
 }
 
-#pragma mark - Sorting Entities
+//MARK: - Sorting Entities
 
 + (NSArray *)QM_ascendingSortDescriptors:(NSArray *)attributesToSortBy {
     
@@ -210,7 +210,7 @@
     return attributes;
 }
 
-#pragma mark - Working Across Contexts
+//MARK: - Working Across Contexts
 
 - (void)QM_refresh {
     
@@ -278,7 +278,7 @@
     }
 }
 
-#pragma mark - Validation
+//MARK: - Validation
 
 - (BOOL)QM_isValidForInsert {
     

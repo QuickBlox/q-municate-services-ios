@@ -130,7 +130,7 @@ typedef NS_ENUM(NSUInteger, QMChatConnectionState) {
  */
 - (void)disconnectWithCompletionBlock:(nullable QBChatCompletionBlock)completion;
 
-#pragma mark - Group dialog join
+//MARK: - Group dialog join
 
 /**
  *  Joins user to group dialog and correctly updates cache. Please use this method instead of 'join' in QBChatDialog if you are using QMServices.
@@ -140,7 +140,7 @@ typedef NS_ENUM(NSUInteger, QMChatConnectionState) {
  */
 - (void)joinToGroupDialog:(QBChatDialog *)dialog completion:(nullable QBChatCompletionBlock)completion;
 
-#pragma mark - Dialog history
+//MARK: - Dialog history
 
 /**
  *  Retrieve chat dialogs
@@ -153,7 +153,7 @@ typedef NS_ENUM(NSUInteger, QMChatConnectionState) {
                  iterationBlock:(nullable void(^)(QBResponse *response, NSArray<QBChatDialog *> * _Nullable dialogObjects, NSSet<NSNumber *> * _Nullable dialogsUsersIDs, BOOL *stop))iterationBlock
                      completion:(nullable void(^)(QBResponse *response))completion;
 
-#pragma mark - Chat dialog creation
+//MARK: - Chat dialog creation
 
 /**
  *  Create p2p dialog
@@ -181,7 +181,8 @@ typedef NS_ENUM(NSUInteger, QMChatConnectionState) {
  */
 - (void)createPrivateChatDialogWithOpponentID:(NSUInteger)opponentID
                                    completion:(nullable void(^)(QBResponse *response, QBChatDialog * _Nullable createdDialog))completion;
-#pragma mark - Edit dialog methods
+
+//MARK: - Edit dialog methods
 
 /**
  *  Change dialog name
@@ -229,7 +230,7 @@ typedef NS_ENUM(NSUInteger, QMChatConnectionState) {
  */
 - (void)loadCachedDialogsWithCompletion:(nullable dispatch_block_t)completion;
 
-#pragma mark - System Messages
+//MARK: - System Messages
 
 /**
  *  Send system message to users about adding to dialog with dialog inside with text.
@@ -244,7 +245,7 @@ typedef NS_ENUM(NSUInteger, QMChatConnectionState) {
                                     withText:(nullable NSString *)text
                                   completion:(nullable QBChatCompletionBlock)completion;
 
-#pragma mark - Notification messages
+//MARK: - Notification messages
 
 /**
  *  Send message about accepting or rejecting contact requst.
@@ -303,7 +304,7 @@ typedef NS_ENUM(NSUInteger, QMChatConnectionState) {
                                   withNotificationText:(NSString *)notificationText
                                             completion:(nullable QBChatCompletionBlock)completion;
 
-#pragma mark - Fetch messages
+//MARK: - Fetch messages
 
 /**
  *  Updating message in cache and memory storage.
@@ -382,7 +383,8 @@ typedef NS_ENUM(NSUInteger, QMChatConnectionState) {
  */
 - (void)earlierMessagesWithChatDialogID:(NSString *)chatDialogID
                              completion:(nullable void(^)(QBResponse *response, NSArray<QBChatMessage *> * _Nullable messages))completion;
-#pragma mark - Fetch dialogs
+
+//MARK: - Fetch dialogs
 
 /**
  *  Fetch dialog with dialog id.
@@ -413,7 +415,7 @@ typedef NS_ENUM(NSUInteger, QMChatConnectionState) {
                      iterationBlock:(nullable void(^)(QBResponse *response, NSArray<QBChatDialog *> * _Nullable dialogObjects, NSSet<NSNumber *> * _Nullable dialogsUsersIDs, BOOL *stop))iteration
                     completionBlock:(nullable void (^)(QBResponse *response))completion;
 
-#pragma mark Send message
+//MARK: Send message
 
 /**
  *  Send message with a specific message type to dialog with identifier.
@@ -490,7 +492,7 @@ typedef NS_ENUM(NSUInteger, QMChatConnectionState) {
                withAttachment:(QBChatAttachment *)attachment
                    completion:(nullable QBChatCompletionBlock)completion;
 
-#pragma mark - mark as delivered
+//MARK: - mark as delivered
 
 /**
  *  Mark message as delivered.
@@ -508,7 +510,7 @@ typedef NS_ENUM(NSUInteger, QMChatConnectionState) {
  */
 - (void)markMessagesAsDelivered:(NSArray<QBChatMessage *> *)messages completion:(nullable QBChatCompletionBlock)completion;
 
-#pragma mark - read messages
+//MARK: - read messages
 
 /**
  *  Sending read status for message and updating unreadMessageCount for dialog in cache
@@ -529,7 +531,7 @@ typedef NS_ENUM(NSUInteger, QMChatConnectionState) {
 
 @end
 
-#pragma mark - Bolts
+//MARK: - Bolts
 
 /**
  *  Bolts methods for QMChatService

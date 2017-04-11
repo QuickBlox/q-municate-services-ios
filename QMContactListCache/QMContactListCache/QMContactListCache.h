@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface QMContactListCache : QMDBStorage
 
-#pragma mark - Singleton
+//MARK: - Singleton
 
 /**
  *  Chat cache singleton
@@ -22,7 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 + (nullable QMContactListCache *)instance;
 
-#pragma mark - Configure store
+//MARK: - Configure store
 
 /**
  *  Setup QMContactListCache stake wit store name
@@ -37,10 +37,10 @@ NS_ASSUME_NONNULL_BEGIN
  */
 + (void)cleanDBWithStoreName:(NSString *)name;
 
-#pragma mark -
-#pragma mark Dialogs
-#pragma mark -
-#pragma mark Insert / Update / Delete contact items
+//MARK: -
+//MARK: Dialogs
+//MARK: -
+//MARK: Insert / Update / Delete contact items
 
 /**
  *  Insert/Update QBContactListItem in cache
@@ -83,7 +83,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)deleteContactList:(nullable dispatch_block_t)completion;
 
-#pragma mark Fetch ContactList operations
+//MARK: Fetch ContactList operations
 
 /**
  *  Fetch all contact list items

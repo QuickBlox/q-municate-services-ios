@@ -48,7 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)updateMessage:(QBChatMessage *)message;
 
-#pragma mark - Getters
+//MARK: - Getters
 
 /**
  *  Messages with chat dialog identifier
@@ -109,7 +109,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (BOOL)isMessageExistent:(QBChatMessage *)message forDialogID:(NSString *)dialogID;
 
-#pragma mark - Helpers
+//MARK: - Helpers
 
 /**
  *  Checks if dialog doesn't have messages

@@ -138,7 +138,7 @@
     return [NSArray arrayWithArray:storeURLs];
 }
 
-#pragma mark - Remove Store File(s)
+//MARK: - Remove Store File(s)
 
 - (BOOL)QM_removePersistentStoreFiles;
 {

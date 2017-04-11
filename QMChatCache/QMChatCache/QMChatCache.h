@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, assign) NSUInteger messagesLimitPerDialog; // default - NSNotFound (infinity)
 
-#pragma mark - Singleton
+//MARK: - Singleton
 
 /**
  *  Chat cache singleton
@@ -28,14 +28,14 @@ NS_ASSUME_NONNULL_BEGIN
  */
 + (nullable QMChatCache *)instance;
 
-#pragma mark - Configure store
+//MARK: - Configure store
 
 /**
  *  Setup QMChatCache stack with store name
  *
  *  @param storeName Store name
  */
-+ (void)setupDBWithStoreNamed:(NSString *)storeName ;
++ (void)setupDBWithStoreNamed:(NSString *)storeName;
 /**
  *  Clean clean chat cache with store name
  *
@@ -43,10 +43,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 + (void)cleanDBWithStoreName:(NSString *)name;
 
-#pragma mark -
-#pragma mark Dialogs
-#pragma mark -
-#pragma mark Insert / Update / Delete dialog operations
+//MARK: - Dialogs
+//MARK: - Insert / Update / Delete dialog operations
 
 /**
  *  Insert/Update dialog in cache
@@ -54,7 +52,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param dialog QBChatDialog instance
  *  @param completion Completion block is called after update or insert operation is completed
  */
-- (void)insertOrUpdateDialog:(QBChatDialog *)dialog completion:(nullable dispatch_block_t)completion;
+- (void)insertOrUpdateDialog:(QBChatDialog *)dialog
+                  completion:(nullable dispatch_block_t)completion;
 
 /**
  *  Insert/Update dialogs
@@ -62,7 +61,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param dialogs    Array of QBChatDialog instances
  *  @param completion Completion block is called after update or insert operation is completed
  */
-- (void)insertOrUpdateDialogs:(NSArray<QBChatDialog *> *)dialogs completion:(nullable dispatch_block_t)completion;
+- (void)insertOrUpdateDialogs:(NSArray<QBChatDialog *> *)dialogs
+                   completion:(nullable dispatch_block_t)completion;
 
 /**
  *  Delete dialog from cache
@@ -70,7 +70,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param dialog
  *  @param completion Completion block is called after delete operation is completed
  */
-- (void)deleteDialogWithID:(NSString *)dialog completion:(nullable dispatch_block_t)completion;
+- (void)deleteDialogWithID:(NSString *)dialog
+                completion:(nullable dispatch_block_t)completion;
 
 /**
  *  Delete all dialogs
@@ -78,6 +79,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param completion Completion block is called after delete all dialogs operation is completed
  */
 - (void)deleteAllDialogsWithCompletion:(nullable dispatch_block_t)completion;
+
+//MARK: Fetch dialog operations
 
 /**
  Dialog by specific ID
@@ -87,18 +90,56 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (nullable QBChatDialog *)dialogByID:(NSString *)dialogID;
 
+/**
+ Fetch All Dialogs (Fetch in Main Queue context)
+
+ @return Returns an array of QBChatDialog instances
+ */
 - (NSArray<QBChatDialog *> *)allDialogs;
+
+/**
+ Fetch Dialogs
+ 
+    Key for filtering:
+    id
+	lastMessageDate
+	lastMessageText
+	lastMessageUserID
+	name;
+	occupantsIDs
+	ocupantsIDs
+	photo
+	recipientID
+	roomJID
+	type
+	unreadMessagesCount
+	userID
+
+ @param sortTerm Attribute name to sort by.
+ @param ascending `YES` if the attribute should be sorted ascending, `NO` for descending.
+ @param predicate Predicate to evaluate objects against
+ @return Returns an array of QBChatDialog instances
+ */
 - (NSArray<QBChatDialog *> *)dialogsSortedBy:(NSString *)sortTerm
                                    ascending:(BOOL)ascending
                                withPredicate:(nullable NSPredicate *)predicate;
 
 - (QMLinkPreview *)linkPreviewForURLKey:(NSString *)urlKey;
 
-#pragma mark Fetch dialog operations
+/**
+ Dialog by specific ID
 
+ @param dialogID QBChatDialog identifier
+ @param completion Returns requested dialog or nil if not found
+ */
 - (void)dialogByID:(NSString *)dialogID
         completion:(void (^)(QBChatDialog *dialog))completion;
 
+/**
+ Fetch All Dialogs (Fetch in Private Queue context)
+
+ @param completion Returns an array of QBChatDialog instances
+ */
 - (void)allDialogsWithCompletion:(nullable void(^)(NSArray<QBChatDialog *> * _Nullable dialogs))completion;
 /**
  *   Fetch all cached dialogs
@@ -138,9 +179,8 @@ NS_ASSUME_NONNULL_BEGIN
           withPredicate:(nullable NSPredicate *)predicate
              completion:(nullable void(^)(NSArray<QBChatDialog *> * _Nullable dialogs))completion;
 
-#pragma mark -
-#pragma mark  Messages
-#pragma mark -
+//MARK: - Messages
+//MARK: -
 
 /**
  *  Add message to cache
@@ -149,7 +189,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param dialogId   Dialog identifier
  *  @param completion Completion block is called after update or insert operation is completed
  */
-- (void)insertOrUpdateMessage:(QBChatMessage *)message withDialogId:(NSString *)dialogID completion:(nullable dispatch_block_t)completion;
+- (void)insertOrUpdateMessage:(QBChatMessage *)message
+                 withDialogId:(NSString *)dialogID
+                   completion:(nullable dispatch_block_t)completion;
 
 /**
  *  Add message to cache
@@ -159,7 +201,10 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param isRead     mark read
  *  @param completion Completion block is called after update or insert operation is completed
  */
-- (void)insertOrUpdateMessage:(QBChatMessage *)message withDialogId:(NSString *)dialogID read:(BOOL)isRead completion:(nullable dispatch_block_t)completion;
+- (void)insertOrUpdateMessage:(QBChatMessage *)message
+                 withDialogId:(NSString *)dialogID
+                         read:(BOOL)isRead
+                   completion:(nullable dispatch_block_t)completion;
 
 /**
  *  Update or insert messages
@@ -168,7 +213,9 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param dialogID   Dialog identifier
  *  @param completion Completion block is called after update or insert operation is completed
  */
-- (void)insertOrUpdateMessages:(NSArray<QBChatMessage *> *)messages withDialogId:(NSString *)dialogID completion:(nullable dispatch_block_t)completion;
+- (void)insertOrUpdateMessages:(NSArray<QBChatMessage *> *)messages
+                  withDialogId:(NSString *)dialogID
+                    completion:(nullable dispatch_block_t)completion;
 
 /**
  *  Delete message
@@ -176,7 +223,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param message    QBChatMessage instance
  *  @param completion Completion block that is called after the delete operation has completed.
  */
-- (void)deleteMessage:(QBChatMessage *)message completion:(nullable dispatch_block_t)completion;
+- (void)deleteMessage:(QBChatMessage *)message
+           completion:(nullable dispatch_block_t)completion;
 
 /**
  *  Delete messages
@@ -184,7 +232,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param messages   messages to delete
  *  @param completion Completion block that is called after the delete operation has completed.
  */
-- (void)deleteMessages:(NSArray<QBChatMessage *> *)messages completion:(nullable dispatch_block_t)completion;
+- (void)deleteMessages:(NSArray<QBChatMessage *> *)messages
+            completion:(nullable dispatch_block_t)completion;
 
 /**
  *  Delete messages for dialog ID
@@ -192,7 +241,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param dialogID   dialog identifier
  *  @param completion Completion block that is called after the delete operation has completed.
  */
-- (void)deleteMessageWithDialogID:(NSString *)dialogID completion:(nullable dispatch_block_t)completion;
+- (void)deleteMessageWithDialogID:(NSString *)dialogID
+                       completion:(nullable dispatch_block_t)completion;
 
 /**
  *  Delete all messages
@@ -201,7 +251,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)deleteAllMessagesWithCompletion:(nullable dispatch_block_t)completion;
 
-#pragma mark Fetch Messages operations
+//MARK: Fetch Messages operations
 
 - (NSArray<QBChatMessage *> *)messagesWithDialogId:(NSString *)dialogId
                                           sortedBy:(NSString *)sortTerm

@@ -195,7 +195,7 @@
     return _coordinator;
 }
 
-#pragma mark - Handle System Notifications
+//MARK: - Handle System Notifications
 
 - (BOOL)saveOnApplicationWillResignActive {
     

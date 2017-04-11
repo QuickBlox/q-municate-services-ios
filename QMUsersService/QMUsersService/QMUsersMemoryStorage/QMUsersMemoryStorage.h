@@ -45,7 +45,7 @@ extern const struct QMUsersSearchKeyStruct QMUsersSearchKey;
  */
 - (void)addUsers:(NSArray<QBUUser *> *)users;
 
-#pragma mark - Sorting
+//MARK: - Sorting
 
 /**
  *  Get all users from memory storage without sorting.
@@ -64,7 +64,7 @@ extern const struct QMUsersSearchKeyStruct QMUsersSearchKey;
  */
 - (NSArray<QBUUser *>*)usersSortedByKey:(NSString *)key ascending:(BOOL)ascending;
 
-#pragma mark Contacts
+//MARK: Contacts
 
 /**
  *  Get all contacts in memory storage sorted by key.
@@ -76,7 +76,7 @@ extern const struct QMUsersSearchKeyStruct QMUsersSearchKey;
  */
 - (NSArray<QBUUser *> *)contactsSortedByKey:(NSString *)key ascending:(BOOL)ascending;
 
-#pragma mark Utils
+//MARK: Utils
 
 /**
  *  Get users with ids without some id.
@@ -97,7 +97,7 @@ extern const struct QMUsersSearchKeyStruct QMUsersSearchKey;
  */
 - (NSString *)joinedNamesbyUsers:(NSArray<QBUUser *> *)users;
 
-#pragma mark - Fetch
+//MARK: - Fetch
 
 /**
  *  Get user with user id.
@@ -171,7 +171,7 @@ extern const struct QMUsersSearchKeyStruct QMUsersSearchKey;
  */
 - (NSArray<QBUUser *> *)usersWithTwitterIDs:(NSArray<NSString *> *)twitterIDs;
 
-#pragma mark - Search & Exclude
+//MARK: - Search & Exclude
 
 /**
  *  Search for users excluding users with users ids.

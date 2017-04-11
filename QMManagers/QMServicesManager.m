@@ -29,14 +29,14 @@
 
 @implementation QMServicesManager
 
-#pragma mark - Logging management
+//MARK: - Logging management
 
 + (void)enableLogging:(BOOL)flag {
     
     QMSLogSetEnabled(flag);
 }
 
-#pragma mark - Construction
+//MARK: - Construction
 
 - (instancetype)init {
     
@@ -80,7 +80,7 @@
     return manager;
 }
 
-#pragma mark - Methods
+//MARK: - Methods
 
 - (void)logoutWithCompletion:(dispatch_block_t)completion {
     
@@ -220,7 +220,7 @@
     });
 }
 
-#pragma mark - QMChatServiceDelegate
+//MARK: - QMChatServiceDelegate
 
 - (void)chatServiceChatDidConnect:(QMChatService *)chatService {
     
@@ -232,7 +232,7 @@
     [self joinAllGroupDialogsIfNeededWithCompletion:NULL];
 }
 
-#pragma mark QMChatServiceCache delegate
+//MARK: QMChatServiceCache delegate
 
 - (void)chatService:(QMChatService *)__unused chatService didAddLinkPreviewToMemoryStorage:(QMLinkPreview *)linkPreview {
     
@@ -304,7 +304,7 @@
     [QMChatCache.instance insertOrUpdateDialog:dialog completion:nil];
 }
 
-#pragma mark QMChatServiceCacheDataSource
+//MARK: QMChatServiceCacheDataSource
 
 - (void)cachedDialogs:(QMCacheCollection)block {
     
@@ -323,11 +323,7 @@
 
 - (void)cachedDialogWithID:(NSString *)dialogID completion:(void (^)(QBChatDialog *dialog))completion {
     
-    [QMChatCache.instance dialogByID:dialogID
-                          completion:^(QBChatDialog *cachedDialog)
-    {
-        completion(cachedDialog);
-    }];
+    completion([QMChatCache.instance dialogByID:dialogID]);
 }
 
 - (void)cachedMessagesWithDialogID:(NSString *)dialogID block:(QMCacheCollection)block {
@@ -339,14 +335,14 @@
     block(result);
 }
 
-#pragma mark - QMUsersServiceCacheDataSource
+//MARK: - QMUsersServiceCacheDataSource
 
 - (void)cachedUsersWithCompletion:(QMCacheCollection)block {
     
     block([QMUsersCache.instance allUsers]);
 }
 
-#pragma mark - QMUsersServiceDelegate
+//MARK: - QMUsersServiceDelegate
 
 - (void)usersService:(QMUsersService *)usersService didAddUsers:(NSArray *)users {
     

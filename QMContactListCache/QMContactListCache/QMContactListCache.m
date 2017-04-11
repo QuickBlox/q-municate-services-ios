@@ -17,7 +17,7 @@
 
 static QMContactListCache *_chatCacheInstance = nil;
 
-#pragma mark - Singleton
+//MARK: - Singleton
 
 + (QMContactListCache *)instance {
     
@@ -25,7 +25,7 @@ static QMContactListCache *_chatCacheInstance = nil;
     return _chatCacheInstance;
 }
 
-#pragma mark - Configure store
+//MARK: - Configure store
 
 + (void)setupDBWithStoreNamed:(NSString *)storeName {
     
@@ -56,8 +56,8 @@ static QMContactListCache *_chatCacheInstance = nil;
     [super cleanDBWithStoreName:name];
 }
 
-#pragma mark Dialogs
-#pragma mark Insert / Update / Delete contact items
+//MARK: Dialogs
+//MARK: Insert / Update / Delete contact items
 
 - (void)insertOrUpdateContactListItem:(QBContactListItem *)contactListItem
                            completion:(dispatch_block_t)completion {
