@@ -41,7 +41,8 @@
 
 - (void)serviceWillStart {
     
-    _multicastDelegate = (id<QMUsersServiceDelegate>)[[QBMulticastDelegate alloc] init];
+    _multicastDelegate =
+    (id<QMUsersServiceDelegate>)[[QBMulticastDelegate alloc] init];
     _usersMemoryStorage = [[QMUsersMemoryStorage alloc] init];
 }
 
@@ -53,20 +54,24 @@
 
 - (void)loadFromCache {
     
-    if ([self.cacheDataSource respondsToSelector:@selector(cachedUsersWithCompletion:)]) {
+    if ([self.cacheDataSource
+         respondsToSelector:@selector(cachedUsersWithCompletion:)]) {
         
         __weak __typeof(self)weakSelf = self;
-        [self.cacheDataSource cachedUsersWithCompletion:^(NSArray *collection)
-         {
-             if (collection.count > 0) {
-                 
-                 [weakSelf.usersMemoryStorage addUsers:collection];
-                 
-                 if ([weakSelf.multicastDelegate respondsToSelector:@selector(usersService:didLoadUsersFromCache:)]) {
-                     [weakSelf.multicastDelegate usersService:weakSelf didLoadUsersFromCache:collection];
-                 }
-             }
-         }];
+        [self.cacheDataSource cachedUsersWithCompletion:^(NSArray *collection) {
+            
+            if (collection.count > 0) {
+                
+                [weakSelf.usersMemoryStorage addUsers:collection];
+                
+                if ([weakSelf.multicastDelegate
+                     respondsToSelector:@selector(usersService:
+                                                  didLoadUsersFromCache:)]) {
+                         [weakSelf.multicastDelegate usersService:weakSelf
+                                            didLoadUsersFromCache:collection];
+                     }
+            }
+        }];
     }
 }
 
@@ -94,7 +99,7 @@
 - (BFTask *)getUserWithID:(NSUInteger)userID forceLoad:(BOOL)forceLoad {
     
     return [[self getUsersWithIDs:@[@(userID)]
-                             page:[self generalResponsePageForCount:1]
+                             page:[self pageForCount:1]
                         forceLoad:forceLoad]
             continueWithBlock:^id(BFTask *task)
             {
@@ -105,14 +110,14 @@
 - (BFTask *)getUsersWithIDs:(NSArray *)usersIDs {
     
     return [self getUsersWithIDs:usersIDs
-                            page:[self generalResponsePageForCount:usersIDs.count]
+                            page:[self pageForCount:usersIDs.count]
                        forceLoad:NO];
 }
 
 - (BFTask *)getUsersWithIDs:(NSArray *)usersIDs forceLoad:(BOOL)forceLoad {
     
     return [self getUsersWithIDs:usersIDs
-                            page:[self generalResponsePageForCount:usersIDs.count]
+                            page:[self pageForCount:usersIDs.count]
                        forceLoad:forceLoad];
 }
 
@@ -130,7 +135,8 @@
     NSParameterAssert(usersIDs);
     NSParameterAssert(page);
     
-    NSDictionary *searchInfo = [self.usersMemoryStorage usersByExcludingUsersIDs:usersIDs];
+    NSDictionary *searchInfo =
+    [self.usersMemoryStorage usersByExcludingUsersIDs:usersIDs];
     NSArray *foundUsers = searchInfo[QMUsersSearchKey.foundObjects];
     NSArray *notFoundIDs = searchInfo[QMUsersSearchKey.notFoundSearchValues];
     
@@ -170,14 +176,15 @@
                              forceLoad:NO];
 }
 
-- (BFTask *)getUserWithExternalID:(NSUInteger)externalUserID forceLoad:(BOOL)forceLoad {
+- (BFTask *)getUserWithExternalID:(NSUInteger)externalUserID
+                        forceLoad:(BOOL)forceLoad {
     
     return make_task(^(BFTaskCompletionSource * _Nonnull source) {
         
-        QBUUser *user = [self.usersMemoryStorage userWithExternalID:externalUserID];
+        QBUUser *user =
+        [self.usersMemoryStorage userWithExternalID:externalUserID];
         
         if (user != nil && !forceLoad) {
-            
             [source setResult:user];
         }
         else {
@@ -185,7 +192,6 @@
             [QBRequest userWithExternalID:externalUserID
                              successBlock:^(QBResponse *response, QBUUser *user)
              {
-                 
                  [source setResult:user];
                  
              } errorBlock:^(QBResponse *response) {
@@ -201,7 +207,7 @@
 - (BFTask *)getUsersWithEmails:(NSArray *)emails {
     
     return [self getUsersWithEmails:emails
-                               page:[self generalResponsePageForCount:emails.count]
+                               page:[self pageForCount:emails.count]
                           forceLoad:NO];
 }
 
@@ -209,7 +215,7 @@
                      forceLoad:(BOOL)forceLoad {
     
     return [self getUsersWithEmails:emails
-                               page:[self generalResponsePageForCount:emails.count]
+                               page:[self pageForCount:emails.count]
                           forceLoad:forceLoad];
 }
 
@@ -228,7 +234,8 @@
     NSParameterAssert(emails);
     NSParameterAssert(page);
     
-    NSDictionary *searchInfo = [self.usersMemoryStorage usersByExcludingEmails:emails];
+    NSDictionary *searchInfo =
+    [self.usersMemoryStorage usersByExcludingEmails:emails];
     NSArray *foundUsers = searchInfo[QMUsersSearchKey.foundObjects];
     NSArray *notFoundEmails = searchInfo[QMUsersSearchKey.notFoundSearchValues];
     
@@ -267,7 +274,7 @@
 - (BFTask *)getUsersWithFacebookIDs:(NSArray *)facebookIDs {
     
     return [self getUsersWithFacebookIDs:facebookIDs
-                                    page:[self generalResponsePageForCount:facebookIDs.count]
+                                    page:[self pageForCount:facebookIDs.count]
                                forceLoad:NO];
 }
 
@@ -275,7 +282,7 @@
                           forceLoad:(BOOL)forceLoad {
     
     return [self getUsersWithFacebookIDs:facebookIDs
-                                    page:[self generalResponsePageForCount:facebookIDs.count]
+                                    page:[self pageForCount:facebookIDs.count]
                                forceLoad:forceLoad];
 }
 
@@ -294,9 +301,11 @@
     NSParameterAssert(facebookIDs);
     NSParameterAssert(page);
     
-    NSDictionary *searchInfo = [self.usersMemoryStorage usersByExcludingFacebookIDs:facebookIDs];
+    NSDictionary *searchInfo =
+    [self.usersMemoryStorage usersByExcludingFacebookIDs:facebookIDs];
     NSArray *foundUsers = searchInfo[QMUsersSearchKey.foundObjects];
-    NSArray *notFoundFacebookIDs = searchInfo[QMUsersSearchKey.notFoundSearchValues];
+    NSArray *notFoundFacebookIDs =
+    searchInfo[QMUsersSearchKey.notFoundSearchValues];
     
     if (!forceLoad && notFoundFacebookIDs.count == 0) {
         
@@ -331,7 +340,7 @@
 - (BFTask *)getUsersWithTwitterIDs:(NSArray *)twitterIDs {
     
     return [self getUsersWithTwitterIDs:twitterIDs
-                                   page:[self generalResponsePageForCount:twitterIDs.count]
+                                   page:[self pageForCount:twitterIDs.count]
                               forceLoad:NO];
 }
 
@@ -339,7 +348,7 @@
                          forceLoad:(BOOL)forceLoad {
     
     return [self getUsersWithTwitterIDs:twitterIDs
-                                   page:[self generalResponsePageForCount:twitterIDs.count]
+                                   page:[self pageForCount:twitterIDs.count]
                               forceLoad:forceLoad];
 }
 
@@ -358,7 +367,8 @@
     NSParameterAssert(twitterIDs);
     NSParameterAssert(page);
     
-    NSDictionary *searchInfo = [self.usersMemoryStorage usersByExcludingTwitterIDs:twitterIDs];
+    NSDictionary *searchInfo =
+    [self.usersMemoryStorage usersByExcludingTwitterIDs:twitterIDs];
     NSArray *foundUsers = searchInfo[QMUsersSearchKey.foundObjects];
     NSArray *notFoundTwitterIDs = searchInfo[QMUsersSearchKey.notFoundSearchValues];
     
@@ -396,7 +406,7 @@
 - (BFTask *)getUsersWithLogins:(NSArray *)logins {
     
     return [self getUsersWithLogins:logins
-                               page:[self generalResponsePageForCount:logins.count]
+                               page:[self pageForCount:logins.count]
                           forceLoad:NO];
 }
 
@@ -404,7 +414,7 @@
                      forceLoad:(BOOL)forceLoad {
     
     return [self getUsersWithLogins:logins
-                               page:[self generalResponsePageForCount:logins.count]
+                               page:[self pageForCount:logins.count]
                           forceLoad:forceLoad];
 }
 
@@ -438,18 +448,18 @@
                               page:page
                       successBlock:^(QBResponse *response,
                                      QBGeneralResponsePage *page,
-                                     NSArray *users) {
-                          
-                          NSArray *result =
-                          [self performUpdateWithLoadedUsers:users
-                                                  foundUsers:foundUsers
-                                               wasLoadForced:forceLoad];
-                          [source setResult:result];
-                          
-                      } errorBlock:^(QBResponse *response) {
-                          
-                          [source setError:response.error.error];
-                      }];
+                                     NSArray *users)
+         {
+             NSArray *result =
+             [self performUpdateWithLoadedUsers:users
+                                     foundUsers:foundUsers
+                                  wasLoadForced:forceLoad];
+             [source setResult:result];
+             
+         } errorBlock:^(QBResponse *response) {
+             
+             [source setError:response.error.error];
+         }];
     });
 }
 
@@ -458,7 +468,8 @@
 - (BFTask *)searchUsersWithFullName:(NSString *)searchText {
     
     return [self searchUsersWithFullName:searchText
-                                    page:[QBGeneralResponsePage responsePageWithCurrentPage:1 perPage:100]];
+                                    page:[QBGeneralResponsePage responsePageWithCurrentPage:1
+                                                                                    perPage:100]];
 }
 
 - (BFTask *)searchUsersWithFullName:(NSString *)searchText
@@ -599,7 +610,7 @@
     return result;
 }
 
-- (QBGeneralResponsePage *)generalResponsePageForCount:(NSUInteger)count {
+- (QBGeneralResponsePage *)pageForCount:(NSUInteger)count {
     
     return [QBGeneralResponsePage responsePageWithCurrentPage:1 perPage:count < 100 ? count : 100];
 }
