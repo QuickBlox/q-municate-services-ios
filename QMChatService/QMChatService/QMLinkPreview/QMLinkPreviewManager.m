@@ -11,6 +11,7 @@
 #import "QMLinkPreview.h"
 
 static NSString *const kQMBaseGraphURL = @"https://ogs.quickblox.com/?url=";
+
 static NSString *const kQMKeyTitle = @"ogTitle";
 static NSString *const kQMKeyDescription = @"ogDescription";
 static NSString *const kQMKeyImageURL = @"ogImage";
@@ -20,6 +21,8 @@ static NSString *const kQMKeyImageURL = @"ogImage";
 @property (nonatomic, strong) NSMutableSet *previewsInProgress;
 @property (nonatomic, strong) NSMutableSet *failedURLs;
 @property (nonatomic, strong) NSMutableDictionary *links;
+@property (nonatomic, strong) NSDataDetector *linkDataDetector;
+
 @end
 
 @implementation QMLinkPreviewManager
@@ -27,6 +30,7 @@ static NSString *const kQMKeyImageURL = @"ogImage";
 - (instancetype)init {
     
     if (self = [super init]) {
+        
         _memoryStorage = [[QMLinkPreviewMemoryStorage alloc] init];
         _previewsInProgress = [NSMutableSet set];
         _failedURLs = [NSMutableSet set];
@@ -34,6 +38,17 @@ static NSString *const kQMKeyImageURL = @"ogImage";
     }
     
     return self;
+}
+
+- (NSDataDetector *)linkDataDetector {
+    
+    if  (!_linkDataDetector) {
+        
+        _linkDataDetector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink
+                                                            error:nil];
+    }
+    
+    return _linkDataDetector;
 }
 
 - (void)downloadLinkPreviewForMessage:(QBChatMessage *)message
@@ -55,8 +70,6 @@ static NSString *const kQMKeyImageURL = @"ogImage";
     NSString *urlKey = [self cacheKeyForURL:url];
     
     if (urlKey.length == 0) {
-        
-        NSError *error = [[NSError alloc] init];
         completion(NO);
         return;
     }
@@ -88,81 +101,77 @@ static NSString *const kQMKeyImageURL = @"ogImage";
     [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
     
     [[[NSURLSession sharedSession] dataTaskWithRequest:request
-                                     completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-                                         
-                                         if ([(NSHTTPURLResponse *)response statusCode] == 404) {
-                                             
-                                             NSError *error = [[NSError alloc] initWithDomain:@"QM_ERROR"
-                                                                                         code:404
-                                                                                     userInfo:nil];
-                                             @synchronized (self.previewsInProgress) {
-                                                 [_previewsInProgress removeObject:urlKey];
-                                             }
-                                             
-                                             [_failedURLs addObject:urlKey];
-                                             completion(NO);
-                                         }
-                                         else if (data != nil) {
-                                             
-                                             NSError *jsonError = nil;
-                                             id jsonObject = [NSJSONSerialization
-                                                              JSONObjectWithData:data
-                                                              options:NSJSONReadingAllowFragments
-                                                              error:&jsonError];
-                                             
-                                             if (jsonObject != nil &&
-                                                 jsonError == nil) {
-                                                 
-                                                 NSLog(@"Successfully deserialized...");
-                                                 
-                                                 if ([jsonObject isKindOfClass:[NSDictionary class]]){
-                                                     
-                                                     NSDictionary *deserializedDictionary = (NSDictionary *)jsonObject;
-                                                     if (![deserializedDictionary[@"err"] isKindOfClass:[NSNull class]]) {
-                                                         
-                                                         QMLinkPreview *linkPreview = [[QMLinkPreview alloc] init];
-                                                         
-                                                         linkPreview.siteUrl = urlKey;
-                                                         
-                                                         if (![deserializedDictionary[kQMKeyTitle] isKindOfClass:[NSNull class]]) {
-                                                             linkPreview.siteTitle = deserializedDictionary[kQMKeyTitle];
-                                                         }
-                                                         if (![deserializedDictionary[kQMKeyDescription] isKindOfClass:[NSNull class]]) {
-                                                             linkPreview.siteDescription = deserializedDictionary[kQMKeyDescription];
-                                                         }
-                                                         if (![deserializedDictionary[kQMKeyImageURL] isKindOfClass:[NSNull class]]) {
-                                                             linkPreview.imageURL = deserializedDictionary[kQMKeyImageURL][@"url"];
-                                                         }
-                                                         
-                                                         [self.memoryStorage addLinkPreview:linkPreview forKey:[self cacheKeyForURL:url]];
-                                                         
-                                                         if ([self.delegate respondsToSelector:@selector(linkPreviewManager:didAddLinkPreviewToMemoryStorage:)]) {
-                                                             [self.delegate linkPreviewManager:self didAddLinkPreviewToMemoryStorage:linkPreview];
-                                                         }
-                                                         
-                                                         @synchronized (self.previewsInProgress) {
-                                                             [_previewsInProgress removeObject:urlKey];
-                                                         }
-                                                         
-                                                         if (completion) {
-                                                             completion(YES);
-                                                         }
-                                                     }
-                                                     else {
-                                                         completion(NO);
-                                                     }
-                                                     
-                                                 }
-                                             }
-                                         }
-                                         else if (error != nil) {
-                                             @synchronized (self.previewsInProgress) {
-                                                 [_previewsInProgress removeObject:urlKey];
-                                             }
-                                             completion(NO);
-                                         }
-                                         
-                                     }] resume];
+                                     completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error)
+      {
+          void(^blockCompletion)(BOOL sucess) = ^(BOOL sucess) {
+              
+              if (completion) {
+                  dispatch_async(dispatch_get_main_queue(), ^{
+                      completion(sucess);
+                  });
+              }
+          };
+          
+          
+          if ([(NSHTTPURLResponse *)response statusCode] == 404) {
+              
+              @synchronized (self.previewsInProgress) {
+                  [_previewsInProgress removeObject:urlKey];
+              }
+              
+              [_failedURLs addObject:urlKey];
+              
+              blockCompletion(NO);
+          }
+          else if (data != nil) {
+              
+              NSError *jsonError = nil;
+              id jsonObject = [NSJSONSerialization
+                               JSONObjectWithData:data
+                               options:NSJSONReadingAllowFragments
+                               error:&jsonError];
+              
+              if (jsonObject != nil &&
+                  jsonError == nil) {
+                  
+                  NSLog(@"Successfully deserialized...");
+                  
+                  if ([jsonObject isKindOfClass:[NSDictionary class]]) {
+                      
+                      NSDictionary *deserializedDictionary = (NSDictionary *)jsonObject;
+                      
+                      if (![deserializedDictionary[@"err"] isKindOfClass:[NSNull class]]) {
+                          
+                          QMLinkPreview *linkPreview = [self linkPreviewFromDictionary:deserializedDictionary];
+                          linkPreview.siteUrl = urlKey;
+                          
+                          [self.memoryStorage addLinkPreview:linkPreview forKey:[self cacheKeyForURL:url]];
+                          
+                          if ([self.delegate respondsToSelector:@selector(linkPreviewManager:didAddLinkPreviewToMemoryStorage:)]) {
+                              [self.delegate linkPreviewManager:self didAddLinkPreviewToMemoryStorage:linkPreview];
+                          }
+                          
+                          @synchronized (self.previewsInProgress) {
+                              [_previewsInProgress removeObject:urlKey];
+                          }
+                          blockCompletion(YES);
+                          
+                      }
+                      else {
+                          blockCompletion(NO);
+                      }
+                  }
+              }
+          }
+          else if (error != nil) {
+              
+              @synchronized (self.previewsInProgress) {
+                  [_previewsInProgress removeObject:urlKey];
+              }
+              blockCompletion(NO);
+          }
+          
+      }] resume];
 }
 
 - (QMLinkPreview *)linkPreviewForMessage:(QBChatMessage *)message {
@@ -194,7 +203,7 @@ static NSString *const kQMKeyImageURL = @"ogImage";
     return linkPreview;
 }
 
-
+//MARK: - Helpers
 
 - (NSString *)cacheKeyForURL:(NSURL *)url {
     if (!url) {
@@ -202,6 +211,30 @@ static NSString *const kQMKeyImageURL = @"ogImage";
     }
     
     return [url absoluteString];
+}
+
+- (QMLinkPreview *)linkPreviewFromDictionary:(NSDictionary *)deserializedDictionary {
+    
+    QMLinkPreview *linkPreview = [[QMLinkPreview alloc] init];
+    
+    if (![deserializedDictionary[kQMKeyTitle] isKindOfClass:[NSNull class]]) {
+        
+        linkPreview.siteTitle = deserializedDictionary[kQMKeyTitle];
+    }
+    if (![deserializedDictionary[kQMKeyDescription] isKindOfClass:[NSNull class]]) {
+        
+        linkPreview.siteDescription = deserializedDictionary[kQMKeyDescription];
+    }
+    if (![deserializedDictionary[kQMKeyImageURL] isKindOfClass:[NSNull class]]) {
+        
+        NSString *imagePath = deserializedDictionary[kQMKeyImageURL][@"url"];
+        
+        if (imagePath != nil) {
+            linkPreview.imageURL = [[self qm_standartitizedURLFromString:imagePath] absoluteString];
+        }
+    }
+    
+    return linkPreview;
 }
 
 - (NSURL *)linkForMessage:(QBChatMessage *)message {
@@ -216,21 +249,41 @@ static NSString *const kQMKeyImageURL = @"ogImage";
     
     if (text.length > 0) {
         
-        NSError *error = nil;
-        NSDataDetector *detector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink
-                                                                   error:&error];
-        if (error == nil) {
+        NSTextCheckingResult *result = [self.linkDataDetector firstMatchInString:text
+                                                                         options:0
+                                                                           range:NSMakeRange(0, text.length)];
+        if (result.resultType == NSTextCheckingTypeLink) {
             
-            NSTextCheckingResult *result = [detector firstMatchInString:text
-                                                                options:0
-                                                                  range:NSMakeRange(0, text.length)];
-            if (result.resultType == NSTextCheckingTypeLink) {
-                url = result.URL;
-                _links[message.ID] = url;
-            }
+            NSString *stringLink = [[text substringWithRange:result.range] lowercaseString];
+            url = [self qm_standartitizedURLFromString:stringLink];
+            _links[message.ID] = url;
         }
     }
+    
     return url;
+}
+
+- (NSURL *)qm_standartitizedURLFromString:(NSString *)stringURL {
+    
+    NSArray *prefixes = @[@"https:", @"http:", @"//", @"/"];
+    
+    for (NSString *prefix in prefixes) {
+        if ([stringURL hasPrefix:prefix]) {
+            stringURL = [stringURL stringByReplacingOccurrencesOfString:prefix withString:@"" options:NSAnchoredSearch range:NSMakeRange(0, [stringURL length])];
+        }
+    }
+    
+    stringURL = [@"https://" stringByAppendingString:stringURL];
+    
+    return [NSURL URLWithString:stringURL];
+}
+
+//MARK: - QMMemoryStorageProtocol
+- (void)free {
+    
+    [_memoryStorage free];
+    [_failedURLs removeAllObjects];
+    [_links removeAllObjects];
 }
 
 @end
