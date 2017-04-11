@@ -17,7 +17,9 @@
     linkPreview.siteTitle = self.title;
     linkPreview.siteDescription = self.siteDescription;
     linkPreview.imageURL = self.imageURL;
-
+    linkPreview.imageWidth = self.widthValue;
+    linkPreview.imageHeight = self.heightValue;
+    
     return linkPreview;
 }
 
@@ -27,6 +29,8 @@
     self.title = linkPreview.siteTitle;
     self.siteDescription = linkPreview.siteDescription;
     self.imageURL = linkPreview.imageURL;
+    self.height = @(linkPreview.imageHeight);
+    self.width = @(linkPreview.imageWidth);
 }
 
 @end

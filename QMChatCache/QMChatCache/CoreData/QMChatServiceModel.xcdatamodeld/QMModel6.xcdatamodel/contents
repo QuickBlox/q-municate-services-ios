@@ -27,10 +27,12 @@
         <relationship name="messages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDMessage" inverseName="dialog" inverseEntity="CDMessage" syncable="YES"/>
     </entity>
     <entity name="CDLinkPreview" representedClassName="CDLinkPreview" syncable="YES" codeGenerationType="class">
+        <attribute name="height" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="imageURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="siteDescription" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="width" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
     </entity>
     <entity name="CDMessage" representedClassName="CDMessage" syncable="YES">
         <attribute name="createAt" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
@@ -53,7 +55,7 @@
     <elements>
         <element name="CDAttachment" positionX="-333" positionY="-96" width="128" height="148"/>
         <element name="CDDialog" positionX="-765" positionY="-198" width="128" height="270"/>
-        <element name="CDLinkPreview" positionX="-522" positionY="-81" width="128" height="105"/>
+        <element name="CDLinkPreview" positionX="-522" positionY="-81" width="128" height="135"/>
         <element name="CDMessage" positionX="-533" positionY="27" width="128" height="285"/>
     </elements>
 </model>
