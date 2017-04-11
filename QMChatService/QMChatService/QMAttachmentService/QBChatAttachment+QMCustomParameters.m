@@ -12,10 +12,10 @@
 /**
  *  Attachment keys
  */
-NSString const *kQMAttachmentWidthKey = @"width";
-NSString const *kQMAttachmentHeightKey = @"height";
-NSString const *kQMAttachmentDurationKey = @"duration";
-NSString const *kQMAttachmentSizeKey = @"size";
+NSString  *kQMAttachmentWidthKey = @"width";
+NSString  *kQMAttachmentHeightKey = @"height";
+NSString  *kQMAttachmentDurationKey = @"duration";
+NSString  *kQMAttachmentSizeKey = @"size";
 
 @implementation QBChatAttachment (QMCustomParameters)
 
@@ -108,7 +108,7 @@ NSString const *kQMAttachmentSizeKey = @"size";
 - (void)setWidth:(NSUInteger)width {
     
     if (self.width != width) {
-        self[kQMAttachmentWidthKey] = [NSString stringWithFormat:@"%ld",width];
+        self[kQMAttachmentWidthKey] = [NSString stringWithFormat:@"%ld",(unsigned long)width];
     }
 }
 
@@ -120,7 +120,7 @@ NSString const *kQMAttachmentSizeKey = @"size";
 - (void)setHeight:(NSUInteger)height {
     
     if (self.height != height) {
-        self[kQMAttachmentHeightKey] = [NSString stringWithFormat:@"%ld",height];
+        self[kQMAttachmentHeightKey] = [NSString stringWithFormat:@"%ld",(unsigned long)height];
     }
 }
 
@@ -132,7 +132,7 @@ NSString const *kQMAttachmentSizeKey = @"size";
 - (void)setSize:(NSUInteger)size {
     
     if (self.size != size) {
-        self[kQMAttachmentSizeKey] = [NSString stringWithFormat:@"%ld",size];
+        self[kQMAttachmentSizeKey] = [NSString stringWithFormat:@"%ld",(unsigned long)size];
     }
 }
 

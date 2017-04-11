@@ -44,6 +44,9 @@
     }
 }
 
+- (void)updateAttachment:(QBChatAttachment *)attachment {
+    [self addAttachment:attachment];
+}
 
 - (QBChatAttachment *)attachmentWithID:(NSString *)atatchmentID messageID:(NSString *)messageID {
     

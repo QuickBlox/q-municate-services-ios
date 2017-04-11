@@ -52,7 +52,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 }
 
 - (QMLinkPreview *)linkPreviewForMessage:(QBChatMessage *)message {
-   return [self.linkPreviewManager linkPreviewForMessage:message];
+    return [self.linkPreviewManager linkPreviewForMessage:message];
 }
 
 - (instancetype)initWithServiceManager:(id<QMServiceManagerProtocol>)serviceManager
@@ -69,7 +69,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
         
         _linkPreviewManager = [QMLinkPreviewManager new];
         _linkPreviewManager.delegate = self;
-
+        
         if (self.serviceManager.currentUser != nil) {
             [self loadCachedDialogsWithCompletion:nil];
         }
@@ -93,7 +93,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 
 //MARK: - QMLinkPreviewManagerDelegate
 
-- (void)linkPreviewManager:(QMLinkPreviewManager *)linkPreview didAddLinkPreviewToMemoryStorage:(QMLinkPreview *)linkPreview {
+- (void)linkPreviewManager:(QMLinkPreviewManager *)linkPreviewManager didAddLinkPreviewToMemoryStorage:(QMLinkPreview *)linkPreview {
     [self.multicastDelegate chatService:self
        didAddLinkPreviewToMemoryStorage:linkPreview];
 }
@@ -964,6 +964,17 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 
 #pragma mark - Messages histroy
 
+- (void)updateMessageLocally:(QBChatMessage *)message {
+    
+    NSAssert(message.dialogID, @"Message must have a dialog ID.");
+    
+    [self.messagesMemoryStorage updateMessage:message];
+    
+    if ([self.multicastDelegate respondsToSelector:@selector(chatService:didUpdateMessage:forDialogID:)]) {
+        [self.multicastDelegate chatService:self didUpdateMessage:message forDialogID:message.dialog.ID];
+    }
+}
+
 - (void)deleteMessageLocally:(QBChatMessage *)message {
     NSAssert(message.dialogID, @"Message must have a dialog ID.");
     
@@ -1477,7 +1488,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     dispatch_group_notify(deliveredGroup, dispatch_get_main_queue(), ^{
         
         if (completion) {
-
+            
             completion(nil);
         }
     });
@@ -1603,6 +1614,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     [self.dialogsMemoryStorage free];
     [self.messagesToRead removeAllObjects];
     [self.deferredQueueManager free];
+    [self.linkPreviewManager free];
 }
 
 #pragma mark - System messages

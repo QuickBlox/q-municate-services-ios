@@ -13,12 +13,16 @@
 
 typedef void(^QMImageOperationCompletionBlock)(UIImage * _Nullable image, NSError * _Nullable error);
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface QMImageOperation : QMAsynchronousOperation
 
 @property (nullable, copy, nonatomic) QMImageOperationCompletionBlock imageOperationCompletionBlock;
 @property (strong, nonatomic, readonly) QBChatAttachment *attachment;
 
 - (instancetype)initWithAttachment:(QBChatAttachment *)attachment
-                 completionHandler:(QMImageOperationCompletionBlock)completionHandler;
+                 completionHandler:(nullable QMImageOperationCompletionBlock)completionHandler;
 
 @end
+
+NS_ASSUME_NONNULL_END

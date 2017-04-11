@@ -86,7 +86,7 @@ typedef NS_ENUM(NSUInteger, QMChatConnectionState) {
  *  Attachment Service
  */
 @property (strong, nonatomic, readonly) QMChatAttachmentService *chatAttachmentService;
-- (void)getLinkPreviewForMessage:(QBChatMessage *)message withCompletion:(QMLinkPreviewCompletionBlock)completion;
+
 
 @property (strong, nonatomic, readonly) QMDeferredQueueManager *deferredQueueManager;
 
@@ -382,8 +382,6 @@ typedef NS_ENUM(NSUInteger, QMChatConnectionState) {
  */
 - (void)earlierMessagesWithChatDialogID:(NSString *)chatDialogID
                              completion:(nullable void(^)(QBResponse *response, NSArray<QBChatMessage *> * _Nullable messages))completion;
-
-- (void)linkPreviewForURL:(NSURL *)url withCompletion:(QMLinkPreviewCompletionBlock)completion;
 #pragma mark - Fetch dialogs
 
 /**

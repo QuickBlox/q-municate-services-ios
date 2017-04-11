@@ -68,7 +68,7 @@
             [op cancel];
         }
     }
-    __weak typeof(self) weakSelf = self;
+
     
     QMImageOperation *imageOperation = [[QMImageOperation alloc] initWithAttachment:attachment
                                                                   completionHandler:^(UIImage * _Nullable image, NSError * _Nullable error) {
@@ -89,7 +89,7 @@
         return;
     }
     else {
-        __weak typeof(self) weakSelf = self;
+      
         
         [self localThumbnailForAttachment:attachment
                                completion:^(UIImage *image) {
@@ -272,7 +272,7 @@ static NSString* thumbnailPath(NSString *key) {
         
         mediaInfoOperations = [NSMutableDictionary dictionary];
     });
-    NSLog(@"mediaInfoOperations = %d",mediaInfoOperations.count);
+    NSLog(@"mediaInfoOperations = %lu",(unsigned long)mediaInfoOperations.count);
     return mediaInfoOperations;
 }
 @end

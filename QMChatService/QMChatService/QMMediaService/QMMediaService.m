@@ -505,7 +505,7 @@
                     }
                     else {
                         attachment.status = QMAttachmentStatusError;
-                        completion(nil, error);
+                        completion(nil, error.error);
                     }
                 } progressBlock:^(float progress) {
                     
