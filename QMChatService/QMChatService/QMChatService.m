@@ -1168,31 +1168,31 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
                        successBlock:^(QBResponse *response,
                                       NSArray *messages,
                                       QBResponsePage *page)
-    {
-        if ([messages count] > 0) {
-            
-            [weakSelf.messagesMemoryStorage addMessages:messages forDialogID:chatDialogID];
-            
-            if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddMessagesToMemoryStorage:forDialogID:)]) {
-                [weakSelf.multicastDelegate chatService:weakSelf didAddMessagesToMemoryStorage:messages forDialogID:chatDialogID];
-            }
-        }
-        
-        if (completion) {
-            completion(response, messages);
-        }
-        
-    } errorBlock:^(QBResponse *response) {
-        
-        // case where we may have deleted dialog from another device
-        if( response.status != QBResponseStatusCodeNotFound ) {
-            [weakSelf.serviceManager handleErrorResponse:response];
-        }
-        
-        if (completion) {
-            completion(response, nil);
-        }
-    }];
+     {
+         if ([messages count] > 0) {
+             
+             [weakSelf.messagesMemoryStorage addMessages:messages forDialogID:chatDialogID];
+             
+             if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didAddMessagesToMemoryStorage:forDialogID:)]) {
+                 [weakSelf.multicastDelegate chatService:weakSelf didAddMessagesToMemoryStorage:messages forDialogID:chatDialogID];
+             }
+         }
+         
+         if (completion) {
+             completion(response, messages);
+         }
+         
+     } errorBlock:^(QBResponse *response) {
+         
+         // case where we may have deleted dialog from another device
+         if( response.status != QBResponseStatusCodeNotFound ) {
+             [weakSelf.serviceManager handleErrorResponse:response];
+         }
+         
+         if (completion) {
+             completion(response, nil);
+         }
+     }];
 }
 
 //MARK: - Fetch dialogs
@@ -1314,10 +1314,11 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     message.senderID = currentUser.ID;
     message.dialogID = dialog.ID;
     
+    if (message.messageType == QMMessageTypeText) {
+        [self.deferredQueueManager addOrUpdateMessage:message];
+    }
+    
     __weak __typeof(self)weakSelf = self;
-    
-    
-    [self.deferredQueueManager addOrUpdateMessage:message];
     
     [dialog sendMessage:message completionBlock:^(NSError *error) {
         
@@ -1325,7 +1326,9 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
         
         if (!error) {
             
-            [self.deferredQueueManager removeMessage:message];
+            if (message.messageType == QMMessageTypeText) {
+                [strongSelf.deferredQueueManager removeMessage:message];
+            }
             
             if (saveToStorage) {
                 // there is a case when message that was returned from server (Group dialogs)
@@ -1358,8 +1361,9 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
             }
         }
         else {
-            
-            [strongSelf.deferredQueueManager addOrUpdateMessage:message];
+            if (message.messageType == QMMessageTypeText) {
+                [strongSelf.deferredQueueManager addOrUpdateMessage:message];
+            }
         }
         
         if (completion) {
