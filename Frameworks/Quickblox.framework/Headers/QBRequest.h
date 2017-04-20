@@ -4,8 +4,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <Quickblox/QBNullability.h>
-#import <Quickblox/QBGeneric.h>
 
 @class QBRequest;
 @class QBResponse;
@@ -54,6 +52,11 @@ typedef void (^QBRequestErrorBlock)(QBResponse *response);
  *  Formed NSURLSessionTask with request information.
  */
 @property (nonatomic, weak, nullable) NSURLSessionTask* task;
+
+/**
+ Request / Response ID
+ */
+@property (nonatomic, assign) NSUInteger ID;
 
 /** 
  *  Formed task type.

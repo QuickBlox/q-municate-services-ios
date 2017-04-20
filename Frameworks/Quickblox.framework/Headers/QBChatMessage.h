@@ -6,8 +6,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <Quickblox/QBNullability.h>
-#import <Quickblox/QBGeneric.h>
 
 @class QBChatAttachment;
 
@@ -46,6 +44,11 @@ NS_ASSUME_NONNULL_BEGIN
  Sender resource
  */
 @property (nonatomic, copy, nullable) NSString *senderResource;
+
+/**
+ Is message carbon
+ */
+@property (nonatomic, assign, readonly) BOOL carbon;
 
 /**
  *  Message date sent.
