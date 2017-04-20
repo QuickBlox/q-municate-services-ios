@@ -8,7 +8,8 @@
 
 #import "QMMemoryStorageProtocol.h"
 
-@class QMLinkPreview;
+#import "QMLinkPreview+QMCustomParameters.h"
+
 @class QMLinkPreviewMemoryStorage;
 
 @protocol QMLinkPreviewManagerDelegate;

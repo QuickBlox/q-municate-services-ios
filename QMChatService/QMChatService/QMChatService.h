@@ -15,7 +15,6 @@
 #import "QMChatConstants.h"
 #import "QMMediaService.h"
 #import "QMLinkPreviewManager.h"
-#import "QMLinkPreview.h"
 #import "QMDeferredQueueManager.h"
 
 @class QMMediaItem;
@@ -98,8 +97,6 @@ typedef NS_ENUM(NSUInteger, QMChatConnectionState) {
  *
  *  @return Return QMChatService instance
  */
-- (QMLinkPreview *)linkPreviewForMessage:(QBChatMessage *)message;
-
 - (instancetype)initWithServiceManager:(id<QMServiceManagerProtocol>)serviceManager
                        cacheDataSource:(nullable id<QMChatServiceCacheDataSource>)cacheDataSource;
 /**
@@ -528,6 +525,12 @@ typedef NS_ENUM(NSUInteger, QMChatConnectionState) {
  *  @param completion   completion block with failure error
  */
 - (void)readMessages:(NSArray<QBChatMessage *> *)messages forDialogID:(NSString *)dialogID completion:(nullable QBChatCompletionBlock)completion;
+
+//MARK:- QMLinkPreview
+
+- (void)getLinkPreviewForMessage:(QBChatMessage *)message withCompletion:(QMLinkPreviewCompletionBlock)completion;
+
+- (QMLinkPreview *)linkPreviewForMessage:(QBChatMessage *)message;
 
 @end
 

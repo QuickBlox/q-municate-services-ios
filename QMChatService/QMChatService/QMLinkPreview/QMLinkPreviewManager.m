@@ -20,6 +20,7 @@ static NSString *const kQMKeyImageURL = @"ogImage";
 
 @property (nonatomic, strong) NSMutableSet *previewsInProgress;
 @property (nonatomic, strong) NSMutableSet *failedURLs;
+@property (nonatomic, strong) NSMutableSet *messagesWithoutLinks;
 @property (nonatomic, strong) NSMutableDictionary *links;
 @property (nonatomic, strong) NSDataDetector *linkDataDetector;
 
@@ -35,6 +36,7 @@ static NSString *const kQMKeyImageURL = @"ogImage";
         _previewsInProgress = [NSMutableSet set];
         _failedURLs = [NSMutableSet set];
         _links = [NSMutableDictionary dictionary];
+        _messagesWithoutLinks = [NSMutableSet set];
     }
     
     return self;
@@ -118,10 +120,13 @@ static NSString *const kQMKeyImageURL = @"ogImage";
               @synchronized (self.previewsInProgress) {
                   [_previewsInProgress removeObject:urlKey];
               }
-              
-              [_failedURLs addObject:urlKey];
-              
+              @synchronized (self.failedURLs) {
+                  [_failedURLs addObject:urlKey];
+              }
               blockCompletion(NO);
+              
+              return;
+
           }
           else if (data != nil) {
               
@@ -140,10 +145,33 @@ static NSString *const kQMKeyImageURL = @"ogImage";
                       
                       NSDictionary *deserializedDictionary = (NSDictionary *)jsonObject;
                       
+                      if (deserializedDictionary.allKeys.count == 0) {
+                          
+                          @synchronized (self.previewsInProgress) {
+                              [_previewsInProgress removeObject:urlKey];
+                          }
+                          @synchronized (self.failedURLs) {
+                              [_failedURLs addObject:urlKey];
+                          }
+                          blockCompletion(NO);
+                          return;
+                      }
+                      
                       if (![deserializedDictionary[@"err"] isKindOfClass:[NSNull class]]) {
                           
                           QMLinkPreview *linkPreview = [self linkPreviewFromDictionary:deserializedDictionary];
                           linkPreview.siteUrl = urlKey;
+                          
+                          if (linkPreview.imageURL.length > 0) {
+                              NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:linkPreview.imageURL]];
+                              UIImage *image = [UIImage imageWithData:data];
+                              
+                              if (image) {
+                                  linkPreview.previewImage = image;
+                                  linkPreview.imageHeight = image.size.height;
+                                  linkPreview.imageWidth = image.size.width;
+                              }
+                          }
                           
                           [self.memoryStorage addLinkPreview:linkPreview forKey:[self cacheKeyForURL:url]];
                           
@@ -154,6 +182,7 @@ static NSString *const kQMKeyImageURL = @"ogImage";
                           @synchronized (self.previewsInProgress) {
                               [_previewsInProgress removeObject:urlKey];
                           }
+                          
                           blockCompletion(YES);
                           
                       }
@@ -242,7 +271,9 @@ static NSString *const kQMKeyImageURL = @"ogImage";
     if (_links[message.ID] != nil) {
         return _links[message.ID];
     }
-    
+    if ([_messagesWithoutLinks containsObject:message.ID]) {
+        return nil;
+    }
     NSURL *url = nil;
     
     NSString *text = message.text;
@@ -252,7 +283,11 @@ static NSString *const kQMKeyImageURL = @"ogImage";
         NSTextCheckingResult *result = [self.linkDataDetector firstMatchInString:text
                                                                          options:0
                                                                            range:NSMakeRange(0, text.length)];
-        if (result.resultType == NSTextCheckingTypeLink) {
+        if (result.range.location > 0 || result.range.length != text.length) {
+            [_messagesWithoutLinks addObject:message.ID];
+            url = nil;
+        }
+        else if (result.resultType == NSTextCheckingTypeLink) {
             
             NSString *stringLink = [[text substringWithRange:result.range] lowercaseString];
             url = [self qm_standartitizedURLFromString:stringLink];
