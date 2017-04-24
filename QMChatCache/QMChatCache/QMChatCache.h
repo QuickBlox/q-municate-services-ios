@@ -201,7 +201,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)insertOrUpdateMessage:(QBChatMessage *)message
                  withDialogId:(NSString *)dialogID
                          read:(BOOL)isRead
-                   completion:(nullable dispatch_block_t)completion;
+                   completion:(nullable dispatch_block_t)completion DEPRECATED_ATTRIBUTE;
 
 /**
  *  Update or insert messages
