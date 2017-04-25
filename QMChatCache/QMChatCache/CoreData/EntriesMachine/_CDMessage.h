@@ -39,12 +39,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong, nullable) NSString* dialogID;
 
-@property (nonatomic, strong, nullable) NSNumber* isRead;
-
-@property (atomic) BOOL isReadValue;
-- (BOOL)isReadValue;
-- (void)setIsReadValue:(BOOL)value_;
-
 @property (nonatomic, strong, nullable) NSString* messageID;
 
 @property (nonatomic, strong, nullable) NSData* readIDs;
@@ -105,12 +99,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSString*)primitiveDialogID;
 - (void)setPrimitiveDialogID:(NSString*)value;
 
-- (NSNumber*)primitiveIsRead;
-- (void)setPrimitiveIsRead:(NSNumber*)value;
-
-- (BOOL)primitiveIsReadValue;
-- (void)setPrimitiveIsReadValue:(BOOL)value_;
-
 - (NSString*)primitiveMessageID;
 - (void)setPrimitiveMessageID:(NSString*)value;
 
@@ -153,7 +141,6 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSString *)delayed;
 + (NSString *)deliveredIDs;
 + (NSString *)dialogID;
-+ (NSString *)isRead;
 + (NSString *)messageID;
 + (NSString *)readIDs;
 + (NSString *)recipientID;

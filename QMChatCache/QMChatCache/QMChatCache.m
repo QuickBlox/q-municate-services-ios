@@ -313,7 +313,6 @@ static QMChatCache *_chatCacheInstance = nil;
                    completion:(dispatch_block_t)completion {
     
     message.dialogID = dialogID;
-    message.read = isRead;
     
     [self insertOrUpdateMessage:message
                    withDialogId:dialogID

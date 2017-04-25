@@ -291,7 +291,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     NSParameterAssert(dialogID != nil);
     NSParameterAssert(messageID != nil);
     
-    QBChatMessage* message = [self.messagesMemoryStorage messageWithID:messageID fromDialogID:dialogID];
+    QBChatMessage *message = [self.messagesMemoryStorage messageWithID:messageID fromDialogID:dialogID];
     
     if (message != nil) {
         if (message.deliveredIDs == nil) {

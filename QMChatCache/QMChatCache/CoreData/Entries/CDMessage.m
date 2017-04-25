@@ -19,7 +19,6 @@
     message.dateSent = self.dateSend;
     message.dialogID = self.dialogID;
     message.customParameters = [[self objectsWithBinaryData:self.customParameters] mutableCopy];
-    message.read = self.isRead.boolValue;
     message.updatedAt = self.updateAt;
     message.createdAt = self.createAt;
     message.delayed = self.delayed.boolValue;
@@ -52,7 +51,6 @@
     self.senderID = @(message.senderID);
     self.dialogID = message.dialogID;
     self.customParameters = [self binaryDataWithObject:message.customParameters];
-    self.isRead = @(message.isRead);
     self.readIDs = [self binaryDataWithObject:message.readIDs];
     self.deliveredIDs = [self binaryDataWithObject:message.deliveredIDs];
 
