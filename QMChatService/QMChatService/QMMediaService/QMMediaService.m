@@ -312,8 +312,6 @@
          
          if (!image) {
              
-             
-             
              if (attachment.status == QMAttachmentStatusLoading || attachment.status == QMAttachmentStatusError) {
                  return;
              }
