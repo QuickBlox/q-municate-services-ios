@@ -136,16 +136,16 @@ NSString  *kQMAttachmentSizeKey = @"size";
     }
 }
 
-- (double)duration {
+- (NSInteger)duration {
     
-    return [self[kQMAttachmentDurationKey] doubleValue];
+    return [self[kQMAttachmentDurationKey] integerValue];
 }
 
-- (void)setDuration:(double)duration {
+- (void)setDuration:(NSInteger)duration {
     
     if (!compareNearlyEqual(self.duration, duration, sizeof(duration))) {
         
-        self[kQMAttachmentDurationKey] = [NSString stringWithFormat:@"%.2f",duration];
+        self[kQMAttachmentDurationKey] = [NSString stringWithFormat:@"%ld",(unsigned long)duration];
     }
 }
 
@@ -198,8 +198,10 @@ NSString  *kQMAttachmentSizeKey = @"size";
     
     NSString *apiEndpoint = [QBSettings apiEndpoint];
     
-    NSURLComponents *components = [NSURLComponents componentsWithURL:[NSURL URLWithString:apiEndpoint]
+    NSURLComponents *components =
+    [NSURLComponents componentsWithURL:[NSURL URLWithString:apiEndpoint]
                                              resolvingAgainstBaseURL:false];
+    
     components.path = [NSString stringWithFormat:@"/blobs/%@", self.ID];
     components.query = [NSString stringWithFormat:@"token=%@",[QBSession currentSession].sessionDetails.token];
     

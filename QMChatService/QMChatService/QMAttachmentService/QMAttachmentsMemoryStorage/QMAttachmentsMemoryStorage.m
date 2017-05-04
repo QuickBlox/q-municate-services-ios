@@ -10,7 +10,7 @@
 
 @interface QMAttachmentsMemoryStorage()
 
-@property (strong, nonatomic) NSMutableDictionary *datasources;
+@property (strong, nonatomic) NSMutableDictionary *attachmentsStorage;
 
 @end
 
@@ -21,15 +21,15 @@
     self = [super init];
     if (self) {
         
-        self.datasources = [NSMutableDictionary dictionary];
+        self.attachmentsStorage = [NSMutableDictionary dictionary];
     }
     return self;
 }
 
-- (void)addAttachment:(QBChatAttachment *)attachment {
-    
-    NSString *messageID = @"dfdfbdf";
-        NSMutableOrderedSet *datasource = [self dataSourceWithMessageID:messageID];
+- (void)addAttachment:(QBChatAttachment *)attachment
+         forMessageID:(NSString *)messageID {
+
+    NSMutableOrderedSet *datasource = [self dataSourceWithMessageID:messageID];
     
     NSUInteger indexOfMessage = [datasource indexOfObject:attachment];
     
@@ -44,11 +44,15 @@
     }
 }
 
-- (void)updateAttachment:(QBChatAttachment *)attachment {
-    [self addAttachment:attachment];
+- (void)updateAttachment:(QBChatAttachment *)attachment
+            forMessageID:(NSString *)messageID {
+    
+    [self addAttachment:attachment
+           forMessageID:messageID];
 }
 
-- (QBChatAttachment *)attachmentWithID:(NSString *)atatchmentID messageID:(NSString *)messageID {
+- (QBChatAttachment *)attachmentWithID:(NSString *)atatchmentID
+                         fromMessageID:(nonnull NSString *)messageID {
     
     NSParameterAssert(atatchmentID != nil);
     NSParameterAssert(messageID != nil);
@@ -70,16 +74,16 @@
 
 - (void)free {
     
-    [self.datasources removeAllObjects];
+    [self.attachmentsStorage removeAllObjects];
 }
 
 - (NSMutableOrderedSet *)dataSourceWithMessageID:(NSString *)messageID {
     
-    NSMutableOrderedSet *attachments = self.datasources[messageID];
+    NSMutableOrderedSet *attachments = self.attachmentsStorage[messageID];
     
     if (!attachments) {
         attachments = [NSMutableOrderedSet orderedSet];
-        self.datasources[messageID] = attachments;
+        self.attachmentsStorage[messageID] = attachments;
     }
     
     return attachments;

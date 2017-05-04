@@ -14,7 +14,7 @@
 
 @protocol QMLinkPreviewManagerDelegate;
 
-typedef void(^QMLinkPreviewCompletionBlock)(BOOL sucess);
+typedef void(^QMLinkPreviewCompletionBlock)(BOOL success);
 
 
 NS_ASSUME_NONNULL_BEGIN

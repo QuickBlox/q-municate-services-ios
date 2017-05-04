@@ -55,7 +55,7 @@ typedef NS_ENUM(NSUInteger, QMAttachmentStatus) {
 /**
  *  Duration in seconds (for video/audio).
  */
-@property (nonatomic, assign) double duration;
+@property (nonatomic, assign) NSInteger duration;
 
 /**
  *  Size of attachment in bytes.

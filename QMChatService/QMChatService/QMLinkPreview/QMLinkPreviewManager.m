@@ -105,11 +105,11 @@ static NSString *const kQMKeyImageURL = @"ogImage";
     [[[NSURLSession sharedSession] dataTaskWithRequest:request
                                      completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error)
       {
-          void(^blockCompletion)(BOOL sucess) = ^(BOOL sucess) {
+          void(^blockCompletion)(BOOL success) = ^(BOOL success) {
               
               if (completion) {
                   dispatch_async(dispatch_get_main_queue(), ^{
-                      completion(sucess);
+                      completion(success);
                   });
               }
           };
