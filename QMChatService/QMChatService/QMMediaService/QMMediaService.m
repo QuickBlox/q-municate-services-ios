@@ -71,15 +71,17 @@
     return mediaItem;
 }
 
-- (QBChatAttachment *)cachedAttachmentWithID:(NSString *)attachmentID {
-    
+
+
+- (QBChatAttachment *)cachedAttachmentWithID:(NSString *)attachmentID
+                                forMessageID:(NSString *)messageID {
     
     if ([self.mediaItemsInProgress containsObject:attachmentID]) {
         return  nil;
     }
     
-    
-    return nil;
+    return [self.storeService cachedAttachmentWithID:attachmentID
+                                        forMessageID:messageID];
 }
 
 //MARK: Downloading
@@ -125,35 +127,58 @@
     
     NSAssert(data, @"No Data provided for media");
     
-    attachment.mediaData = data;
-    
     message.attachments = @[attachment];
+    
     self.placeholderItems[message.ID] = attachment;
     
-    [self changeMessageAttachmentStatus:QMMessageAttachmentStatusLoading forMessage:message];
+    [self changeMessageAttachmentStatus:QMMessageAttachmentStatusLoading
+                             forMessage:message];
+    
     __weak typeof(self) weakSelf = self;
     
-    [self.uploadService uploadAttachment:attachment withCompletionBlock:^(NSError *error) {
-        __strong typeof(weakSelf) strongSelf = weakSelf;
-        
-        message.text = [NSString stringWithFormat:@"%@ attachment", [[attachment stringContentType] capitalizedString]];
-        
-        [strongSelf.storeService save:attachment];
-        
-        [strongSelf changeMessageAttachmentStatus:QMMessageAttachmentStatusLoaded forMessage:message];
-        
-        message.attachments = @[attachment];
-        [chatService sendMessage:message
-                        toDialog:dialog
-                   saveToHistory:YES
-                   saveToStorage:YES
-                      completion:completion];
-    } progressBlock:^(float progress) {
-        
-        __strong typeof(weakSelf) strongSelf = weakSelf;
-        [strongSelf changeMessageUploadingProgress:progress forMessage:message];
-        
-    }];
+    [self.uploadService uploadAttachment:attachment
+                                withData:data
+                     withCompletionBlock:^(NSError *error)
+     {
+         
+         __strong typeof(weakSelf) strongSelf = weakSelf;
+         
+         if (error) {
+             
+             [strongSelf changeMessageAttachmentStatus:QMMessageAttachmentStatusError
+                                            forMessage:message];
+             
+             completion(error);
+             return;
+         }
+         
+         message.text =
+         [NSString stringWithFormat:@"%@ attachment",
+          [[attachment stringContentType] capitalizedString]];
+         
+         [strongSelf.storeService saveData:data
+                             forAttachment:attachment
+                                 cacheType:QMAttachmentCacheTypeDisc| QMAttachmentCacheTypeMemory
+                                 messageID:message.ID
+                                  dialogID:dialog.ID];
+         
+         [strongSelf changeMessageAttachmentStatus:QMMessageAttachmentStatusLoaded
+                                        forMessage:message];
+         
+         message.attachments = @[attachment];
+         
+         [chatService sendMessage:message
+                         toDialog:dialog
+                    saveToHistory:YES
+                    saveToStorage:YES
+                       completion:completion];
+         
+     } progressBlock:^(float progress) {
+         
+         __strong typeof(weakSelf) strongSelf = weakSelf;
+         [strongSelf changeMessageUploadingProgress:progress forMessage:message];
+         
+     }];
     
 }
 
@@ -239,7 +264,9 @@
                        message:(QBChatMessage *)message
                     completion:(void(^)(BOOL isReady, NSError *error))completion {
     
-    if ([self.storeService isSavedLocally:attachment]) {
+    if ([self.storeService isSavedLocally:attachment
+                                messageID:message.ID
+                                 dialogID:message.dialogID]) {
         completion(YES, nil);
         return;
     }
@@ -248,9 +275,14 @@
         
         [self.downloadService downloadDataForAttachment:attachment withCompletionBlock:^(NSString *attachmentID, NSData *data, QMMediaError *error) {
             __strong typeof(weakSelf) strongSelf = weakSelf;
+            
             if (data) {
-                attachment.mediaData = data;
-                [strongSelf.storeService save:attachment];
+                [strongSelf.storeService saveData:data
+                                    forAttachment:attachment
+                                        cacheType:QMAttachmentCacheTypeMemory | QMAttachmentCacheTypeDisc
+                                        messageID:message.ID
+                                         dialogID:message.dialogID];
+                
                 completion(YES,nil);
             }
             else {
@@ -258,9 +290,9 @@
             }
         } progressBlock:^(float progress) {
             
-            [self changeDownloadingProgress:progress
-                                 forMessage:nil
-                                 attachment:attachment];
+            [weakSelf changeDownloadingProgress:progress
+                                     forMessage:message
+                                     attachment:attachment];
         }];
         
     }
@@ -271,64 +303,85 @@
                 completion:(void(^)(UIImage *image, NSError *error))completion {
     
     __weak typeof(self) weakSelf = self;
-    [self.storeService localImageForAttachment:attachment completion:^(UIImage *image) {
-        
-        if (!image) {
-            __strong typeof(weakSelf) strongSelf = weakSelf;
-            
-            if (attachment.status == QMAttachmentStatusLoading || attachment.status == QMAttachmentStatusError) {
-                return;
-            }
-            if (attachment.contentType == QMAttachmentContentTypeImage) {
-                
-                attachment.status = QMAttachmentStatusLoading;
-                
-                [strongSelf.downloadService downloadDataForAttachment:attachment withCompletionBlock:^(NSString *attachmentID, NSData *data, QMMediaError *error) {
-                    if (data) {
-                        attachment.mediaData = data;
-                        [strongSelf.storeService save:attachment];
-                        completion([UIImage imageWithData:data], nil);
-                        attachment.status = QMAttachmentStatusLoaded;
-                    }
-                    else {
-                        attachment.status = QMAttachmentStatusError;
-                        completion(nil, error.error);
-                    }
-                } progressBlock:^(float progress) {
-                    
-                    [self changeDownloadingProgress:progress
-                                         forMessage:nil
-                                         attachment:attachment];
-                }];
-            }
-            else if (attachment.contentType == QMAttachmentContentTypeVideo) {
-                
-                if (attachment.status == QMAttachmentStatusPreparing || attachment.status == QMAttachmentStatusError) {
-                    return;
-                }
-                
-                attachment.status = QMAttachmentStatusPreparing;
-                [strongSelf.mediaInfoService videoThumbnailForAttachment:attachment completion:^(UIImage *image, NSError *error) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        if (image) {
-                            attachment.mediaData = UIImagePNGRepresentation(image);
-                            [strongSelf.storeService save:attachment];
-                            attachment.status = QMAttachmentStatusPrepared;
-                        }
-                        else {
-                            attachment.status = QMAttachmentStatusError;
-                        }
-                        completion(image, error);
-                    });
-                }];
-            }
-        }
-        else {
-            if (completion) {
-                completion(image, nil);
-            }
-        }
-    }];
+    
+    [self.storeService localImageForAttachment:attachment
+                                     messageID:message.ID
+                                      dialogID:message.dialogID
+                                    completion:^(UIImage *image)
+     {
+         
+         if (!image) {
+             
+             
+             
+             if (attachment.status == QMAttachmentStatusLoading || attachment.status == QMAttachmentStatusError) {
+                 return;
+             }
+             
+             QMAttachmentCacheType cacheType = QMAttachmentCacheTypeMemory | QMAttachmentCacheTypeDisc;
+             
+             if (attachment.contentType == QMAttachmentContentTypeImage) {
+                 
+                 attachment.status = QMAttachmentStatusLoading;
+                 __strong typeof(weakSelf) strongSelf = weakSelf;
+                 [strongSelf.downloadService downloadDataForAttachment:attachment
+                                                   withCompletionBlock:^(NSString *attachmentID, NSData *data, QMMediaError *error) {
+                                                       if (data) {
+                                                           [strongSelf.storeService saveData:data
+                                                                               forAttachment:attachment
+                                                                                   cacheType:cacheType
+                                                                                   messageID:message.ID
+                                                                                    dialogID:message.dialogID];
+                                                           
+                                                           completion([UIImage imageWithData:data], nil);
+                                                           attachment.status = QMAttachmentStatusLoaded;
+                                                       }
+                                                       else {
+                                                           attachment.status = QMAttachmentStatusError;
+                                                           completion(nil, error.error);
+                                                       }
+                                                   } progressBlock:^(float progress) {
+                                                       
+                                                       [self changeDownloadingProgress:progress
+                                                                            forMessage:message
+                                                                            attachment:attachment];
+                                                   }];
+             }
+             else if (attachment.contentType == QMAttachmentContentTypeVideo) {
+                 
+                 if (attachment.status == QMAttachmentStatusPreparing || attachment.status == QMAttachmentStatusError) {
+                     return;
+                 }
+                 __strong typeof(weakSelf) strongSelf = weakSelf;
+                 attachment.status = QMAttachmentStatusPreparing;
+                 [strongSelf.mediaInfoService videoThumbnailForAttachment:attachment
+                                                               completion:^(UIImage *image, NSError *error)
+                  {
+                      dispatch_async(dispatch_get_main_queue(), ^{
+                          
+                          if (image) {
+                              [strongSelf.storeService saveData:UIImagePNGRepresentation(image)
+                                                  forAttachment:attachment
+                                                      cacheType:cacheType
+                                                      messageID:message.ID
+                                                       dialogID:message.dialogID];
+                              attachment.status = QMAttachmentStatusPrepared;
+                          }
+                          else {
+                              attachment.status = QMAttachmentStatusError;
+                          }
+                          
+                          completion(image, error);
+                      });
+                  }];
+             }
+         }
+         else {
+             if (completion) {
+                 completion(image, nil);
+             }
+         }
+     }];
 }
 
 @end

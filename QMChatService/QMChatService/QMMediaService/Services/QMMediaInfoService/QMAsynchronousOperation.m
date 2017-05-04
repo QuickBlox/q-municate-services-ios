@@ -20,9 +20,10 @@
                                       queue:(NSOperationQueue *)queue {
     
     QMAsynchronousOperation *operation = [QMAsynchronousOperation new];
-    operation.operationID = operationID;
     
     if (operationID.length != 0) {
+        
+        operation.operationID = operationID;
         
         for (QMAsynchronousOperation *operationInQueue in queue.operations) {
             if ([operationInQueue.operationID isEqualToString:operationID]) {

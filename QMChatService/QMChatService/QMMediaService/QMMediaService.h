@@ -23,7 +23,6 @@
 @property (copy, nonatomic) QMAttachmentDownloadProgressBlock onMessageDidChangeDownloadingProgress;
 @property (copy, nonatomic) QMAttachmentMessageDidStartUploading onMessageDidStartUploading;
 
-- (QMMediaItem *)placeholderMediaForMessage:(QBChatMessage *)message;
 - (QBChatAttachment *)placeholderAttachment:(NSString *)messageID;
 
 - (void)imageForAttachment:(QBChatAttachment *)attachment
@@ -36,5 +35,6 @@
                     completion:(void(^)(BOOL isReady, NSError *error))completion;
 
 - (void)cancelOperationsForAttachment:(QBChatAttachment *)attachment;
+
 @end
 

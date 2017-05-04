@@ -32,7 +32,9 @@
      withAttachment:(QBChatAttachment *)attachment
          completion:(QBChatCompletionBlock)completion;
 
-- (QMMediaItem *)cachedMediaForMessage:(QBChatMessage *)message attachmentID:(NSString *)attachmentID;
+- (QBChatAttachment *)cachedAttachmentWithID:(NSString *)attachmentID
+                                forMessageID:(NSString *)messageID;
+
 
 - (void)imageForMediaItem:(QMMediaItem *)mediaItem  completion:(void(^)(UIImage *image))completion;
 
