@@ -7,27 +7,18 @@
 //
 
 #import <Foundation/Foundation.h>
-
-#import <Foundation/Foundation.h>
-
 #import "QMMediaBlocks.h"
-
-@protocol QMMediaUploadDelegate;
 
 @protocol QMMediaUploadServiceDelegate <NSObject>
 
-- (void)uploadMediaWithData:(NSData *)data
-                   mimeType:(NSString *)mimeType
-        withCompletionBlock:(QMMediaUploadCompletionBlock)completionBlock
-              progressBlock:(QMMediaProgressBlock)progressBlock;
-
-- (BFTask <QBCBlob *> *)uploadMediaWithData:(NSData *)data
-                                   mimeType:(NSString *)mimeType
-                              progressBlock:(QMMediaProgressBlock)progressBlock;
-
+- (void)uploadAttachment:(QBChatAttachment *)attachment
+                withData:(NSData *)data
+     withCompletionBlock:(QMAttachmentUploadCompletionBlock)completionBlock
+           progressBlock:(QMMediaProgressBlock)progressBlock;
 
 - (void)uploadAttachment:(QBChatAttachment *)attachment
-            withCompletionBlock:(QMAttachmentUploadCompletionBlock)completionBlock
-                  progressBlock:(QMMediaProgressBlock)progressBlock;
+             withFileURL:(NSURL *)fileURL
+     withCompletionBlock:(QMAttachmentUploadCompletionBlock)completionBlock
+           progressBlock:(QMMediaProgressBlock)progressBlock;
 
 @end

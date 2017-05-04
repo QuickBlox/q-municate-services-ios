@@ -50,32 +50,45 @@
     
     NSString *attachmentID = attachment.ID;
     
-    QMAsynchronousOperation *operation = [QMAsynchronousOperation asynchronousOperationWithID:attachmentID queue:self.downloadOperationQueue];
+    QMAsynchronousOperation *operation =
+    [QMAsynchronousOperation asynchronousOperationWithID:attachmentID
+                                                   queue:self.downloadOperationQueue];
     
     __weak typeof(QMAsynchronousOperation) *weakOperation = operation;
     
     operation.operationBlock = ^{
         
-        QBRequest *request = [QBRequest downloadFileWithUID:attachmentID  successBlock:^(QBResponse *response, NSData *fileData) {
-            
-            if (fileData) {
-                completionBlock(attachmentID, fileData, nil);
-            }
-            [weakOperation complete];
-            
-        } statusBlock:^(QBRequest *request, QBRequestStatus *status) {
-            
-            progressBlock(status.percentOfCompletion);
-            
-        } errorBlock:^(QBResponse *response) {
-            
-            QMMediaError *error = [QMMediaError errorWithResponse:response];
-            completionBlock(attachmentID, nil, error);
-            
-            [weakOperation complete];
-        }];
+        QBRequest *request =
+        [QBRequest downloadFileWithUID:attachmentID
+                          successBlock:^(QBResponse *response, NSData *fileData)
+         {
+             
+             if (fileData) {
+                 completionBlock(attachmentID, fileData, nil);
+             }
+             [weakOperation complete];
+             
+         } statusBlock:^(QBRequest *request, QBRequestStatus *status) {
+             
+             progressBlock(status.percentOfCompletion);
+             
+         } errorBlock:^(QBResponse *response) {
+             
+             QMMediaError *error = [QMMediaError errorWithResponse:response];
+             completionBlock(attachmentID, nil, error);
+             
+             [weakOperation complete];
+         }];
+        
         @synchronized (self.downloads) {
             self.downloads[attachmentID] = request;
+        }
+    };
+    
+    operation.completionBlock = ^{
+        
+        @synchronized (self.downloads) {
+            [self.downloads removeObjectForKey:attachmentID];
         }
     };
     
@@ -97,7 +110,8 @@
 }
 
 - (void)cancelDownloadOperationForAttachment:(QBChatAttachment *)attachment {
-    [QMAsynchronousOperation cancelOperationWithID:attachment.ID queue:self.downloadOperationQueue];
+    [QMAsynchronousOperation cancelOperationWithID:attachment.ID
+                                             queue:self.downloadOperationQueue];
 }
 
 @end
