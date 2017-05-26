@@ -12,7 +12,6 @@
 #import "QMMediaBlocks.h"
 #import "QMSLog.h"
 #import "QMMediaError.h"
-#import "QMMediaItem.h"
 #import "QMAsynchronousOperation.h"
 
 @interface QMMediaDownloadService()
@@ -29,8 +28,9 @@
     if (self  = [super init]) {
         
         self.downloadOperationQueue = [NSOperationQueue new];
-        self.downloadOperationQueue.maxConcurrentOperationCount = 3;
+        self.downloadOperationQueue.maxConcurrentOperationCount = 5;
         self.downloads = [NSMutableDictionary dictionary];
+    
     }
     
     return self;
@@ -49,6 +49,10 @@
                     progressBlock:(QMMediaProgressBlock)progressBlock {
     
     NSString *attachmentID = attachment.ID;
+    
+    if (self.downloads[attachmentID]) {
+        return;
+    }
     
     QMAsynchronousOperation *operation =
     [QMAsynchronousOperation asynchronousOperationWithID:attachmentID
@@ -94,9 +98,10 @@
     
     operation.cancellBlock = ^{
         
+        QBRequest *request = self.downloads[attachmentID];
+        [request cancel];
+        
         @synchronized (self.downloads) {
-            QBRequest *request = self.downloads[attachmentID];
-            [request cancel];
             [self.downloads removeObjectForKey:attachmentID];
         }
         

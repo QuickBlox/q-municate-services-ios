@@ -45,7 +45,7 @@ typedef NS_ENUM(NSUInteger, QMVideoUrlType) {
     QMSLog(@"%@ - %@",  NSStringFromSelector(_cmd), self);
 }
 
-- (AVAsset*)asset {
+- (AVAsset *)asset {
     
     __block AVAsset *theAsset = nil;
     dispatch_sync(self.assetQueue, ^(void) {
@@ -55,7 +55,7 @@ typedef NS_ENUM(NSUInteger, QMVideoUrlType) {
     return theAsset;
 }
 
-- (AVAsset*)getAssetInternal
+- (AVAsset *)getAssetInternal
 {
     if (_asset == nil) {
         
@@ -72,9 +72,9 @@ typedef NS_ENUM(NSUInteger, QMVideoUrlType) {
     QMMediaInfo *mediaInfo = [[QMMediaInfo alloc] init];
     NSURL *mediaURL = nil;
     
-    if (attachment.localURL) {
+    if (attachment.localFileURL) {
         
-        mediaURL = attachment.localURL;
+        mediaURL = attachment.localFileURL;
     }
     
     else if (attachment.remoteURL) {
@@ -98,9 +98,9 @@ typedef NS_ENUM(NSUInteger, QMVideoUrlType) {
         mediaInfo.thumbnailImage = attachment.image;
     }
     
-    if ([attachment isReady]) {
-        mediaInfo.prepareStatus = QMMediaPrepareStatusPrepareFinished;
-    }
+//    if ([attachment isReady]) {
+//        mediaInfo.prepareStatus = QMMediaPrepareStatusPrepareFinished;
+//    }
     
     //mediaInfo.playerItem = [AVPlayerItem playerItemWithAsset:[mediaInfo getAssetInternal]];
     
@@ -163,7 +163,7 @@ typedef NS_ENUM(NSUInteger, QMVideoUrlType) {
 
 
 
-- (void)generateThumbnailFromAsset:(AVURLAsset *)thumbnailAsset withSize:(CGSize)size
+- (void)generateThumbnailFromAsset:(AVAsset *)thumbnailAsset withSize:(CGSize)size
                  completionHandler:(void (^)(UIImage *thumbnail))handler
 {
     _imageGenerator = [[AVAssetImageGenerator alloc] initWithAsset:thumbnailAsset];
@@ -203,7 +203,7 @@ typedef NS_ENUM(NSUInteger, QMVideoUrlType) {
      }];
 }
 
-- (void)prepareAsset:(AVURLAsset *)asset withKeys:(NSArray *)requestedKeys {
+- (void)prepareAsset:(AVAsset *)asset withKeys:(NSArray *)requestedKeys {
     /*
      // Make sure that the value of each key has loaded successfully.
      for (NSString *thisKey in requestedKeys) {
@@ -227,9 +227,9 @@ typedef NS_ENUM(NSUInteger, QMVideoUrlType) {
     CGSize mediaSize = CGSizeZero;
     
     if (self.contentType == QMAttachmentContentTypeVideo) {
-        
-        CGFloat videoWidth = [[[asset tracksWithMediaType:AVMediaTypeVideo] firstObject] naturalSize].width;
-        CGFloat videoHeight = [[[asset tracksWithMediaType:AVMediaTypeVideo] firstObject] naturalSize].height;
+        CGSize videoSize = [[[asset tracksWithMediaType:AVMediaTypeVideo] firstObject] naturalSize];
+        CGFloat videoWidth = videoSize.width;
+        CGFloat videoHeight = videoSize.height;
         
         mediaSize = CGSizeMake(videoWidth, videoHeight);
         

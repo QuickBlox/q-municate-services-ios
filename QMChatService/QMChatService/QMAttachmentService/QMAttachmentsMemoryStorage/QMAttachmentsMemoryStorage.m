@@ -52,7 +52,7 @@
 }
 
 - (QBChatAttachment *)attachmentWithID:(NSString *)atatchmentID
-                         fromMessageID:(nonnull NSString *)messageID {
+                         fromMessageID:(NSString *)messageID {
     
     NSParameterAssert(atatchmentID != nil);
     NSParameterAssert(messageID != nil);

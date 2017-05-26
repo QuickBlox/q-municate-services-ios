@@ -9,7 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "QMMediaBlocks.h"
 
-@class QMMediaItem;
 @class QMChatService;
 @class QMMediaInfo;
 
@@ -35,11 +34,11 @@
 - (QBChatAttachment *)cachedAttachmentWithID:(NSString *)attachmentID
                                 forMessageID:(NSString *)messageID;
 
+- (void)statusForAttachment:(QBChatAttachment *)attachment
+                 completion:(void(^)(int))completionBlock;
 
-- (void)imageForMediaItem:(QMMediaItem *)mediaItem  completion:(void(^)(UIImage *image))completion;
-
-
-
+- (BOOL)attachmentIsReadyToPlay:(QBChatAttachment *)attachment
+                        message:(QBChatMessage *)message;
 
 @end
 

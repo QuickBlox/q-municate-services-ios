@@ -18,6 +18,6 @@
 
 + (instancetype)videoAttachmentwWithFileURL:(NSURL *)itemURL;
 + (instancetype)audioAttachmentWithFileURL:(NSURL *)itemURL;
-+ (instancetype)mediaAttachmentWithImage:(UIImage *)image;
++ (instancetype)imageAttachmentWithImage:(UIImage *)image;
 
 @end

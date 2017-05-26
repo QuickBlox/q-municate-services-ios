@@ -1443,7 +1443,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
           withAttachmentImage:(UIImage *)image
                    completion:(QBChatCompletionBlock)completion
 {
-    QBChatAttachment *attachment = [QBChatAttachment mediaAttachmentWithImage:image];
+    QBChatAttachment *attachment = [QBChatAttachment imageAttachmentWithImage:image];
     
     [self sendAttachmentMessage:attachmentMessage
                        toDialog:dialog

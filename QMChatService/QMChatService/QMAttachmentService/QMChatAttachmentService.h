@@ -11,7 +11,6 @@
 
 @class QMChatService;
 @class QMChatAttachmentService;
-@class QMMediaItem;
 @class QMMediaService;
 
 NS_ASSUME_NONNULL_BEGIN

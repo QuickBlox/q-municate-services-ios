@@ -27,7 +27,6 @@
 
 - (void)imageForAttachment:(QBChatAttachment *)attachment
                    message:(QBChatMessage *)message
-                  withSize:(CGSize)size
                 completion:(void(^)(UIImage *image, NSError *error))completion;
 
 - (void)audioDataForAttachment:(QBChatAttachment *)attachment

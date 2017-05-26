@@ -19,12 +19,12 @@ NSString  *kQMAttachmentSizeKey = @"size";
 
 @implementation QBChatAttachment (QMCustomParameters)
 
-- (NSURL *)localURL {
-    return objc_getAssociatedObject(self, @selector(localURL));
+- (NSURL *)localFileURL {
+    return objc_getAssociatedObject(self, @selector(localFileURL));
 }
 
-- (void)setLocalURL:(NSURL *)localURL {
-    objc_setAssociatedObject(self, @selector(localURL), localURL, OBJC_ASSOCIATION_COPY_NONATOMIC);
+- (void)setLocalFileURL:(NSURL *)localFileURL {
+    objc_setAssociatedObject(self, @selector(localFileURL), localFileURL, OBJC_ASSOCIATION_COPY_NONATOMIC);
 }
 
 - (NSData *)mediaData {
@@ -66,7 +66,8 @@ NSString  *kQMAttachmentSizeKey = @"size";
 - (QMAttachmentContentType)contentType {
     
     if ([[self tContentType] integerValue] == 0) {
-        QMAttachmentContentType contentType;
+        
+        QMAttachmentContentType contentType = QMAttachmentContentTypeCustom;
         
         if ([self.type isEqualToString:@"audio"]) {
             contentType = QMAttachmentContentTypeAudio;
@@ -76,8 +77,10 @@ NSString  *kQMAttachmentSizeKey = @"size";
             contentType = QMAttachmentContentTypeVideo;
         }
         else if ([self.type isEqualToString:@"image"]) {
+            
             contentType = QMAttachmentContentTypeImage;
         }
+        
         [self setContentType:contentType];
     }
     
@@ -172,22 +175,6 @@ NSString  *kQMAttachmentSizeKey = @"size";
     }
     
     return stringMIMEType;
-}
-
-
-- (BOOL)isReady {
-    
-    if (self.contentType == QMAttachmentContentTypeImage) {
-        return self.image != nil;
-    }
-    else  if (self.contentType == QMAttachmentContentTypeAudio) {
-        return self.duration > 0;
-    }
-    else if (self.contentType == QMAttachmentContentTypeVideo) {
-        return self.duration > 0 && self.image != nil;
-    }
-    
-    return YES;
 }
 
 - (NSURL *)remoteURL {

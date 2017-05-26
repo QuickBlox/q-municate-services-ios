@@ -17,8 +17,6 @@
 #import "QMLinkPreviewManager.h"
 #import "QMDeferredQueueManager.h"
 
-@class QMMediaItem;
-
 @protocol QMChatServiceDelegate;
 @protocol QMChatServiceCacheDataSource;
 @protocol QMChatConnectionDelegate;

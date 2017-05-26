@@ -8,10 +8,8 @@
 
 #import "QMLinkPreviewManager.h"
 #import "QMLinkPreviewMemoryStorage.h"
-#import "QMLinkPreview.h"
 
 static NSString *const kQMBaseGraphURL = @"https://ogs.quickblox.com/?url=";
-
 static NSString *const kQMKeyTitle = @"ogTitle";
 static NSString *const kQMKeyDescription = @"ogDescription";
 static NSString *const kQMKeyImageURL = @"ogImage";
@@ -96,14 +94,17 @@ static NSString *const kQMKeyImageURL = @"ogImage";
                           url,
                           [QBSession currentSession].sessionDetails.token];
     
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:graphURL]];
+    NSMutableURLRequest *request =
+    [NSMutableURLRequest requestWithURL:[NSURL URLWithString:graphURL]];
     
     request.HTTPMethod = @"GET";
     [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
     
     [[[NSURLSession sharedSession] dataTaskWithRequest:request
-                                     completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error)
+                                     completionHandler:^(NSData * _Nullable data,
+                                                         NSURLResponse * _Nullable response,
+                                                         NSError * _Nullable error)
       {
           void(^blockCompletion)(BOOL success) = ^(BOOL success) {
               
@@ -114,7 +115,6 @@ static NSString *const kQMKeyImageURL = @"ogImage";
               }
           };
           
-          
           if ([(NSHTTPURLResponse *)response statusCode] == 404) {
               
               @synchronized (self.previewsInProgress) {
@@ -123,10 +123,9 @@ static NSString *const kQMKeyImageURL = @"ogImage";
               @synchronized (self.failedURLs) {
                   [_failedURLs addObject:urlKey];
               }
-              blockCompletion(NO);
               
+              blockCompletion(NO);
               return;
-
           }
           else if (data != nil) {
               
@@ -159,24 +158,30 @@ static NSString *const kQMKeyImageURL = @"ogImage";
                       
                       if (![deserializedDictionary[@"err"] isKindOfClass:[NSNull class]]) {
                           
-                          QMLinkPreview *linkPreview = [self linkPreviewFromDictionary:deserializedDictionary];
+                          QMLinkPreview *linkPreview =
+                          [self linkPreviewFromDictionary:deserializedDictionary];
                           linkPreview.siteUrl = urlKey;
                           
                           if (linkPreview.imageURL.length > 0) {
-                              NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:linkPreview.imageURL]];
-                              UIImage *image = [UIImage imageWithData:data];
                               
-                              if (image) {
-                                  linkPreview.previewImage = image;
-                                  linkPreview.imageHeight = image.size.height;
-                                  linkPreview.imageWidth = image.size.width;
+                              if ([NSURL URLWithString:linkPreview.imageURL].host == nil) {
+                                  
+                                  NSString *urlString =
+                                  [NSString stringWithFormat:@"%@%@",
+                                   linkPreview.siteUrl,
+                                   [NSURL URLWithString:linkPreview.imageURL].absoluteString];
+                                  
+                                  linkPreview.imageURL = urlString;
                               }
                           }
                           
-                          [self.memoryStorage addLinkPreview:linkPreview forKey:[self cacheKeyForURL:url]];
+                          [self.memoryStorage addLinkPreview:linkPreview
+                                                      forKey:[self cacheKeyForURL:url]];
                           
-                          if ([self.delegate respondsToSelector:@selector(linkPreviewManager:didAddLinkPreviewToMemoryStorage:)]) {
-                              [self.delegate linkPreviewManager:self didAddLinkPreviewToMemoryStorage:linkPreview];
+                          if ([self.delegate respondsToSelector:@selector(linkPreviewManager:
+                                                                          didAddLinkPreviewToMemoryStorage:)]) {
+                              [self.delegate linkPreviewManager:self
+                               didAddLinkPreviewToMemoryStorage:linkPreview];
                           }
                           
                           @synchronized (self.previewsInProgress) {
@@ -184,7 +189,6 @@ static NSString *const kQMKeyImageURL = @"ogImage";
                           }
                           
                           blockCompletion(YES);
-                          
                       }
                       else {
                           blockCompletion(NO);
@@ -235,6 +239,7 @@ static NSString *const kQMKeyImageURL = @"ogImage";
 //MARK: - Helpers
 
 - (NSString *)cacheKeyForURL:(NSURL *)url {
+    
     if (!url) {
         return @"";
     }
@@ -271,6 +276,7 @@ static NSString *const kQMKeyImageURL = @"ogImage";
     if (_links[message.ID] != nil) {
         return _links[message.ID];
     }
+    
     if ([_messagesWithoutLinks containsObject:message.ID]) {
         return nil;
     }
@@ -283,7 +289,9 @@ static NSString *const kQMKeyImageURL = @"ogImage";
         NSTextCheckingResult *result = [self.linkDataDetector firstMatchInString:text
                                                                          options:0
                                                                            range:NSMakeRange(0, text.length)];
+        
         if (result.range.location > 0 || result.range.length != text.length) {
+            
             [_messagesWithoutLinks addObject:message.ID];
             url = nil;
         }
@@ -303,8 +311,12 @@ static NSString *const kQMKeyImageURL = @"ogImage";
     NSArray *prefixes = @[@"https:", @"http:", @"//", @"/"];
     
     for (NSString *prefix in prefixes) {
+        
         if ([stringURL hasPrefix:prefix]) {
-            stringURL = [stringURL stringByReplacingOccurrencesOfString:prefix withString:@"" options:NSAnchoredSearch range:NSMakeRange(0, [stringURL length])];
+            stringURL = [stringURL stringByReplacingOccurrencesOfString:prefix
+                                                             withString:@""
+                                                                options:NSAnchoredSearch
+                                                                  range:NSMakeRange(0,stringURL.length)];
         }
     }
     
@@ -314,8 +326,10 @@ static NSString *const kQMKeyImageURL = @"ogImage";
 }
 
 //MARK: - QMMemoryStorageProtocol
+
 - (void)free {
     
+    [_messagesWithoutLinks removeAllObjects];
     [_memoryStorage free];
     [_failedURLs removeAllObjects];
     [_links removeAllObjects];

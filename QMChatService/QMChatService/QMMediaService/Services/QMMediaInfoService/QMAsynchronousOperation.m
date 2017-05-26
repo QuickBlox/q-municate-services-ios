@@ -112,6 +112,7 @@
 }
 
 - (void)start {
+    
     if (self.isCancelled) {
         self.finished = YES;
     }
@@ -119,14 +120,14 @@
         
         self.executing = YES;
         [self main];
-        NSLog(@"\"%@\" Operation Started.", self.name);
+        NSLog(@"\"%@\" Operation Started.", self.operationID);
     }
 }
 
 - (void)complete {
     
     if (self.isExecuting) {
-        NSLog(@"\"%@\" Operation Finished.", self.name);
+        NSLog(@"\"%@\" Operation Finished.", self.operationID);
         
         self.executing = NO;
         self.finished = YES;

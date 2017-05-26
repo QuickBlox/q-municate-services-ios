@@ -8,7 +8,6 @@
 
 #import "QMMediaStoreService.h"
 #import "QMMediaStoreServiceDelegate.h"
-#import "QMMediaItem.h"
 #import "QMSLog.h"
 #import "QMAttachmentsMemoryStorage.h"
 #import "QBChatAttachment+QMCustomParameters.h"
@@ -45,10 +44,10 @@
 
 //MARK: - QMMediaStoreServiceDelegate
 
-- (void)localImageForAttachment:(QBChatAttachment *)attachment
-                      messageID:(NSString *)messageID
-                       dialogID:(NSString *)dialogID
-                     completion:(nonnull void (^)(UIImage * _Nonnull))completion {
+- (void)cachedImageForAttachment:(QBChatAttachment *)attachment
+                       messageID:(NSString *)messageID
+                        dialogID:(NSString *)dialogID
+                      completion:(void (^)(UIImage *))completion {
     
     if (self.imagesMemoryStorage[attachment.ID] != nil) {
         
@@ -58,7 +57,6 @@
         return;
     }
     
-    // checking attachment in cache
     NSString *path = mediaPath(attachment, dialogID, messageID);
     
     if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
@@ -96,6 +94,58 @@
                                              fromMessageID:messageID];
 }
 
+- (void)saveAttachment:(QBChatAttachment *)attachment
+             cacheType:(QMAttachmentCacheType)cacheType
+             messageID:(NSString *)messageID
+              dialogID:(NSString *)dialogID {
+    
+    NSAssert(attachment.ID, @"No ID");
+    NSAssert(messageID, @"No ID");
+    NSAssert(dialogID, @"No ID");
+    
+    if (cacheType & QMAttachmentCacheTypeDisc) {
+        
+        NSURL *tempURL = attachment.localFileURL;
+        
+        NSString *filePath = mediaPath(attachment,
+                                       dialogID,
+                                       messageID);
+        BOOL isSucceed = NO;
+        
+        if (tempURL) {
+            
+            isSucceed  = [[NSFileManager defaultManager] copyItemAtURL:tempURL
+                                                                 toURL:[NSURL fileURLWithPath:filePath]
+                                                                 error:NULL];
+            
+            [[NSFileManager defaultManager] removeItemAtURL:tempURL
+                                                      error:NULL];
+        }
+        else {
+            
+            if (attachment.image) {
+                
+                NSData *data = UIImagePNGRepresentation(attachment.image);
+                
+                isSucceed = [data writeToFile:mediaPath(attachment, dialogID, messageID)
+                                      options:NSDataWritingAtomic
+                                        error:nil];
+            }
+        }
+        
+        if (isSucceed) {
+            attachment.localFileURL = [NSURL fileURLWithPath:filePath];
+        }
+        
+    }
+    
+    if (cacheType & QMAttachmentCacheTypeMemory) {
+        
+        [self.attachmentsMemoryStorage addAttachment:attachment
+                                        forMessageID:messageID];
+    }
+}
+
 - (void)saveData:(NSData *)data
    forAttachment:(QBChatAttachment *)attachment
        cacheType:(QMAttachmentCacheType)cacheType
@@ -107,11 +157,7 @@
     NSAssert(dialogID, @"No ID");
     NSAssert(data.length, @"No data");
     
-    if (cacheType & QMAttachmentCacheTypeMemory) {
-        
-        [self.attachmentsMemoryStorage addAttachment:attachment
-                                        forMessageID:messageID];
-    }
+    
     if (cacheType & QMAttachmentCacheTypeDisc) {
         
         NSError *error = nil;
@@ -122,12 +168,19 @@
         
         if (isSucceed) {
             
-            attachment.localURL =  [NSURL fileURLWithPath:mediaPath(attachment,
-                                                                    messageID,
-                                                                    dialogID)];
+            attachment.localFileURL =  [NSURL fileURLWithPath:mediaPath(attachment,
+                                                                        dialogID,
+                                                                        messageID
+                                                                        )];
             
         }
     }
+    if (cacheType & QMAttachmentCacheTypeMemory) {
+        
+        [self.attachmentsMemoryStorage addAttachment:attachment
+                                        forMessageID:messageID];
+    }
+    
     
 }
 
@@ -163,35 +216,41 @@ static NSString* mediaCacheDir() {
 }
 
 
-static NSString* mediaPath(QBChatAttachment *attachment, NSString *messsageID, NSString *dialogID) {
+static NSString* mediaPath(QBChatAttachment *attachment, NSString *dialogID, NSString *messsageID) {
     
     NSString *dialogDirectory = [mediaCacheDir() stringByAppendingPathComponent:dialogID];
     
     if (![[NSFileManager defaultManager] fileExistsAtPath:dialogDirectory]) {
-        [[NSFileManager defaultManager] createDirectoryAtPath:dialogDirectory withIntermediateDirectories:NO attributes:nil error:nil];
+        [[NSFileManager defaultManager] createDirectoryAtPath:dialogDirectory
+                                  withIntermediateDirectories:NO
+                                                   attributes:nil
+                                                        error:nil];
     }
     
     NSString *messageDirectory = [dialogDirectory stringByAppendingPathComponent:messsageID];
     
     if (![[NSFileManager defaultManager] fileExistsAtPath:messageDirectory]) {
-        [[NSFileManager defaultManager] createDirectoryAtPath:messageDirectory withIntermediateDirectories:NO attributes:nil error:nil];
+        [[NSFileManager defaultManager] createDirectoryAtPath:messageDirectory
+                                  withIntermediateDirectories:NO
+                                                   attributes:nil
+                                                        error:nil];
     }
     
     return [messageDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/attachment-%@.%@",
-                                                            attachment.ID,
-                                                            [attachment extension]]];
+                                                             attachment.ID,
+                                                             [attachment extension]]];
 }
 
 //MARK: - Helpers
-
-- (BOOL)isSavedLocally:(QBChatAttachment *)attachment
-             messageID:(NSString *)messageID
-              dialogID:(NSString *)dialogID {
+- (NSURL *)fileURLForAttachment:(QBChatAttachment *)attachment
+                      messageID:(NSString *)messageID
+                       dialogID:(NSString *)dialogID {
     // checking attachment in cache
     NSString *path = mediaPath(attachment, dialogID, messageID);
-    return [[NSFileManager defaultManager] fileExistsAtPath:path];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
+        return [NSURL fileURLWithPath:path];
+    }
+    return nil;
 }
-
-
 
 @end

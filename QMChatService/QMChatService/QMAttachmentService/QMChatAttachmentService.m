@@ -390,13 +390,4 @@ static NSString* attachmentPath(QBChatAttachment *attachment) {
                         completion:completion];
 }
 
-//- (void)mediaItemForAttachmentMessage:(QBChatMessage *)message
-//                         attachmentID:(NSString *)attachmentID
-//                           completion:(void(^)(QMMediaItem *mediaItem, NSError *error))completion {
-//    
-//    [self.mediaService mediaForMessage:message
-//                          attachmentID:attachmentID
-//                   withCompletionBlock:completion];
-//}
-
 @end

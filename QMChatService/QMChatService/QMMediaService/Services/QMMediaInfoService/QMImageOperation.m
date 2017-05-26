@@ -24,33 +24,41 @@
     self = [self init];
     
     if (self) {
+        
         _attachment = attachment;
         _imageOperationCompletionBlock = [completionHandler copy];
-
+        
         self.generator = [AVAssetImageGenerator assetImageGeneratorWithAsset:[AVAsset assetWithURL:[self.attachment remoteURL]]];
         self.generator.appliesPreferredTrackTransform = YES;
         self.generator.maximumSize = CGSizeMake(200, 200);
         
         __weak typeof(self) weakSelf = self;
-  
+
         self.operationBlock = ^{
+                    __strong typeof(weakSelf) strongSelf = weakSelf;
             
-            AVAssetImageGeneratorCompletionHandler handler = ^(CMTime requestedTime, CGImageRef image, CMTime actualTime, AVAssetImageGeneratorResult result, NSError *error) {
+            AVAssetImageGeneratorCompletionHandler handler = ^(CMTime requestedTime,
+                                                               CGImageRef image,
+                                                               CMTime actualTime,
+                                                               AVAssetImageGeneratorResult result,
+                                                               NSError *error) {
+                
                 UIImage *thumb = nil;
                 if (result == AVAssetImageGeneratorSucceeded) {
                     thumb = [UIImage imageWithCGImage:image];
-                    NSLog(@"Succesfully generater the thumbnail!!!");
-                } else {
-                    NSLog(@"Failed to generater the thumbnail!!!");
-                    NSLog(@"Error : %@",error.localizedDescription);
                 }
-             
-                weakSelf.imageOperationCompletionBlock(thumb, error);
-                [weakSelf complete];
+                if (strongSelf.imageOperationCompletionBlock) {
+                    strongSelf.imageOperationCompletionBlock(thumb, error);
+                }
+                
+                [strongSelf complete];
             };
             
-            [weakSelf.generator generateCGImagesAsynchronouslyForTimes:[NSArray arrayWithObject:[NSValue valueWithCMTime:CMTimeMakeWithSeconds(2,1)]] completionHandler:handler];
 
+            NSArray *times = @[[NSValue valueWithCMTime:CMTimeMakeWithSeconds(2,1)]];
+            [strongSelf.generator generateCGImagesAsynchronouslyForTimes:times
+                                                     completionHandler:handler];
+            
         };
         
         self.cancellBlock = ^{
@@ -61,12 +69,9 @@
     return self;
 }
 
-#pragma mark - Start
+
 - (void)dealloc {
-    NSLog(@"QMImageOperation deallock");
+
 }
-
-
-
 
 @end

@@ -12,6 +12,4 @@
 
 @interface QMMediaInfoService : NSObject <QMMediaInfoServiceDelegate>
 
-
-
 @end

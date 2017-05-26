@@ -7,15 +7,13 @@
 //
 
 #import "QMMemoryStorageProtocol.h"
-
-#import "QMLinkPreview+QMCustomParameters.h"
+#import "QMLinkPreview.h"
 
 @class QMLinkPreviewMemoryStorage;
 
 @protocol QMLinkPreviewManagerDelegate;
 
 typedef void(^QMLinkPreviewCompletionBlock)(BOOL success);
-
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -33,7 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  Download,create and cache QMLinkPreview instance
-
+ 
  @param message message
  @param completion completion
  */
@@ -42,19 +40,20 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  Method returns cached instance of QMLinkPreview class
-
+ 
  @param message message
  @return cached instance of QMLinkPreview class
  */
-- (QMLinkPreview *)linkPreviewForMessage:(QBChatMessage *)message;
+- (nullable QMLinkPreview *)linkPreviewForMessage:(QBChatMessage *)message;
 
 @end
 
 @protocol QMLinkPreviewManagerDelegate <NSObject>
 
-- (void)linkPreviewManager:(QMLinkPreviewManager *)linkPreview didAddLinkPreviewToMemoryStorage:(QMLinkPreview *)linkPreview;
+- (void)linkPreviewManager:(QMLinkPreviewManager *)linkPreviewManager
+didAddLinkPreviewToMemoryStorage:(QMLinkPreview *)linkPreview;
 
-- (QMLinkPreview *)cachedLinkPreviewForURLKey:(NSString *)urlKey;
+- (nullable QMLinkPreview *)cachedLinkPreviewForURLKey:(NSString *)urlKey;
 
 @end
 

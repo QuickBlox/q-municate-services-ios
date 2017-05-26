@@ -27,7 +27,4 @@
 #import "QMMessagesMemoryStorage.h"
 #import "QMUsersCache.h"
 #import "QMUsersService.h"
-
-#import "QMMediaItem.h"
-
 #import "QMMediaService.h"

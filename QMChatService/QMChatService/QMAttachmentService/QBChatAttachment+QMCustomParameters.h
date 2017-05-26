@@ -9,6 +9,7 @@
 #import <Quickblox/Quickblox.h>
 
 typedef NS_ENUM(NSInteger, QMAttachmentContentType) {
+    
     QMAttachmentContentTypeAudio = 1,
     QMAttachmentContentTypeVideo,
     QMAttachmentContentTypeImage,
@@ -16,6 +17,7 @@ typedef NS_ENUM(NSInteger, QMAttachmentContentType) {
 };
 
 typedef NS_ENUM(NSUInteger, QMAttachmentStatus) {
+    
     QMAttachmentStatusNotLoaded = 0,
     QMAttachmentStatusLoading,
     QMAttachmentStatusLoaded,
@@ -30,8 +32,11 @@ typedef NS_ENUM(NSUInteger, QMAttachmentStatus) {
 
 @property (assign, nonatomic) QMAttachmentStatus status;
 
+/**
+ *  The URL that identifies locally saved attachment resource.
+ */
+@property (copy, nonatomic) NSURL *localFileURL;
 
-@property (copy, nonatomic) NSURL *localURL;
 /**
  *  Data representation of attachment.
  */
@@ -66,7 +71,6 @@ typedef NS_ENUM(NSUInteger, QMAttachmentStatus) {
 - (NSURL *)remoteURL;
 - (NSString *)stringContentType;
 - (NSString *)stringMIMEType;
-- (BOOL)isReady;
 - (NSString *)extension;
 
 @end

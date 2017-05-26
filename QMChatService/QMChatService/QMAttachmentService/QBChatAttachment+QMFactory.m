@@ -18,13 +18,12 @@
     QBChatAttachment *attachment = [QBChatAttachment new];
     attachment.name = name;
     attachment.ID = mediaID;
-    attachment.localURL = localURL;
+    attachment.localFileURL = localURL;
     attachment.contentType = contentType;
     attachment.type = [attachment stringContentType];
     
     return attachment;
 }
-
 
 + (instancetype)videoAttachmentwWithFileURL:(NSURL *)itemURL {
     
@@ -42,7 +41,7 @@
                   contentType:QMAttachmentContentTypeAudio];
 }
 
-+ (instancetype)mediaAttachmentWithImage:(UIImage *)image {
++ (instancetype)imageAttachmentWithImage:(UIImage *)image {
     
     QBChatAttachment *attachment =  [self initWithName:@"Image attachment"
                                                mediaID:nil
