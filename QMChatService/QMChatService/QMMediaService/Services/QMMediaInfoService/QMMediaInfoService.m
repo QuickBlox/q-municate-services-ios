@@ -47,10 +47,8 @@
     QMImageOperation *imageOperation = [[QMImageOperation alloc] initWithAttachment:attachment
                                                                   completionHandler:^(UIImage * _Nullable image, NSError * _Nullable error) {
                                                                       if (completion) {
-                                                                          dispatch_async(dispatch_get_main_queue(), ^{
                                                                               completion(image, error);
-                                                                          });
-                                                                      }
+                                                                          }
                                                                   }];
     [self.imagesOperationQueue addOperation:imageOperation];
 }

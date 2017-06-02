@@ -27,7 +27,7 @@
         
         for (QMAsynchronousOperation *operationInQueue in queue.operations) {
             if ([operationInQueue.operationID isEqualToString:operationID]) {
-                [operation addDependency:operationInQueue];
+                return nil;
             }
         }
     }

@@ -293,13 +293,22 @@ static NSString *const kQMKeyImageURL = @"ogImage";
         if (result.range.location > 0 || result.range.length != text.length) {
             
             [_messagesWithoutLinks addObject:message.ID];
-            url = nil;
         }
         else if (result.resultType == NSTextCheckingTypeLink) {
             
-            NSString *stringLink = [[text substringWithRange:result.range] lowercaseString];
-            url = [self qm_standartitizedURLFromString:stringLink];
-            _links[message.ID] = url;
+            //deny email
+            NSString *pattern = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]+";
+            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", pattern];
+            
+            if (![predicate evaluateWithObject:text]) {
+                
+                NSString *stringLink = [[text substringWithRange:result.range] lowercaseString];
+                url = [self qm_standartitizedURLFromString:stringLink];
+                _links[message.ID] = url;
+            }
+            else {
+                [_messagesWithoutLinks addObject:message.ID];
+            }
         }
     }
     
