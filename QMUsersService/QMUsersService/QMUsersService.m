@@ -570,6 +570,47 @@
     });
 }
 
+- (BFTask *)searchUsersWithExtendedRequest:(NSDictionary *)extendedRequest {
+    return [self searchUsersWithExtendedRequest:extendedRequest
+                                           page:[QBGeneralResponsePage responsePageWithCurrentPage:1 perPage:100]];
+}
+
+- (BFTask *)searchUsersWithExtendedRequest:(NSDictionary *)extendedRequest page:(QBGeneralResponsePage *)page {
+    
+    NSParameterAssert(extendedRequest);
+    NSParameterAssert(page);
+    
+    return make_task(^(BFTaskCompletionSource * _Nonnull source) {
+        
+        [QBRequest usersWithExtendedRequest:extendedRequest
+                                       page:page
+                               successBlock:^(QBResponse * _Nonnull response, QBGeneralResponsePage * _Nullable page, NSArray<QBUUser *> * _Nullable users)
+         {
+             
+             [self.usersMemoryStorage addUsers:users];
+             
+             if ([self.multicastDelegate respondsToSelector:@selector(usersService:didAddUsers:)]) {
+                 [self.multicastDelegate usersService:self didAddUsers:users];
+             }
+             
+             [source setResult:users];
+             
+         } errorBlock:^(QBResponse * _Nonnull response)
+         {
+             [source setError:response.error.error];
+         }];
+    });
+}
+
+// MARK: Public users management
+
+- (void)updateUsers:(NSArray *)users {
+    [self.usersMemoryStorage addUsers:users];
+    if ([self.multicastDelegate respondsToSelector:@selector(usersService:didUpdateUsers:)]) {
+        [self.multicastDelegate usersService:self didUpdateUsers:users];
+    }
+}
+
 //MARK: - Helpers
 
 - (NSArray<QBUUser *> *)performUpdateWithLoadedUsers:(NSArray<QBUUser *> *)loadedUsers

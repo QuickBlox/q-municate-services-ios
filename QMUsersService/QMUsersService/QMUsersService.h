@@ -372,6 +372,34 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (BFTask <NSArray<QBUUser *> *> *)searchUsersWithPhoneNumbers:(NSArray<NSString *> *)phoneNumbers page:(QBGeneralResponsePage *)page;
 
+/**
+ *  Search for users by extended request.
+ *
+ *  @param extendedRequest extended request
+ *
+ *  @return BFTask with NSArray of QBUUser instances as a result
+ */
+- (BFTask *)searchUsersWithExtendedRequest:(NSDictionary *)extendedRequest;
+
+/**
+ *  Search for users by extended request with extended pagination parameters.
+ *
+ *  @param extendedRequest extended request
+ *  @param page pagination params
+ *
+ *  @return BFTask with NSArray of QBUUser instances as a result
+ */
+- (BFTask *)searchUsersWithExtendedRequest:(NSDictionary *)extendedRequest page:(QBGeneralResponsePage *)page;
+
+// MARK: Public users management
+
+/**
+ *  Update users in memory storage and cache.
+ *
+ *  @param users array of users
+ */
+- (void)updateUsers:(NSArray *)users;
+
 @end
 
 //MARK: - Protocols
