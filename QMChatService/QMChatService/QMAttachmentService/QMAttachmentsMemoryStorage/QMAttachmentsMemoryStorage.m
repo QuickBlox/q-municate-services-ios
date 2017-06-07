@@ -51,6 +51,14 @@
            forMessageID:messageID];
 }
 
+- (void)deleteAttachment:(QBChatAttachment *)attachment
+            forMessageID:(NSString *)messageID {
+    
+    NSMutableOrderedSet *datasource = [self dataSourceWithMessageID:messageID];
+    [datasource removeObject:attachment];
+}
+
+
 - (QBChatAttachment *)attachmentWithID:(NSString *)atatchmentID
                          fromMessageID:(NSString *)messageID {
     
