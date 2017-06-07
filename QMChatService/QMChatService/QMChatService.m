@@ -19,14 +19,13 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 
 @interface QMChatService()<QBChatDelegate, QMDeferredQueueManagerDelegate, QMLinkPreviewManagerDelegate>
 
-@property (assign, nonatomic, readwrite) QMChatConnectionState chatConnectionState;
+//@property (assign, nonatomic, readwrite) QMChatConnectionState chatConnectionState;
 @property (strong, nonatomic) QBMulticastDelegate <QMChatServiceDelegate, QMChatConnectionDelegate> *multicastDelegate;
 @property (weak, nonatomic) id <QMChatServiceCacheDataSource> cacheDataSource;
 @property (strong, nonatomic) QMDialogsMemoryStorage *dialogsMemoryStorage;
 @property (strong, nonatomic) QMMessagesMemoryStorage *messagesMemoryStorage;
 @property (strong, nonatomic) QMChatAttachmentService *chatAttachmentService;
 
-@property (weak, nonatomic)   BFTask* loadEarlierMessagesTask;
 @property (strong, nonatomic) NSMutableDictionary *loadedAllMessages;
 @property (strong, nonatomic) NSMutableDictionary *lastMessagesLoadDate;
 @property (strong, nonatomic) NSMutableSet *messagesToRead;
@@ -190,16 +189,12 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 
 - (void)chatDidConnect {
     
-    self.chatConnectionState = QMChatConnectionStateConnected;
-    
     if ([self.multicastDelegate respondsToSelector:@selector(chatServiceChatDidConnect:)]) {
         [self.multicastDelegate chatServiceChatDidConnect:self];
     }
 }
 
 - (void)chatDidNotConnectWithError:(NSError *)error {
-    
-    self.chatConnectionState = QMChatConnectionStateDisconnected;
     
     if ([self.multicastDelegate respondsToSelector:@selector(chatService:chatDidNotConnectWithError:)]) {
         [self.multicastDelegate chatService:self chatDidNotConnectWithError:error];
@@ -208,16 +203,12 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 
 - (void)chatDidAccidentallyDisconnect {
     
-    self.chatConnectionState = QMChatConnectionStateDisconnected;
-    
     if ([self.multicastDelegate respondsToSelector:@selector(chatServiceChatDidAccidentallyDisconnect:)]) {
         [self.multicastDelegate chatServiceChatDidAccidentallyDisconnect:self];
     }
 }
 
 - (void)chatDidReconnect {
-    
-    self.chatConnectionState = QMChatConnectionStateConnected;
     
     if ([self.multicastDelegate respondsToSelector:@selector(chatServiceChatDidReconnect:)]) {
         [self.multicastDelegate chatServiceChatDidReconnect:self];
@@ -338,7 +329,6 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
             [self.multicastDelegate chatServiceChatHasStartedConnecting:self];
         }
         
-        self.chatConnectionState = QMChatConnectionStateConnecting;
         [[QBChat instance] connectWithUser:self.serviceManager.currentUser
                                 completion:completion];
     }
@@ -874,7 +864,9 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     }];
 }
 
-- (void)changeDialogAvatar:(NSString *)avatarPublicUrl forChatDialog:(QBChatDialog *)chatDialog completion:(void(^)(QBResponse *response, QBChatDialog *updatedDialog))completion {
+- (void)changeDialogAvatar:(NSString *)avatarPublicUrl
+             forChatDialog:(QBChatDialog *)chatDialog
+                completion:(void(^)(QBResponse *response, QBChatDialog *updatedDialog))completion {
     
     NSAssert(avatarPublicUrl != nil, @"avatarPublicUrl can't be nil");
     NSAssert(chatDialog != nil, @"Dialog can't be nil");
@@ -883,10 +875,14 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     
     __weak __typeof(self)weakSelf = self;
     [QBRequest updateDialog:chatDialog successBlock:^(QBResponse *response, QBChatDialog *dialog) {
-        //
-        [weakSelf.dialogsMemoryStorage addChatDialog:dialog andJoin:self.isAutoJoinEnabled completion:^(QBChatDialog *addedDialog, NSError *error) {
-            if (completion) completion(response, addedDialog);
-        }];
+        
+        [weakSelf.dialogsMemoryStorage addChatDialog:dialog
+                                             andJoin:self.isAutoJoinEnabled
+                                          completion:^(QBChatDialog *addedDialog, NSError *error) {
+                                              if (completion) {
+                                                  completion(response, addedDialog);
+                                              }
+                                          }];
     } errorBlock:^(QBResponse *response) {
         //
         [weakSelf.serviceManager handleErrorResponse:response];
