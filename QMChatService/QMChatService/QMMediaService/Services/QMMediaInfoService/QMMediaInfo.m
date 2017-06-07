@@ -174,7 +174,7 @@ typedef NS_ENUM(NSUInteger, QMVideoUrlType) {
         
         BOOL isVerticalVideo = size.width < size.height;
         
-        size = isVerticalVideo ? CGSizeMake(142.0, 270.0) : CGSizeMake(270.0, 142.0);;
+        size = isVerticalVideo ? CGSizeMake(142.0, 270.0) : CGSizeMake(270.0, 142.0);
     }
 
         

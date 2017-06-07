@@ -60,7 +60,7 @@ static NSString* attachmentPath(QBChatAttachment *attachment) {
     
     if (self = [super init]) {
         
-        _multicastDelegate = (id <QMChatAttachmentServiceDelegate>)[[QBMulticastDelegate alloc] init];;
+        _multicastDelegate = (id <QMChatAttachmentServiceDelegate>)[[QBMulticastDelegate alloc] init];
         _attachmentsStorage = [NSMutableDictionary dictionary];
     }
     

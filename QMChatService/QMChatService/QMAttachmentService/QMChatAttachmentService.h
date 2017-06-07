@@ -97,7 +97,7 @@ NS_ASSUME_NONNULL_BEGIN
                               toDialog:(QBChatDialog *)dialog
                        withChatService:(QMChatService *)chatService
                      withAttachedImage:(UIImage *)image
-                            completion:(nullable QBChatCompletionBlock)completion DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.4.7. Use 'uploadAndSendAttachmentMessage:toDialog:withChatService:attachment:completion:' instead.");;
+                            completion:(nullable QBChatCompletionBlock)completion DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.4.7. Use 'uploadAndSendAttachmentMessage:toDialog:withChatService:attachment:completion:' instead.");
 
 /**
  *  Get image by attachment message.

@@ -30,7 +30,7 @@ static NSString *const kQMChatServiceDomain = @"com.q-municate.chatservice";
 - (BFTask *)connect {
     
     if ([QBChat instance].isConnected) {
-        return [BFTask taskWithResult:nil];;
+        return [BFTask taskWithResult:nil];
     }
     
     QBUUser *user = self.serviceManager.currentUser;
