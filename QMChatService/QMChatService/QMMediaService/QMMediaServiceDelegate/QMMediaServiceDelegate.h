@@ -40,5 +40,10 @@
 - (BOOL)attachmentIsReadyToPlay:(QBChatAttachment *)attachment
                         message:(QBChatMessage *)message;
 
+- (void)removeAllMediaFiles;
+- (void)removeMediaFilesForDialogWithID:(NSString *)dialogID;
+- (void)removeMediaFilesForMessageWithID:(NSString *)messageID
+                                dialogID:(NSString *)dialogID;
+
 @end
 

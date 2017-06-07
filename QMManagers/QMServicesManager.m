@@ -93,6 +93,8 @@
             __typeof(self) strongSelf = weakSelf;
             [strongSelf.chatService disconnectWithCompletionBlock:nil];
             [strongSelf.chatService free];
+            [strongSelf.chatService.chatAttachmentService.mediaService removeAllMediaFiles];
+            
             dispatch_group_leave(strongSelf.logoutGroup);
         }];
         
