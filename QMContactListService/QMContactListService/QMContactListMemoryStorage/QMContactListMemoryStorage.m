@@ -16,6 +16,8 @@
 
 @implementation QMContactListMemoryStorage
 
+// MARK: Construction
+
 - (instancetype)init {
     
     self = [super init];
@@ -26,6 +28,8 @@
     
     return self;
 }
+
+// MARK: Public
 
 - (void)updateWithContactList:(QBContactList *)contactList {
     
@@ -63,7 +67,7 @@
     return self.contactList.allValues;
 }
 
-//MARK: - QMMemoryStorageProtocol
+// MARK: QMMemoryStorageProtocol
 
 - (void)free {
     
