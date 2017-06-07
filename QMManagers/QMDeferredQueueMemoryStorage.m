@@ -51,7 +51,7 @@
 
 - (BOOL)containsMessage:(QBChatMessage *)message {
     
-    return self.messagesInQueue[message.ID];
+    return self.messagesInQueue[message.ID] != nil;
 }
 
 - (NSArray<QBChatMessage *> *)messages {

@@ -238,7 +238,7 @@
              if (data) {
                  [strongSelf.storeService saveData:data
                                      forAttachment:attachment
-                                         cacheType:QMAttachmentCacheTypeMemory | QMAttachmentCacheTypeDisc
+                                         cacheType:QMAttachmentCacheTypeMemory|QMAttachmentCacheTypeDisc
                                          messageID:message.ID
                                           dialogID:message.dialogID];
                  
@@ -257,6 +257,26 @@
     }
 }
 
+- (void)removeAllMediaFiles {
+    
+    [self.storeService clearCacheForType:QMAttachmentCacheTypeMemory|QMAttachmentCacheTypeDisc];
+}
+
+- (void)removeMediaFilesForDialogWithID:(NSString *)dialogID {
+    
+    [self.storeService clearCacheForDialogWithID:dialogID
+                                       cacheType:QMAttachmentCacheTypeMemory|QMAttachmentCacheTypeDisc];
+    
+}
+
+- (void)removeMediaFilesForMessageWithID:(NSString *)messageID
+                                dialogID:(NSString *)dialogID {
+    
+    [self.storeService clearCacheForMessageWithID:messageID
+                                         dialogID:dialogID
+                                        cacheType:QMAttachmentCacheTypeMemory|QMAttachmentCacheTypeDisc];
+}
+
 - (void)imageForAttachment:(QBChatAttachment *)attachment
                    message:(QBChatMessage *)message
                 completion:(void(^)(UIImage *image, NSError *error))completion {
@@ -264,9 +284,9 @@
     __weak typeof(self) weakSelf = self;
     
     [self.storeService cachedImageForAttachment:attachment
-                                     messageID:message.ID
-                                      dialogID:message.dialogID
-                                    completion:^(UIImage *image)
+                                      messageID:message.ID
+                                       dialogID:message.dialogID
+                                     completion:^(UIImage *image)
      {
          
          if (!image) {
@@ -318,22 +338,22 @@
                  [strongSelf.mediaInfoService videoThumbnailForAttachment:attachment
                                                                completion:^(UIImage *image, NSError *error)
                   {
-                     
-                          
-                          if (image) {
-                              [strongSelf.storeService saveData:UIImagePNGRepresentation(image)
-                                                  forAttachment:attachment
-                                                      cacheType:cacheType
-                                                      messageID:message.ID
-                                                       dialogID:message.dialogID];
-                              attachment.status = QMAttachmentStatusPrepared;
-                          }
-                          else {
-                              attachment.status = QMAttachmentStatusError;
-                          }
-                          
-                          completion(image, error);
-    
+                      
+                      
+                      if (image) {
+                          [strongSelf.storeService saveData:UIImagePNGRepresentation(image)
+                                              forAttachment:attachment
+                                                  cacheType:cacheType
+                                                  messageID:message.ID
+                                                   dialogID:message.dialogID];
+                          attachment.status = QMAttachmentStatusPrepared;
+                      }
+                      else {
+                          attachment.status = QMAttachmentStatusError;
+                      }
+                      
+                      completion(image, error);
+                      
                   }];
              }
          }

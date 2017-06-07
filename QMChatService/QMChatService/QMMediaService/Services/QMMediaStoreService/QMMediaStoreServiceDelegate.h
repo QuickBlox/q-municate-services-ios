@@ -53,5 +53,13 @@ NS_ASSUME_NONNULL_BEGIN
            attachmentID:(nullable NSString *)attachmentID
              completion:(nullable void(^)(float length))completionBlock;
 
+- (void)clearCacheForType:(QMAttachmentCacheType)cacheType;
+
+- (void)clearCacheForDialogWithID:(NSString *)dialogID
+                        cacheType:(QMAttachmentCacheType)cacheType;
+
+- (void)clearCacheForMessageWithID:(NSString *)messageID
+                          dialogID:(NSString *)dialogID
+                         cacheType:(QMAttachmentCacheType)cacheType;
 @end
 NS_ASSUME_NONNULL_END

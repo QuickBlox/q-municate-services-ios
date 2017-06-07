@@ -191,6 +191,39 @@
                                     forMessageID:messageID];
 }
 
+//MARK: - Removing
+
+- (void)clearCacheForType:(QMAttachmentCacheType)cacheType {
+    
+    if (cacheType & QMAttachmentCacheTypeDisc) {
+        
+        [[NSFileManager defaultManager] removeItemAtPath:mediaCacheDir()
+                                                   error:nil];
+    }
+    if (cacheType & QMAttachmentCacheTypeMemory) {
+        [self.attachmentsMemoryStorage free];
+        [self.imagesMemoryStorage removeAllObjects];
+    }
+}
+
+- (void)clearCacheForDialogWithID:(NSString *)dialogID
+                        cacheType:(QMAttachmentCacheType)cacheType {
+    
+    NSString *dialogPath = [mediaCacheDir() stringByAppendingPathComponent:dialogID];
+    [[NSFileManager defaultManager] removeItemAtPath:dialogPath
+                                               error:nil];
+}
+
+- (void)clearCacheForMessageWithID:(NSString *)messageID
+                          dialogID:(NSString *)dialogID
+                         cacheType:(QMAttachmentCacheType)cacheType {
+    
+    NSString *messagePath = [[mediaCacheDir() stringByAppendingPathComponent:dialogID]
+                             stringByAppendingPathComponent:messageID];
+    
+    [[NSFileManager defaultManager] removeItemAtPath:messagePath
+                                               error:nil];
+}
 
 //MARK: - Helpers
 
