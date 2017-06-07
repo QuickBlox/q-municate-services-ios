@@ -26,7 +26,6 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 @property (strong, nonatomic) QMMessagesMemoryStorage *messagesMemoryStorage;
 @property (strong, nonatomic) QMChatAttachmentService *chatAttachmentService;
 
-@property (weak, nonatomic)   BFTask* loadEarlierMessagesTask;
 @property (strong, nonatomic) NSMutableDictionary *loadedAllMessages;
 @property (strong, nonatomic) NSMutableDictionary *lastMessagesLoadDate;
 @property (strong, nonatomic) NSMutableSet *messagesToRead;
