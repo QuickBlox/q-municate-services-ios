@@ -16,7 +16,7 @@ static NSString *const kQMChatServiceDomain = @"com.q-municate.chatservice";
 
 @interface QMChatService()
 
-@property (assign, nonatomic, readwrite) QMChatConnectionState chatConnectionState;
+//@property (assign, nonatomic, readwrite) QMChatConnectionState chatConnectionState;
 @property (strong, nonatomic) QBMulticastDelegate <QMChatServiceDelegate, QMChatConnectionDelegate> *multicastDelegate;
 @property (weak, nonatomic) BFTask* loadEarlierMessagesTask;
 @property (strong, nonatomic) NSMutableDictionary *loadedAllMessages;
@@ -30,7 +30,7 @@ static NSString *const kQMChatServiceDomain = @"com.q-municate.chatservice";
 - (BFTask *)connect {
     
     if ([QBChat instance].isConnected) {
-        return [BFTask taskWithResult:nil];;
+        return [BFTask taskWithResult:nil];
     }
     
     QBUUser *user = self.serviceManager.currentUser;
@@ -51,8 +51,6 @@ static NSString *const kQMChatServiceDomain = @"com.q-municate.chatservice";
     [QBSettings setAutoReconnectEnabled:YES];
     
     return make_task(^(BFTaskCompletionSource *source) {
-        
-        self.chatConnectionState = QMChatConnectionStateConnecting;
         
         if ([self.multicastDelegate
              respondsToSelector:@selector(chatServiceChatHasStartedConnecting:)]) {

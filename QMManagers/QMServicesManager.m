@@ -9,6 +9,7 @@
 #import "QMServicesManager.h"
 #import "_CDMessage.h"
 #import "_CDDialog.h"
+#import "_CDLinkPreview.h"
 
 #import "QMSLog.h"
 
@@ -92,6 +93,8 @@
             __typeof(self) strongSelf = weakSelf;
             [strongSelf.chatService disconnectWithCompletionBlock:nil];
             [strongSelf.chatService free];
+            [strongSelf.chatService.chatAttachmentService.mediaService removeAllMediaFiles];
+            
             dispatch_group_leave(strongSelf.logoutGroup);
         }];
         
@@ -233,6 +236,11 @@
 
 //MARK: QMChatServiceCache delegate
 
+- (void)chatService:(QMChatService *)__unused chatService didAddLinkPreviewToMemoryStorage:(QMLinkPreview *)linkPreview {
+    
+    [QMChatCache.instance insertOrUpdateLinkPreview:linkPreview
+                                         completion:nil];
+}
 - (void)chatService:(QMChatService *)chatService didAddChatDialogToMemoryStorage:(QBChatDialog *)chatDialog {
     
     [QMChatCache.instance insertOrUpdateDialog:chatDialog completion:nil];
@@ -307,6 +315,12 @@
                                   ascending:YES
                               withPredicate:nil];
     block(dialogs);
+}
+
+
+- (QMLinkPreview *)cachedLinkPreviewForURLKey:(NSString *)urlKey {
+    
+    return [QMChatCache.instance linkPreviewForURLKey:urlKey];
 }
 
 - (void)cachedDialogWithID:(NSString *)dialogID completion:(void (^)(QBChatDialog *dialog))completion {

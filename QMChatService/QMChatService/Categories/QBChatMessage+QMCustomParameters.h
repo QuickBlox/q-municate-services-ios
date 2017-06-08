@@ -8,6 +8,7 @@
 
 #import <Quickblox/QBChatMessage.h>
 #import "QMChatTypes.h"
+#import "QBChatAttachment+QMCustomParameters.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -22,6 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic) BOOL messageDeliveryStatus;
 @property (assign, nonatomic) QMMessageAttachmentStatus attachmentStatus;
 @property (assign, nonatomic) CLLocationCoordinate2D locationCoordinate;
+
 
 /**
  *  Dialog
@@ -71,6 +73,32 @@ NS_ASSUME_NONNULL_BEGIN
  *  Return `YES` if this item is a location message, and `NO` if it is a text message.
  */
 - (BOOL)isLocationMessage;
+
+/**
+ *  This method is used to determine if the message data item is audio attachment.
+ *
+ *  @return A boolean value specifying whether or not this is a message with audio attachment.
+ *  Return `YES` if this item is a audio attachment, and `NO` if it is a text message.
+ */
+- (BOOL)isAudioAttachment;
+
+/**
+ *  This method is used to determine if the message data item is video attachment.
+ *
+ *  @return A boolean value specifying whether or not this is a message with video attachment.
+ *  Return `YES` if this item is a video attachment, and `NO` if it is a text message.
+ */
+- (BOOL)isVideoAttachment;
+
+/**
+ *  This method is used to determine if the message data item is image attachment.
+ *
+ *  @return A boolean value specifying whether or not this is a message with image attachment.
+ *  Return `YES` if this item is a image attachment, and `NO` if it is a text message.
+ */
+- (BOOL)isImageAttachment;
+
+
 
 @end
 

@@ -55,6 +55,8 @@ const struct QMUsersSearchKeyStruct QMUsersSearchKey = {
 
 - (QBUUser *)userWithID:(NSUInteger)userID {
     
+   // NSParameterAssert(userID > 0);
+    
     NSString *stingID = [NSString stringWithFormat:@"%tu", userID];
     QBUUser *user = self.users[stingID];
     

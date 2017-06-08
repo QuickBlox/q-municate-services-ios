@@ -17,16 +17,18 @@
 @implementation QMDeferredQueueMemoryStorage
 
 - (void)dealloc {
+    
     [self.messagesInQueue removeAllObjects];
 }
 
 - (instancetype)init {
     
     self = [super init];
+    
     if (self) {
-        
         _messagesInQueue = [NSMutableDictionary dictionary];
     }
+    
     return self;
 }
 
@@ -38,18 +40,18 @@
     QBChatMessage *localMessage = self.messagesInQueue[message.ID];
     
     if (localMessage == nil) {
-
         self.messagesInQueue[message.ID] = message;
     }
 }
 
 - (void)removeMessage:(QBChatMessage *)message {
+    
     [self.messagesInQueue removeObjectForKey:message.ID];
 }
 
 - (BOOL)containsMessage:(QBChatMessage *)message {
     
-    return self.messagesInQueue[message.ID];
+    return self.messagesInQueue[message.ID] != nil;
 }
 
 - (NSArray<QBChatMessage *> *)messages {
@@ -70,6 +72,7 @@
 //MARK: QMMemoryStorageProtocol
 
 - (void)free {
+    
     [self.messagesInQueue removeAllObjects];
 }
 

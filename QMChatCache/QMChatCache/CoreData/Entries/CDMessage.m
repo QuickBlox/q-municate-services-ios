@@ -32,7 +32,7 @@
         QBChatAttachment *attachment = [cdAttachment toQBChatAttachment];
         [attachments addObject:attachment];
     }
-    
+
     message.attachments = attachments;
     
     return message;
@@ -44,10 +44,10 @@
     
     self.createAt = message.createdAt;
     self.updateAt = message.updatedAt;
-    self.delayed = @(message.delayed);
+    self.delayedValue = message.delayed;
     self.text = message.text;
     self.dateSend = message.dateSent;
-    self.recipientID = @(message.recipientID);
+    self.recipientIDValue = message.recipientID;
     self.senderID = @(message.senderID);
     self.dialogID = message.dialogID;
     self.customParameters = [self binaryDataWithObject:message.customParameters];
@@ -63,7 +63,9 @@
         for (QBChatAttachment *qbChatAttachment in message.attachments) {
             
             CDAttachment *attachment = [CDAttachment QM_createEntityInContext:context];
+            
             [attachment updateWithQBChatAttachment:qbChatAttachment];
+            
             [attachments addObject:attachment];
         }
         

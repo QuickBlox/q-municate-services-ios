@@ -19,6 +19,10 @@ NSString const *kQMCustomParameterMessageType = @"notification_type";
 NSString const *kQMCustomParameterChatMessageID = @"chat_message_id";
 NSString const *kQMCustomParameterMessageStatus = @"chat_message_status";
 
+static NSString * const kQMChatAudioMessageTypeName = @"audio";
+static NSString * const kQMChatVideoMessageTypeName = @"video";
+static NSString * const kQMChatImageMessageTypeName = @"image";
+
 static NSString * const kQMChatLocationMessageTypeName = @"location";
 static NSString * const kQMLocationLatitudeKey = @"lat";
 static NSString * const kQMLocationLongitudeKey = @"lng";
@@ -401,6 +405,7 @@ NSString const *kQMCustomParameterDialogDeletedOccupantsIDs = @"deleted_occupant
     self.attachments = @[locationAttachment];
 }
 
+
 - (BOOL)isLocationMessage {
     
     __block BOOL isLocationMessage = NO;
@@ -435,6 +440,53 @@ NSString const *kQMCustomParameterDialogDeletedOccupantsIDs = @"deleted_occupant
     }];
     
     return locationAttachment;
+}
+
+#pragma mark - Media
+
+- (BOOL)isVideoAttachment {
+    
+    __block BOOL isVideoAttachment = NO;
+    
+    [self.attachments enumerateObjectsUsingBlock:^(QBChatAttachment * _Nonnull obj, NSUInteger __unused idx, BOOL * _Nonnull stop) {
+        
+        if ([obj.type isEqualToString:kQMChatVideoMessageTypeName]) {
+            isVideoAttachment = YES;
+            *stop = YES;
+        }
+    }];
+    
+    return isVideoAttachment;
+}
+
+- (BOOL)isAudioAttachment {
+    
+    __block BOOL isAudioAttachment = NO;
+    
+    [self.attachments enumerateObjectsUsingBlock:^(QBChatAttachment * _Nonnull obj, NSUInteger __unused idx, BOOL * _Nonnull stop) {
+        
+        if ([obj.type isEqualToString:kQMChatAudioMessageTypeName]) {
+            isAudioAttachment = YES;
+            *stop = YES;
+        }
+    }];
+    
+    return isAudioAttachment;
+}
+
+- (BOOL)isImageAttachment {
+    
+    __block BOOL isImageAttachment = NO;
+    
+    [self.attachments enumerateObjectsUsingBlock:^(QBChatAttachment * _Nonnull obj, NSUInteger __unused idx, BOOL * _Nonnull stop) {
+        
+        if ([obj.type isEqualToString:kQMChatImageMessageTypeName]) {
+            isImageAttachment = YES;
+            *stop = YES;
+        }
+    }];
+    
+    return isImageAttachment;
 }
 
 @end

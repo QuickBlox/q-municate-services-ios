@@ -20,12 +20,11 @@
 
 #import "QBChatMessage+QMCustomParameters.h"
 #import "QBChatAttachment+QMCustomData.h"
-
+#import "QBChatAttachment+QMFactory.h"
+#import "QBChatAttachment+QMCustomParameters.h"
 #import "QMUsersMemoryStorage.h"
 #import "QMContactListMemoryStorage.h"
 #import "QMMessagesMemoryStorage.h"
-
 #import "QMUsersCache.h"
 #import "QMUsersService.h"
-
-#import "QMServicesManager.h"
+#import "QMMediaService.h"

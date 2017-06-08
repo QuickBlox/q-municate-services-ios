@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface _CDDialog : NSManagedObject
 + (instancetype)insertInManagedObjectContext:(NSManagedObjectContext *)moc_;
 + (NSString*)entityName;
-+ (nullable NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
++ (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
 @property (nonatomic, readonly, strong) CDDialogID *objectID;
 
 @property (nonatomic, strong, nullable) NSDate* createdAt;
@@ -89,59 +89,59 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface _CDDialog (CoreDataGeneratedPrimitiveAccessors)
 
-- (nullable NSDate*)primitiveCreatedAt;
-- (void)setPrimitiveCreatedAt:(nullable NSDate*)value;
+- (NSDate*)primitiveCreatedAt;
+- (void)setPrimitiveCreatedAt:(NSDate*)value;
 
-- (nullable id)primitiveData;
-- (void)setPrimitiveData:(nullable id)value;
+- (id)primitiveData;
+- (void)setPrimitiveData:(id)value;
 
-- (nullable NSString*)primitiveDialogID;
-- (void)setPrimitiveDialogID:(nullable NSString*)value;
+- (NSString*)primitiveDialogID;
+- (void)setPrimitiveDialogID:(NSString*)value;
 
-- (nullable NSNumber*)primitiveDialogType;
-- (void)setPrimitiveDialogType:(nullable NSNumber*)value;
+- (NSNumber*)primitiveDialogType;
+- (void)setPrimitiveDialogType:(NSNumber*)value;
 
 - (int16_t)primitiveDialogTypeValue;
 - (void)setPrimitiveDialogTypeValue:(int16_t)value_;
 
-- (nullable NSDate*)primitiveLastMessageDate;
-- (void)setPrimitiveLastMessageDate:(nullable NSDate*)value;
+- (NSDate*)primitiveLastMessageDate;
+- (void)setPrimitiveLastMessageDate:(NSDate*)value;
 
-- (nullable NSString*)primitiveLastMessageText;
-- (void)setPrimitiveLastMessageText:(nullable NSString*)value;
+- (NSString*)primitiveLastMessageText;
+- (void)setPrimitiveLastMessageText:(NSString*)value;
 
-- (nullable NSNumber*)primitiveLastMessageUserID;
-- (void)setPrimitiveLastMessageUserID:(nullable NSNumber*)value;
+- (NSNumber*)primitiveLastMessageUserID;
+- (void)setPrimitiveLastMessageUserID:(NSNumber*)value;
 
 - (int32_t)primitiveLastMessageUserIDValue;
 - (void)setPrimitiveLastMessageUserIDValue:(int32_t)value_;
 
-- (nullable NSString*)primitiveName;
-- (void)setPrimitiveName:(nullable NSString*)value;
+- (NSString*)primitiveName;
+- (void)setPrimitiveName:(NSString*)value;
 
-- (nullable id)primitiveOccupantsIDs;
-- (void)setPrimitiveOccupantsIDs:(nullable id)value;
+- (id)primitiveOccupantsIDs;
+- (void)setPrimitiveOccupantsIDs:(id)value;
 
-- (nullable NSString*)primitivePhoto;
-- (void)setPrimitivePhoto:(nullable NSString*)value;
+- (NSString*)primitivePhoto;
+- (void)setPrimitivePhoto:(NSString*)value;
 
-- (nullable NSNumber*)primitiveRecipientID;
-- (void)setPrimitiveRecipientID:(nullable NSNumber*)value;
+- (NSNumber*)primitiveRecipientID;
+- (void)setPrimitiveRecipientID:(NSNumber*)value;
 
 - (int32_t)primitiveRecipientIDValue;
 - (void)setPrimitiveRecipientIDValue:(int32_t)value_;
 
-- (nullable NSNumber*)primitiveUnreadMessagesCount;
-- (void)setPrimitiveUnreadMessagesCount:(nullable NSNumber*)value;
+- (NSNumber*)primitiveUnreadMessagesCount;
+- (void)setPrimitiveUnreadMessagesCount:(NSNumber*)value;
 
 - (int32_t)primitiveUnreadMessagesCountValue;
 - (void)setPrimitiveUnreadMessagesCountValue:(int32_t)value_;
 
-- (nullable NSDate*)primitiveUpdatedAt;
-- (void)setPrimitiveUpdatedAt:(nullable NSDate*)value;
+- (NSDate*)primitiveUpdatedAt;
+- (void)setPrimitiveUpdatedAt:(NSDate*)value;
 
-- (nullable NSNumber*)primitiveUserID;
-- (void)setPrimitiveUserID:(nullable NSNumber*)value;
+- (NSNumber*)primitiveUserID;
+- (void)setPrimitiveUserID:(NSNumber*)value;
 
 - (int32_t)primitiveUserIDValue;
 - (void)setPrimitiveUserIDValue:(int32_t)value_;

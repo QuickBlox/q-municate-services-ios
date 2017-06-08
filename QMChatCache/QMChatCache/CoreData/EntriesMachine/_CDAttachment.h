@@ -19,14 +19,18 @@ NS_ASSUME_NONNULL_BEGIN
 @interface _CDAttachment : NSManagedObject
 + (instancetype)insertInManagedObjectContext:(NSManagedObjectContext *)moc_;
 + (NSString*)entityName;
-+ (nullable NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
++ (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
 @property (nonatomic, readonly, strong) CDAttachmentID *objectID;
+
+@property (nonatomic, strong, nullable) NSData* customParameters;
 
 @property (nonatomic, strong, nullable) NSString* data;
 
 @property (nonatomic, strong, nullable) NSString* id;
 
 @property (nonatomic, strong, nullable) NSString* mimeType;
+
+@property (nonatomic, strong, nullable) NSString* name;
 
 @property (nonatomic, strong, nullable) NSString* url;
 
@@ -36,17 +40,23 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface _CDAttachment (CoreDataGeneratedPrimitiveAccessors)
 
-- (nullable NSString*)primitiveData;
-- (void)setPrimitiveData:(nullable NSString*)value;
+- (NSData*)primitiveCustomParameters;
+- (void)setPrimitiveCustomParameters:(NSData*)value;
 
-- (nullable NSString*)primitiveId;
-- (void)setPrimitiveId:(nullable NSString*)value;
+- (NSString*)primitiveData;
+- (void)setPrimitiveData:(NSString*)value;
 
-- (nullable NSString*)primitiveMimeType;
-- (void)setPrimitiveMimeType:(nullable NSString*)value;
+- (NSString*)primitiveId;
+- (void)setPrimitiveId:(NSString*)value;
 
-- (nullable NSString*)primitiveUrl;
-- (void)setPrimitiveUrl:(nullable NSString*)value;
+- (NSString*)primitiveMimeType;
+- (void)setPrimitiveMimeType:(NSString*)value;
+
+- (NSString*)primitiveName;
+- (void)setPrimitiveName:(NSString*)value;
+
+- (NSString*)primitiveUrl;
+- (void)setPrimitiveUrl:(NSString*)value;
 
 - (CDMessage*)primitiveMessage;
 - (void)setPrimitiveMessage:(CDMessage*)value;
@@ -54,9 +64,11 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @interface CDAttachmentAttributes: NSObject 
++ (NSString *)customParameters;
 + (NSString *)data;
 + (NSString *)id;
 + (NSString *)mimeType;
++ (NSString *)name;
 + (NSString *)url;
 @end
 
