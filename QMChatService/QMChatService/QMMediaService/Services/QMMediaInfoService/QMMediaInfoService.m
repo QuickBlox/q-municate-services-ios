@@ -23,7 +23,7 @@
 - (instancetype)init {
     
     if (self = [super init]) {
-    
+        
         _imagesOperationQueue = [[NSOperationQueue alloc] init];
         _imagesOperationQueue.maxConcurrentOperationCount  = 2;
     }
@@ -31,7 +31,8 @@
     return self;
 }
 
-- (void)videoThumbnailForAttachment:(QBChatAttachment *)attachment completion:(void(^)(UIImage *image, NSError *error))completion {
+- (void)videoThumbnailForAttachment:(QBChatAttachment *)attachment
+                         completion:(void(^)(UIImage *image, NSError *error))completion {
     
     NSString *key = attachment.ID;
     if (key == nil) {
@@ -44,17 +45,17 @@
         }
     }
     
-    QMImageOperation *imageOperation = [[QMImageOperation alloc] initWithAttachment:attachment
-                                                                  completionHandler:^(UIImage * _Nullable image, NSError * _Nullable error) {
-                                                                      if (completion) {
-                                                                              completion(image, error);
-                                                                          }
-                                                                  }];
+    QMImageOperation *imageOperation =
+    [[QMImageOperation alloc] initWithAttachment:attachment
+                               completionHandler:^(UIImage * _Nullable image, NSError * _Nullable error)
+     {
+         if (completion) {
+             completion(image, error);
+         }
+     }];
+    
     [self.imagesOperationQueue addOperation:imageOperation];
 }
-
-
-
 
 - (void)cancellAllInfoOperations {
     
