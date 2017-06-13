@@ -117,6 +117,7 @@ typedef NS_ENUM(NSUInteger, QMVideoUrlType) {
 }
 
 - (void)cancel {
+    
     if (self.prepareStatus == QMMediaPrepareStatusPreparing) {
         dispatch_async(self.assetQueue, ^{
             [self.asset cancelLoading];
@@ -193,7 +194,7 @@ typedef NS_ENUM(NSUInteger, QMVideoUrlType) {
              UIImage *thumbUIImage = nil;
              if (image) {
                  thumbUIImage = [[UIImage alloc] initWithCGImage:image];
-                 CFRelease(image);
+                 CGImageRelease(image);
              }
              
              if (handler) {
@@ -204,24 +205,6 @@ typedef NS_ENUM(NSUInteger, QMVideoUrlType) {
 }
 
 - (void)prepareAsset:(AVAsset *)asset withKeys:(NSArray *)requestedKeys {
-    /*
-     // Make sure that the value of each key has loaded successfully.
-     for (NSString *thisKey in requestedKeys) {
-     NSError *error = nil;
-     AVKeyValueStatus keyStatus = [asset statusOfValueForKey:thisKey error:&error];
-     if (keyStatus == AVKeyValueStatusFailed) {
-     
-     self.prepareStatus = QMMediaPrepareStatusPrepareFailed;
-     
-     dispatch_async(dispatch_get_main_queue(), ^{
-     
-     if (self.completion) {
-     self.completion(0, CGSizeZero, nil, error);
-     }
-     });
-     }
-     }
-     */
     
     NSTimeInterval duration = CMTimeGetSeconds(asset.duration);
     CGSize mediaSize = CGSizeZero;
@@ -232,7 +215,6 @@ typedef NS_ENUM(NSUInteger, QMVideoUrlType) {
         CGFloat videoHeight = videoSize.height;
         
         mediaSize = CGSizeMake(videoWidth, videoHeight);
-        
         
         if (self.thumbnailImage == nil) {
             

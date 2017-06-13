@@ -134,10 +134,12 @@
                                       messageID:message.ID
                                        dialogID:dialog.ID];
         
+        message.attachments = @[attachment];
+        
         [strongSelf changeMessageAttachmentStatus:QMMessageAttachmentStatusLoaded
                                        forMessage:message];
         
-        message.attachments = @[attachment];
+    
         
         [chatService sendMessage:message
                         toDialog:dialog
@@ -172,24 +174,18 @@
 - (void)changeMessageAttachmentStatus:(QMMessageAttachmentStatus)status
                            forMessage:(QBChatMessage *)message {
     
-    dispatch_async(dispatch_get_main_queue(), ^{
+
         if (self.onMessageDidChangeAttachmentStatus) {
             self.onMessageDidChangeAttachmentStatus(status, message);
         }
-        
-    });
-    
 }
 
 - (void)changeMessageUploadingProgress:(float)progress
                             forMessage:(QBChatMessage *)message {
     
-    dispatch_async(dispatch_get_main_queue(), ^{
-        
         if (self.onMessageDidChangeUploadingProgress) {
             self.onMessageDidChangeUploadingProgress(progress, message);
         }
-    });
 }
 
 
@@ -312,9 +308,8 @@
                                                                                    cacheType:cacheType
                                                                                    messageID:message.ID
                                                                                     dialogID:message.dialogID];
-                                                           
-                                                           completion([UIImage imageWithData:data], nil);
                                                            attachment.status = QMAttachmentStatusLoaded;
+                                                           completion([UIImage imageWithData:data], nil);
                                                        }
                                                        else {
                                                            attachment.status = QMAttachmentStatusError;
@@ -334,6 +329,7 @@
                      return;
                  }
                  __strong typeof(weakSelf) strongSelf = weakSelf;
+                 
                  attachment.status = QMAttachmentStatusPreparing;
                  [strongSelf.mediaInfoService videoThumbnailForAttachment:attachment
                                                                completion:^(UIImage *image, NSError *error)
