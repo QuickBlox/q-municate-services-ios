@@ -47,14 +47,17 @@
                 if (result == AVAssetImageGeneratorSucceeded) {
                     thumb = [UIImage imageWithCGImage:image];
                 }
-                if (strongSelf.imageOperationCompletionBlock) {
-                    strongSelf.imageOperationCompletionBlock(thumb, error);
-                }
                 
-                [strongSelf complete];
+                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                    
+                    if (strongSelf.imageOperationCompletionBlock) {
+                        strongSelf.imageOperationCompletionBlock(thumb, error);
+                    }
+                    
+                    [strongSelf complete];
+                }];
             };
             
-
             NSArray *times = @[[NSValue valueWithCMTime:CMTimeMakeWithSeconds(2,1)]];
             [strongSelf.generator generateCGImagesAsynchronouslyForTimes:times
                                                      completionHandler:handler];

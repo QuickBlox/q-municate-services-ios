@@ -334,8 +334,6 @@
                  [strongSelf.mediaInfoService videoThumbnailForAttachment:attachment
                                                                completion:^(UIImage *image, NSError *error)
                   {
-                      
-                      
                       if (image) {
                           [strongSelf.storeService saveData:UIImagePNGRepresentation(image)
                                               forAttachment:attachment
