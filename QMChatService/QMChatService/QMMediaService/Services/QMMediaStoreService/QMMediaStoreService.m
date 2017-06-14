@@ -7,7 +7,6 @@
 //
 
 #import "QMMediaStoreService.h"
-#import "QMMediaStoreServiceDelegate.h"
 #import "QMSLog.h"
 #import "QMAttachmentsMemoryStorage.h"
 #import "QBChatAttachment+QMCustomParameters.h"
@@ -25,10 +24,16 @@
 
 @implementation QMMediaStoreService
 
-- (void)dealloc {
+//MARK: - NSObject
+
+- (instancetype)initWithDelegate:(id <QMMediaStoreServiceDelegate>)delegate {
     
-    QMSLog(@"%@ - %@",  NSStringFromSelector(_cmd), self);
+    if ([self init]) {
+        _storeDelegate = delegate;
+    }
+    return self;
 }
+
 
 - (instancetype)init {
     
@@ -41,8 +46,27 @@
     return self;
 }
 
+- (void)dealloc {
+    
+    QMSLog(@"%@ - %@",  NSStringFromSelector(_cmd), self);
+}
+
+
 
 //MARK: - QMMediaStoreServiceDelegate
+
+- (void)attachmentWithID:(NSString *)attachmentID
+               messageID:(NSString *)messageID
+                dialogID:(NSString *)dialogID {
+    
+    if (attachmentID == nil) {
+        
+        [_attachmentsMemoryStorage attachmentWithID:attachmentID fromMessageID:messageID];
+        
+    }
+    
+}
+
 
 - (void)cachedImageForAttachment:(QBChatAttachment *)attachment
                        messageID:(NSString *)messageID
@@ -113,7 +137,7 @@
         BOOL isSucceed = NO;
         
         if (tempURL) {
-            if (attachment.contentType == QMAttachmentContentTypeVideo) {
+            if (attachment.contentType != QMAttachmentContentTypeVideo) {
                 isSucceed  = [[NSFileManager defaultManager] copyItemAtURL:tempURL
                                                                      toURL:[NSURL fileURLWithPath:filePath]
                                                                      error:NULL];
@@ -255,27 +279,29 @@ static NSString* mediaCacheDir() {
 
 static NSString* mediaPath(NSString *dialogID, NSString *messsageID, QBChatAttachment *attachment)   {
     
-    NSString *dialogDirectory = [mediaCacheDir() stringByAppendingPathComponent:dialogID];
+    NSString *mediaPatch =
+    [[mediaCacheDir() stringByAppendingPathComponent:dialogID]
+     stringByAppendingPathComponent:messsageID];
     
-    if (![[NSFileManager defaultManager] fileExistsAtPath:dialogDirectory]) {
-        [[NSFileManager defaultManager] createDirectoryAtPath:dialogDirectory
-                                  withIntermediateDirectories:NO
+    if (![[NSFileManager defaultManager] fileExistsAtPath:mediaPatch]) {
+        NSError *error = nil;
+        
+        [[NSFileManager defaultManager] createDirectoryAtPath:mediaPatch
+                                  withIntermediateDirectories:YES
                                                    attributes:nil
-                                                        error:nil];
+                                                        error:&error];
+        if (error) {
+            QMSLog(@"Failed to create directory at path with error: %@", error.localizedDescription);
+            return nil;
+        }
     }
     
-    NSString *messageDirectory = [dialogDirectory stringByAppendingPathComponent:messsageID];
+    NSString *filePath =
+    [NSString stringWithFormat:@"/attachment-%@.%@",
+     messsageID,
+     [attachment extension]];
     
-    if (![[NSFileManager defaultManager] fileExistsAtPath:messageDirectory]) {
-        [[NSFileManager defaultManager] createDirectoryAtPath:messageDirectory
-                                  withIntermediateDirectories:NO
-                                                   attributes:nil
-                                                        error:nil];
-    }
-    
-    return [messageDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"/attachment-%@.%@",
-                                                             attachment.ID,
-                                                             [attachment extension]]];
+    return [mediaPatch stringByAppendingPathComponent:filePath];
 }
 
 //MARK: - Helpers
@@ -299,5 +325,7 @@ static NSString* mediaPath(NSString *dialogID, NSString *messsageID, QBChatAttac
     
 }
 
-
 @end
+
+
+

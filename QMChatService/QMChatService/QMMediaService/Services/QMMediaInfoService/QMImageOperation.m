@@ -27,7 +27,7 @@
         
         _attachment = attachment;
         _imageOperationCompletionBlock = [completionHandler copy];
-        
+        self.operationID = attachment.ID;
         self.generator = [AVAssetImageGenerator assetImageGeneratorWithAsset:[AVAsset assetWithURL:[self.attachment remoteURL]]];
         self.generator.appliesPreferredTrackTransform = YES;
         self.generator.maximumSize = CGSizeMake(200, 200);

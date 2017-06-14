@@ -17,7 +17,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 
 #define kChatServiceSaveToHistoryTrue @"1"
 
-@interface QMChatService()<QBChatDelegate, QMDeferredQueueManagerDelegate, QMLinkPreviewManagerDelegate>
+@interface QMChatService() <QBChatDelegate, QMDeferredQueueManagerDelegate, QMLinkPreviewManagerDelegate>
 
 //@property (assign, nonatomic, readwrite) QMChatConnectionState chatConnectionState;
 @property (strong, nonatomic) QBMulticastDelegate <QMChatServiceDelegate, QMChatConnectionDelegate> *multicastDelegate;
@@ -84,6 +84,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     _deferredQueueManager = [[QMDeferredQueueManager alloc] initWithServiceManager:self.serviceManager];
     [_deferredQueueManager addDelegate:self];
     _messagesMemoryStorage.delegate = (id<QMMemoryTemporaryQueueDelegate>)self.deferredQueueManager;
+    
     _chatAttachmentService = [[QMChatAttachmentService alloc] init];
     
     [QBChat.instance addDelegate:self];

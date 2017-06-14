@@ -13,7 +13,6 @@
 #import "QMChatAttachmentService.h"
 #import "QMChatTypes.h"
 #import "QMChatConstants.h"
-#import "QMMediaService.h"
 #import "QMLinkPreviewManager.h"
 #import "QMDeferredQueueManager.h"
 
