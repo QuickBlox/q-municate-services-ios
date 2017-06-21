@@ -631,12 +631,12 @@
         
         if (mutableNewUsers.count > 0 &&
             [self.multicastDelegate respondsToSelector:@selector(usersService:didAddUsers:)]) {
-            [self.multicastDelegate usersService:self didAddUsers:mutableNewUsers.copy];
+            [self.multicastDelegate usersService:self didAddUsers:[mutableNewUsers copy]];
         }
         
         if (mutableUpdatedUsers.count > 0 &&
             [self.multicastDelegate respondsToSelector:@selector(usersService:didUpdateUsers:)]) {
-            [self.multicastDelegate usersService:self didUpdateUsers:mutableUpdatedUsers.copy];
+            [self.multicastDelegate usersService:self didUpdateUsers:[mutableUpdatedUsers copy]];
         }
     }
     else {
