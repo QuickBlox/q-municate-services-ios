@@ -42,6 +42,11 @@ const struct QMUsersSearchKeyStruct QMUsersSearchKey = {
 - (void)addUser:(QBUUser *)user {
     
     NSString *key = [NSString stringWithFormat:@"%tu", user.ID];
+    QBUUser *existingUser = self.users[key];
+    if ([existingUser.lastRequestAt compare:user.lastRequestAt] == NSOrderedDescending) {
+        // always should have newest date
+        user.lastRequestAt = existingUser.lastRequestAt;
+    }
     self.users[key] = user;
 }
 
