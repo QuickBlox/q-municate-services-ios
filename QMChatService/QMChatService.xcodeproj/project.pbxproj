@@ -19,6 +19,8 @@
 		E03151211E92CF660081E44B /* QMLinkPreviewMemoryStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = E031511E1E92CF660081E44B /* QMLinkPreviewMemoryStorage.m */; };
 		E03C35A81E5E000C00BFDA31 /* QMMediaInfoService.m in Sources */ = {isa = PBXBuildFile; fileRef = E03C35A71E5E000C00BFDA31 /* QMMediaInfoService.m */; };
 		E03C83281E633C430039A9D0 /* QMMediaInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = E03C83271E633C430039A9D0 /* QMMediaInfo.m */; };
+		E04D04E41EFA1C5A00C9889A /* DRAsyncOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = E04D04DF1EFA1C4900C9889A /* DRAsyncOperation.m */; };
+		E04D04E51EFA1C5D00C9889A /* DRAsyncBlockOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = E04D04DD1EFA1C4900C9889A /* DRAsyncBlockOperation.m */; };
 		E057C0E81EF188480018F108 /* QMMediaWebService.m in Sources */ = {isa = PBXBuildFile; fileRef = E057C0E71EF188480018F108 /* QMMediaWebService.m */; };
 		E0883F141E50D37200C9E8AD /* QMMediaStoreService.m in Sources */ = {isa = PBXBuildFile; fileRef = E0883EFB1E50D37200C9E8AD /* QMMediaStoreService.m */; };
 		E0883F151E50D37200C9E8AD /* QMMediaDownloadService.m in Sources */ = {isa = PBXBuildFile; fileRef = E0883F001E50D37200C9E8AD /* QMMediaDownloadService.m */; };
@@ -61,6 +63,13 @@
 		E03C83261E633C430039A9D0 /* QMMediaInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMMediaInfo.h; sourceTree = "<group>"; };
 		E03C83271E633C430039A9D0 /* QMMediaInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMMediaInfo.m; sourceTree = "<group>"; };
 		E0452D631E545E39004BC4F7 /* QMMediaBlocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMMediaBlocks.h; sourceTree = "<group>"; };
+		E04D04DC1EFA1C4900C9889A /* DRAsyncBlockOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRAsyncBlockOperation.h; sourceTree = "<group>"; };
+		E04D04DD1EFA1C4900C9889A /* DRAsyncBlockOperation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRAsyncBlockOperation.m; sourceTree = "<group>"; };
+		E04D04DE1EFA1C4900C9889A /* DRAsyncOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRAsyncOperation.h; sourceTree = "<group>"; };
+		E04D04DF1EFA1C4900C9889A /* DRAsyncOperation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRAsyncOperation.m; sourceTree = "<group>"; };
+		E04D04E01EFA1C4900C9889A /* DRAsyncOperations.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRAsyncOperations.h; sourceTree = "<group>"; };
+		E04D04E11EFA1C4900C9889A /* DRAsyncOperationSubclass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRAsyncOperationSubclass.h; sourceTree = "<group>"; };
+		E04D04E31EFA1C4900C9889A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E057C0E61EF188480018F108 /* QMMediaWebService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QMMediaWebService.h; sourceTree = "<group>"; };
 		E057C0E71EF188480018F108 /* QMMediaWebService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QMMediaWebService.m; sourceTree = "<group>"; };
 		E06505361E9E726600DC0048 /* QMLinkPreview+QMCustomParameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QMLinkPreview+QMCustomParameters.h"; sourceTree = "<group>"; };
@@ -178,6 +187,7 @@
 		E03C35A51E5DFF7100BFDA31 /* QMMediaInfoService */ = {
 			isa = PBXGroup;
 			children = (
+				E04D04DB1EFA1C4900C9889A /* DRAsyncOperations */,
 				E024F0BA1E83AAB50097EB7D /* QMImageOperation.h */,
 				E024F0BB1E83AAB50097EB7D /* QMImageOperation.m */,
 				E024F0BC1E83AAB50097EB7D /* QMAsynchronousOperation.h */,
@@ -189,6 +199,28 @@
 				E03C35A91E5E003300BFDA31 /* QMMediaInfoServiceDelegate.h */,
 			);
 			path = QMMediaInfoService;
+			sourceTree = "<group>";
+		};
+		E04D04DB1EFA1C4900C9889A /* DRAsyncOperations */ = {
+			isa = PBXGroup;
+			children = (
+				E04D04DC1EFA1C4900C9889A /* DRAsyncBlockOperation.h */,
+				E04D04DD1EFA1C4900C9889A /* DRAsyncBlockOperation.m */,
+				E04D04DE1EFA1C4900C9889A /* DRAsyncOperation.h */,
+				E04D04DF1EFA1C4900C9889A /* DRAsyncOperation.m */,
+				E04D04E01EFA1C4900C9889A /* DRAsyncOperations.h */,
+				E04D04E11EFA1C4900C9889A /* DRAsyncOperationSubclass.h */,
+				E04D04E21EFA1C4900C9889A /* Supporting Files */,
+			);
+			path = DRAsyncOperations;
+			sourceTree = "<group>";
+		};
+		E04D04E21EFA1C4900C9889A /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				E04D04E31EFA1C4900C9889A /* Info.plist */,
+			);
+			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		E0883EF11E50D37200C9E8AD /* QMMediaService */ = {
@@ -346,6 +378,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E04D04E41EFA1C5A00C9889A /* DRAsyncOperation.m in Sources */,
 				E0883F151E50D37200C9E8AD /* QMMediaDownloadService.m in Sources */,
 				E0883F141E50D37200C9E8AD /* QMMediaStoreService.m in Sources */,
 				E057C0E81EF188480018F108 /* QMMediaWebService.m in Sources */,
@@ -357,6 +390,7 @@
 				E097E3CE1E538391005F2E4E /* QMMediaError.m in Sources */,
 				E03151201E92CF660081E44B /* QMLinkPreviewManager.m in Sources */,
 				E024F0BF1E83AAB50097EB7D /* QMAsynchronousOperation.m in Sources */,
+				E04D04E51EFA1C5D00C9889A /* DRAsyncBlockOperation.m in Sources */,
 				E03C35A81E5E000C00BFDA31 /* QMMediaInfoService.m in Sources */,
 				E03151211E92CF660081E44B /* QMLinkPreviewMemoryStorage.m in Sources */,
 				E08A87421E88259C00262C00 /* QBChatAttachment+QMCustomParameters.m in Sources */,

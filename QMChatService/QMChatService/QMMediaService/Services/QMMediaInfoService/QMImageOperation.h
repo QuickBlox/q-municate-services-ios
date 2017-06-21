@@ -7,20 +7,20 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "QMAsynchronousOperation.h"
+#import "DRAsyncOperation.h"
 
 @class QBChatAttachment;
 
-typedef void(^QMImageOperationCompletionBlock)(UIImage * _Nullable image, NSError * _Nullable error);
+typedef void(^QMImageOperationCompletionBlock)(UIImage * _Nullable image, Float64 durationSeconds, CGSize size, NSError * _Nullable error);
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface QMImageOperation : QMAsynchronousOperation
+@interface QMImageOperation : DRAsyncOperation
 
-@property (nullable, copy, nonatomic) QMImageOperationCompletionBlock imageOperationCompletionBlock;
-@property (strong, nonatomic, readonly) QBChatAttachment *attachment;
+@property (nonatomic, copy) NSString *operationID;
+@property (nonatomic, copy, nullable) QMImageOperationCompletionBlock imageOperationCompletionBlock;
 
-- (instancetype)initWithAttachment:(QBChatAttachment *)attachment
+- (instancetype)initWithURL:(NSURL *)url
                  completionHandler:(nullable QMImageOperationCompletionBlock)completionHandler;
 
 @end

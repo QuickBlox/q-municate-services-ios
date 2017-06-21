@@ -9,10 +9,13 @@
 #import "QMMediaInfoService.h"
 #import <AVKit/AVKit.h>
 #import "QMImageOperation.h"
+#import "DRAsyncBlockOperation.h"
+#import "QBChatAttachment+QMCustomParameters.h"
 
 @interface QMMediaInfoService()
 
 @property (strong, nonatomic) NSOperationQueue *imagesOperationQueue;
+@property (strong, nonatomic) NSMutableSet *imageOperations;
 
 @end
 
@@ -26,6 +29,10 @@
         
         _imagesOperationQueue = [[NSOperationQueue alloc] init];
         _imagesOperationQueue.maxConcurrentOperationCount  = 2;
+        _imagesOperationQueue.qualityOfService = NSQualityOfServiceUtility;
+        _imagesOperationQueue.name = @"QMServices.videoThumbnailOperationQueue";
+        
+        _imageOperations = [NSMutableSet set];
     }
     
     return self;
@@ -34,59 +41,54 @@
 - (void)videoThumbnailForAttachment:(QBChatAttachment *)attachment
                          completion:(void(^)(UIImage *image, NSError *error))completion {
     
-    NSString *key = attachment.ID;
-    if (key == nil) {
+    NSURL *remoteURL = attachment.remoteURL;
+    if (!remoteURL) {
         return;
     }
-    
-    for (QMImageOperation *op in [self.imagesOperationQueue operations]) {
-        if ([op.attachment.ID isEqualToString:key]) {
-            [op cancel];
+    for (QMImageOperation *operationInQueue in self.imagesOperationQueue.operations) {
+        if ([operationInQueue.operationID isEqualToString:attachment.ID]) {
+            return;
         }
     }
     
-    QMImageOperation *imageOperation =
-    [[QMImageOperation alloc] initWithAttachment:attachment
-                               completionHandler:^(UIImage * _Nullable image, NSError * _Nullable error)
-     {
-         if (completion) {
-             completion(image, error);
-         }
-     }];
+    [self.imageOperations addObject:attachment.ID];
     
+    QMImageOperation *imageOperation =
+    [[QMImageOperation alloc] initWithURL:attachment.remoteURL
+                        completionHandler:^(UIImage * _Nullable image,
+                                            Float64 durationSeconds,
+                                            CGSize size,
+                                            NSError * _Nullable error) {
+                            
+                            [self.imageOperations removeObject:attachment.ID];
+                            if (completion) {
+                                completion(image, error);
+                            }
+                        }];
+    
+    imageOperation.operationID = attachment.ID;
     [self.imagesOperationQueue addOperation:imageOperation];
+    
 }
 
 - (void)cancellAllInfoOperations {
     
-    NSEnumerator *enumerator = [[[self class] mediaInfoOperations] keyEnumerator];
-    
-    NSString *mediaID = nil;
-    
-    while (mediaID = [enumerator nextObject]) {
-        
-        QMMediaInfo *mediaInfo = [[[self class] mediaInfoOperations] objectForKey:mediaID];
-        [mediaInfo cancel];
-    }
+    [self.imagesOperationQueue cancelAllOperations];
+    [self.imageOperations removeAllObjects];
 }
 
 
 - (void)cancelInfoOperationForKey:(NSString *)key {
-    
-    [QMImageOperation cancelOperationWithID:key
-                                      queue:self.imagesOperationQueue];
+    return;
+    NSLog(@"Operation queue before cancell: %@",self.imagesOperationQueue.operations);
+    for (QMImageOperation *operationInQueue in self.imagesOperationQueue.operations) {
+        if ([operationInQueue.operationID isEqualToString:key]) {
+            [self.imageOperations removeObject:key];
+            [operationInQueue cancel];
+        }
+    }
+    NSLog(@"Operation queue after cancell: %@",self.imagesOperationQueue.operations);
 }
 
-+ (NSMutableDictionary *)mediaInfoOperations {
-    
-    static NSMutableDictionary *mediaInfoOperations = nil;
-    
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        
-        mediaInfoOperations = [NSMutableDictionary dictionary];
-    });
-    NSLog(@"mediaInfoOperations = %lu",(unsigned long)mediaInfoOperations.count);
-    return mediaInfoOperations;
-}
+
 @end
