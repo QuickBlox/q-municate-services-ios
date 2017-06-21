@@ -26,7 +26,8 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @return QMChatCache instance
  */
-+ (nullable QMChatCache *)instance;
+
+@property (nonatomic, class) QMChatCache *instance;
 
 //MARK: - Configure store
 
@@ -67,10 +68,10 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Delete dialog from cache
  *
- *  @param dialog
+ *  @param dialogID Dialog Identifier
  *  @param completion Completion block is called after delete operation is completed
  */
-- (void)deleteDialogWithID:(NSString *)dialog
+- (void)deleteDialogWithID:(NSString *)dialogID
                 completion:(nullable dispatch_block_t)completion;
 
 /**
@@ -123,8 +124,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSArray<QBChatDialog *> *)dialogsSortedBy:(NSString *)sortTerm
                                    ascending:(BOOL)ascending
                                withPredicate:(nullable NSPredicate *)predicate;
-
-- (QMLinkPreview *)linkPreviewForURLKey:(NSString *)urlKey;
 
 /**
  Dialog by specific ID
@@ -186,7 +185,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  Add message to cache
  *
  *  @param message    QBChatMessage instance
- *  @param dialogId   Dialog identifier
+ *  @param dialogID   Dialog identifier
  *  @param completion Completion block is called after update or insert operation is completed
  */
 - (void)insertOrUpdateMessage:(QBChatMessage *)message
@@ -197,7 +196,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  Add message to cache
  *
  *  @param message    QBChatMessage instance
- *  @param dialogId   Dialog identifier
+ *  @param dialogID   Dialog identifier
  *  @param isRead     mark read
  *  @param completion Completion block is called after update or insert operation is completed
  */
@@ -260,15 +259,14 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Fetch cached messages with dialog id and filtering with predicate
  *
- *  @param dialogId   Dialog identifier
- *  @param predicate  Predicate to evaluate objects against
+ *  @param dialogId  Dialog identifier
+ *  @param sortTerm  Attribute name to sort by.
  *  @param completion returns an array of QBChatMessages instances
  */
 - (void)messagesWithDialogId:(NSString *)dialogId
                     sortedBy:(NSString *)sortTerm
                    ascending:(BOOL)ascending
                   completion:(void(^)(NSArray<QBChatMessage *> *messages))completion;
-
 /**
  *  Fetch messages
  *
@@ -282,9 +280,6 @@ NS_ASSUME_NONNULL_BEGIN
                     ascending:(BOOL)ascending
                    completion:(void(^)(NSArray<QBChatMessage *> *messages))completion;
 
-//MARK: - Link Preview operations
-- (void)insertOrUpdateLinkPreview:(QMLinkPreview *)linkPreview
-                       completion:(nullable dispatch_block_t)completion;
 @end
 
 NS_ASSUME_NONNULL_END

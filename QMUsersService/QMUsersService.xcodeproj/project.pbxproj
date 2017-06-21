@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		862360C91BDD5C6A0076D7A2 /* QBUUser+CustomData.m in Sources */ = {isa = PBXBuildFile; fileRef = 862360C51BDD5C6A0076D7A2 /* QBUUser+CustomData.m */; };
 		862360CA1BDD5C6A0076D7A2 /* QMUsersMemoryStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 862360C81BDD5C6A0076D7A2 /* QMUsersMemoryStorage.m */; };
-		86F9CD461BDA27ED0021B6F0 /* QMUsersService.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 86F9CD451BDA27ED0021B6F0 /* QMUsersService.h */; };
 		86F9CD481BDA27ED0021B6F0 /* QMUsersService.m in Sources */ = {isa = PBXBuildFile; fileRef = 86F9CD471BDA27ED0021B6F0 /* QMUsersService.m */; };
 /* End PBXBuildFile section */
 
@@ -20,7 +19,6 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
-				86F9CD461BDA27ED0021B6F0 /* QMUsersService.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -35,8 +33,8 @@
 		862360C81BDD5C6A0076D7A2 /* QMUsersMemoryStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMUsersMemoryStorage.m; sourceTree = "<group>"; };
 		862360CB1BDD5DD20076D7A2 /* QMUsersService-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "QMUsersService-Prefix.pch"; sourceTree = "<group>"; };
 		86F9CD421BDA27ED0021B6F0 /* libQMUsersService.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libQMUsersService.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		86F9CD451BDA27ED0021B6F0 /* QMUsersService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QMUsersService.h; sourceTree = "<group>"; };
 		86F9CD471BDA27ED0021B6F0 /* QMUsersService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QMUsersService.m; sourceTree = "<group>"; };
+		FB5D70971EF189B000E50084 /* QMUsersService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMUsersService.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,7 +95,7 @@
 		86F9CD441BDA27ED0021B6F0 /* QMUsersService */ = {
 			isa = PBXGroup;
 			children = (
-				86F9CD451BDA27ED0021B6F0 /* QMUsersService.h */,
+				FB5D70971EF189B000E50084 /* QMUsersService.h */,
 				86F9CD471BDA27ED0021B6F0 /* QMUsersService.m */,
 				862360C31BDD5C6A0076D7A2 /* Categories */,
 				862360C61BDD5C6A0076D7A2 /* QMUsersMemoryStorage */,

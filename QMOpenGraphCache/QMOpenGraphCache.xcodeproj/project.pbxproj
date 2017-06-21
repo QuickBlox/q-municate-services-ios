@@ -1,0 +1,534 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		FB5D705B1EF14E0100E50084 /* QMOpenGraphCacheMogenerator */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = FB5D705C1EF14E0100E50084 /* Build configuration list for PBXAggregateTarget "QMOpenGraphCacheMogenerator" */;
+			buildPhases = (
+				FB5D70611EF14E2D00E50084 /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = QMOpenGraphCacheMogenerator;
+			productName = QMOpenGraphCacheMogenerator;
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXBuildFile section */
+		FB5D703F1EF14A1800E50084 /* QMOpenGraphCache.m in Sources */ = {isa = PBXBuildFile; fileRef = FB5D703E1EF14A1800E50084 /* QMOpenGraphCache.m */; };
+		FB5D70841EF170D900E50084 /* QMOpenGraphModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FB5D70721EF151FC00E50084 /* QMOpenGraphModel.xcdatamodeld */; };
+		FB5D70D71EF1965F00E50084 /* CDOpenGraphModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FB5D70D61EF1965F00E50084 /* CDOpenGraphModel.m */; };
+		FB5D70DA1EF1966B00E50084 /* _CDOpenGraphModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FB5D70D91EF1966B00E50084 /* _CDOpenGraphModel.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		FB5D705F1EF14E0B00E50084 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FB5D70321EF14A1800E50084 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FB5D705B1EF14E0100E50084;
+			remoteInfo = QMOpenGraphCacheMogenerator;
+		};
+		FB5D709D1EF18AA000E50084 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FB5D70321EF14A1800E50084 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FB5D704F1EF14AA600E50084;
+			remoteInfo = QMOpenGraphCacheModel;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		FB5D70381EF14A1800E50084 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		FB5D703A1EF14A1800E50084 /* libQMOpenGraphCache.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libQMOpenGraphCache.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		FB5D703E1EF14A1800E50084 /* QMOpenGraphCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QMOpenGraphCache.m; sourceTree = "<group>"; };
+		FB5D70501EF14AA600E50084 /* QMOpenGraphCacheModel.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QMOpenGraphCacheModel.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		FB5D70521EF14AA600E50084 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FB5D70731EF151FC00E50084 /* QMOpenGraphModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = QMOpenGraphModel.xcdatamodel; sourceTree = "<group>"; };
+		FB5D70941EF1836400E50084 /* QMOpenGraphCacheModel.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = QMOpenGraphCacheModel.bundle; sourceTree = SOURCE_ROOT; };
+		FB5D70A51EF18D2500E50084 /* QMOpenGraphCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMOpenGraphCache.h; sourceTree = "<group>"; };
+		FB5D70A61EF18DDC00E50084 /* QMOpenGraphCache-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "QMOpenGraphCache-Prefix.pch"; sourceTree = "<group>"; };
+		FB5D70A71EF18EB900E50084 /* QMOpenGraphModelIncludes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMOpenGraphModelIncludes.h; sourceTree = "<group>"; };
+		FB5D70D51EF1965F00E50084 /* CDOpenGraphModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDOpenGraphModel.h; sourceTree = "<group>"; };
+		FB5D70D61EF1965F00E50084 /* CDOpenGraphModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDOpenGraphModel.m; sourceTree = "<group>"; };
+		FB5D70D81EF1966B00E50084 /* _CDOpenGraphModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _CDOpenGraphModel.h; sourceTree = "<group>"; };
+		FB5D70D91EF1966B00E50084 /* _CDOpenGraphModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _CDOpenGraphModel.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		FB5D70371EF14A1800E50084 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FB5D704D1EF14AA600E50084 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		FB5D70311EF14A1800E50084 = {
+			isa = PBXGroup;
+			children = (
+				FB5D703C1EF14A1800E50084 /* QMOpenGraphCache */,
+				FB5D70511EF14AA600E50084 /* QMOpenGraphCacheModel */,
+				FB5D703B1EF14A1800E50084 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		FB5D703B1EF14A1800E50084 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FB5D703A1EF14A1800E50084 /* libQMOpenGraphCache.a */,
+				FB5D70501EF14AA600E50084 /* QMOpenGraphCacheModel.bundle */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FB5D703C1EF14A1800E50084 /* QMOpenGraphCache */ = {
+			isa = PBXGroup;
+			children = (
+				FB5D70941EF1836400E50084 /* QMOpenGraphCacheModel.bundle */,
+				FB5D70A51EF18D2500E50084 /* QMOpenGraphCache.h */,
+				FB5D703E1EF14A1800E50084 /* QMOpenGraphCache.m */,
+				FB5D70561EF14AE800E50084 /* CoreData */,
+				FB5D70A61EF18DDC00E50084 /* QMOpenGraphCache-Prefix.pch */,
+			);
+			path = QMOpenGraphCache;
+			sourceTree = "<group>";
+		};
+		FB5D70511EF14AA600E50084 /* QMOpenGraphCacheModel */ = {
+			isa = PBXGroup;
+			children = (
+				FB5D70521EF14AA600E50084 /* Info.plist */,
+			);
+			path = QMOpenGraphCacheModel;
+			sourceTree = "<group>";
+		};
+		FB5D70561EF14AE800E50084 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				FB5D70A71EF18EB900E50084 /* QMOpenGraphModelIncludes.h */,
+				FB5D70721EF151FC00E50084 /* QMOpenGraphModel.xcdatamodeld */,
+				FB5D70851EF173F100E50084 /* Entries */,
+				FB5D70881EF173F100E50084 /* EntriesMachine */,
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
+		FB5D70851EF173F100E50084 /* Entries */ = {
+			isa = PBXGroup;
+			children = (
+				FB5D70D51EF1965F00E50084 /* CDOpenGraphModel.h */,
+				FB5D70D61EF1965F00E50084 /* CDOpenGraphModel.m */,
+			);
+			path = Entries;
+			sourceTree = "<group>";
+		};
+		FB5D70881EF173F100E50084 /* EntriesMachine */ = {
+			isa = PBXGroup;
+			children = (
+				FB5D70D81EF1966B00E50084 /* _CDOpenGraphModel.h */,
+				FB5D70D91EF1966B00E50084 /* _CDOpenGraphModel.m */,
+			);
+			path = EntriesMachine;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		FB5D70391EF14A1800E50084 /* QMOpenGraphCache */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FB5D70431EF14A1800E50084 /* Build configuration list for PBXNativeTarget "QMOpenGraphCache" */;
+			buildPhases = (
+				FB5D70361EF14A1800E50084 /* Sources */,
+				FB5D70371EF14A1800E50084 /* Frameworks */,
+				FB5D70381EF14A1800E50084 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FB5D709E1EF18AA000E50084 /* PBXTargetDependency */,
+			);
+			name = QMOpenGraphCache;
+			productName = QMOpenGraphCache;
+			productReference = FB5D703A1EF14A1800E50084 /* libQMOpenGraphCache.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		FB5D704F1EF14AA600E50084 /* QMOpenGraphCacheModel */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FB5D70551EF14AA600E50084 /* Build configuration list for PBXNativeTarget "QMOpenGraphCacheModel" */;
+			buildPhases = (
+				FB5D704C1EF14AA600E50084 /* Sources */,
+				FB5D704D1EF14AA600E50084 /* Frameworks */,
+				FB5D704E1EF14AA600E50084 /* Resources */,
+				FB5D70821EF1705700E50084 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FB5D70601EF14E0B00E50084 /* PBXTargetDependency */,
+			);
+			name = QMOpenGraphCacheModel;
+			productName = QMOpenGraphCacheModel;
+			productReference = FB5D70501EF14AA600E50084 /* QMOpenGraphCacheModel.bundle */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		FB5D70321EF14A1800E50084 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0830;
+				ORGANIZATIONNAME = QuickBlox;
+				TargetAttributes = {
+					FB5D70391EF14A1800E50084 = {
+						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = 8885H5G2YX;
+						ProvisioningStyle = Automatic;
+					};
+					FB5D704F1EF14AA600E50084 = {
+						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = 8885H5G2YX;
+						ProvisioningStyle = Automatic;
+					};
+					FB5D705B1EF14E0100E50084 = {
+						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = 8885H5G2YX;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = FB5D70351EF14A1800E50084 /* Build configuration list for PBXProject "QMOpenGraphCache" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = FB5D70311EF14A1800E50084;
+			productRefGroup = FB5D703B1EF14A1800E50084 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				FB5D70391EF14A1800E50084 /* QMOpenGraphCache */,
+				FB5D704F1EF14AA600E50084 /* QMOpenGraphCacheModel */,
+				FB5D705B1EF14E0100E50084 /* QMOpenGraphCacheMogenerator */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		FB5D704E1EF14AA600E50084 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		FB5D70611EF14E2D00E50084 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = "/bin/sh  ../Scripts/mogenerator.sh  QMOpenGraphModel";
+			shellScript = "";
+		};
+		FB5D70821EF1705700E50084 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = "/bin/sh ../Scripts/copy_bundle.sh";
+			shellScript = "";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		FB5D70361EF14A1800E50084 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FB5D70DA1EF1966B00E50084 /* _CDOpenGraphModel.m in Sources */,
+				FB5D70D71EF1965F00E50084 /* CDOpenGraphModel.m in Sources */,
+				FB5D703F1EF14A1800E50084 /* QMOpenGraphCache.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FB5D704C1EF14AA600E50084 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FB5D70841EF170D900E50084 /* QMOpenGraphModel.xcdatamodeld in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		FB5D70601EF14E0B00E50084 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FB5D705B1EF14E0100E50084 /* QMOpenGraphCacheMogenerator */;
+			targetProxy = FB5D705F1EF14E0B00E50084 /* PBXContainerItemProxy */;
+		};
+		FB5D709E1EF18AA000E50084 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FB5D704F1EF14AA600E50084 /* QMOpenGraphCacheModel */;
+			targetProxy = FB5D709D1EF18AA000E50084 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		FB5D70411EF14A1800E50084 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		FB5D70421EF14A1800E50084 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		FB5D70441EF14A1800E50084 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = 8885H5G2YX;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "QMOpenGraphCache/QMOpenGraphCache-Prefix.pch";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/../**";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		FB5D70451EF14A1800E50084 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = 8885H5G2YX;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "QMOpenGraphCache/QMOpenGraphCache-Prefix.pch";
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/../**";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		FB5D70531EF14AA600E50084 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 8885H5G2YX;
+				INFOPLIST_FILE = QMOpenGraphCacheModel/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				PRODUCT_BUNDLE_IDENTIFIER = com.quickblox.QMOpenGraphCacheModel;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Debug;
+		};
+		FB5D70541EF14AA600E50084 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = YES;
+				DEVELOPMENT_TEAM = 8885H5G2YX;
+				INFOPLIST_FILE = QMOpenGraphCacheModel/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				PRODUCT_BUNDLE_IDENTIFIER = com.quickblox.QMOpenGraphCacheModel;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Release;
+		};
+		FB5D705D1EF14E0100E50084 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = 8885H5G2YX;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		FB5D705E1EF14E0100E50084 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = 8885H5G2YX;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		FB5D70351EF14A1800E50084 /* Build configuration list for PBXProject "QMOpenGraphCache" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FB5D70411EF14A1800E50084 /* Debug */,
+				FB5D70421EF14A1800E50084 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FB5D70431EF14A1800E50084 /* Build configuration list for PBXNativeTarget "QMOpenGraphCache" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FB5D70441EF14A1800E50084 /* Debug */,
+				FB5D70451EF14A1800E50084 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FB5D70551EF14AA600E50084 /* Build configuration list for PBXNativeTarget "QMOpenGraphCacheModel" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FB5D70531EF14AA600E50084 /* Debug */,
+				FB5D70541EF14AA600E50084 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FB5D705C1EF14E0100E50084 /* Build configuration list for PBXAggregateTarget "QMOpenGraphCacheMogenerator" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FB5D705D1EF14E0100E50084 /* Debug */,
+				FB5D705E1EF14E0100E50084 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		FB5D70721EF151FC00E50084 /* QMOpenGraphModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				FB5D70731EF151FC00E50084 /* QMOpenGraphModel.xcdatamodel */,
+			);
+			currentVersion = FB5D70731EF151FC00E50084 /* QMOpenGraphModel.xcdatamodel */;
+			path = QMOpenGraphModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = FB5D70321EF14A1800E50084 /* Project object */;
+}

@@ -14,7 +14,6 @@
 #import "QMChatTypes.h"
 #import "QMChatConstants.h"
 #import "QMMediaService.h"
-#import "QMLinkPreviewManager.h"
 #import "QMDeferredQueueManager.h"
 
 @protocol QMChatServiceDelegate;
@@ -502,9 +501,9 @@ typedef void(^QMCacheCollection)(NSArray * _Nullable collection);
 
 //MARK:- QMLinkPreview
 
-- (void)getLinkPreviewForMessage:(QBChatMessage *)message withCompletion:(QMLinkPreviewCompletionBlock)completion;
-
-- (QMLinkPreview *)linkPreviewForMessage:(QBChatMessage *)message;
+//- (void)getLinkPreviewForMessage:(QBChatMessage *)message withCompletion:(QMLinkPreviewCompletionBlock)completion;
+//
+//- (QMLinkPreview *)linkPreviewForMessage:(QBChatMessage *)message;
 
 @end
 
@@ -967,7 +966,7 @@ typedef void(^QMCacheCollection)(NSArray * _Nullable collection);
 
 @optional
 
-- (QMLinkPreview *)cachedLinkPreviewForURLKey:(NSString *)urlKey;
+//- (QMLinkPreview *)cachedLinkPreviewForURLKey:(NSString *)urlKey;
 
 @end
 
@@ -980,7 +979,7 @@ typedef void(^QMCacheCollection)(NSArray * _Nullable collection);
  *  @param chatService instance
  *  @param linkPreview QMLinkPreview instance
  */
-- (void)chatService:(QMChatService *)chatService didAddLinkPreviewToMemoryStorage:(QMLinkPreview *)linkPreview;
+//- (void)chatService:(QMChatService *)chatService didAddLinkPreviewToMemoryStorage:(QMLinkPreview *)linkPreview;
 
 /**
  *  Is called when ChatDialogs did load from cache.

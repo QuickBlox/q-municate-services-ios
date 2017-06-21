@@ -376,7 +376,6 @@ static NSString* attachmentPath(QBChatAttachment *attachment) {
     });
 }
 
-
 - (void)uploadAndSendAttachmentMessage:(QBChatMessage *)message
                               toDialog:(QBChatDialog *)dialog
                        withChatService:(QMChatService *)chatService

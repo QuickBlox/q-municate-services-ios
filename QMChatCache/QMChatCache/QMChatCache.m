@@ -7,8 +7,7 @@
 //
 
 #import "QMChatCache.h"
-#import "QMCCModelIncludes.h"
-#import "QMLinkPreview.h"
+#import "QMChatServiceModelIncludes.h"
 
 #import "QMSLog.h"
 
@@ -67,19 +66,6 @@ static QMChatCache *_chatCacheInstance = nil;
     
     return self;
 }
-
-//MARK: - Fetch link previews
-- (QMLinkPreview *)linkPreviewForURLKey:(NSString *)urlKey {
-    __block QMLinkPreview *result = nil;
-    [self performMainQueue:^(NSManagedObjectContext *ctx) {
-        result = [[CDLinkPreview QM_findFirstByAttribute:@"url"
-                                          withValue:urlKey
-                                          inContext:ctx] toQMLinkPreview];
-    }];
-    
-    return result;
-}
-
 
 //MARK: - Fetch Dialogs
 //MARK: Main queue
@@ -188,19 +174,6 @@ static QMChatCache *_chatCacheInstance = nil;
     }];
 }
 
-//MARK: - Insert / Update
-- (void)insertOrUpdateLinkPreview:(QMLinkPreview *)linkPreview
-                      completion:(dispatch_block_t)completion {
-    
-    [self save:^(NSManagedObjectContext *ctx) {
-        CDLinkPreview *cachedLinkPreview =
-        [CDLinkPreview QM_findFirstOrCreateByAttribute:@"url"
-                                             withValue:linkPreview.siteUrl
-                                             inContext:ctx];
-        [cachedLinkPreview updateWithQMLinkPreview:linkPreview];
-    } finish:completion];
-    
-}
 - (void)insertOrUpdateDialog:(QBChatDialog *)dialog
                   completion:(dispatch_block_t)completion {
     

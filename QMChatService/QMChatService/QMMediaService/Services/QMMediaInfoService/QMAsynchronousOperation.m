@@ -48,7 +48,6 @@
     }
 }
 
-
 + (void)cancelAllOperationsForQueue:(NSOperationQueue *)queue {
     
     for (QMAsynchronousOperation *operationInQueue in queue.operations) {
@@ -120,14 +119,12 @@
         
         self.executing = YES;
         [self main];
-        NSLog(@"\"%@\" Operation Started.", self.operationID);
     }
 }
 
 - (void)complete {
     
     if (self.isExecuting) {
-        NSLog(@"\"%@\" Operation Finished.", self.operationID);
         
         self.executing = NO;
         self.finished = YES;

@@ -26,6 +26,9 @@
     if (self) {
         
         _attachment = attachment;
+
+        self.operationID = attachment.ID;
+        
         _imageOperationCompletionBlock = [completionHandler copy];
         
         self.generator = [AVAssetImageGenerator assetImageGeneratorWithAsset:[AVAsset assetWithURL:[self.attachment remoteURL]]];
@@ -42,7 +45,6 @@
                                                                CMTime actualTime,
                                                                AVAssetImageGeneratorResult result,
                                                                NSError *error) {
-                
                 UIImage *thumb = nil;
                 if (result == AVAssetImageGeneratorSucceeded) {
                     thumb = [UIImage imageWithCGImage:image];
