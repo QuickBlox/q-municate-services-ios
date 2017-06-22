@@ -93,7 +93,7 @@
             __typeof(self) strongSelf = weakSelf;
             [strongSelf.chatService disconnectWithCompletionBlock:nil];
             [strongSelf.chatService free];
-            [strongSelf.chatService.chatAttachmentService.mediaService removeAllMediaFiles];
+            [strongSelf.chatService.chatAttachmentService removeAllMediaFiles];
             
             dispatch_group_leave(strongSelf.logoutGroup);
         }];
@@ -292,14 +292,23 @@
 - (void)chatService:(QMChatService *)chatService didDeleteMessageFromMemoryStorage:(QBChatMessage *)message forDialogID:(NSString *)dialogID {
     
     [QMChatCache.instance deleteMessage:message completion:nil];
+    [self.chatService.chatAttachmentService  removeMediaFilesForMessageWithID:message.ID
+                                                                     dialogID:dialogID];
 }
 
 - (void)chatService:(QMChatService *)chatService didDeleteMessagesFromMemoryStorage:(NSArray *)messages forDialogID:(NSString *)dialogID {
     
     [QMChatCache.instance deleteMessages:messages completion:nil];
+    
+    NSArray *messagesIDs = [messages valueForKeyPath:NSStringFromSelector(@selector(messageID))];
+    [self.chatService.chatAttachmentService  removeMediaFilesForMessagesWithID:messagesIDs
+                                                                      dialogID:dialogID];
 }
 
-- (void)chatService:(QMChatService *)chatService  didReceiveNotificationMessage:(QBChatMessage *)message createDialog:(QBChatDialog *)dialog {
+- (void)chatService:(QMChatService *)chatService
+didReceiveNotificationMessage:(QBChatMessage *)message
+       createDialog:(QBChatDialog *)dialog {
+    
     NSAssert([message.dialogID isEqualToString:dialog.ID], @"must be equal");
     
     [QMChatCache.instance insertOrUpdateMessage:message withDialogId:dialog.ID completion:nil];

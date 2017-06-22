@@ -12,10 +12,10 @@
 #import "DRAsyncBlockOperation.h"
 #import "QBChatAttachment+QMCustomParameters.h"
 
-@interface QMMediaInfoService()
 
+@interface QMMediaInfoService()
 @property (strong, nonatomic) NSOperationQueue *imagesOperationQueue;
-@property (strong, nonatomic) NSMutableSet *imageOperations;
+@property (strong, nonatomic,readwrite) NSMutableSet *attachmentsInProcess;
 
 @end
 
@@ -32,7 +32,6 @@
         _imagesOperationQueue.qualityOfService = NSQualityOfServiceUtility;
         _imagesOperationQueue.name = @"QMServices.videoThumbnailOperationQueue";
         
-        _imageOperations = [NSMutableSet set];
     }
     
     return self;
@@ -51,8 +50,6 @@
         }
     }
     
-    [self.imageOperations addObject:attachment.ID];
-    
     QMImageOperation *imageOperation =
     [[QMImageOperation alloc] initWithURL:attachment.remoteURL
                         completionHandler:^(UIImage * _Nullable image,
@@ -60,7 +57,7 @@
                                             CGSize size,
                                             NSError * _Nullable error) {
                             
-                            [self.imageOperations removeObject:attachment.ID];
+                            
                             if (completion) {
                                 completion(image, error);
                             }
@@ -74,16 +71,13 @@
 - (void)cancellAllInfoOperations {
     
     [self.imagesOperationQueue cancelAllOperations];
-    [self.imageOperations removeAllObjects];
 }
 
 
 - (void)cancelInfoOperationForKey:(NSString *)key {
-    return;
-    NSLog(@"Operation queue before cancell: %@",self.imagesOperationQueue.operations);
+    
     for (QMImageOperation *operationInQueue in self.imagesOperationQueue.operations) {
         if ([operationInQueue.operationID isEqualToString:key]) {
-            [self.imageOperations removeObject:key];
             [operationInQueue cancel];
         }
     }

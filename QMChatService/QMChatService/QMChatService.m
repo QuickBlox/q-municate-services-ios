@@ -9,15 +9,20 @@
 #import "QMChatService.h"
 #import "QBChatMessage+QMCustomParameters.h"
 #import "QMSLog.h"
-#import "QBChatAttachment+QMFactory.h"
+
 #import "QMLinkPreviewManager.h"
+#import "QBChatAttachment+QMFactory.h"
+#import "QMMediaStoreService.h"
+#import "QMMediaWebService.h"
+#import "QMMediaInfoService.h"
+
 
 const char *kChatCacheQueue = "com.q-municate.chatCacheQueue";
 static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 
 #define kChatServiceSaveToHistoryTrue @"1"
 
-@interface QMChatService() <QBChatDelegate, QMDeferredQueueManagerDelegate, QMLinkPreviewManagerDelegate>
+@interface QMChatService() <QBChatDelegate, QMDeferredQueueManagerDelegate, QMLinkPreviewManagerDelegate, QMMediaStoreServiceDelegate>
 
 //@property (assign, nonatomic, readwrite) QMChatConnectionState chatConnectionState;
 @property (strong, nonatomic) QBMulticastDelegate <QMChatServiceDelegate, QMChatConnectionDelegate> *multicastDelegate;
@@ -85,7 +90,13 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     [_deferredQueueManager addDelegate:self];
     _messagesMemoryStorage.delegate = (id<QMMemoryTemporaryQueueDelegate>)self.deferredQueueManager;
     
-    _chatAttachmentService = [[QMChatAttachmentService alloc] init];
+    QMMediaStoreService *storeService = [[QMMediaStoreService alloc] initWithDelegate:self];
+    QMMediaWebService *webService = [QMMediaWebService new];
+    QMMediaInfoService *infoService = [QMMediaInfoService new];
+    
+    _chatAttachmentService = [[QMChatAttachmentService alloc] initWithStoreService:storeService
+                                                                        webService:webService
+                                                                       infoService:infoService];
     
     [QBChat.instance addDelegate:self];
 }
@@ -240,7 +251,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     NSParameterAssert(dialogID != nil);
     NSParameterAssert(messageID != nil);
     
-    QBChatMessage* message = [self.messagesMemoryStorage messageWithID:messageID fromDialogID:dialogID];
+    QBChatMessage *message = [self.messagesMemoryStorage messageWithID:messageID fromDialogID:dialogID];
     
     if (message) {
         
@@ -1837,6 +1848,38 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     parameters[@"date_sent[gt]"] = @([lastMessagesLoadDate timeIntervalSince1970]);
     
     return [parameters copy];
+}
+
+
+
+- (void)didRemoveAttachment:(nonnull QBChatAttachment *)attachment
+                  messageID:(nonnull NSString *)messageID
+                   dialogID:(nonnull NSString *)dialogID {
+    
+    QBChatMessage *message = [self.messagesMemoryStorage messageWithID:messageID fromDialogID:dialogID];
+    
+    if (message){
+        
+            [self.messagesMemoryStorage updateMessage:message];
+            
+            if ([self.multicastDelegate respondsToSelector:@selector(chatService:didUpdateMessage:forDialogID:)]) {
+                [self.multicastDelegate chatService:self didUpdateMessage:message forDialogID:dialogID];
+            }
+    }
+}
+
+- (void)didUpdateAttachment:(nonnull QBChatAttachment *)attachment messageID:(nonnull NSString *)messageID dialogID:(nonnull NSString *)dialogID {
+    
+    QBChatMessage *message = [self.messagesMemoryStorage messageWithID:messageID fromDialogID:dialogID];
+    
+    if (message) {
+        
+        [self.messagesMemoryStorage updateMessage:message];
+        
+        if ([self.multicastDelegate respondsToSelector:@selector(chatService:didUpdateMessage:forDialogID:)]) {
+            [self.multicastDelegate chatService:self didUpdateMessage:message forDialogID:dialogID];
+        }
+    }
 }
 
 @end

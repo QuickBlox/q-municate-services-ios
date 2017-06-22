@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "QMMediaStoreServiceDelegate.h"
+#import "QMAttachmentsMemoryStorage.h"
 
 typedef NS_OPTIONS(NSInteger, QMAttachmentCacheType) {
     
@@ -19,6 +20,8 @@ typedef NS_OPTIONS(NSInteger, QMAttachmentCacheType) {
 NS_ASSUME_NONNULL_BEGIN
 
 @interface QMMediaStoreService : NSObject
+
+@property (strong, nonatomic, readonly) QMAttachmentsMemoryStorage *attachmentsMemoryStorage;
 
 @property (nonatomic, weak, nullable) id <QMMediaStoreServiceDelegate> storeDelegate;
 
@@ -64,6 +67,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)clearCacheForMessageWithID:(NSString *)messageID
                           dialogID:(NSString *)dialogID
                          cacheType:(QMAttachmentCacheType)cacheType;
+
+- (void)clearCacheForMessagesWithIDs:(NSArray <NSString *> *)messagesIDs
+                            dialogID:(NSString *)dialogID
+                           cacheType:(QMAttachmentCacheType)cacheType;
 @end
 
 NS_ASSUME_NONNULL_END

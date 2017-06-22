@@ -8,9 +8,8 @@
 
 #import "QMMediaStoreService.h"
 #import "QMSLog.h"
-#import "QMAttachmentsMemoryStorage.h"
-#import "QBChatAttachment+QMCustomParameters.h"
 
+#import "QBChatAttachment+QMCustomParameters.h"
 
 #import <AVKit/AVKit.h>
 #import <AVFoundation/AVFoundation.h>
@@ -18,31 +17,21 @@
 @interface QMMediaStoreService()
 
 @property (strong, nonatomic) NSMutableDictionary *imagesMemoryStorage;
-@property (strong, nonatomic) QMAttachmentsMemoryStorage *attachmentsMemoryStorage;
+@property (strong, nonatomic, readwrite) QMAttachmentsMemoryStorage *attachmentsMemoryStorage;
 
 @end
 
 @implementation QMMediaStoreService
 
 //MARK: - NSObject
-
 - (instancetype)initWithDelegate:(id <QMMediaStoreServiceDelegate>)delegate {
     
     if ([self init]) {
-        _storeDelegate = delegate;
-    }
-    return self;
-}
-
-
-- (instancetype)init {
-    
-    if (self = [super init]) {
         
+        _storeDelegate = delegate;
         _imagesMemoryStorage = [NSMutableDictionary dictionary];
         _attachmentsMemoryStorage = [[QMAttachmentsMemoryStorage alloc] init];
     }
-    
     return self;
 }
 
@@ -80,12 +69,11 @@
         }
         return;
     }
-    
-    NSString *path = mediaPath(dialogID, messageID, attachment);
-    
-    if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSString *path = mediaPath(dialogID, messageID, attachment);
+        
+        if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
             
             NSError *error;
             NSData *data = [NSData dataWithContentsOfFile:path
@@ -93,22 +81,25 @@
                                                     error:&error];
             UIImage *image = [UIImage imageWithData:data];
             
-            dispatch_async(dispatch_get_main_queue(), ^{
-                
-                if (image != nil) {
-                    self.imagesMemoryStorage[messageID] = image;
-                }
-                if (completion) {
+            
+            if (image != nil) {
+                self.imagesMemoryStorage[messageID] = image;
+            }
+            
+            if (completion) {
+                dispatch_async(dispatch_get_main_queue(), ^{
                     completion(image);
-                }
-            });
-        });
-    }
-    else {
-        if (completion) {
-            completion(nil);
+                });
+            }
+            
+            
         }
-    }
+        else {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completion(nil);
+            });
+        }
+    });
 }
 
 - (QBChatAttachment *)cachedAttachmentWithID:(NSString *)attachmentID
@@ -157,7 +148,6 @@
                  cacheType:cacheType
                  messageID:messageID
                   dialogID:dialogID];
-            attachment.status = QMAttachmentStatusPrepared;
         }
         
         if (isSucceed) {
@@ -172,6 +162,7 @@
         }
         [self.attachmentsMemoryStorage addAttachment:attachment
                                         forMessageID:messageID];
+        
     }
 }
 
@@ -207,17 +198,14 @@
         
         [self.attachmentsMemoryStorage addAttachment:attachment
                                         forMessageID:messageID];
+        
+        [self updateAttachment:attachment
+                     messageID:messageID
+                      dialogID:dialogID];
+        
     }
-    
-    
 }
 
-
-- (void)updateAttachment:(QBChatAttachment *)attachment forMessageID:(NSString *)messageID {
-    
-    [self.attachmentsMemoryStorage addAttachment:attachment
-                                    forMessageID:messageID];
-}
 
 //MARK: - Removing
 
@@ -242,15 +230,26 @@
                                                error:nil];
 }
 
+- (void)clearCacheForMessagesWithIDs:(NSArray <NSString *> *)messagesIDs
+                            dialogID:(NSString *)dialogID
+                           cacheType:(QMAttachmentCacheType)cacheType {
+    
+    NSString *dialogsPath = [mediaCacheDir() stringByAppendingPathComponent:dialogID];
+    
+    for (NSString *messageID in messagesIDs) {
+        NSString *messagePath = [dialogsPath stringByAppendingPathComponent:messageID];
+        [[NSFileManager defaultManager] removeItemAtPath:messagePath
+                                                   error:nil];
+    }
+}
+
 - (void)clearCacheForMessageWithID:(NSString *)messageID
                           dialogID:(NSString *)dialogID
                          cacheType:(QMAttachmentCacheType)cacheType {
     
-    NSString *messagePath = [[mediaCacheDir() stringByAppendingPathComponent:dialogID]
-                             stringByAppendingPathComponent:messageID];
-    
-    [[NSFileManager defaultManager] removeItemAtPath:messagePath
-                                               error:nil];
+    [self clearCacheForMessagesWithIDs:@[messageID]
+                              dialogID:dialogID
+                             cacheType:cacheType];
 }
 
 //MARK: - Helpers
@@ -316,16 +315,102 @@ static NSString* mediaPath(NSString *dialogID, NSString *messsageID, QBChatAttac
     return nil;
 }
 
-- (void)sizeForDialogID:(nullable NSString *)dialogID messageID:(nullable NSString *)messageID attachmentID:(nullable NSString *)attachmentID completion:(nullable void (^)(float))completionBlock {
+- (void)sizeForDialogID:(nullable NSString *)dialogID
+              messageID:(nullable NSString *)messageID
+           attachmentID:(nullable NSString *)attachmentID
+             completion:(void (^)(float))completionBlock {
+    
     completionBlock(0.0f);
 }
 
 
-- (void)updateAttachment:(nonnull QBChatAttachment *)attachment messageID:(nonnull NSString *)messageID dialogID:(nonnull NSString *)dialogID {
+- (void)updateAttachment:(nonnull QBChatAttachment *)attachment
+               messageID:(nonnull NSString *)messageID
+                dialogID:(nonnull NSString *)dialogID {
     
+    [self.attachmentsMemoryStorage updateAttachment:attachment forMessageID:messageID];
+    
+    if ([self.storeDelegate respondsToSelector:@selector(storeStore:
+                                                         didUpdateAttachment:
+                                                         messageID:
+                                                         dialogID:)]) {
+        [self.storeDelegate storeStore:self
+                   didUpdateAttachment:attachment
+                             messageID:messageID
+                              dialogID:dialogID];
+    }
+}
+
+- (BOOL)nr_getAllocatedSize:(unsigned long long *)size ofDirectoryAtURL:(NSURL *)directoryURL error:(NSError * __autoreleasing *)error
+{
+    NSParameterAssert(size != NULL);
+    NSParameterAssert(directoryURL != nil);
+    
+    // We'll sum up content size here:
+    unsigned long long accumulatedSize = 0;
+    
+    // prefetching some properties during traversal will speed up things a bit.
+    NSArray *prefetchedProperties = @[
+                                      NSURLIsRegularFileKey,
+                                      NSURLFileAllocatedSizeKey,
+                                      NSURLTotalFileAllocatedSizeKey,
+                                      ];
+    
+    // The error handler simply signals errors to outside code.
+    __block BOOL errorDidOccur = NO;
+    BOOL (^errorHandler)(NSURL *, NSError *) = ^(NSURL *url, NSError *localError) {
+        if (error != NULL)
+            *error = localError;
+        errorDidOccur = YES;
+        return NO;
+    };
+    
+    // We have to enumerate all directory contents, including subdirectories.
+    NSDirectoryEnumerator *enumerator = [[NSFileManager defaultManager] enumeratorAtURL:directoryURL
+                                                             includingPropertiesForKeys:prefetchedProperties
+                                                                                options:(NSDirectoryEnumerationOptions)0
+                                                                           errorHandler:errorHandler];
+    
+    // Start the traversal:
+    for (NSURL *contentItemURL in enumerator) {
+        
+        // Bail out on errors from the errorHandler.
+        if (errorDidOccur)
+            return NO;
+        
+        // Get the type of this item, making sure we only sum up sizes of regular files.
+        NSNumber *isRegularFile;
+        if (! [contentItemURL getResourceValue:&isRegularFile forKey:NSURLIsRegularFileKey error:error])
+            return NO;
+        if (! [isRegularFile boolValue])
+            continue; // Ignore anything except regular files.
+        
+        // To get the file's size we first try the most comprehensive value in terms of what the file may use on disk.
+        // This includes metadata, compression (on file system level) and block size.
+        NSNumber *fileSize;
+        if (! [contentItemURL getResourceValue:&fileSize forKey:NSURLTotalFileAllocatedSizeKey error:error])
+            return NO;
+        
+        // In case the value is unavailable we use the fallback value (excluding meta data and compression)
+        // This value should always be available.
+        if (fileSize == nil) {
+            if (! [contentItemURL getResourceValue:&fileSize forKey:NSURLFileAllocatedSizeKey error:error])
+                return NO;
+            
+            NSAssert(fileSize != nil, @"huh? NSURLFileAllocatedSizeKey should always return a value");
+        }
+        
+        // We're good, add up the value.
+        accumulatedSize += [fileSize unsignedLongLongValue];
+    }
+    
+    // Bail out on errors from the errorHandler.
+    if (errorDidOccur)
+        return NO;
+    
+    // We finally got it.
+    *size = accumulatedSize;
+    return YES;
 }
 
 @end
-
-
-

@@ -23,6 +23,8 @@ typedef NS_ENUM(NSUInteger, QMMessageAttachmentStatus) {
     QMMessageAttachmentStatusLoading,
     QMMessageAttachmentStatusLoaded,
     QMMessageAttachmentStatusError,
+    QMMessageAttachmentStatusCancelled,
+    QMMessageAttachmentStatusPrepared
 };
 
 typedef NS_ENUM(NSUInteger, QMDialogUpdateType) {

@@ -23,7 +23,6 @@
         
         if (response.status == QBResponseStatusCodeNotFound) {
             _attachmentStatus = QMMessageAttachmentStatusError;
-            
         }
         else {
             _attachmentStatus = QMMessageAttachmentStatusNotLoaded;

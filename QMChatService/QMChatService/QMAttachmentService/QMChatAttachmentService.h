@@ -13,6 +13,16 @@
 #import "QMMediaInfoService.h"
 #import "QMMediaWebService.h"
 
+typedef NS_ENUM(NSUInteger, QMAttachmentStatus) {
+    
+    QMAttachmentStatusNotLoaded = 0,
+    QMAttachmentStatusLoading,
+    QMAttachmentStatusLoaded,
+    QMAttachmentStatusPreparing,
+    QMAttachmentStatusPrepared,
+    QMAttachmentStatusError
+};
+
 @class QMChatService;
 @protocol QMChatAttachmentServiceDelegate;
 
@@ -23,23 +33,40 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface QMChatAttachmentService : NSObject
 
-@property (nonatomic, strong) QMMediaStoreService *storeService;
-@property (nonatomic, strong) QMMediaWebService *webService;
-@property (nonatomic, strong) QMMediaInfoService *infoService;
+@property (nonatomic, strong, readonly) QMMediaStoreService *storeService;
+@property (nonatomic, strong, readonly) QMMediaWebService *webService;
+@property (nonatomic, strong, readonly) QMMediaInfoService *infoService;
+
+- (instancetype)init NS_UNAVAILABLE;
+- (instancetype)new NS_UNAVAILABLE;
+
+- (instancetype)initWithStoreService:(QMMediaStoreService *)storeService
+                          webService:(QMMediaWebService *)webService
+                         infoService:(QMMediaInfoService *)infoService;
 
 - (QBChatAttachment *)placeholderAttachment:(NSString *)messageID;
 
-- (void)imageForAttachment:(QBChatAttachment *)attachment
-                   message:(QBChatMessage *)message
-                completion:(void(^)(UIImage *image, NSError *error))completion;
+- (void)attachmentWithID:(NSString *)attachmentID
+                 message:(QBChatMessage *)message
+              completion:(void(^)(QBChatAttachment * _Nullable attachment,
+                                  NSError * _Nullable error))completion;
 
-- (void)audioDataForAttachment:(QBChatAttachment *)attachment
-                       message:(QBChatMessage *)message
-                    completion:(void(^)(BOOL isReady, NSError *error))completion;
+- (BOOL)attachmentIsReadyToPlay:(QBChatAttachment *)attachment
+                        message:(QBChatMessage *)message;
 
-- (void)cancelOperationsForAttachment:(QBChatAttachment *)attachment;
+- (void)cancelOperationsForAttachment:(QBChatAttachment *)attachment
+                            messageID:(NSString *)messageID;
+
+- (void)removeAllMediaFiles;
+
+- (void)removeMediaFilesForDialogWithID:(NSString *)dialogID;
+
+- (void)removeMediaFilesForMessageWithID:(NSString *)messageID
+                                dialogID:(NSString *)dialogID;
 
 
+- (void)removeMediaFilesForMessagesWithID:(NSArray<NSString *> *)messagesIDs
+                                 dialogID:(NSString *)dialogID;
 
 /**
  *  Add delegate (Multicast)
@@ -122,6 +149,11 @@ DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.4.7. Use 'addDelegate:' instead.");
 
 @protocol QMChatAttachmentServiceDelegate <NSObject>
 
+- (void)chatAttachmentService:(QMChatAttachmentService *)chatAttachmentService
+          didUpdateAttachment:(QBChatAttachment *)attachment
+                  forMesssage:(QBChatMessage *)message;
+
+
 /**
  *  Is called when attachment service did change attachment status for some message.
  *  Please see QMMessageAttachmentStatus for additional info.
@@ -167,6 +199,7 @@ DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.4.7. Use 'chatAttachmentService:didCha
      didChangeLoadingProgress:(CGFloat)progress
                    forMessage:(QBChatMessage *)message
                    attachment:(QBChatAttachment *)attachment;
+
 
 @end
 
