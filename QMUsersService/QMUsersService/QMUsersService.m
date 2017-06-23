@@ -15,6 +15,7 @@
 @property (strong, nonatomic) QBMulticastDelegate <QMUsersServiceDelegate> *multicastDelegate;
 @property (strong, nonatomic) QMUsersMemoryStorage *usersMemoryStorage;
 @property (weak, nonatomic) id<QMUsersServiceCacheDataSource> cacheDataSource;
+@property (strong, nonatomic) NSMutableDictionary <QBUUser *, QBMulticastDelegate <QMUsersServiceListenerProtocol> *> *listeners;
 
 @end
 
@@ -34,6 +35,7 @@
         
         _cacheDataSource = cacheDataSource;
         [self loadFromCache];
+        _listeners = [[NSMutableDictionary alloc] init];
     }
     
     return self;
@@ -85,6 +87,27 @@
 - (void)removeDelegate:(id <QMUsersServiceDelegate>)delegate {
     
     [self.multicastDelegate removeDelegate:delegate];
+}
+
+// MARK: - Listeners
+
+- (void)addListener:(id<QMUsersServiceListenerProtocol>)listenerDelegate forUser:(QBUUser *)user {
+    QBMulticastDelegate<QMUsersServiceListenerProtocol> *multicastDelegate = self.listeners[user];
+    if (multicastDelegate == nil) {
+        multicastDelegate = (id<QMUsersServiceListenerProtocol>)[[QBMulticastDelegate alloc] init];
+        self.listeners[user] = multicastDelegate;
+    }
+    [multicastDelegate addDelegate:listenerDelegate];
+}
+
+- (void)removeListener:(id<QMUsersServiceListenerProtocol>)listenerDelegate forUser:(QBUUser *)user {
+    QBMulticastDelegate<QMUsersServiceListenerProtocol> *multicastDelegate = self.listeners[user];
+    if (multicastDelegate != nil) {
+        [multicastDelegate removeDelegate:listenerDelegate];
+        if (multicastDelegate.delegates.count == 0) {
+            self.listeners[user] = nil;
+        }
+    }
 }
 
 //MARK: - Retrive users
@@ -492,6 +515,8 @@
                  [self.multicastDelegate usersService:self didAddUsers:users];
              }
              
+             [self notifyListenersAboutUsersUpdate:users];
+             
              [source setResult:users];
              
          } errorBlock:^(QBResponse *response) {
@@ -524,6 +549,8 @@
              if ([self.multicastDelegate respondsToSelector:@selector(usersService:didAddUsers:)]) {
                  [self.multicastDelegate usersService:self didAddUsers:users];
              }
+             
+             [self notifyListenersAboutUsersUpdate:users];
              
              [source setResult:users];
              
@@ -561,6 +588,8 @@
                  [self.multicastDelegate usersService:self didAddUsers:users];
              }
              
+             [self notifyListenersAboutUsersUpdate:users];
+             
              [source setResult:users];
              
          } errorBlock:^(QBResponse *response) {
@@ -592,6 +621,8 @@
              if ([self.multicastDelegate respondsToSelector:@selector(usersService:didAddUsers:)]) {
                  [self.multicastDelegate usersService:self didAddUsers:users];
              }
+             
+             [self notifyListenersAboutUsersUpdate:users];
              
              [source setResult:users];
              
@@ -634,9 +665,11 @@
             [self.multicastDelegate usersService:self didAddUsers:[mutableNewUsers copy]];
         }
         
-        if (mutableUpdatedUsers.count > 0 &&
-            [self.multicastDelegate respondsToSelector:@selector(usersService:didUpdateUsers:)]) {
-            [self.multicastDelegate usersService:self didUpdateUsers:[mutableUpdatedUsers copy]];
+        if (mutableUpdatedUsers.count > 0) {
+            [self notifyListenersAboutUsersUpdate:mutableUpdatedUsers];
+            if ([self.multicastDelegate respondsToSelector:@selector(usersService:didUpdateUsers:)]) {
+                [self.multicastDelegate usersService:self didUpdateUsers:[mutableUpdatedUsers copy]];
+            }
         }
     }
     else {
@@ -649,6 +682,15 @@
     }
     
     return result;
+}
+
+- (void)notifyListenersAboutUsersUpdate:(NSArray <QBUUser *> *)users {
+    for (QBUUser *user in self.listeners.keyEnumerator) {
+        if ([users containsObject:user]) {
+            QBMulticastDelegate<QMUsersServiceListenerProtocol> *multicastDelegate = self.listeners[user];
+            [multicastDelegate usersService:self didUpdateUser:[self.usersMemoryStorage userWithID:user.ID]];
+        }
+    }
 }
 
 - (QBGeneralResponsePage *)pageForCount:(NSUInteger)count {
