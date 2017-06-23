@@ -637,6 +637,7 @@
 
 - (void)updateUsers:(NSArray *)users {
     [self.usersMemoryStorage addUsers:users];
+    [self notifyListenersAboutUsersUpdate:users];
     if ([self.multicastDelegate respondsToSelector:@selector(usersService:didUpdateUsers:)]) {
         [self.multicastDelegate usersService:self didUpdateUsers:users];
     }
