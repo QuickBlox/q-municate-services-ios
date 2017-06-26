@@ -686,7 +686,8 @@
 }
 
 - (void)notifyListenersAboutUsersUpdate:(NSArray <QBUUser *> *)users {
-    for (QBUUser *user in self.listeners.keyEnumerator) {
+    NSEnumerator *keyEnumerator = self.listeners.keyEnumerator;
+    for (QBUUser *user in keyEnumerator) {
         if ([users containsObject:user]) {
             QBMulticastDelegate<QMUsersServiceListenerProtocol> *multicastDelegate = self.listeners[user];
             [multicastDelegate usersService:self didUpdateUser:[self.usersMemoryStorage userWithID:user.ID]];
