@@ -12,9 +12,9 @@
 #import "QMMediaStoreService.h"
 #import "QMMediaInfoService.h"
 #import "QMMediaWebService.h"
+#import "QMCancellableService.h"
 
 typedef NS_ENUM(NSUInteger, QMAttachmentStatus) {
-    
     QMAttachmentStatusNotLoaded = 0,
     QMAttachmentStatusLoading,
     QMAttachmentStatusLoaded,
@@ -39,6 +39,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init NS_UNAVAILABLE;
 - (instancetype)new NS_UNAVAILABLE;
+
+
 
 - (instancetype)initWithStoreService:(QMMediaStoreService *)storeService
                           webService:(QMMediaWebService *)webService

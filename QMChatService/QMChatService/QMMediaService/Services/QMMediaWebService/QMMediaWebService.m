@@ -42,33 +42,34 @@
 - (void)downloadDataForAttachment:(QBChatAttachment *)attachment
                         messageID:(NSString *)messageID
               withCompletionBlock:(QMAttachmentDataCompletionBlock)completionBlock
-                    progressBlock:(QMMediaProgressBlock)progressBlock {
+                    progressBlock:(QMMediaProgressBlock)progressBlock
+                     cancellBlock:(QMAttachmentDownloadCancellBlock)cancellBlock  {
     
     [self.downloader downloadDataForAttachment:attachment
+                                     messageID:messageID
                            withCompletionBlock:completionBlock
                                  progressBlock:^(float progress) {
                                      self.messagesWebProgress[messageID] = @(progress);
                                      progressBlock(progress);
-                                 }];
+                                 }
+                                  cancellBlock:cancellBlock];
 }
 
-- (void)cancellAllDownloads {
-    [self.downloader cancellAllDownloads];
-}
-
-- (void)cancelDownloadOperationForAttachment:(QBChatAttachment *)attachment {
-    [self.downloader cancelDownloadOperationForAttachment:attachment];
-}
 
 - (void)uploadAttachment:(QBChatAttachment *)attachment
                messageID:(NSString *)messageID
                 withData:(NSData *)data
      withCompletionBlock:(QMAttachmentUploadCompletionBlock)completionBlock
            progressBlock:(QMMediaProgressBlock)progressBlock {
-    [self.uploader uploadAttachment:attachment withData:data withCompletionBlock:completionBlock progressBlock:^(float progress) {
-        self.messagesWebProgress[messageID] = @(progress);
-        progressBlock(progress);
-    }];
+    
+    [self.uploader uploadAttachment:attachment
+                           withData:data
+                withCompletionBlock:completionBlock
+                      progressBlock:^(float progress) {
+                          
+                          self.messagesWebProgress[messageID] = @(progress);
+                          progressBlock(progress);
+                      }];
 }
 
 - (void)uploadAttachment:(QBChatAttachment *)attachment
@@ -92,5 +93,15 @@
 }
 
 
+//MARK: - QMCancellableService
 
+- (void)cancellOperationWithID:(NSString *)operationID {
+    [self.messagesWebProgress removeObjectForKey:operationID];
+    [self.downloader cancellOperationWithID:operationID];
+}
+
+- (void)cancellAllOperations {
+    
+    [self.downloader cancellAllOperations];
+}
 @end

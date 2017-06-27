@@ -13,17 +13,15 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface QMMediaWebService : NSObject
+@interface QMMediaWebService : NSObject <QMCancellableService>
 
 @property (weak, nonatomic) id <QMMediaWebServiceDelegate> delegate;
 
 - (void)downloadDataForAttachment:(QBChatAttachment *)attachment
                         messageID:(NSString *)messageID
               withCompletionBlock:(QMAttachmentDataCompletionBlock)completionBlock
-                    progressBlock:(QMMediaProgressBlock)progressBlock;
-
-- (void)cancellAllDownloads;
-- (void)cancelDownloadOperationForAttachment:(QBChatAttachment *)attachment;
+                    progressBlock:(QMMediaProgressBlock)progressBlock
+                     cancellBlock:(QMAttachmentDownloadCancellBlock)cancellBlock;
 
 - (void)uploadAttachment:(QBChatAttachment *)attachment
                messageID:(NSString *)messageID

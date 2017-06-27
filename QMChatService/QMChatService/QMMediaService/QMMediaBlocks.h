@@ -12,6 +12,7 @@
 @class QBCBlob;
 @class QMMediaError;
 
+typedef void (^QMAttachmentDownloadCancellBlock)(QBChatAttachment *attachment);
 typedef void (^QMAttachmentMessageStatusBlock)(QMMessageAttachmentStatus status, QBChatMessage *message);
 typedef void (^QMAttachmentMesssageUploadProgressBlock)(float progress, QBChatMessage *message);
 typedef void (^QMAttachmentDownloadProgressBlock)(float progress, QBChatMessage *message, QBChatAttachment *attachment);
@@ -23,3 +24,4 @@ typedef void (^QMMediaErrorBlock)(NSError *error, QBResponseStatusCode);
 typedef void (^QMMediaUploadCompletionBlock)(QBCBlob *blob, NSError *error);
 typedef void (^QMAttachmentUploadCompletionBlock)(NSError *error);
 typedef void (^QMMessageUploadProgressBlock)(float progress);
+typedef void(^QMMediaInfoServiceCompletionBlock)(UIImage * _Nullable image, Float64 durationSeconds, CGSize size, NSError * _Nullable error);

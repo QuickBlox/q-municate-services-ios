@@ -8,8 +8,15 @@
 
 #import <Foundation/Foundation.h>
 #import "QMMediaDownloadServiceDelegate.h"
+#import "QMCancellableService.h"
+#import "QMMediaBlocks.h"
 
-@interface QMMediaDownloadService : NSObject <QMMediaDownloadServiceDelegate>
+@interface QMMediaDownloadService : NSObject <QMCancellableService>
 
+- (void)downloadDataForAttachment:(QBChatAttachment *)attachment
+                        messageID:(NSString *)messageID
+              withCompletionBlock:(QMAttachmentDataCompletionBlock)completionBlock
+                    progressBlock:(QMMediaProgressBlock)progressBlock
+                     cancellBlock:(QMAttachmentDownloadCancellBlock)cancellBlock;
 
 @end

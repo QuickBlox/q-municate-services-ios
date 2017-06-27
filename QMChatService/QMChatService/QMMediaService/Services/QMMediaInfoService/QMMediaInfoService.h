@@ -9,7 +9,12 @@
 #import <Foundation/Foundation.h>
 #import "QMMediaInfoServiceDelegate.h"
 #import "QMMediaInfo.h"
+#import "QMMediaBlocks.h"
+#import "QMCancellableService.h"
 
-@interface QMMediaInfoService : NSObject <QMMediaInfoServiceDelegate>
+@interface QMMediaInfoService : NSObject <QMCancellableService>
 
+- (void)mediaInfoForAttachment:(QBChatAttachment *)attachment
+                     messageID:(NSString *)messageID
+                    completion:(QMMediaInfoServiceCompletionBlock)completion;
 @end

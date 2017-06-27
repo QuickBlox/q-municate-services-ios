@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "QMMediaStoreServiceDelegate.h"
 #import "QMAttachmentsMemoryStorage.h"
+#import "QMCancellableService.h"
 
 typedef NS_OPTIONS(NSInteger, QMAttachmentCacheType) {
     
@@ -19,7 +20,7 @@ typedef NS_OPTIONS(NSInteger, QMAttachmentCacheType) {
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface QMMediaStoreService : NSObject
+@interface QMMediaStoreService : NSObject <QMCancellableService>
 
 @property (strong, nonatomic, readonly) QMAttachmentsMemoryStorage *attachmentsMemoryStorage;
 
