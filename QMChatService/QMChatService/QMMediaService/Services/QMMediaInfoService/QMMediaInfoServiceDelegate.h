@@ -8,8 +8,6 @@
 
 @protocol QMMediaInfoServiceDelegate <NSObject>
 
-- (void)cancellAllInfoOperations;
-- (void)cancelInfoOperationForKey:(NSString *)key;
 
 - (void)videoThumbnailForAttachment:(QBChatAttachment *)attachment
                          completion:(void(^)(UIImage *image, NSError *error))completion;

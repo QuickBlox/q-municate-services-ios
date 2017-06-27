@@ -43,25 +43,15 @@ NSString  *kQMAttachmentSizeKey = @"size";
     objc_setAssociatedObject(self, @selector(image), image, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (QMAttachmentStatus)status {
-    
-    return [[self tAttachmentStatus] integerValue];
-}
-
-- (void)setStatus:(QMAttachmentStatus)status {
-    
-    [self setTAttachmentStatus:@(status)];
-}
-
-- (NSNumber *)tAttachmentStatus {
-    
-    return objc_getAssociatedObject(self, @selector(tAttachmentStatus));
-}
-
-- (void)setTAttachmentStatus:(NSNumber *)attachmentStatusNumber {
-    
-    objc_setAssociatedObject(self, @selector(tAttachmentStatus), attachmentStatusNumber, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
+//- (NSNumber *)tAttachmentStatus {
+//
+//    return objc_getAssociatedObject(self, @selector(tAttachmentStatus));
+//}
+//
+//- (void)setTAttachmentStatus:(NSNumber *)attachmentStatusNumber {
+//
+//    objc_setAssociatedObject(self, @selector(tAttachmentStatus), attachmentStatusNumber, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+//}
 
 - (QMAttachmentContentType)contentType {
     
@@ -191,7 +181,7 @@ NSString  *kQMAttachmentSizeKey = @"size";
     
     components.path = [NSString stringWithFormat:@"/blobs/%@", self.ID];
     components.query = [NSString stringWithFormat:@"token=%@",[QBSession currentSession].sessionDetails.token];
-    
+   
     return components.URL;
 }
 

@@ -16,21 +16,12 @@ typedef NS_ENUM(NSInteger, QMAttachmentContentType) {
     QMAttachmentContentTypeCustom
 };
 
-typedef NS_ENUM(NSUInteger, QMAttachmentStatus) {
-    
-    QMAttachmentStatusNotLoaded = 0,
-    QMAttachmentStatusLoading,
-    QMAttachmentStatusLoaded,
-    QMAttachmentStatusPreparing,
-    QMAttachmentStatusPrepared,
-    QMAttachmentStatusError
-};
 
 @interface QBChatAttachment (QMCustomParameters)
 
 @property (assign, nonatomic) QMAttachmentContentType contentType;
 
-@property (assign, nonatomic) QMAttachmentStatus status;
+//@property (assign, nonatomic) QMAttachmentStatus status;
 
 /**
  *  The URL that identifies locally saved attachment resource.

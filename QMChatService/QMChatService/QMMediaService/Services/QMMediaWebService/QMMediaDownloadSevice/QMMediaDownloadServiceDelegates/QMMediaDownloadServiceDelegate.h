@@ -8,18 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-#import "QMMediaBlocks.h"
-
-@protocol QMMediaDownloadServiceDelegate <NSObject>
-
-- (void)downloadDataForAttachment:(QBChatAttachment *)attachment
-              withCompletionBlock:(QMAttachmentDataCompletionBlock)completionBlock
-                    progressBlock:(QMMediaProgressBlock)progressBlock;
-
-- (void)cancellAllDownloads;
-- (void)cancelDownloadOperationForAttachment:(QBChatAttachment *)attachment;
-
-@end
 
 
 

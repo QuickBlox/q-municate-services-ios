@@ -1423,7 +1423,8 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     NSAssert(message.messageType == QMMessageTypeText,
              @"You can only send text messages with this method.");
     
-    [self sendMessage:message type:QMMessageTypeText
+    [self sendMessage:message
+                 type:QMMessageTypeText
              toDialog:dialog
         saveToHistory:saveToHistory
         saveToStorage:saveToStorage
