@@ -18,16 +18,18 @@ typedef  void(^QMCancellBlock)();
 @property (nonatomic, copy, nullable) QMOperationBlock operationBlock;
 @property (nonatomic, copy, nullable) QMCancellBlock cancellBlock;
 
-- (void)complete;
-- (void)cancel;
+- (void)completeOperation;
 
 + (instancetype)asynchronousOperationWithID:(NSString *)operationID
                                       queue:(NSOperationQueue *)queue;
 
-+ (void)cancelOperationWithID:(NSString *)operationID
-                        queue:(NSOperationQueue *)queue;
+@end
 
-+ (void)cancelAllOperationsForQueue:(NSOperationQueue *)queue;
+@interface NSOperationQueue(QMAsynchronousOperation)
+
+- (void)cancelOperationWithID:(NSString *)operationID;
+- (void)addAsynchronousOperation:(QMAsynchronousOperation *)asyncOperation;
 
 @end
+
 NS_ASSUME_NONNULL_END

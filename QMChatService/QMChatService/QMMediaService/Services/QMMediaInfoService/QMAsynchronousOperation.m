@@ -8,130 +8,169 @@
 
 #import "QMAsynchronousOperation.h"
 
+@interface QMAsynchronousOperation()
+@property (nonatomic, getter = isFinished, readwrite)  BOOL finished;
+@property (nonatomic, getter = isExecuting, readwrite) BOOL executing;
+@end
+
+#ifndef dispatch_main_async_safe
+#define dispatch_main_async_safe(block)\
+if (strcmp(dispatch_queue_get_label(DISPATCH_CURRENT_QUEUE_LABEL), dispatch_queue_get_label(dispatch_get_main_queue())) == 0) {\
+block();\
+} else {\
+dispatch_async(dispatch_get_main_queue(), block);\
+}
+#endif
+
 @implementation QMAsynchronousOperation
 
-//@synthesize ready = _ready;
+@synthesize finished  = _finished;
 @synthesize executing = _executing;
-@synthesize finished = _finished;
 
 //MARK: - Class methods
 
 + (instancetype)asynchronousOperationWithID:(NSString *)operationID
                                       queue:(NSOperationQueue *)queue {
     
-    QMAsynchronousOperation *operation = [QMAsynchronousOperation new];
+    QMAsynchronousOperation *operation = [QMAsynchronousOperation operation];
     
     if (operationID.length != 0) {
         
         operation.operationID = operationID;
-        
-        for (QMAsynchronousOperation *operationInQueue in queue.operations) {
-            if ([operationInQueue.operationID isEqualToString:operationID]) {
-                return nil;
-            }
-        }
+        [queue addAsynchronousOperation:operation];
     }
     
     return operation;
 }
 
-+ (void)cancelOperationWithID:(NSString *)operationID
-                        queue:(NSOperationQueue *)queue {
-    if (operationID.length != 0) {
-        
-        for (QMAsynchronousOperation *operationInQueue in queue.operations) {
-            if ([operationInQueue.operationID isEqualToString:operationID]) {
-                [operationInQueue cancel];
-                [operationInQueue complete];
-            }
-        }
++ (instancetype)operation {
+    return [[self alloc] init];
+}
+
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        _finished  = NO;
+        _executing = NO;
     }
-}
-
-
-+ (void)cancelAllOperationsForQueue:(NSOperationQueue *)queue {
-    
-    for (QMAsynchronousOperation *operationInQueue in queue.operations) {
-        [operationInQueue cancel];
-        [operationInQueue complete];
-    }
-}
-
-//MARK: - State
-- (void)setExecuting:(BOOL)executing {
-    if (_executing != executing) {
-        [self willChangeValueForKey:NSStringFromSelector(@selector(isExecuting))];
-        _executing = executing;
-        [self didChangeValueForKey:NSStringFromSelector(@selector(isExecuting))];
-    }
-}
-
-- (BOOL)isExecuting
-{
-    return _executing;
-}
-
-- (void)setFinished:(BOOL)finished
-{
-    if (_finished != finished)
-    {
-        [self willChangeValueForKey:NSStringFromSelector(@selector(isFinished))];
-        _finished = finished;
-        [self didChangeValueForKey:NSStringFromSelector(@selector(isFinished))];
-    }
-}
-
-- (BOOL)isFinished
-{
-    return _finished;
-}
-
-- (BOOL)isAsynchronous
-{
-    return YES;
+    return self;
 }
 
 //MARK: - Control
-- (void)cancel {
+
+-(void)completeOperation {
     
-    [super cancel];
-    
-    if (self.cancellBlock) {
-        self.cancellBlock();
+    self.executing = NO;
+    self.finished  = YES;
+}
+
+
+- (void)start {
+    if ([self isCancelled]) {
+        self.finished = YES;
+        return;
     }
+    
+    self.executing = YES;
+    
+    [self main];
 }
 
 - (void)main {
     
-    if (self.operationBlock != nil) {
+    if (self.operationBlock) {
         self.operationBlock();
     }
     else {
-        [self complete];
+        [self completeOperation];
     }
 }
 
-- (void)start {
+- (void)cancel {
     
-    if (self.isCancelled) {
-        self.finished = YES;
-    }
-    else if (!self.isExecuting && !self.isFinished) {
-        
-        self.executing = YES;
-        [self main];
-        NSLog(@"\"%@\" Operation Started.", self.operationID);
+    [super cancel];
+    
+    dispatch_main_async_safe(^{
+        if (self.cancellBlock) {
+            self.cancellBlock();
+        }
+    });
+}
+
+//MARK: - NSOperation methods
+
+- (BOOL)isAsynchronous {
+    return YES;
+}
+
+- (BOOL)isExecuting {
+    @synchronized(self) {
+        return _executing;
     }
 }
 
-- (void)complete {
-    
-    if (self.isExecuting) {
-        NSLog(@"\"%@\" Operation Finished.", self.operationID);
-        
-        self.executing = NO;
-        self.finished = YES;
+- (BOOL)isFinished {
+    @synchronized(self) {
+        return _finished;
     }
 }
+
+- (void)setExecuting:(BOOL)executing {
+    if (_executing != executing) {
+        [self willChangeValueForKey:@"isExecuting"];
+        @synchronized(self) {
+            _executing = executing;
+        }
+        [self didChangeValueForKey:@"isExecuting"];
+    }
+}
+
+- (void)setFinished:(BOOL)finished {
+    if (_finished != finished) {
+        [self willChangeValueForKey:@"isFinished"];
+        @synchronized(self) {
+            _finished = finished;
+        }
+        [self didChangeValueForKey:@"isFinished"];
+    }
+}
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"%@ ID:%@",
+            [super description],self.operationID];
+}
+
+@end
+
+@implementation NSOperationQueue(QMAsynchronousOperation)
+
+- (void)cancelOperationWithID:(NSString *)operationID {
+    
+    QMAsynchronousOperation *operation = [[self _asyncOperations] objectForKey:operationID];
+    [operation cancel];
+}
+
+- (void)addAsynchronousOperation:(QMAsynchronousOperation *)asyncOperation {
+    
+    if ([[self _asyncOperations] objectForKey:asyncOperation.operationID]) {
+        return;
+    }
+    [[self _asyncOperations] setObject:asyncOperation forKey:asyncOperation.operationID];
+    [self addOperation:asyncOperation];
+}
+
+- (NSMapTable *)_asyncOperations {
+    
+    static NSMapTable *snapshotOperations = nil;
+    
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        
+        snapshotOperations = [NSMapTable strongToWeakObjectsMapTable];
+    });
+    
+    return snapshotOperations;
+}
+
 
 @end
