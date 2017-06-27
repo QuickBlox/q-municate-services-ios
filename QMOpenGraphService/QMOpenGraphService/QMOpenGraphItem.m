@@ -18,6 +18,7 @@
      "\r   url: %@"
      "\r   title: %@"
      "\r   description: %@"
+     "\r   fiveiconUrl: %@"
      "\r   imageURL: %@"
      "\r   width: %tu"
      "\r   height: %tu",
@@ -25,6 +26,7 @@
      _baseUrl,
      _siteTitle,
      _siteDescription,
+     _faviconUrl,
      _imageURL,
      _imageWidth,
      _imageHeight];

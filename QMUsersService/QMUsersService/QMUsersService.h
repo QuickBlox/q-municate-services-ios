@@ -12,6 +12,7 @@
 
 @protocol QMUsersServiceDelegate;
 @protocol QMUsersServiceCacheDataSource;
+@protocol QMUsersServiceListenerProtocol;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -25,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Init with service data delegate and users cache protocol.
  *
- *  @param serviceManager   instance confirmed id<QMServiceDataDelegate> protocol
+ *  @param serviceManager        instance confirmed id<QMServiceDataDelegate> protocol
  *  @param cacheDataSource       instance confirmed id<QMUsersServiceCacheDataSource> protocol
  *
  *  @return QMUsersService instance
@@ -46,6 +47,26 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param delegate instance that confirms id<QMUsersServiceDelegate> protocol
  */
 - (void)removeDelegate:(id <QMUsersServiceDelegate>)delegate;
+
+/**
+ *  Start listen for user updates.
+ *
+ *  @param listener class that conforms to QMUsersServiceListenerProtocol protocol
+ *  @param user user instance to subscribe for
+ *
+ *  @see QMUsersServiceListenerProtocol
+ */
+- (void)addListener:(id<QMUsersServiceListenerProtocol>)listener forUser:(QBUUser *)user;
+
+/**
+ *  Stop listen for user updates.
+ *
+ *  @param listener class that conforms to QMUsersServiceListenerProtocol protocol
+ *  @param user user instance to subscribe for
+ *
+ *  @see QMUsersServiceListenerProtocol
+ */
+- (void)removeListener:(id<QMUsersServiceListenerProtocol>)listener forUser:(QBUUser *)user;
 
 //MARK: - Tasks
 //MARK: - Intelligent fetch
@@ -464,6 +485,24 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param users            NSArray of QBUUser instances as users
  */
 - (void)usersService:(QMUsersService *)usersService didUpdateUsers:(NSArray<QBUUser *> *)users;
+
+@end
+
+/**
+ *  QMUsersServiceListenerProtocol protocol interface.
+ *  This protocol allows to receive updates only for a specific user.
+ */
+@protocol QMUsersServiceListenerProtocol <NSObject>
+
+@required
+
+/**
+ *  Called when specific user you subscribed for was updaed.
+ *
+ *  @param usersService QMUsersService instance
+ *  @param user user instance that was updated
+ */
+- (void)usersService:(QMUsersService *)usersService didUpdateUser:(QBUUser *)user;
 
 @end
 

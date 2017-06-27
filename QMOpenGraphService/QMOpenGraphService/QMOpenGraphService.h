@@ -47,7 +47,7 @@ NS_ASSUME_NONNULL_BEGIN
  
  @param ID Identifier
  */
-- (void)openGraphItemForText:(NSString *)text ID:(NSString *)ID;
+- (void)preloadGraphItemForText:(NSString *)text ID:(NSString *)ID;
 
 @end
 
@@ -76,7 +76,7 @@ didAddOpenGraphItemToMemoryStorage:(QMOpenGraphItem *)openGraphItem;
 
 @protocol QMOpenGraphCacheDataSource <NSObject>
 
-- (nullable QMOpenGraphItem *)cachedOpenGraphItemWithID:(NSString *)ID URLString:(NSString *)URLString;
+- (nullable QMOpenGraphItem *)cachedOpenGraphItemWithID:(NSString *)ID;
 
 @end
 
