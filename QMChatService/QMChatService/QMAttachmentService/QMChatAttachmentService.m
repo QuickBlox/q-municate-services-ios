@@ -105,7 +105,7 @@
                       }];
     }
     
-    if (attachment.contentType == QMAttachmentContentTypeAudio || attachment.contentType == QMAttachmentContentTypeVideo) {
+    if (attachment.contentType == QMAttachmentContentTypeAudio) {
         [self audioDataForAttachment:attachment
                              message:message
                           completion:^(NSURL *fileURL, NSError *error) {
