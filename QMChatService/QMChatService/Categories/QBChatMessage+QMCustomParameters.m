@@ -405,7 +405,6 @@ NSString const *kQMCustomParameterDialogDeletedOccupantsIDs = @"deleted_occupant
     self.attachments = @[locationAttachment];
 }
 
-
 - (BOOL)isLocationMessage {
     
     __block BOOL isLocationMessage = NO;

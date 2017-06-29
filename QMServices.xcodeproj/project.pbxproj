@@ -22,7 +22,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		2CE107F71B594BD800379D96 /* QMServicesManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 2CE107F51B594BD800379D96 /* QMServicesManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2CE107F71B594BD800379D96 /* QMServicesManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 2CE107F51B594BD800379D96 /* QMServicesManager.h */; };
 		55013A801A1F68280030C134 /* QMServices.m in Sources */ = {isa = PBXBuildFile; fileRef = 55013A7F1A1F68280030C134 /* QMServices.m */; };
 		55013AEC1A1F72350030C134 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55013AEB1A1F72350030C134 /* Foundation.framework */; };
 		55A3651C1A2744A800C792C0 /* libQMAuthService.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 55A364E51A27378F00C792C0 /* libQMAuthService.a */; };
@@ -37,8 +37,9 @@
 		86E40FF11BDA4C50002B0496 /* libQMUsersCache.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 86F9CD721BDA28110021B6F0 /* libQMUsersCache.a */; };
 		86E40FF21BDA4C50002B0496 /* libQMUsersService.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 86F9CD571BDA27ED0021B6F0 /* libQMUsersService.a */; };
 		E0C3C38B1D632766003C0FB8 /* QMDeferredQueueManager.h in Headers */ = {isa = PBXBuildFile; fileRef = E0C3C3891D632766003C0FB8 /* QMDeferredQueueManager.h */; };
-		E0C3C3951D632789003C0FB8 /* QMDeferredAction.h in Headers */ = {isa = PBXBuildFile; fileRef = E0C3C3931D632789003C0FB8 /* QMDeferredAction.h */; };
 		E0C3C3991D632FA9003C0FB8 /* QMDeferredQueueMemoryStorage.h in Headers */ = {isa = PBXBuildFile; fileRef = E0C3C3971D632FA9003C0FB8 /* QMDeferredQueueMemoryStorage.h */; };
+		FB5D709A1EF18A1D00E50084 /* libQMOpenGraphCache.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FB5D704B1EF14A2E00E50084 /* libQMOpenGraphCache.a */; };
+		FB5D70D11EF1922000E50084 /* libQMOpenGraphService.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FB5D70CE1EF190C800E50084 /* libQMOpenGraphService.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -196,6 +197,41 @@
 			remoteGlobalIDString = 86F9CD611BDA28110021B6F0;
 			remoteInfo = QMUsersCache;
 		};
+		FB5D704A1EF14A2E00E50084 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FB5D70461EF14A2E00E50084 /* QMOpenGraphCache.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FB5D703A1EF14A1800E50084;
+			remoteInfo = QMOpenGraphCache;
+		};
+		FB5D707C1EF16F1600E50084 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FB5D70461EF14A2E00E50084 /* QMOpenGraphCache.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FB5D70501EF14AA600E50084;
+			remoteInfo = QMOpenGraphCacheModel;
+		};
+		FB5D709B1EF18A3D00E50084 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FB5D70461EF14A2E00E50084 /* QMOpenGraphCache.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FB5D70391EF14A1800E50084;
+			remoteInfo = QMOpenGraphCache;
+		};
+		FB5D70CD1EF190C800E50084 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FB5D70C91EF190C800E50084 /* QMOpenGraphService.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FB5D70B11EF1909300E50084;
+			remoteInfo = QMOpenGraphService;
+		};
+		FB5D70CF1EF1921A00E50084 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FB5D70C91EF190C800E50084 /* QMOpenGraphService.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FB5D70B01EF1909300E50084;
+			remoteInfo = QMOpenGraphService;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -219,10 +255,10 @@
 		86F9CD6D1BDA28110021B6F0 /* QMUsersCache.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMUsersCache.xcodeproj; path = QMUsersCache/QMUsersCache.xcodeproj; sourceTree = "<group>"; };
 		E0C3C3891D632766003C0FB8 /* QMDeferredQueueManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMDeferredQueueManager.h; sourceTree = "<group>"; };
 		E0C3C38A1D632766003C0FB8 /* QMDeferredQueueManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMDeferredQueueManager.m; sourceTree = "<group>"; };
-		E0C3C3931D632789003C0FB8 /* QMDeferredAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMDeferredAction.h; sourceTree = "<group>"; };
-		E0C3C3941D632789003C0FB8 /* QMDeferredAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMDeferredAction.m; sourceTree = "<group>"; };
 		E0C3C3971D632FA9003C0FB8 /* QMDeferredQueueMemoryStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMDeferredQueueMemoryStorage.h; sourceTree = "<group>"; };
 		E0C3C3981D632FA9003C0FB8 /* QMDeferredQueueMemoryStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMDeferredQueueMemoryStorage.m; sourceTree = "<group>"; };
+		FB5D70461EF14A2E00E50084 /* QMOpenGraphCache.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMOpenGraphCache.xcodeproj; path = QMOpenGraphCache/QMOpenGraphCache.xcodeproj; sourceTree = "<group>"; };
+		FB5D70C91EF190C800E50084 /* QMOpenGraphService.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMOpenGraphService.xcodeproj; path = QMOpenGraphService/QMOpenGraphService.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -230,15 +266,17 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FB5D70D11EF1922000E50084 /* libQMOpenGraphService.a in Frameworks */,
+				55A3651E1A2744A800C792C0 /* libQMDBStorage.a in Frameworks */,
+				55A3653F1A2744ED00C792C0 /* libQMContactListCache.a in Frameworks */,
+				FB5D709A1EF18A1D00E50084 /* libQMOpenGraphCache.a in Frameworks */,
 				86E40FF11BDA4C50002B0496 /* libQMUsersCache.a in Frameworks */,
+				55A3653D1A2744ED00C792C0 /* libQMChatCache.a in Frameworks */,
 				86E40FF21BDA4C50002B0496 /* libQMUsersService.a in Frameworks */,
 				55A3653C1A2744ED00C792C0 /* libQMBaseService.a in Frameworks */,
-				55A3653D1A2744ED00C792C0 /* libQMChatCache.a in Frameworks */,
 				55A3653E1A2744ED00C792C0 /* libQMChatService.a in Frameworks */,
-				55A3653F1A2744ED00C792C0 /* libQMContactListCache.a in Frameworks */,
 				55A3651C1A2744A800C792C0 /* libQMAuthService.a in Frameworks */,
 				55A3651D1A2744A800C792C0 /* libQMContactListService.a in Frameworks */,
-				55A3651E1A2744A800C792C0 /* libQMDBStorage.a in Frameworks */,
 				55013AEC1A1F72350030C134 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -253,8 +291,6 @@
 				2CE107F61B594BD800379D96 /* QMServicesManager.m */,
 				E0C3C3891D632766003C0FB8 /* QMDeferredQueueManager.h */,
 				E0C3C38A1D632766003C0FB8 /* QMDeferredQueueManager.m */,
-				E0C3C3931D632789003C0FB8 /* QMDeferredAction.h */,
-				E0C3C3941D632789003C0FB8 /* QMDeferredAction.m */,
 				E0C3C3971D632FA9003C0FB8 /* QMDeferredQueueMemoryStorage.h */,
 				E0C3C3981D632FA9003C0FB8 /* QMDeferredQueueMemoryStorage.m */,
 			);
@@ -300,6 +336,7 @@
 		5590F28A1A0B8C5200C5044F /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				FB5D70C91EF190C800E50084 /* QMOpenGraphService.xcodeproj */,
 				86F9CD4E1BDA27ED0021B6F0 /* QMUsersService.xcodeproj */,
 				5590F2E01A0BA11900C5044F /* QMBaseService.xcodeproj */,
 				55C276C71A0916BF005A0C38 /* QMChatService.xcodeproj */,
@@ -312,10 +349,11 @@
 		5590F2911A0B8C7B00C5044F /* Cache */ = {
 			isa = PBXGroup;
 			children = (
-				86F9CD6D1BDA28110021B6F0 /* QMUsersCache.xcodeproj */,
 				5590F22C1A0B876F00C5044F /* QMDBStorage.xcodeproj */,
-				5590F2A31A0B8D2900C5044F /* QMContactListCache.xcodeproj */,
+				86F9CD6D1BDA28110021B6F0 /* QMUsersCache.xcodeproj */,
 				5590F26B1A0B8C0500C5044F /* QMChatCache.xcodeproj */,
+				5590F2A31A0B8D2900C5044F /* QMContactListCache.xcodeproj */,
+				FB5D70461EF14A2E00E50084 /* QMOpenGraphCache.xcodeproj */,
 			);
 			name = Cache;
 			sourceTree = "<group>";
@@ -391,6 +429,23 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		FB5D70471EF14A2E00E50084 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FB5D704B1EF14A2E00E50084 /* libQMOpenGraphCache.a */,
+				FB5D707D1EF16F1600E50084 /* QMOpenGraphCacheModel.bundle */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FB5D70CA1EF190C800E50084 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FB5D70CE1EF190C800E50084 /* libQMOpenGraphService.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -401,7 +456,6 @@
 				2CE107F71B594BD800379D96 /* QMServicesManager.h in Headers */,
 				E0C3C38B1D632766003C0FB8 /* QMDeferredQueueManager.h in Headers */,
 				584AFDCC1D13F462007D286D /* QMSLog.h in Headers */,
-				E0C3C3951D632789003C0FB8 /* QMDeferredAction.h in Headers */,
 				E0C3C3991D632FA9003C0FB8 /* QMDeferredQueueMemoryStorage.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -426,8 +480,10 @@
 				55013B101A1F78FC0030C134 /* PBXTargetDependency */,
 				55013A721A1F64F40030C134 /* PBXTargetDependency */,
 				55013B081A1F759F0030C134 /* PBXTargetDependency */,
-				86E40FE41BDA4C3A002B0496 /* PBXTargetDependency */,
 				86E40FF01BDA4C47002B0496 /* PBXTargetDependency */,
+				86E40FE41BDA4C3A002B0496 /* PBXTargetDependency */,
+				FB5D70D01EF1921A00E50084 /* PBXTargetDependency */,
+				FB5D709C1EF18A3D00E50084 /* PBXTargetDependency */,
 			);
 			name = QMServices;
 			productName = QMServices;
@@ -490,6 +546,14 @@
 				{
 					ProductGroup = 5590F22D1A0B876F00C5044F /* Products */;
 					ProjectRef = 5590F22C1A0B876F00C5044F /* QMDBStorage.xcodeproj */;
+				},
+				{
+					ProductGroup = FB5D70471EF14A2E00E50084 /* Products */;
+					ProjectRef = FB5D70461EF14A2E00E50084 /* QMOpenGraphCache.xcodeproj */;
+				},
+				{
+					ProductGroup = FB5D70CA1EF190C800E50084 /* Products */;
+					ProjectRef = FB5D70C91EF190C800E50084 /* QMOpenGraphService.xcodeproj */;
 				},
 				{
 					ProductGroup = 86F9CD6E1BDA28110021B6F0 /* Products */;
@@ -593,6 +657,27 @@
 			remoteRef = 86F9CD711BDA28110021B6F0 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		FB5D704B1EF14A2E00E50084 /* libQMOpenGraphCache.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libQMOpenGraphCache.a;
+			remoteRef = FB5D704A1EF14A2E00E50084 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FB5D707D1EF16F1600E50084 /* QMOpenGraphCacheModel.bundle */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = QMOpenGraphCacheModel.bundle;
+			remoteRef = FB5D707C1EF16F1600E50084 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FB5D70CE1EF190C800E50084 /* libQMOpenGraphService.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libQMOpenGraphService.a;
+			remoteRef = FB5D70CD1EF190C800E50084 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -657,6 +742,16 @@
 			isa = PBXTargetDependency;
 			name = QMUsersService;
 			targetProxy = 86E40FEF1BDA4C47002B0496 /* PBXContainerItemProxy */;
+		};
+		FB5D709C1EF18A3D00E50084 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = QMOpenGraphCache;
+			targetProxy = FB5D709B1EF18A3D00E50084 /* PBXContainerItemProxy */;
+		};
+		FB5D70D01EF1921A00E50084 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = QMOpenGraphService;
+			targetProxy = FB5D70CF1EF1921A00E50084 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

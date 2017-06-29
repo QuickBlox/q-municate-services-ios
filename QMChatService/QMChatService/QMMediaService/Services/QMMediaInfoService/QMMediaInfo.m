@@ -162,8 +162,6 @@ typedef NS_ENUM(NSUInteger, QMVideoUrlType) {
     });
 }
 
-
-
 - (void)generateThumbnailFromAsset:(AVAsset *)thumbnailAsset withSize:(CGSize)size
                  completionHandler:(void (^)(UIImage *thumbnail))handler
 {

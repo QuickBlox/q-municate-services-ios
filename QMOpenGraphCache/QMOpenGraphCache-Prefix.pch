@@ -1,0 +1,13 @@
+//
+//  QMOpenGraphCache-Prefix.pch
+//  QMOpenGraphCache
+//
+//  Created by Andrey Ivanov on 14/06/2017.
+//  Copyright © 2017 QuickBlox. All rights reserved.
+//
+
+#ifndef QMOpenGraphCache_Prefix_pch
+#define QMOpenGraphCache_Prefix_pch
+
+
+#endif /* QMOpenGraphCache_Prefix_pch */

@@ -99,7 +99,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)isImageAttachment;
 
 
-
 @end
 
 NS_ASSUME_NONNULL_END

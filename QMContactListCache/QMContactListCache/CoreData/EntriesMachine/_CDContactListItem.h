@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface _CDContactListItem : NSManagedObject
 + (instancetype)insertInManagedObjectContext:(NSManagedObjectContext *)moc_;
 + (NSString*)entityName;
-+ (nullable NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
++ (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
 @property (nonatomic, readonly, strong) CDContactListItemID *objectID;
 
 @property (nonatomic, strong, nullable) NSNumber* subscriptionState;
@@ -36,14 +36,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface _CDContactListItem (CoreDataGeneratedPrimitiveAccessors)
 
-- (nullable NSNumber*)primitiveSubscriptionState;
-- (void)setPrimitiveSubscriptionState:(nullable NSNumber*)value;
+- (NSNumber*)primitiveSubscriptionState;
+- (void)setPrimitiveSubscriptionState:(NSNumber*)value;
 
 - (int16_t)primitiveSubscriptionStateValue;
 - (void)setPrimitiveSubscriptionStateValue:(int16_t)value_;
 
-- (nullable NSNumber*)primitiveUserID;
-- (void)setPrimitiveUserID:(nullable NSNumber*)value;
+- (NSNumber*)primitiveUserID;
+- (void)setPrimitiveUserID:(NSNumber*)value;
 
 - (int32_t)primitiveUserIDValue;
 - (void)setPrimitiveUserIDValue:(int32_t)value_;

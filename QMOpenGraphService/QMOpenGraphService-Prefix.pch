@@ -1,0 +1,20 @@
+//
+//  QMOpenGraphService-Prefix.pch
+//  QMOpenGraphService
+//
+//  Created by Andrey Ivanov on 29/06/2017.
+//  Copyright © 2017 QuickBlox. All rights reserved.
+//
+
+#ifndef QMOpenGraphService_Prefix_pch
+#define QMOpenGraphService_Prefix_pch
+
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+#import <MobileCoreServices/MobileCoreServices.h>
+#import <SystemConfiguration/SystemConfiguration.h>
+#import <Quickblox/Quickblox.h>
+#import <Bolts/Bolts.h>
+#import <Quickblox/QBMulticastDelegate.h>
+
+#endif /* QMOpenGraphService_Prefix_pch */

@@ -9,7 +9,6 @@
 #import "QMServicesManager.h"
 #import "_CDMessage.h"
 #import "_CDDialog.h"
-#import "_CDLinkPreview.h"
 
 #import "QMSLog.h"
 
@@ -44,7 +43,7 @@
     if (self) {
         
         [QMChatCache setupDBWithStoreNamed:@"sample-cache" applicationGroupIdentifier:[self appGroupIdentifier]];
-        [QMChatCache instance].messagesLimitPerDialog = kQMMessagesLimitPerDialog;
+        QMChatCache.instance.messagesLimitPerDialog = kQMMessagesLimitPerDialog;
         
         _authService = [[QMAuthService alloc] initWithServiceManager:self];
         _chatService = [[QMChatService alloc] initWithServiceManager:self cacheDataSource:self];
@@ -99,14 +98,21 @@
         }];
         
         dispatch_group_enter(self.logoutGroup);
-        [[QMChatCache instance] deleteAllDialogsWithCompletion:^{
+        [QMChatCache.instance deleteAllDialogsWithCompletion:^{
             
             __typeof(self) strongSelf = weakSelf;
             dispatch_group_leave(strongSelf.logoutGroup);
         }];
         
         dispatch_group_enter(self.logoutGroup);
-        [[QMChatCache instance] deleteAllMessagesWithCompletion:^{
+        [QMChatCache.instance deleteAllMessagesWithCompletion:^{
+            
+            __typeof(self) strongSelf = weakSelf;
+            dispatch_group_leave(strongSelf.logoutGroup);
+        }];
+        
+        dispatch_group_enter(self.logoutGroup);
+        [QMOpenGraphCache.instance deleteAllOpenGraphItemsWithCompletion:^{
             
             __typeof(self) strongSelf = weakSelf;
             dispatch_group_leave(strongSelf.logoutGroup);
@@ -236,10 +242,10 @@
 
 //MARK: QMChatServiceCache delegate
 
-- (void)chatService:(QMChatService *)__unused chatService didAddLinkPreviewToMemoryStorage:(QMLinkPreview *)linkPreview {
-    
-    [QMChatCache.instance insertOrUpdateLinkPreview:linkPreview
-                                         completion:nil];
+- (void)chatService:(QMChatService *)__unused chatService r:(QMLinkPreview *)linkPreview {
+    //
+    //    [QMChatCache.instance insertOrUpdateLinkPreview:linkPreview
+    //                                         completion:nil];
 }
 - (void)chatService:(QMChatService *)chatService didAddChatDialogToMemoryStorage:(QBChatDialog *)chatDialog {
     
@@ -320,16 +326,10 @@ didReceiveNotificationMessage:(QBChatMessage *)message
 - (void)cachedDialogs:(QMCacheCollection)block {
     
     NSArray<QBChatDialog *> *dialogs =
-    [[QMChatCache instance] dialogsSortedBy:CDDialogAttributes.lastMessageDate
-                                  ascending:YES
-                              withPredicate:nil];
+    [QMChatCache.instance dialogsSortedBy:CDDialogAttributes.lastMessageDate
+                                ascending:YES
+                            withPredicate:nil];
     block(dialogs);
-}
-
-
-- (QMLinkPreview *)cachedLinkPreviewForURLKey:(NSString *)urlKey {
-    
-    return [QMChatCache.instance linkPreviewForURLKey:urlKey];
 }
 
 - (void)cachedDialogWithID:(NSString *)dialogID completion:(void (^)(QBChatDialog *dialog))completion {

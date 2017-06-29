@@ -11,13 +11,6 @@
 
 #define IS(attrName, attrVal) [NSPredicate predicateWithFormat:@"%K == %@", attrName, attrVal]
 
-#define cd_dispatch_main_async_safe(block)\
-    if ([NSThread isMainThread]) {\
-        block();\
-    } else {\
-        dispatch_async(dispatch_get_main_queue(), block);\
-    }
-
 NS_ASSUME_NONNULL_BEGIN
 
 @interface QMDBStorage : NSObject
@@ -30,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  * @brief Load CoreData(Sqlite) file
- * @param name - filename
+ * @param storeName - filename
  */
 + (void)setupDBWithStoreNamed:(NSString *)storeName;
 

@@ -11,11 +11,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		55A6211C1A0BE2EB001BA470 /* QMBaseService-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QMBaseService-Prefix.pch"; sourceTree = "<group>"; };
 		55B2201B1A2C0C9D00668086 /* libQMBaseService.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libQMBaseService.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		55B2F11C1A091CE9008C2272 /* QMBaseService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMBaseService.h; sourceTree = "<group>"; };
 		55B2F11D1A091CE9008C2272 /* QMBaseService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMBaseService.m; sourceTree = "<group>"; };
-		8620BC591B0F7DCB005ED359 /* Quickblox.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; lineEnding = 0; name = Quickblox.xcconfig; path = ../Quickblox.xcconfig; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.xcconfig; };
+		8620BC591B0F7DCB005ED359 /* Quickblox.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; lineEnding = 0; name = Quickblox.xcconfig; path = ../Quickblox.xcconfig; sourceTree = "<group>"; };
+		FB805A511F052E72000B3E9F /* QMBaseService-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QMBaseService-Prefix.pch"; sourceTree = "<group>"; };
 		FBBBDBE41AEF98DA00841288 /* QMMemoryStorageProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = QMMemoryStorageProtocol.h; sourceTree = "<group>"; };
 		FBBBDBEF1AEF9DA300841288 /* QMServiceManagerProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = QMServiceManagerProtocol.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -31,20 +31,12 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		55A6211B1A0BE2EB001BA470 /* Support */ = {
-			isa = PBXGroup;
-			children = (
-				55A6211C1A0BE2EB001BA470 /* QMBaseService-Prefix.pch */,
-			);
-			path = Support;
-			sourceTree = "<group>";
-		};
 		55B2F0E41A091CBA008C2272 = {
 			isa = PBXGroup;
 			children = (
+				FB805A511F052E72000B3E9F /* QMBaseService-Prefix.pch */,
 				8620BC591B0F7DCB005ED359 /* Quickblox.xcconfig */,
 				55B2F1061A091CC9008C2272 /* QMBaseService */,
-				55A6211B1A0BE2EB001BA470 /* Support */,
 				55B2201B1A2C0C9D00668086 /* libQMBaseService.a */,
 			);
 			sourceTree = "<group>";
@@ -196,7 +188,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Support/QMBaseService-Prefix.pch";
+				GCC_PREFIX_HEADER = "QMBaseService-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -248,7 +240,7 @@
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Support/QMBaseService-Prefix.pch";
+				GCC_PREFIX_HEADER = "QMBaseService-Prefix.pch";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;

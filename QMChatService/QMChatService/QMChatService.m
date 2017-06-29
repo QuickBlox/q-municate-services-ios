@@ -10,7 +10,6 @@
 #import "QBChatMessage+QMCustomParameters.h"
 #import "QMSLog.h"
 
-#import "QMLinkPreviewManager.h"
 #import "QBChatAttachment+QMFactory.h"
 #import "QMMediaStoreService.h"
 #import "QMMediaWebService.h"
@@ -22,7 +21,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 
 #define kChatServiceSaveToHistoryTrue @"1"
 
-@interface QMChatService() <QBChatDelegate, QMDeferredQueueManagerDelegate, QMLinkPreviewManagerDelegate, QMMediaStoreServiceDelegate>
+@interface QMChatService()<QBChatDelegate, QMDeferredQueueManagerDelegate, QMMediaStoreServiceDelegate>
 
 //@property (assign, nonatomic, readwrite) QMChatConnectionState chatConnectionState;
 @property (strong, nonatomic) QBMulticastDelegate <QMChatServiceDelegate, QMChatConnectionDelegate> *multicastDelegate;
@@ -35,7 +34,6 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 @property (strong, nonatomic) NSMutableDictionary *lastMessagesLoadDate;
 @property (strong, nonatomic) NSMutableSet *messagesToRead;
 @property (weak, nonatomic)   BFTask* loadEarlierMessagesTask;
-@property (strong, nonatomic) QMLinkPreviewManager *linkPreviewManager;
 
 @end
 
@@ -50,14 +48,6 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 
 //MARK: - Configure
 
-- (void)getLinkPreviewForMessage:(QBChatMessage *)message withCompletion:(QMLinkPreviewCompletionBlock)completion {
-    [self.linkPreviewManager downloadLinkPreviewForMessage:message withCompletion:completion];
-}
-
-- (QMLinkPreview *)linkPreviewForMessage:(QBChatMessage *)message {
-    return [self.linkPreviewManager linkPreviewForMessage:message];
-}
-
 - (instancetype)initWithServiceManager:(id<QMServiceManagerProtocol>)serviceManager
                        cacheDataSource:(id<QMChatServiceCacheDataSource>)cacheDataSource {
     
@@ -69,10 +59,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
         _loadedAllMessages = [NSMutableDictionary dictionary];
         _lastMessagesLoadDate = [NSMutableDictionary dictionary];
         _messagesToRead = [NSMutableSet set];
-        
-        _linkPreviewManager = [QMLinkPreviewManager new];
-        _linkPreviewManager.delegate = self;
-        
+
         if (self.serviceManager.currentUser != nil) {
             [self loadCachedDialogsWithCompletion:nil];
         }
@@ -99,22 +86,6 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
                                                                        infoService:infoService];
     
     [QBChat.instance addDelegate:self];
-}
-
-//MARK: - QMLinkPreviewManagerDelegate
-
-- (void)linkPreviewManager:(QMLinkPreviewManager *)linkPreviewManager didAddLinkPreviewToMemoryStorage:(QMLinkPreview *)linkPreview {
-    [self.multicastDelegate chatService:self
-       didAddLinkPreviewToMemoryStorage:linkPreview];
-}
-
-- (QMLinkPreview *)cachedLinkPreviewForURLKey:(NSString *)urlKey {
-    
-    if ([self.cacheDataSource respondsToSelector:@selector(cachedLinkPreviewForURLKey:)]) {
-        return [self.cacheDataSource cachedLinkPreviewForURLKey:urlKey];
-    }
-    
-    return nil;
 }
 
 //MARK: - Load cached data
@@ -1379,7 +1350,6 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     }];
 }
 
-
 //MARK: -
 //MARK: QMDeferredQueueManagerDelegate
 
@@ -1633,7 +1603,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     [self.dialogsMemoryStorage free];
     [self.messagesToRead removeAllObjects];
     [self.deferredQueueManager free];
-    [self.linkPreviewManager free];
+//    [self.linkPreviewManager free];
 }
 
 //MARK: - System messages

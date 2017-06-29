@@ -47,7 +47,7 @@
     self.delayedValue = message.delayed;
     self.text = message.text;
     self.dateSend = message.dateSent;
-    self.recipientIDValue = message.recipientID;
+    self.recipientIDValue = (int32_t)message.recipientID;
     self.senderID = @(message.senderID);
     self.dialogID = message.dialogID;
     self.customParameters = [self binaryDataWithObject:message.customParameters];
