@@ -20,6 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
 + (nullable NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
 @property (nonatomic, readonly, strong) CDOpenGraphModelID *objectID;
 
+@property (nonatomic, strong, nullable) NSString* favIconURL;
+
 @property (nonatomic, strong, nullable) NSNumber* height;
 
 @property (atomic) int16_t heightValue;
@@ -45,6 +47,9 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @interface _CDOpenGraphModel (CoreDataGeneratedPrimitiveAccessors)
+
+- (nullable NSString*)primitiveFavIconURL;
+- (void)setPrimitiveFavIconURL:(nullable NSString*)value;
 
 - (nullable NSNumber*)primitiveHeight;
 - (void)setPrimitiveHeight:(nullable NSNumber*)value;
@@ -76,6 +81,7 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @interface CDOpenGraphModelAttributes: NSObject 
++ (NSString *)favIconURL;
 + (NSString *)height;
 + (NSString *)id;
 + (NSString *)imageURL;

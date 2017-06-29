@@ -14,7 +14,6 @@
 
 @end
 
-
 static NSString *const kQMBaseGraphURL = @"https://ogs.quickblox.com";
 static NSString *const kQMKeyTitle = @"ogTitle";
 static NSString *const kQMKeyDescription = @"ogDescription";

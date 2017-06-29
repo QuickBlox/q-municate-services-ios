@@ -26,8 +26,6 @@
 		558666A01A122DBC00927430 /* QMCDRecordInternal.m in Sources */ = {isa = PBXBuildFile; fileRef = 558666651A122DBC00927430 /* QMCDRecordInternal.m */; };
 		558666A91A122DBC00927430 /* QMCDRecordStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 5586667C1A122DBC00927430 /* QMCDRecordStack.m */; };
 		5590F23D1A0B87AB00C5044F /* QMDBStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 5590F23C1A0B87AB00C5044F /* QMDBStorage.m */; };
-		5590F2FC1A0BA58800C5044F /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5590F2FB1A0BA58800C5044F /* CoreData.framework */; };
-		5590F2FE1A0BA5C000C5044F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5590F2FD1A0BA5C000C5044F /* UIKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -84,10 +82,8 @@
 		5586667C1A122DBC00927430 /* QMCDRecordStack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = QMCDRecordStack.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		5590F23A1A0B87AB00C5044F /* QMDBStorage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = QMDBStorage.h; sourceTree = "<group>"; };
 		5590F23C1A0B87AB00C5044F /* QMDBStorage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = QMDBStorage.m; sourceTree = "<group>"; };
-		5590F2FB1A0BA58800C5044F /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.1.sdk/System/Library/Frameworks/CoreData.framework; sourceTree = DEVELOPER_DIR; };
-		5590F2FD1A0BA5C000C5044F /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.1.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
-		5590F3011A0BA6B200C5044F /* QMDBStorage-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = "QMDBStorage-Prefix.pch"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		55B220211A2C0C9E00668086 /* libQMDBStorage.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libQMDBStorage.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		FB805A531F052ED6000B3E9F /* QMDBStorage-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QMDBStorage-Prefix.pch"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,8 +91,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5590F2FE1A0BA5C000C5044F /* UIKit.framework in Frameworks */,
-				5590F2FC1A0BA58800C5044F /* CoreData.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -216,9 +210,8 @@
 		5590F2251A0B876F00C5044F = {
 			isa = PBXGroup;
 			children = (
+				FB805A531F052ED6000B3E9F /* QMDBStorage-Prefix.pch */,
 				5590F2391A0B87AB00C5044F /* QMDBStorage */,
-				5590F3001A0BA65800C5044F /* Frameworks */,
-				5590F2FF1A0BA64500C5044F /* Support */,
 				55B220211A2C0C9E00668086 /* libQMDBStorage.a */,
 			);
 			sourceTree = "<group>";
@@ -231,23 +224,6 @@
 				5586661B1A122DBB00927430 /* QMCDRecord */,
 			);
 			path = QMDBStorage;
-			sourceTree = "<group>";
-		};
-		5590F2FF1A0BA64500C5044F /* Support */ = {
-			isa = PBXGroup;
-			children = (
-				5590F3011A0BA6B200C5044F /* QMDBStorage-Prefix.pch */,
-			);
-			path = Support;
-			sourceTree = "<group>";
-		};
-		5590F3001A0BA65800C5044F /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				5590F2FD1A0BA5C000C5044F /* UIKit.framework */,
-				5590F2FB1A0BA58800C5044F /* CoreData.framework */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -401,7 +377,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Support/QMDBStorage-Prefix.pch";
+				GCC_PREFIX_HEADER = "QMDBStorage-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -450,7 +426,7 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Support/QMDBStorage-Prefix.pch";
+				GCC_PREFIX_HEADER = "QMDBStorage-Prefix.pch";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;

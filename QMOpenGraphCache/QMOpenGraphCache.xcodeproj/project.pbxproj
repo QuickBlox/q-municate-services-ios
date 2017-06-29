@@ -64,12 +64,13 @@
 		FB5D70731EF151FC00E50084 /* QMOpenGraphModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = QMOpenGraphModel.xcdatamodel; sourceTree = "<group>"; };
 		FB5D70941EF1836400E50084 /* QMOpenGraphCacheModel.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = QMOpenGraphCacheModel.bundle; sourceTree = SOURCE_ROOT; };
 		FB5D70A51EF18D2500E50084 /* QMOpenGraphCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMOpenGraphCache.h; sourceTree = "<group>"; };
-		FB5D70A61EF18DDC00E50084 /* QMOpenGraphCache-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "QMOpenGraphCache-Prefix.pch"; sourceTree = "<group>"; };
 		FB5D70A71EF18EB900E50084 /* QMOpenGraphModelIncludes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMOpenGraphModelIncludes.h; sourceTree = "<group>"; };
 		FB5D70D51EF1965F00E50084 /* CDOpenGraphModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDOpenGraphModel.h; sourceTree = "<group>"; };
 		FB5D70D61EF1965F00E50084 /* CDOpenGraphModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDOpenGraphModel.m; sourceTree = "<group>"; };
 		FB5D70D81EF1966B00E50084 /* _CDOpenGraphModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _CDOpenGraphModel.h; sourceTree = "<group>"; };
 		FB5D70D91EF1966B00E50084 /* _CDOpenGraphModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _CDOpenGraphModel.m; sourceTree = "<group>"; };
+		FB805A461F050E35000B3E9F /* Quickblox.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Quickblox.xcconfig; path = ../Quickblox.xcconfig; sourceTree = "<group>"; };
+		FB805A4B1F051272000B3E9F /* QMOpenGraphCache-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QMOpenGraphCache-Prefix.pch"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +94,8 @@
 		FB5D70311EF14A1800E50084 = {
 			isa = PBXGroup;
 			children = (
+				FB805A4B1F051272000B3E9F /* QMOpenGraphCache-Prefix.pch */,
+				FB805A461F050E35000B3E9F /* Quickblox.xcconfig */,
 				FB5D703C1EF14A1800E50084 /* QMOpenGraphCache */,
 				FB5D70511EF14AA600E50084 /* QMOpenGraphCacheModel */,
 				FB5D703B1EF14A1800E50084 /* Products */,
@@ -115,7 +118,6 @@
 				FB5D70A51EF18D2500E50084 /* QMOpenGraphCache.h */,
 				FB5D703E1EF14A1800E50084 /* QMOpenGraphCache.m */,
 				FB5D70561EF14AE800E50084 /* CoreData */,
-				FB5D70A61EF18DDC00E50084 /* QMOpenGraphCache-Prefix.pch */,
 			);
 			path = QMOpenGraphCache;
 			sourceTree = "<group>";
@@ -409,8 +411,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DEVELOPMENT_TEAM = 8885H5G2YX;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "QMOpenGraphCache/QMOpenGraphCache-Prefix.pch";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				GCC_PREFIX_HEADER = "QMOpenGraphCache-Prefix.pch";
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/../**";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -422,8 +424,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DEVELOPMENT_TEAM = 8885H5G2YX;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "QMOpenGraphCache/QMOpenGraphCache-Prefix.pch";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				GCC_PREFIX_HEADER = "QMOpenGraphCache-Prefix.pch";
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/../**";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -34,6 +34,8 @@
 		FB5D70D31EF193D100E50084 /* QMOpenGraphItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMOpenGraphItem.m; sourceTree = "<group>"; };
 		FB5D70DB1EF19CD500E50084 /* QMOpenGraphMemoryStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMOpenGraphMemoryStorage.h; sourceTree = "<group>"; };
 		FB5D70DC1EF19CD500E50084 /* QMOpenGraphMemoryStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMOpenGraphMemoryStorage.m; sourceTree = "<group>"; };
+		FB805A471F050E74000B3E9F /* Quickblox.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Quickblox.xcconfig; path = ../Quickblox.xcconfig; sourceTree = "<group>"; };
+		FB805A491F050F94000B3E9F /* QMOpenGraphService-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QMOpenGraphService-Prefix.pch"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,6 +52,8 @@
 		FB5D70A81EF1909300E50084 = {
 			isa = PBXGroup;
 			children = (
+				FB805A491F050F94000B3E9F /* QMOpenGraphService-Prefix.pch */,
+				FB805A471F050E74000B3E9F /* Quickblox.xcconfig */,
 				FB5D70B31EF1909300E50084 /* QMOpenGraphService */,
 				FB5D70B21EF1909300E50084 /* Products */,
 			);
@@ -237,7 +241,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DEVELOPMENT_TEAM = 8885H5G2YX;
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/../**";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../**",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "QMOpenGraphService-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../**",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -248,7 +261,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DEVELOPMENT_TEAM = 8885H5G2YX;
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/../**";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../**",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "QMOpenGraphService-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../**",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;

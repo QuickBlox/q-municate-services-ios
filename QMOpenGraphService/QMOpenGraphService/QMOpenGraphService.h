@@ -12,6 +12,8 @@
 #import "QMOpenGraphMemoryStorage.h"
 #import "QMOpenGraphItem.h"
 
+#import <UIKit/UIKit.h>
+
 @protocol QMOpenGraphServiceDelegate;
 @protocol QMOpenGraphCacheDataSource;
 

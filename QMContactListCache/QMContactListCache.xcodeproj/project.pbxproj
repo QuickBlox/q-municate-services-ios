@@ -75,12 +75,12 @@
 		554A28331A0CE38600C4E03C /* _CDContactListItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _CDContactListItem.m; sourceTree = "<group>"; };
 		5590F2AD1A0B8D4000C5044F /* QMContactListCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = QMContactListCache.h; sourceTree = "<group>"; };
 		5590F2AF1A0B8D4000C5044F /* QMContactListCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = QMContactListCache.m; sourceTree = "<group>"; };
-		55A6211A1A0BE284001BA470 /* QMContactListCache-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = "QMContactListCache-Prefix.pch"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		55B2201E1A2C0C9E00668086 /* libQMContactListCache.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libQMContactListCache.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		58BBF3D31CBFAC0E00ECC291 /* QMContactListCacheModel.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QMContactListCacheModel.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		58BBF3D81CBFAF3F00ECC291 /* QMContactListCacheModel.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = QMContactListCacheModel.bundle; sourceTree = SOURCE_ROOT; };
-		8620BC571B0F7B1E005ED359 /* Quickblox.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; lineEnding = 0; name = Quickblox.xcconfig; path = ../Quickblox.xcconfig; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.xcconfig; };
+		8620BC571B0F7B1E005ED359 /* Quickblox.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; lineEnding = 0; name = Quickblox.xcconfig; path = ../Quickblox.xcconfig; sourceTree = "<group>"; };
 		FB5D70811EF16F4C00E50084 /* QMContactListModelIncludes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMContactListModelIncludes.h; sourceTree = "<group>"; };
+		FB805A4D1F052C00000B3E9F /* QMContactListCache-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QMContactListCache-Prefix.pch"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,10 +141,10 @@
 		5590F29C1A0B8D2900C5044F = {
 			isa = PBXGroup;
 			children = (
+				FB805A4D1F052C00000B3E9F /* QMContactListCache-Prefix.pch */,
 				8620BC571B0F7B1E005ED359 /* Quickblox.xcconfig */,
 				5590F2AC1A0B8D4000C5044F /* QMContactListCache */,
 				55013B211A1F81530030C134 /* QMContactListCacheModel */,
-				55A621191A0BE284001BA470 /* Support */,
 				55B2201E1A2C0C9E00668086 /* libQMContactListCache.a */,
 				58BBF3D31CBFAC0E00ECC291 /* QMContactListCacheModel.bundle */,
 			);
@@ -159,14 +159,6 @@
 				554A280E1A0CE1A900C4E03C /* CoreData */,
 			);
 			path = QMContactListCache;
-			sourceTree = "<group>";
-		};
-		55A621191A0BE284001BA470 /* Support */ = {
-			isa = PBXGroup;
-			children = (
-				55A6211A1A0BE284001BA470 /* QMContactListCache-Prefix.pch */,
-			);
-			path = Support;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -507,7 +499,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Support/QMContactListCache-Prefix.pch";
+				GCC_PREFIX_HEADER = "QMContactListCache-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -562,7 +554,7 @@
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Support/QMContactListCache-Prefix.pch";
+				GCC_PREFIX_HEADER = "QMContactListCache-Prefix.pch";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
