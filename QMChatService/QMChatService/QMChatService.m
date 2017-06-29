@@ -76,17 +76,6 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     [QBChat.instance addDelegate:self];
 }
 
-//MARK: - QMLinkPreviewManagerDelegate
-
-//- (QMLinkPreview *)cachedLinkPreviewForURLKey:(NSString *)urlKey {
-//    
-//    if ([self.cacheDataSource respondsToSelector:@selector(cachedLinkPreviewForURLKey:)]) {
-//        return [self.cacheDataSource cachedLinkPreviewForURLKey:urlKey];
-//    }
-//    
-//    return nil;
-//}
-
 //MARK: - Load cached data
 
 - (void)loadCachedDialogsWithCompletion:(dispatch_block_t)completion {
