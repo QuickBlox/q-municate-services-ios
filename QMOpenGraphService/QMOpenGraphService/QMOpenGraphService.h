@@ -49,6 +49,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)preloadGraphItemForText:(NSString *)text ID:(NSString *)ID;
 
+- (void)cancelAllloads;
+
 @end
 
 @protocol QMOpenGraphServiceDelegate <NSObject>

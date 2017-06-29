@@ -8,6 +8,13 @@
 
 #import "QMOpenGraphService.h"
 
+@interface QMOpenGraphLoadOperation : NSBlockOperation
+
+@property (nonatomic) NSString *identifier;
+
+@end
+
+
 static NSString *const kQMBaseGraphURL = @"https://ogs.quickblox.com";
 static NSString *const kQMKeyTitle = @"ogTitle";
 static NSString *const kQMKeyDescription = @"ogDescription";
@@ -52,14 +59,23 @@ static NSString *const kQMKeyImageURL = @"ogImage";
 
 - (void)loadOpenGraphForURL:(NSString *)url ID:(NSString *)ID {
     
-    NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
+    for (QMOpenGraphLoadOperation *o in _operationQueue.operations) {
         
+        if ([o.identifier isEqualToString:ID]) {
+            return;
+        }
+    }
+    
+    QMOpenGraphLoadOperation *operation = [[QMOpenGraphLoadOperation alloc] init];
+    operation.identifier = ID;
+    [operation addExecutionBlock:^{
+
         QMOpenGraphItem *item = [self.memoryStorage openGraphItemWithBaseURL:url];
         //NSParameterAssert(!self.memoryStorage[ID]);
         if (item) {
             
             item = [item copy];
-//            NSParameterAssert(![item.ID isEqualToString:ID]);
+            //            NSParameterAssert(![item.ID isEqualToString:ID]);
             item.ID = ID;
             self.memoryStorage[ID] = item;
             dispatch_sync(dispatch_get_main_queue(), ^{
@@ -73,9 +89,8 @@ static NSString *const kQMKeyImageURL = @"ogImage";
         }
         
         dispatch_semaphore_t sem = dispatch_semaphore_create(0);
-        
         __weak __typeof(self)weakSelf = self;
-        NSLog(@">>Begin load %@", ID);
+        
         QBRequest *request =
         [self.ogsClient GET:@""
                  parameters:@{@"url": url}
@@ -164,7 +179,13 @@ static NSString *const kQMKeyImageURL = @"ogImage";
         NSLog(@"Done: %tu, ID: %@, %@", request.task.taskIdentifier, ID, url);
     }];
     
+    NSLog(@"Add: %@, %@", operation, url);
     [_operationQueue addOperation:operation];
+}
+
+- (void)cancelAllloads {
+    
+    [self.operationQueue cancelAllOperations];
 }
 
 - (BOOL)isLoaded {
@@ -210,7 +231,6 @@ static NSString *const kQMKeyImageURL = @"ogImage";
                         
                         [self loadOpenGraphForURL:result.URL.absoluteString ID:ID];
                     }
-                    
                 });
             }
         }
@@ -276,8 +296,25 @@ static NSString *const kQMKeyImageURL = @"ogImage";
 
 - (void)free {
     
-    //    [_messagesWithoutLinks removeAllObjects];
-    //    [_memoryStorage free];
+
+}
+
+@end
+
+
+@implementation QMOpenGraphLoadOperation
+
+- (void)dealloc {
+    
+    NSLog(@"%@, class: %@, id: %@", NSStringFromSelector(_cmd), NSStringFromClass(self.class), _identifier);
+}
+
+- (NSString *)description {
+    
+    NSMutableString *result = [NSMutableString stringWithString:[super description]];
+    [result appendFormat:@" ->>> %@", _identifier];
+    
+    return result.copy;
 }
 
 @end

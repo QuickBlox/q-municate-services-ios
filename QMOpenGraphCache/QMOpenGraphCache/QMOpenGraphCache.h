@@ -37,7 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
 
  @param completion completion block
  */
-- (void)deleteAllOpenGraphItemsWithCompletion:(dispatch_block_t)completion;
+- (void)deleteAllOpenGraphItemsWithCompletion:(nullable dispatch_block_t)completion;
 
 @end
 
