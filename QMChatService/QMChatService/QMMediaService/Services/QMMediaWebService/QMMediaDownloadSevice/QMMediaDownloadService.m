@@ -53,12 +53,13 @@
     QMAsynchronousOperation *operation =
     [QMAsynchronousOperation asynchronousOperationWithID:messageID
                                                    queue:self.downloadOperationQueue];
+  
     if (operation) {
         
         __weak typeof(QMAsynchronousOperation) *weakOperation = operation;
         __block  QBRequest *request;
         operation.operationBlock = ^{
-            //    NSLog(@"START %@, %d", attachmentID, ++operationsInprogress);
+                NSLog(@"_START %@", messageID);
             request =
             [QBRequest downloadFileWithUID:attachment.ID
                               successBlock:^(QBResponse *response, NSData *fileData)
@@ -70,7 +71,7 @@
                  __strong QMAsynchronousOperation *strongOperation = weakOperation;
                  //     NSLog(@"COMPLETE %@, %d", attachmentID, --operationsInprogress);
                  [strongOperation completeOperation];
-                 
+                  NSLog(@"_COMPLETE %@", messageID);
              } statusBlock:^(QBRequest *request, QBRequestStatus *status) {
                  
                  progressBlock(status.percentOfCompletion);
@@ -86,7 +87,10 @@
              }];
         };
         
+        [self.downloadOperationQueue setSuspended:NO];
+        
         operation.cancellBlock = ^{
+          NSLog(@"_Cancell %@", messageID);
             [request cancel];
             cancellBlock(attachment);
         };

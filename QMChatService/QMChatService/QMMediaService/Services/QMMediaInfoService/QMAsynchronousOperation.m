@@ -35,14 +35,37 @@ dispatch_async(dispatch_get_main_queue(), block);\
     QMAsynchronousOperation *operation = [QMAsynchronousOperation operation];
     
     if (operationID.length != 0) {
-        
+        NSLog(@"_CREATE OPERATION %@", operationID);
         operation.operationID = operationID;
+        [queue setSuspended:YES];
         [queue addAsynchronousOperation:operation];
+        NSLog(@"_QUEUE = %@ %@",queue, queue.operations);
+    }
+    else {
+        NSLog(@"_CREATE NO ID OPERATION %@", operationID);
     }
     
     return operation;
 }
-
++ (instancetype)asynchronousOperationWithID:(NSString *)operationID
+                             operationBlock:(QMOperationBlock)operationBlock
+                                      queue:(NSOperationQueue *)queue {
+    QMAsynchronousOperation *operation = [QMAsynchronousOperation operation];
+    
+    if (operationID.length != 0) {
+        NSLog(@"_CREATE OPERATION %@", operationID);
+        operation.operationID = operationID;
+        operation.operationBlock = operationBlock;
+        [queue addAsynchronousOperation:operation];
+        NSLog(@"_QUEUE = %@ %@",queue, queue.operations);
+    }
+    else {
+        NSLog(@"_CREATE NO ID OPERATION %@", operationID);
+    }
+    
+    return operation;
+}
+    
 + (instancetype)operation {
     return [[self alloc] init];
 }
@@ -66,7 +89,9 @@ dispatch_async(dispatch_get_main_queue(), block);\
 
 
 - (void)start {
+    NSLog(@"_START %@", _operationID);
     if ([self isCancelled]) {
+        NSLog(@"_isCancelled %@", _operationID);
         self.finished = YES;
         return;
     }
@@ -79,6 +104,7 @@ dispatch_async(dispatch_get_main_queue(), block);\
 - (void)main {
     
     if (self.operationBlock) {
+        NSLog(@"NO OPERATION BLOCK");
         self.operationBlock();
     }
     else {
@@ -94,6 +120,7 @@ dispatch_async(dispatch_get_main_queue(), block);\
         if (self.cancellBlock) {
             self.cancellBlock();
         }
+        _cancellBlock = nil;
     });
 }
 
@@ -153,6 +180,7 @@ dispatch_async(dispatch_get_main_queue(), block);\
 - (void)addAsynchronousOperation:(QMAsynchronousOperation *)asyncOperation {
     
     if ([[self _asyncOperations] objectForKey:asyncOperation.operationID]) {
+        NSLog(@"_Return %@", asyncOperation.operationID);
         return;
     }
     [[self _asyncOperations] setObject:asyncOperation forKey:asyncOperation.operationID];

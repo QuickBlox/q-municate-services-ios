@@ -48,10 +48,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (QBChatAttachment *)placeholderAttachment:(NSString *)messageID;
 
+- (void)imageForAttachment:(QBChatAttachment *)attachment
+                   message:(QBChatMessage *)message
+                completion:(void(^)(UIImage *image,
+                                    QMMediaError *error))completion;
+
 - (void)attachmentWithID:(NSString *)attachmentID
                  message:(QBChatMessage *)message
               completion:(void(^)(QBChatAttachment * _Nullable attachment,
-                                  NSError * _Nullable error))completion;
+                                  NSError * _Nullable error,
+                                  QMMessageAttachmentStatus status))completion;
 
 - (BOOL)attachmentIsReadyToPlay:(QBChatAttachment *)attachment
                         message:(QBChatMessage *)message;
@@ -155,7 +161,6 @@ DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.4.7. Use 'addDelegate:' instead.");
           didUpdateAttachment:(QBChatAttachment *)attachment
                   forMesssage:(QBChatMessage *)message;
 
-
 /**
  *  Is called when attachment service did change attachment status for some message.
  *  Please see QMMessageAttachmentStatus for additional info.
@@ -182,6 +187,7 @@ DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.4.7. Use 'addDelegate:' instead.");
 - (void)chatAttachmentService:(QMChatAttachmentService *)chatAttachmentService
      didChangeLoadingProgress:(CGFloat)progress
             forChatAttachment:(QBChatAttachment *)attachment
+
 DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.4.7. Use 'chatAttachmentService:didChangeUploadingProgress:forMessage:attachment:' instead.");;
 
 /**
