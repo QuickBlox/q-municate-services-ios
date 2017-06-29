@@ -43,7 +43,7 @@
 	return keyPaths;
 }
 
-@dynamic favIconURL;
+@dynamic faviconURL;
 
 @dynamic height;
 
@@ -98,8 +98,8 @@
 @end
 
 @implementation CDOpenGraphModelAttributes 
-+ (NSString *)favIconURL {
-	return @"favIconURL";
++ (NSString *)faviconURL {
+	return @"faviconURL";
 }
 + (NSString *)height {
 	return @"height";

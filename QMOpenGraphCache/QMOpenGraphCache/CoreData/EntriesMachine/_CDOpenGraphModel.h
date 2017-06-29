@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (nullable NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
 @property (nonatomic, readonly, strong) CDOpenGraphModelID *objectID;
 
-@property (nonatomic, strong, nullable) NSString* favIconURL;
+@property (nonatomic, strong, nullable) NSString* faviconURL;
 
 @property (nonatomic, strong, nullable) NSNumber* height;
 
@@ -28,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (int16_t)heightValue;
 - (void)setHeightValue:(int16_t)value_;
 
-@property (nonatomic, strong, nullable) NSString* id;
+@property (nonatomic, strong) NSString* id;
 
 @property (nonatomic, strong, nullable) NSString* imageURL;
 
@@ -48,8 +48,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface _CDOpenGraphModel (CoreDataGeneratedPrimitiveAccessors)
 
-- (nullable NSString*)primitiveFavIconURL;
-- (void)setPrimitiveFavIconURL:(nullable NSString*)value;
+- (nullable NSString*)primitiveFaviconURL;
+- (void)setPrimitiveFaviconURL:(nullable NSString*)value;
 
 - (nullable NSNumber*)primitiveHeight;
 - (void)setPrimitiveHeight:(nullable NSNumber*)value;
@@ -57,8 +57,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (int16_t)primitiveHeightValue;
 - (void)setPrimitiveHeightValue:(int16_t)value_;
 
-- (nullable NSString*)primitiveId;
-- (void)setPrimitiveId:(nullable NSString*)value;
+- (NSString*)primitiveId;
+- (void)setPrimitiveId:(NSString*)value;
 
 - (nullable NSString*)primitiveImageURL;
 - (void)setPrimitiveImageURL:(nullable NSString*)value;
@@ -81,7 +81,7 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @interface CDOpenGraphModelAttributes: NSObject 
-+ (NSString *)favIconURL;
++ (NSString *)faviconURL;
 + (NSString *)height;
 + (NSString *)id;
 + (NSString *)imageURL;
