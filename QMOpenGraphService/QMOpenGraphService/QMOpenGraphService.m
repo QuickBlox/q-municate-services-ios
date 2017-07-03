@@ -223,8 +223,8 @@ static NSString *const kQMKeyImageURL = @"ogImage";
                     
                     if (!result ||
                         result.range.location > 0 ||
-                        result.range.length != text.length) {
-                        
+                        result.range.length != text.length ||
+                        [result.URL.absoluteString hasPrefix:@"mailto:"]) {
                     }
                     else {
                         

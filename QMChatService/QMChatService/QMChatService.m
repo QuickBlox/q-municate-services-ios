@@ -23,7 +23,6 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 
 @interface QMChatService()<QBChatDelegate, QMDeferredQueueManagerDelegate, QMMediaStoreServiceDelegate>
 
-//@property (assign, nonatomic, readwrite) QMChatConnectionState chatConnectionState;
 @property (strong, nonatomic) QBMulticastDelegate <QMChatServiceDelegate, QMChatConnectionDelegate> *multicastDelegate;
 @property (weak, nonatomic) id <QMChatServiceCacheDataSource> cacheDataSource;
 @property (strong, nonatomic) QMDialogsMemoryStorage *dialogsMemoryStorage;
@@ -33,7 +32,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 @property (strong, nonatomic) NSMutableDictionary *loadedAllMessages;
 @property (strong, nonatomic) NSMutableDictionary *lastMessagesLoadDate;
 @property (strong, nonatomic) NSMutableSet *messagesToRead;
-@property (weak, nonatomic)   BFTask* loadEarlierMessagesTask;
+@property (weak, nonatomic) BFTask* loadEarlierMessagesTask;
 
 @end
 

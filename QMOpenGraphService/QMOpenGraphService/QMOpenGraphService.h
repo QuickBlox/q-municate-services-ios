@@ -57,6 +57,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol QMOpenGraphServiceDelegate <NSObject>
 
+@optional
 /**
  Called if ..
  
@@ -80,6 +81,7 @@ didAddOpenGraphItemToMemoryStorage:(QMOpenGraphItem *)openGraphItem;
 
 @protocol QMOpenGraphCacheDataSource <NSObject>
 
+@optional
 - (nullable QMOpenGraphItem *)cachedOpenGraphItemWithID:(NSString *)ID;
 
 @end
