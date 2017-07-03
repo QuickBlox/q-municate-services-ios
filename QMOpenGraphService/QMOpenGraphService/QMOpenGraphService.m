@@ -187,10 +187,6 @@ static NSString *const kQMKeyImageURL = @"ogImage";
     [self.operationQueue cancelAllOperations];
 }
 
-- (BOOL)isLoaded {
-    return NO;
-}
-
 - (void)preloadGraphItemForText:(NSString *)text ID:(NSString *)ID {
     
     if (text.length == 0 || ID.length == 0) {
@@ -291,15 +287,7 @@ static NSString *const kQMKeyImageURL = @"ogImage";
     return stringURL;
 }
 
-//MARK: - QMMemoryStorageProtocol
-
-- (void)free {
-    
-
-}
-
 @end
-
 
 @implementation QMOpenGraphLoadOperation
 
