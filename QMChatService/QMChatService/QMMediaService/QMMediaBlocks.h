@@ -12,6 +12,8 @@
 @class QBCBlob;
 @class QMMediaError;
 
+NS_ASSUME_NONNULL_BEGIN
+
 typedef void (^QMAttachmentDownloadCancellBlock)(QBChatAttachment *attachment);
 typedef void (^QMAttachmentMessageStatusBlock)(QMMessageAttachmentStatus status, QBChatMessage *message);
 typedef void (^QMAttachmentMesssageUploadProgressBlock)(float progress, QBChatMessage *message);
@@ -24,4 +26,7 @@ typedef void (^QMMediaErrorBlock)(NSError *error, QBResponseStatusCode);
 typedef void (^QMMediaUploadCompletionBlock)(QBCBlob *blob, NSError *error);
 typedef void (^QMAttachmentUploadCompletionBlock)(NSError *error);
 typedef void (^QMMessageUploadProgressBlock)(float progress);
-typedef void(^QMMediaInfoServiceCompletionBlock)(UIImage * _Nullable image, Float64 durationSeconds, CGSize size, NSError * _Nullable error);
+typedef void(^QMMediaInfoServiceCompletionBlock)(UIImage * _Nullable image, Float64 durationSeconds, CGSize size, NSError * _Nullable error, NSString *messageID, BOOL cancelled);
+
+NS_ASSUME_NONNULL_END
+

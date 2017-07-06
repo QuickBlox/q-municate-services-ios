@@ -20,15 +20,20 @@ typedef  void(^QMCancellBlock)();
 
 - (void)completeOperation;
 
-+ (instancetype)asynchronousOperationWithID:(NSString *)operationID
-                                      queue:(NSOperationQueue *)queue;
++ (instancetype)asynchronousOperationWithID:(NSString *)operationID;
 
 @end
 
 @interface NSOperationQueue(QMAsynchronousOperation)
 
-- (void)cancelOperationWithID:(NSString *)operationID;
 - (void)addAsynchronousOperation:(QMAsynchronousOperation *)asyncOperation;
+
+- (void)addAsynchronousOperation:(QMAsynchronousOperation *)asyncOperation
+                   atFronOfQueue:(BOOL)atFronOfQueue;
+
+- (BOOL)hasOperationWithID:(NSString *)operationID;
+
+- (void)cancelOperationWithID:(NSString *)operationID;
 
 @end
 

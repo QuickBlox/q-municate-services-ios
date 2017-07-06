@@ -23,11 +23,21 @@
      withCompletionBlock:(QMAttachmentUploadCompletionBlock)completionBlock
            progressBlock:(QMMediaProgressBlock)progressBlock {
     
+    if (![[NSFileManager defaultManager] fileExistsAtPath:fileURL.path]) {
+        NSParameterAssert(NO);
+    }
+    
     [QBRequest uploadFileWithUrl:fileURL
                         fileName:attachment.name
                      contentType:[attachment stringMIMEType]
                         isPublic:YES
                     successBlock:^(QBResponse * _Nonnull response, QBCBlob * _Nonnull tBlob) {
+                        
+//                        if (tBlob.status != QBCBlobStatusCompleted) {
+//                            NSError *error = [NSError new];
+//                            completionBlock(error);
+//                            return;
+//                        }
                         
                         attachment.ID = tBlob.UID;
                         attachment.size = tBlob.size;
@@ -38,6 +48,7 @@
                         
                     } statusBlock:^(QBRequest * _Nonnull request, QBRequestStatus * _Nonnull status) {
                         progressBlock(status.percentOfCompletion);
+                        NSLog(@"Upload status = %f", status.percentOfCompletion);
                     } errorBlock:^(QBResponse * _Nonnull response) {
                         completionBlock(response.error.error);
                     }];

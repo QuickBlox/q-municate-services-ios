@@ -100,6 +100,10 @@
     [self.downloader cancellOperationWithID:operationID];
 }
 
+- (BOOL)isDownloadingMessageWithID:(NSString *)messageID {
+   return  [self.downloader isDownloadingMessageWithID:messageID];
+}
+
 - (void)cancellAllOperations {
     
     [self.downloader cancellAllOperations];

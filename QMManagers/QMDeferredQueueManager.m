@@ -92,6 +92,7 @@
     
     BOOL messageIsExisted =
     [self.deferredQueueMemoryStorage containsMessage:message];
+    
     [self.deferredQueueMemoryStorage addMessage:message];
     
     if (!messageIsExisted) {

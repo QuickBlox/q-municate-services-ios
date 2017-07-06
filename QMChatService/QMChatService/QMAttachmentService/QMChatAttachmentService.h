@@ -14,19 +14,34 @@
 #import "QMMediaWebService.h"
 #import "QMCancellableService.h"
 
-typedef NS_ENUM(NSUInteger, QMAttachmentStatus) {
-    QMAttachmentStatusNotLoaded = 0,
-    QMAttachmentStatusLoading,
-    QMAttachmentStatusLoaded,
-    QMAttachmentStatusPreparing,
-    QMAttachmentStatusPrepared,
-    QMAttachmentStatusError
-};
+
+
+//typedef NS_ENUM(NSUInteger, QMAttachmentStatus) {
+//    QMAttachmentStatusNotLoaded = 0,
+//    QMAttachmentStatusLoading,
+//    QMAttachmentStatusLoaded,
+//    QMAttachmentStatusPreparing,
+//    QMAttachmentStatusPrepared,
+//    QMAttachmentStatusError
+//};
 
 @class QMChatService;
 @protocol QMChatAttachmentServiceDelegate;
 
 NS_ASSUME_NONNULL_BEGIN
+
+struct QMAttachmentStatusStruct {
+    __unsafe_unretained NSString *notLoaded;
+    __unsafe_unretained NSString *loading;
+    __unsafe_unretained NSString *loaded;
+    __unsafe_unretained NSString *preparing;
+    __unsafe_unretained NSString *prepared;
+    __unsafe_unretained NSString *error;
+};
+
+extern const struct QMAttachmentStatusStruct QMAttachmentStatus;
+
+    
 
 /**
  *  Chat attachment service
@@ -41,6 +56,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)new NS_UNAVAILABLE;
 
 
+- (NSString *)statusForMessage:(QBChatMessage *)message;
 
 - (instancetype)initWithStoreService:(QMMediaStoreService *)storeService
                           webService:(QMMediaWebService *)webService
@@ -75,7 +91,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)removeMediaFilesForMessagesWithID:(NSArray<NSString *> *)messagesIDs
                                  dialogID:(NSString *)dialogID;
-
+- (void)prepareAttachment:(QBChatAttachment *)attachment messageID:(NSString *)messageID
+               completion:(QMMediaInfoServiceCompletionBlock)completion;
 /**
  *  Add delegate (Multicast)
  *
@@ -170,8 +187,8 @@ DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.4.7. Use 'addDelegate:' instead.");
  *  @param message new status owner QBChatMessage
  */
 - (void)chatAttachmentService:(QMChatAttachmentService *)chatAttachmentService
-    didChangeAttachmentStatus:(QMMessageAttachmentStatus)status
-                   forMessage:(QBChatMessage *)message;
+    didChangeAttachmentStatus:(NSString *)status
+                   forMessageID:(NSString *)messageID;
 
 /**
  *  Is called when chat attachment service did change loading progress for some attachment.

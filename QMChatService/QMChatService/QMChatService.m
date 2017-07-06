@@ -162,35 +162,35 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 //MARK: - QBChatDelegate
 
 - (void)chatDidFailWithStreamError:(NSError *)error {
-    
+    NSLog(@"CHAT_chatDidFailWithStreamError");
     if ([self.multicastDelegate respondsToSelector:@selector(chatServiceChatDidFailWithStreamError:)]) {
         [self.multicastDelegate chatServiceChatDidFailWithStreamError:error];
     }
 }
 
 - (void)chatDidConnect {
-    
+    NSLog(@"CHAT_DID_CONNECT");
     if ([self.multicastDelegate respondsToSelector:@selector(chatServiceChatDidConnect:)]) {
         [self.multicastDelegate chatServiceChatDidConnect:self];
     }
 }
 
 - (void)chatDidNotConnectWithError:(NSError *)error {
-    
+    NSLog(@"CHAT_DchatDidNotConnectWithErrorT");
     if ([self.multicastDelegate respondsToSelector:@selector(chatService:chatDidNotConnectWithError:)]) {
         [self.multicastDelegate chatService:self chatDidNotConnectWithError:error];
     }
 }
 
 - (void)chatDidAccidentallyDisconnect {
-    
+    NSLog(@"CHAT_chatDidAccidentallyDisconnectT");
     if ([self.multicastDelegate respondsToSelector:@selector(chatServiceChatDidAccidentallyDisconnect:)]) {
         [self.multicastDelegate chatServiceChatDidAccidentallyDisconnect:self];
     }
 }
 
 - (void)chatDidReconnect {
-    
+    NSLog(@"CHAT_chatDidReconnect");
     if ([self.multicastDelegate respondsToSelector:@selector(chatServiceChatDidReconnect:)]) {
         [self.multicastDelegate chatServiceChatDidReconnect:self];
     }
@@ -1291,7 +1291,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     message.senderID = currentUser.ID;
     message.dialogID = dialog.ID;
     
-    if (message.messageType == QMMessageTypeText) {
+    if (message.messageType == QMMessageTypeText || message.isMediaMessage) {
         [self.deferredQueueManager addOrUpdateMessage:message];
     }
     
@@ -1338,7 +1338,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
             }
         }
         else {
-            if (message.messageType == QMMessageTypeText) {
+            if (message.messageType == QMMessageTypeText || message.isMediaMessage) {
                 [strongSelf.deferredQueueManager addOrUpdateMessage:message];
             }
         }
@@ -1359,11 +1359,19 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     QBChatDialog *dialog =
     [self.dialogsMemoryStorage chatDialogWithID:message.dialogID];
     
+    if (message.isMediaMessage) {
+        [self sendAttachmentMessage:message
+                           toDialog:dialog
+                     withAttachment:message.attachments.firstObject
+                         completion:completion];
+    }
+    else {
     [self sendMessage:message
              toDialog:dialog
         saveToHistory:message.saveToHistory.integerValue
         saveToStorage:YES
            completion:completion];
+    }
 }
 
 - (void)sendMessage:(QBChatMessage *)message

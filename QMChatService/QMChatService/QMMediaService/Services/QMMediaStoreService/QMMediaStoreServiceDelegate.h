@@ -18,12 +18,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @required
 
-- (void)storeStore:(QMMediaStoreService *)storeService
+- (void)storeService:(QMMediaStoreService *)storeService
 didUpdateAttachment:(QBChatAttachment *)attachment
          messageID:(NSString *)messageID
           dialogID:(NSString *)dialogID;
 
-- (void)storeStore:(QMMediaStoreService *)storeService
+- (void)storeService:(QMMediaStoreService *)storeService
 didRemoveAttachment:(QBChatAttachment *)attachment
          messageID:(NSString *)messageID
           dialogID:(NSString *)dialogID;

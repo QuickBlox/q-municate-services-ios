@@ -17,6 +17,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (weak, nonatomic) id <QMMediaWebServiceDelegate> delegate;
 
+- (BOOL)isDownloadingMessageWithID:(NSString *)messageID;
+
 - (void)downloadDataForAttachment:(QBChatAttachment *)attachment
                         messageID:(NSString *)messageID
               withCompletionBlock:(QMAttachmentDataCompletionBlock)completionBlock
@@ -36,6 +38,8 @@ NS_ASSUME_NONNULL_BEGIN
            progressBlock:(QMMediaProgressBlock)progressBlock;
 
 - (CGFloat)progressForMessageWithID:(NSString *)messageID;
+
+
 
 @end
 

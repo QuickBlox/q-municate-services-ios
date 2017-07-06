@@ -28,7 +28,7 @@ NSString  *kQMAttachmentSizeKey = @"size";
 }
 
 - (NSData *)mediaData {
-     return objc_getAssociatedObject(self, @selector(mediaData));
+    return objc_getAssociatedObject(self, @selector(mediaData));
 }
 
 - (void)setMediaData:(NSData *)data {
@@ -169,6 +169,11 @@ NSString  *kQMAttachmentSizeKey = @"size";
 
 - (NSURL *)remoteURL {
     
+    return [self remoteURLWithToken:YES];
+}
+
+- (NSURL *)remoteURLWithToken:(BOOL)withToken {
+    
     if (self.ID.length == 0) {
         return nil;
     }
@@ -177,11 +182,13 @@ NSString  *kQMAttachmentSizeKey = @"size";
     
     NSURLComponents *components =
     [NSURLComponents componentsWithURL:[NSURL URLWithString:apiEndpoint]
-                                             resolvingAgainstBaseURL:false];
+               resolvingAgainstBaseURL:false];
     
     components.path = [NSString stringWithFormat:@"/blobs/%@", self.ID];
-    components.query = [NSString stringWithFormat:@"token=%@",[QBSession currentSession].sessionDetails.token];
-   
+    
+    if (withToken) {
+        components.query = [NSString stringWithFormat:@"token=%@",[QBSession currentSession].sessionDetails.token];
+    }
     return components.URL;
 }
 

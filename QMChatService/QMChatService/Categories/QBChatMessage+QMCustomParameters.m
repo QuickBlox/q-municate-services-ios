@@ -367,9 +367,7 @@ NSString const *kQMCustomParameterDialogDeletedOccupantsIDs = @"deleted_occupant
 
 - (BOOL)isMediaMessage {
     
-    return
-    self.attachments.count > 0 ||
-    self.attachmentStatus == QMMessageAttachmentStatusLoading;
+    return self.attachments.count > 0;
 }
 
 //MARK: - Location

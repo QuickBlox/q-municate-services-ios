@@ -12,7 +12,7 @@
 #import "QMMediaBlocks.h"
 
 @interface QMMediaDownloadService : NSObject <QMCancellableService>
-
+- (BOOL)isDownloadingMessageWithID:(NSString *)messageID;
 - (void)downloadDataForAttachment:(QBChatAttachment *)attachment
                         messageID:(NSString *)messageID
               withCompletionBlock:(QMAttachmentDataCompletionBlock)completionBlock

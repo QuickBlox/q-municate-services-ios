@@ -19,13 +19,23 @@
 
 #import "QMSLog.h"
 
+const struct QMAttachmentStatusStruct QMAttachmentStatus =
+{
+    .notLoaded = @"QMAttachmentStatusNotLoaded",
+    .loading = @"QMAttachmentStatusLoading",
+    .loaded = @"QMAttachmentStatusLoaded",
+    .preparing = @"QMAttachmentStatusPreparing",
+    .prepared = @"QMAttachmentStatusPrepared",
+    .error = @"QMAttachmentStatusPrepared"
+};
+
 @interface QMChatAttachmentService() <QMMediaWebServiceDelegate>
 
 @property (nonatomic, strong) NSMutableDictionary *attachmentsStorage;
-@property (strong, nonatomic) QBMulticastDelegate <QMChatAttachmentServiceDelegate> *multicastDelegate;
-@property (strong, nonatomic) NSMutableDictionary *placeholderAttachments;
-@property (strong, nonatomic) NSMutableSet *attachmentsInProgress;
-
+@property (nonatomic, strong) QBMulticastDelegate <QMChatAttachmentServiceDelegate> *multicastDelegate;
+@property (nonatomic, strong) NSMutableDictionary *placeholderAttachments;
+@property (nonatomic, strong) NSMutableSet *attachmentsInProgress;
+@property (nonatomic, strong) NSMutableDictionary *attachmentsStatuses;
 @end
 
 @implementation QMChatAttachmentService
@@ -44,9 +54,31 @@
         _multicastDelegate = (id <QMChatAttachmentServiceDelegate>)[[QBMulticastDelegate alloc] init];
         _attachmentsInProgress = [NSMutableSet set];
         _placeholderAttachments = [NSMutableDictionary dictionary];
+        _attachmentsStatuses = [NSMutableDictionary dictionary];
     }
     
     return self;
+}
+
+- (void)prepareAttachment:(QBChatAttachment *)attachment messageID:(NSString *)messageID
+               completion:(QMMediaInfoServiceCompletionBlock)completion {
+    
+    __weak typeof(self) weakSelf = self;
+    __strong typeof(weakSelf) strongSelf = weakSelf;
+   [self.infoService mediaInfoForAttachment:attachment messageID:messageID completion:^(UIImage * _Nullable image, Float64 durationSeconds, CGSize size, NSError * _Nullable error, NSString * _Nonnull messageID, BOOL cancelled) {
+       
+       if (cancelled) {
+           [strongSelf changeAttachmentStatus:QMAttachmentStatus.notLoaded forMessageID:messageID];
+       }
+            
+        if (error) {
+            
+            [strongSelf changeAttachmentStatus:QMAttachmentStatus.error forMessageID:messageID];
+        }
+        else {
+             [strongSelf changeAttachmentStatus:QMAttachmentStatus.prepared forMessageID:messageID];
+        }
+   }];
 }
 
 - (void)attachmentWithID:(NSString *)attachmentID
@@ -65,8 +97,8 @@
                                                                 forMessageID:message.ID];
     
     if (attachment) {
-//        [self changeMessageAttachmentStatus:QMMessageAttachmentStatusLoaded
-//                                 forMessage:message];
+        //        [self changeMessageAttachmentStatus:QMMessageAttachmentStatusLoaded
+        //                                 forMessage:message];
         NSLog(@"_GET CACHED %@ %@", message.ID, attachment.ID);
         completion(attachment, nil, QMMessageAttachmentStatusLoaded);
         return;
@@ -90,12 +122,13 @@
                                addAttachment:attachment
                                forMessageID:message.ID];
                               status = QMMessageAttachmentStatusLoaded;
-//                              [self changeMessageAttachmentStatus:QMMessageAttachmentStatusLoaded
-//                                                       forMessage:message];
+                              //                              [self changeMessageAttachmentStatus:QMMessageAttachmentStatusLoaded
+                              //                                                       forMessage:message];
+                              [self changeAttachmentStatus:QMAttachmentStatus.loaded forMessageID:message.ID];
                           }
                           else {
                               NSLog(@"_GET ERROR %@ %@", message.ID, attachment.ID);
-                               status = QMMessageAttachmentStatusError;
+                              status = QMMessageAttachmentStatusError;
                               if ([error isKindOfClass:[QMMediaError class]]) {
                                   status = error.attachmentStatus;
                               }
@@ -113,8 +146,8 @@
                                   NSLog(@"_GET FILEURL %@ %@", message.ID, attachment.ID);
                                   attachment.localFileURL = fileURL;
                                   [self.storeService.attachmentsMemoryStorage addAttachment:attachment forMessageID:message.ID];
-//                                  [self changeMessageAttachmentStatus:QMMessageAttachmentStatusLoaded
-//                                                           forMessage:message];
+                                  //                                  [self changeMessageAttachmentStatus:QMMessageAttachmentStatusLoaded
+                                  //                                                           forMessage:message];
                                   completion(attachment, nil, QMMessageAttachmentStatusLoaded);
                                   return;
                               }
@@ -132,6 +165,7 @@
     
     return _placeholderAttachments[messageID];
 }
+
 
 - (void)cancelOperationsForAttachment:(QBChatAttachment *)attachment
                             messageID:(NSString *)messageID {
@@ -186,10 +220,15 @@
              }
          }
          else {
-             NSLog(@"_GET NOT CACHED IMAGE %@ %@", message.ID, attachment.ID);
-             if (message.attachmentStatus == QMMessageAttachmentStatusLoading ||
-                 message.attachmentStatus == QMMessageAttachmentStatusError) {
+             //             NSLog(@"_GET NOT CACHED IMAGE %@ %@", message.ID, attachment.ID);
+             //             if (message.attachmentStatus == QMMessageAttachmentStatusLoading ||
+             //                 message.attachmentStatus == QMMessageAttachmentStatusError) {
+             //                 NSLog(@"_ALREADY DOWNLOADING %@ %@", message.ID, attachment.ID);
+             //                 return;
+             //             }
+             if ([self statusForMessage:message] == QMAttachmentStatus.loading) {
                  NSLog(@"_ALREADY DOWNLOADING %@ %@", message.ID, attachment.ID);
+                 //                 return;
                  return;
              }
              
@@ -201,7 +240,7 @@
                  
                  [strongSelf changeMessageAttachmentStatus:QMMessageAttachmentStatusLoading
                                                 forMessage:message];
-                 
+                 [strongSelf changeAttachmentStatus:QMAttachmentStatus.loading forMessageID:message.ID];
                  
                  [strongSelf.webService downloadDataForAttachment:attachment
                                                         messageID:message.ID
@@ -213,11 +252,15 @@
                                                                           forAttachment:attachment
                                                                               cacheType:cacheType
                                                                               messageID:message.ID
-                                                                               dialogID:message.dialogID];
-                                                      
-                                                      completion([UIImage imageWithData:data], nil);
+                                                                               dialogID:message.dialogID
+                                                                             completion:^{
+                                                                                 [strongSelf changeAttachmentStatus:QMAttachmentStatus.loaded forMessageID:message.ID];
+                                                                                 completion([UIImage imageWithData:data], nil);
+                                                                             }];
                                                   }
                                                   else {
+                                                      [strongSelf changeAttachmentStatus:QMAttachmentStatus.error forMessageID:message.ID];
+                                                      
                                                       [strongSelf changeMessageAttachmentStatus:error.attachmentStatus
                                                                                      forMessage:message];
                                                       completion(nil, error);
@@ -237,6 +280,7 @@
                                               } cancellBlock:^(QBChatAttachment *attachment) {
                                                   
                                                   __strong typeof(weakSelf) strongSelf = weakSelf;
+                                                  [strongSelf changeAttachmentStatus:QMAttachmentStatus.notLoaded forMessageID:message.ID];
                                                   [strongSelf changeMessageAttachmentStatus:QMMessageAttachmentStatusNotLoaded
                                                                                  forMessage:message];
                                               }];
@@ -244,46 +288,53 @@
              else if (attachment.contentType == QMAttachmentContentTypeVideo) {
                  
                  __strong typeof(weakSelf) strongSelf = weakSelf;
-                 
+                 [strongSelf changeAttachmentStatus:QMAttachmentStatus.loading forMessageID:message.ID];
                  [strongSelf changeMessageAttachmentStatus:QMMessageAttachmentStatusLoading
                                                 forMessage:message];
                  
                  [strongSelf.infoService mediaInfoForAttachment:attachment
                                                       messageID:message.ID
-                                                     completion:^(UIImage * _Nullable image,
-                                                                  Float64 durationSeconds,
-                                                                  CGSize size,
-                                                                  NSError * _Nullable error) {
-                     if (!error) {
-                         attachment.duration = durationSeconds;
-                         attachment.width = size.width;
-                         attachment.height = size.height;
-                         
-                         if (image) {
-                             [strongSelf.storeService saveData:UIImagePNGRepresentation(image)
-                                                 forAttachment:attachment
-                                                     cacheType:cacheType
-                                                     messageID:message.ID
-                                                      dialogID:message.dialogID];
-                             
-                         }
-                         else {
-                             [strongSelf.storeService saveAttachment:attachment
-                                                           cacheType:QMAttachmentCacheTypeMemory
-                                                           messageID:message.ID
-                                                            dialogID:message.dialogID];
-                         }
-                         
-                         [strongSelf changeMessageAttachmentStatus:QMMessageAttachmentStatusLoaded
-                                                        forMessage:message];
-                     }
-                     else {
-                         
-                          [strongSelf changeMessageAttachmentStatus:QMMessageAttachmentStatusError
-                                                         forMessage:message];
-                     }
-                      completion(image, error);
-                  }];
+                                                     completion:^(UIImage * _Nullable image, Float64 durationSeconds, CGSize size, NSError * _Nullable error, NSString * _Nonnull messageID, BOOL cancelled)
+                 {
+                                                         if (!error) {
+                                                             attachment.duration = durationSeconds;
+                                                             attachment.width = size.width;
+                                                             attachment.height = size.height;
+                                                             
+                                                             dispatch_block_t completionBlock = ^{
+                                                                 [strongSelf changeAttachmentStatus:QMAttachmentStatus.loaded forMessageID:messageID];
+                                                                 [strongSelf changeMessageAttachmentStatus:QMMessageAttachmentStatusLoaded
+                                                                                                forMessage:message];
+                                                             };
+                                                             if (image) {
+                                                                 [strongSelf.storeService saveData:UIImagePNGRepresentation(image)
+                                                                                     forAttachment:attachment
+                                                                                         cacheType:cacheType
+                                                                                         messageID:message.ID
+                                                                                          dialogID:message.dialogID
+                                                                                        completion:^{
+                                                                                            completionBlock();
+                                                                                        }];
+                                                                 
+                                                             }
+                                                             else {
+                                                                 [strongSelf.storeService saveAttachment:attachment
+                                                                                               cacheType:QMAttachmentCacheTypeMemory
+                                                                                               messageID:message.ID
+                                                                                                dialogID:message.dialogID
+                                                                                              completion:^{
+                                                                                                  completionBlock();
+                                                                                              }];
+                                                             }
+                                                             
+                                                         }
+                                                         else {
+                                                             [strongSelf changeAttachmentStatus:QMAttachmentStatus.error forMessageID:messageID];
+                                                             [strongSelf changeMessageAttachmentStatus:QMMessageAttachmentStatusError
+                                                                                            forMessage:message];
+                                                         }
+                                                         completion(image, error);
+                                                     }];
              }
          }
      }];
@@ -292,9 +343,6 @@
 - (BOOL)attachmentIsReadyToPlay:(QBChatAttachment *)attachment
                         message:(QBChatMessage *)message {
     
-    if ([_attachmentsInProgress containsObject:attachment.ID]) {
-        return  NO;
-    }
     
     if (attachment.contentType == QMAttachmentContentTypeAudio) {
         
@@ -305,7 +353,7 @@
     }
     else if (attachment.contentType == QMAttachmentContentTypeVideo) {
         
-        return YES;
+        return attachment.ID != nil;
     }
     else if (attachment.contentType == QMAttachmentContentTypeImage) {
         return attachment.image != nil;
@@ -316,9 +364,6 @@
 - (QBChatAttachment *)cachedAttachmentWithID:(NSString *)attachmentID
                                 forMessageID:(NSString *)messageID {
     
-    if ([self.attachmentsInProgress containsObject:attachmentID]) {
-        return  nil;
-    }
     
     return [self.storeService cachedAttachmentWithID:attachmentID
                                         forMessageID:messageID];
@@ -339,14 +384,14 @@
     }
     else {
         
-        if (message.attachmentStatus == QMMessageAttachmentStatusLoading ||
-            message.attachmentStatus == QMMessageAttachmentStatusError) {
+        if ([self statusForMessage:message] == QMAttachmentStatus.loading) {
             NSLog(@"_ALREADY DOWNLOADING %@ %@", message.ID, attachment.ID);
             return;
         }
         
         __weak typeof(self) weakSelf = self;
         
+        [self changeAttachmentStatus:QMAttachmentStatus.loading forMessageID:message.ID];
         [self changeMessageAttachmentStatus:QMMessageAttachmentStatusLoading
                                  forMessage:message];
         NSLog(@"_DOWNLOAD %@ %@", message.ID, attachment.ID);
@@ -360,33 +405,37 @@
              
              if (data) {
                  NSLog(@"_HAS DATA %@ %@", message.ID, attachment.ID);
-              [strongSelf.storeService saveData:data
+                 [strongSelf.storeService saveData:data
                                      forAttachment:attachment
                                          cacheType:QMAttachmentCacheTypeMemory|QMAttachmentCacheTypeDisc
                                          messageID:message.ID
-                                          dialogID:message.dialogID];
-                 NSURL *localFileURL = [self.storeService fileURLForAttachment:attachment
-                                                                     messageID:message.ID
-                                                                      dialogID:message.dialogID];
-                 if (localFileURL) {
-                     NSLog(@"_HAS localFileURL %@ %@", message.ID, attachment.ID);
-                 [strongSelf changeMessageAttachmentStatus:QMMessageAttachmentStatusLoaded
-                                                forMessage:message];
-                 }
-                 else {
-                     NSLog(@"_HAS NOT localFileURL %@ %@", message.ID, attachment.ID);
-                     [strongSelf changeMessageAttachmentStatus:QMMessageAttachmentStatusNotLoaded
-                                                    forMessage:message];
-                 }
-                     completion(localFileURL, nil);
-                 
+                                          dialogID:message.dialogID
+                                        completion:^{
+                                            NSURL *localFileURL = [self.storeService fileURLForAttachment:attachment
+                                                                                                messageID:message.ID
+                                                                                                 dialogID:message.dialogID];
+                                            if (localFileURL) {
+                                                NSLog(@"_HAS localFileURL %@ %@", message.ID, attachment.ID);
+                                                [strongSelf changeAttachmentStatus:QMAttachmentStatus.loaded forMessageID:message.ID];
+                                                [strongSelf changeMessageAttachmentStatus:QMMessageAttachmentStatusLoaded
+                                                                               forMessage:message];
+                                            }
+                                            else {
+                                                NSLog(@"_HAS NOT localFileURL %@ %@", message.ID, attachment.ID);
+                                                [strongSelf changeAttachmentStatus:QMAttachmentStatus.notLoaded forMessageID:message.ID];
+                                                [strongSelf changeMessageAttachmentStatus:QMMessageAttachmentStatusNotLoaded
+                                                                               forMessage:message];
+                                            }
+                                            completion(localFileURL, nil);
+                                        }];
              }
              else {
                  if (error.error) {
                      NSLog(@"_HAS ERROR %@ %@", message.ID, attachment.ID);
+                     [strongSelf changeAttachmentStatus:QMAttachmentStatus.notLoaded forMessageID:message.ID];
                      [strongSelf changeMessageAttachmentStatus:error.attachmentStatus
                                                     forMessage:message];
-                 completion(nil, error.error);
+                     completion(nil, error.error);
                  }
              }
          } progressBlock:^(float progress) {
@@ -404,6 +453,7 @@
          }
                                       cancellBlock:^(QBChatAttachment *attachment) {
                                           __strong typeof(weakSelf) strongSelf = weakSelf;
+                                          [strongSelf changeAttachmentStatus:QMAttachmentStatus.notLoaded forMessageID:message.ID];
                                           [strongSelf changeMessageAttachmentStatus:QMMessageAttachmentStatusNotLoaded
                                                                          forMessage:message];
                                       }];
@@ -413,13 +463,15 @@
 
 - (void)removeAllMediaFiles {
     
-    [self.storeService clearCacheForType:QMAttachmentCacheTypeMemory|QMAttachmentCacheTypeDisc];
+    [self.storeService clearCacheForType:QMAttachmentCacheTypeMemory|QMAttachmentCacheTypeDisc
+                              completion:nil];
 }
 
 - (void)removeMediaFilesForDialogWithID:(NSString *)dialogID {
     
     [self.storeService clearCacheForDialogWithID:dialogID
-                                       cacheType:QMAttachmentCacheTypeMemory|QMAttachmentCacheTypeDisc];
+                                       cacheType:QMAttachmentCacheTypeMemory|QMAttachmentCacheTypeDisc
+                                      completion:nil];
     
 }
 
@@ -428,7 +480,8 @@
     
     [self.storeService clearCacheForMessagesWithIDs:messagesIDs
                                            dialogID:dialogID
-                                          cacheType:QMAttachmentCacheTypeMemory|QMAttachmentCacheTypeDisc];
+                                          cacheType:QMAttachmentCacheTypeMemory|QMAttachmentCacheTypeDisc
+                                         completion:nil];
 }
 
 - (void)removeMediaFilesForMessageWithID:(NSString *)messageID
@@ -436,7 +489,8 @@
     
     [self.storeService clearCacheForMessagesWithIDs:@[messageID]
                                            dialogID:dialogID
-                                          cacheType:QMAttachmentCacheTypeMemory|QMAttachmentCacheTypeDisc];
+                                          cacheType:QMAttachmentCacheTypeMemory|QMAttachmentCacheTypeDisc
+                                         completion:nil];
 }
 
 - (void)statusForAttachment:(QBChatAttachment *)attachment
@@ -455,20 +509,33 @@
     
     [self.multicastDelegate removeDelegate:delegate];
 }
-
+//
 - (void)changeMessageAttachmentStatus:(QMMessageAttachmentStatus)status
                            forMessage:(QBChatMessage *)message {
     
-    message.attachmentStatus = status;
+    
+    return;
+}
+
+- (void)changeAttachmentStatus:(NSString *)status
+                    forMessageID:(NSString *)messageID {
+    
+    
+    if (self.attachmentsStatuses[messageID] == status) {
+        return;
+    }
+    
+    self.attachmentsStatuses[messageID] = status;
     
     if ([self.multicastDelegate respondsToSelector:@selector(chatAttachmentService:
                                                              didChangeAttachmentStatus:
-                                                             forMessage:)]) {
+                                                             forMessageID:)]) {
         [self.multicastDelegate chatAttachmentService:self
                             didChangeAttachmentStatus:status
-                                           forMessage:message];
+                                           forMessageID:messageID];
     }
 }
+
 
 - (void)uploadAndSendAttachmentMessage:(QBChatMessage *)message
                               toDialog:(QBChatDialog *)dialog
@@ -495,6 +562,8 @@
     
     _placeholderAttachments[message.ID] = attachment;
     
+    [self changeAttachmentStatus:QMAttachmentStatus.loading forMessageID:message.ID];
+    
     [self changeMessageAttachmentStatus:QMMessageAttachmentStatusLoading
                              forMessage:message];
     
@@ -505,6 +574,7 @@
         __strong typeof(weakSelf) strongSelf = weakSelf;
         
         if (error) {
+            [strongSelf changeAttachmentStatus:QMAttachmentStatus.error forMessageID:message.ID];
             
             [strongSelf changeMessageAttachmentStatus:QMMessageAttachmentStatusError
                                            forMessage:message];
@@ -520,20 +590,22 @@
         [strongSelf.storeService saveAttachment:attachment
                                       cacheType:QMAttachmentCacheTypeDisc|QMAttachmentCacheTypeMemory
                                       messageID:message.ID
-                                       dialogID:dialog.ID];
-        
-        message.attachments = @[attachment];
-        
-        [strongSelf changeMessageAttachmentStatus:QMMessageAttachmentStatusLoaded
-                                       forMessage:message];
-        
-        
-        
-        [chatService sendMessage:message
-                        toDialog:dialog
-                   saveToHistory:YES
-                   saveToStorage:YES
-                      completion:completion];
+                                       dialogID:dialog.ID
+                                     completion:^{
+                                         message.attachments = @[attachment];
+                                         
+                                         [strongSelf changeAttachmentStatus:QMAttachmentStatus.loaded forMessageID:message.ID];
+                                         
+                                         [strongSelf changeMessageAttachmentStatus:QMMessageAttachmentStatusLoaded
+                                                                        forMessage:message];
+                                         
+                                         
+                                         [chatService sendMessage:message
+                                                         toDialog:dialog
+                                                    saveToHistory:YES
+                                                    saveToStorage:YES
+                                                       completion:completion];
+                                     }];
     };
     
     void(^progressBlock)(float progress) = ^(float progress) {
@@ -560,11 +632,35 @@
         
         [self.webService uploadAttachment:attachment
                                 messageID:message.ID
-                                 withData:UIImagePNGRepresentation(attachment.image)
+                                 withData:[self.storeService dataForImage:attachment.image]
                       withCompletionBlock:completionBlock
                             progressBlock:progressBlock];
     }
     
+}
+
+- (NSString *)statusForMessage:(QBChatMessage *)message {
+    
+    NSString *status = QMAttachmentStatus.notLoaded;
+    
+    if (self.attachmentsStatuses[message.ID]!= nil) {
+        return self.attachmentsStatuses[message.ID];
+    }
+    else {
+        QBChatAttachment *attachment = [message.attachments firstObject];
+        NSURL *fileURl = [self.storeService fileURLForAttachment:attachment messageID:message.ID dialogID:message.dialogID];
+        if (fileURl != nil) {
+            status = QMAttachmentStatus.loaded;
+        }
+        else {
+            BOOL downloading = [self.webService isDownloadingMessageWithID:message.ID];
+            if (downloading) {
+                status = QMAttachmentStatus.loading;
+            }
+        }
+        self.attachmentsStatuses[message.ID] = status;
+    }
+    return status;
 }
 
 @end

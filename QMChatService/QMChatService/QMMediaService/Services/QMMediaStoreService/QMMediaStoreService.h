@@ -36,17 +36,20 @@ NS_ASSUME_NONNULL_BEGIN
                        messageID:(NSString *)messageID
                         dialogID:(NSString *)dialogID
                       completion:(void(^)(UIImage * _Nullable image))completion;
-
+- (NSData *)dataForImage:(UIImage*)image;
 - (void)saveData:(NSData *)data
    forAttachment:(QBChatAttachment *)attachment
        cacheType:(QMAttachmentCacheType)cacheType
        messageID:(NSString *)messageID
-        dialogID:(NSString *)dialogID;
+        dialogID:(NSString *)dialogID
+completion:(nullable dispatch_block_t)completion;
 
 - (void)saveAttachment:(QBChatAttachment *)attachment
              cacheType:(QMAttachmentCacheType)cacheType
              messageID:(NSString *)messageID
-              dialogID:(NSString *)dialogID;
+              dialogID:(NSString *)dialogID
+completion:(nullable dispatch_block_t)completion;
+
 
 - (NSURL *)fileURLForAttachment:(QBChatAttachment *)attachment
                       messageID:(NSString *)messageID
@@ -60,18 +63,22 @@ NS_ASSUME_NONNULL_BEGIN
            attachmentID:(nullable NSString *)attachmentID
              completion:(nullable void(^)(float length))completionBlock;
 
-- (void)clearCacheForType:(QMAttachmentCacheType)cacheType;
+- (void)clearCacheForType:(QMAttachmentCacheType)cacheType
+               completion:(nullable dispatch_block_t)completion;
 
 - (void)clearCacheForDialogWithID:(NSString *)dialogID
-                        cacheType:(QMAttachmentCacheType)cacheType;
+                        cacheType:(QMAttachmentCacheType)cacheType
+                       completion:(nullable dispatch_block_t)completion;
 
 - (void)clearCacheForMessageWithID:(NSString *)messageID
                           dialogID:(NSString *)dialogID
-                         cacheType:(QMAttachmentCacheType)cacheType;
+                         cacheType:(QMAttachmentCacheType)cacheType
+                        completion:(nullable dispatch_block_t)completion;
 
 - (void)clearCacheForMessagesWithIDs:(NSArray <NSString *> *)messagesIDs
                             dialogID:(NSString *)dialogID
-                           cacheType:(QMAttachmentCacheType)cacheType;
+                           cacheType:(QMAttachmentCacheType)cacheType
+                          completion:(nullable dispatch_block_t)completion;
 @end
 
 NS_ASSUME_NONNULL_END

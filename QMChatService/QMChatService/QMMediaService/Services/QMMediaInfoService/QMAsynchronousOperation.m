@@ -29,17 +29,15 @@ dispatch_async(dispatch_get_main_queue(), block);\
 
 //MARK: - Class methods
 
-+ (instancetype)asynchronousOperationWithID:(NSString *)operationID
-                                      queue:(NSOperationQueue *)queue {
++ (instancetype)asynchronousOperationWithID:(NSString *)operationID {
+
     
     QMAsynchronousOperation *operation = [QMAsynchronousOperation operation];
     
     if (operationID.length != 0) {
         NSLog(@"_CREATE OPERATION %@", operationID);
         operation.operationID = operationID;
-        [queue setSuspended:YES];
-        [queue addAsynchronousOperation:operation];
-        NSLog(@"_QUEUE = %@ %@",queue, queue.operations);
+
     }
     else {
         NSLog(@"_CREATE NO ID OPERATION %@", operationID);
@@ -104,10 +102,10 @@ dispatch_async(dispatch_get_main_queue(), block);\
 - (void)main {
     
     if (self.operationBlock) {
-        NSLog(@"NO OPERATION BLOCK");
         self.operationBlock();
     }
     else {
+          NSLog(@"NO OPERATION BLOCK %@", _operationID);
         [self completeOperation];
     }
 }
@@ -116,12 +114,12 @@ dispatch_async(dispatch_get_main_queue(), block);\
     
     [super cancel];
     
-    dispatch_main_async_safe(^{
+    
         if (self.cancellBlock) {
             self.cancellBlock();
         }
         _cancellBlock = nil;
-    });
+//    });
 }
 
 //MARK: - NSOperation methods
@@ -175,30 +173,79 @@ dispatch_async(dispatch_get_main_queue(), block);\
     
     QMAsynchronousOperation *operation = [[self _asyncOperations] objectForKey:operationID];
     [operation cancel];
+    [[self _asyncOperations] removeObjectForKey:operationID];
 }
 
 - (void)addAsynchronousOperation:(QMAsynchronousOperation *)asyncOperation {
+    
+    [self addAsynchronousOperation:asyncOperation atFronOfQueue:NO];
+}
+
+- (void)addAsynchronousOperation:(QMAsynchronousOperation *)asyncOperation
+                   atFronOfQueue:(BOOL)atFronOfQueue {
+    
+    NSLog(@"Async operations = %@", [self _asyncOperations]);
+    NSLog(@"Operations in queue = %@", self.operations);
     
     if ([[self _asyncOperations] objectForKey:asyncOperation.operationID]) {
         NSLog(@"_Return %@", asyncOperation.operationID);
         return;
     }
+    
+    if (atFronOfQueue) {
+        
+        @synchronized(self)
+        {
+            //suspend queue
+            BOOL wasSuspended = [self isSuspended];
+            [self setSuspended:YES];
+            
+            //make asyncOperation dependency for other operations in queue
+            NSInteger maxOperations = ([self maxConcurrentOperationCount] > 0) ? [self maxConcurrentOperationCount]: INT_MAX;
+            NSArray *operations = [self operations];
+            NSInteger index = [operations count] - maxOperations;
+            if (index >= 0)
+            {
+                NSOperation *operation = operations[index];
+                if (![operation isExecuting])
+                {
+                    [operation addDependency:asyncOperation];
+                }
+            }
+            
+            //resume queue
+            [self setSuspended:wasSuspended];
+        }
+    }
+    
     [[self _asyncOperations] setObject:asyncOperation forKey:asyncOperation.operationID];
+    
     [self addOperation:asyncOperation];
+}
+
+- (BOOL)hasOperationWithID:(NSString *)operationID {
+    
+    BOOL hasOperation = NO;
+    for (QMAsynchronousOperation *op in [self operations]) {
+        if ([op.operationID isEqualToString:operationID]) {
+            hasOperation = YES;
+            break;
+        }
+    }
+    return hasOperation;
 }
 
 - (NSMapTable *)_asyncOperations {
     
-    static NSMapTable *snapshotOperations = nil;
+    static NSMapTable *asyncOperations = nil;
     
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         
-        snapshotOperations = [NSMapTable strongToWeakObjectsMapTable];
+        asyncOperations = [NSMapTable strongToWeakObjectsMapTable];
     });
     
-    return snapshotOperations;
+    return asyncOperations;
 }
-
 
 @end

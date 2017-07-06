@@ -17,7 +17,6 @@
 @interface QMMediaDownloadService()
 
 @property (strong, nonatomic) NSOperationQueue *downloadOperationQueue;
-@property (strong, nonatomic) NSMutableDictionary *downloads;
 
 @end
 
@@ -30,9 +29,7 @@
         self.downloadOperationQueue = [NSOperationQueue new];
         self.downloadOperationQueue.name = @"QM.QMDownloadOperationQueue";
         self.downloadOperationQueue.qualityOfService = NSQualityOfServiceUserInitiated;
-        self.downloadOperationQueue.maxConcurrentOperationCount = 5;
-        self.downloads = [NSMutableDictionary dictionary];
-        
+        self.downloadOperationQueue.maxConcurrentOperationCount = 2;
     }
     
     return self;
@@ -51,18 +48,17 @@
                      cancellBlock:(QMAttachmentDownloadCancellBlock)cancellBlock {
     
     QMAsynchronousOperation *operation =
-    [QMAsynchronousOperation asynchronousOperationWithID:messageID
-                                                   queue:self.downloadOperationQueue];
-  
+    [QMAsynchronousOperation asynchronousOperationWithID:messageID];
+    
     if (operation) {
         
         __weak typeof(QMAsynchronousOperation) *weakOperation = operation;
         __block  QBRequest *request;
         operation.operationBlock = ^{
-                NSLog(@"_START %@", messageID);
+            
             request =
-            [QBRequest downloadFileWithUID:attachment.ID
-                              successBlock:^(QBResponse *response, NSData *fileData)
+            [QBRequest backgroundDownloadFileWithUID:attachment.ID
+                                       successBlock:^(QBResponse *response, NSData *fileData)
              {
                  
                  if (fileData) {
@@ -71,7 +67,7 @@
                  __strong QMAsynchronousOperation *strongOperation = weakOperation;
                  //     NSLog(@"COMPLETE %@, %d", attachmentID, --operationsInprogress);
                  [strongOperation completeOperation];
-                  NSLog(@"_COMPLETE %@", messageID);
+                 NSLog(@"_COMPLETE %@", messageID);
              } statusBlock:^(QBRequest *request, QBRequestStatus *status) {
                  
                  progressBlock(status.percentOfCompletion);
@@ -87,17 +83,21 @@
              }];
         };
         
-        [self.downloadOperationQueue setSuspended:NO];
         
         operation.cancellBlock = ^{
-          NSLog(@"_Cancell %@", messageID);
+            NSLog(@"_Cancell %@", messageID);
             [request cancel];
             cancellBlock(attachment);
         };
     }
+    
+    [self.downloadOperationQueue addAsynchronousOperation:operation atFronOfQueue:YES];
 }
 
 
+- (BOOL)isDownloadingMessageWithID:(NSString *)messageID {
+    return [self.downloadOperationQueue hasOperationWithID:messageID];
+}
 //MARK: - QMCancellableService
 
 - (void)cancellOperationWithID:(NSString *)operationID {

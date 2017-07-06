@@ -306,7 +306,7 @@
     
     [QMChatCache.instance deleteMessages:messages completion:nil];
     
-    NSArray *messagesIDs = [messages valueForKeyPath:NSStringFromSelector(@selector(messageID))];
+    NSArray *messagesIDs = [messages valueForKeyPath:NSStringFromSelector(@selector(ID))];
     [self.chatService.chatAttachmentService  removeMediaFilesForMessagesWithID:messagesIDs
                                                                       dialogID:dialogID];
 }
