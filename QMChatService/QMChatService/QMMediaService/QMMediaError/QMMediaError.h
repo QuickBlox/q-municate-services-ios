@@ -12,6 +12,8 @@
 @interface QMMediaError : NSObject
 
 @property (nonatomic, strong, readonly) NSError *error;
+
+#warning ????
 @property (nonatomic, assign, readonly) QMMessageAttachmentStatus attachmentStatus;
 
 + (instancetype)errorWithResponse:(QBResponse *)response;

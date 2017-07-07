@@ -11,6 +11,8 @@
 @interface QMOpenGraphLoadOperation : NSBlockOperation
 
 @property (nonatomic) NSString *identifier;
+@property (copy, nonatomic) dispatch_block_t cancelBlock;
+@property (strong, nonatomic) QBRequest *request;
 
 @end
 
@@ -66,19 +68,33 @@ static NSString *const kQMKeyImageURL = @"ogImage";
     }
     
     QMOpenGraphLoadOperation *operation = [[QMOpenGraphLoadOperation alloc] init];
+    __weak __typeof(operation)weakOperation = operation;
+    __weak __typeof(self)weakSelf = self;
+    
+    
+    operation.cancelBlock = ^{
+        
+        [weakOperation.request cancel];
+        @synchronized(self.memoryStorage) {
+            
+            NSCParameterAssert(!self.memoryStorage[ID]);
+            self.memoryStorage[ID] = nil;
+        }
+    };
+    
     operation.identifier = ID;
     [operation addExecutionBlock:^{
-
+        
         QMOpenGraphItem *item = [self.memoryStorage openGraphItemWithBaseURL:url];
-        //NSParameterAssert(!self.memoryStorage[ID]);
+        NSParameterAssert(!self.memoryStorage[ID]);
         if (item) {
             
             item = [item copy];
-            //            NSParameterAssert(![item.ID isEqualToString:ID]);
+            NSParameterAssert(![item.ID isEqualToString:ID]);
             item.ID = ID;
             self.memoryStorage[ID] = item;
+            
             dispatch_sync(dispatch_get_main_queue(), ^{
-                
                 [self.multicastDelegate openGraphSerivce:self
                       didAddOpenGraphItemToMemoryStorage:item];
                 NSLog(@"ID: %@, url %@ - exists", ID, url);
@@ -88,9 +104,8 @@ static NSString *const kQMKeyImageURL = @"ogImage";
         }
         
         dispatch_semaphore_t sem = dispatch_semaphore_create(0);
-        __weak __typeof(self)weakSelf = self;
         
-        QBRequest *request =
+        weakOperation.request =
         [self.ogsClient GET:@""
                  parameters:@{@"url": url}
                    progress:nil
@@ -106,66 +121,40 @@ static NSString *const kQMKeyImageURL = @"ogImage";
                  
                  QMOpenGraphItem *openGraphItem =
                  [weakSelf openGraphWithID:ID dictionary:jsonObject baseUrl:url];
+                 
+                 dispatch_group_t group = dispatch_group_create();
                  // Load Preview image
                  if (openGraphItem.imageURL) {
                      
                      NSURL *previewImageURL = [NSURL URLWithString:openGraphItem.imageURL];
-                     NSData *previewImageData = [NSData dataWithContentsOfURL:previewImageURL];
-                     
-                     if (previewImageData) {
-                         
-                         UIImage *previewImage = [UIImage imageWithData:previewImageData];
-                         if (previewImage) {
-                             dispatch_sync(dispatch_get_main_queue(), ^{
-                                 [weakSelf.multicastDelegate openGraphSerivce:weakSelf
-                                                          didLoadPreviewImage:previewImage
-                                                                       forURL:previewImageURL];
-                             });
-                         }
+                     dispatch_group_enter(group);
+                     [weakSelf.multicastDelegate openGraphSerivce:weakSelf hasImageURL:previewImageURL completion:^{
                          
                          NSLog(@"--->: %tu, Finish load preview image %@",
-                               task.taskIdentifier,
-                               previewImageURL.absoluteString);
-                     }
-                     else {
-                         NSLog(@"--->: %tu, Filed load preview image %@",
-                               task.taskIdentifier,
-                               previewImageURL.absoluteString);
-                     }
-                     
+                               task.taskIdentifier, previewImageURL.absoluteString);
+                         
+                         dispatch_group_leave(group);
+                     }];
                  }
                  // Load favicon
                  NSURL *faviconURL = [NSURL URLWithString:openGraphItem.faviconUrl];
-                 NSData *faviconData = [NSData dataWithContentsOfURL:faviconURL];
-                 UIImage *faviconImage = [UIImage imageWithData:faviconData];
+                 dispatch_group_enter(group);
+                 [weakSelf.multicastDelegate openGraphSerivce:weakSelf
+                                             hasFaviconURL:faviconURL completion:^
+                  {
+                      NSLog(@"--->: %tu, Finish load favicon %@",
+                            task.taskIdentifier, faviconURL.absoluteString);
+                      dispatch_group_leave(group);
+                  }];
                  
-                 if (faviconImage) {
-                     NSLog(@"--->: %tu, Finish load favicon %@",
-                           task.taskIdentifier, faviconURL.absoluteString);
+                 dispatch_group_notify(group, _ogsQueue, ^{
                      
-                     if (faviconImage) {
-                         dispatch_sync(dispatch_get_main_queue(), ^{
-                             [weakSelf.multicastDelegate openGraphSerivce:weakSelf
-                                                           didLoadFavicon:faviconImage
-                                                                   forURL:faviconURL];
-                         });
-                     }
-                 }
-                 else {
-                     NSLog(@"--->: %tu, Filed load favicon %@",
-                           task.taskIdentifier,
-                           faviconURL.absoluteString);
-                 }
-                 
-                 weakSelf.memoryStorage[ID] = openGraphItem;
-                 
-                 dispatch_sync(dispatch_get_main_queue(), ^{
-                     
+                     weakSelf.memoryStorage[ID] = openGraphItem;
                      [weakSelf.multicastDelegate openGraphSerivce:weakSelf
                                didAddOpenGraphItemToMemoryStorage:openGraphItem];
+                     
+                     dispatch_semaphore_signal(sem);
                  });
-                 
-                 dispatch_semaphore_signal(sem);
              }
              
          } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -173,9 +162,9 @@ static NSString *const kQMKeyImageURL = @"ogImage";
              dispatch_semaphore_signal(sem);
          }];
         
-        NSLog(@"Task: %tu, ID: %@, load for %@", request.task.taskIdentifier, ID, url);
+        NSLog(@"Task: %tu, ID: %@, load for %@", weakOperation.request.task.taskIdentifier, ID, url);
         dispatch_semaphore_wait(sem, DISPATCH_TIME_FOREVER);
-        NSLog(@"Done: %tu, ID: %@, %@", request.task.taskIdentifier, ID, url);
+        NSLog(@"Done: %tu, ID: %@, %@", weakOperation.request.task.taskIdentifier, ID, url);
     }];
     
     NSLog(@"Add: %@, %@", operation, url);
@@ -251,6 +240,8 @@ static NSString *const kQMKeyImageURL = @"ogImage";
         
         NSString *imagePath = dictionary[kQMKeyImageURL][@"url"];
         
+        imagePath = [imagePath stringByReplacingOccurrencesOfString:@".gif/" withString:@".gif"];
+        
         if (imagePath != nil) {
             openGraphItem.imageURL = imagePath;
         }
@@ -290,6 +281,32 @@ static NSString *const kQMKeyImageURL = @"ogImage";
 @end
 
 @implementation QMOpenGraphLoadOperation
+
+- (void)setCancelBlock:(dispatch_block_t)cancelBlock {
+    // check if the operation is already cancelled, then we just call the cancelBlock
+    if (self.isCancelled) {
+        if (cancelBlock) {
+            cancelBlock();
+        }
+        _cancelBlock = nil; // don't forget to nil the cancelBlock, otherwise we will get crashes
+    } else {
+        _cancelBlock = [cancelBlock copy];
+    }
+}
+
+- (void)cancel {
+    
+    [super cancel];
+    
+    if (self.cancelBlock) {
+        self.cancelBlock();
+        
+        // TODO: this is a temporary fix to #809.
+        // Until we can figure the exact cause of the crash, going with the ivar instead of the setter
+        //        self.cancelBlock = nil;
+        _cancelBlock = nil;
+    }
+}
 
 - (void)dealloc {
     

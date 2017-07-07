@@ -68,12 +68,12 @@ NS_ASSUME_NONNULL_BEGIN
 didAddOpenGraphItemToMemoryStorage:(QMOpenGraphItem *)openGraphItem;
 
 - (void)openGraphSerivce:(QMOpenGraphService *)openGraphSerivce
-          didLoadFavicon:(UIImage *)fiveIcon
-                  forURL:(NSURL *)url;
+           hasFaviconURL:(NSURL *)url
+              completion:(dispatch_block_t)completion;
 
 - (void)openGraphSerivce:(QMOpenGraphService *)openGraphSerivce
-     didLoadPreviewImage:(UIImage *)previewImage
-                  forURL:(NSURL *)url;
+             hasImageURL:(NSURL *)url
+              completion:(dispatch_block_t)completion;
 
 - (void)openGraphSerivce:(QMOpenGraphService *)openGraphSerivce
         didLoadFromCache:(QMOpenGraphItem *)openGraph;
