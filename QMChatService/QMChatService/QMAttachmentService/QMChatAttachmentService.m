@@ -99,7 +99,8 @@ const struct QMAttachmentStatusStruct QMAttachmentStatus =
     return self;
 }
 
-- (void)prepareAttachment:(QBChatAttachment *)attachment messageID:(NSString *)messageID
+- (void)prepareAttachment:(QBChatAttachment *)attachment
+                messageID:(NSString *)messageID
                completion:(QMMediaInfoServiceCompletionBlock)completion {
     
     __weak typeof(self) weakSelf = self;
@@ -127,6 +128,7 @@ const struct QMAttachmentStatusStruct QMAttachmentStatus =
                  [strongSelf changeAttachmentStatus:QMAttachmentStatus.error forMessageID:messageID];
              }
              else {
+                 
                  [strongSelf changeAttachmentStatus:QMAttachmentStatus.prepared forMessageID:messageID];
              }
              if (completion) {
@@ -606,7 +608,7 @@ const struct QMAttachmentStatusStruct QMAttachmentStatus =
               completion:(void(^)(QMAttachmentOperation *))completionBlock {
     QMAttachmentOperation *attachmentOperation =  [QMAttachmentOperation new];
     
-    QBChatAttachment *cachedAttachment =  [self.storeService.attachmentsMemoryStorage
+    QBChatAttachment *cachedAttachment = [self.storeService.attachmentsMemoryStorage
                                            attachmentWithID:attachmentID
                                            fromMessageID:message.ID];
     if (cachedAttachment) {
@@ -691,6 +693,8 @@ const struct QMAttachmentStatusStruct QMAttachmentStatus =
                                                                                           else {
                                                                                               attachment.image = image;
                                                                                               attachment.duration = durationSeconds;
+                                                                                              
+                                                                                              [self.storeService updateAttachment:attachment messageID:messageID dialogID:message.dialogID];
                                                                                               attachmentOperation.attachment = attachment;
                                                                                           }
                                                                                           completionBlock(attachmentOperation);

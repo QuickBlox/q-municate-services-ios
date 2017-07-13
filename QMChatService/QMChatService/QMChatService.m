@@ -58,7 +58,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
         _loadedAllMessages = [NSMutableDictionary dictionary];
         _lastMessagesLoadDate = [NSMutableDictionary dictionary];
         _messagesToRead = [NSMutableSet set];
-
+        
         if (self.serviceManager.currentUser != nil) {
             [self loadCachedDialogsWithCompletion:nil];
         }
@@ -1366,11 +1366,11 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
                          completion:completion];
     }
     else {
-    [self sendMessage:message
-             toDialog:dialog
-        saveToHistory:message.saveToHistory.integerValue
-        saveToStorage:YES
-           completion:completion];
+        [self sendMessage:message
+                 toDialog:dialog
+            saveToHistory:message.saveToHistory.integerValue
+            saveToStorage:YES
+               completion:completion];
     }
 }
 
@@ -1611,7 +1611,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     [self.dialogsMemoryStorage free];
     [self.messagesToRead removeAllObjects];
     [self.deferredQueueManager free];
-//    [self.linkPreviewManager free];
+    //    [self.linkPreviewManager free];
 }
 
 //MARK: - System messages
@@ -1831,23 +1831,27 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 
 
 
-- (void)didRemoveAttachment:(nonnull QBChatAttachment *)attachment
-                  messageID:(nonnull NSString *)messageID
-                   dialogID:(nonnull NSString *)dialogID {
+- (void)storeService:(QMMediaStoreService *)storeService
+ didRemoveAttachment:(QBChatAttachment *)attachment
+           messageID:(NSString *)messageID
+            dialogID:(NSString *)dialogID {
     
     QBChatMessage *message = [self.messagesMemoryStorage messageWithID:messageID fromDialogID:dialogID];
     
-    if (message){
+    if (message) {
         
-            [self.messagesMemoryStorage updateMessage:message];
-            
-            if ([self.multicastDelegate respondsToSelector:@selector(chatService:didUpdateMessage:forDialogID:)]) {
-                [self.multicastDelegate chatService:self didUpdateMessage:message forDialogID:dialogID];
-            }
+        [self.messagesMemoryStorage updateMessage:message];
+        
+        if ([self.multicastDelegate respondsToSelector:@selector(chatService:didUpdateMessage:forDialogID:)]) {
+            [self.multicastDelegate chatService:self didUpdateMessage:message forDialogID:dialogID];
+        }
     }
 }
 
-- (void)didUpdateAttachment:(nonnull QBChatAttachment *)attachment messageID:(nonnull NSString *)messageID dialogID:(nonnull NSString *)dialogID {
+- (void)storeService:(QMMediaStoreService *)storeService
+ didUpdateAttachment:(QBChatAttachment *)attachment
+           messageID:(NSString *)messageID
+            dialogID:(NSString *)dialogID {
     
     QBChatMessage *message = [self.messagesMemoryStorage messageWithID:messageID fromDialogID:dialogID];
     
@@ -1860,5 +1864,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
         }
     }
 }
+
+
 
 @end
