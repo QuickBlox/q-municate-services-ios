@@ -37,6 +37,12 @@ NS_ASSUME_NONNULL_BEGIN
                         dialogID:(NSString *)dialogID
                       completion:(void(^)(UIImage * _Nullable image))completion;
 - (NSData *)dataForImage:(UIImage*)image;
+
+- (NSOperation *)cachedAttachment:(QBChatAttachment *)attachment
+                             messageID:(NSString *)messageID
+                              dialogID:(NSString *)dialogID
+                            completion:(void(^)(NSURL *filURL, NSData *data))completion;
+
 - (void)saveData:(NSData *)data
    forAttachment:(QBChatAttachment *)attachment
        cacheType:(QMAttachmentCacheType)cacheType

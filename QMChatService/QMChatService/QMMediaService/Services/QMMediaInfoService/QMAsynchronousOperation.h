@@ -9,16 +9,17 @@
 #import <Foundation/Foundation.h>
 NS_ASSUME_NONNULL_BEGIN
 
-typedef  void(^QMOperationBlock)();
+typedef  void(^QMOperationBlock)(dispatch_block_t finish);
 typedef  void(^QMCancellBlock)();
 
 @interface QMAsynchronousOperation : NSOperation
 
 @property (nonatomic, copy, nullable) NSString *operationID;
 @property (nonatomic, copy, nullable) QMOperationBlock operationBlock;
-@property (nonatomic, copy, nullable) QMCancellBlock cancellBlock;
+@property (nonatomic, copy, nullable) QMCancellBlock cancelBlock;
 
-- (void)completeOperation;
+
+- (void)finish;
 
 + (instancetype)asynchronousOperationWithID:(NSString *)operationID;
 

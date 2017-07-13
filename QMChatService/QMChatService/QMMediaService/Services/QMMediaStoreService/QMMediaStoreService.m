@@ -11,6 +11,25 @@
 
 #import "QBChatAttachment+QMCustomParameters.h"
 
+@protocol QMStoreOperationObserver <NSObject>
+
+- (void)didStoreData:(NSData *)data forObjectWithID:(NSString *)objectID;
+- (void)didRemoveData:(NSData *)data forObjectWithID:(NSString *)objectID;
+
+
+@end
+
+@interface QMStoreOperation : NSOperation
+
+
+@property (weak, nonatomic) id <QMStoreOperationObserver> observer;
+
+@end
+
+@implementation QMStoreOperation
+
+@end
+
 
 @interface QMMediaStoreService() {
     NSFileManager *_fileManager;
@@ -61,12 +80,10 @@
                messageID:(NSString *)messageID
                 dialogID:(NSString *)dialogID {
     
-    if (attachmentID == nil) {
+    if (attachmentID != nil) {
         
         [_attachmentsMemoryStorage attachmentWithID:attachmentID fromMessageID:messageID];
-        
     }
-    
 }
 
 - (void)cachedDataForAttachment:(QBChatAttachment *)attachment
@@ -161,7 +178,7 @@
     }
     else {
         if (completion) {
-            completion;
+            completion();
         }
     }
 }
@@ -203,35 +220,35 @@
             
             BOOL isSucceed = NO;
             
-//            if (tempPathToFile && ![tempPathToFile isEqualToString:pathToFile]) {
-//                if (attachment.contentType != QMAttachmentContentTypeVideo) {
-//
-//                    if (![_fileManager fileExistsAtPath:[pathToFile stringByDeletingLastPathComponent]]) {
-//                        [_fileManager createDirectoryAtPath:[pathToFile stringByDeletingLastPathComponent] withIntermediateDirectories:YES attributes:nil error:NULL];
-//                    }
-//                    NSError *error;
-//                    isSucceed  = [_fileManager copyItemAtURL:[NSURL fileURLWithPath:tempPathToFile]
-//                                                       toURL:[NSURL fileURLWithPath:pathToFile]
-//                                                       error:&error];
-//                    if (error) {
-//                        NSLog(@"error = %@", error);
-//                    }
-//                }
-//
-//                [_fileManager removeItemAtURL:[NSURL fileURLWithPath:tempPathToFile]
-//                                        error:NULL];
-//            }
-//            else {
-                if (![_fileManager fileExistsAtPath:[pathToFile stringByDeletingLastPathComponent]]) {
-                    [_fileManager createDirectoryAtPath:[pathToFile stringByDeletingLastPathComponent] withIntermediateDirectories:YES attributes:nil error:NULL];
-                }
-                NSLog(@"CREATE FILE AT PATH %@", pathToFile);
-                if  (![_fileManager createFileAtPath:pathToFile contents:data attributes:nil]) {
-                    
-                    NSLog(@"Error was code: %d - message: %s", errno, strerror(errno));
-                    
-                }
-   //         }
+            //            if (tempPathToFile && ![tempPathToFile isEqualToString:pathToFile]) {
+            //                if (attachment.contentType != QMAttachmentContentTypeVideo) {
+            //
+            //                    if (![_fileManager fileExistsAtPath:[pathToFile stringByDeletingLastPathComponent]]) {
+            //                        [_fileManager createDirectoryAtPath:[pathToFile stringByDeletingLastPathComponent] withIntermediateDirectories:YES attributes:nil error:NULL];
+            //                    }
+            //                    NSError *error;
+            //                    isSucceed  = [_fileManager copyItemAtURL:[NSURL fileURLWithPath:tempPathToFile]
+            //                                                       toURL:[NSURL fileURLWithPath:pathToFile]
+            //                                                       error:&error];
+            //                    if (error) {
+            //                        NSLog(@"error = %@", error);
+            //                    }
+            //                }
+            //
+            //                [_fileManager removeItemAtURL:[NSURL fileURLWithPath:tempPathToFile]
+            //                                        error:NULL];
+            //            }
+            //            else {
+            if (![_fileManager fileExistsAtPath:[pathToFile stringByDeletingLastPathComponent]]) {
+                [_fileManager createDirectoryAtPath:[pathToFile stringByDeletingLastPathComponent] withIntermediateDirectories:YES attributes:nil error:NULL];
+            }
+            NSLog(@"CREATE FILE AT PATH %@", pathToFile);
+            if  (![_fileManager createFileAtPath:pathToFile contents:data attributes:nil]) {
+                
+                NSLog(@"Error was code: %d - message: %s", errno, strerror(errno));
+                
+            }
+            //         }
             
             attachment.localFileURL = [NSURL fileURLWithPath:pathToFile];
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -396,6 +413,22 @@ static NSString* mediaPath(NSString *dialogID, NSString *messsageID, QBChatAttac
         }
     });
     return fileURL;
+}
+
+- (QMStoreOperation *)cachedAttachment:(QBChatAttachment *)attachment
+                             messageID:(NSString *)messageID
+                              dialogID:(NSString *)dialogID
+                            completion:(void(^)(NSURL *filURL, NSData *data))completion {
+    QMStoreOperation *operation = [QMStoreOperation new];
+    
+    [self cachedDataForAttachment:attachment messageID:messageID dialogID:dialogID completion:^(NSData *data, NSURL *fileURL) {
+        if (operation.isCancelled) {
+            return;
+        }
+        completion(fileURL,data);
+    }];
+    
+    return operation;
 }
 
 - (void)sizeForDialogID:(nullable NSString *)dialogID

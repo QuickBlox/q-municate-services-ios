@@ -1415,6 +1415,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
                withAttachment:(QBChatAttachment *)attachment
                    completion:(nullable QBChatCompletionBlock)completion {
     
+    [self.deferredQueueManager addOrUpdateMessage:attachmentMessage];
     [self.chatAttachmentService uploadAndSendAttachmentMessage:attachmentMessage
                                                       toDialog:dialog
                                                withChatService:self
@@ -1851,7 +1852,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     QBChatMessage *message = [self.messagesMemoryStorage messageWithID:messageID fromDialogID:dialogID];
     
     if (message) {
-        
+        message.attachments = @[attachment];
         [self.messagesMemoryStorage updateMessage:message];
         
         if ([self.multicastDelegate respondsToSelector:@selector(chatService:didUpdateMessage:forDialogID:)]) {
