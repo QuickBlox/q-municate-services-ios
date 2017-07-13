@@ -13,7 +13,8 @@ typedef NS_ENUM(NSUInteger, QMMediaPrepareStatus) {
     QMMediaPrepareStatusNotPrepared,
     QMMediaPrepareStatusPreparing,
     QMMediaPrepareStatusPrepareFinished,
-    QMMediaPrepareStatusPrepareFailed
+    QMMediaPrepareStatusPrepareFailed,
+    QMMediaPrepareStatusPrepareCancelled
 };
 
 @class QBChatAttachment;
@@ -27,7 +28,7 @@ typedef NS_ENUM(NSUInteger, QMMediaPrepareStatus) {
 @property (strong, nonatomic, readonly) AVPlayerItem *playerItem;
 @property (assign, nonatomic, readonly) QMMediaPrepareStatus prepareStatus;
 
-+ (instancetype)infoFromAttachment:(QBChatAttachment *)attachment;
++ (instancetype)infoFromAttachment:(QBChatAttachment *)attachment messageID:(NSString *)messageID;
 - (void)cancel;
 
 - (void)prepareWithCompletion:(void(^)(NSTimeInterval duration, CGSize size, UIImage *image, NSError *error))completion;

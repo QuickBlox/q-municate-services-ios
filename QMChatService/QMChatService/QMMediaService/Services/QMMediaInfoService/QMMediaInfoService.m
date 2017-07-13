@@ -14,7 +14,14 @@
 #import "QBChatAttachment+QMCustomParameters.h"
 #import "QMMediaInfo.h"
 
-@interface QMMediaInfoService() //<QMImageOperationDelegate>
+@interface QMMediaInfoOperation : NSBlockOperation
+@property (copy, nonatomic) NSString *identifier;
+@property (copy, nonatomic) dispatch_block_t cancelBlock;
+@property (strong, nonatomic) QMMediaInfo *mediaInfo;
+
+@end
+
+@interface QMMediaInfoService()
 @property (strong, nonatomic) NSOperationQueue *imagesOperationQueue;
 @property (strong, nonatomic,readwrite) NSMutableSet *attachmentsInProcess;
 
@@ -32,7 +39,6 @@
         _imagesOperationQueue.maxConcurrentOperationCount  = 3;
         _imagesOperationQueue.qualityOfService = NSQualityOfServiceUtility;
         _imagesOperationQueue.name = @"QMServices.videoThumbnailOperationQueue";
-        
     }
     
     return self;
@@ -41,102 +47,45 @@
 - (void)mediaInfoForAttachment:(QBChatAttachment *)attachment
                      messageID:(NSString *)messageID
                     completion:(QMMediaInfoServiceCompletionBlock)completion
-                     {
+{
     
     NSURL *url = attachment.localFileURL?:attachment.remoteURL;
     if (!url) {
         return;
     }
     
-    if ([self.imagesOperationQueue hasOperationWithID:messageID]) {
+    for (QMMediaInfoOperation *o in _imagesOperationQueue.operations) {
         
-        return;
+        if ([o.identifier isEqualToString:messageID]) {
+            return;
+        }
     }
     
-    QMAsynchronousOperation *mediaInfoOperation = [QMAsynchronousOperation asynchronousOperationWithID:messageID];
-    __block QMMediaInfo *mediaInfo ;
-    __weak typeof(QMAsynchronousOperation) *weakOperation = mediaInfoOperation;
+    QMMediaInfoOperation *mediaInfoOperation = [[QMMediaInfoOperation alloc] init];
+    mediaInfoOperation.identifier = messageID;
+    __weak __typeof(mediaInfoOperation)weakOperation = mediaInfoOperation;
     
-    mediaInfoOperation.operationBlock = ^{
+    
+    mediaInfoOperation.cancelBlock = ^{
         
+        [weakOperation.mediaInfo cancel];
         
-       mediaInfo = [QMMediaInfo infoFromAttachment:attachment];
-        [mediaInfo prepareWithCompletion:^(NSTimeInterval duration, CGSize size, UIImage *image, NSError *error) {
-            __strong QMAsynchronousOperation *strongOperation = weakOperation;
-            BOOL isCancelled = strongOperation.isCancelled;
-            completion(image,duration, size, error, messageID, isCancelled);
-     //       if (!isCancelled) {
-                 [strongOperation completeOperation];
-      //      }
+    };
+    
+    [mediaInfoOperation addExecutionBlock:^{
+        dispatch_semaphore_t sem = dispatch_semaphore_create(0);
+        weakOperation.mediaInfo = [QMMediaInfo infoFromAttachment:attachment messageID:messageID];
+        [weakOperation.mediaInfo prepareWithCompletion:^(NSTimeInterval duration, CGSize size, UIImage *image, NSError *error) {
+            
+            completion(image,duration, size, error, messageID, weakOperation.isCancelled);
+            dispatch_semaphore_signal(sem);
+            
         }];
-        
-//        AVAsset *asset = [AVAsset assetWithURL:url];
-//        __block UIImage *thumbnailImage = nil;
-//        __block CGSize size = CGSizeZero;
-//        Float64 durationSeconds =  CMTimeGetSeconds([asset duration]);
-//        __block NSError *error;
-//
-//        NSString *tracksKey = @"tracks";
-//
-//        [asset loadValuesAsynchronouslyForKeys:@[tracksKey] completionHandler:
-//         ^{
-//
-//             AVKeyValueStatus status = [asset statusOfValueForKey:tracksKey error:&error];
-//
-//             if (status == AVKeyValueStatusLoaded) {
-//                 if ([[asset tracksWithMediaType:AVMediaTypeVideo] count] > 0)
-//                 {
-//                     generator = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];
-//                     generator.appliesPreferredTrackTransform = YES;
-//                     generator.maximumSize = CGSizeMake(200, 200);
-//
-//
-//
-//                     CMTime actualTime;
-//                     size = [[[asset tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0] naturalSize];
-//
-//                     CGImageRef halfWayImage = [generator copyCGImageAtTime:kCMTimeZero
-//                                                                 actualTime:&actualTime
-//                                                                      error:&error];
-//
-//                     if (halfWayImage != NULL) {
-//                         thumbnailImage = [UIImage imageWithCGImage:halfWayImage];
-//                     }
-//
-//                     dispatch_async(dispatch_get_main_queue(), ^{
-//                         completion(thumbnailImage, durationSeconds, size, error);
-//                     });
-//
-//                     __strong QMAsynchronousOperation *strongOperation = weakOperation;
-//                     [strongOperation completeOperation];
-//                 }
-//                 else {
-//                     __strong QMAsynchronousOperation *strongOperation = weakOperation;
-//                     [strongOperation completeOperation];
-//                     //    NSAssert(NO, @"NO VIDEO TRACKS");
-//                     dispatch_async(dispatch_get_main_queue(), ^{
-//                         completion(thumbnailImage, durationSeconds, size, error);
-//                     });
-//                 }
-//             }
-//             else {
-//                 NSLog(@"ERROR %@ %@", messageID ,error);
-//                 dispatch_async(dispatch_get_main_queue(), ^{
-//                     completion(thumbnailImage, durationSeconds, size, error);
-//                 });
-//
-//                 __strong QMAsynchronousOperation *strongOperation = weakOperation;
-//                 [strongOperation completeOperation];
-//             }
-//         }];
-//
-    };
+        dispatch_semaphore_wait(sem, DISPATCH_TIME_FOREVER);
+    }];
     
-    mediaInfoOperation.cancellBlock = ^{
-        [mediaInfo cancel];
-    };
     
-    [self.imagesOperationQueue addAsynchronousOperation:mediaInfoOperation atFronOfQueue:YES];
+    [self.imagesOperationQueue addOperation:mediaInfoOperation];
 }
 
 
@@ -149,9 +98,58 @@
 
 - (void)cancellOperationWithID:(NSString *)operationID {
     
+    for (QMMediaInfoOperation *op in self.imagesOperationQueue.operations) {
+        if ([op.identifier isEqualToString:operationID]) {
+            [op cancel];
+            break;
+        }
+    }
+    
     NSLog(@"_Cancell operation with ID:%@",operationID);
-    [self.imagesOperationQueue cancelOperationWithID:operationID];
+    //    [self.imagesOperationQueue cancelOperationWithID:operationID];
     NSLog(@"Operations = %@", [self.imagesOperationQueue operations]);
 }
 
+@end
+
+@implementation QMMediaInfoOperation
+
+- (void)setCancelBlock:(dispatch_block_t)cancelBlock {
+    // check if the operation is already cancelled, then we just call the cancelBlock
+    if (self.isCancelled) {
+        if (cancelBlock) {
+            cancelBlock();
+        }
+        _cancelBlock = nil; // don't forget to nil the cancelBlock, otherwise we will get crashes
+    } else {
+        _cancelBlock = [cancelBlock copy];
+    }
+}
+
+- (void)cancel {
+    
+    [super cancel];
+    
+    if (self.cancelBlock) {
+        self.cancelBlock();
+        
+        // TODO: this is a temporary fix to #809.
+        // Until we can figure the exact cause of the crash, going with the ivar instead of the setter
+        //        self.cancelBlock = nil;
+        _cancelBlock = nil;
+    }
+}
+
+- (void)dealloc {
+    
+    NSLog(@"%@, class: %@, id: %@", NSStringFromSelector(_cmd), NSStringFromClass(self.class), _identifier);
+}
+
+- (NSString *)description {
+    
+    NSMutableString *result = [NSMutableString stringWithString:[super description]];
+    [result appendFormat:@" ->>> %@", _identifier];
+    
+    return result.copy;
+}
 @end

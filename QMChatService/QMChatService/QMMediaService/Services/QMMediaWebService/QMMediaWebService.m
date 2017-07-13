@@ -39,65 +39,50 @@
 }
 
 
-- (void)downloadDataForAttachment:(QBChatAttachment *)attachment
-                        messageID:(NSString *)messageID
-              withCompletionBlock:(QMAttachmentDataCompletionBlock)completionBlock
-                    progressBlock:(QMMediaProgressBlock)progressBlock
-                     cancellBlock:(QMAttachmentDownloadCancellBlock)cancellBlock  {
+- (void)downloadMessage:(QBChatMessage *)message
+           attachmentID:(NSString *)attachmentID
+          progressBlock:(QMMediaProgressBlock)progressBlock
+        completionBlock:(void(^)(QMDownloadOperation *downloadOperation))completion {
     
-    [self.downloader downloadDataForAttachment:attachment
-                                     messageID:messageID
-                           withCompletionBlock:completionBlock
-                                 progressBlock:^(float progress) {
-                                     self.messagesWebProgress[messageID] = @(progress);
-                                     progressBlock(progress);
-                                 }
-                                  cancellBlock:cancellBlock];
+    [self.downloader downloadMessage:message attachmentID:attachmentID progressBlock:progressBlock completionBlock:completion];
 }
 
 
 - (void)uploadAttachment:(QBChatAttachment *)attachment
                messageID:(NSString *)messageID
                 withData:(NSData *)data
-     withCompletionBlock:(QMAttachmentUploadCompletionBlock)completionBlock
-           progressBlock:(QMMediaProgressBlock)progressBlock {
+           progressBlock:(QMMediaProgressBlock)progressBlock
+completionBlock:(void(^)(QMUploadOperation *uploadOperation))completion {
     
     [self.uploader uploadAttachment:attachment
+                          messageID:messageID
                            withData:data
-                withCompletionBlock:completionBlock
-                      progressBlock:^(float progress) {
-                          
-                          self.messagesWebProgress[messageID] = @(progress);
-                          progressBlock(progress);
-                      }];
+                      progressBlock:progressBlock
+                    completionBlock:completion];
 }
 
 - (void)uploadAttachment:(QBChatAttachment *)attachment
                messageID:(NSString *)messageID
              withFileURL:(NSURL *)fileURL
-     withCompletionBlock:(QMAttachmentUploadCompletionBlock)completionBlock
-           progressBlock:(QMMediaProgressBlock)progressBlock {
-    
-    [self.uploader uploadAttachment:attachment
-                        withFileURL:fileURL
-                withCompletionBlock:completionBlock
-                      progressBlock:^(float progress) {
-                          self.messagesWebProgress[messageID] = @(progress);
-                          progressBlock(progress);
-                      }];
+           progressBlock:(_Nullable QMMediaProgressBlock)progressBlock
+         completionBlock:(void(^)(QMUploadOperation *downloadOperation))completion {
+       [self.uploader uploadAttachment:attachment
+                             messageID:messageID
+                           withFileURL:fileURL
+                         progressBlock:progressBlock
+                       completionBlock:completion];
 }
-
 
 - (CGFloat)progressForMessageWithID:(NSString *)messageID {
     return self.messagesWebProgress[messageID].floatValue;
 }
-
 
 //MARK: - QMCancellableService
 
 - (void)cancellOperationWithID:(NSString *)operationID {
     [self.messagesWebProgress removeObjectForKey:operationID];
     [self.downloader cancellOperationWithID:operationID];
+    self.messagesWebProgress[operationID] = nil;
 }
 
 - (BOOL)isDownloadingMessageWithID:(NSString *)messageID {

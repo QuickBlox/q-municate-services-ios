@@ -58,6 +58,11 @@ typedef NS_ENUM(NSInteger, QMAttachmentContentType) {
  */
 @property (nonatomic, assign) NSUInteger size;
 
+/**
+ *  Attachment has all needed values
+ */
+@property (nonatomic, assign, getter=isPrepared, readonly) BOOL prepared;
+
 - (NSURL *)remoteURLWithToken:(BOOL)withToken;
 - (NSURL *)remoteURL;
 - (NSString *)stringContentType;

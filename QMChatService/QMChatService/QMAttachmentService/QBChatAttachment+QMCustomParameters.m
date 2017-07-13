@@ -241,7 +241,25 @@ NSString  *kQMAttachmentSizeKey = @"size";
     
     return stringMediaType;
 }
-
+- (BOOL)isPrepared {
+    
+    switch (self.contentType) {
+            
+        case QMAttachmentContentTypeAudio:
+            return self.duration > 0;
+        case QMAttachmentContentTypeImage:
+            return self.image != nil;
+            break;
+        case QMAttachmentContentTypeVideo:
+            return self.image != nil && self.duration > 0;
+            break;
+        case QMAttachmentContentTypeCustom:
+            return YES;
+            break;
+        default:
+            break;
+    }
+}
 //MARK: Helpers
 bool compareNearlyEqual (float a, float b, unsigned epsilonMultiplier) {
     float epsilon;

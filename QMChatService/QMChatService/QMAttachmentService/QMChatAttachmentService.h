@@ -41,7 +41,20 @@ struct QMAttachmentStatusStruct {
 
 extern const struct QMAttachmentStatusStruct QMAttachmentStatus;
 
-    
+
+@interface QMAttachmentOperation : NSBlockOperation
+
+@property (copy, nonatomic) NSString *identifier;
+@property QBChatAttachment *attachment;
+@property NSError *error;
+@property NSOperation *storeOperation;
+@property NSOperation *mediaInfoOperation;
+@property NSOperation *sendOperation;
+@property NSOperation *uploadOperation;
+
+@property (copy, nonatomic) dispatch_block_t cancelBlock;
+
+@end
 
 /**
  *  Chat attachment service
@@ -52,28 +65,27 @@ extern const struct QMAttachmentStatusStruct QMAttachmentStatus;
 @property (nonatomic, strong, readonly) QMMediaWebService *webService;
 @property (nonatomic, strong, readonly) QMMediaInfoService *infoService;
 
+
 - (instancetype)init NS_UNAVAILABLE;
 - (instancetype)new NS_UNAVAILABLE;
-
-
-- (NSString *)statusForMessage:(QBChatMessage *)message;
 
 - (instancetype)initWithStoreService:(QMMediaStoreService *)storeService
                           webService:(QMMediaWebService *)webService
                          infoService:(QMMediaInfoService *)infoService;
 
-- (QBChatAttachment *)placeholderAttachment:(NSString *)messageID;
 
-- (void)imageForAttachment:(QBChatAttachment *)attachment
-                   message:(QBChatMessage *)message
-                completion:(void(^)(UIImage *image,
-                                    QMMediaError *error))completion;
+- (NSString *)statusForMessage:(QBChatMessage *)message;
+- (QBChatAttachment *)placeholderAttachment:(NSString *)messageID;
 
 - (void)attachmentWithID:(NSString *)attachmentID
                  message:(QBChatMessage *)message
-              completion:(void(^)(QBChatAttachment * _Nullable attachment,
-                                  NSError * _Nullable error,
-                                  QMMessageAttachmentStatus status))completion;
+           progressBlock:(QMMediaProgressBlock)progressBlock
+              completion:(void(^)(QMAttachmentOperation *op))completionBlock;
+
+- (void)imageForAttachment:(QBChatAttachment *)attachment
+                   message:(QBChatMessage *)message
+                completion:(void(^)(UIImage * _Nullable image,
+                                    NSError * _Nullable error))completion;
 
 - (BOOL)attachmentIsReadyToPlay:(QBChatAttachment *)attachment
                         message:(QBChatMessage *)message;
@@ -91,8 +103,11 @@ extern const struct QMAttachmentStatusStruct QMAttachmentStatus;
 
 - (void)removeMediaFilesForMessagesWithID:(NSArray<NSString *> *)messagesIDs
                                  dialogID:(NSString *)dialogID;
-- (void)prepareAttachment:(QBChatAttachment *)attachment messageID:(NSString *)messageID
+
+- (void)prepareAttachment:(QBChatAttachment *)attachment
+                messageID:(NSString *)messageID
                completion:(QMMediaInfoServiceCompletionBlock)completion;
+
 /**
  *  Add delegate (Multicast)
  *
@@ -188,7 +203,7 @@ DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.4.7. Use 'addDelegate:' instead.");
  */
 - (void)chatAttachmentService:(QMChatAttachmentService *)chatAttachmentService
     didChangeAttachmentStatus:(NSString *)status
-                   forMessageID:(NSString *)messageID;
+                 forMessageID:(NSString *)messageID;
 
 /**
  *  Is called when chat attachment service did change loading progress for some attachment.
