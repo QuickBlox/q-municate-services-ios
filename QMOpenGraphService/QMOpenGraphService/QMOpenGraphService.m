@@ -71,7 +71,6 @@ static NSString *const kQMKeyImageURL = @"ogImage";
     __weak __typeof(operation)weakOperation = operation;
     __weak __typeof(self)weakSelf = self;
     
-    
     operation.cancelBlock = ^{
         
         [weakOperation.request cancel];
@@ -207,8 +206,6 @@ static NSString *const kQMKeyImageURL = @"ogImage";
                     NSTextCheckingResult *result = [detector firstMatchInString:text options:0 range:textRenge];
                     
                     if (!result ||
-                        result.range.location > 0 ||
-                        result.range.length != text.length ||
                         [result.URL.absoluteString hasPrefix:@"mailto:"]) {
                     }
                     else {
