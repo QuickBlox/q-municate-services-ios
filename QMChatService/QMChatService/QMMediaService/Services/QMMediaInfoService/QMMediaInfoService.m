@@ -14,17 +14,11 @@
 #import "QBChatAttachment+QMCustomParameters.h"
 #import "QMMediaInfo.h"
 
-@interface QMMediaInfoOperation : NSBlockOperation
-@property (copy, nonatomic) NSString *identifier;
-@property (copy, nonatomic) dispatch_block_t cancelBlock;
-@property (strong, nonatomic) QMMediaInfo *mediaInfo;
-
-@end
-
 @interface QMMediaInfoService()
-@property (strong, nonatomic) NSOperationQueue *imagesOperationQueue;
-@property (strong, nonatomic,readwrite) NSMutableSet *attachmentsInProcess;
 
+@property (strong, nonatomic) NSOperationQueue *mediaInfoOperationQueue;
+@property (weak, nonatomic, nullable) NSOperation *lastAddedOperation;
+@property (strong, nonatomic) NSMutableDictionary *mediaInfoStorage;
 @end
 
 @implementation QMMediaInfoService
@@ -35,10 +29,11 @@
     
     if (self = [super init]) {
         
-        _imagesOperationQueue = [[NSOperationQueue alloc] init];
-        _imagesOperationQueue.maxConcurrentOperationCount  = 3;
-        _imagesOperationQueue.qualityOfService = NSQualityOfServiceUtility;
-        _imagesOperationQueue.name = @"QMServices.videoThumbnailOperationQueue";
+        _mediaInfoOperationQueue = [[NSOperationQueue alloc] init];
+        _mediaInfoOperationQueue.maxConcurrentOperationCount  = 2;
+        _mediaInfoOperationQueue.qualityOfService = NSQualityOfServiceUtility;
+        _mediaInfoOperationQueue.name = @"QMServices.mediaInfoOperationQueue";
+        _mediaInfoStorage = [NSMutableDictionary new];
     }
     
     return self;
@@ -50,56 +45,73 @@
 {
     
     NSURL *url = attachment.localFileURL?:attachment.remoteURL;
-    if (!url) {
+    NSParameterAssert(url);
+    
+    if ([_mediaInfoOperationQueue hasOperationWithID:messageID]) {
         return;
     }
     
-    for (QMMediaInfoOperation *o in _imagesOperationQueue.operations) {
-        
-        if ([o.identifier isEqualToString:messageID]) {
-            return;
-        }
-    }
-    
-    QMMediaInfoOperation *mediaInfoOperation = [[QMMediaInfoOperation alloc] init];
-    mediaInfoOperation.identifier = messageID;
+    QMAsynchronousOperation *mediaInfoOperation = [[QMAsynchronousOperation alloc] init];
+    mediaInfoOperation.operationID = messageID;
     __weak __typeof(mediaInfoOperation)weakOperation = mediaInfoOperation;
     
-    
     mediaInfoOperation.cancelBlock = ^{
+        __strong typeof(weakOperation) strongOperation = weakOperation;
+        NSLog(@"Cancell operation with ID: %@", strongOperation.operationID);
+        if (!strongOperation.objectToCancel) {
+            completion(nil, 0, CGSizeZero, nil, messageID, YES);
+        }
         
-        [weakOperation.mediaInfo cancel];
+        [strongOperation.objectToCancel cancel];
         
     };
     
-    [mediaInfoOperation addExecutionBlock:^{
-        dispatch_semaphore_t sem = dispatch_semaphore_create(0);
-        weakOperation.mediaInfo = [QMMediaInfo infoFromAttachment:attachment messageID:messageID];
-        [weakOperation.mediaInfo prepareWithCompletion:^(NSTimeInterval duration, CGSize size, UIImage *image, NSError *error) {
-            
+    [mediaInfoOperation setAsyncOperationBlock:^(dispatch_block_t  _Nonnull finish) {
+        
+        QMMediaInfo *mediaInfo = [QMMediaInfo infoFromAttachment:attachment
+                                                       messageID:messageID];
+        
+        weakOperation.objectToCancel = (id <QMCancellableObject>)mediaInfo;
+        
+        [mediaInfo prepareWithCompletion:^(NSTimeInterval duration, CGSize size, UIImage *image, NSError *error, AVPlayerItem *item) {
+            if (item) {
+                @synchronized (self.mediaInfoStorage) {
+                    self.mediaInfoStorage[messageID] = item;
+                }
+            }
             completion(image,duration, size, error, messageID, weakOperation.isCancelled);
-            dispatch_semaphore_signal(sem);
-            
+            finish();
         }];
-        dispatch_semaphore_wait(sem, DISPATCH_TIME_FOREVER);
     }];
     
+    [self.mediaInfoOperationQueue addOperation:mediaInfoOperation];
     
-    [self.imagesOperationQueue addOperation:mediaInfoOperation];
+    //LIFO order
+    [self.lastAddedOperation addDependency:mediaInfoOperation];
+    self.lastAddedOperation = mediaInfoOperation;
 }
 
+- (AVPlayerItem *)playerItemForAtatchment:(QBChatAttachment *)att
+                                messageID:(NSString *)messageID  {
+    AVPlayerItem *item = nil;
+    @synchronized (self.mediaInfoStorage) {
+        item =  self.mediaInfoStorage[messageID];
+    }
+    
+    return item;
+}
 
 //MARK: QMCancellableService
 
 - (void)cancellAllOperations {
     
-    [self.imagesOperationQueue cancelAllOperations];
+    [self.mediaInfoOperationQueue cancelAllOperations];
 }
 
 - (void)cancellOperationWithID:(NSString *)operationID {
     
-    for (QMMediaInfoOperation *op in self.imagesOperationQueue.operations) {
-        if ([op.identifier isEqualToString:operationID]) {
+    for (QMAsynchronousOperation *op in self.mediaInfoOperationQueue.operations) {
+        if ([op.operationID isEqualToString:operationID]) {
             [op cancel];
             break;
         }
@@ -107,49 +119,8 @@
     
     NSLog(@"_Cancell operation with ID:%@",operationID);
     //    [self.imagesOperationQueue cancelOperationWithID:operationID];
-    NSLog(@"Operations = %@", [self.imagesOperationQueue operations]);
+    NSLog(@"Operations = %@", [self.mediaInfoOperationQueue operations]);
 }
 
 @end
 
-@implementation QMMediaInfoOperation
-
-- (void)setCancelBlock:(dispatch_block_t)cancelBlock {
-    // check if the operation is already cancelled, then we just call the cancelBlock
-    if (self.isCancelled) {
-        if (cancelBlock) {
-            cancelBlock();
-        }
-        _cancelBlock = nil; // don't forget to nil the cancelBlock, otherwise we will get crashes
-    } else {
-        _cancelBlock = [cancelBlock copy];
-    }
-}
-
-- (void)cancel {
-    
-    [super cancel];
-    
-    if (self.cancelBlock) {
-        self.cancelBlock();
-        
-        // TODO: this is a temporary fix to #809.
-        // Until we can figure the exact cause of the crash, going with the ivar instead of the setter
-        //        self.cancelBlock = nil;
-        _cancelBlock = nil;
-    }
-}
-
-- (void)dealloc {
-    
-    NSLog(@"%@, class: %@, id: %@", NSStringFromSelector(_cmd), NSStringFromClass(self.class), _identifier);
-}
-
-- (NSString *)description {
-    
-    NSMutableString *result = [NSMutableString stringWithString:[super description]];
-    [result appendFormat:@" ->>> %@", _identifier];
-    
-    return result.copy;
-}
-@end

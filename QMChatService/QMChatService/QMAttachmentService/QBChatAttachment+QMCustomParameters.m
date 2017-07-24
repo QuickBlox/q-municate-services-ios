@@ -93,36 +93,36 @@ NSString  *kQMAttachmentSizeKey = @"size";
 }
 
 
-- (NSUInteger)width {
+- (NSInteger)width {
     
     return [self[kQMAttachmentWidthKey] integerValue];
 }
 
-- (void)setWidth:(NSUInteger)width {
+- (void)setWidth:(NSInteger)width {
     
     if (self.width != width) {
         self[kQMAttachmentWidthKey] = [NSString stringWithFormat:@"%ld",(unsigned long)width];
     }
 }
 
-- (NSUInteger)height {
+- (NSInteger)height {
     
     return [self[kQMAttachmentHeightKey] integerValue];
 }
 
-- (void)setHeight:(NSUInteger)height {
+- (void)setHeight:(NSInteger)height {
     
     if (self.height != height) {
         self[kQMAttachmentHeightKey] = [NSString stringWithFormat:@"%ld",(unsigned long)height];
     }
 }
 
-- (NSUInteger)size {
+- (NSInteger)size {
     
     return [self[kQMAttachmentSizeKey] integerValue];
 }
 
-- (void)setSize:(NSUInteger)size {
+- (void)setSize:(NSInteger)size {
     
     if (self.size != size) {
         self[kQMAttachmentSizeKey] = [NSString stringWithFormat:@"%ld",(unsigned long)size];

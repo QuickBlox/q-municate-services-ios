@@ -59,6 +59,9 @@ typedef NS_ENUM(NSUInteger, QMMessageStatus) {
 - (void)deferredQueueManager:(QMDeferredQueueManager *)queueManager
      didUpdateMessageLocally:(QBChatMessage *)addedMessage;
 
+- (void)deferredQueueManager:(QMDeferredQueueManager *)queueManager
+      didUpdateMessageStatus:(QMMessageStatus)status
+                     message:(QBChatMessage *)message;
 @end
 
 NS_ASSUME_NONNULL_END

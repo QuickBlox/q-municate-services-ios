@@ -35,5 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
                                    progressBlock:(_Nullable QMMediaProgressBlock)progressBlock
                                  completionBlock:(void(^)(QMUploadOperation *downloadOperation))completion;
 
+- (BOOL)isUplodingMessageWithID:(NSString *)messageID;
+
 @end
 NS_ASSUME_NONNULL_END

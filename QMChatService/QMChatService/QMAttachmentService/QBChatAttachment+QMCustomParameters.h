@@ -16,7 +16,6 @@ typedef NS_ENUM(NSInteger, QMAttachmentContentType) {
     QMAttachmentContentTypeCustom
 };
 
-
 @interface QBChatAttachment (QMCustomParameters)
 
 @property (assign, nonatomic) QMAttachmentContentType contentType;
@@ -41,12 +40,12 @@ typedef NS_ENUM(NSInteger, QMAttachmentContentType) {
 /**
  *  Width of attachment (for video/image).
  */
-@property (nonatomic, assign) NSUInteger width;
+@property (nonatomic, assign) NSInteger width;
 
 /**
  *  Height of attachment (for video/image).
  */
-@property (nonatomic, assign) NSUInteger height;
+@property (nonatomic, assign) NSInteger height;
 
 /**
  *  Duration in seconds (for video/audio).
@@ -56,7 +55,7 @@ typedef NS_ENUM(NSInteger, QMAttachmentContentType) {
 /**
  *  Size of attachment in bytes.
  */
-@property (nonatomic, assign) NSUInteger size;
+@property (nonatomic, assign) NSInteger size;
 
 /**
  *  Attachment has all needed values

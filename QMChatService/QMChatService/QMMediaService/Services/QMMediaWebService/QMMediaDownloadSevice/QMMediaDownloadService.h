@@ -16,8 +16,6 @@
 
 @interface QMDownloadOperation : QMAsynchronousOperation
 
-@property (copy, nonatomic) QMAttachmentDataCompletionBlock operationCompletionBlock;
-
 @property (nonatomic, strong) QBRequest *request;
 @property (nonatomic, strong) NSError *error;
 @property (nonatomic, strong) NSData *data;
@@ -27,15 +25,10 @@
 @interface QMMediaDownloadService : NSObject <QMCancellableService>
 
 - (BOOL)isDownloadingMessageWithID:(NSString *)messageID;
-- (QMDownloadOperation *)downloadDataForAttachment:(QBChatAttachment *)attachment
-                        messageID:(NSString *)messageID
-              withCompletionBlock:(QMAttachmentDataCompletionBlock)completionBlock
-                    progressBlock:(QMMediaProgressBlock)progressBlock
-                     cancellBlock:(QMAttachmentDownloadCancellBlock)cancellBlock;
 
-- (void)downloadMessage:(QBChatMessage *)message
-           attachmentID:(NSString *)attachmentID
-          progressBlock:(QMMediaProgressBlock)progressBlock
-        completionBlock:(void(^)(QMDownloadOperation *downloadOperation))completion;
+- (void)downloadAttachmentWithID:(NSString *)attachmentID
+                       messageID:(NSString *)messageID
+                   progressBlock:(QMMediaProgressBlock)progressBlock
+                 completionBlock:(void(^)(QMDownloadOperation *downloadOperation))completion;
 
 @end

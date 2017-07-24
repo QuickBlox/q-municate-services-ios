@@ -15,6 +15,7 @@ typedef NS_ENUM(NSInteger, QMAsynchronousOperationState) {
 };
 
 static inline NSString *QMKeyPathForState(QMAsynchronousOperationState state) {
+    
     switch (state) {
         case QMAsynchronousOperationStateStateReady:        return @"isReady";
         case QMAsynchronousOperationStateStateExecuting:    return @"isExecuting";
@@ -171,10 +172,10 @@ dispatch_async(dispatch_get_main_queue(), block);\
 
 - (void)asyncTask
 {
-    NSParameterAssert(self.operationBlock!= nil);
+    NSParameterAssert(self.asyncOperationBlock != nil);
     // Invoke execution block
     __weak typeof(self)weakSelf = self;
-    self.operationBlock(^{
+    self.asyncOperationBlock(^{
         __strong __typeof(weakSelf)strongSelf = weakSelf;
         [strongSelf finish];
     });
@@ -182,7 +183,7 @@ dispatch_async(dispatch_get_main_queue(), block);\
 
 - (void)finish
 {
-    _operationBlock = nil;
+    _asyncOperationBlock = nil;
     
     [self performBlockAndWait:^{
         // Signal the completion of operation
@@ -227,41 +228,24 @@ dispatch_async(dispatch_get_main_queue(), block);\
 
 - (void)cancelOperationWithID:(NSString *)operationID {
     
-    for (QMAsynchronousOperation *op in self.operations) {
+    [[self operationWithID:operationID] cancel];
+}
+
+- (nullable QMAsynchronousOperation *)operationWithID:(NSString *)operationID {
+    
+    QMAsynchronousOperation *operation = nil;
+    
+    for (QMAsynchronousOperation *op in [self operations]) {
         if ([op.operationID isEqualToString:operationID]) {
-            [op cancel];
+            operation = op;
             break;
         }
     }
-}
-
-- (void)addAsynchronousOperation:(QMAsynchronousOperation *)asyncOperation {
-    
-    [self addAsynchronousOperation:asyncOperation atFronOfQueue:NO];
-}
-
-- (void)addAsynchronousOperation:(QMAsynchronousOperation *)asyncOperation
-                   atFronOfQueue:(BOOL)atFronOfQueue {
-    
-    NSLog(@"Operations in queue = %@", self.operations);
-    
-    if ([self hasOperationWithID:asyncOperation.operationID]) {
-        return;
-    }
-    
-    [self addOperation:asyncOperation];
+    return operation;
 }
 
 - (BOOL)hasOperationWithID:(NSString *)operationID {
-    
-    BOOL hasOperation = NO;
-    for (QMAsynchronousOperation *op in [self operations]) {
-        if ([op.operationID isEqualToString:operationID]) {
-            hasOperation = !op.isCancelled;
-            break;
-        }
-    }
-    return hasOperation;
+    return [self operationWithID:operationID] != nil;
 }
 
 

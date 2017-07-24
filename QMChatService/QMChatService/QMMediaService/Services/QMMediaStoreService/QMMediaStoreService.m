@@ -218,27 +218,6 @@
                                              messageID,
                                              attachment);
             
-            BOOL isSucceed = NO;
-            
-            //            if (tempPathToFile && ![tempPathToFile isEqualToString:pathToFile]) {
-            //                if (attachment.contentType != QMAttachmentContentTypeVideo) {
-            //
-            //                    if (![_fileManager fileExistsAtPath:[pathToFile stringByDeletingLastPathComponent]]) {
-            //                        [_fileManager createDirectoryAtPath:[pathToFile stringByDeletingLastPathComponent] withIntermediateDirectories:YES attributes:nil error:NULL];
-            //                    }
-            //                    NSError *error;
-            //                    isSucceed  = [_fileManager copyItemAtURL:[NSURL fileURLWithPath:tempPathToFile]
-            //                                                       toURL:[NSURL fileURLWithPath:pathToFile]
-            //                                                       error:&error];
-            //                    if (error) {
-            //                        NSLog(@"error = %@", error);
-            //                    }
-            //                }
-            //
-            //                [_fileManager removeItemAtURL:[NSURL fileURLWithPath:tempPathToFile]
-            //                                        error:NULL];
-            //            }
-            //            else {
             if (![_fileManager fileExistsAtPath:[pathToFile stringByDeletingLastPathComponent]]) {
                 [_fileManager createDirectoryAtPath:[pathToFile stringByDeletingLastPathComponent] withIntermediateDirectories:YES attributes:nil error:NULL];
             }
@@ -248,7 +227,6 @@
                 NSLog(@"Error was code: %d - message: %s", errno, strerror(errno));
                 
             }
-            //         }
             
             attachment.localFileURL = [NSURL fileURLWithPath:pathToFile];
             dispatch_async(dispatch_get_main_queue(), ^{

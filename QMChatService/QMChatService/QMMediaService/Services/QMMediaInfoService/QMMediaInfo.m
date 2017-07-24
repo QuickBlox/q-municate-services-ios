@@ -24,7 +24,7 @@ typedef NS_ENUM(NSUInteger, QMVideoUrlType) {
 @property (assign, nonatomic) QMAttachmentContentType contentType;
 @property (strong, nonatomic) AVAssetImageGenerator *imageGenerator;
 
-@property (copy, nonatomic) void(^completion)(NSTimeInterval duration, CGSize size, UIImage *image, NSError *error);
+@property (copy, nonatomic) void(^completion)(NSTimeInterval duration, CGSize size, UIImage *image, NSError *error, AVPlayerItem *playerItem);
 
 @property (strong, nonatomic, readwrite) AVPlayerItem *playerItem;
 @property (assign, nonatomic, readwrite) CGSize mediaSize;
@@ -108,16 +108,16 @@ typedef NS_ENUM(NSUInteger, QMVideoUrlType) {
 
 - (void)cancel {
     
-    if (self.prepareStatus == QMMediaPrepareStatusPreparing) {
+    if (self.prepareStatus != QMMediaPrepareStatusPrepareCancelled) {
+        
         self.prepareStatus = QMMediaPrepareStatusPrepareCancelled;
-        //  dispatch_sync(self.assetQueue, ^{
+        
         [self.asset cancelLoading];
-        //     });
         [self.imageGenerator cancelAllCGImageGeneration];
     }
 }
 
-- (void)prepareWithCompletion:(void(^)(NSTimeInterval duration, CGSize size, UIImage *image, NSError *error))completionBLock {
+- (void)prepareWithCompletion:(void(^)(NSTimeInterval duration, CGSize size, UIImage *image, NSError *error, AVPlayerItem *item))completionBLock {
     
     if (self.prepareStatus == QMMediaPrepareStatusNotPrepared && self.assetURL) {
         NSLog(@"1 self.prepareStatus == QMMediaPrepareStatusNotPrepared %@", _messageID);
@@ -130,7 +130,8 @@ typedef NS_ENUM(NSUInteger, QMVideoUrlType) {
     
     else if (self.prepareStatus == QMMediaPrepareStatusPrepareFinished) {
          NSLog(@"1 self.prepareStatus == QMMediaPrepareStatusPrepareFinished %@", _messageID);
-        completionBLock(self.duration, self.mediaSize, self.thumbnailImage, nil);
+        AVPlayerItem *item = [AVPlayerItem playerItemWithAsset:self.asset];
+        completionBLock(self.duration, self.mediaSize, self.thumbnailImage, nil, item);
     }
     NSAssert(NO, @"No condition");
 }
@@ -149,11 +150,25 @@ typedef NS_ENUM(NSUInteger, QMVideoUrlType) {
        // dispatch_async(strongSelf.assetQueue, ^(void) {
             NSLog(@"3 Completed Load %@", _messageID);
         if (self.prepareStatus == QMMediaPrepareStatusPrepareCancelled) {
+            NSLog(@"4 isCancelled %@", _messageID);
             if (self.completion) {
-                self.completion(0, CGSizeZero, nil, nil);
+                self.completion(0, CGSizeZero, nil, nil, nil);
             }
             return;
         }
+        
+        for (NSString *key in requestedKeys) {
+            NSError *error = nil;
+            AVKeyValueStatus keyStatus = [asset statusOfValueForKey:key error:&error];
+            if (keyStatus == AVKeyValueStatusFailed) {
+                if (self.completion) {
+                    self.prepareStatus = QMMediaPrepareStatusPrepareFailed;
+                    self.completion(0, CGSizeZero, nil, error, nil);
+                }
+                return;
+            }
+        }
+        
             [self prepareAsset:asset withKeys:requestedKeys];
       //  });
     }];
@@ -161,7 +176,7 @@ typedef NS_ENUM(NSUInteger, QMVideoUrlType) {
 }
 
 - (void)generateThumbnailFromAsset:(AVAsset *)thumbnailAsset withSize:(CGSize)size
-                 completionHandler:(void (^)(UIImage *thumbnail))handler
+                 completionHandler:(void (^)(UIImage *thumbnail, NSError *error))handler
 {
     _imageGenerator = [[AVAssetImageGenerator alloc] initWithAsset:thumbnailAsset];
     
@@ -183,7 +198,7 @@ typedef NS_ENUM(NSUInteger, QMVideoUrlType) {
          if (result == AVAssetImageGeneratorFailed || result == AVAssetImageGeneratorCancelled) {
               NSLog(@"7 image gemenaritonWithResult: %@ %@",@"Failed or AVAssetImageGeneratorCancelled", _messageID);
              
-                 handler(nil);
+                 handler(nil, error);
              
          }
          else {
@@ -194,7 +209,7 @@ typedef NS_ENUM(NSUInteger, QMVideoUrlType) {
              }
              
              if (handler) {
-                 handler(thumbUIImage);
+                 handler(thumbUIImage, nil);
              }
          }
      }];
@@ -212,7 +227,8 @@ typedef NS_ENUM(NSUInteger, QMVideoUrlType) {
         NSLog(@"5 QMAttachmentContentTypeVideo %@", _messageID);
         if ([asset tracksWithMediaType:AVMediaTypeVideo] > 0) {
             NSLog(@"6 tracksWithMediaType %@", _messageID);
-            CGSize videoSize = [[[asset tracksWithMediaType:AVMediaTypeVideo] firstObject] naturalSize];
+            AVAssetTrack *videoTrack = [[asset tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0];
+            CGSize videoSize = CGSizeApplyAffineTransform(videoTrack.naturalSize, videoTrack.preferredTransform);
             CGFloat videoWidth = videoSize.width;
             CGFloat videoHeight = videoSize.height;
             
@@ -222,24 +238,34 @@ typedef NS_ENUM(NSUInteger, QMVideoUrlType) {
                     NSLog(@"7 Begin imnage generation %@", _messageID);
                 __weak typeof(self) weakSelf = self;
                 
-                [self generateThumbnailFromAsset:asset withSize:mediaSize completionHandler:^(UIImage *thumbnail) {
+                [self generateThumbnailFromAsset:asset withSize:mediaSize completionHandler:^(UIImage *thumbnail, NSError *error) {
                     NSLog(@"8 End image generation %@", _messageID);
-                     __strong typeof(weakSelf) strongSelf = weakSelf;
+                         __strong typeof(weakSelf) strongSelf = weakSelf;
+                    if (error) {
+                        if (strongSelf.completion) {
+                            strongSelf.prepareStatus = QMMediaPrepareStatusPrepareFailed;
+                            strongSelf.completion(duration, mediaSize, thumbnail, error, nil);
+                        }
+                        return;
+                    }
+                    
                         strongSelf.prepareStatus = QMMediaPrepareStatusPrepareFinished;
                         strongSelf.duration = duration;
                         strongSelf.mediaSize = mediaSize;
                         //  self.playerItem = [AVPlayerItem playerItemWithAsset:asset];
                         strongSelf.thumbnailImage = thumbnail;
                         if (strongSelf.completion) {
-                            strongSelf.completion(duration, mediaSize, thumbnail, nil);
+                             AVPlayerItem *item = [AVPlayerItem playerItemWithAsset:self.asset];
+                            strongSelf.completion(duration, mediaSize, thumbnail, nil, item);
                         }
                 }];
             }
             else {
-                NSLog(@"8 NO IMAGE: %@", _messageID);
+                NSLog(@"8 HAS IMAGE: %@", _messageID);
                 
                     if (self.completion) {
-                        self.completion(0, CGSizeZero, nil, nil);
+                        AVPlayerItem *item = [AVPlayerItem playerItemWithAsset:self.asset];
+                        self.completion(duration, mediaSize, self.thumbnailImage, nil, item);
                     }
             }
         }
@@ -251,10 +277,9 @@ typedef NS_ENUM(NSUInteger, QMVideoUrlType) {
                 self.duration = duration;
                 self.mediaSize = mediaSize;
                 if (self.completion) {
-                    self.completion(duration, mediaSize, self.thumbnailImage , nil);
+                    AVPlayerItem *item = [AVPlayerItem playerItemWithAsset:self.asset];
+                    self.completion(duration, mediaSize, self.thumbnailImage , nil, item);
                 }
-                
-            
         }
         
     }
@@ -263,9 +288,9 @@ typedef NS_ENUM(NSUInteger, QMVideoUrlType) {
             self.prepareStatus = QMMediaPrepareStatusPrepareFinished;
             self.duration = duration;
             self.mediaSize = mediaSize;
-            
+            AVPlayerItem *item = [AVPlayerItem playerItemWithAsset:self.asset];
             if (self.completion) {
-                self.completion(duration, mediaSize, nil, nil);
+                self.completion(duration, mediaSize, nil, nil, item);
             }
         
     }

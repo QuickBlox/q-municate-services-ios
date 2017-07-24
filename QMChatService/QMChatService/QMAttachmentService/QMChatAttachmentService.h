@@ -32,7 +32,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 struct QMAttachmentStatusStruct {
     __unsafe_unretained NSString *notLoaded;
-    __unsafe_unretained NSString *loading;
+    __unsafe_unretained NSString *downloading;
+    __unsafe_unretained NSString *uploading;
     __unsafe_unretained NSString *loaded;
     __unsafe_unretained NSString *preparing;
     __unsafe_unretained NSString *prepared;

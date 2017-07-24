@@ -27,7 +27,7 @@
 
 + (instancetype)videoAttachmentwWithFileURL:(NSURL *)itemURL {
     
-    return  [self initWithName:@"Video attachment"
+    return [self initWithName:@"Video attachment"
                        mediaID:nil
                       localURL:itemURL
                    contentType:QMAttachmentContentTypeVideo];

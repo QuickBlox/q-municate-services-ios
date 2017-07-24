@@ -9,7 +9,7 @@
 #import "QMMediaUploadService.h"
 #import "QMSLog.h"
 #import "QBChatAttachment+QMCustomParameters.h"
-
+#import "QMAsynchronousOperation.h"
 
 @implementation QMUploadOperation
 
@@ -87,15 +87,12 @@
                messageID:(NSString *)messageID
              withFileURL:(NSURL *)fileURL
            progressBlock:(_Nullable QMMediaProgressBlock)progressBlock
-         completionBlock:(void(^)(QMUploadOperation *downloadOperation))completion {
+         completionBlock:(void(^)(QMUploadOperation *uploadOperation))completion {
     
     NSParameterAssert([[NSFileManager defaultManager] fileExistsAtPath:fileURL.path]);
     
-    for (QMUploadOperation *o in _uploadOperationQueue.operations) {
-        
-        if ([o.identifier isEqualToString:messageID]) {
-            return;
-        }
+    if ([_uploadOperationQueue hasOperationWithID:messageID]) {
+        return;
     }
     
     
@@ -109,7 +106,7 @@
             completion(strongOperation);
         }
         else {
-        [strongOperation.request cancel];
+            [strongOperation.request cancel];
         }
     };
     
@@ -127,7 +124,7 @@
                                      attachment.ID = tBlob.UID;
                                      attachment.size = tBlob.size;
                                      
-                                      __strong typeof(weakOperation) strongOperation = weakOperation;
+                                     __strong typeof(weakOperation) strongOperation = weakOperation;
                                      strongOperation.attachmentID = attachment.ID;
                                      if (completion) {
                                          completion(strongOperation);
@@ -142,10 +139,10 @@
                                      
                                  } errorBlock:^(QBResponse * _Nonnull response)
                                  {
-                                      __strong typeof(weakOperation) strongOperation = weakOperation;
+                                     __strong typeof(weakOperation) strongOperation = weakOperation;
                                      strongOperation.error = response.error.error;
                                      if (completion) {
-                                     completion(strongOperation);
+                                         completion(strongOperation);
                                      }
                                      dispatch_semaphore_signal(sem);
                                  }];
@@ -158,12 +155,15 @@
     
 }
 
+- (BOOL)isUplodingMessageWithID:(NSString *)messageID {
+    return [_uploadOperationQueue hasOperationWithID:messageID];
+}
 
 - (void)uploadAttachment:(QBChatAttachment *)attachment
                messageID:(NSString *)messageID
                 withData:(NSData *)data
            progressBlock:(_Nullable QMMediaProgressBlock)progressBlock
-         completionBlock:(void(^)(QMUploadOperation *downloadOperation))completion {
+         completionBlock:(void(^)(QMUploadOperation *uploadOperation))completion {
     
     NSParameterAssert(data != nil);
     
@@ -180,13 +180,13 @@
     __weak __typeof(uploadOperation)weakOperation = uploadOperation;
     
     uploadOperation.cancelBlock = ^{
-         __strong typeof(weakOperation) strongOperation = weakOperation;
+        __strong typeof(weakOperation) strongOperation = weakOperation;
         
         if (!strongOperation.request) {
-        completion(strongOperation);
+            completion(strongOperation);
         }
         else {
-        [weakOperation.request cancel];
+            [weakOperation.request cancel];
         }
     };
     
@@ -209,7 +209,7 @@
                                       if (completion) {
                                           completion(strongOperation);
                                       }
-                                       dispatch_semaphore_signal(sem);
+                                      dispatch_semaphore_signal(sem);
                                       
                                   } statusBlock:^(QBRequest * _Nonnull request,
                                                   QBRequestStatus * _Nullable status)
@@ -234,7 +234,7 @@
     
     
     [_uploadOperationQueue addOperation:uploadOperation];
-
+    
 }
 
 @end

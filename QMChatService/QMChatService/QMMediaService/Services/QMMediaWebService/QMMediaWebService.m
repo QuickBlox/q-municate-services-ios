@@ -44,7 +44,10 @@
           progressBlock:(QMMediaProgressBlock)progressBlock
         completionBlock:(void(^)(QMDownloadOperation *downloadOperation))completion {
     
-    [self.downloader downloadMessage:message attachmentID:attachmentID progressBlock:progressBlock completionBlock:completion];
+    [self.downloader downloadAttachmentWithID:attachmentID
+                                    messageID:message.ID
+                                progressBlock:progressBlock
+                              completionBlock:completion];
 }
 
 
@@ -87,6 +90,10 @@ completionBlock:(void(^)(QMUploadOperation *uploadOperation))completion {
 
 - (BOOL)isDownloadingMessageWithID:(NSString *)messageID {
    return  [self.downloader isDownloadingMessageWithID:messageID];
+}
+
+- (BOOL)isUploadingMessageWithID:(NSString *)messageID {
+    return [self.uploader isUplodingMessageWithID:messageID];
 }
 
 - (void)cancellAllOperations {

@@ -27,7 +27,7 @@
         
         _deferredQueueMemoryStorage = [[QMDeferredQueueMemoryStorage alloc] init];
         _multicastDelegate = (id <QMDeferredQueueManagerDelegate>)[[QBMulticastDelegate alloc] init];
-        _autoSendTimeInterval = 60 * 10;
+        _autoSendTimeInterval = 60 * 10; //10 minutes
         _performingMessagesIDs = [NSMutableSet set];
         _maxDeferredActionsCount = 3;
     }
@@ -94,7 +94,7 @@
     [self.deferredQueueMemoryStorage containsMessage:message];
     
     [self.deferredQueueMemoryStorage addMessage:message];
-    
+    NSLog(@"_DEFFERED QUEUE ADD OR UPDATE_%@ has message:%@", message.ID, messageIsExisted ? @"YES" : @"NO");
     if (!messageIsExisted) {
         
         if ([self.multicastDelegate respondsToSelector:@selector(deferredQueueManager:didAddMessageLocally:)]) {
@@ -120,6 +120,8 @@
     
     if ([self.deferredQueueMemoryStorage containsMessage:message]) {
         
+        // NSLog(@"_DEFFERED QUEUE CONTAINS_%@", message.ID);
+        
         return ([[QBChat instance] isConnected] &&
                 [self isAutoSendAvailableForMessage:message]) ? QMMessageStatusSending : QMMessageStatusNotSent;
     }
@@ -133,26 +135,28 @@
 - (BFTask *)perfromDefferedActionForMessage:(QBChatMessage *)message {
     
     if ([self.performingMessagesIDs containsObject:message.ID]) {
+         NSLog(@"_DEFFERED QUEUE perfromDefferedAction CONTAINS_%@", message.ID);
         return nil;
     }
     
     [self.performingMessagesIDs addObject:message.ID];
     
-    BFTaskCompletionSource *successful = [BFTaskCompletionSource taskCompletionSource];
+    BFTaskCompletionSource *completionSource = [BFTaskCompletionSource taskCompletionSource];
     
-    [self perfromDefferedActionForMessage:message withCompletion:^(NSError * _Nullable error) {
-        
+    [self perfromDefferedActionForMessage:message
+                           withCompletion:^(NSError * _Nullable error) {
+        NSLog(@"_DEFFERED QUEUE perfromDefferedAction COMPLETION %@", message.ID);
         [self.performingMessagesIDs removeObject:message.ID];
         
         if (error != nil) {
-            [successful setError:error];
+            [completionSource setError:error];
         }
         else {
-            [successful setResult:nil];
+            [completionSource setResult:nil];
         }
     }];
     
-    return successful.task;
+    return completionSource.task;
 }
 
 - (void)performDeferredActionsForDialogWithID:(NSString *)dialogID {
@@ -192,6 +196,7 @@
 - (void)perfromDefferedActionForMessage:(QBChatMessage *)message withCompletion:(QBChatCompletionBlock)completion {
     
     BOOL messageIsExisted = [self.deferredQueueMemoryStorage containsMessage:message];
+    NSParameterAssert(messageIsExisted);
     
     if (messageIsExisted
         && [self.multicastDelegate respondsToSelector:@selector(deferredQueueManager:
@@ -207,10 +212,12 @@
 //MARK: - Helpers
 
 - (BOOL)isAutoSendAvailableForMessage:(QBChatMessage *)message {
-
+    
     NSTimeInterval secondsBetween = [[NSDate date] timeIntervalSinceDate:message.dateSent];
 
-    return secondsBetween <= self.autoSendTimeInterval;
+    BOOL isAvailable = secondsBetween <= self.autoSendTimeInterval;
+    NSLog(@"_DEFFERED QUEUE isAutoSendAvailableForMessage %@ %@", message.ID, isAvailable ? @"YES" : @"NO");
+    return isAvailable;
 }
 
 - (BOOL)shouldSendMessagesInDialogWithID:(NSString *)dialogID {

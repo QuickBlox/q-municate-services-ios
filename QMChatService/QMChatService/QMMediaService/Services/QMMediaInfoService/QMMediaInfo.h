@@ -31,6 +31,6 @@ typedef NS_ENUM(NSUInteger, QMMediaPrepareStatus) {
 + (instancetype)infoFromAttachment:(QBChatAttachment *)attachment messageID:(NSString *)messageID;
 - (void)cancel;
 
-- (void)prepareWithCompletion:(void(^)(NSTimeInterval duration, CGSize size, UIImage *image, NSError *error))completion;
+- (void)prepareWithCompletion:(void(^)(NSTimeInterval duration, CGSize size, UIImage *image, NSError *error, AVPlayerItem *playerItem))completion;
 
 @end

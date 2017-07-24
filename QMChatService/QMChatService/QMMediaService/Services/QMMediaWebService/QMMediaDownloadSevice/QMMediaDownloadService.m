@@ -25,58 +25,57 @@
 
 @implementation QMMediaDownloadService
 
-- (void)downloadMessage:(QBChatMessage *)message
-                       attachmentID:(NSString *)attachmentID
-          progressBlock:(QMMediaProgressBlock)progressBlock
-        completionBlock:(void(^)(QMDownloadOperation *downloadOperation))completion {
+- (void)downloadAttachmentWithID:(NSString *)attachmentID
+                       messageID:(NSString *)messageID
+                   progressBlock:(QMMediaProgressBlock)progressBlock
+                 completionBlock:(void(^)(QMDownloadOperation *downloadOperation))completion {
     
+    NSParameterAssert(attachmentID.length);
+    NSParameterAssert(messageID.length);
     
-    if  ([_downloadOperationQueue hasOperationWithID:message.ID]) {
+    if  ([_downloadOperationQueue hasOperationWithID:messageID]) {
         return;
     }
     
-    
     QMDownloadOperation *downloadOperation =  [QMDownloadOperation new];
-    downloadOperation.operationID = message.ID;
+    downloadOperation.operationID = messageID;
     
     __weak __typeof(downloadOperation)weakOperation = downloadOperation;
     
     downloadOperation.cancelBlock = ^{
         __strong typeof(weakOperation) strongOperation = weakOperation;
         NSLog(@"Cancell operation with ID: %@", strongOperation.operationID);
-        if (!strongOperation.request) {
+        if (!strongOperation.objectToCancel) {
             completion(strongOperation);
         }
-        [strongOperation.request cancel];
-        strongOperation.request = nil;
-       // cancellBlock(attachment);
+        [strongOperation.objectToCancel cancel];
+        strongOperation.objectToCancel = nil;
     };
     
-    [downloadOperation setOperationBlock:^(dispatch_block_t  _Nonnull finish) {
+    [downloadOperation setAsyncOperationBlock:^(dispatch_block_t _Nonnull finish) {
         NSLog(@"Start Download operation with ID: %@", weakOperation.operationID);
-        weakOperation.request = [QBRequest backgroundDownloadFileWithUID:attachmentID
-                                                            successBlock:^(QBResponse * _Nonnull response,
-                                                                           NSData * _Nonnull fileData)
-                                 {
-                                     NSLog(@"Complete operation with ID: %@", weakOperation.operationID);
-                                  //   completionBlock(messageID, fileData, response.error.error);
-                                     __strong typeof(weakOperation) strongOperation = weakOperation;
-                                     strongOperation.data = fileData;
-                                     completion(strongOperation);
-                                     finish();
-                                     
-                                 } statusBlock:^(QBRequest * _Nonnull request, QBRequestStatus * _Nonnull status) {
-                                     if (progressBlock) {
-                                         progressBlock(status.percentOfCompletion);
-                                     }
-                                 } errorBlock:^(QBResponse * _Nonnull response) {
-                                     NSLog(@"Error operation with ID: %@", weakOperation.operationID);
-                                     __strong typeof(weakOperation) strongOperation = weakOperation;
-                                     strongOperation.error = response.error.error;
-                                     completion(strongOperation);
-                                     finish();
-                                 }];
-        
+        weakOperation.objectToCancel = (id <QMCancellableObject>)[QBRequest backgroundDownloadFileWithUID:attachmentID
+                                                                                             successBlock:^(QBResponse * _Nonnull response,
+                                                                                                            NSData * _Nonnull fileData)
+                                                                  {
+                                                                      NSLog(@"Complete operation with ID: %@", weakOperation.operationID);
+                                                                      
+                                                                      __strong typeof(weakOperation) strongOperation = weakOperation;
+                                                                      strongOperation.data = fileData;
+                                                                      completion(strongOperation);
+                                                                      finish();
+                                                                      
+                                                                  } statusBlock:^(QBRequest * _Nonnull request, QBRequestStatus * _Nonnull status) {
+                                                                      if (progressBlock) {
+                                                                          progressBlock(status.percentOfCompletion);
+                                                                      }
+                                                                  } errorBlock:^(QBResponse * _Nonnull response) {
+                                                                      NSLog(@"Error operation with ID: %@", weakOperation.operationID);
+                                                                      __strong typeof(weakOperation) strongOperation = weakOperation;
+                                                                      strongOperation.error = response.error.error;
+                                                                      completion(strongOperation);
+                                                                      finish();
+                                                                  }];
     }];
     
     
@@ -101,70 +100,10 @@
     QMSLog(@"%@ - %@",  NSStringFromSelector(_cmd), self);
 }
 
-
-
-- (NSOperation *)downloadDataForAttachment:(QBChatAttachment *)attachment
-                        messageID:(NSString *)messageID
-              withCompletionBlock:(QMAttachmentDataCompletionBlock)completionBlock
-                    progressBlock:(QMMediaProgressBlock)progressBlock
-                     cancellBlock:(QMAttachmentDownloadCancellBlock)cancellBlock {
-    
-    
-    if  ([_downloadOperationQueue hasOperationWithID:messageID]) {
-        return nil;
-    }
-    
-    
-  QMDownloadOperation *downloadOperation =  [QMDownloadOperation new];
-    downloadOperation.operationID = messageID;
-    
-    __weak __typeof(downloadOperation)weakOperation = downloadOperation;
-    
-    downloadOperation.cancelBlock = ^{
-           __strong typeof(weakOperation) strongOperation = weakOperation;
-         NSLog(@"Cancell operation with ID: %@", strongOperation.operationID);
-        if (!strongOperation.request) {
-            NSLog(@"NO REQUEST FOR CANCELL operation with ID: %@", strongOperation.operationID);
-        }
-        [strongOperation.request cancel];
-        strongOperation.request = nil;
-         cancellBlock(attachment);
-    };
-    
-    [downloadOperation setOperationBlock:^(dispatch_block_t  _Nonnull finish) {
-        NSLog(@"Start Download operation with ID: %@", weakOperation.operationID);
-        weakOperation.request = [QBRequest backgroundDownloadFileWithUID:attachment.ID
-                                                            successBlock:^(QBResponse * _Nonnull response,
-                                                                           NSData * _Nonnull fileData)
-        {
-            NSLog(@"Complete operation with ID: %@", weakOperation.operationID);
-            completionBlock(messageID, fileData, response.error.error);
-            weakOperation.operationCompletionBlock(messageID, fileData, response.error.error);
-            finish();
-            
-        } statusBlock:^(QBRequest * _Nonnull request, QBRequestStatus * _Nonnull status) {
-            if (progressBlock) {
-                progressBlock(status.percentOfCompletion);
-            }
-        } errorBlock:^(QBResponse * _Nonnull response) {
-            NSLog(@"Error operation with ID: %@", weakOperation.operationID);
-            completionBlock(messageID, nil, response.error.error);
-             finish();
-            
-        }];
-        
-    }];
-    
-    
-    [_downloadOperationQueue addOperation:downloadOperation];
-    NSLog(@"donwload operation queue %@", self.downloadOperationQueue.operations);
-    return downloadOperation;
-}
-
-
 - (BOOL)isDownloadingMessageWithID:(NSString *)messageID {
     return [self.downloadOperationQueue hasOperationWithID:messageID];
 }
+
 //MARK: - QMCancellableService
 
 - (void)cancellOperationWithID:(NSString *)operationID {

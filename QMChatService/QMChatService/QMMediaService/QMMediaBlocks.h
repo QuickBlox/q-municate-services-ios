@@ -19,7 +19,7 @@ typedef void (^QMAttachmentDownloadProgressBlock)(float progress, QBChatMessage 
 typedef void (^QMAttachmentDataCompletionBlock)(NSString *attachmentID, NSData * _Nullable data, NSError * _Nullable error);
 typedef void (^QMMediaProgressBlock)(float progress);
 typedef void (^QMAttachmentUploadCompletionBlock)(NSString * _Nullable attachmentID, NSError * _Nullable error);
-typedef void(^QMMediaInfoServiceCompletionBlock)(UIImage * _Nullable image, Float64 durationSeconds, CGSize size, NSError * _Nullable error, NSString *messageID, BOOL cancelled);
+typedef void(^QMMediaInfoServiceCompletionBlock)(UIImage * _Nullable image, Float64 durationInSeconds, CGSize size, NSError * _Nullable error, NSString *messageID, BOOL cancelled);
 
 NS_ASSUME_NONNULL_END
 

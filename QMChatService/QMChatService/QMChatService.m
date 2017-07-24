@@ -162,35 +162,35 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 //MARK: - QBChatDelegate
 
 - (void)chatDidFailWithStreamError:(NSError *)error {
-    NSLog(@"CHAT_chatDidFailWithStreamError");
+   // NSLog(@"CHAT_chatDidFailWithStreamError");
     if ([self.multicastDelegate respondsToSelector:@selector(chatServiceChatDidFailWithStreamError:)]) {
         [self.multicastDelegate chatServiceChatDidFailWithStreamError:error];
     }
 }
 
 - (void)chatDidConnect {
-    NSLog(@"CHAT_DID_CONNECT");
+   // NSLog(@"CHAT_DID_CONNECT");
     if ([self.multicastDelegate respondsToSelector:@selector(chatServiceChatDidConnect:)]) {
         [self.multicastDelegate chatServiceChatDidConnect:self];
     }
 }
 
 - (void)chatDidNotConnectWithError:(NSError *)error {
-    NSLog(@"CHAT_DchatDidNotConnectWithErrorT");
+  //  NSLog(@"CHAT_DchatDidNotConnectWithErrorT");
     if ([self.multicastDelegate respondsToSelector:@selector(chatService:chatDidNotConnectWithError:)]) {
         [self.multicastDelegate chatService:self chatDidNotConnectWithError:error];
     }
 }
 
 - (void)chatDidAccidentallyDisconnect {
-    NSLog(@"CHAT_chatDidAccidentallyDisconnectT");
+ //   NSLog(@"CHAT_chatDidAccidentallyDisconnectT");
     if ([self.multicastDelegate respondsToSelector:@selector(chatServiceChatDidAccidentallyDisconnect:)]) {
         [self.multicastDelegate chatServiceChatDidAccidentallyDisconnect:self];
     }
 }
 
 - (void)chatDidReconnect {
-    NSLog(@"CHAT_chatDidReconnect");
+ //   NSLog(@"CHAT_chatDidReconnect");
     if ([self.multicastDelegate respondsToSelector:@selector(chatServiceChatDidReconnect:)]) {
         [self.multicastDelegate chatServiceChatDidReconnect:self];
     }
@@ -1303,7 +1303,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
         
         if (!error) {
             
-            if (message.messageType == QMMessageTypeText) {
+            if (message.messageType == QMMessageTypeText || message.isMediaMessage) {
                 [strongSelf.deferredQueueManager removeMessage:message];
             }
             
@@ -1415,7 +1415,6 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
                withAttachment:(QBChatAttachment *)attachment
                    completion:(nullable QBChatCompletionBlock)completion {
     
-    [self.deferredQueueManager addOrUpdateMessage:attachmentMessage];
     [self.chatAttachmentService uploadAndSendAttachmentMessage:attachmentMessage
                                                       toDialog:dialog
                                                withChatService:self
