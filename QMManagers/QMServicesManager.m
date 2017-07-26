@@ -171,8 +171,11 @@
 }
 
 - (BOOL)isAuthorized {
+    const BOOL isAuthorized =
+    self.authService.isAuthorized &&
+    ![QBSession currentSession].sessionTokenHasExpiredOrNeedCreate;
     
-    return self.authService.isAuthorized;
+    return isAuthorized;
 }
 
 - (QBUUser *)currentUser {
