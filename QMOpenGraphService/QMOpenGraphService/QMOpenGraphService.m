@@ -33,9 +33,10 @@ static NSString *const kQMKeyImageURL = @"ogImage";
 
 @implementation QMOpenGraphService
 
-- (instancetype)initWithCacheDataSource:(id<QMOpenGraphCacheDataSource>)cacheDataSource{
+- (instancetype)initWithServiceManager:(id<QMServiceManagerProtocol>)serviceManager
+                       cacheDataSource:(id<QMOpenGraphCacheDataSource>)cacheDataSource {
     
-    if (self = [super init]) {
+    if (self = [super initWithServiceManager:serviceManager]) {
         
         _cahceDataSource = cacheDataSource;
         _memoryStorage = [[QMOpenGraphMemoryStorage alloc] init];
@@ -304,6 +305,7 @@ static NSString *const kQMKeyImageURL = @"ogImage";
         _cancelBlock = nil;
     }
 }
+
 
 - (void)dealloc {
     

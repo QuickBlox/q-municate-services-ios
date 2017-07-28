@@ -7,12 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "QMMemoryStorageProtocol.h"
 
 @class QMOpenGraphItem;
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface QMOpenGraphMemoryStorage : NSObject
+@interface QMOpenGraphMemoryStorage : NSObject <QMMemoryStorageProtocol>
 
 - (nullable QMOpenGraphItem *)openGraphItemWithBaseURL:(NSString *)baseUrl;
 - (nullable QMOpenGraphItem *)objectForKeyedSubscript:(NSString *)key;

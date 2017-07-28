@@ -8,10 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-#import "QMMemoryStorageProtocol.h"
 #import "QMOpenGraphMemoryStorage.h"
 #import "QMOpenGraphItem.h"
-
+#import "QMBaseService.h"
 #import <UIKit/UIKit.h>
 
 @protocol QMOpenGraphServiceDelegate;
@@ -19,14 +18,15 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface QMOpenGraphService : NSObject
+@interface QMOpenGraphService : QMBaseService
 
 /**
  Memory storage for QMLinkPreview
  */
 @property (nonatomic, readonly) QMOpenGraphMemoryStorage *memoryStorage;
 
-- (instancetype)initWithCacheDataSource:(id<QMOpenGraphCacheDataSource>)cacheDataSource NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithServiceManager:(id<QMServiceManagerProtocol>)serviceManager
+                       cacheDataSource:(id<QMOpenGraphCacheDataSource>)cacheDataSource NS_DESIGNATED_INITIALIZER;
 
 - (instancetype)init NS_UNAVAILABLE;
 + (instancetype)new NS_UNAVAILABLE;
