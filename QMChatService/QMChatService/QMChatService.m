@@ -356,10 +356,9 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 
 - (void)handleChatMessage:(QBChatMessage *)message {
     
-    if (!message.dialogID || !self.serviceManager.isAuthorized) {
+    if (!message.dialogID) {
         
-        QMSLog(@"Need update this case");
-        
+        QMSLog(@"handleChatMessage: message.dialogID == nil");
         return;
     }
     

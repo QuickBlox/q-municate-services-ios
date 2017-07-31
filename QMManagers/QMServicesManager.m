@@ -17,11 +17,6 @@
 @property (nonatomic, strong) QMAuthService *authService;
 @property (nonatomic, strong) QMChatService *chatService;
 
-/**
- *  Logout group for synchronous completion.
- */
-@property (nonatomic, strong) dispatch_group_t logoutGroup;
-
 @property (nonatomic, strong) dispatch_group_t joinGroup;
 
 @end
@@ -59,7 +54,6 @@
         _usersService = [[QMUsersService alloc] initWithServiceManager:self cacheDataSource:self];
         [_usersService addDelegate:self];
         
-        _logoutGroup = dispatch_group_create();
         _joinGroup = dispatch_group_create();
     }
     
@@ -86,45 +80,41 @@
     if ([QBSession currentSession].currentUser != nil) {
         
         __weak typeof(self)weakSelf = self;
-        dispatch_group_enter(self.logoutGroup);
         [self.authService logOut:^(QBResponse *response) {
             
-            __typeof(self) strongSelf = weakSelf;
-            [strongSelf.chatService disconnectWithCompletionBlock:nil];
-            [strongSelf.chatService free];
-            [strongSelf.chatService.chatAttachmentService removeAllMediaFiles];
+            dispatch_group_t logoutGroup = dispatch_group_create();
             
-            dispatch_group_leave(strongSelf.logoutGroup);
-        }];
-        
-        dispatch_group_enter(self.logoutGroup);
-        [QMChatCache.instance deleteAllDialogsWithCompletion:^{
+            dispatch_group_enter(logoutGroup);
             
-            __typeof(self) strongSelf = weakSelf;
-            dispatch_group_leave(strongSelf.logoutGroup);
-        }];
-        
-        dispatch_group_enter(self.logoutGroup);
-        [QMChatCache.instance deleteAllMessagesWithCompletion:^{
+            [weakSelf.chatService disconnectWithCompletionBlock:^(NSError *error) {
+                [weakSelf.chatService free];
+                [weakSelf.chatService.chatAttachmentService removeAllMediaFiles];
+                dispatch_group_leave(logoutGroup);
+            }];
             
-            __typeof(self) strongSelf = weakSelf;
-            dispatch_group_leave(strongSelf.logoutGroup);
-        }];
-        
-        dispatch_group_enter(self.logoutGroup);
-        [QMOpenGraphCache.instance deleteAllOpenGraphItemsWithCompletion:^{
+            dispatch_group_enter(logoutGroup);
+            [QMChatCache.instance deleteAllDialogsWithCompletion:^{
+                dispatch_group_leave(logoutGroup);
+            }];
             
-            __typeof(self) strongSelf = weakSelf;
-            dispatch_group_leave(strongSelf.logoutGroup);
-        }];
-        
-        dispatch_group_notify(self.logoutGroup, dispatch_get_main_queue(), ^{
+            dispatch_group_enter(logoutGroup);
+            [QMChatCache.instance deleteAllMessagesWithCompletion:^{
+                dispatch_group_leave(logoutGroup);
+            }];
             
-            if (completion) {
+            dispatch_group_enter(logoutGroup);
+            [QMOpenGraphCache.instance deleteAllOpenGraphItemsWithCompletion:^{
                 
-                completion();
-            }
-        });
+                dispatch_group_leave(logoutGroup);
+            }];
+            
+            dispatch_group_notify(logoutGroup, dispatch_get_main_queue(), ^{
+                
+                if (completion) {
+                    completion();
+                }
+            });
+        }];
     }
     else {
         
