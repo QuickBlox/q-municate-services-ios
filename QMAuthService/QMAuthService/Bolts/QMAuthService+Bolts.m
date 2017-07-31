@@ -8,10 +8,7 @@
 
 #import "QMAuthService.h"
 
-
 @implementation QMAuthService (Bolts)
-
-
 
 - (BFTask *)signUpAndLoginWithUser:(QBUUser *)user {
     
