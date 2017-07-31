@@ -171,16 +171,13 @@
 }
 
 - (BOOL)isAuthorized {
-    const BOOL isAuthorized =
-    self.authService.isAuthorized &&
-    ![QBSession currentSession].sessionTokenHasExpiredOrNeedCreate;
     
-    return isAuthorized;
+    return self.authService.isAuthorized;
 }
 
 - (QBUUser *)currentUser {
     
-    return [QBSession currentSession].currentUser;
+    return QBSession.currentSession.currentUser;
 }
 
 - (void)joinAllGroupDialogsIfNeeded {
