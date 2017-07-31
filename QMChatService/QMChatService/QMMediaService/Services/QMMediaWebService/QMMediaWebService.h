@@ -39,6 +39,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (CGFloat)progressForMessageWithID:(NSString *)messageID;
 
+- (void)cancelDownloadOperations;
+
 
 
 @end

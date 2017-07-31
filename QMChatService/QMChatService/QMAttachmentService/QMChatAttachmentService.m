@@ -146,8 +146,7 @@ const struct QMAttachmentStatusStruct QMAttachmentStatus =
     return _placeholderAttachments[messageID];
 }
 
-- (void)cancelOperationsForAttachment:(QBChatAttachment *)attachment
-                            messageID:(NSString *)messageID {
+- (void)cancelOperationsWithMessageID:(NSString *)messageID {
     NSLog(@"CALL CANCELL ID: %@", messageID);
     QMAttachmentOperation *operation = nil;
     @synchronized (self.runningOperations) {
@@ -459,8 +458,12 @@ const struct QMAttachmentStatusStruct QMAttachmentStatus =
     [self uploadAttachmentMessage:message
                          toDialog:dialog
                        attachment:attachment
-                       completion:^(NSError *error) {
-                           
+                       completion:^(NSError *error, BOOL cancelled) {
+                           if (cancelled) {
+                               [chatService deleteMessageLocally:message];
+                               completion(nil);
+                               return;
+                           }
                            if (!error) {
                                NSLog(@"_UPLOAD NO ERROR completion %@",message.ID);
                                [chatService sendMessage:message
@@ -480,7 +483,7 @@ const struct QMAttachmentStatusStruct QMAttachmentStatus =
 - (void)uploadAttachmentMessage:(QBChatMessage *)message
                        toDialog:(QBChatDialog *)dialog
                      attachment:(QBChatAttachment *)attachment
-                     completion:(void(^)(NSError *))completion {
+                     completion:(void(^)(NSError *error, BOOL cancelled))completion {
     
     BOOL hasOperation = NO;
     @synchronized (self.runningOperations) {
@@ -562,7 +565,7 @@ const struct QMAttachmentStatusStruct QMAttachmentStatus =
                                            NSLog(@"_UPLOAD 3 has file URL %@",message.ID);
                                            [self changeAttachmentStatus:QMAttachmentStatus.loaded forMessageID:message.ID];
                                            attachment.localFileURL = fileURL;
-                                           completion(nil);
+                                           completion(nil,attachmentOperation.isCancelled);
                                            [self safelyRemoveOperationFromRunning:strongOperation];
                                        }
                                        else {
@@ -589,7 +592,7 @@ const struct QMAttachmentStatusStruct QMAttachmentStatus =
                                                    NSLog(@"_UPLOAD 6 error: %@", message.ID);
                                                    [self changeAttachmentStatus:QMAttachmentStatus.notLoaded forMessageID:message.ID];
                                                    [self safelyRemoveOperationFromRunning:strongOperation];
-                                                   completion(error);
+                                                   completion(error,attachmentOperation.isCancelled);
                                                }
                                                else {
                                                    
@@ -602,7 +605,7 @@ const struct QMAttachmentStatusStruct QMAttachmentStatus =
                                                                                   NSLog(@"_UPLOAD 8 change status: %@", message.ID);
                                                                                   [self changeAttachmentStatus:QMAttachmentStatus.loaded forMessageID:message.ID];
                                                                                   
-                                                                                  completion(nil);
+                                                                                  completion(nil,attachmentOperation.isCancelled);
                                                                                   [self safelyRemoveOperationFromRunning:strongOperation];
                                                                               }
                                                                               else {
@@ -630,8 +633,11 @@ const struct QMAttachmentStatusStruct QMAttachmentStatus =
     attachmentOperation.cancelBlock = ^{
         
         __strong __typeof(weakOperation) strongOperation = weakOperation;
-        //       cancelBlock();
+    
+        [self.webService cancellOperationWithID:strongOperation.identifier];
         [self safelyRemoveOperationFromRunning:strongOperation];
+        
+        completion(nil, YES);
     };
 }
 

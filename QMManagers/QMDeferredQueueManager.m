@@ -8,12 +8,14 @@
 
 #import "QMDeferredQueueManager.h"
 #import "QMDeferredQueueMemoryStorage.h"
+#import "QMAsynchronousOperation.h"
+#import "QMCancellableService.h"
 
 @interface QMDeferredQueueManager()
 
 @property (strong, nonatomic) QBMulticastDelegate <QMDeferredQueueManagerDelegate> *multicastDelegate;
 @property (strong, nonatomic) QMDeferredQueueMemoryStorage *deferredQueueMemoryStorage;
-@property (strong, nonatomic) NSMutableSet<NSString *> *performingMessagesIDs;
+@property (strong, nonatomic) NSOperationQueue *deferredOperationQueue;
 
 @end
 
@@ -22,14 +24,21 @@
 //MARK: - Life Cycle
 
 - (instancetype)initWithServiceManager:(id<QMServiceManagerProtocol>)serviceManager {
+    
     self = [super initWithServiceManager:serviceManager];
+    
     if (self) {
         
         _deferredQueueMemoryStorage = [[QMDeferredQueueMemoryStorage alloc] init];
         _multicastDelegate = (id <QMDeferredQueueManagerDelegate>)[[QBMulticastDelegate alloc] init];
         _autoSendTimeInterval = 60 * 10; //10 minutes
-        _performingMessagesIDs = [NSMutableSet set];
+        
         _maxDeferredActionsCount = 3;
+        
+        _deferredOperationQueue = [[NSOperationQueue alloc] init];
+        _deferredOperationQueue.maxConcurrentOperationCount = 1;
+        _deferredOperationQueue.name = @"QMServices.deferredOperationQueue";
+        _deferredOperationQueue.qualityOfService = NSOperationQualityOfServiceUserInitiated;
     }
     
     return self;
@@ -38,11 +47,7 @@
 - (void)free {
     
     [_deferredQueueMemoryStorage free];
-    [_performingMessagesIDs removeAllObjects];
-}
-
-- (void)dealloc {
-    
+    [_deferredOperationQueue cancelAllOperations];
 }
 
 //MARK: - MulticastDelegate
@@ -94,7 +99,7 @@
     [self.deferredQueueMemoryStorage containsMessage:message];
     
     [self.deferredQueueMemoryStorage addMessage:message];
-    NSLog(@"_DEFFERED QUEUE ADD OR UPDATE_%@ has message:%@", message.ID, messageIsExisted ? @"YES" : @"NO");
+    
     if (!messageIsExisted) {
         
         if ([self.multicastDelegate respondsToSelector:@selector(deferredQueueManager:didAddMessageLocally:)]) {
@@ -105,7 +110,7 @@
     else {
         if ([self.multicastDelegate respondsToSelector:@selector(deferredQueueManager:didUpdateMessageLocally:)]) {
             [self.multicastDelegate deferredQueueManager:self
-                                    didUpdateMessageLocally:message];
+                                 didUpdateMessageLocally:message];
         }
     }
 }
@@ -113,15 +118,12 @@
 - (void)removeMessage:(QBChatMessage *)message {
     
     [self.deferredQueueMemoryStorage removeMessage:message];
-    [self.performingMessagesIDs removeObject:message.ID];
+    [self.deferredOperationQueue cancelOperationWithID:message.ID];
 }
 
 - (QMMessageStatus)statusForMessage:(QBChatMessage *)message {
     
     if ([self.deferredQueueMemoryStorage containsMessage:message]) {
-        
-        // NSLog(@"_DEFFERED QUEUE CONTAINS_%@", message.ID);
-        
         return ([[QBChat instance] isConnected] &&
                 [self isAutoSendAvailableForMessage:message]) ? QMMessageStatusSending : QMMessageStatusNotSent;
     }
@@ -132,31 +134,31 @@
 
 //MARK: - Deferred Queue Operations
 
-- (BFTask *)perfromDefferedActionForMessage:(QBChatMessage *)message {
+- (void)perfromDefferedActionForMessage:(QBChatMessage *)message withCompletion:(QBChatCompletionBlock)completion {
     
-    if ([self.performingMessagesIDs containsObject:message.ID]) {
-         NSLog(@"_DEFFERED QUEUE perfromDefferedAction CONTAINS_%@", message.ID);
-        return nil;
+    if ([_deferredOperationQueue hasOperationWithID:message.ID]) {
+        return;
     }
     
-    [self.performingMessagesIDs addObject:message.ID];
+    QMAsynchronousOperation *op =  [QMAsynchronousOperation asynchronousOperationWithID:message.ID];
     
-    BFTaskCompletionSource *completionSource = [BFTaskCompletionSource taskCompletionSource];
-    
-    [self perfromDefferedActionForMessage:message
-                           withCompletion:^(NSError * _Nullable error) {
-        NSLog(@"_DEFFERED QUEUE perfromDefferedAction COMPLETION %@", message.ID);
-        [self.performingMessagesIDs removeObject:message.ID];
-        
-        if (error != nil) {
-            [completionSource setError:error];
-        }
-        else {
-            [completionSource setResult:nil];
-        }
+    [op setAsyncOperationBlock:^(dispatch_block_t  _Nonnull finish) {
+        __weak typeof(self) weakSelf = self;
+        [self internalDefferedActionForMessage:message
+                                withCompletion:^(NSError * _Nullable error) {
+                                    if (completion) {
+                                        completion(error);
+                                    }
+                                    if (!error) {
+                                       __strong typeof(weakSelf) strongSelf = weakSelf;
+                                         [strongSelf.deferredQueueMemoryStorage removeMessage:message];
+                                    }
+                                    
+                                    finish();
+                                }];
     }];
     
-    return completionSource.task;
+    [_deferredOperationQueue addOperation:op];
 }
 
 - (void)performDeferredActionsForDialogWithID:(NSString *)dialogID {
@@ -165,14 +167,8 @@
     [self messagesForDialogWithID:dialogID];
     
     for (QBChatMessage *message in messages) {
-        
-        BFTask *task = [BFTask taskWithResult:nil];
         if ([self isAutoSendAvailableForMessage:message]) {
-            
-            task = [task continueWithBlock:^id(BFTask *task) {
-                
-                return [self perfromDefferedActionForMessage:message];
-            }];
+            [self perfromDefferedActionForMessage:message withCompletion:nil];
         }
         else {
             continue;
@@ -184,16 +180,12 @@
     
     
     for (QBChatMessage *message in self.deferredQueueMemoryStorage.messages) {
-        
-        BFTask *task = [BFTask taskWithResult:nil];
-        
-        task = [task continueWithBlock:^id(BFTask *task) {
-            return [self perfromDefferedActionForMessage:message];
-        }];
+        [self perfromDefferedActionForMessage:message withCompletion:nil];
     }
 }
 
-- (void)perfromDefferedActionForMessage:(QBChatMessage *)message withCompletion:(QBChatCompletionBlock)completion {
+- (void)internalDefferedActionForMessage:(QBChatMessage *)message
+                          withCompletion:(QBChatCompletionBlock)completion {
     
     BOOL messageIsExisted = [self.deferredQueueMemoryStorage containsMessage:message];
     NSParameterAssert(messageIsExisted);
@@ -214,9 +206,7 @@
 - (BOOL)isAutoSendAvailableForMessage:(QBChatMessage *)message {
     
     NSTimeInterval secondsBetween = [[NSDate date] timeIntervalSinceDate:message.dateSent];
-
     BOOL isAvailable = secondsBetween <= self.autoSendTimeInterval;
-    NSLog(@"_DEFFERED QUEUE isAutoSendAvailableForMessage %@ %@", message.ID, isAvailable ? @"YES" : @"NO");
     return isAvailable;
 }
 
@@ -237,5 +227,17 @@
     
     return [self messagesForDialogWithID:dialogID];
 }
+
+//MARK: -
+//MARK: QMCancellableService
+
+- (void)cancellOperationWithID:(NSString *)operationID {
+    [_deferredOperationQueue cancelOperationWithID:operationID];
+}
+
+- (void)cancellAllOperations {
+    [_deferredOperationQueue cancelAllOperations];
+}
+
 
 @end

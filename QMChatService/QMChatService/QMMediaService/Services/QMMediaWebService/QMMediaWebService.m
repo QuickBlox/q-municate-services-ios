@@ -85,6 +85,7 @@ completionBlock:(void(^)(QMUploadOperation *uploadOperation))completion {
 - (void)cancellOperationWithID:(NSString *)operationID {
     [self.messagesWebProgress removeObjectForKey:operationID];
     [self.downloader cancellOperationWithID:operationID];
+    [self.uploader cancellOperationWithID:operationID];
     self.messagesWebProgress[operationID] = nil;
 }
 
@@ -96,8 +97,14 @@ completionBlock:(void(^)(QMUploadOperation *uploadOperation))completion {
     return [self.uploader isUplodingMessageWithID:messageID];
 }
 
+- (void)cancelDownloadOperations {
+    
+    [self.downloader cancellAllOperations];
+}
+
 - (void)cancellAllOperations {
     
     [self.downloader cancellAllOperations];
+    [self.uploader cancellAllOperations];
 }
 @end

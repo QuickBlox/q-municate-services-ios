@@ -91,8 +91,7 @@ extern const struct QMAttachmentStatusStruct QMAttachmentStatus;
 - (BOOL)attachmentIsReadyToPlay:(QBChatAttachment *)attachment
                         message:(QBChatMessage *)message;
 
-- (void)cancelOperationsForAttachment:(QBChatAttachment *)attachment
-                            messageID:(NSString *)messageID;
+- (void)cancelOperationsWithMessageID:(NSString *)messageID;
 
 - (void)removeAllMediaFiles;
 
