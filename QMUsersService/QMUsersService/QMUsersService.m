@@ -616,13 +616,15 @@
                                successBlock:^(QBResponse * _Nonnull response, QBGeneralResponsePage * _Nullable page, NSArray<QBUUser *> * _Nullable users)
          {
              
-             [self.usersMemoryStorage addUsers:users];
-             
-             if ([self.multicastDelegate respondsToSelector:@selector(usersService:didAddUsers:)]) {
-                 [self.multicastDelegate usersService:self didAddUsers:users];
+             if (users.count > 0) {
+                 [self.usersMemoryStorage addUsers:users];
+                 
+                 if ([self.multicastDelegate respondsToSelector:@selector(usersService:didAddUsers:)]) {
+                     [self.multicastDelegate usersService:self didAddUsers:users];
+                 }
+                 
+                 [self notifyListenersAboutUsersUpdate:users];
              }
-             
-             [self notifyListenersAboutUsersUpdate:users];
              
              [source setResult:users];
              
