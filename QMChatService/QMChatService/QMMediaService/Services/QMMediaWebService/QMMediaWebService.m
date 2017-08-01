@@ -41,12 +41,18 @@
 
 - (void)downloadMessage:(QBChatMessage *)message
            attachmentID:(NSString *)attachmentID
-          progressBlock:(QMMediaProgressBlock)progressBlock
+          progressBlock:(QMAttachmentProgressBlock)progressBlock
         completionBlock:(void(^)(QMDownloadOperation *downloadOperation))completion {
+    
+    __weak typeof(self) weakSelf = self;
     
     [self.downloader downloadAttachmentWithID:attachmentID
                                     messageID:message.ID
-                                progressBlock:progressBlock
+                                progressBlock:^(float progress) {
+                                    __strong typeof(weakSelf) strongSelf = weakSelf;
+                                    [strongSelf setProgress:progress messageID:message.ID];
+                                    progressBlock(progress);
+                                }
                               completionBlock:completion];
 }
 
@@ -54,30 +60,45 @@
 - (void)uploadAttachment:(QBChatAttachment *)attachment
                messageID:(NSString *)messageID
                 withData:(NSData *)data
-           progressBlock:(QMMediaProgressBlock)progressBlock
-completionBlock:(void(^)(QMUploadOperation *uploadOperation))completion {
+           progressBlock:(QMAttachmentProgressBlock)progressBlock
+         completionBlock:(void(^)(QMUploadOperation *uploadOperation))completion {
+    
+    __weak typeof(self) weakSelf = self;
     
     [self.uploader uploadAttachment:attachment
                           messageID:messageID
                            withData:data
-                      progressBlock:progressBlock
+                      progressBlock:^(float progress) {
+                          __strong typeof(weakSelf) strongSelf = weakSelf;
+                          [strongSelf setProgress:progress messageID:messageID];
+                          progressBlock(progress);
+                      }
                     completionBlock:completion];
 }
 
 - (void)uploadAttachment:(QBChatAttachment *)attachment
                messageID:(NSString *)messageID
              withFileURL:(NSURL *)fileURL
-           progressBlock:(_Nullable QMMediaProgressBlock)progressBlock
+           progressBlock:(_Nullable QMAttachmentProgressBlock)progressBlock
          completionBlock:(void(^)(QMUploadOperation *downloadOperation))completion {
-       [self.uploader uploadAttachment:attachment
-                             messageID:messageID
-                           withFileURL:fileURL
-                         progressBlock:progressBlock
-                       completionBlock:completion];
+    __weak typeof(self) weakSelf = self;
+    [self.uploader uploadAttachment:attachment
+                          messageID:messageID
+                        withFileURL:fileURL
+                      progressBlock:^(float progress) {
+                          __strong typeof(weakSelf) strongSelf = weakSelf;
+                          [strongSelf setProgress:progress messageID:messageID];
+                          progressBlock(progress);
+                      }
+                    completionBlock:completion];
 }
 
 - (CGFloat)progressForMessageWithID:(NSString *)messageID {
-    return self.messagesWebProgress[messageID].floatValue;
+    return _messagesWebProgress[messageID].floatValue;
+}
+
+- (void)setProgress:(CGFloat)progress messageID:(NSString *)messageID {
+    _messagesWebProgress[messageID] = @(progress);
 }
 
 //MARK: - QMCancellableService
@@ -85,19 +106,26 @@ completionBlock:(void(^)(QMUploadOperation *uploadOperation))completion {
 - (void)cancellOperationWithID:(NSString *)operationID {
     [self.messagesWebProgress removeObjectForKey:operationID];
     [self.downloader cancellOperationWithID:operationID];
+    [self.uploader cancellOperationWithID:operationID];
     self.messagesWebProgress[operationID] = nil;
 }
 
 - (BOOL)isDownloadingMessageWithID:(NSString *)messageID {
-   return  [self.downloader isDownloadingMessageWithID:messageID];
+    return  [self.downloader isDownloadingMessageWithID:messageID];
 }
 
 - (BOOL)isUploadingMessageWithID:(NSString *)messageID {
     return [self.uploader isUplodingMessageWithID:messageID];
 }
 
+- (void)cancelDownloadOperations {
+    
+    [self.downloader cancellAllOperations];
+}
+
 - (void)cancellAllOperations {
     
     [self.downloader cancellAllOperations];
+    [self.uploader cancellAllOperations];
 }
 @end

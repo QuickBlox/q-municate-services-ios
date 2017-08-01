@@ -82,6 +82,16 @@
             completion(image,duration, size, error, messageID, weakOperation.isCancelled);
             finish();
         }];
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(15 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            // if still in existence, and unfinished, then cancel it
+            
+            if (weakOperation && ![weakOperation isFinished]) {
+                NSError *timeoutError = [NSError errorWithDomain:NSCocoaErrorDomain code:0 userInfo:nil];
+                [weakOperation cancel];
+                completion(nil, 0 , CGSizeZero,timeoutError,messageID,nil);
+            }
+        });
     }];
     
     [self.mediaInfoOperationQueue addOperation:mediaInfoOperation];
@@ -117,7 +127,7 @@
         }
     }
     
-    NSLog(@"_Cancell operation with ID:%@",operationID);
+    NSLog(@"_Cancell operation with ID (info service):%@",operationID);
     //    [self.imagesOperationQueue cancelOperationWithID:operationID];
     NSLog(@"Operations = %@", [self.mediaInfoOperationQueue operations]);
 }

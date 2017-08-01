@@ -37,11 +37,11 @@
     NSAssert(message != nil, @"Message is nil!");
     NSAssert(message.ID != nil, @"Messagewithout identifier!");
     
-    QBChatMessage *localMessage = self.messagesInQueue[message.ID];
-    
-    if (localMessage == nil) {
-        self.messagesInQueue[message.ID] = message;
-    }
+//    QBChatMessage *localMessage = self.messagesInQueue[message.ID];
+//
+//    if (!localMessage) {
+       self.messagesInQueue[message.ID] = message;
+//    }
 }
 
 - (void)removeMessage:(QBChatMessage *)message {

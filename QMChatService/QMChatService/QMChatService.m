@@ -162,28 +162,32 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 //MARK: - QBChatDelegate
 
 - (void)chatDidFailWithStreamError:(NSError *)error {
-   // NSLog(@"CHAT_chatDidFailWithStreamError");
+
     if ([self.multicastDelegate respondsToSelector:@selector(chatServiceChatDidFailWithStreamError:)]) {
         [self.multicastDelegate chatServiceChatDidFailWithStreamError:error];
     }
 }
 
 - (void)chatDidConnect {
-   // NSLog(@"CHAT_DID_CONNECT");
+    
     if ([self.multicastDelegate respondsToSelector:@selector(chatServiceChatDidConnect:)]) {
         [self.multicastDelegate chatServiceChatDidConnect:self];
     }
 }
 
 - (void)chatDidNotConnectWithError:(NSError *)error {
-  //  NSLog(@"CHAT_DchatDidNotConnectWithErrorT");
+    
+    [self.deferredQueueManager cancellAllOperations];
+
     if ([self.multicastDelegate respondsToSelector:@selector(chatService:chatDidNotConnectWithError:)]) {
         [self.multicastDelegate chatService:self chatDidNotConnectWithError:error];
     }
 }
 
 - (void)chatDidAccidentallyDisconnect {
- //   NSLog(@"CHAT_chatDidAccidentallyDisconnectT");
+    
+    [self.deferredQueueManager cancellAllOperations];
+
     if ([self.multicastDelegate respondsToSelector:@selector(chatServiceChatDidAccidentallyDisconnect:)]) {
         [self.multicastDelegate chatServiceChatDidAccidentallyDisconnect:self];
     }
@@ -960,6 +964,11 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 - (void)deleteMessagesLocally:(NSArray *)messages forDialogID:(NSString *)dialogID {
     
     NSArray *messagesToDelete = messages.copy;
+    
+    for (QBChatMessage *msg in messages) {
+        [self.deferredQueueManager removeMessage:msg];
+    }
+    
     [self.messagesMemoryStorage deleteMessages:messages forDialogID:dialogID];
     if ([self.multicastDelegate respondsToSelector:@selector(chatService:didDeleteMessagesFromMemoryStorage:forDialogID:)]) {
         [self.multicastDelegate chatService:self didDeleteMessagesFromMemoryStorage:messagesToDelete forDialogID:dialogID];
@@ -1357,8 +1366,8 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     
     QBChatDialog *dialog =
     [self.dialogsMemoryStorage chatDialogWithID:message.dialogID];
-    
-    if (message.isMediaMessage) {
+    message.dateSent = [NSDate date];
+    if (message.isMediaMessage && !message.isLocationMessage) {
         [self sendAttachmentMessage:message
                            toDialog:dialog
                      withAttachment:message.attachments.firstObject

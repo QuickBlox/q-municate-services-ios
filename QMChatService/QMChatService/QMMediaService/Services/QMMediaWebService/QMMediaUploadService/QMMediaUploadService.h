@@ -8,31 +8,32 @@
 
 #import <Foundation/Foundation.h>
 #import "QMMediaBlocks.h"
+#import "QMAsynchronousOperation.h"
+#import "QMCancellableService.h"
+
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface QMUploadOperation : NSBlockOperation
+@interface QMUploadOperation : QMAsynchronousOperation
+
 @property (nonatomic, strong) NSError *error;
 @property (nonatomic, copy) NSString *attachmentID;
-@property (copy, nonatomic) dispatch_block_t cancelBlock;
-@property (nonatomic, copy) NSString *identifier;
-@property (nonatomic, strong) QBRequest *request;
 
 @end
 
-@interface QMMediaUploadService : NSObject
+@interface QMMediaUploadService : NSObject <QMCancellableService>
 
 - (void)uploadAttachment:(QBChatAttachment *)attachment
                                  messageID:(NSString *)messageID
                                   withData:(NSData *)data
-                             progressBlock:(_Nullable QMMediaProgressBlock)progressBlock
+                             progressBlock:(_Nullable QMAttachmentProgressBlock)progressBlock
          completionBlock:(void(^)(QMUploadOperation *downloadOperation))completion;
 
 
 - (void)uploadAttachment:(QBChatAttachment *)attachment
                                  messageID:(NSString *)messageID
                                withFileURL:(NSURL *)fileURL
-                                   progressBlock:(_Nullable QMMediaProgressBlock)progressBlock
+                                   progressBlock:(_Nullable QMAttachmentProgressBlock)progressBlock
                                  completionBlock:(void(^)(QMUploadOperation *downloadOperation))completion;
 
 - (BOOL)isUplodingMessageWithID:(NSString *)messageID;

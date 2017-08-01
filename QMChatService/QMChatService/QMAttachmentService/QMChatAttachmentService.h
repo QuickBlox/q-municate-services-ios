@@ -80,7 +80,7 @@ extern const struct QMAttachmentStatusStruct QMAttachmentStatus;
 
 - (void)attachmentWithID:(NSString *)attachmentID
                  message:(QBChatMessage *)message
-           progressBlock:(QMMediaProgressBlock)progressBlock
+           progressBlock:(QMAttachmentProgressBlock)progressBlock
               completion:(void(^)(QMAttachmentOperation *op))completionBlock;
 
 - (void)imageForAttachment:(QBChatAttachment *)attachment
@@ -91,8 +91,7 @@ extern const struct QMAttachmentStatusStruct QMAttachmentStatus;
 - (BOOL)attachmentIsReadyToPlay:(QBChatAttachment *)attachment
                         message:(QBChatMessage *)message;
 
-- (void)cancelOperationsForAttachment:(QBChatAttachment *)attachment
-                            messageID:(NSString *)messageID;
+- (void)cancelOperationsWithMessageID:(NSString *)messageID;
 
 - (void)removeAllMediaFiles;
 

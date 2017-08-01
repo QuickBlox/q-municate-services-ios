@@ -21,23 +21,25 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)downloadMessage:(QBChatMessage *)message
            attachmentID:(NSString *)attachmentID
-          progressBlock:(QMMediaProgressBlock)progressBlock
+          progressBlock:(QMAttachmentProgressBlock)progressBlock
         completionBlock:(void(^)(QMDownloadOperation *downloadOperation))completion;
 
 - (void)uploadAttachment:(QBChatAttachment *)attachment
                messageID:(NSString *)messageID
                 withData:(NSData *)data
-           progressBlock:(_Nullable QMMediaProgressBlock)progressBlock
+           progressBlock:(_Nullable QMAttachmentProgressBlock)progressBlock
          completionBlock:(void(^)(QMUploadOperation *downloadOperation))completion;
 
 
 - (void)uploadAttachment:(QBChatAttachment *)attachment
                messageID:(NSString *)messageID
              withFileURL:(NSURL *)fileURL
-           progressBlock:(_Nullable QMMediaProgressBlock)progressBlock
+           progressBlock:(_Nullable QMAttachmentProgressBlock)progressBlock
          completionBlock:(void(^)(QMUploadOperation *downloadOperation))completion;
 
 - (CGFloat)progressForMessageWithID:(NSString *)messageID;
+
+- (void)cancelDownloadOperations;
 
 
 

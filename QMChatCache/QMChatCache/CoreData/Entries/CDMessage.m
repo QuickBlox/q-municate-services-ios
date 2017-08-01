@@ -30,6 +30,7 @@
     for (CDAttachment *cdAttachment in self.attachments) {
         
         QBChatAttachment *attachment = [cdAttachment toQBChatAttachment];
+        
         [attachments addObject:attachment];
     }
 

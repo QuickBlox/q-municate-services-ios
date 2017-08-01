@@ -20,4 +20,4 @@
 - (AVPlayerItem *)playerItemForAtatchment:(QBChatAttachment *)att messageID:(NSString *)messageID;
 
 @end
-    
+

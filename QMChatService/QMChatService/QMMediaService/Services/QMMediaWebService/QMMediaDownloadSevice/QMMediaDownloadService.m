@@ -27,7 +27,7 @@
 
 - (void)downloadAttachmentWithID:(NSString *)attachmentID
                        messageID:(NSString *)messageID
-                   progressBlock:(QMMediaProgressBlock)progressBlock
+                   progressBlock:(QMAttachmentProgressBlock)progressBlock
                  completionBlock:(void(^)(QMDownloadOperation *downloadOperation))completion {
     
     NSParameterAssert(attachmentID.length);
@@ -67,6 +67,7 @@
                                                                       
                                                                   } statusBlock:^(QBRequest * _Nonnull request, QBRequestStatus * _Nonnull status) {
                                                                       if (progressBlock) {
+                                                                          NSLog(@"donwload progress %f",status.percentOfCompletion);
                                                                           progressBlock(status.percentOfCompletion);
                                                                       }
                                                                   } errorBlock:^(QBResponse * _Nonnull response) {
