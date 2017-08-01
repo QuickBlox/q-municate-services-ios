@@ -80,7 +80,7 @@ extern const struct QMAttachmentStatusStruct QMAttachmentStatus;
 
 - (void)attachmentWithID:(NSString *)attachmentID
                  message:(QBChatMessage *)message
-           progressBlock:(QMMediaProgressBlock)progressBlock
+           progressBlock:(QMAttachmentProgressBlock)progressBlock
               completion:(void(^)(QMAttachmentOperation *op))completionBlock;
 
 - (void)imageForAttachment:(QBChatAttachment *)attachment

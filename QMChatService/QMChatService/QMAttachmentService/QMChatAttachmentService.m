@@ -21,7 +21,7 @@ const struct QMAttachmentStatusStruct QMAttachmentStatus =
 {
     .notLoaded = @"QMAttachmentStatusNotLoaded",
     .downloading = @"QMAttachmentStatusDownloading",
-    .uploading = @"QMAttachmentStatusUploadingloading",
+    .uploading = @"QMAttachmentStatusUploading",
     .loaded = @"QMAttachmentStatusLoaded",
     .preparing = @"QMAttachmentStatusPreparing",
     .prepared = @"QMAttachmentStatusPrepared",
@@ -473,7 +473,7 @@ const struct QMAttachmentStatusStruct QMAttachmentStatus =
                                              completion:completion];
                            }
                            else {
-                               NSLog(@"_UPLOAD has error completion %@",message.ID);
+                               NSLog(@"_UPLOAD has error completion %@ %@",message.ID, error);
                                [chatService.deferredQueueManager addOrUpdateMessage:message];
                                completion(error);
                            }
@@ -491,7 +491,8 @@ const struct QMAttachmentStatusStruct QMAttachmentStatus =
     }
     
     if (hasOperation) {
-        NSLog(@"_UPLOAD 0hasOperation completion %@",message.ID);
+        NSLog(@"__UPLOAD 0 HAS OPERATION %@", message.ID);
+        //   [self cancelOperationsWithMessageID:message.ID];
         return;
     }
     
@@ -533,17 +534,17 @@ const struct QMAttachmentStatusStruct QMAttachmentStatus =
                                                    NSError * _Nullable error,
                                                    NSString * _Nonnull messageID,
                                                    BOOL cancelled) {
-            if (!cancelled) {
-                if (!error) {
-                attachment.image = image;
-                attachment.duration = durationInSeconds;
-                attachment.width = size.width;
-                attachment.height = size.height;
-                }
-                
-            }
-              dispatch_group_leave(uploadGroup);
-        }];
+                                          if (!cancelled) {
+                                              if (!error) {
+                                                  attachment.image = image;
+                                                  attachment.duration = durationInSeconds;
+                                                  attachment.width = size.width;
+                                                  attachment.height = size.height;
+                                              }
+                                              
+                                          }
+                                          dispatch_group_leave(uploadGroup);
+                                      }];
     }
     
     dispatch_group_wait(uploadGroup,DISPATCH_TIME_FOREVER);
@@ -589,7 +590,7 @@ const struct QMAttachmentStatusStruct QMAttachmentStatus =
                                                    return;
                                                }
                                                else if (error) {
-                                                   NSLog(@"_UPLOAD 6 error: %@", message.ID);
+                                                   NSLog(@"_UPLOAD 6 error: %@ __%@", message.ID, error);
                                                    [self changeAttachmentStatus:QMAttachmentStatus.notLoaded forMessageID:message.ID];
                                                    [self safelyRemoveOperationFromRunning:strongOperation];
                                                    completion(error,attachmentOperation.isCancelled);
@@ -633,7 +634,7 @@ const struct QMAttachmentStatusStruct QMAttachmentStatus =
     attachmentOperation.cancelBlock = ^{
         
         __strong __typeof(weakOperation) strongOperation = weakOperation;
-    
+        
         [self.webService cancellOperationWithID:strongOperation.identifier];
         [self safelyRemoveOperationFromRunning:strongOperation];
         
@@ -643,7 +644,7 @@ const struct QMAttachmentStatusStruct QMAttachmentStatus =
 
 - (void)attachmentWithID:(NSString *)attachmentID
                  message:(QBChatMessage *)message
-           progressBlock:(QMMediaProgressBlock)progressBlock
+           progressBlock:(QMAttachmentProgressBlock)progressBlock
               completion:(void(^)(QMAttachmentOperation *))completionBlock {
     
     QMAttachmentOperation *attachmentOperation =  [QMAttachmentOperation new];

@@ -124,6 +124,7 @@
 - (QMMessageStatus)statusForMessage:(QBChatMessage *)message {
     
     if ([self.deferredQueueMemoryStorage containsMessage:message]) {
+        
         return ([[QBChat instance] isConnected] &&
                 [self isAutoSendAvailableForMessage:message]) ? QMMessageStatusSending : QMMessageStatusNotSent;
     }
