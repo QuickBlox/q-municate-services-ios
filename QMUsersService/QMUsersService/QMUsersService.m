@@ -115,6 +115,7 @@
 
 - (BFTask *)getUserWithID:(NSUInteger)userID {
     
+    if (userID == 0) return nil;
     return [self getUserWithID:userID
                      forceLoad:NO];
 }
