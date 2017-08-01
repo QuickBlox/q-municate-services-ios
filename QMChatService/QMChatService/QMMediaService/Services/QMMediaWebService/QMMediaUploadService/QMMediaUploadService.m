@@ -46,7 +46,7 @@
 - (void)uploadAttachment:(QBChatAttachment *)attachment
                messageID:(NSString *)messageID
              withFileURL:(NSURL *)fileURL
-           progressBlock:(_Nullable QMMediaProgressBlock)progressBlock
+           progressBlock:(_Nullable QMAttachmentProgressBlock)progressBlock
          completionBlock:(void(^)(QMUploadOperation *uploadOperation))completion {
     
     NSParameterAssert([[NSFileManager defaultManager] fileExistsAtPath:fileURL.path]);
@@ -73,7 +73,7 @@
     [uploadOperation setAsyncOperationBlock:^(dispatch_block_t  _Nonnull finish)
      {
      
-         QBRequest *__strong *request = [QBRequest uploadFileWithUrl:fileURL
+         QBRequest *request = [QBRequest uploadFileWithUrl:fileURL
                              fileName:attachment.name
                           contentType:[attachment stringMIMEType]
                              isPublic:YES
@@ -93,7 +93,7 @@
           {
               
               progressBlock(status.percentOfCompletion);
-              NSLog(@"Upload status = %f", status.percentOfCompletion);
+              NSLog(@"Upload status = %f __  isCancelled %d", status.percentOfCompletion, request.isCancelled);
               
           } errorBlock:^(QBResponse * _Nonnull response)
           {
@@ -106,7 +106,7 @@
           }];
          
          __strong typeof(weakOperation) strongOperation = weakOperation;
-            strongOperation.objectToCancel = (id <QMCancellableObject>)*request;
+            strongOperation.objectToCancel = (id <QMCancellableObject>)request;
      }];
  
     
@@ -122,7 +122,7 @@
 - (void)uploadAttachment:(QBChatAttachment *)attachment
                messageID:(NSString *)messageID
                 withData:(NSData *)data
-           progressBlock:(_Nullable QMMediaProgressBlock)progressBlock
+           progressBlock:(_Nullable QMAttachmentProgressBlock)progressBlock
          completionBlock:(void(^)(QMUploadOperation *uploadOperation))completion {
     
     NSParameterAssert(data != nil);

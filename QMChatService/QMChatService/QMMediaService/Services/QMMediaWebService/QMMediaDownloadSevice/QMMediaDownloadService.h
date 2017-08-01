@@ -28,7 +28,7 @@
 
 - (void)downloadAttachmentWithID:(NSString *)attachmentID
                        messageID:(NSString *)messageID
-                   progressBlock:(QMMediaProgressBlock)progressBlock
+                   progressBlock:(QMAttachmentProgressBlock)progressBlock
                  completionBlock:(void(^)(QMDownloadOperation *downloadOperation))completion;
 
 @end

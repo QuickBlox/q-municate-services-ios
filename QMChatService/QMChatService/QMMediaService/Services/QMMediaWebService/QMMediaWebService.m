@@ -41,7 +41,7 @@
 
 - (void)downloadMessage:(QBChatMessage *)message
            attachmentID:(NSString *)attachmentID
-          progressBlock:(QMMediaProgressBlock)progressBlock
+          progressBlock:(QMAttachmentProgressBlock)progressBlock
         completionBlock:(void(^)(QMDownloadOperation *downloadOperation))completion {
     
     [self.downloader downloadAttachmentWithID:attachmentID
@@ -54,7 +54,7 @@
 - (void)uploadAttachment:(QBChatAttachment *)attachment
                messageID:(NSString *)messageID
                 withData:(NSData *)data
-           progressBlock:(QMMediaProgressBlock)progressBlock
+           progressBlock:(QMAttachmentProgressBlock)progressBlock
 completionBlock:(void(^)(QMUploadOperation *uploadOperation))completion {
     
     [self.uploader uploadAttachment:attachment
@@ -67,7 +67,7 @@ completionBlock:(void(^)(QMUploadOperation *uploadOperation))completion {
 - (void)uploadAttachment:(QBChatAttachment *)attachment
                messageID:(NSString *)messageID
              withFileURL:(NSURL *)fileURL
-           progressBlock:(_Nullable QMMediaProgressBlock)progressBlock
+           progressBlock:(_Nullable QMAttachmentProgressBlock)progressBlock
          completionBlock:(void(^)(QMUploadOperation *downloadOperation))completion {
        [self.uploader uploadAttachment:attachment
                              messageID:messageID
