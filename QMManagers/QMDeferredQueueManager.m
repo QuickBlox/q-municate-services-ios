@@ -146,9 +146,11 @@
         __weak typeof(self) weakSelf = self;
         [self internalDefferedActionForMessage:message
                                 withCompletion:^(NSError * _Nullable error) {
-                                    if (completion) {
-                                        completion(error);
-                                    }
+                                     if (completion) {
+                                    dispatch_async(dispatch_get_main_queue(), ^{
+                                            completion(error);
+                                    });
+                                }
                                     if (!error) {
                                        __strong typeof(weakSelf) strongSelf = weakSelf;
                                          [strongSelf.deferredQueueMemoryStorage removeMessage:message];
