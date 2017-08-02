@@ -19,11 +19,11 @@ NS_ASSUME_NONNULL_BEGIN
 @required
 
 /**
- *  Get user from current session
+ *  Current user
  *
  *  @return QBUUser instance
  */
-- (nullable QBUUser *)currentUser;
+@property (nonatomic, strong, readonly) QBUUser *currentUser;
 
 /**
  *  Check is current session is authorized

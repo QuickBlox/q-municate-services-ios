@@ -9,8 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "QMDBStorage.h"
 
-@class QMLinkPreview;
-
 NS_ASSUME_NONNULL_BEGIN
 @interface QMChatCache : QMDBStorage
 
@@ -27,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @return QMChatCache instance
  */
 
-@property (nonatomic, class) QMChatCache *instance;
+@property (nonatomic, readonly, class) QMChatCache *instance;
 
 //MARK: - Configure store
 

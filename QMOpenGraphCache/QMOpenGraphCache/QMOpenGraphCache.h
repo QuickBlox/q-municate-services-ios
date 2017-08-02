@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface QMOpenGraphCache : QMDBStorage
 
-@property (class) QMOpenGraphCache *instance;
+@property (class, readonly) QMOpenGraphCache *instance;
 
 /**
  Get Open Graph Item with url if exist

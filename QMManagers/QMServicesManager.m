@@ -232,11 +232,6 @@
 
 //MARK: QMChatServiceCache delegate
 
-- (void)chatService:(QMChatService *)__unused chatService r:(QMLinkPreview *)linkPreview {
-    //
-    //    [QMChatCache.instance insertOrUpdateLinkPreview:linkPreview
-    //                                         completion:nil];
-}
 - (void)chatService:(QMChatService *)chatService didAddChatDialogToMemoryStorage:(QBChatDialog *)chatDialog {
     
     [QMChatCache.instance insertOrUpdateDialog:chatDialog completion:nil];
