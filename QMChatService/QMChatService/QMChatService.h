@@ -520,7 +520,16 @@ typedef void(^QMCacheCollection)(NSArray * _Nullable collection);
  *
  *  @see In order to know how to work with BFTask's see documentation https://github.com/BoltsFramework/Bolts-iOS#bolts
  */
-- (BFTask *)connect;
+- (BFTask *)connect DEPRECATED_ATTRIBUTE;
+
+/**
+ *  Connect to the chat using Bolts.
+ *
+ *  @return BFTask with failure error
+ *
+ *  @see In order to know how to work with BFTask's see documentation https://github.com/BoltsFramework/Bolts-iOS#bolts
+ */
+- (BFTask *)connectWithUserID:(NSUInteger)userID password:(NSString *)password;
 
 /**
  *  Disconnect from the chat using Bolts.
