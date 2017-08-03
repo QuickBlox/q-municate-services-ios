@@ -28,11 +28,6 @@ typedef NS_ENUM(NSInteger, QMAttachmentContentType) {
 @property (copy, nonatomic) NSURL *localFileURL;
 
 /**
- *  Data representation of attachment.
- */
-@property (strong, nonatomic) NSData *mediaData;
-
-/**
  *  Image of attachment (for video/image).
  */
 @property (strong, nonatomic) UIImage *image;

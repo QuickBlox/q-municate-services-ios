@@ -89,7 +89,9 @@
             if (weakOperation && ![weakOperation isFinished]) {
                 NSError *timeoutError = [NSError errorWithDomain:NSCocoaErrorDomain code:0 userInfo:nil];
                 [weakOperation cancel];
-                completion(nil, 0 , CGSizeZero,timeoutError,messageID,nil);
+                dispatch_async(dispatch_get_main_queue(), ^{
+                     completion(nil, 0 , CGSizeZero,timeoutError,messageID,YES);
+                });
             }
         });
     }];
@@ -99,16 +101,6 @@
     //LIFO order
     [self.lastAddedOperation addDependency:mediaInfoOperation];
     self.lastAddedOperation = mediaInfoOperation;
-}
-
-- (AVPlayerItem *)playerItemForAtatchment:(QBChatAttachment *)att
-                                messageID:(NSString *)messageID  {
-    AVPlayerItem *item = nil;
-    @synchronized (self.mediaInfoStorage) {
-        item =  self.mediaInfoStorage[messageID];
-    }
-    
-    return item;
 }
 
 //MARK: QMCancellableService

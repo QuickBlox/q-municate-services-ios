@@ -695,63 +695,63 @@ const struct QMAttachmentStatusStruct QMAttachmentStatus =
                 
                 [strongSelf changeAttachmentStatus:QMAttachmentStatus.downloading forMessageID:message.ID];
                 
-                [strongSelf.webService downloadMessage:message
-                                          attachmentID:attachmentID
-                                         progressBlock:progressBlock
-                                       completionBlock:^(QMDownloadOperation * _Nonnull downloadOperation) {
-                                           
-                                           if (!downloadOperation || downloadOperation.isCancelled) {
-                                               NSLog(@"2 IS CANCELLED FOR DOWNLOAD SERVICE ID: %@", attachmentOperation.identifier);
-                                               [strongSelf changeAttachmentStatus:QMAttachmentStatus.notLoaded forMessageID:message.ID];
-                                               return;
-                                           }
-                                           if (downloadOperation.error) {
-                                               NSLog(@"ERROR ID: %@", attachmentOperation.identifier);
-                                               [strongSelf changeAttachmentStatus:QMAttachmentStatus.notLoaded forMessageID:message.ID];
-                                               
-                                               attachmentOperation.error = downloadOperation.error;
-                                               
-                                               completionBlock(attachmentOperation);
-                                           }
-                                           else if (downloadOperation.data) {
-                                               NSLog(@"NOT CANCELLED SAVE ID: %@", attachmentOperation.identifier);
-                                               attachment.ID = attachmentID;
-                                               
-                                               [strongSelf.storeService saveData:downloadOperation.data
-                                                                   forAttachment:attachment
-                                                                       cacheType:QMAttachmentCacheTypeDisc|QMAttachmentCacheTypeMemory messageID:message.ID
-                                                                        dialogID:message.dialogID
-                                                                      completion:^
-                                                {
+                [strongSelf.webService downloadAttachmentWithID:attachmentID
+                                                        message:message
+                                                  progressBlock:progressBlock
+                                                completionBlock:^(QMDownloadOperation * _Nonnull downloadOperation) {
                                                     
-                                                    [strongSelf changeAttachmentStatus:QMAttachmentStatus.loaded forMessageID:message.ID];
-                                                    if (downloadOperation && !downloadOperation.isCancelled) {
-                                                        if (!attachment.isPrepared) {
-                                                            [strongSelf prepareAttachment:attachment messageID:message.ID completion:^(UIImage * _Nullable image, Float64 durationSeconds, CGSize size, NSError * _Nullable error, NSString * _Nonnull messageID, BOOL cancelled) {
-                                                                if (!cancelled) {
-                                                                    if (error) {
-                                                                        attachmentOperation.error = error;
-                                                                    }
-                                                                    else {
-                                                                        attachment.image = image;
-                                                                        attachment.duration = durationSeconds;
-                                                                        
-                                                                        [self.storeService updateAttachment:attachment messageID:messageID dialogID:message.dialogID];
-                                                                        attachmentOperation.attachment = attachment;
-                                                                    }
-                                                                    completionBlock(attachmentOperation);
-                                                                }
-                                                            }];
-                                                        }
-                                                        else {
-                                                            attachmentOperation.attachment = attachment;
-                                                            completionBlock(attachmentOperation);
-                                                        }
+                                                    if (!downloadOperation || downloadOperation.isCancelled) {
+                                                        NSLog(@"2 IS CANCELLED FOR DOWNLOAD SERVICE ID: %@", attachmentOperation.identifier);
+                                                        [strongSelf changeAttachmentStatus:QMAttachmentStatus.notLoaded forMessageID:message.ID];
+                                                        return;
                                                     }
+                                                    if (downloadOperation.error) {
+                                                        NSLog(@"ERROR ID: %@", attachmentOperation.identifier);
+                                                        [strongSelf changeAttachmentStatus:QMAttachmentStatus.notLoaded forMessageID:message.ID];
+                                                        
+                                                        attachmentOperation.error = downloadOperation.error;
+                                                        
+                                                        completionBlock(attachmentOperation);
+                                                    }
+                                                    else if (downloadOperation.data) {
+                                                        NSLog(@"NOT CANCELLED SAVE ID: %@", attachmentOperation.identifier);
+                                                        attachment.ID = attachmentID;
+                                                        
+                                                        [strongSelf.storeService saveData:downloadOperation.data
+                                                                            forAttachment:attachment
+                                                                                cacheType:QMAttachmentCacheTypeDisc|QMAttachmentCacheTypeMemory messageID:message.ID
+                                                                                 dialogID:message.dialogID
+                                                                               completion:^
+                                                         {
+                                                             
+                                                             [strongSelf changeAttachmentStatus:QMAttachmentStatus.loaded forMessageID:message.ID];
+                                                             if (downloadOperation && !downloadOperation.isCancelled) {
+                                                                 if (!attachment.isPrepared) {
+                                                                     [strongSelf prepareAttachment:attachment messageID:message.ID completion:^(UIImage * _Nullable image, Float64 durationSeconds, CGSize size, NSError * _Nullable error, NSString * _Nonnull messageID, BOOL cancelled) {
+                                                                         if (!cancelled) {
+                                                                             if (error) {
+                                                                                 attachmentOperation.error = error;
+                                                                             }
+                                                                             else {
+                                                                                 attachment.image = image;
+                                                                                 attachment.duration = durationSeconds;
+                                                                                 
+                                                                                 [self.storeService updateAttachment:attachment messageID:messageID dialogID:message.dialogID];
+                                                                                 attachmentOperation.attachment = attachment;
+                                                                             }
+                                                                             completionBlock(attachmentOperation);
+                                                                         }
+                                                                     }];
+                                                                 }
+                                                                 else {
+                                                                     attachmentOperation.attachment = attachment;
+                                                                     completionBlock(attachmentOperation);
+                                                                 }
+                                                             }
+                                                         }];
+                                                    }
+                                                    
                                                 }];
-                                           }
-                                           
-                                       }];
                 
             }];
             

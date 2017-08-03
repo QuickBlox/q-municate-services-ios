@@ -19,10 +19,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL)isDownloadingMessageWithID:(NSString *)messageID;
 
-- (void)downloadMessage:(QBChatMessage *)message
-           attachmentID:(NSString *)attachmentID
-          progressBlock:(QMAttachmentProgressBlock)progressBlock
-        completionBlock:(void(^)(QMDownloadOperation *downloadOperation))completion;
+- (void)downloadAttachmentWithID:(NSString *)attachmentID
+                         message:(QBChatMessage *)message
+                   progressBlock:(QMAttachmentProgressBlock)progressBlock
+                 completionBlock:(void(^)(QMDownloadOperation *downloadOperation))completion;
 
 - (void)uploadAttachment:(QBChatAttachment *)attachment
                messageID:(NSString *)messageID
