@@ -199,7 +199,7 @@ DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.4.7. Use 'addDelegate:' instead.");
  *
  *  @param chatAttachmentService instance QMChatAttachmentService
  *  @param status new status
- *  @param message new status owner QBChatMessage
+ *  @param messageID new status owner QBChatMessage
  */
 - (void)chatAttachmentService:(QMChatAttachmentService *)chatAttachmentService
     didChangeAttachmentStatus:(NSString *)status
@@ -228,7 +228,7 @@ DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.4.7. Use 'chatAttachmentService:didCha
  *
  *  @param chatAttachmentService QMChatAttachmentService instance
  *  @param progress              changed value of progress min 0.0, max 1.0
- *  @param messageID             ID of message that contains attachment
+ *  @param message             ID of message that contains attachment
  */
 - (void)chatAttachmentService:(QMChatAttachmentService *)chatAttachmentService
    didChangeUploadingProgress:(CGFloat)progress
