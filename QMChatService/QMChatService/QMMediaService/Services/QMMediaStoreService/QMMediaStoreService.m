@@ -400,9 +400,6 @@ static NSString* mediaPath(NSString *dialogID, NSString *messsageID, QBChatAttac
     QMStoreOperation *operation = [QMStoreOperation new];
     
     [self cachedDataForAttachment:attachment messageID:messageID dialogID:dialogID completion:^(NSData *data, NSURL *fileURL) {
-        if (operation.isCancelled) {
-            return;
-        }
         completion(fileURL,data);
     }];
     

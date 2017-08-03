@@ -43,16 +43,6 @@ NSString  *kQMAttachmentSizeKey = @"size";
     objc_setAssociatedObject(self, @selector(image), image, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-//- (NSNumber *)tAttachmentStatus {
-//
-//    return objc_getAssociatedObject(self, @selector(tAttachmentStatus));
-//}
-//
-//- (void)setTAttachmentStatus:(NSNumber *)attachmentStatusNumber {
-//
-//    objc_setAssociatedObject(self, @selector(tAttachmentStatus), attachmentStatusNumber, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-//}
-
 - (QMAttachmentContentType)contentType {
     
     if ([[self tContentType] integerValue] == 0) {
