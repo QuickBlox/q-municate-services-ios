@@ -39,10 +39,10 @@
 }
 
 
-- (void)downloadMessage:(QBChatMessage *)message
-           attachmentID:(NSString *)attachmentID
-          progressBlock:(QMAttachmentProgressBlock)progressBlock
-        completionBlock:(void(^)(QMDownloadOperation *downloadOperation))completion {
+- (void)downloadAttachmentWithID:(NSString *)attachmentID
+                         message:(QBChatMessage *)message
+                   progressBlock:(QMAttachmentProgressBlock)progressBlock
+                 completionBlock:(void(^)(QMDownloadOperation *downloadOperation))completion {
     
     __weak typeof(self) weakSelf = self;
     
@@ -115,7 +115,7 @@
 }
 
 - (BOOL)isUploadingMessageWithID:(NSString *)messageID {
-    return [self.uploader isUplodingMessageWithID:messageID];
+    return [self.uploader isUploadingMessageWithID:messageID];
 }
 
 - (void)cancelDownloadOperations {
