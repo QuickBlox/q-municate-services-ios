@@ -77,7 +77,6 @@ static NSString *const kQMKeyImageURL = @"ogImage";
         [weakOperation.request cancel];
         @synchronized(self.memoryStorage) {
             
-            NSCParameterAssert(!self.memoryStorage[ID]);
             self.memoryStorage[ID] = nil;
         }
     };
@@ -118,6 +117,10 @@ static NSString *const kQMKeyImageURL = @"ogImage";
                                              options:NSJSONReadingAllowFragments
                                                error:&jsonError];
              if (jsonObject) {
+                 
+                 NSLog(@"open graph item:"
+                       "\r%@",
+                       jsonObject);
                  
                  QMOpenGraphItem *openGraphItem =
                  [weakSelf openGraphWithID:ID dictionary:jsonObject baseUrl:url];
