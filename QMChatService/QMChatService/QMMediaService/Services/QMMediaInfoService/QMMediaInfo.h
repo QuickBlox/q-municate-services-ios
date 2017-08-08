@@ -21,16 +21,12 @@ typedef NS_ENUM(NSUInteger, QMMediaPrepareStatus) {
 
 @interface QMMediaInfo : NSObject
 
-@property (assign, nonatomic, readonly) CGSize mediaSize;
-@property (assign, nonatomic, readonly) NSTimeInterval duration;
-
-@property (strong, nonatomic, readonly) UIImage *thumbnailImage;
-@property (strong, nonatomic, readonly) AVPlayerItem *playerItem;
 @property (assign, nonatomic, readonly) QMMediaPrepareStatus prepareStatus;
 
 + (instancetype)infoFromAttachment:(QBChatAttachment *)attachment messageID:(NSString *)messageID;
 - (void)cancel;
 
-- (void)prepareWithCompletion:(void(^)(NSTimeInterval duration, CGSize size, UIImage *image, NSError *error, AVPlayerItem *playerItem))completion;
+- (void)prepareWithTimeOut:(NSTimeInterval)timeOutInterval
+                completion:(void(^)(NSTimeInterval duration, CGSize size, UIImage *image, NSError *error))completionBlock;
 
 @end

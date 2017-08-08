@@ -59,7 +59,7 @@
         __strong typeof(weakOperation) strongOperation = weakOperation;
         NSLog(@"Cancell operation with ID: %@", strongOperation.operationID);
         if (!strongOperation.objectToCancel) {
-            completion(nil, 0, CGSizeZero, nil, messageID, YES);
+            completion(nil, 0, CGSizeZero, nil, YES);
         }
         
         [strongOperation.objectToCancel cancel];
@@ -73,13 +73,10 @@
         
         weakOperation.objectToCancel = (id <QMCancellableObject>)mediaInfo;
         
-        [mediaInfo prepareWithCompletion:^(NSTimeInterval duration, CGSize size, UIImage *image, NSError *error, AVPlayerItem *item) {
-            if (item) {
-                @synchronized (self.mediaInfoStorage) {
-                    self.mediaInfoStorage[messageID] = item;
-                }
-            }
-            completion(image,duration, size, error, messageID, weakOperation.isCancelled);
+        [mediaInfo prepareWithTimeOut:15
+                           completion:^(NSTimeInterval duration, CGSize size, UIImage *image, NSError *error) {
+                           
+            completion(image, duration, size, error, weakOperation.isCancelled);
             finish();
         }];
         
@@ -90,7 +87,7 @@
                 NSError *timeoutError = [NSError errorWithDomain:NSCocoaErrorDomain code:0 userInfo:nil];
                 [weakOperation cancel];
                 dispatch_async(dispatch_get_main_queue(), ^{
-                     completion(nil, 0 , CGSizeZero,timeoutError,messageID,YES);
+                     completion(nil, 0 , CGSizeZero,timeoutError,YES);
                 });
             }
         });

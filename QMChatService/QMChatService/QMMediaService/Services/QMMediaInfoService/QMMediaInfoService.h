@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "QMMediaInfoServiceDelegate.h"
 #import "QMMediaInfo.h"
 #import "QMMediaBlocks.h"
 #import "QMCancellableService.h"
@@ -17,7 +16,5 @@
 - (void)mediaInfoForAttachment:(QBChatAttachment *)attachment
                      messageID:(NSString *)messageID
                     completion:(QMMediaInfoServiceCompletionBlock)completion;
-- (AVPlayerItem *)playerItemForAtatchment:(QBChatAttachment *)att messageID:(NSString *)messageID;
-
 @end
 

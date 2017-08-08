@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "QMMediaDownloadServiceDelegate.h"
 #import "QMCancellableService.h"
 #import "QMMediaBlocks.h"
 

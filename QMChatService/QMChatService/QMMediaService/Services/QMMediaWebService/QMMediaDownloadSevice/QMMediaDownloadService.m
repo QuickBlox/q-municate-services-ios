@@ -6,24 +6,37 @@
 //  Copyright © 2017 quickblox. All rights reserved.
 //
 
-#import "QMMediaDownloadServiceDelegate.h"
-#import "QMMediaDownloadService.h"
 
+#import "QMMediaDownloadService.h"
 #import "QMMediaBlocks.h"
 #import "QMSLog.h"
 
-@implementation QMDownloadOperation
+@interface QMDownloadOperation()
 
+@property  (assign, nonatomic) UIBackgroundTaskIdentifier bgTaskId;
+@end
+
+@implementation QMDownloadOperation
 @end
 
 @interface QMMediaDownloadService()
-
 @property (strong, nonatomic) NSOperationQueue *downloadOperationQueue;
-
-
 @end
 
 @implementation QMMediaDownloadService
+
+- (instancetype)init {
+    
+    if (self  = [super init]) {
+        
+        _downloadOperationQueue = [NSOperationQueue new];
+        _downloadOperationQueue.name = @"QM.QMDownloadOperationQueue";
+        _downloadOperationQueue.qualityOfService = NSQualityOfServiceUserInitiated;
+        _downloadOperationQueue.maxConcurrentOperationCount = 1;
+    }
+    
+    return self;
+}
 
 - (void)downloadAttachmentWithID:(NSString *)attachmentID
                        messageID:(NSString *)messageID
@@ -54,6 +67,16 @@
     
     [downloadOperation setAsyncOperationBlock:^(dispatch_block_t _Nonnull finish) {
         NSLog(@"Start Download operation with ID: %@", weakOperation.operationID);
+        
+        UIApplication *application = [UIApplication sharedApplication];
+        NSLog(@"Begin background task %@", messageID);
+        __strong typeof(weakOperation) strongOperation = weakOperation;
+        strongOperation.bgTaskId = [application beginBackgroundTaskWithExpirationHandler:^{
+            NSLog(@"END background task %@", messageID);
+            [application endBackgroundTask:strongOperation.bgTaskId];
+            strongOperation.bgTaskId = UIBackgroundTaskInvalid;
+        }];
+        
         weakOperation.objectToCancel = (id <QMCancellableObject>)[QBRequest backgroundDownloadFileWithUID:attachmentID
                                                                                              successBlock:^(QBResponse * _Nonnull response,
                                                                                                             NSData * _Nonnull fileData)
@@ -63,18 +86,27 @@
                                                                       __strong typeof(weakOperation) strongOperation = weakOperation;
                                                                       strongOperation.data = fileData;
                                                                       completion(strongOperation);
-                                                                      finish();
+                                                                      NSLog(@"END background task inside %@", messageID);
                                                                       
+                                                                      [application endBackgroundTask:strongOperation.bgTaskId];
+                                                                      strongOperation.bgTaskId = UIBackgroundTaskInvalid;
+                                                                      
+                                                                      finish();
                                                                   } statusBlock:^(QBRequest * _Nonnull request, QBRequestStatus * _Nonnull status) {
                                                                       if (progressBlock) {
                                                                           NSLog(@"donwload progress %f",status.percentOfCompletion);
                                                                           progressBlock(status.percentOfCompletion);
                                                                       }
                                                                   } errorBlock:^(QBResponse * _Nonnull response) {
+                                                                      
                                                                       NSLog(@"Error operation with ID: %@", weakOperation.operationID);
                                                                       __strong typeof(weakOperation) strongOperation = weakOperation;
                                                                       strongOperation.error = response.error.error;
                                                                       completion(strongOperation);
+                                                                      NSLog(@"END background task inside error %@", messageID);
+                                                                      [application endBackgroundTask:strongOperation.bgTaskId];
+                                                                      strongOperation.bgTaskId = UIBackgroundTaskInvalid;
+                                                                      
                                                                       finish();
                                                                   }];
     }];
@@ -82,19 +114,6 @@
     
     [_downloadOperationQueue addOperation:downloadOperation];
     NSLog(@"donwload operation queue %@", self.downloadOperationQueue.operations);
-}
-
-- (instancetype)init {
-    
-    if (self  = [super init]) {
-        
-        self.downloadOperationQueue = [NSOperationQueue new];
-        self.downloadOperationQueue.name = @"QM.QMDownloadOperationQueue";
-        self.downloadOperationQueue.qualityOfService = NSQualityOfServiceUserInitiated;
-        self.downloadOperationQueue.maxConcurrentOperationCount = 1;
-    }
-    
-    return self;
 }
 
 - (void)dealloc {

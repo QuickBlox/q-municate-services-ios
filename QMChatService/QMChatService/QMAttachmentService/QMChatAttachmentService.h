@@ -11,21 +11,11 @@
 
 #import "QMMediaStoreService.h"
 #import "QMMediaInfoService.h"
-#import "QMMediaWebService.h"
+#import "QMAttachmentContentService.h"
 #import "QMCancellableService.h"
 
-
-
-//typedef NS_ENUM(NSUInteger, QMAttachmentStatus) {
-//    QMAttachmentStatusNotLoaded = 0,
-//    QMAttachmentStatusLoading,
-//    QMAttachmentStatusLoaded,
-//    QMAttachmentStatusPreparing,
-//    QMAttachmentStatusPrepared,
-//    QMAttachmentStatusError
-//};
-
 @class QMChatService;
+
 @protocol QMChatAttachmentServiceDelegate;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -41,7 +31,6 @@ struct QMAttachmentStatusStruct {
 };
 
 extern const struct QMAttachmentStatusStruct QMAttachmentStatus;
-
 
 @interface QMAttachmentOperation : NSBlockOperation
 
@@ -63,7 +52,7 @@ extern const struct QMAttachmentStatusStruct QMAttachmentStatus;
 @interface QMChatAttachmentService : NSObject
 
 @property (nonatomic, strong, readonly) QMMediaStoreService *storeService;
-@property (nonatomic, strong, readonly) QMMediaWebService *webService;
+@property (nonatomic, strong, readonly) QMAttachmentContentService *contentService;
 @property (nonatomic, strong, readonly) QMMediaInfoService *infoService;
 
 
@@ -71,12 +60,11 @@ extern const struct QMAttachmentStatusStruct QMAttachmentStatus;
 - (instancetype)new NS_UNAVAILABLE;
 
 - (instancetype)initWithStoreService:(QMMediaStoreService *)storeService
-                          webService:(QMMediaWebService *)webService
+                          contentService:(QMAttachmentContentService *)contentService
                          infoService:(QMMediaInfoService *)infoService;
 
 
 - (NSString *)statusForMessage:(QBChatMessage *)message;
-- (QBChatAttachment *)placeholderAttachment:(NSString *)messageID;
 
 - (void)attachmentWithID:(NSString *)attachmentID
                  message:(QBChatMessage *)message
