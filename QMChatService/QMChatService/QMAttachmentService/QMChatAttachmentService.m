@@ -71,30 +71,26 @@ const struct QMAttachmentStatusStruct QMAttachmentStatus =
 
 @interface QMChatAttachmentService() <QMMediaWebServiceDelegate>
 
-@property (nonatomic, strong) NSMutableDictionary *attachmentsStorage;
+
 @property (nonatomic, strong) QBMulticastDelegate <QMChatAttachmentServiceDelegate> *multicastDelegate;
-@property (nonatomic, strong) NSMutableDictionary *placeholderAttachments;
-@property (nonatomic, strong) NSMutableSet *attachmentsInProgress;
 @property (nonatomic, strong) NSMutableDictionary *attachmentsStatuses;
-@property (nonatomic, strong) NSMutableDictionary *runningOperations;
+@property (nonatomic, strong)  NSMutableDictionary *runningOperations;
+
 @end
 
 @implementation QMChatAttachmentService
 
-
 - (instancetype)initWithStoreService:(QMMediaStoreService *)storeService
-                          webService:(QMMediaWebService *)webService
+                      contentService:(QMAttachmentsContentService *)contentService
                          infoService:(QMMediaInfoService *)infoService {
     
     if (self = [super init]) {
         
         _storeService = storeService;
-        _webService = webService;
+        _contentService = contentService;
         _infoService = infoService;
         
         _multicastDelegate = (id <QMChatAttachmentServiceDelegate>)[[QBMulticastDelegate alloc] init];
-        _attachmentsInProgress = [NSMutableSet set];
-        _placeholderAttachments = [NSMutableDictionary dictionary];
         _attachmentsStatuses = [NSMutableDictionary dictionary];
         _runningOperations = [NSMutableDictionary dictionary];
     }
@@ -795,13 +791,21 @@ const struct QMAttachmentStatusStruct QMAttachmentStatus =
             status = QMAttachmentStatus.loaded;
         }
         else {
-            BOOL downloading = [self.webService isDownloadingMessageWithID:message.ID];
+            BOOL downloading = [self.contentService isDownloadingMessageWithID:message.ID];
             if (downloading) {
                 status = QMAttachmentStatus.downloading;
             }
+            else {
+                BOOL uploading = [self.contentService isUploadingMessageWithID:message.ID];
+                if (uploading) {
+                    status = QMAttachmentStatus.uploading;
+                }
+            }
         }
-        self.attachmentsStatuses[message.ID] = status;
     }
+    
+    self.attachmentsStatuses[message.ID] = status;
+    
     return status;
 }
 
