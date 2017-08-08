@@ -272,17 +272,9 @@ const struct QMAttachmentStatusStruct QMAttachmentStatus =
     
     [self.multicastDelegate removeDelegate:delegate];
 }
-//
-- (void)changeMessageAttachmentStatus:(QMMessageAttachmentStatus)status
-                           forMessage:(QBChatMessage *)message {
-    
-    
-    return;
-}
 
 - (void)changeAttachmentStatus:(NSString *)status
                   forMessageID:(NSString *)messageID {
-    
     
     if (self.attachmentsStatuses[messageID] == status) {
         return;

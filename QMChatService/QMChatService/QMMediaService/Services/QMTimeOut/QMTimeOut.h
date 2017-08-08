@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign, readonly) NSTimeInterval timeInterval;
 
 - (instancetype)initWithTimeInterval:(NSTimeInterval)timeInterval
-                               queue:(__nullable dispatch_queue_t)queue;
+                               queue:(nullable dispatch_queue_t)queue;
 
 - (void)startWithFireBlock:(dispatch_block_t)fireBlock;
 - (void)cancelTimeout;

@@ -21,7 +21,7 @@
 @implementation QMTimeOut
 
 - (instancetype)initWithTimeInterval:(NSTimeInterval)timeInterval
-                               queue:(nullable dispatch_queue_t)queue {
+                               queue:(dispatch_queue_t)queue {
     
     if (self = [super init]) {
         
