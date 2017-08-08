@@ -11,12 +11,6 @@
 #import "QBChatAttachment+QMCustomParameters.h"
 #import "QMTimeOut.h"
 
-typedef NS_ENUM(NSUInteger, QMVideoUrlType) {
-    QMVideoUrlTypeRemote,
-    QMVideoUrlTypeNative
-};
-
-
 @interface QMMediaInfo ()
 
 @property (strong ,nonatomic) AVAsset *asset;
@@ -29,8 +23,6 @@ typedef NS_ENUM(NSUInteger, QMVideoUrlType) {
 
 @property (assign, nonatomic, readwrite) QMMediaPrepareStatus prepareStatus;
 
-
-@property (strong, nonatomic) dispatch_queue_t assetQueue;
 
 @end
 
@@ -73,26 +65,8 @@ typedef NS_ENUM(NSUInteger, QMVideoUrlType) {
     mediaInfo.prepareStatus = QMMediaPrepareStatusNotPrepared;
     mediaInfo.contentType = attachment.contentType;
     mediaInfo.messageID = messageID;
+    
     return mediaInfo;
-}
-
-- (instancetype)init {
-    
-    if (self = [super init]) {
-        
-        _assetQueue = dispatch_queue_create("Asset Queue", DISPATCH_QUEUE_SERIAL);
-    }
-    return self;
-}
-
-- (void)cancel {
-    
-    if (self.prepareStatus != QMMediaPrepareStatusPrepareCancelled) {
-        
-        self.prepareStatus = QMMediaPrepareStatusPrepareCancelled;
-        [self.asset cancelLoading];
-        [self.imageGenerator cancelAllCGImageGeneration];
-    }
 }
 
 - (void)prepareWithTimeOut:(NSTimeInterval)timeOutInterval
@@ -258,6 +232,17 @@ typedef NS_ENUM(NSUInteger, QMVideoUrlType) {
             self.completion(duration, mediaSize, nil, nil);
         }
     }
+}
+
+
+- (void)cancel {
+    
+    NSParameterAssert(self.prepareStatus == QMMediaPrepareStatusPrepareCancelled);
+    
+    [self.preloadTimeout cancelTimeout];
+    self.prepareStatus = QMMediaPrepareStatusPrepareCancelled;
+    [self.asset cancelLoading];
+    [self.imageGenerator cancelAllCGImageGeneration];
 }
 
 @end
