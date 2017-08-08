@@ -189,135 +189,8 @@ const struct QMAttachmentStatusStruct QMAttachmentStatus =
                    message:(QBChatMessage *)message
                 completion:(void(^)(UIImage *image,
                                     NSError *error))imageCompletionBlock {
-    /*
-     __weak typeof(self) weakSelf = self;
-     
-     [self.storeService cachedImageForAttachment:attachment
-     messageID:message.ID
-     dialogID:message.dialogID
-     completion:^(UIImage *image)
-     {
-     if (image) {
-     NSLog(@"_GET CACHED IMAGE %@ %@", message.ID, attachment.ID);
-     if (imageCompletionBlock) {
-     imageCompletionBlock(image, nil);
-     }
-     }
-     else {
-     
-     if ([self statusForMessage:message] == QMAttachmentStatus.loading) {
-     NSLog(@"_ALREADY DOWNLOADING %@ %@", message.ID, attachment.ID);
-     //                 return;
-     return;
-     }
-     
-     QMAttachmentCacheType cacheType = QMAttachmentCacheTypeMemory|QMAttachmentCacheTypeDisc;
-     
-     if (attachment.contentType == QMAttachmentContentTypeImage) {
-     
-     __strong typeof(weakSelf) strongSelf = weakSelf;
-     
-     [strongSelf changeMessageAttachmentStatus:QMMessageAttachmentStatusLoading
-     forMessage:message];
-     [strongSelf changeAttachmentStatus:QMAttachmentStatus.loading forMessageID:message.ID];
-     
-     [strongSelf.webService downloadMessage:message attachmentID:attachment.ID
-     progressBlock:^(float progress)
-     {
-     __strong typeof(weakSelf) strongSelf = weakSelf;
-     if ([strongSelf.multicastDelegate respondsToSelector:@selector(chatAttachmentService:
-     didChangeLoadingProgress:
-     forMessage:
-     attachment:)]) {
-     [strongSelf.multicastDelegate chatAttachmentService:self
-     didChangeLoadingProgress:progress
-     forMessage:message
-     attachment:attachment];
-     }  completionBlock:^(QMDownloadOperation * _Nonnull downloadOperation)
-     {
-     if (downloadOperation.isCancelled) {
-     [strongSelf changeAttachmentStatus:QMAttachmentStatus.notLoaded forMessageID:message.ID];
-     return;
-     }
-     
-     
-     if (downloadOperation.data) {
-     [strongSelf.storeService saveData:downloadOperation.data
-     forAttachment:attachment
-     cacheType:cacheType
-     messageID:message.ID
-     dialogID:message.dialogID
-     completion:^{
-     [strongSelf changeAttachmentStatus:QMAttachmentStatus.loaded forMessageID:message.ID];
-     imageCompletionBlock([UIImage imageWithData:downloadOperation.data], nil);
-     }];
-     }
-     else {
-     
-     [strongSelf changeAttachmentStatus:QMAttachmentStatus.notLoaded forMessageID:message.ID];
-     
-     imageCompletionBlock(nil, downloadOperation.error);
-     }
-     
-     }];
-     
-     }
-     */
-    /*
-     else if (attachment.contentType == QMAttachmentContentTypeVideo) {
-     
-     __strong typeof(weakSelf) strongSelf = weakSelf;
-     [strongSelf changeAttachmentStatus:QMAttachmentStatus.loading forMessageID:message.ID];
-     [strongSelf changeMessageAttachmentStatus:QMMessageAttachmentStatusLoading
-     forMessage:message];
-     
-     [strongSelf.infoService mediaInfoForAttachment:attachment
-     messageID:message.ID
-     completion:^(UIImage * _Nullable image, Float64 durationSeconds, CGSize size, NSError * _Nullable error, NSString * _Nonnull messageID, BOOL cancelled)
-     {
-     if (!error) {
-     attachment.duration = durationSeconds;
-     attachment.width = size.width;
-     attachment.height = size.height;
-     
-     dispatch_block_t completionBlock = ^{
-     [strongSelf changeAttachmentStatus:QMAttachmentStatus.loaded forMessageID:messageID];
-     [strongSelf changeMessageAttachmentStatus:QMMessageAttachmentStatusLoaded
-     forMessage:message];
-     };
-     if (image) {
-     [strongSelf.storeService saveData:UIImagePNGRepresentation(image)
-     forAttachment:attachment
-     cacheType:cacheType
-     messageID:message.ID
-     dialogID:message.dialogID
-     completion:^{
-     completionBlock();
-     }];
-     
-     }
-     else {
-     [strongSelf.storeService saveAttachment:attachment
-     cacheType:QMAttachmentCacheTypeMemory
-     messageID:message.ID
-     dialogID:message.dialogID
-     completion:^{
-     completionBlock();
-     }];
-     }
-     
-     }
-     else {
-     [strongSelf changeAttachmentStatus:QMAttachmentStatus.error forMessageID:messageID];
-     [strongSelf changeMessageAttachmentStatus:QMMessageAttachmentStatusError
-     forMessage:message];
-     }
-     completion(image, error);
-     }];
-     }
-     }
-     }];*/
-    
+    //TODO:
+    //Add method for backward compatibility
 }
 
 - (BOOL)attachmentIsReadyToPlay:(QBChatAttachment *)attachment
@@ -387,10 +260,6 @@ const struct QMAttachmentStatusStruct QMAttachmentStatus =
                                          completion:nil];
 }
 
-- (void)statusForAttachment:(QBChatAttachment *)attachment
-                 completion:(void(^)(int))completionBlock {
-    
-}
 
 //MARK:- Add / Remove Multicast delegate
 
