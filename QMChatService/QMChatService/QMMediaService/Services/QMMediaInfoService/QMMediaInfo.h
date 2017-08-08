@@ -27,6 +27,6 @@ typedef NS_ENUM(NSUInteger, QMMediaPrepareStatus) {
 - (void)cancel;
 
 - (void)prepareWithTimeOut:(NSTimeInterval)timeOutInterval
-                completion:(void(^)(NSTimeInterval duration, CGSize size, UIImage *image, NSError *error, AVPlayerItem *playerItem))completionBlock;
+                completion:(void(^)(NSTimeInterval duration, CGSize size, UIImage *image, NSError *error))completionBlock;
 
 @end

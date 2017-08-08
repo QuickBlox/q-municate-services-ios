@@ -77,11 +77,11 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     _messagesMemoryStorage.delegate = (id<QMMemoryTemporaryQueueDelegate>)self.deferredQueueManager;
     
     QMMediaStoreService *storeService = [[QMMediaStoreService alloc] initWithDelegate:self];
-    QMMediaWebService *webService = [QMMediaWebService new];
+    QMAttachmentContentService *contentService = [QMAttachmentContentService new];
     QMMediaInfoService *infoService = [QMMediaInfoService new];
     
     _chatAttachmentService = [[QMChatAttachmentService alloc] initWithStoreService:storeService
-                                                                        webService:webService
+                                                                    contentService:contentService
                                                                        infoService:infoService];
     
     [QBChat.instance addDelegate:self];
@@ -162,7 +162,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 //MARK: - QBChatDelegate
 
 - (void)chatDidFailWithStreamError:(NSError *)error {
-
+    
     if ([self.multicastDelegate respondsToSelector:@selector(chatServiceChatDidFailWithStreamError:)]) {
         [self.multicastDelegate chatServiceChatDidFailWithStreamError:error];
     }
@@ -178,7 +178,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 - (void)chatDidNotConnectWithError:(NSError *)error {
     
     [self.deferredQueueManager cancellAllOperations];
-
+    
     if ([self.multicastDelegate respondsToSelector:@selector(chatService:chatDidNotConnectWithError:)]) {
         [self.multicastDelegate chatService:self chatDidNotConnectWithError:error];
     }
@@ -187,14 +187,14 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 - (void)chatDidAccidentallyDisconnect {
     
     [self.deferredQueueManager cancellAllOperations];
-
+    
     if ([self.multicastDelegate respondsToSelector:@selector(chatServiceChatDidAccidentallyDisconnect:)]) {
         [self.multicastDelegate chatServiceChatDidAccidentallyDisconnect:self];
     }
 }
 
 - (void)chatDidReconnect {
- //   NSLog(@"CHAT_chatDidReconnect");
+
     if ([self.multicastDelegate respondsToSelector:@selector(chatServiceChatDidReconnect:)]) {
         [self.multicastDelegate chatServiceChatDidReconnect:self];
     }
