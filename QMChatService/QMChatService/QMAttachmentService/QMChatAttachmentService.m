@@ -116,7 +116,6 @@ const struct QMAttachmentStatusStruct QMAttachmentStatus =
                                                Float64 durationSeconds,
                                                CGSize size,
                                                NSError * _Nullable error,
-                                               NSString * _Nonnull messageID,
                                                BOOL cancelled)
      {
          
@@ -135,7 +134,7 @@ const struct QMAttachmentStatusStruct QMAttachmentStatus =
                  [strongSelf changeAttachmentStatus:QMAttachmentStatus.prepared forMessageID:messageID];
              }
              if (completion) {
-                 completion(image, durationSeconds, size,error,messageID,cancelled);
+                 completion(image, durationSeconds, size,error, cancelled);
              }
          });
      }];
@@ -532,7 +531,6 @@ const struct QMAttachmentStatusStruct QMAttachmentStatus =
                                                    Float64 durationInSeconds,
                                                    CGSize size,
                                                    NSError * _Nullable error,
-                                                   NSString * _Nonnull messageID,
                                                    BOOL cancelled) {
                                           if (!cancelled) {
                                               if (!error) {
@@ -727,7 +725,7 @@ const struct QMAttachmentStatusStruct QMAttachmentStatus =
                                                              [strongSelf changeAttachmentStatus:QMAttachmentStatus.loaded forMessageID:message.ID];
                                                              if (downloadOperation && !downloadOperation.isCancelled) {
                                                                  if (!attachment.isPrepared) {
-                                                                     [strongSelf prepareAttachment:attachment messageID:message.ID completion:^(UIImage * _Nullable image, Float64 durationSeconds, CGSize size, NSError * _Nullable error, NSString * _Nonnull messageID, BOOL cancelled) {
+                                                                     [strongSelf prepareAttachment:attachment messageID:message.ID completion:^(UIImage * _Nullable image, Float64 durationSeconds, CGSize size, NSError * _Nullable error, BOOL cancelled) {
                                                                          if (!cancelled) {
                                                                              if (error) {
                                                                                  attachmentOperation.error = error;
@@ -736,7 +734,7 @@ const struct QMAttachmentStatusStruct QMAttachmentStatus =
                                                                                  attachment.image = image;
                                                                                  attachment.duration = durationSeconds;
                                                                                  
-                                                                                 [self.storeService updateAttachment:attachment messageID:messageID dialogID:message.dialogID];
+                                                                                 [self.storeService updateAttachment:attachment messageID:message.ID dialogID:message.dialogID];
                                                                                  attachmentOperation.attachment = attachment;
                                                                              }
                                                                              completionBlock(attachmentOperation);
