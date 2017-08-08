@@ -212,8 +212,7 @@
     if (cacheType & QMAttachmentCacheTypeDisc) {
         
         dispatch_async(self.storeServiceQueue, ^{
-            NSString *tempPathToFile = [attachment.localFileURL absoluteString];
-            
+    
             NSString *pathToFile = mediaPath(dialogID,
                                              messageID,
                                              attachment);
