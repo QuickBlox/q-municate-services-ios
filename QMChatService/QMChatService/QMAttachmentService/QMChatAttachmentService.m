@@ -332,8 +332,8 @@ const struct QMAttachmentStatusStruct QMAttachmentStatus =
         return fileURL != nil;
     }
     else if (attachment.contentType == QMAttachmentContentTypeVideo) {
-        
-        return attachment.ID != nil;
+        BOOL isLoaded =  [self statusForMessage:message] == QMAttachmentStatus.prepared ||  [self statusForMessage:message] == QMAttachmentStatus.loaded;
+        return attachment.ID != nil && isLoaded;
     }
     else if (attachment.contentType == QMAttachmentContentTypeImage) {
         return attachment.image != nil;
