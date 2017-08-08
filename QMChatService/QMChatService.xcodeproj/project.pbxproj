@@ -22,7 +22,6 @@
 		E08A873F1E8821DD00262C00 /* QMChatAttachmentService.m in Sources */ = {isa = PBXBuildFile; fileRef = E08A873D1E8821DD00262C00 /* QMChatAttachmentService.m */; };
 		E08A87421E88259C00262C00 /* QBChatAttachment+QMCustomParameters.m in Sources */ = {isa = PBXBuildFile; fileRef = E08A87411E88259C00262C00 /* QBChatAttachment+QMCustomParameters.m */; };
 		E08A87451E88590A00262C00 /* QBChatAttachment+QMFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = E08A87441E88590A00262C00 /* QBChatAttachment+QMFactory.m */; };
-		E097E3CE1E538391005F2E4E /* QMMediaError.m in Sources */ = {isa = PBXBuildFile; fileRef = E097E3CD1E538391005F2E4E /* QMMediaError.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -310,7 +309,6 @@
 				E08A87451E88590A00262C00 /* QBChatAttachment+QMFactory.m in Sources */,
 				55F41E371A0A4C3B008D1C68 /* QMDialogsMemoryStorage.m in Sources */,
 				E08A873F1E8821DD00262C00 /* QMChatAttachmentService.m in Sources */,
-				E097E3CE1E538391005F2E4E /* QMMediaError.m in Sources */,
 				E024F0BF1E83AAB50097EB7D /* QMAsynchronousOperation.m in Sources */,
 				E03C35A81E5E000C00BFDA31 /* QMMediaInfoService.m in Sources */,
 				E08A87421E88259C00262C00 /* QBChatAttachment+QMCustomParameters.m in Sources */,
