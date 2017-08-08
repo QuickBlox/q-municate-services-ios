@@ -12,7 +12,7 @@
 
 #import "QBChatAttachment+QMFactory.h"
 #import "QMMediaStoreService.h"
-#import "QMMediaWebService.h"
+#import "QMAttachmentContentService.h"
 #import "QMMediaInfoService.h"
 
 
