@@ -115,7 +115,7 @@
     
 }
 
-- (BOOL)isUplodingMessageWithID:(NSString *)messageID {
+- (BOOL)isUploadingMessageWithID:(NSString *)messageID {
     return [_uploadOperationQueue hasOperationWithID:messageID];
 }
 
