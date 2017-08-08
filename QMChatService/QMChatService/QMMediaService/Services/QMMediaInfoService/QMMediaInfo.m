@@ -143,6 +143,7 @@ typedef NS_ENUM(NSUInteger, QMVideoUrlType) {
             AVKeyValueStatus keyStatus = [asset statusOfValueForKey:key error:&error];
             if (keyStatus == AVKeyValueStatusFailed) {
                 if (strongSelf.completion) {
+                    [strongSelf.preloadTimeout cancelTimeout];
                     strongSelf.prepareStatus = QMMediaPrepareStatusPrepareFailed;
                     strongSelf.completion(0, CGSizeZero, nil, error);
                 }
