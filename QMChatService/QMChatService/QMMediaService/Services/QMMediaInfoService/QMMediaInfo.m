@@ -33,7 +33,6 @@
 - (void)dealloc {
     
     QMSLog(@"%@ - %@",  NSStringFromSelector(_cmd), self);
-    [self cancel];
     _completion = nil;
 }
 
@@ -227,10 +226,8 @@
     else {
         
         self.prepareStatus = QMMediaPrepareStatusPrepareFinished;
-        if (self.completion) {
-            [self.preloadTimeout cancelTimeout];
-            self.completion(duration, mediaSize, nil, nil);
-        }
+        [self.preloadTimeout cancelTimeout];
+        self.completion(duration, mediaSize, nil, nil);
     }
 }
 
