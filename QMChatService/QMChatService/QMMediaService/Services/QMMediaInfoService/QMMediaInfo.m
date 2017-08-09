@@ -234,7 +234,7 @@
 
 - (void)cancel {
     
-    NSParameterAssert(self.prepareStatus == QMMediaPrepareStatusPrepareCancelled);
+    NSParameterAssert(self.prepareStatus != QMMediaPrepareStatusPrepareCancelled);
     
     [self.preloadTimeout cancelTimeout];
     self.prepareStatus = QMMediaPrepareStatusPrepareCancelled;
