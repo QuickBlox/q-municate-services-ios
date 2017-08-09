@@ -33,7 +33,6 @@
 - (void)dealloc {
     
     QMSLog(@"%@ - %@",  NSStringFromSelector(_cmd), self);
-    [self cancel];
     _completion = nil;
 }
 
@@ -227,17 +226,15 @@
     else {
         
         self.prepareStatus = QMMediaPrepareStatusPrepareFinished;
-        if (self.completion) {
-            [self.preloadTimeout cancelTimeout];
-            self.completion(duration, mediaSize, nil, nil);
-        }
+        [self.preloadTimeout cancelTimeout];
+        self.completion(duration, mediaSize, nil, nil);
     }
 }
 
 
 - (void)cancel {
     
-    NSParameterAssert(self.prepareStatus == QMMediaPrepareStatusPrepareCancelled);
+    NSParameterAssert(self.prepareStatus != QMMediaPrepareStatusPrepareCancelled);
     
     [self.preloadTimeout cancelTimeout];
     self.prepareStatus = QMMediaPrepareStatusPrepareCancelled;

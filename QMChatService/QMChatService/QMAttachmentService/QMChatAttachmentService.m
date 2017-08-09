@@ -74,7 +74,6 @@ const struct QMAttachmentStatusStruct QMAttachmentStatus =
 @property (nonatomic, strong) NSMutableDictionary *attachmentsStorage;
 @property (nonatomic, strong) QBMulticastDelegate <QMChatAttachmentServiceDelegate> *multicastDelegate;
 @property (nonatomic, strong) NSMutableDictionary *placeholderAttachments;
-@property (nonatomic, strong) NSMutableSet *attachmentsInProgress;
 @property (nonatomic, strong) NSMutableDictionary *attachmentsStatuses;
 @property (nonatomic, strong) NSMutableDictionary *runningOperations;
 @end
@@ -93,7 +92,6 @@ const struct QMAttachmentStatusStruct QMAttachmentStatus =
         _infoService = infoService;
         
         _multicastDelegate = (id <QMChatAttachmentServiceDelegate>)[[QBMulticastDelegate alloc] init];
-        _attachmentsInProgress = [NSMutableSet set];
         _placeholderAttachments = [NSMutableDictionary dictionary];
         _attachmentsStatuses = [NSMutableDictionary dictionary];
         _runningOperations = [NSMutableDictionary dictionary];
@@ -134,7 +132,7 @@ const struct QMAttachmentStatusStruct QMAttachmentStatus =
                  [strongSelf changeAttachmentStatus:QMAttachmentStatus.prepared forMessageID:messageID];
              }
              if (completion) {
-                 completion(image, durationSeconds, size,error, cancelled);
+                 completion(image, durationSeconds, size,   error, cancelled);
              }
          });
      }];
