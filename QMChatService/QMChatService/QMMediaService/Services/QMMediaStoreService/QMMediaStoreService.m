@@ -220,10 +220,10 @@
             if (![_fileManager fileExistsAtPath:[pathToFile stringByDeletingLastPathComponent]]) {
                 [_fileManager createDirectoryAtPath:[pathToFile stringByDeletingLastPathComponent] withIntermediateDirectories:YES attributes:nil error:NULL];
             }
-            NSLog(@"CREATE FILE AT PATH %@", pathToFile);
+            QMSLog(@"CREATE FILE AT PATH %@", pathToFile);
             if  (![_fileManager createFileAtPath:pathToFile contents:data attributes:nil]) {
                 
-                NSLog(@"Error was code: %d - message: %s", errno, strerror(errno));
+                QMSLog(@"Error was code: %d - message: %s", errno, strerror(errno));
                 
             }
             
@@ -571,6 +571,7 @@ static inline NSData * __nullable imageData(UIImage * __nonnull image) {
 - (void)cancellAllOperations {
     
 }
+
 - (NSUInteger)getSize {
     __block NSUInteger size = 0;
     dispatch_sync(self.storeServiceQueue, ^{

@@ -93,7 +93,7 @@
           {
               
               progressBlock(status.percentOfCompletion);
-              NSLog(@"Upload status = %f __  isCancelled %d", status.percentOfCompletion, request.isCancelled);
+              QMSLog(@"Upload status = %f __  isCancelled %d", status.percentOfCompletion, request.isCancelled);
               
           } errorBlock:^(QBResponse * _Nonnull response)
           {

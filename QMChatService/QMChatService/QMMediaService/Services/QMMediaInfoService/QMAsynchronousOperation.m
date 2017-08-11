@@ -7,6 +7,7 @@
 //
 
 #import "QMAsynchronousOperation.h"
+#import "QMSLog.h"
 
 typedef NS_ENUM(NSInteger, QMAsynchronousOperationState) {
     QMAsynchronousOperationStateStateReady,
@@ -211,7 +212,7 @@ dispatch_async(dispatch_get_main_queue(), block);\
 
 - (void)dealloc {
     
-    NSLog(@"%@, class: %@, id: %@", NSStringFromSelector(_cmd), NSStringFromClass(self.class), _operationID);
+    QMSLog(@"%@, class: %@, id: %@", NSStringFromSelector(_cmd), NSStringFromClass(self.class), _operationID);
 }
 
 - (NSString *)description {

@@ -7,6 +7,7 @@
 //
 
 #import "QMOpenGraphService.h"
+#import "QMSLog.h"
 
 @interface QMOpenGraphLoadOperation : NSBlockOperation
 
@@ -96,7 +97,7 @@ static NSString *const kQMKeyImageURL = @"ogImage";
             dispatch_sync(dispatch_get_main_queue(), ^{
                 [self.multicastDelegate openGraphSerivce:self
                       didAddOpenGraphItemToMemoryStorage:item];
-                NSLog(@"ID: %@, url %@ - exists", ID, url);
+                QMSLog(@"ID: %@, url %@ - exists", ID, url);
             });
             
             return;
@@ -118,7 +119,7 @@ static NSString *const kQMKeyImageURL = @"ogImage";
                                                error:&jsonError];
              if (jsonObject) {
                  
-                 NSLog(@"open graph item:"
+                 QMSLog(@"open graph item:"
                        "\r%@",
                        jsonObject);
                  
@@ -133,7 +134,7 @@ static NSString *const kQMKeyImageURL = @"ogImage";
                      dispatch_group_enter(group);
                      [weakSelf.multicastDelegate openGraphSerivce:weakSelf hasImageURL:previewImageURL completion:^{
                          
-                         NSLog(@"--->: %tu, Finish load preview image %@",
+                         QMSLog(@"--->: %tu, Finish load preview image %@",
                                task.taskIdentifier, previewImageURL.absoluteString);
                          
                          dispatch_group_leave(group);
@@ -145,7 +146,7 @@ static NSString *const kQMKeyImageURL = @"ogImage";
                  [weakSelf.multicastDelegate openGraphSerivce:weakSelf
                                              hasFaviconURL:faviconURL completion:^
                   {
-                      NSLog(@"--->: %tu, Finish load favicon %@",
+                      QMSLog(@"--->: %tu, Finish load favicon %@",
                             task.taskIdentifier, faviconURL.absoluteString);
                       dispatch_group_leave(group);
                   }];
@@ -161,16 +162,16 @@ static NSString *const kQMKeyImageURL = @"ogImage";
              }
              
          } failure:^(NSURLSessionDataTask *task, NSError *error) {
-             NSLog(@"Failure task %tu, error - %@", task.taskIdentifier, error.localizedDescription);
+             QMSLog(@"Failure task %tu, error - %@", task.taskIdentifier, error.localizedDescription);
              dispatch_semaphore_signal(sem);
          }];
         
-        NSLog(@"Task: %tu, ID: %@, load for %@", weakOperation.request.task.taskIdentifier, ID, url);
+        QMSLog(@"Task: %tu, ID: %@, load for %@", weakOperation.request.task.taskIdentifier, ID, url);
         dispatch_semaphore_wait(sem, DISPATCH_TIME_FOREVER);
-        NSLog(@"Done: %tu, ID: %@, %@", weakOperation.request.task.taskIdentifier, ID, url);
+        QMSLog(@"Done: %tu, ID: %@, %@", weakOperation.request.task.taskIdentifier, ID, url);
     }];
     
-    NSLog(@"Add: %@, %@", operation, url);
+    QMSLog(@"Add: %@, %@", operation, url);
     [_operationQueue addOperation:operation];
 }
 
@@ -312,7 +313,7 @@ static NSString *const kQMKeyImageURL = @"ogImage";
 
 - (void)dealloc {
     
-    NSLog(@"%@, class: %@, id: %@", NSStringFromSelector(_cmd), NSStringFromClass(self.class), _identifier);
+    QMSLog(@"%@, class: %@, id: %@", NSStringFromSelector(_cmd), NSStringFromClass(self.class), _identifier);
 }
 
 - (NSString *)description {

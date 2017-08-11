@@ -8,11 +8,11 @@
 
 #import "QMMediaInfoService.h"
 #import <AVKit/AVKit.h>
-//#import "QMImageOperation.h"
 #import "QMAsynchronousOperation.h"
 
 #import "QBChatAttachment+QMCustomParameters.h"
 #import "QMMediaInfo.h"
+#import "QMSLog.h"
 
 @interface QMMediaInfoService()
 
@@ -57,7 +57,7 @@
     
     mediaInfoOperation.cancelBlock = ^{
         __strong typeof(weakOperation) strongOperation = weakOperation;
-        NSLog(@"Cancell operation with ID: %@", strongOperation.operationID);
+        QMSLog(@"Cancell operation with ID: %@", strongOperation.operationID);
         if (!strongOperation.objectToCancel) {
             completion(nil, 0, CGSizeZero, nil, YES);
         }
@@ -104,9 +104,9 @@
         }
     }
     
-    NSLog(@"_Cancell operation with ID (info service):%@",operationID);
+    QMSLog(@"_Cancell operation with ID (info service):%@",operationID);
     //    [self.imagesOperationQueue cancelOperationWithID:operationID];
-    NSLog(@"Operations = %@", [self.mediaInfoOperationQueue operations]);
+    QMSLog(@"Operations = %@", [self.mediaInfoOperationQueue operations]);
 }
 
 @end

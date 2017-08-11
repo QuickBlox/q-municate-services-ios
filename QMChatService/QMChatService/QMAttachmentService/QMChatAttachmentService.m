@@ -45,7 +45,7 @@ const struct QMAttachmentStatusStruct QMAttachmentStatus =
 }
 
 - (void)dealloc {
-    NSLog(@"deallock");
+    QMSLog(@"deallock");
 }
 
 - (void)cancel {
@@ -144,13 +144,13 @@ const struct QMAttachmentStatusStruct QMAttachmentStatus =
 }
 
 - (void)cancelOperationsWithMessageID:(NSString *)messageID {
-    NSLog(@"CALL CANCELL ID: %@", messageID);
+    
     QMAttachmentOperation *operation = nil;
     @synchronized (self.runningOperations) {
         operation = self.runningOperations [messageID];
     }
     if (!operation) {
-        NSLog(@"NO OPERATION FOR CALL CANCELL ID: %@", messageID);
+        QMSLog(@"NO OPERATION FOR CALL CANCELL ID: %@", messageID);
     }
     [operation cancel];
     
@@ -310,7 +310,7 @@ const struct QMAttachmentStatusStruct QMAttachmentStatus =
                        withChatService:(QMChatService *)chatService
                             attachment:(QBChatAttachment *)attachment
                             completion:(QBChatCompletionBlock)completion {
-    NSLog(@"_UPLOAD and send call %@",message.ID);
+    QMSLog(@"_UPLOAD and send call %@",message.ID);
     [chatService.deferredQueueManager addOrUpdateMessage:message];
     
     [self uploadAttachmentMessage:message
@@ -323,7 +323,7 @@ const struct QMAttachmentStatusStruct QMAttachmentStatus =
                                return;
                            }
                            if (!error) {
-                               NSLog(@"_UPLOAD NO ERROR completion %@",message.ID);
+                               QMSLog(@"_UPLOAD NO ERROR completion %@",message.ID);
                                [chatService sendMessage:message
                                                toDialog:dialog
                                           saveToHistory:YES
@@ -331,7 +331,7 @@ const struct QMAttachmentStatusStruct QMAttachmentStatus =
                                              completion:completion];
                            }
                            else {
-                               NSLog(@"_UPLOAD has error completion %@ %@",message.ID, error);
+                               QMSLog(@"_UPLOAD has error completion %@ %@",message.ID, error);
                                [chatService.deferredQueueManager addOrUpdateMessage:message];
                                completion(error);
                            }
@@ -349,7 +349,7 @@ const struct QMAttachmentStatusStruct QMAttachmentStatus =
     }
     
     if (hasOperation) {
-        NSLog(@"__UPLOAD 0 HAS OPERATION %@", message.ID);
+        QMSLog(@"__UPLOAD 0 HAS OPERATION %@", message.ID);
         //   [self cancelOperationsWithMessageID:message.ID];
         return;
     }
@@ -411,16 +411,16 @@ const struct QMAttachmentStatusStruct QMAttachmentStatus =
                                                              dialogID:message.dialogID
                                                            completion:^(NSURL * _Nonnull fileURL, NSData * _Nonnull data)
                                    {
-                                       NSLog(@"_UPLOAD 1 STORE SERVICE completion %@",message.ID);
+                                       QMSLog(@"_UPLOAD 1 STORE SERVICE completion %@",message.ID);
                                        __strong __typeof(weakOperation) strongOperation = weakOperation;
                                        if (attachmentOperation.isCancelled) {
-                                           NSLog(@"_UPLOAD 2 is Cancelled %@",message.ID);
+                                           QMSLog(@"_UPLOAD 2 is Cancelled %@",message.ID);
                                            
                                            [self safelyRemoveOperationFromRunning:strongOperation];
                                            return;
                                        }
                                        if (fileURL) {
-                                           NSLog(@"_UPLOAD 3 has file URL %@",message.ID);
+                                           QMSLog(@"_UPLOAD 3 has file URL %@",message.ID);
                                            [self changeAttachmentStatus:QMAttachmentStatus.loaded forMessageID:message.ID];
                                            attachment.localFileURL = fileURL;
                                            completion(nil,attachmentOperation.isCancelled);
@@ -428,7 +428,7 @@ const struct QMAttachmentStatusStruct QMAttachmentStatus =
                                        }
                                        else {
                                            if ([self statusForMessage:message] == QMAttachmentStatus.uploading) {
-                                               NSLog(@"_UPLOAD 4 STATUS IS LOADING ID ID: %@", message.ID);
+                                               QMSLog(@"_UPLOAD 4 STATUS IS LOADING ID ID: %@", message.ID);
                                                return;
                                            }
                                            
@@ -439,15 +439,15 @@ const struct QMAttachmentStatusStruct QMAttachmentStatus =
                                            {
                                                NSError * error = operation.error;
                                                __strong __typeof(weakOperation) strongOperation = weakOperation;
-                                               NSLog(@"_UPLOAD 5 completion upload: %@", message.ID);
+                                               QMSLog(@"_UPLOAD 5 completion upload: %@", message.ID);
                                                if (!strongOperation || strongOperation.isCancelled) {
-                                                   NSLog(@"_UPLOAD 6 is cancelled: %@", message.ID);
+                                                   QMSLog(@"_UPLOAD 6 is cancelled: %@", message.ID);
                                                    [self safelyRemoveOperationFromRunning:strongOperation];
                                                    [self changeAttachmentStatus:QMAttachmentStatus.notLoaded forMessageID:message.ID];
                                                    return;
                                                }
                                                else if (error) {
-                                                   NSLog(@"_UPLOAD 6 error: %@ __%@", message.ID, error);
+                                                   QMSLog(@"_UPLOAD 6 error: %@ __%@", message.ID, error);
                                                    [self changeAttachmentStatus:QMAttachmentStatus.notLoaded forMessageID:message.ID];
                                                    [self safelyRemoveOperationFromRunning:strongOperation];
                                                    completion(error,attachmentOperation.isCancelled);
@@ -458,9 +458,9 @@ const struct QMAttachmentStatusStruct QMAttachmentStatus =
                                                                            cacheType:QMAttachmentCacheTypeDisc|QMAttachmentCacheTypeMemory messageID:message.ID
                                                                             dialogID:message.dialogID
                                                                           completion:^{
-                                                                              NSLog(@"_UPLOAD 7 save to storage: %@", message.ID);
+                                                                              QMSLog(@"_UPLOAD 7 save to storage: %@", message.ID);
                                                                               if (strongOperation && !strongOperation.isCancelled) {
-                                                                                  NSLog(@"_UPLOAD 8 change status: %@", message.ID);
+                                                                                  QMSLog(@"_UPLOAD 8 change status: %@", message.ID);
                                                                                   [self changeAttachmentStatus:QMAttachmentStatus.loaded forMessageID:message.ID];
                                                                                   
                                                                                   completion(nil,attachmentOperation.isCancelled);
@@ -468,7 +468,7 @@ const struct QMAttachmentStatusStruct QMAttachmentStatus =
                                                                               }
                                                                               else {
                                                                                   [self safelyRemoveOperationFromRunning:strongOperation];
-                                                                                  NSLog(@"_UPLOAD 8 Cancelled: %@", message.ID);
+                                                                                  QMSLog(@"_UPLOAD 8 Cancelled: %@", message.ID);
                                                                               }
                                                                           }];
                                                    
@@ -517,7 +517,7 @@ const struct QMAttachmentStatusStruct QMAttachmentStatus =
         
         QMAttachmentOperation *attachmentOperation =  [QMAttachmentOperation new];
         attachmentOperation.identifier = message.ID;
-        NSLog(@"CREATE ATTACHMENT OPERAION WITH ID ID: %@", attachmentOperation.identifier);
+        QMSLog(@"CREATE ATTACHMENT OPERAION WITH ID ID: %@", attachmentOperation.identifier);
         @synchronized (self.runningOperations) {
             self.runningOperations[message.ID] = attachmentOperation;
         }
@@ -529,7 +529,7 @@ const struct QMAttachmentStatusStruct QMAttachmentStatus =
         if (attachment.contentType == QMAttachmentContentTypeAudio) {
             
             if ([self statusForMessage:message] == QMAttachmentStatus.downloading) {
-                NSLog(@"STATUS IS LOADING ID ID: %@", attachmentOperation.identifier);
+                QMSLog(@"STATUS IS LOADING ID ID: %@", attachmentOperation.identifier);
                 return;
             }
             __weak typeof(self) weakSelf = self;
@@ -538,13 +538,13 @@ const struct QMAttachmentStatusStruct QMAttachmentStatus =
                 __strong typeof(weakSelf) strongSelf = weakSelf;
                 
                 if (attachmentOperation.isCancelled) {
-                    NSLog(@"IS CANCELLED FOR STORE SERVICE ID: %@", attachmentOperation.identifier);
+                    QMSLog(@"IS CANCELLED FOR STORE SERVICE ID: %@", attachmentOperation.identifier);
                     __strong __typeof(weakOperation) strongOperation = weakOperation;
                     [strongSelf safelyRemoveOperationFromRunning:strongOperation];
                     return;
                 }
                 if (fileURL) {
-                    NSLog(@"HAS FILE URL ID: %@", attachmentOperation.identifier);
+                    QMSLog(@"HAS FILE URL ID: %@", attachmentOperation.identifier);
                     [strongSelf changeAttachmentStatus:QMAttachmentStatus.loaded forMessageID:message.ID];
                     attachment.localFileURL = fileURL;
                     return;
@@ -558,12 +558,12 @@ const struct QMAttachmentStatusStruct QMAttachmentStatus =
                                                 completionBlock:^(QMDownloadOperation * _Nonnull downloadOperation) {
                                                     
                                                     if (!downloadOperation || downloadOperation.isCancelled) {
-                                                        NSLog(@"2 IS CANCELLED FOR DOWNLOAD SERVICE ID: %@", attachmentOperation.identifier);
+                                                        QMSLog(@"2 IS CANCELLED FOR DOWNLOAD SERVICE ID: %@", attachmentOperation.identifier);
                                                         [strongSelf changeAttachmentStatus:QMAttachmentStatus.notLoaded forMessageID:message.ID];
                                                         return;
                                                     }
                                                     if (downloadOperation.error) {
-                                                        NSLog(@"ERROR ID: %@", attachmentOperation.identifier);
+                                                        QMSLog(@"ERROR ID: %@", attachmentOperation.identifier);
                                                         [strongSelf changeAttachmentStatus:QMAttachmentStatus.notLoaded forMessageID:message.ID];
                                                         
                                                         attachmentOperation.error = downloadOperation.error;
@@ -571,7 +571,7 @@ const struct QMAttachmentStatusStruct QMAttachmentStatus =
                                                         completionBlock(attachmentOperation);
                                                     }
                                                     else if (downloadOperation.data) {
-                                                        NSLog(@"NOT CANCELLED SAVE ID: %@", attachmentOperation.identifier);
+                                                        QMSLog(@"NOT CANCELLED SAVE ID: %@", attachmentOperation.identifier);
                                                         attachment.ID = attachmentID;
                                                         
                                                         [strongSelf.storeService saveData:downloadOperation.data

@@ -111,14 +111,14 @@ extern const struct QMAttachmentStatusStruct QMAttachmentStatus;
 /**
  *  Add delegate (Multicast)
  *
- *  @param delegate Instance confirmed QMChatServiceDelegate protocol
+ *  @param delegate Instance confirmed QMChatAttachmentServiceDelegate protocol
  */
 - (void)addDelegate:(id <QMChatAttachmentServiceDelegate>)delegate;
 
 /**
  *  Remove delegate from observed list
  *
- *  @param delegate Instance confirmed QMChatServiceDelegate protocol
+ *  @param delegate Instance confirmed QMChatAttachmentServiceDelegate protocol
  */
 - (void)removeDelegate:(id <QMChatAttachmentServiceDelegate>)delegate;
 
