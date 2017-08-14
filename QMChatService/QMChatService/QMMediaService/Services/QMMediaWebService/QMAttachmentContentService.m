@@ -5,18 +5,18 @@
 //  Created by Vitaliy Gurkovsky on 6/14/17.
 //
 
-#import "QMMediaWebService.h"
+#import "QMAttachmentContentService.h"
 #import "QMMediaDownloadService.h"
 #import "QMMediaUploadService.h"
 
-@interface QMMediaWebService()
+@interface QMAttachmentContentService()
 
 @property (nonatomic, strong) QMMediaUploadService *uploader;
 @property (nonatomic, strong) QMMediaDownloadService *downloader;
 @property (nonatomic, strong) NSMutableDictionary <NSString *, NSNumber *> *messagesWebProgress;
 @end
 
-@implementation QMMediaWebService
+@implementation QMAttachmentContentService
 
 - (instancetype)init {
     
