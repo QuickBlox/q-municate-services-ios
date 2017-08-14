@@ -16,7 +16,7 @@ typedef NS_ENUM(NSInteger, QMAsynchronousOperationState) {
 };
 
 static inline NSString *QMKeyPathForState(QMAsynchronousOperationState state) {
-    
+
     switch (state) {
         case QMAsynchronousOperationStateStateReady:        return @"isReady";
         case QMAsynchronousOperationStateStateExecuting:    return @"isExecuting";

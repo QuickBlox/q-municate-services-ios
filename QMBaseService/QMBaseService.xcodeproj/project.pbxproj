@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		55B2F11E1A091CE9008C2272 /* QMBaseService.m in Sources */ = {isa = PBXBuildFile; fileRef = 55B2F11D1A091CE9008C2272 /* QMBaseService.m */; };
+		E04D56C81F41D4EC005B0D12 /* QMAsynchronousOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = E04D56C61F41D4C3005B0D12 /* QMAsynchronousOperation.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -15,6 +16,9 @@
 		55B2F11C1A091CE9008C2272 /* QMBaseService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMBaseService.h; sourceTree = "<group>"; };
 		55B2F11D1A091CE9008C2272 /* QMBaseService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMBaseService.m; sourceTree = "<group>"; };
 		8620BC591B0F7DCB005ED359 /* Quickblox.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; lineEnding = 0; name = Quickblox.xcconfig; path = ../Quickblox.xcconfig; sourceTree = "<group>"; };
+		E04D56C51F41D4C3005B0D12 /* QMAsynchronousOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QMAsynchronousOperation.h; sourceTree = "<group>"; };
+		E04D56C61F41D4C3005B0D12 /* QMAsynchronousOperation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QMAsynchronousOperation.m; sourceTree = "<group>"; };
+		E04D56C71F41D4C3005B0D12 /* QMCancellableService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QMCancellableService.h; sourceTree = "<group>"; };
 		FB805A511F052E72000B3E9F /* QMBaseService-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QMBaseService-Prefix.pch"; sourceTree = "<group>"; };
 		FBBBDBE41AEF98DA00841288 /* QMMemoryStorageProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = QMMemoryStorageProtocol.h; sourceTree = "<group>"; };
 		FBBBDBEF1AEF9DA300841288 /* QMServiceManagerProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = QMServiceManagerProtocol.h; sourceTree = "<group>"; };
@@ -44,12 +48,23 @@
 		55B2F1061A091CC9008C2272 /* QMBaseService */ = {
 			isa = PBXGroup;
 			children = (
+				E04D56C41F41D4C3005B0D12 /* QMAsynchronousOperation */,
+				E04D56C71F41D4C3005B0D12 /* QMCancellableService.h */,
 				55B2F11C1A091CE9008C2272 /* QMBaseService.h */,
 				FBBBDBEF1AEF9DA300841288 /* QMServiceManagerProtocol.h */,
 				55B2F11D1A091CE9008C2272 /* QMBaseService.m */,
 				FBBBDBE41AEF98DA00841288 /* QMMemoryStorageProtocol.h */,
 			);
 			path = QMBaseService;
+			sourceTree = "<group>";
+		};
+		E04D56C41F41D4C3005B0D12 /* QMAsynchronousOperation */ = {
+			isa = PBXGroup;
+			children = (
+				E04D56C51F41D4C3005B0D12 /* QMAsynchronousOperation.h */,
+				E04D56C61F41D4C3005B0D12 /* QMAsynchronousOperation.m */,
+			);
+			path = QMAsynchronousOperation;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -107,6 +122,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				55B2F11E1A091CE9008C2272 /* QMBaseService.m in Sources */,
+				E04D56C81F41D4EC005B0D12 /* QMAsynchronousOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -9,39 +9,33 @@
 #import <Foundation/Foundation.h>
 #import "QMChatTypes.h"
 
-#import "QMMediaStoreService.h"
-#import "QMMediaInfoService.h"
-#import "QMMediaWebService.h"
+#import "QMAttachmentStoreService.h"
+#import "QMAttachmentAssetService.h"
+#import "QMAttachmentContentService.h"
 #import "QMCancellableService.h"
 
-
-
-//typedef NS_ENUM(NSUInteger, QMAttachmentStatus) {
-//    QMAttachmentStatusNotLoaded = 0,
-//    QMAttachmentStatusLoading,
-//    QMAttachmentStatusLoaded,
-//    QMAttachmentStatusPreparing,
-//    QMAttachmentStatusPrepared,
-//    QMAttachmentStatusError
-//};
+/**
+ The current state of the attachment.
+ */
+typedef NS_ENUM(NSUInteger, QMChatAttachmentState) {
+    /** Default attachment state. Attachment has no active processes */
+    QMChatAttachmentStateNotLoaded = 0,
+    /** The attachment has started the download process. */
+    QMChatAttachmentStateDownloading,
+    /** The attachment has started the upload process. */
+    QMChatAttachmentStateUploading,
+    /** The attachment has started the asset-loading process. */
+    QMChatAttachmentStatePreparing,
+    /** The attachment process has been completed successfully. */
+    QMChatAttachmentStateLoaded,
+    /** The attachment process failed because of an error. */
+    QMChatAttachmentStateError
+};
 
 @class QMChatService;
 @protocol QMChatAttachmentServiceDelegate;
 
 NS_ASSUME_NONNULL_BEGIN
-
-struct QMAttachmentStatusStruct {
-    __unsafe_unretained NSString *notLoaded;
-    __unsafe_unretained NSString *downloading;
-    __unsafe_unretained NSString *uploading;
-    __unsafe_unretained NSString *loaded;
-    __unsafe_unretained NSString *preparing;
-    __unsafe_unretained NSString *prepared;
-    __unsafe_unretained NSString *error;
-};
-
-extern const struct QMAttachmentStatusStruct QMAttachmentStatus;
-
 
 @interface QMAttachmentOperation : NSBlockOperation
 
@@ -62,22 +56,28 @@ extern const struct QMAttachmentStatusStruct QMAttachmentStatus;
  */
 @interface QMChatAttachmentService : NSObject
 
-@property (nonatomic, strong, readonly) QMMediaStoreService *storeService;
-@property (nonatomic, strong, readonly) QMMediaWebService *webService;
-@property (nonatomic, strong, readonly) QMMediaInfoService *infoService;
+@property (nonatomic, strong, readonly) QMAttachmentStoreService *storeService;
+@property (nonatomic, strong, readonly) QMAttachmentContentService *contentService;
+@property (nonatomic, strong, readonly) QMAttachmentAssetService *assetService;
 
 
 - (instancetype)init NS_UNAVAILABLE;
 - (instancetype)new NS_UNAVAILABLE;
 
-- (instancetype)initWithStoreService:(QMMediaStoreService *)storeService
-                          webService:(QMMediaWebService *)webService
-                         infoService:(QMMediaInfoService *)infoService;
+/**
+ Initializes an `QMChatAttachmentService` object with the specified store, content and asset service.
+ 
+ @param storeService The `QMAttachmentStoreService` instance.
+ @param contentService The `QMAttachmentContentService` instance.
+ @param assetService The `QMAttachmentAssetService` instance.
+ 
+ @return The newly-initialized QMChatAttachmentService
+ */
+- (instancetype)initWithStoreService:(QMAttachmentStoreService *)storeService
+                      contentService:(QMAttachmentContentService *)contentService
+                        assetService:(QMAttachmentAssetService *)assetService;
 
-
-- (NSString *)statusForMessage:(QBChatMessage *)message;
-- (QBChatAttachment *)placeholderAttachment:(NSString *)messageID;
-
+- (QMChatAttachmentState)attachmentStateForMessage:(QBChatMessage *)message;
 - (void)attachmentWithID:(NSString *)attachmentID
                  message:(QBChatMessage *)message
            progressBlock:(QMAttachmentProgressBlock)progressBlock
@@ -194,16 +194,18 @@ DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.4.7. Use 'addDelegate:' instead.");
                   forMesssage:(QBChatMessage *)message;
 
 /**
- *  Is called when attachment service did change attachment status for some message.
- *  Please see QMMessageAttachmentStatus for additional info.
+ *  Is called when attachment service did change current state of the attachment.
+ *  Please see QMMessageAttachmentState for additional info.
  *
- *  @param chatAttachmentService instance QMChatAttachmentService
- *  @param status new status
- *  @param messageID new status owner QBChatMessage
+ *  @param chatAttachmentService The 'QMChatAttachmentService' instance.
+ *  @param attachmentState The current state of the attachment.
+ *  @param attachment The 'QBChatAttachment' instance.
+ *  @param messageID The message ID that contains attachment.
  */
 - (void)chatAttachmentService:(QMChatAttachmentService *)chatAttachmentService
-    didChangeAttachmentStatus:(NSString *)status
-                 forMessageID:(NSString *)messageID;
+     didChangeAttachmentState:(QMChatAttachmentState)attachmentState
+                   attachment:(QBChatAttachment *)attachment
+                    messageID:(NSString *)messageID;
 
 /**
  *  Is called when chat attachment service did change loading progress for some attachment.
@@ -226,9 +228,9 @@ DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.4.7. Use 'chatAttachmentService:didCha
  *  Is called when chat attachment service did change Uploading progress for attachment in message.
  *  Used for display loading progress.
  *
- *  @param chatAttachmentService QMChatAttachmentService instance
- *  @param progress              changed value of progress min 0.0, max 1.0
- *  @param message             ID of message that contains attachment
+ *  @param chatAttachmentService QMChatAttachmentService instance.
+ *  @param progress              Changed value of progress. Min 0.0, max 1.0.
+ *  @param message               Message that contains attachment.
  */
 - (void)chatAttachmentService:(QMChatAttachmentService *)chatAttachmentService
    didChangeUploadingProgress:(CGFloat)progress
