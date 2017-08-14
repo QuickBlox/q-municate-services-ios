@@ -189,10 +189,6 @@ DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.4.7. Use 'addDelegate:' instead.");
 
 @protocol QMChatAttachmentServiceDelegate <NSObject>
 
-- (void)chatAttachmentService:(QMChatAttachmentService *)chatAttachmentService
-          didUpdateAttachment:(QBChatAttachment *)attachment
-                  forMesssage:(QBChatMessage *)message;
-
 /**
  *  Is called when attachment service did change current state of the attachment.
  *  Please see QMMessageAttachmentState for additional info.
@@ -204,8 +200,8 @@ DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.4.7. Use 'addDelegate:' instead.");
  */
 - (void)chatAttachmentService:(QMChatAttachmentService *)chatAttachmentService
      didChangeAttachmentState:(QMChatAttachmentState)attachmentState
-                   attachment:(QBChatAttachment *)attachment
-                    messageID:(NSString *)messageID;
+                forAttachment:(QBChatAttachment *)attachment
+                withMessageID:(NSString *)messageID;
 
 /**
  *  Is called when chat attachment service did change loading progress for some attachment.

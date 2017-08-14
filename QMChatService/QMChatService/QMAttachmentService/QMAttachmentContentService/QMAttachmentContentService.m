@@ -103,10 +103,10 @@
 
 //MARK: - QMCancellableService
 
-- (void)cancellOperationWithID:(NSString *)operationID {
+- (void)cancelOperationWithID:(NSString *)operationID {
     [self.messagesWebProgress removeObjectForKey:operationID];
-    [self.downloader cancellOperationWithID:operationID];
-    [self.uploader cancellOperationWithID:operationID];
+    [self.downloader cancelOperationWithID:operationID];
+    [self.uploader cancelOperationWithID:operationID];
     self.messagesWebProgress[operationID] = nil;
 }
 
@@ -120,12 +120,12 @@
 
 - (void)cancelDownloadOperations {
     
-    [self.downloader cancellAllOperations];
+    [self.downloader cancelAllOperations];
 }
 
-- (void)cancellAllOperations {
+- (void)cancelAllOperations {
     
-    [self.downloader cancellAllOperations];
-    [self.uploader cancellAllOperations];
+    [self.downloader cancelAllOperations];
+    [self.uploader cancelAllOperations];
 }
 @end

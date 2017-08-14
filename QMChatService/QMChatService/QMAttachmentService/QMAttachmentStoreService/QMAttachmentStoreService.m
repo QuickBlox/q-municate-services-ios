@@ -11,18 +11,7 @@
 
 #import "QBChatAttachment+QMCustomParameters.h"
 
-@protocol QMStoreOperationObserver <NSObject>
-
-- (void)didStoreData:(NSData *)data forObjectWithID:(NSString *)objectID;
-- (void)didRemoveData:(NSData *)data forObjectWithID:(NSString *)objectID;
-
-
-@end
-
 @interface QMStoreOperation : NSOperation
-
-
-@property (weak, nonatomic) id <QMStoreOperationObserver> observer;
 
 @end
 
@@ -44,7 +33,8 @@
 @implementation QMAttachmentStoreService
 
 //MARK: - NSObject
-- (instancetype)initWithDelegate:(id <QMMediaStoreServiceDelegate>)delegate {
+
+- (instancetype)initWithDelegate:(id<QMAttachmentStoreServiceDelegate>)delegate {
     
     if ([self init]) {
         
@@ -66,12 +56,9 @@
     return self;
 }
 
-
 - (void)dealloc {
-    
     QMSLog(@"%@ - %@",  NSStringFromSelector(_cmd), self);
 }
-
 
 
 //MARK: - QMMediaStoreServiceDelegate
@@ -81,7 +68,6 @@
                 dialogID:(NSString *)dialogID {
     
     if (attachmentID != nil) {
-        
         [_attachmentsMemoryStorage attachmentWithID:attachmentID fromMessageID:messageID];
     }
 }
@@ -102,6 +88,9 @@
             data = [NSData dataWithContentsOfFile:path
                                           options:NSDataReadingMappedIfSafe
                                             error:&error];
+            if (error) {
+                QMSLog(@"ERROR: %@ - %@, error:%@",  NSStringFromSelector(_cmd), self, error);
+            }
         }
         dispatch_async(dispatch_get_main_queue(), ^{
             if (completion) {
@@ -563,11 +552,11 @@ static inline NSData * __nullable imageData(UIImage * __nonnull image) {
 
 //MARK: - QMCancellableService
 
-- (void)cancellOperationWithID:(NSString *)operationID {
+- (void)cancelOperationWithID:(NSString *)operationID {
     
 }
 
-- (void)cancellAllOperations {
+- (void)cancelAllOperations {
     
 }
 

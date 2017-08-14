@@ -25,6 +25,23 @@
 
 @implementation QMMediaDownloadService
 
+- (instancetype)init {
+    
+    if (self  = [super init]) {
+        
+        _downloadOperationQueue = [NSOperationQueue new];
+        _downloadOperationQueue.name = @"QM.QMDownloadOperationQueue";
+        _downloadOperationQueue.qualityOfService = NSQualityOfServiceUserInitiated;
+        _downloadOperationQueue.maxConcurrentOperationCount = 1;
+    }
+    
+    return self;
+}
+
+- (void)dealloc {
+    QMSLog(@"%@ - %@",  NSStringFromSelector(_cmd), self);
+}
+
 - (void)downloadAttachmentWithID:(NSString *)attachmentID
                        messageID:(NSString *)messageID
                    progressBlock:(QMAttachmentProgressBlock)progressBlock
@@ -84,35 +101,18 @@
     QMSLog(@"donwload operation queue %@", self.downloadOperationQueue.operations);
 }
 
-- (instancetype)init {
-    
-    if (self  = [super init]) {
-        
-        self.downloadOperationQueue = [NSOperationQueue new];
-        self.downloadOperationQueue.name = @"QM.QMDownloadOperationQueue";
-        self.downloadOperationQueue.qualityOfService = NSQualityOfServiceUserInitiated;
-        self.downloadOperationQueue.maxConcurrentOperationCount = 1;
-    }
-    
-    return self;
-}
-
-- (void)dealloc {
-    QMSLog(@"%@ - %@",  NSStringFromSelector(_cmd), self);
-}
-
 - (BOOL)isDownloadingMessageWithID:(NSString *)messageID {
     return [self.downloadOperationQueue hasOperationWithID:messageID];
 }
 
 //MARK: - QMCancellableService
 
-- (void)cancellOperationWithID:(NSString *)operationID {
+- (void)cancelOperationWithID:(NSString *)operationID {
     
     [self.downloadOperationQueue cancelOperationWithID:operationID];
 }
 
-- (void)cancellAllOperations {
+- (void)cancelAllOperations {
     
     [self.downloadOperationQueue cancelAllOperations];
 }

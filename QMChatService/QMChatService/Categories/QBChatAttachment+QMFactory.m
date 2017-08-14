@@ -15,7 +15,7 @@
                     localURL:(NSURL *)localURL
                  contentType:(QMAttachmentContentType)contentType {
     
-    QBChatAttachment *attachment = [QBChatAttachment new];
+    QBChatAttachment *attachment = [self new];
     attachment.name = name;
     attachment.ID = mediaID;
     attachment.localFileURL = localURL;
@@ -25,7 +25,7 @@
     return attachment;
 }
 
-+ (instancetype)videoAttachmentwWithFileURL:(NSURL *)itemURL {
++ (instancetype)videoAttachmentWithFileURL:(NSURL *)itemURL {
     
     return [self initWithName:@"Video attachment"
                        mediaID:nil

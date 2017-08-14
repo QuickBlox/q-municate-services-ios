@@ -13,7 +13,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@protocol QMMediaStoreServiceDelegate <NSObject>
+@protocol QMAttachmentStoreServiceDelegate <NSObject>
 
 @required
 

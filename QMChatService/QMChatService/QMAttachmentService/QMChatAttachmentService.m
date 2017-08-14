@@ -276,13 +276,13 @@
     
     if ([self.multicastDelegate respondsToSelector:@selector(chatAttachmentService:
                                                              didChangeAttachmentState:
-                                                             attachment:
-                                                             messageID:)]) {
+                                                             forAttachment:
+                                                             withMessageID:)]) {
         
         [self.multicastDelegate chatAttachmentService:self
                              didChangeAttachmentState:state
-                                           attachment:attachment
-                                            messageID:messageID];
+                                        forAttachment:attachment
+                                        withMessageID:messageID];
     }
 }
 
@@ -498,7 +498,7 @@
         
         __strong __typeof(weakOperation) strongOperation = weakOperation;
         
-        [self.contentService cancellOperationWithID:strongOperation.identifier];
+        [self.contentService cancelOperationWithID:strongOperation.identifier];
         [self safelyRemoveOperationFromRunning:strongOperation];
         
         completion(nil, YES);
@@ -634,8 +634,8 @@
                 __strong __typeof(weakOperation) strongOperation = weakOperation;
                 //                [self changeAttachmentStatus:QMAttachmentStatus.notLoaded forMessageID:strongOperation.identifier];
                 
-                [self.assetService cancellOperationWithID:strongOperation.identifier];
-                [self.contentService cancellOperationWithID:strongOperation.identifier];
+                [self.assetService cancelOperationWithID:strongOperation.identifier];
+                [self.contentService cancelOperationWithID:strongOperation.identifier];
                 [self safelyRemoveOperationFromRunning:strongOperation];
             };
         }

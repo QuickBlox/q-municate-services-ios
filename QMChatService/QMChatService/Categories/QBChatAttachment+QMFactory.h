@@ -16,7 +16,7 @@
                     localURL:(NSURL *)localURL
                  contentType:(QMAttachmentContentType)contentType;
 
-+ (instancetype)videoAttachmentwWithFileURL:(NSURL *)itemURL;
++ (instancetype)videoAttachmentWithFileURL:(NSURL *)itemURL;
 + (instancetype)audioAttachmentWithFileURL:(NSURL *)itemURL;
 + (instancetype)imageAttachmentWithImage:(UIImage *)image;
 

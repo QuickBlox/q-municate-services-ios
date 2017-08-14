@@ -27,10 +27,10 @@
     
     if (self  = [super init]) {
         
-        self.uploadOperationQueue = [NSOperationQueue new];
-        self.uploadOperationQueue.name = @"QM.QMUploadOperationQueue";
-        self.uploadOperationQueue.qualityOfService = NSQualityOfServiceUserInitiated;
-        self.uploadOperationQueue.maxConcurrentOperationCount = 1;
+        _uploadOperationQueue = [NSOperationQueue new];
+        _uploadOperationQueue.name = @"QM.QMUploadOperationQueue";
+        _uploadOperationQueue.qualityOfService = NSQualityOfServiceUserInitiated;
+        _uploadOperationQueue.maxConcurrentOperationCount = 1;
     }
     
     return self;
@@ -194,11 +194,11 @@
     [_uploadOperationQueue addOperation:uploadOperation];
 }
 
-- (void)cancellAllOperations {
+- (void)cancelAllOperations {
     [_uploadOperationQueue cancelAllOperations];
 }
 
-- (void)cancellOperationWithID:(NSString *)operationID {
+- (void)cancelOperationWithID:(NSString *)operationID {
     [_uploadOperationQueue cancelOperationWithID:operationID];
 }
 

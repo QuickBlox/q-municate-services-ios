@@ -86,12 +86,12 @@
 
 //MARK: QMCancellableService
 
-- (void)cancellAllOperations {
+- (void)cancelAllOperations {
     
     [self.assetServiceOperationQueue cancelAllOperations];
 }
 
-- (void)cancellOperationWithID:(NSString *)operationID {
+- (void)cancelOperationWithID:(NSString *)operationID {
     
     for (QMAsynchronousOperation *op in self.assetServiceOperationQueue.operations) {
         if ([op.operationID isEqualToString:operationID]) {
