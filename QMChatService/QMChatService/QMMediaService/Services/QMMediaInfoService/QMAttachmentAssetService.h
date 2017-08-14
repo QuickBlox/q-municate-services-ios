@@ -1,5 +1,5 @@
 //
-//  QMMediaInfoService.h
+//  QMAttachmentAssetService.h
 //  QMChatService
 //
 //  Created by Vitaliy Gurkovsky on 2/22/17.
@@ -7,13 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "QMMediaInfo.h"
+#import "QMAssetLoader.h"
 #import "QMMediaBlocks.h"
 #import "QMCancellableService.h"
 
-@interface QMMediaInfoService : NSObject <QMCancellableService>
+@interface QMAttachmentAssetService : NSObject <QMCancellableService>
 
-- (void)mediaInfoForAttachment:(QBChatAttachment *)attachment
+- (void)loadAssetForAttachment:(QBChatAttachment *)attachment
                      messageID:(NSString *)messageID
                     completion:(QMMediaInfoServiceCompletionBlock)completion;
 @end
