@@ -6,7 +6,7 @@
 //  Copyright © 2017 quickblox. All rights reserved.
 //
 
-#import "QMMediaStoreService.h"
+#import "QMAttachmentStoreService.h"
 #import "QMSLog.h"
 
 #import "QBChatAttachment+QMCustomParameters.h"
@@ -31,7 +31,7 @@
 @end
 
 
-@interface QMMediaStoreService() {
+@interface QMAttachmentStoreService() {
     NSFileManager *_fileManager;
 }
 
@@ -41,7 +41,7 @@
 @property (strong, nonatomic, nonnull) NSString *diskMediaCachePath;
 @end
 
-@implementation QMMediaStoreService
+@implementation QMAttachmentStoreService
 
 //MARK: - NSObject
 - (instancetype)initWithDelegate:(id <QMMediaStoreServiceDelegate>)delegate {
@@ -519,7 +519,6 @@ static inline NSData * __nullable imageData(UIImage * __nonnull image) {
         return UIImageJPEGRepresentation(image, 1.0f);
     }
 }
-
 
 - (NSString *)mimeTypeForData:(NSData *)data {
     
