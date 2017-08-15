@@ -196,8 +196,8 @@
     }
     else if (attachment.contentType == QMAttachmentContentTypeVideo) {
         QMChatAttachmentState state = [self attachmentStateForMessage:message];
-        BOOL isLoaded =  state == QMMessageAttachmentStatusPrepared ||  state == QMMessageAttachmentStatusLoaded;
-        return attachment.ID != nil && isLoaded;
+        BOOL isReady = state == QMChatAttachmentStateLoaded || state == QMChatAttachmentStateNotLoaded;
+        return attachment.ID != nil && isReady;
     }
     else if (attachment.contentType == QMAttachmentContentTypeImage) {
         return attachment.image != nil;

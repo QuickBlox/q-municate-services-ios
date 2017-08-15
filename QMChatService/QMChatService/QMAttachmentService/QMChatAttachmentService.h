@@ -56,8 +56,19 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface QMChatAttachmentService : NSObject
 
+/**
+ <#Description#>
+ */
 @property (nonatomic, strong, readonly) QMAttachmentStoreService *storeService;
+
+/**
+ <#Description#>
+ */
 @property (nonatomic, strong, readonly) QMAttachmentContentService *contentService;
+
+/**
+ <#Description#>
+ */
 @property (nonatomic, strong, readonly) QMAttachmentAssetService *assetService;
 
 
@@ -77,46 +88,109 @@ NS_ASSUME_NONNULL_BEGIN
                       contentService:(QMAttachmentContentService *)contentService
                         assetService:(QMAttachmentAssetService *)assetService;
 
+/**
+ Returns the current state of the attachment.
+ 
+ @param message QBChatMessage instance, that contains attachment.
+ @return The current state of the attachment.
+ */
 - (QMChatAttachmentState)attachmentStateForMessage:(QBChatMessage *)message;
+
+/**
+ Gets the attachment from the attachment message.
+ 
+ @param attachmentID The ID of the 'QBChatAttachment' instance.
+ @param message QBChatMessage instance, that contains attachment.
+ @param progressBlock Block with changed value of progress. Min 0.0, max 1.0.
+ @param completionBlock Completion block with 'QMAttachmentOperation' instance.
+ */
 - (void)attachmentWithID:(NSString *)attachmentID
                  message:(QBChatMessage *)message
            progressBlock:(QMAttachmentProgressBlock)progressBlock
               completion:(void(^)(QMAttachmentOperation *op))completionBlock;
 
+/**
+ Gets the image from the attachment message.
+ 
+ @param attachment 'QBChatAttachment' instance
+ @param message 'QBChatMessage' instance, that contains attachment.
+ @param completion Fetched image or error if failed.
+ */
 - (void)imageForAttachment:(QBChatAttachment *)attachment
                    message:(QBChatMessage *)message
                 completion:(void(^)(UIImage * _Nullable image,
                                     NSError * _Nullable error))completion;
 
+/**
+ Indicates whether the attachment, or its URL, can be used to play.
+ 
+ @abstract        Returns YES if attachment is playable.
+ 
+ @param attachment 'QBChatAttachment' instance
+ @param message    'QBChatMessage' instance, that contains attachment.
+ @return YES or NO.
+ */
 - (BOOL)attachmentIsReadyToPlay:(QBChatAttachment *)attachment
                         message:(QBChatMessage *)message;
 
+/**
+ Cancels  queued or executing operations.
+ 
+ @param messageID The message ID that contains attachment.
+ */
 - (void)cancelOperationsWithMessageID:(NSString *)messageID;
 
+/**
+ Removes all data related to attachments from the disk and the cache.
+ */
 - (void)removeAllMediaFiles;
 
+/**
+ Removes all data related to attachments for the specified dialog with ID from the disk and the cache.
+ 
+ @param dialogID The dialog ID.
+ */
 - (void)removeMediaFilesForDialogWithID:(NSString *)dialogID;
 
+/**
+ Removes all data related to attachments for the specified dialogID and messageID from the disk and cache.
+ 
+ @param messageID The message ID that contains attachment.
+ @param dialogID  The dialog ID.
+ */
 - (void)removeMediaFilesForMessageWithID:(NSString *)messageID
                                 dialogID:(NSString *)dialogID;
 
 
+/**
+ Removes all data related to attachments for specified dialogID and messages ID's array from disk and cache.
+ 
+ @param messagesIDs An instance of NSArray, containing messageIDs.
+ @param dialogID The dialog ID.
+ */
 - (void)removeMediaFilesForMessagesWithID:(NSArray<NSString *> *)messagesIDs
                                  dialogID:(NSString *)dialogID;
 
+/**
+ Directs service to load the values for asset from attachment.
+ 
+ @param attachment 'QBChatAttachment' instance.
+ @param messageID  The message ID that contains attachment.
+ @param completion The block to be invoked when loading succeeds, fails, or is cancelled.
+ */
 - (void)prepareAttachment:(QBChatAttachment *)attachment
                 messageID:(NSString *)messageID
                completion:(QMMediaInfoServiceCompletionBlock)completion;
 
 /**
- *  Add delegate (Multicast)
+ *  Adds delegate (Multicast)
  *
  *  @param delegate Instance confirmed QMChatAttachmentServiceDelegate protocol
  */
 - (void)addDelegate:(id <QMChatAttachmentServiceDelegate>)delegate;
 
 /**
- *  Remove delegate from observed list
+ *  Removes delegate from observed list
  *
  *  @param delegate Instance confirmed QMChatAttachmentServiceDelegate protocol
  */
@@ -131,13 +205,13 @@ NS_ASSUME_NONNULL_BEGIN
 DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.4.7. Use 'addDelegate:' instead.");
 
 /**
- *  Upload and send attachment message to dialog.
+ *  Uploads and sends attachment message to dialog.
  *
- *  @param message      QBChatMessage instance
- *  @param dialog       QBChatDialog instance
- *  @param chatService  QMChatService instance
- *  @param image        Attachment image
- *  @param completion   Send message result
+ *  @param message      QBChatMessage instance, that contains attachment.
+ *  @param dialog       QBChatDialog instance.
+ *  @param chatService  QMChatService instance.
+ *  @param image        Attachment image.
+ *  @param completion   Send message result.
  *
  *  @warning *Deprecated in QMServices 0.4.7:* Use 'uploadAndSendAttachmentMessage:toDialog:withChatService:attachment:completion:' instead.
  */
@@ -148,19 +222,19 @@ DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.4.7. Use 'addDelegate:' instead.");
                             completion:(nullable QBChatCompletionBlock)completion DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.4.7. Use 'uploadAndSendAttachmentMessage:toDialog:withChatService:attachment:completion:' instead.");
 
 /**
- *  Get image by attachment message.
+ *  Gets the image from the attachment message.
  *
- *  @param attachmentMessage message with attachment
- *  @param completion        fetched image or error if failed
+ *  @param attachmentMessage Message with attachment.
+ *  @param completion        Fetched image or error if failed.
  */
 - (void)imageForAttachmentMessage:(QBChatMessage *)attachmentMessage
                        completion:(nullable void(^)(NSError * _Nullable error, UIImage * _Nullable image))completion DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.4.7. Use 'imageForAttachment:message:completion:' instead.");
 
 /**
- *  Get image local image by attachment message.
+ *  Gets image local image by attachment message.
  *
- *  @param attachmentMessage      message with attachment
- *  @param completion             local image or nil if no image
+ *  @param attachmentMessage      Message with attachment.
+ *  @param completion             Local image or nil if no image.
  */
 - (void)localImageForAttachmentMessage:(QBChatMessage *)attachmentMessage
                             completion:(nullable void(^)(NSError * _Nullable error, UIImage * _Nullable image))completion DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.4.7. Use 'imageForAttachment:message:completion:' instead.");
@@ -168,7 +242,7 @@ DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.4.7. Use 'addDelegate:' instead.");
 //MARK: - Media
 
 /**
- *  Upload and send attachment message to dialog.
+ *  Uploads and sends attachment message to dialog.
  *
  *  @param message      QBChatMessage instance
  *  @param dialog       QBChatDialog instance
@@ -218,7 +292,7 @@ DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.4.7. Use 'addDelegate:' instead.");
      didChangeLoadingProgress:(CGFloat)progress
             forChatAttachment:(QBChatAttachment *)attachment
 
-DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.4.7. Use 'chatAttachmentService:didChangeUploadingProgress:forMessage:attachment:' instead.");;
+DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.4.7. Use 'chatAttachmentService:didChangeUploadingProgress:forMessage:attachment:' instead.");
 
 /**
  *  Is called when chat attachment service did change Uploading progress for attachment in message.
@@ -226,13 +300,21 @@ DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.4.7. Use 'chatAttachmentService:didCha
  *
  *  @param chatAttachmentService QMChatAttachmentService instance.
  *  @param progress              Changed value of progress. Min 0.0, max 1.0.
- *  @param message               Message that contains attachment.
+ *  @param message               QBChatMessage instance, that contains attachment.
  */
 - (void)chatAttachmentService:(QMChatAttachmentService *)chatAttachmentService
    didChangeUploadingProgress:(CGFloat)progress
                    forMessage:(QBChatMessage *)message;
 
-
+/**
+ *  Is called when chat attachment service did change downloading progress for some attachment.
+ *  Used for display downloading progress.
+ *
+ *  @param chatAttachmentService 'QMChatAttachmentService' instance.
+ *  @param progress              Changed value of progress min 0.0, max 1.0
+ *  @param message               QBChatMessage instance, that contains attachment.
+ *  @param attachment            'QBChatAttachment' instance that uploading.
+ */
 - (void)chatAttachmentService:(QMChatAttachmentService *)chatAttachmentService
      didChangeLoadingProgress:(CGFloat)progress
                    forMessage:(QBChatMessage *)message
