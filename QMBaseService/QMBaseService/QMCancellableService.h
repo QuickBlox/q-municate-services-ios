@@ -9,7 +9,7 @@
 
 @protocol QMCancellableService <NSObject>
 
-- (void)cancellOperationWithID:(NSString *)operationID;
-- (void)cancellAllOperations;
+- (void)cancelOperationWithID:(NSString *)operationID;
+- (void)cancelAllOperations;
 
 @end

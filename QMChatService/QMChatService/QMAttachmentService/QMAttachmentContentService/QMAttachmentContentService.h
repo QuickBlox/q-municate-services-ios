@@ -13,7 +13,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface QMMediaWebService : NSObject <QMCancellableService>
+@interface QMAttachmentContentService : NSObject <QMCancellableService>
 
 @property (weak, nonatomic) id <QMMediaWebServiceDelegate> delegate;
 

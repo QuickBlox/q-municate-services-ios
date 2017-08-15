@@ -360,7 +360,7 @@ NSString const *kQMCustomParameterDialogDeletedOccupantsIDs = @"deleted_occupant
 
 //MARK: - extra params
 
-- (BOOL)isNotificatonMessage {
+- (BOOL)isNotificationMessage {
     
     return self.messageType != QMMessageTypeText;
 }

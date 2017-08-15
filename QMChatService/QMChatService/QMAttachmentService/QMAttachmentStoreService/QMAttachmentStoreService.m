@@ -6,23 +6,12 @@
 //  Copyright © 2017 quickblox. All rights reserved.
 //
 
-#import "QMMediaStoreService.h"
+#import "QMAttachmentStoreService.h"
 #import "QMSLog.h"
 
 #import "QBChatAttachment+QMCustomParameters.h"
 
-@protocol QMStoreOperationObserver <NSObject>
-
-- (void)didStoreData:(NSData *)data forObjectWithID:(NSString *)objectID;
-- (void)didRemoveData:(NSData *)data forObjectWithID:(NSString *)objectID;
-
-
-@end
-
 @interface QMStoreOperation : NSOperation
-
-
-@property (weak, nonatomic) id <QMStoreOperationObserver> observer;
 
 @end
 
@@ -31,7 +20,7 @@
 @end
 
 
-@interface QMMediaStoreService() {
+@interface QMAttachmentStoreService() {
     NSFileManager *_fileManager;
 }
 
@@ -41,10 +30,11 @@
 @property (strong, nonatomic, nonnull) NSString *diskMediaCachePath;
 @end
 
-@implementation QMMediaStoreService
+@implementation QMAttachmentStoreService
 
 //MARK: - NSObject
-- (instancetype)initWithDelegate:(id <QMMediaStoreServiceDelegate>)delegate {
+
+- (instancetype)initWithDelegate:(id<QMAttachmentStoreServiceDelegate>)delegate {
     
     if ([self init]) {
         
@@ -66,12 +56,9 @@
     return self;
 }
 
-
 - (void)dealloc {
-    
     QMSLog(@"%@ - %@",  NSStringFromSelector(_cmd), self);
 }
-
 
 
 //MARK: - QMMediaStoreServiceDelegate
@@ -81,7 +68,6 @@
                 dialogID:(NSString *)dialogID {
     
     if (attachmentID != nil) {
-        
         [_attachmentsMemoryStorage attachmentWithID:attachmentID fromMessageID:messageID];
     }
 }
@@ -102,6 +88,9 @@
             data = [NSData dataWithContentsOfFile:path
                                           options:NSDataReadingMappedIfSafe
                                             error:&error];
+            if (error) {
+                QMSLog(@"ERROR: %@ - %@, error:%@",  NSStringFromSelector(_cmd), self, error);
+            }
         }
         dispatch_async(dispatch_get_main_queue(), ^{
             if (completion) {
@@ -220,10 +209,10 @@
             if (![_fileManager fileExistsAtPath:[pathToFile stringByDeletingLastPathComponent]]) {
                 [_fileManager createDirectoryAtPath:[pathToFile stringByDeletingLastPathComponent] withIntermediateDirectories:YES attributes:nil error:NULL];
             }
-            NSLog(@"CREATE FILE AT PATH %@", pathToFile);
+            QMSLog(@"CREATE FILE AT PATH %@", pathToFile);
             if  (![_fileManager createFileAtPath:pathToFile contents:data attributes:nil]) {
                 
-                NSLog(@"Error was code: %d - message: %s", errno, strerror(errno));
+                QMSLog(@"Error was code: %d - message: %s", errno, strerror(errno));
                 
             }
             
@@ -520,7 +509,6 @@ static inline NSData * __nullable imageData(UIImage * __nonnull image) {
     }
 }
 
-
 - (NSString *)mimeTypeForData:(NSData *)data {
     
     uint8_t c;
@@ -564,13 +552,14 @@ static inline NSData * __nullable imageData(UIImage * __nonnull image) {
 
 //MARK: - QMCancellableService
 
-- (void)cancellOperationWithID:(NSString *)operationID {
+- (void)cancelOperationWithID:(NSString *)operationID {
     
 }
 
-- (void)cancellAllOperations {
+- (void)cancelAllOperations {
     
 }
+
 - (NSUInteger)getSize {
     __block NSUInteger size = 0;
     dispatch_sync(self.storeServiceQueue, ^{
