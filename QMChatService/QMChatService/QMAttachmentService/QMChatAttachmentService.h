@@ -57,17 +57,17 @@ NS_ASSUME_NONNULL_BEGIN
 @interface QMChatAttachmentService : NSObject
 
 /**
- <#Description#>
+ 'QMAttachmentStoreService' instance.
  */
 @property (nonatomic, strong, readonly) QMAttachmentStoreService *storeService;
 
 /**
- <#Description#>
+ 'QMAttachmentContentService' instance.
  */
 @property (nonatomic, strong, readonly) QMAttachmentContentService *contentService;
 
 /**
- <#Description#>
+ 'QMAttachmentAssetService' instance.
  */
 @property (nonatomic, strong, readonly) QMAttachmentAssetService *assetService;
 
@@ -86,7 +86,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (instancetype)initWithStoreService:(QMAttachmentStoreService *)storeService
                       contentService:(QMAttachmentContentService *)contentService
-                        assetService:(QMAttachmentAssetService *)assetService;
+                        assetService:(QMAttachmentAssetService *)assetService NS_DESIGNATED_INITIALIZER;
 
 /**
  Returns the current state of the attachment.
