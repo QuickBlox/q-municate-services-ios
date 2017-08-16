@@ -282,18 +282,6 @@ static QMChatCache *_chatCacheInstance = nil;
 
 - (void)insertOrUpdateMessage:(QBChatMessage *)message
                  withDialogId:(NSString *)dialogID
-                         read:(BOOL)isRead
-                   completion:(dispatch_block_t)completion {
-    
-    message.dialogID = dialogID;
-    
-    [self insertOrUpdateMessage:message
-                   withDialogId:dialogID
-                     completion:completion];
-}
-
-- (void)insertOrUpdateMessage:(QBChatMessage *)message
-                 withDialogId:(NSString *)dialogID
                    completion:(dispatch_block_t)completion {
     
     [self insertOrUpdateMessages:@[message]
