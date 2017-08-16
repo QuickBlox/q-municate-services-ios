@@ -81,7 +81,9 @@
              withFileURL:(NSURL *)fileURL
            progressBlock:(_Nullable QMAttachmentProgressBlock)progressBlock
          completionBlock:(void(^)(QMUploadOperation *downloadOperation))completion {
+    
     __weak typeof(self) weakSelf = self;
+    
     [self.uploader uploadAttachment:attachment
                           messageID:messageID
                         withFileURL:fileURL
@@ -111,7 +113,7 @@
 }
 
 - (BOOL)isDownloadingMessageWithID:(NSString *)messageID {
-    return  [self.downloader isDownloadingMessageWithID:messageID];
+    return [self.downloader isDownloadingMessageWithID:messageID];
 }
 
 - (BOOL)isUploadingMessageWithID:(NSString *)messageID {
@@ -119,7 +121,6 @@
 }
 
 - (void)cancelDownloadOperations {
-    
     [self.downloader cancelAllOperations];
 }
 
@@ -128,4 +129,5 @@
     [self.downloader cancelAllOperations];
     [self.uploader cancelAllOperations];
 }
+
 @end

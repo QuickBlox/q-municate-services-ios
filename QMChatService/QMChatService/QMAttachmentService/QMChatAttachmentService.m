@@ -56,7 +56,7 @@
 
 @end
 
-@interface QMChatAttachmentService() <QMMediaWebServiceDelegate>
+@interface QMChatAttachmentService() <QMAttachmentContentServiceDelegate>
 
 @property (nonatomic, strong) QBMulticastDelegate <QMChatAttachmentServiceDelegate> *multicastDelegate;
 
@@ -67,7 +67,6 @@
 @end
 
 @implementation QMChatAttachmentService
-
 
 - (instancetype)initWithStoreService:(QMAttachmentStoreService *)storeService
                       contentService:(QMAttachmentContentService *)contentService
@@ -401,7 +400,7 @@
     
     dispatch_group_wait(uploadGroup,DISPATCH_TIME_FOREVER);
     
-    [self.storeService cachedAttachment:attachment
+    [self.storeService cachedDataForAttachment:attachment
                               messageID:message.ID
                                dialogID:message.dialogID
                              completion:^(NSURL * _Nonnull fileURL, NSData * _Nonnull data)
@@ -538,7 +537,7 @@
                 return;
             }
             __weak typeof(self) weakSelf = self;
-            [self.storeService cachedAttachment:attachment messageID:message.ID dialogID:message.dialogID completion:^(NSURL * _Nonnull fileURL, NSData * _Nonnull data) {
+            [self.storeService cachedDataForAttachment:attachment messageID:message.ID dialogID:message.dialogID completion:^(NSURL * _Nonnull fileURL, NSData * _Nonnull data) {
                 
                 __strong typeof(weakSelf) strongSelf = weakSelf;
                 

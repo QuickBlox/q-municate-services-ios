@@ -11,15 +11,6 @@
 
 #import "QBChatAttachment+QMCustomParameters.h"
 
-@interface QMStoreOperation : NSOperation
-
-@end
-
-@implementation QMStoreOperation
-
-@end
-
-
 @interface QMAttachmentStoreService() {
     NSFileManager *_fileManager;
 }
@@ -78,7 +69,7 @@
 - (void)cachedDataForAttachment:(QBChatAttachment *)attachment
                       messageID:(NSString *)messageID
                        dialogID:(NSString *)dialogID
-                     completion:(void (^)(NSData *data, NSURL *fileURL))completion {
+                     completion:(nonnull void (^)(NSURL * _Nullable, NSData * _Nullable))completion {
     
     dispatch_async(_storeServiceQueue, ^{
         
@@ -334,43 +325,7 @@
                             completion:completion];
 }
 
-//MARK: - Helpers
 
-static NSString* mediaCacheDir() {
-    
-    static NSString *mediaCacheDirString;
-    
-    if (!mediaCacheDirString) {
-        
-        NSString *cacheDir = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
-        mediaCacheDirString = [cacheDir stringByAppendingPathComponent:@"Attachments"];
-        
-        static dispatch_once_t onceToken;
-        
-        dispatch_once(&onceToken, ^{
-            if (![[NSFileManager defaultManager] fileExistsAtPath:mediaCacheDirString]) {
-                [[NSFileManager defaultManager] createDirectoryAtPath:mediaCacheDirString withIntermediateDirectories:NO attributes:nil error:nil];
-            }
-        });
-    }
-    
-    return mediaCacheDirString;
-}
-
-
-static NSString* mediaPath(NSString *dialogID, NSString *messsageID, QBChatAttachment *attachment)   {
-    
-    NSString *mediaPatch =
-    [[mediaCacheDir() stringByAppendingPathComponent:dialogID]
-     stringByAppendingPathComponent:messsageID];
-    
-    NSString *filePath =
-    [NSString stringWithFormat:@"/attachment-%@.%@",
-     messsageID,
-     [attachment extension]];
-    
-    return [mediaPatch stringByAppendingPathComponent:filePath];
-}
 
 //MARK: - Helpers
 - (NSURL *)fileURLForAttachment:(QBChatAttachment *)attachment
@@ -392,7 +347,7 @@ static NSString* mediaPath(NSString *dialogID, NSString *messsageID, QBChatAttac
     
     NSString *path = [_diskMediaCachePath stringByAppendingPathComponent:dialogID];
     if (messageID != nil) {
-         path = [path stringByAppendingPathComponent:messageID];
+        path = [path stringByAppendingPathComponent:messageID];
     }
     return [self sizeForPath:path];
 }
@@ -416,21 +371,6 @@ static NSString* mediaPath(NSString *dialogID, NSString *messsageID, QBChatAttac
 }
 
 //MARK: - Helpers
-
-static inline NSData * __nullable imageData(UIImage * __nonnull image) {
-    
-    int alphaInfo = CGImageGetAlphaInfo(image.CGImage);
-    BOOL hasAlpha = !(alphaInfo == kCGImageAlphaNone ||
-                      alphaInfo == kCGImageAlphaNoneSkipFirst ||
-                      alphaInfo == kCGImageAlphaNoneSkipLast);
-    
-    if (hasAlpha) {
-        return UIImagePNGRepresentation(image);
-    }
-    else {
-        return UIImageJPEGRepresentation(image, 1.0f);
-    }
-}
 
 - (NSString *)mimeTypeForData:(NSData *)data {
     
@@ -495,5 +435,59 @@ static inline NSData * __nullable imageData(UIImage * __nonnull image) {
     });
     return size;
 }
+
+//MARK: - Static methods.
+
+static NSString* mediaCacheDir() {
+    
+    static NSString *mediaCacheDirString;
+    
+    if (!mediaCacheDirString) {
+        
+        NSString *cacheDir = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
+        mediaCacheDirString = [cacheDir stringByAppendingPathComponent:@"Attachments"];
+        
+        static dispatch_once_t onceToken;
+        
+        dispatch_once(&onceToken, ^{
+            if (![[NSFileManager defaultManager] fileExistsAtPath:mediaCacheDirString]) {
+                [[NSFileManager defaultManager] createDirectoryAtPath:mediaCacheDirString withIntermediateDirectories:NO attributes:nil error:nil];
+            }
+        });
+    }
+    
+    return mediaCacheDirString;
+}
+
+
+static NSString* mediaPath(NSString *dialogID, NSString *messsageID, QBChatAttachment *attachment)   {
+    
+    NSString *mediaPatch =
+    [[mediaCacheDir() stringByAppendingPathComponent:dialogID]
+     stringByAppendingPathComponent:messsageID];
+    
+    NSString *filePath =
+    [NSString stringWithFormat:@"/attachment-%@.%@",
+     messsageID,
+     [attachment extension]];
+    
+    return [mediaPatch stringByAppendingPathComponent:filePath];
+}
+
+static inline NSData * __nullable imageData(UIImage * __nonnull image) {
+    
+    int alphaInfo = CGImageGetAlphaInfo(image.CGImage);
+    BOOL hasAlpha = !(alphaInfo == kCGImageAlphaNone ||
+                      alphaInfo == kCGImageAlphaNoneSkipFirst ||
+                      alphaInfo == kCGImageAlphaNoneSkipLast);
+    
+    if (hasAlpha) {
+        return UIImagePNGRepresentation(image);
+    }
+    else {
+        return UIImageJPEGRepresentation(image, 1.0f);
+    }
+}
+
 
 @end

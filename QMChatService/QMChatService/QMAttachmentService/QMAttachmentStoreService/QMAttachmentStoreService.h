@@ -18,12 +18,12 @@ typedef NS_OPTIONS(NSInteger, QMAttachmentCacheType) {
     /**
      * Memory cache. QMAttachmentStoreService should save the attachment to the memory cache.
      */
-    QMAttachmentCacheTypeMemory =  0,
+    QMAttachmentCacheTypeMemory = 1 << 0,
     
     /**
      * Disck cache. QMAttachmentStoreService should save the attachment to the disck cache.
      */
-    QMAttachmentCacheTypeDisc = 1 << 0
+    QMAttachmentCacheTypeDisc = 1 << 1
 };
 
 NS_ASSUME_NONNULL_BEGIN
