@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 typedef void(^QMAssetLoaderCompletionBlock)(NSTimeInterval duration, CGSize size, UIImage * __nullable image, NSError *__nullable error);
 
 typedef NS_ENUM(NSUInteger, QMAssetLoaderStatus) {
+    
     QMAssetLoaderStatusNotLoaded = 0,
     QMAssetLoaderStatusLoading,
     QMAssetLoaderStatusFinished,

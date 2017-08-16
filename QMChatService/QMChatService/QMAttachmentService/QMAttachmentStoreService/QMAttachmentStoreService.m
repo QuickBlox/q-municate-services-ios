@@ -11,15 +11,6 @@
 
 #import "QBChatAttachment+QMCustomParameters.h"
 
-@interface QMStoreOperation : NSOperation
-
-@end
-
-@implementation QMStoreOperation
-
-@end
-
-
 @interface QMAttachmentStoreService() {
     NSFileManager *_fileManager;
 }
@@ -28,6 +19,7 @@
 @property (nonatomic, readwrite) QMAttachmentsMemoryStorage *attachmentsMemoryStorage;
 @property (nonatomic, strong, nullable) dispatch_queue_t storeServiceQueue;
 @property (strong, nonatomic, nonnull) NSString *diskMediaCachePath;
+
 @end
 
 @implementation QMAttachmentStoreService
@@ -36,7 +28,9 @@
 
 - (instancetype)initWithDelegate:(id<QMAttachmentStoreServiceDelegate>)delegate {
     
-    if ([self init]) {
+    self = [super init];
+    
+    if (self) {
         
         _storeDelegate = delegate;
         _imagesMemoryStorage = [NSMutableDictionary dictionary];
@@ -75,7 +69,7 @@
 - (void)cachedDataForAttachment:(QBChatAttachment *)attachment
                       messageID:(NSString *)messageID
                        dialogID:(NSString *)dialogID
-                     completion:(void (^)(NSData *data, NSURL *fileURL))completion {
+                     completion:(nonnull void (^)(NSURL * _Nullable, NSData * _Nullable))completion {
     
     dispatch_async(_storeServiceQueue, ^{
         
@@ -114,16 +108,20 @@
         return;
     }
     
-    [self cachedDataForAttachment:attachment messageID:messageID dialogID:dialogID completion:^(NSData *data, NSURL __unused *fileURL) {
-        UIImage *image = nil;
-        if (data) {
-            UIImage *image = [UIImage imageWithData:data];
-            self.imagesMemoryStorage[messageID] = image;
-        }
-        dispatch_async(dispatch_get_main_queue(), ^{
-            completion(image);
-        });
-    }];
+    [self cachedDataForAttachment:attachment
+                        messageID:messageID
+                         dialogID:dialogID
+                       completion:^(NSURL * _Nullable fileURL, NSData * _Nullable data)
+     {
+         UIImage *image = nil;
+         if (data) {
+             UIImage *image = [UIImage imageWithData:data];
+             self.imagesMemoryStorage[messageID] = image;
+         }
+         dispatch_async(dispatch_get_main_queue(), ^{
+             completion(image);
+         });
+     }];
     
 }
 
@@ -201,7 +199,7 @@
     if (cacheType & QMAttachmentCacheTypeDisc) {
         
         dispatch_async(self.storeServiceQueue, ^{
-    
+            
             NSString *pathToFile = mediaPath(dialogID,
                                              messageID,
                                              attachment);
@@ -237,12 +235,12 @@
 
 //MARK: - Removing
 
-- (void)clearCacheForType:(QMAttachmentCacheType)cacheType completion:(dispatch_block_t)completion {
+- (void)clearCacheForType:(QMAttachmentCacheType)cacheType
+               completion:(dispatch_block_t)completion {
     
     dispatch_block_t clearMemoryBlock = ^{
         
         if (cacheType & QMAttachmentCacheTypeMemory) {
-            
             [self.attachmentsMemoryStorage free];
             [self.imagesMemoryStorage removeAllObjects];
         }
@@ -327,49 +325,12 @@
                             completion:completion];
 }
 
-//MARK: - Helpers
 
-static NSString* mediaCacheDir() {
-    
-    static NSString *mediaCacheDirString;
-    
-    if (!mediaCacheDirString) {
-        
-        NSString *cacheDir = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
-        mediaCacheDirString = [cacheDir stringByAppendingPathComponent:@"Attachments"];
-        
-        static dispatch_once_t onceToken;
-        
-        dispatch_once(&onceToken, ^{
-            if (![[NSFileManager defaultManager] fileExistsAtPath:mediaCacheDirString]) {
-                [[NSFileManager defaultManager] createDirectoryAtPath:mediaCacheDirString withIntermediateDirectories:NO attributes:nil error:nil];
-            }
-        });
-    }
-    
-    return mediaCacheDirString;
-}
-
-
-static NSString* mediaPath(NSString *dialogID, NSString *messsageID, QBChatAttachment *attachment)   {
-    
-    NSString *mediaPatch =
-    [[mediaCacheDir() stringByAppendingPathComponent:dialogID]
-     stringByAppendingPathComponent:messsageID];
-    
-    NSString *filePath =
-    [NSString stringWithFormat:@"/attachment-%@.%@",
-     messsageID,
-     [attachment extension]];
-    
-    return [mediaPatch stringByAppendingPathComponent:filePath];
-}
 
 //MARK: - Helpers
 - (NSURL *)fileURLForAttachment:(QBChatAttachment *)attachment
                       messageID:(NSString *)messageID
                        dialogID:(NSString *)dialogID {
-    // checking attachment in cache
     
     __block NSURL *fileURL = nil;
     dispatch_sync(self.storeServiceQueue, ^{
@@ -381,25 +342,14 @@ static NSString* mediaPath(NSString *dialogID, NSString *messsageID, QBChatAttac
     return fileURL;
 }
 
-- (QMStoreOperation *)cachedAttachment:(QBChatAttachment *)attachment
-                             messageID:(NSString *)messageID
-                              dialogID:(NSString *)dialogID
-                            completion:(void(^)(NSURL *filURL, NSData *data))completion {
-    QMStoreOperation *operation = [QMStoreOperation new];
+- (NSUInteger)sizeForMessageWithID:(nullable NSString *)messageID
+                          dialogID:(NSString *)dialogID {
     
-    [self cachedDataForAttachment:attachment messageID:messageID dialogID:dialogID completion:^(NSData *data, NSURL *fileURL) {
-        completion(fileURL,data);
-    }];
-    
-    return operation;
-}
-
-- (void)sizeForDialogID:(nullable NSString *)dialogID
-              messageID:(nullable NSString *)messageID
-           attachmentID:(nullable NSString *)attachmentID
-             completion:(void (^)(float))completionBlock {
-    
-    completionBlock(0.0f);
+    NSString *path = [_diskMediaCachePath stringByAppendingPathComponent:dialogID];
+    if (messageID != nil) {
+        path = [path stringByAppendingPathComponent:messageID];
+    }
+    return [self sizeForPath:path];
 }
 
 
@@ -420,94 +370,7 @@ static NSString* mediaPath(NSString *dialogID, NSString *messsageID, QBChatAttac
     }
 }
 
-- (BOOL)nr_getAllocatedSize:(unsigned long long *)size ofDirectoryAtURL:(NSURL *)directoryURL error:(NSError * __autoreleasing *)error
-{
-    NSParameterAssert(size != NULL);
-    NSParameterAssert(directoryURL != nil);
-    
-    // We'll sum up content size here:
-    unsigned long long accumulatedSize = 0;
-    
-    // prefetching some properties during traversal will speed up things a bit.
-    NSArray *prefetchedProperties = @[
-                                      NSURLIsRegularFileKey,
-                                      NSURLFileAllocatedSizeKey,
-                                      NSURLTotalFileAllocatedSizeKey,
-                                      ];
-    
-    // The error handler simply signals errors to outside code.
-    __block BOOL errorDidOccur = NO;
-    BOOL (^errorHandler)(NSURL *, NSError *) = ^(NSURL *url, NSError *localError) {
-        if (error != NULL)
-            *error = localError;
-        errorDidOccur = YES;
-        return NO;
-    };
-    
-    // We have to enumerate all directory contents, including subdirectories.
-    NSDirectoryEnumerator *enumerator = [[NSFileManager defaultManager] enumeratorAtURL:directoryURL
-                                                             includingPropertiesForKeys:prefetchedProperties
-                                                                                options:(NSDirectoryEnumerationOptions)0
-                                                                           errorHandler:errorHandler];
-    
-    // Start the traversal:
-    for (NSURL *contentItemURL in enumerator) {
-        
-        // Bail out on errors from the errorHandler.
-        if (errorDidOccur)
-            return NO;
-        
-        // Get the type of this item, making sure we only sum up sizes of regular files.
-        NSNumber *isRegularFile;
-        if (! [contentItemURL getResourceValue:&isRegularFile forKey:NSURLIsRegularFileKey error:error])
-            return NO;
-        if (! [isRegularFile boolValue])
-            continue; // Ignore anything except regular files.
-        
-        // To get the file's size we first try the most comprehensive value in terms of what the file may use on disk.
-        // This includes metadata, compression (on file system level) and block size.
-        NSNumber *fileSize;
-        if (! [contentItemURL getResourceValue:&fileSize forKey:NSURLTotalFileAllocatedSizeKey error:error])
-            return NO;
-        
-        // In case the value is unavailable we use the fallback value (excluding meta data and compression)
-        // This value should always be available.
-        if (fileSize == nil) {
-            if (! [contentItemURL getResourceValue:&fileSize forKey:NSURLFileAllocatedSizeKey error:error])
-                return NO;
-            
-            NSAssert(fileSize != nil, @"huh? NSURLFileAllocatedSizeKey should always return a value");
-        }
-        
-        // We're good, add up the value.
-        accumulatedSize += [fileSize unsignedLongLongValue];
-    }
-    
-    // Bail out on errors from the errorHandler.
-    if (errorDidOccur)
-        return NO;
-    
-    // We finally got it.
-    *size = accumulatedSize;
-    return YES;
-}
-
 //MARK: - Helpers
-
-static inline NSData * __nullable imageData(UIImage * __nonnull image) {
-    
-    int alphaInfo = CGImageGetAlphaInfo(image.CGImage);
-    BOOL hasAlpha = !(alphaInfo == kCGImageAlphaNone ||
-                      alphaInfo == kCGImageAlphaNoneSkipFirst ||
-                      alphaInfo == kCGImageAlphaNoneSkipLast);
-    
-    if (hasAlpha) {
-        return UIImagePNGRepresentation(image);
-    }
-    else {
-        return UIImageJPEGRepresentation(image, 1.0f);
-    }
-}
 
 - (NSString *)mimeTypeForData:(NSData *)data {
     
@@ -560,7 +423,7 @@ static inline NSData * __nullable imageData(UIImage * __nonnull image) {
     
 }
 
-- (NSUInteger)getSize {
+- (NSUInteger)sizeForPath:(NSString *)path {
     __block NSUInteger size = 0;
     dispatch_sync(self.storeServiceQueue, ^{
         NSDirectoryEnumerator *fileEnumerator = [_fileManager enumeratorAtPath:self.diskMediaCachePath];
@@ -572,4 +435,59 @@ static inline NSData * __nullable imageData(UIImage * __nonnull image) {
     });
     return size;
 }
+
+//MARK: - Static methods.
+
+static NSString* mediaCacheDir() {
+    
+    static NSString *mediaCacheDirString;
+    
+    if (!mediaCacheDirString) {
+        
+        NSString *cacheDir = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
+        mediaCacheDirString = [cacheDir stringByAppendingPathComponent:@"Attachments"];
+        
+        static dispatch_once_t onceToken;
+        
+        dispatch_once(&onceToken, ^{
+            if (![[NSFileManager defaultManager] fileExistsAtPath:mediaCacheDirString]) {
+                [[NSFileManager defaultManager] createDirectoryAtPath:mediaCacheDirString withIntermediateDirectories:NO attributes:nil error:nil];
+            }
+        });
+    }
+    
+    return mediaCacheDirString;
+}
+
+
+static NSString* mediaPath(NSString *dialogID, NSString *messsageID, QBChatAttachment *attachment)   {
+    
+    NSString *mediaPatch =
+    [[mediaCacheDir() stringByAppendingPathComponent:dialogID]
+     stringByAppendingPathComponent:messsageID];
+    
+    NSString *filePath =
+    [NSString stringWithFormat:@"/attachment-%@.%@",
+     messsageID,
+     [attachment extension]];
+    
+    return [mediaPatch stringByAppendingPathComponent:filePath];
+}
+
+static inline NSData * __nullable imageData(UIImage * __nonnull image) {
+    
+    int alphaInfo = CGImageGetAlphaInfo(image.CGImage);
+    BOOL hasAlpha = !(alphaInfo == kCGImageAlphaNone ||
+                      alphaInfo == kCGImageAlphaNoneSkipFirst ||
+                      alphaInfo == kCGImageAlphaNoneSkipLast);
+    
+    if (hasAlpha) {
+        return UIImagePNGRepresentation(image);
+    }
+    else {
+        return UIImageJPEGRepresentation(image, 1.0f);
+    }
+}
+
+
 @end
