@@ -228,7 +228,7 @@ DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.4.7. Use 'addDelegate:' instead.");
  *  @param completion        Fetched image or error if failed.
  */
 - (void)imageForAttachmentMessage:(QBChatMessage *)attachmentMessage
-                       completion:(nullable void(^)(NSError * _Nullable error, UIImage * _Nullable image))completion DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.4.7. Use 'imageForAttachment:message:completion:' instead.");
+                       completion:(void(^)(NSError * _Nullable error, UIImage * _Nullable image))completion;
 
 /**
  *  Gets image local image by attachment message.
@@ -237,9 +237,7 @@ DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.4.7. Use 'addDelegate:' instead.");
  *  @param completion             Local image or nil if no image.
  */
 - (void)localImageForAttachmentMessage:(QBChatMessage *)attachmentMessage
-                            completion:(nullable void(^)(NSError * _Nullable error, UIImage * _Nullable image))completion DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.4.7. Use 'imageForAttachment:message:completion:' instead.");
-
-//MARK: - Media
+                            completion:(void(^)(UIImage * _Nullable image))completion;
 
 /**
  *  Uploads and sends attachment message to dialog.
@@ -256,10 +254,7 @@ DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.4.7. Use 'addDelegate:' instead.");
                        withChatService:(QMChatService *)chatService
                             attachment:(QBChatAttachment *)attachment
                             completion:(nullable QBChatCompletionBlock)completion;
-
 @end
-
-
 
 @protocol QMChatAttachmentServiceDelegate <NSObject>
 
