@@ -1,17 +1,18 @@
 //
-//  QMMediaInfo.m
+//  QMAssetLoader.m
 //
 //
 //  Created by Vitaliy Gurkovsky on 2/26/17.
 //
 //
 
-#import "QMMediaInfo.h"
+#import "QMAssetLoader.h"
 #import "QMSLog.h"
 #import "QBChatAttachment+QMCustomParameters.h"
 #import "QMTimeOut.h"
+#import "QMSLog.h"
 
-@interface QMMediaInfo ()
+@interface QMAssetLoader ()
 
 @property (strong ,nonatomic) AVAsset *asset;
 @property (strong, nonatomic) NSURL *assetURL;
@@ -19,17 +20,14 @@
 @property (assign, nonatomic) QMAttachmentContentType contentType;
 @property (strong, nonatomic) AVAssetImageGenerator *imageGenerator;
 @property (strong, nonatomic) QMTimeOut *preloadTimeout;
-@property (copy, nonatomic) void(^completion)(NSTimeInterval duration, CGSize size, UIImage *image, NSError *error);
-
-@property (assign, nonatomic, readwrite) QMMediaPrepareStatus prepareStatus;
-
+@property (copy, nonatomic) QMAssetLoaderCompletionBlock completion;
+@property (assign, nonatomic, readwrite) QMAssetLoaderStatus loaderStatus;
 
 @end
 
-@implementation QMMediaInfo
+@implementation QMAssetLoader
 
 //MARK - NSObject
-
 - (void)dealloc {
     
     QMSLog(@"%@ - %@",  NSStringFromSelector(_cmd), self);
@@ -45,12 +43,12 @@
                                          options:options];
     }
     
-    return  _asset;
+    return _asset;
 }
 
-+ (instancetype)infoFromAttachment:(QBChatAttachment *)attachment messageID:(NSString *)messageID {
++ (instancetype)loaderForAttachment:(QBChatAttachment *)attachment messageID:(NSString *)messageID {
     
-    QMMediaInfo *mediaInfo = [[QMMediaInfo alloc] init];
+    QMAssetLoader *assetLoader = [[QMAssetLoader alloc] init];
     NSURL *mediaURL = nil;
     
     if (attachment.localFileURL) {
@@ -60,24 +58,21 @@
         mediaURL = attachment.remoteURL;
     }
     
-    mediaInfo.assetURL = mediaURL;
-    mediaInfo.prepareStatus = QMMediaPrepareStatusNotPrepared;
-    mediaInfo.contentType = attachment.contentType;
-    mediaInfo.messageID = messageID;
+    assetLoader.assetURL = mediaURL;
+    assetLoader.loaderStatus = QMAssetLoaderStatusNotLoaded;
+    assetLoader.contentType = attachment.contentType;
+    assetLoader.messageID = messageID;
     
-    return mediaInfo;
+    return assetLoader;
 }
 
-- (void)prepareWithTimeOut:(NSTimeInterval)timeOutInterval
-                completion:(void(^)(NSTimeInterval duration,
-                                    CGSize size,
-                                    UIImage *image,
-                                    NSError *error))completionBlock {
+- (void)loadWithTimeOut:(NSTimeInterval)timeOutInterval
+        completionBlock:(QMAssetLoaderCompletionBlock)completionBlock {
     
-    if (self.prepareStatus == QMMediaPrepareStatusNotPrepared && self.assetURL) {
-        NSLog(@"1 self.prepareStatus == QMMediaPrepareStatusNotPrepared %@", _messageID);
+    if (self.loaderStatus == QMAssetLoaderStatusNotLoaded && self.assetURL) {
+        QMSLog(@"1 self.prepareStatus == QMMediaPrepareStatusNotPrepared %@", _messageID);
         self.completion = completionBlock;
-        self.prepareStatus = QMMediaPrepareStatusPreparing;
+        self.loaderStatus = QMAssetLoaderStatusLoading;
         
         __weak typeof(self) weakSelf = self;
         
@@ -97,7 +92,7 @@
 - (void)asynchronouslyLoadURLAsset {
     
     NSArray *requestedKeys = @[@"tracks", @"duration", @"playable"];
-    NSLog(@"2 loadValuesAsynchronouslyForKeys %@", _messageID);
+    QMSLog(@"2 loadValuesAsynchronouslyForKeys %@", _messageID);
     
     __weak typeof(self) weakSelf = self;
     
@@ -105,9 +100,9 @@
         
         __strong typeof(weakSelf) strongSelf = weakSelf;
         AVAsset *asset = strongSelf.asset;
-        NSLog(@"3 Completed Load %@", _messageID);
-        if (strongSelf.prepareStatus == QMMediaPrepareStatusPrepareCancelled) {
-            NSLog(@"4 isCancelled %@", _messageID);
+        QMSLog(@"3 Completed Load %@", _messageID);
+        if (strongSelf.loaderStatus == QMAssetLoaderStatusCancelled) {
+            QMSLog(@"4 isCancelled %@", _messageID);
             return;
         }
         
@@ -117,7 +112,7 @@
             if (keyStatus == AVKeyValueStatusFailed) {
                 if (strongSelf.completion) {
                     [strongSelf.preloadTimeout cancelTimeout];
-                    strongSelf.prepareStatus = QMMediaPrepareStatusPrepareFailed;
+                    strongSelf.loaderStatus = QMAssetLoaderStatusFailed;
                     strongSelf.completion(0, CGSizeZero, nil, error);
                 }
                 return;
@@ -150,12 +145,12 @@
      ^(CMTime requestedTime, CGImageRef image, CMTime actualTime, AVAssetImageGeneratorResult result, NSError *error)
      {
          if (result == AVAssetImageGeneratorFailed || result == AVAssetImageGeneratorCancelled) {
-             NSLog(@"7 image gemenaritonWithResult: %@ %@",@"Failed or AVAssetImageGeneratorCancelled", _messageID);
+             QMSLog(@"7 image gemenaritonWithResult: %@ %@",@"Failed or AVAssetImageGeneratorCancelled", _messageID);
              
              handler(nil, error);
          }
          else {
-             NSLog(@"7 image gemenaritonWithResult: %@ %@",@"Sucess", _messageID);
+             QMSLog(@"7 image gemenaritonWithResult: %@ %@",@"Sucess", _messageID);
              UIImage *thumbUIImage = nil;
              if (image) {
                  thumbUIImage = [[UIImage alloc] initWithCGImage:image];
@@ -170,17 +165,17 @@
 
 - (void)prepareAsset:(AVAsset *)asset {
     
-    NSLog(@"4 prepareAsset %@", _messageID);
+    QMSLog(@"4 prepareAsset %@", _messageID);
     
     NSTimeInterval duration = CMTimeGetSeconds(asset.duration);
     CGSize mediaSize = CGSizeZero;
     
     if (self.contentType == QMAttachmentContentTypeVideo) {
         
-        NSLog(@"5 QMAttachmentContentTypeVideo %@", _messageID);
+        QMSLog(@"5 QMAttachmentContentTypeVideo %@", _messageID);
         NSArray *videoTracks = [asset tracksWithMediaType:AVMediaTypeVideo];
         if (videoTracks.count > 0) {
-            NSLog(@"6 tracksWithMediaType %@", _messageID);
+            QMSLog(@"6 tracksWithMediaType %@", _messageID);
             AVAssetTrack *videoTrack = [videoTracks firstObject];
             CGSize videoSize = CGSizeApplyAffineTransform(videoTrack.naturalSize, videoTrack.preferredTransform);
             CGFloat videoWidth = videoSize.width;
@@ -188,25 +183,25 @@
             
             mediaSize = CGSizeMake(videoWidth, videoHeight);
             
-            NSLog(@"7 Begin imnage generation %@", _messageID);
+            QMSLog(@"7 Begin imnage generation %@", _messageID);
             __weak typeof(self) weakSelf = self;
             
             [self generateThumbnailFromAsset:asset withSize:mediaSize completionHandler:^(UIImage *thumbnail, NSError *error) {
-                NSLog(@"8 End image generation %@", _messageID);
+                QMSLog(@"8 End image generation %@", _messageID);
                 __strong typeof(weakSelf) strongSelf = weakSelf;
-                if (strongSelf.prepareStatus == QMMediaPrepareStatusPrepareCancelled) {
+                if (strongSelf.loaderStatus == QMAssetLoaderStatusCancelled) {
                     return;
                 }
                 if (error) {
                     if (strongSelf.completion) {
                         [strongSelf.preloadTimeout cancelTimeout];
-                        strongSelf.prepareStatus = QMMediaPrepareStatusPrepareFailed;
+                        strongSelf.loaderStatus = QMAssetLoaderStatusFinished;
                         strongSelf.completion(duration, mediaSize, thumbnail, error);
                     }
                     return;
                 }
                 
-                strongSelf.prepareStatus = QMMediaPrepareStatusPrepareFinished;
+                strongSelf.loaderStatus = QMAssetLoaderStatusFinished;
                 if (strongSelf.completion) {
                     [strongSelf.preloadTimeout cancelTimeout];
                     strongSelf.completion(duration, mediaSize, thumbnail, nil);
@@ -215,8 +210,8 @@
         }
         else {
             
-            NSLog(@"6 NO tracksWithMediaType %@", _messageID);
-            self.prepareStatus = QMMediaPrepareStatusPrepareFinished;
+            QMSLog(@"6 NO tracksWithMediaType %@", _messageID);
+            self.loaderStatus = QMAssetLoaderStatusFinished;
             if (self.completion) {
                 [self.preloadTimeout cancelTimeout];
                 self.completion(duration, mediaSize, nil , nil);
@@ -225,7 +220,7 @@
     }
     else {
         
-        self.prepareStatus = QMMediaPrepareStatusPrepareFinished;
+        self.loaderStatus = QMAssetLoaderStatusFinished;
         [self.preloadTimeout cancelTimeout];
         self.completion(duration, mediaSize, nil, nil);
     }
@@ -234,12 +229,12 @@
 
 - (void)cancel {
     
-    NSParameterAssert(self.prepareStatus != QMMediaPrepareStatusPrepareCancelled);
+    NSParameterAssert(self.loaderStatus != QMAssetLoaderStatusCancelled);
     
-    [self.preloadTimeout cancelTimeout];
-    self.prepareStatus = QMMediaPrepareStatusPrepareCancelled;
-    [self.asset cancelLoading];
-    [self.imageGenerator cancelAllCGImageGeneration];
+    [_preloadTimeout cancelTimeout];
+    _loaderStatus = QMAssetLoaderStatusCancelled;
+    [_asset cancelLoading];
+    [_imageGenerator cancelAllCGImageGeneration];
 }
 
 @end

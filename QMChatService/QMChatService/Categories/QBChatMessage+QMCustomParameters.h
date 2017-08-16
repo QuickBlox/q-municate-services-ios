@@ -6,7 +6,6 @@
 //  Copyright (c) 2015 Quickblox. All rights reserved.
 //
 
-#import <Quickblox/QBChatMessage.h>
 #import "QMChatTypes.h"
 #import "QBChatAttachment+QMCustomParameters.h"
 
@@ -64,7 +63,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @return A boolean value specifying whether or not this is a notification message.
  *  Return `YES` if this item is a notification message, and `NO` if it is a text message.
  */
-- (BOOL)isNotificatonMessage;
+- (BOOL)isNotificationMessage;
 
 /**
  *  This method is used to determine if the message data item is location.

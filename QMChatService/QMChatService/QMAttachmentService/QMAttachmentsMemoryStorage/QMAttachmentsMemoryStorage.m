@@ -21,7 +21,7 @@
     self = [super init];
     if (self) {
         
-        self.attachmentsStorage = [NSMutableDictionary dictionary];
+        _attachmentsStorage = [NSMutableDictionary dictionary];
     }
     return self;
 }

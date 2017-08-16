@@ -8,22 +8,21 @@
 
 #import <Foundation/Foundation.h>
 
-
 @class QBChatAttachment;
-@class QMMediaStoreService;
+@class QMAttachmentStoreService;
 
 NS_ASSUME_NONNULL_BEGIN
 
-@protocol QMMediaStoreServiceDelegate <NSObject>
+@protocol QMAttachmentStoreServiceDelegate <NSObject>
 
 @required
 
-- (void)storeService:(QMMediaStoreService *)storeService
+- (void)storeService:(QMAttachmentStoreService *)storeService
 didUpdateAttachment:(QBChatAttachment *)attachment
          messageID:(NSString *)messageID
           dialogID:(NSString *)dialogID;
 
-- (void)storeService:(QMMediaStoreService *)storeService
+- (void)storeService:(QMAttachmentStoreService *)storeService
 didRemoveAttachment:(QBChatAttachment *)attachment
          messageID:(NSString *)messageID
           dialogID:(NSString *)dialogID;
