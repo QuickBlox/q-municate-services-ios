@@ -76,7 +76,7 @@
         NSString *path = mediaPath(dialogID, messageID, attachment);
         NSData *data = nil;
         
-        if ([ _fileManager fileExistsAtPath:path]) {
+        if ([_fileManager fileExistsAtPath:path]) {
             
             NSError *error;
             data = [NSData dataWithContentsOfFile:path
@@ -89,7 +89,7 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             if (completion) {
                 NSURL *fileURL = data ? [NSURL fileURLWithPath:path] : nil;
-                completion(data, fileURL);
+                completion(fileURL, data);
             }
         });
     });
@@ -136,7 +136,8 @@
     return imageData(image);
 }
 
-- (void)saveAttachment:(QBChatAttachment *)attachment
+- (void)storeAttachment:(QBChatAttachment *)attachment
+              withData:(nullable NSData *)data
              cacheType:(QMAttachmentCacheType)cacheType
              messageID:(NSString *)messageID
               dialogID:(NSString *)dialogID
@@ -146,15 +147,16 @@
     NSAssert(messageID, @"No ID");
     NSAssert(dialogID, @"No ID");
     
-    NSData *data = nil;
+    if (!data) {
+        if (attachment.image) {
+            self.imagesMemoryStorage[messageID] = attachment.image;
+            data = imageData(attachment.image);
+        }
+        else if (attachment.localFileURL) {
+            data = [NSData dataWithContentsOfURL:attachment.localFileURL];
+        }
+    }
     
-    if (attachment.image) {
-        
-        data = imageData(attachment.image);
-    }
-    else if (attachment.localFileURL) {
-        data = [NSData dataWithContentsOfURL:attachment.localFileURL];
-    }
     if (data) {
         [self saveData:data
          forAttachment:attachment
@@ -207,11 +209,11 @@
             if (![_fileManager fileExistsAtPath:[pathToFile stringByDeletingLastPathComponent]]) {
                 [_fileManager createDirectoryAtPath:[pathToFile stringByDeletingLastPathComponent] withIntermediateDirectories:YES attributes:nil error:NULL];
             }
+            
             QMSLog(@"CREATE FILE AT PATH %@", pathToFile);
+            
             if  (![_fileManager createFileAtPath:pathToFile contents:data attributes:nil]) {
-                
                 QMSLog(@"Error was code: %d - message: %s", errno, strerror(errno));
-                
             }
             
             attachment.localFileURL = [NSURL fileURLWithPath:pathToFile];
@@ -411,6 +413,7 @@
 - (void)didReceiveApplicationMemoryWarningNotification:(NSNotification *)notification {
     
     [self.imagesMemoryStorage removeAllObjects];
+    [self.attachmentsMemoryStorage free];
 }
 
 //MARK: - QMCancellableService
