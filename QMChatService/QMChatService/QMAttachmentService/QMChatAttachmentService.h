@@ -82,7 +82,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param contentService The `QMAttachmentContentService` instance.
  @param assetService The `QMAttachmentAssetService` instance.
  
- @return The newly-initialized QMChatAttachmentService
+ @return The newly-initialized QMChatAttachmentService.
  */
 - (instancetype)initWithStoreService:(QMAttachmentStoreService *)storeService
                       contentService:(QMAttachmentContentService *)contentService
@@ -134,7 +134,7 @@ NS_ASSUME_NONNULL_BEGIN
                         message:(QBChatMessage *)message;
 
 /**
- Cancels  queued or executing operations.
+ Cancels queued or executing operations.
  
  @param messageID The message ID that contains attachment.
  */
@@ -176,7 +176,7 @@ NS_ASSUME_NONNULL_BEGIN
  
  @param attachment 'QBChatAttachment' instance.
  @param messageID  The message ID that contains attachment.
- @param completion The block to be invoked when loading succeeds, fails, or is cancelled.
+ @param completion The block to be invoked when the loading succeeds, fails, or is cancelled.
  */
 - (void)prepareAttachment:(QBChatAttachment *)attachment
                 messageID:(NSString *)messageID
@@ -185,14 +185,14 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Adds delegate (Multicast)
  *
- *  @param delegate Instance confirmed QMChatAttachmentServiceDelegate protocol
+ *  @param delegate An instance that confirmes QMChatAttachmentServiceDelegate protocol
  */
 - (void)addDelegate:(id <QMChatAttachmentServiceDelegate>)delegate;
 
 /**
  *  Removes delegate from observed list
  *
- *  @param delegate Instance confirmed QMChatAttachmentServiceDelegate protocol
+ *  @param delegate An instance that confirmes QMChatAttachmentServiceDelegate protocol
  */
 - (void)removeDelegate:(id <QMChatAttachmentServiceDelegate>)delegate;
 
@@ -211,7 +211,7 @@ DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.4.7. Use 'addDelegate:' instead.");
  *  @param dialog       QBChatDialog instance.
  *  @param chatService  QMChatService instance.
  *  @param image        Attachment image.
- *  @param completion   Send message result.
+ *  @param completion   Upload message result.
  *
  *  @warning *Deprecated in QMServices 0.4.7:* Use 'uploadAndSendAttachmentMessage:toDialog:withChatService:attachment:completion:' instead.
  */
