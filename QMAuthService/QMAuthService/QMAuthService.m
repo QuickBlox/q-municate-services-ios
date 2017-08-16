@@ -175,6 +175,34 @@ static NSString *const kQMTwitterAuthSocialProvider  = @"twitter";
     return request;
 }
 
+- (QBRequest *)logInWithFirebaseProjectID:(NSString *)projectID
+                              accessToken:(NSString *)accessToken
+                                      completion:(void(^)(QBResponse *response,
+                                                          QBUUser *userProfile))completion {
+    
+    return [QBRequest logInWithFirebaseProjectID:projectID
+                              accessToken:accessToken
+                             successBlock:^(QBResponse *response, QBUUser *tUser)
+    {
+        tUser.password = QBSession.currentSession.sessionDetails.token;
+        
+        if ([self.multicastDelegate respondsToSelector:@selector(authService:didLoginWithUser:)]) {
+            [self.multicastDelegate authService:self didLoginWithUser:tUser];
+        }
+        
+        if (completion) {
+            completion(response, tUser);
+        }
+    } errorBlock:^(QBResponse * _Nonnull response) {
+        
+        [self.serviceManager handleErrorResponse:response];
+        
+        if (completion) {
+            completion(response, nil);
+        }
+    }];
+}
+
 //MARK: - Social auth
 
 - (QBRequest *)loginWithTwitterAccessToken:(NSString *)accessToken

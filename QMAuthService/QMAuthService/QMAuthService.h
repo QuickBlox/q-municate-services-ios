@@ -64,7 +64,18 @@ NS_ASSUME_NONNULL_BEGIN
  *  @return Cancelable request
  */
 - (QBRequest *)loginWithTwitterDigitsAuthHeaders:(NSDictionary *)authHeaders
-                                      completion:(nullable void(^)(QBResponse *response, QBUUser * _Nullable userProfile))completion;
+                                      completion:(nullable void(^)(QBResponse *response, QBUUser * _Nullable userProfile))completion DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.5 Use 'logInWithFirebaseProjectID:accessToken:successBlock:errorBlock:'.");
+/**
+ Login with firebase project ID and accessToken
+
+ @param projectID Firebase project ID
+ @param accessToken Firebase access token
+ @param completion ompletion block with response and user profile
+ @return Cancelable request
+ */
+- (QBRequest *)logInWithFirebaseProjectID:(NSString *)projectID
+                              accessToken:(NSString *)accessToken
+                               completion:(void(^)(QBResponse *response, QBUUser *userProfile))completion;
 
 /**
  *  Login with facebook
