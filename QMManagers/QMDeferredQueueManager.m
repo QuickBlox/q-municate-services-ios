@@ -234,11 +234,11 @@
 //MARK: -
 //MARK: QMCancellableService
 
-- (void)cancellOperationWithID:(NSString *)operationID {
+- (void)cancelOperationWithID:(NSString *)operationID {
     [_deferredOperationQueue cancelOperationWithID:operationID];
 }
 
-- (void)cancellAllOperations {
+- (void)cancelAllOperations {
     [_deferredOperationQueue cancelAllOperations];
 }
 

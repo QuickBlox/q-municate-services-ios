@@ -95,37 +95,21 @@ NS_ASSUME_NONNULL_BEGIN
                      completion:(void(^)(NSURL *_Nullable fileURL, NSData *_Nullable data))completion;
 
 /**
- Save and cache data for attachment for provided cache type.
+ Stores attachment for provided cache type.
  
- @param data 'NSData' instance.
  @param attachment 'QBChatAttachment' instance.
+ @param data 'NSData' instance. If this parameter is nil the data will be taken from attachment's image or local file URL.
  @param cacheType Type of the cache.
  @param messageID The message ID that contains attachment.
  @param dialogID The dialog ID.
- @param completion The block to be invoked when finishes the saving.
+ @param completion The block to be invoked when finishes the storing.
  */
-- (void)saveData:(NSData *)data
-   forAttachment:(QBChatAttachment *)attachment
-       cacheType:(QMAttachmentCacheType)cacheType
-       messageID:(NSString *)messageID
-        dialogID:(NSString *)dialogID
-      completion:(nullable dispatch_block_t)completion;
-
-/**
- Save and cache attachment for provided cache type.
- 
- @param attachment 'QBChatAttachment' instance.
- @param cacheType Type of the cache.
- @param messageID The message ID that contains attachment.
- @param dialogID The dialog ID.
- @param completion The block to be invoked when finishes the saving.
- */
-- (void)saveAttachment:(QBChatAttachment *)attachment
+- (void)storeAttachment:(QBChatAttachment *)attachment
+              withData:(nullable NSData *)data
              cacheType:(QMAttachmentCacheType)cacheType
              messageID:(NSString *)messageID
               dialogID:(NSString *)dialogID
             completion:(nullable dispatch_block_t)completion;
-
 
 /**
  Gets file URL for saved attachment.
@@ -152,20 +136,10 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Gets size for provided dialog ID and message ID.
  
- @param dialogID dialogID The dialog ID.
- @param messageID The message ID that contains attachment.
- @param completionBlock The block with size.
- */
-
-
-
-/**
- Gets size for provided dialog ID and message ID.
- 
  @param messageID The message ID that contains attachment.
  @param dialogID  The dialog ID.
  
- @return Size in
+ @return Size
  */
 - (NSUInteger)sizeForMessageWithID:(nullable NSString *)messageID
                           dialogID:(NSString *)dialogID;
