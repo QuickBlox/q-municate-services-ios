@@ -139,7 +139,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)allDialogsWithCompletion:(nullable void(^)(NSArray<QBChatDialog *> * _Nullable dialogs))completion;
 /**
- *   Fetch all cached dialogs
+ *   Asynchronous fetches all cached dialogs
  *
  *  @param sortTerm   Attribute name to sort by.
  *  @param ascending  `YES` if the attribute should be sorted ascending, `NO` for descending.
@@ -211,10 +211,10 @@ NS_ASSUME_NONNULL_BEGIN
            completion:(nullable dispatch_block_t)completion;
 
 /**
- *  Delete messages
- *
- *  @param messages   messages to delete
- *  @param completion Completion block that is called after the delete operation has completed.
+ Asynchronously deletes messages
+ 
+ @param messages   messages to delete
+ @param completion Completion block that is called after the delete operation has completed.
  */
 - (void)deleteMessages:(NSArray<QBChatMessage *> *)messages
             completion:(nullable dispatch_block_t)completion;
@@ -272,6 +272,8 @@ NS_ASSUME_NONNULL_BEGIN
                      sortedBy:(NSString *)sortTerm
                     ascending:(BOOL)ascending
                    completion:(void(^)(NSArray<QBChatMessage *> *messages))completion;
+
+- (void)truncateAll:(nullable dispatch_block_t)completion;
 
 @end
 

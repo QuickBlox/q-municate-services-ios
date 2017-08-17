@@ -295,14 +295,17 @@ static QMChatCache *_chatCacheInstance = nil;
     
     [self save:^(NSManagedObjectContext *ctx) {
         
+        CDDialog *cachedDialog =
+        [CDDialog QM_findFirstByAttribute:@"dialogID" withValue:dialogID inContext:ctx];
+        
         for (QBChatMessage *message in messages) {
             
             CDMessage *procMessage =
             [CDMessage QM_findFirstOrCreateByAttribute:@"messageID"
                                              withValue:message.ID
                                              inContext:ctx];
-            
             [procMessage updateWithQBChatMessage:message];
+            [cachedDialog addMessagesObject:procMessage];
         }
         
         QMSLog(@"[%@] Messages to insert %tu, update %tu",
@@ -317,6 +320,7 @@ static QMChatCache *_chatCacheInstance = nil;
            completion:(dispatch_block_t)completion {
     
     [self save:^(NSManagedObjectContext *ctx) {
+        
         [CDMessage QM_deleteAllMatchingPredicate:IS(@"messageID", message.ID)
                                        inContext:ctx];
     } finish:completion];
@@ -353,6 +357,17 @@ static QMChatCache *_chatCacheInstance = nil;
     
     [self save:^(NSManagedObjectContext *ctx) {
         [CDMessage QM_truncateAllInContext:ctx];
+    } finish:completion];
+}
+
+- (void)truncateAll:(nullable dispatch_block_t)completion {
+    
+    [self save:^(NSManagedObjectContext *ctx) {
+        
+        [CDDialog QM_truncateAllInContext:ctx];
+        [CDMessage QM_truncateAllInContext:ctx];
+        [CDAttachment QM_truncateAllInContext:ctx];
+        
     } finish:completion];
 }
 
