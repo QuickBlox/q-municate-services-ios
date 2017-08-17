@@ -91,17 +91,12 @@
                 [weakSelf.chatService.chatAttachmentService removeAllMediaFiles];
                 dispatch_group_leave(logoutGroup);
             }];
-            
+        
             dispatch_group_enter(logoutGroup);
-            [QMChatCache.instance deleteAllDialogsWithCompletion:^{
+            [QMChatCache.instance truncateAll:^{
                 dispatch_group_leave(logoutGroup);
             }];
-            
-            dispatch_group_enter(logoutGroup);
-            [QMChatCache.instance deleteAllMessagesWithCompletion:^{
-                dispatch_group_leave(logoutGroup);
-            }];
-            
+        
             dispatch_group_enter(logoutGroup);
             [QMOpenGraphCache.instance deleteAllOpenGraphItemsWithCompletion:^{
                 
