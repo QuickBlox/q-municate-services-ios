@@ -59,7 +59,7 @@
         }
         
         [strongOperation.objectToCancel cancel];
-        
+        strongOperation.objectToCancel = nil;
     };
     
     [assetLoaderOperation setAsyncOperationBlock:^(dispatch_block_t  _Nonnull finish) {
@@ -69,7 +69,11 @@
         
         weakOperation.objectToCancel = (id <QMCancellableObject>)assetLoader;
         
-        [assetLoader loadWithTimeOut:60.0 completionBlock:^(NSTimeInterval duration, CGSize size, UIImage * _Nullable image, NSError * _Nullable error) {
+        [assetLoader loadWithTimeOut:60.0
+                     completionBlock:^(NSTimeInterval duration,
+                                       CGSize size,
+                                       UIImage * _Nullable image,
+                                       NSError * _Nullable error) {
             completion(image, duration, size, error, weakOperation.isCancelled);
             finish();
         }];
@@ -77,9 +81,9 @@
     
     [self.assetServiceOperationQueue addOperation:assetLoaderOperation];
     
-    //LIFO order
-    [self.lastAddedOperation addDependency:assetLoaderOperation];
-    self.lastAddedOperation = assetLoaderOperation;
+//    //LIFO order
+//    [self.lastAddedOperation addDependency:assetLoaderOperation];
+//    self.lastAddedOperation = assetLoaderOperation;
 }
 
 //MARK: QMCancellableService
@@ -94,11 +98,11 @@
     for (QMAsynchronousOperation *op in self.assetServiceOperationQueue.operations) {
         if ([op.operationID isEqualToString:operationID]) {
             [op cancel];
+            QMSLog(@"_Cancell operation with ID (info service):%@",operationID);
             break;
         }
     }
     
-    QMSLog(@"_Cancell operation with ID (info service):%@",operationID);
     //    [self.imagesOperationQueue cancelOperationWithID:operationID];
     QMSLog(@"Operations = %@", [self.assetServiceOperationQueue operations]);
 }
