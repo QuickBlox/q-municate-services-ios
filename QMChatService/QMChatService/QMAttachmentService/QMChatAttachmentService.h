@@ -13,24 +13,7 @@
 #import "QMAttachmentAssetService.h"
 #import "QMAttachmentContentService.h"
 #import "QMCancellableService.h"
-
-/**
- The current state of the attachment.
- */
-typedef NS_ENUM(NSUInteger, QMChatAttachmentState) {
-    /** Default attachment state. Attachment has no active processes */
-    QMChatAttachmentStateNotLoaded = 0,
-    /** The attachment has started the download process. */
-    QMChatAttachmentStateDownloading,
-    /** The attachment has started the upload process. */
-    QMChatAttachmentStateUploading,
-    /** The attachment has started the asset-loading process. */
-    QMChatAttachmentStatePreparing,
-    /** The attachment process has been completed successfully. */
-    QMChatAttachmentStateLoaded,
-    /** The attachment process failed because of an error. */
-    QMChatAttachmentStateError
-};
+#import "QMChatTypes.h"
 
 @class QMChatService;
 @protocol QMChatAttachmentServiceDelegate;
@@ -89,12 +72,12 @@ NS_ASSUME_NONNULL_BEGIN
                         assetService:(QMAttachmentAssetService *)assetService NS_DESIGNATED_INITIALIZER;
 
 /**
- Returns the current state of the attachment.
+ Returns the current status of the attachment message.
  
  @param message QBChatMessage instance, that contains attachment.
- @return The current state of the attachment.
+ @return The current status of the attachment message.
  */
-- (QMChatAttachmentState)attachmentStateForMessage:(QBChatMessage *)message;
+- (QMMessageAttachmentStatus)attachmentStatusForMessage:(QBChatMessage *)message;
 
 /**
  Gets the attachment from the attachment message.
@@ -106,8 +89,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)attachmentWithID:(NSString *)attachmentID
                  message:(QBChatMessage *)message
-           progressBlock:(QMAttachmentProgressBlock)progressBlock
-              completion:(void(^)(QMAttachmentOperation *op))completionBlock;
+           progressBlock:(nullable QMAttachmentProgressBlock)progressBlock
+              completion:(nullable void(^)(QMAttachmentOperation *op))completionBlock;
 
 /**
  Gets the image from the attachment message.
@@ -175,12 +158,12 @@ NS_ASSUME_NONNULL_BEGIN
  Directs service to load the values for asset from attachment.
  
  @param attachment 'QBChatAttachment' instance.
- @param messageID  The message ID that contains attachment.
+ @param message  QBChatMessage instance, that contains attachment.
  @param completion The block to be invoked when the loading succeeds, fails, or is cancelled.
  */
 - (void)prepareAttachment:(QBChatAttachment *)attachment
-                messageID:(NSString *)messageID
-               completion:(QMMediaInfoServiceCompletionBlock)completion;
+                  message:(QBChatMessage *)message
+               completion:(QMAttachmentAssetLoaderCompletionBlock)completion;
 
 /**
  *  Adds delegate (Multicast)
@@ -258,19 +241,18 @@ DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.4.7. Use 'addDelegate:' instead.");
 
 @protocol QMChatAttachmentServiceDelegate <NSObject>
 
+
 /**
  *  Is called when attachment service did change current state of the attachment.
  *  Please see QMMessageAttachmentState for additional info.
  *
  *  @param chatAttachmentService The 'QMChatAttachmentService' instance.
- *  @param attachmentState The current state of the attachment.
- *  @param attachment The 'QBChatAttachment' instance.
- *  @param messageID The message ID that contains attachment.
+ *  @param status The current status of the attachment messsage.
+ *  @param message QBChatMessage instance, that contains attachment.
  */
 - (void)chatAttachmentService:(QMChatAttachmentService *)chatAttachmentService
-     didChangeAttachmentState:(QMChatAttachmentState)attachmentState
-                forAttachment:(QBChatAttachment *)attachment
-                withMessageID:(NSString *)messageID;
+    didChangeAttachmentStatus:(QMMessageAttachmentStatus)status
+                   forMessage:(QBChatMessage *)message;
 
 /**
  *  Is called when chat attachment service did change loading progress for some attachment.
@@ -280,14 +262,14 @@ DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.4.7. Use 'addDelegate:' instead.");
  *  @param progress changed value of progress min 0.0, max 1.0
  *  @param attachment loaded QBChatAttachment
  *
- *  @warning *Deprecated in QMServices 0.4.7:* Use 'uploadAndSendAttachmentMessage:toDialog:withChatService:attachment:completion:' instead.
+ *  @warning *Deprecated in QMServices 0.4.7:* Use 'chatAttachmentService:didChangeLoadingProgress:forMessage:attachment:' instead.
  */
 
 - (void)chatAttachmentService:(QMChatAttachmentService *)chatAttachmentService
      didChangeLoadingProgress:(CGFloat)progress
             forChatAttachment:(QBChatAttachment *)attachment
 
-DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.4.7. Use 'chatAttachmentService:didChangeUploadingProgress:forMessage:attachment:' instead.");
+DEPRECATED_MSG_ATTRIBUTE("Deprecated in 0.4.7. Use 'chatAttachmentService:didChangeLoadingProgress:forMessage:attachment:' instead.");
 
 /**
  *  Is called when chat attachment service did change Uploading progress for attachment in message.
