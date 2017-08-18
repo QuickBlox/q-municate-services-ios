@@ -7,56 +7,73 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "QMCDRecord.h"
 
-#define CONTAINS(attrName, attrVal) [NSPredicate predicateWithFormat:@"self.%K CONTAINS %@", attrName, attrVal]
-#define LIKE(attrName, attrVal) [NSPredicate predicateWithFormat:@"%K like %@", attrName, attrVal]
-#define LIKE_C(attrName, attrVal) [NSPredicate predicateWithFormat:@"%K like[c] %@", attrName, attrVal]
 #define IS(attrName, attrVal) [NSPredicate predicateWithFormat:@"%K == %@", attrName, attrVal]
 
-#define START_LOG_TIME double startTime = CFAbsoluteTimeGetCurrent();
-#define END_LOG_TIME NSLog(@"%s %f", __PRETTY_FUNCTION__, CFAbsoluteTimeGetCurrent()-startTime);
-
-#define DO_AT_MAIN(x) dispatch_async(dispatch_get_main_queue(), ^{ x; });
-
-#import "QMCDRecord.h"
+NS_ASSUME_NONNULL_BEGIN
 
 @interface QMDBStorage : NSObject
 
-@property (strong, nonatomic, readonly) dispatch_queue_t queue;
-@property (strong, nonatomic, readonly) QMCDRecordStack *stack;
+@property (strong, nonatomic) QMCDRecordStack *stack;
 
-- (instancetype)initWithStoreNamed:(NSString *)storeName
-                             model:(NSManagedObjectModel *)model
-                        queueLabel:(const char *)queueLabel
-        applicationGroupIdentifier:(NSString *)appGroupIdentifier;
+- (instancetype)init NS_UNAVAILABLE;
++ (instancetype)new NS_UNAVAILABLE;
 
-- (instancetype)initWithStoreNamed:(NSString *)storeName
-                             model:(NSManagedObjectModel *)model
-                        queueLabel:(const char *)queueLabel;
 /**
- * @brief Load CoreData(Sqlite) file
- * @param name - filename
- */
+ Init with store name, model and app group identifier
 
+ @param storeName Store name
+ @param model model name
+ @param appGroupIdentifier App group identifier
+ @return instance
+ */
+- (instancetype)initWithStoreNamed:(NSString *)storeName
+                             model:(NSManagedObjectModel *)model
+        applicationGroupIdentifier:(nullable NSString *)appGroupIdentifier NS_DESIGNATED_INITIALIZER;
+
+/**
+ Setup database
+ 
+ @brief Load CoreData(Sqlite) file
+ @param storeName - filename
+ */
 + (void)setupDBWithStoreNamed:(NSString *)storeName;
 
 /**
- * @brief Clean data base with store name
- */
+ Setup stack with store name and group identifier
 
+ @param storeName Store name
+ @param appGroupIdentifier App group identifier
+ */
++ (void)setupDBWithStoreNamed:(NSString *)storeName
+   applicationGroupIdentifier:(nullable NSString *)appGroupIdentifier;
+
+/**
+ Clean data base with store name
+ */
 + (void)cleanDBWithStoreName:(NSString *)name;
 
 /**
- * @brief Perform operation in CoreData thread
+ Asynchronously performs a given block on the NSPrivateQueueConcurrencyType queue.
+ @param block Background queue context (NSPrivateQueueConcurrencyType)
  */
-
-- (void)async:(void(^)(NSManagedObjectContext *context))block;
-- (void)sync:(void(^)(NSManagedObjectContext *context))block;
+- (void)performBackgroundQueue:(void (^)(NSManagedObjectContext *ctx))block;
 
 /**
- * @brief Save to persistent store (async)
+ Synchronously performs a given block on the NSPrivateQueueConcurrencyType queue.
  */
+- (void)performMainQueue:(void (^)(NSManagedObjectContext *ctx))block;
 
-- (void)save:(dispatch_block_t)completion;
+/**
+ Saves to Persistent Store.
+ 
+ @param block Asynchronously performs a given block on the NSPrivateQueueConcurrencyType queue
+ @param finish Asyncronously performs a given block after saveToPersistentStoreAndWait on the main queue
+ */
+- (void)save:(void (^)(NSManagedObjectContext *ctx))block
+      finish:(dispatch_block_t)finish;
 
 @end
+
+NS_ASSUME_NONNULL_END

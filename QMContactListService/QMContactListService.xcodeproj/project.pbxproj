@@ -14,11 +14,11 @@
 /* Begin PBXFileReference section */
 		5547E6211A24CB490051F7DF /* QMContactListMemoryStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = QMContactListMemoryStorage.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		5547E6221A24CB490051F7DF /* QMContactListMemoryStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = QMContactListMemoryStorage.m; sourceTree = "<group>"; };
-		55A621221A0BE307001BA470 /* QMContactListService-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = "QMContactListService-Prefix.pch"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		55B220201A2C0C9E00668086 /* libQMContactListService.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libQMContactListService.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		55B2F0B31A091C38008C2272 /* QMContactListService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QMContactListService.h; sourceTree = "<group>"; };
 		55B2F0B51A091C38008C2272 /* QMContactListService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QMContactListService.m; sourceTree = "<group>"; };
-		8620BC5C1B0F7F0D005ED359 /* Quickblox.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; lineEnding = 0; name = Quickblox.xcconfig; path = ../Quickblox.xcconfig; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.xcconfig; };
+		8620BC5C1B0F7F0D005ED359 /* Quickblox.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; lineEnding = 0; name = Quickblox.xcconfig; path = ../Quickblox.xcconfig; sourceTree = "<group>"; };
+		FB805A4E1F052E26000B3E9F /* QMContactListService-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QMContactListService-Prefix.pch"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,14 +41,6 @@
 			path = QMContactListMemoryStorage;
 			sourceTree = "<group>";
 		};
-		55A621211A0BE307001BA470 /* Support */ = {
-			isa = PBXGroup;
-			children = (
-				55A621221A0BE307001BA470 /* QMContactListService-Prefix.pch */,
-			);
-			path = Support;
-			sourceTree = "<group>";
-		};
 		55B2F0B21A091C38008C2272 /* QMContactListService */ = {
 			isa = PBXGroup;
 			children = (
@@ -62,9 +54,9 @@
 		55C276D41A091739005A0C38 = {
 			isa = PBXGroup;
 			children = (
+				FB805A4E1F052E26000B3E9F /* QMContactListService-Prefix.pch */,
 				8620BC5C1B0F7F0D005ED359 /* Quickblox.xcconfig */,
 				55B2F0B21A091C38008C2272 /* QMContactListService */,
-				55A621211A0BE307001BA470 /* Support */,
 				55B220201A2C0C9E00668086 /* libQMContactListService.a */,
 			);
 			sourceTree = "<group>";
@@ -94,7 +86,7 @@
 		55C276D51A091739005A0C38 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0610;
+				LastUpgradeCheck = 0820;
 				TargetAttributes = {
 					55B2F0AF1A091C38008C2272 = {
 						CreatedOnToolsVersion = 6.1;
@@ -156,7 +148,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Support/QMContactListService-Prefix.pch";
+				GCC_PREFIX_HEADER = "QMContactListService-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -208,7 +200,7 @@
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Support/QMContactListService-Prefix.pch";
+				GCC_PREFIX_HEADER = "QMContactListService-Prefix.pch";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -235,6 +227,24 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8620BC5C1B0F7F0D005ED359 /* Quickblox.xcconfig */;
 			buildSettings = {
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
 				ONLY_ACTIVE_ARCH = YES;
 			};
 			name = Debug;
@@ -243,6 +253,23 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8620BC5C1B0F7F0D005ED359 /* Quickblox.xcconfig */;
 			buildSettings = {
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
 			};
 			name = Release;
 		};

@@ -12,9 +12,13 @@
 
 #import "QMMemoryStorageProtocol.h"
 #import "QMServiceManagerProtocol.h"
-#import "QMDeferredQueueManager.h"
+#import "QMCancellableService.h"
 
 NS_ASSUME_NONNULL_BEGIN
+
+typedef void(^QMTaskSourceBlock)(BFTaskCompletionSource * source);
+
+BFTask *make_task(QMTaskSourceBlock b);
 
 @interface QMBaseService : NSObject <QMMemoryStorageProtocol>
 
@@ -22,7 +26,6 @@ NS_ASSUME_NONNULL_BEGIN
  *  Service manager reference.
  */
 @property (weak, nonatomic, readonly, nullable) id <QMServiceManagerProtocol> serviceManager;
-@property (strong, nonatomic, readonly) QMDeferredQueueManager *deferredQueueManager;
 
 - (id)init NS_UNAVAILABLE;
 

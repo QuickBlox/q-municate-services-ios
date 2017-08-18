@@ -6,8 +6,8 @@
 //  Copyright (c) 2015 Quickblox. All rights reserved.
 //
 
-#import <Quickblox/QBChatMessage.h>
 #import "QMChatTypes.h"
+#import "QBChatAttachment+QMCustomParameters.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -23,14 +23,15 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic) QMMessageAttachmentStatus attachmentStatus;
 @property (assign, nonatomic) CLLocationCoordinate2D locationCoordinate;
 
+
 /**
  *  Dialog
  */
 @property (strong, nonatomic, readonly, nullable) QBChatDialog *dialog;
 @property (assign, nonatomic) QMDialogUpdateType dialogUpdateType;
-@property (strong, nonatomic, nullable) NSArray QB_GENERIC(NSNumber *) *currentOccupantsIDs;
-@property (strong, nonatomic, nullable) NSArray QB_GENERIC(NSNumber *) *addedOccupantsIDs;
-@property (strong, nonatomic, nullable) NSArray QB_GENERIC(NSNumber *) *deletedOccupantsIDs;
+@property (strong, nonatomic, nullable) NSArray<NSNumber *> *currentOccupantsIDs;
+@property (strong, nonatomic, nullable) NSArray<NSNumber *> *addedOccupantsIDs;
+@property (strong, nonatomic, nullable) NSArray<NSNumber *> *deletedOccupantsIDs;
 @property (strong, nonatomic, nullable) NSString *dialogName;
 @property (strong, nonatomic, nullable) NSString *dialogPhoto;
 @property (strong, nonatomic, nullable) NSDate *dialogUpdatedAt;
@@ -62,7 +63,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @return A boolean value specifying whether or not this is a notification message.
  *  Return `YES` if this item is a notification message, and `NO` if it is a text message.
  */
-- (BOOL)isNotificatonMessage;
+- (BOOL)isNotificationMessage;
 
 /**
  *  This method is used to determine if the message data item is location.
@@ -71,6 +72,31 @@ NS_ASSUME_NONNULL_BEGIN
  *  Return `YES` if this item is a location message, and `NO` if it is a text message.
  */
 - (BOOL)isLocationMessage;
+
+/**
+ *  This method is used to determine if the message data item is audio attachment.
+ *
+ *  @return A boolean value specifying whether or not this is a message with audio attachment.
+ *  Return `YES` if this item is a audio attachment, and `NO` if it is a text message.
+ */
+- (BOOL)isAudioAttachment;
+
+/**
+ *  This method is used to determine if the message data item is video attachment.
+ *
+ *  @return A boolean value specifying whether or not this is a message with video attachment.
+ *  Return `YES` if this item is a video attachment, and `NO` if it is a text message.
+ */
+- (BOOL)isVideoAttachment;
+
+/**
+ *  This method is used to determine if the message data item is image attachment.
+ *
+ *  @return A boolean value specifying whether or not this is a message with image attachment.
+ *  Return `YES` if this item is a image attachment, and `NO` if it is a text message.
+ */
+- (BOOL)isImageAttachment;
+
 
 @end
 

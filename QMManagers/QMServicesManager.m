@@ -17,25 +17,20 @@
 @property (nonatomic, strong) QMAuthService *authService;
 @property (nonatomic, strong) QMChatService *chatService;
 
-/**
- *  Logout group for synchronous completion.
- */
-@property (nonatomic, strong) dispatch_group_t logoutGroup;
-
 @property (nonatomic, strong) dispatch_group_t joinGroup;
 
 @end
 
 @implementation QMServicesManager
 
-#pragma mark - Logging management
+//MARK: - Logging management
 
 + (void)enableLogging:(BOOL)flag {
     
     QMSLogSetEnabled(flag);
 }
 
-#pragma mark - Construction
+//MARK: - Construction
 
 - (instancetype)init {
     
@@ -43,7 +38,7 @@
     if (self) {
         
         [QMChatCache setupDBWithStoreNamed:@"sample-cache" applicationGroupIdentifier:[self appGroupIdentifier]];
-        [QMChatCache instance].messagesLimitPerDialog = kQMMessagesLimitPerDialog;
+        QMChatCache.instance.messagesLimitPerDialog = kQMMessagesLimitPerDialog;
         
         _authService = [[QMAuthService alloc] initWithServiceManager:self];
         _chatService = [[QMChatService alloc] initWithServiceManager:self cacheDataSource:self];
@@ -59,7 +54,6 @@
         _usersService = [[QMUsersService alloc] initWithServiceManager:self cacheDataSource:self];
         [_usersService addDelegate:self];
         
-        _logoutGroup = dispatch_group_create();
         _joinGroup = dispatch_group_create();
     }
     
@@ -79,43 +73,43 @@
     return manager;
 }
 
-#pragma mark - Methods
+//MARK: - Methods
 
 - (void)logoutWithCompletion:(dispatch_block_t)completion {
     
     if ([QBSession currentSession].currentUser != nil) {
         
         __weak typeof(self)weakSelf = self;
-        dispatch_group_enter(self.logoutGroup);
         [self.authService logOut:^(QBResponse *response) {
             
-            __typeof(self) strongSelf = weakSelf;
-            [strongSelf.chatService disconnectWithCompletionBlock:nil];
-            [strongSelf.chatService free];
-            dispatch_group_leave(strongSelf.logoutGroup);
-        }];
-        
-        dispatch_group_enter(self.logoutGroup);
-        [[QMChatCache instance] deleteAllDialogsWithCompletion:^{
+            dispatch_group_t logoutGroup = dispatch_group_create();
             
-            __typeof(self) strongSelf = weakSelf;
-            dispatch_group_leave(strongSelf.logoutGroup);
-        }];
-        
-        dispatch_group_enter(self.logoutGroup);
-        [[QMChatCache instance] deleteAllMessagesWithCompletion:^{
+            dispatch_group_enter(logoutGroup);
             
-            __typeof(self) strongSelf = weakSelf;
-            dispatch_group_leave(strongSelf.logoutGroup);
-        }];
+            [weakSelf.chatService disconnectWithCompletionBlock:^(NSError *error) {
+                [weakSelf.chatService free];
+                [weakSelf.chatService.chatAttachmentService removeAllMediaFiles];
+                dispatch_group_leave(logoutGroup);
+            }];
         
-        dispatch_group_notify(self.logoutGroup, dispatch_get_main_queue(), ^{
-            
-            if (completion) {
+            dispatch_group_enter(logoutGroup);
+            [QMChatCache.instance truncateAll:^{
+                dispatch_group_leave(logoutGroup);
+            }];
+        
+            dispatch_group_enter(logoutGroup);
+            [QMOpenGraphCache.instance deleteAllOpenGraphItemsWithCompletion:^{
                 
-                completion();
-            }
-        });
+                dispatch_group_leave(logoutGroup);
+            }];
+            
+            dispatch_group_notify(logoutGroup, dispatch_get_main_queue(), ^{
+                
+                if (completion) {
+                    completion();
+                }
+            });
+        }];
     }
     else {
         
@@ -168,7 +162,7 @@
 
 - (QBUUser *)currentUser {
     
-    return [QBSession currentSession].currentUser;
+    return QBSession.currentSession.currentUser;
 }
 
 - (void)joinAllGroupDialogsIfNeeded {
@@ -207,6 +201,7 @@
             }];
         }
         else {
+            
             [self.chatService.deferredQueueManager performDeferredActionsForDialogWithID:dialog.ID];
         }
     }
@@ -218,7 +213,7 @@
     });
 }
 
-#pragma mark - QMChatServiceDelegate
+//MARK: - QMChatServiceDelegate
 
 - (void)chatServiceChatDidConnect:(QMChatService *)chatService {
     
@@ -227,10 +222,10 @@
 
 - (void)chatServiceChatDidReconnect:(QMChatService *)chatService {
     
-   [self joinAllGroupDialogsIfNeededWithCompletion:NULL];
+    [self joinAllGroupDialogsIfNeededWithCompletion:NULL];
 }
 
-#pragma mark QMChatServiceCache delegate
+//MARK: QMChatServiceCache delegate
 
 - (void)chatService:(QMChatService *)chatService didAddChatDialogToMemoryStorage:(QBChatDialog *)chatDialog {
     
@@ -283,59 +278,62 @@
 - (void)chatService:(QMChatService *)chatService didDeleteMessageFromMemoryStorage:(QBChatMessage *)message forDialogID:(NSString *)dialogID {
     
     [QMChatCache.instance deleteMessage:message completion:nil];
+    [self.chatService.chatAttachmentService  removeMediaFilesForMessageWithID:message.ID
+                                                                     dialogID:dialogID];
 }
 
 - (void)chatService:(QMChatService *)chatService didDeleteMessagesFromMemoryStorage:(NSArray *)messages forDialogID:(NSString *)dialogID {
     
     [QMChatCache.instance deleteMessages:messages completion:nil];
+    
+    NSArray *messagesIDs = [messages valueForKeyPath:NSStringFromSelector(@selector(ID))];
+    [self.chatService.chatAttachmentService  removeMediaFilesForMessagesWithID:messagesIDs
+                                                                      dialogID:dialogID];
 }
 
-- (void)chatService:(QMChatService *)chatService  didReceiveNotificationMessage:(QBChatMessage *)message createDialog:(QBChatDialog *)dialog {
+- (void)chatService:(QMChatService *)chatService
+didReceiveNotificationMessage:(QBChatMessage *)message
+       createDialog:(QBChatDialog *)dialog {
+    
     NSAssert([message.dialogID isEqualToString:dialog.ID], @"must be equal");
     
     [QMChatCache.instance insertOrUpdateMessage:message withDialogId:dialog.ID completion:nil];
     [QMChatCache.instance insertOrUpdateDialog:dialog completion:nil];
 }
 
-#pragma mark QMChatServiceCacheDataSource
+//MARK: QMChatServiceCacheDataSource
 
 - (void)cachedDialogs:(QMCacheCollection)block {
     
-    [QMChatCache.instance dialogsSortedBy:CDDialogAttributes.lastMessageDate ascending:YES completion:^(NSArray *dialogs) {
-        
-        block(dialogs);
-    }];
+    NSArray<QBChatDialog *> *dialogs =
+    [QMChatCache.instance dialogsSortedBy:CDDialogAttributes.lastMessageDate
+                                ascending:YES
+                            withPredicate:nil];
+    block(dialogs);
 }
 
 - (void)cachedDialogWithID:(NSString *)dialogID completion:(void (^)(QBChatDialog *dialog))completion {
     
-    [QMChatCache.instance dialogByID:dialogID completion:^(QBChatDialog *cachedDialog) {
-        
-        completion(cachedDialog);
-    }];
+    completion([QMChatCache.instance dialogByID:dialogID]);
 }
 
 - (void)cachedMessagesWithDialogID:(NSString *)dialogID block:(QMCacheCollection)block {
     
-    [QMChatCache.instance messagesWithDialogId:dialogID sortedBy:CDMessageAttributes.messageID ascending:YES completion:^(NSArray *array) {
-        
-        block(array);
-    }];
+    NSArray<QBChatMessage *> *result =
+    [QMChatCache.instance messagesWithDialogId:dialogID
+                                      sortedBy:CDMessageAttributes.messageID
+                                     ascending:NO];
+    block(result);
 }
 
-#pragma mark - QMUsersServiceCacheDataSource
+//MARK: - QMUsersServiceCacheDataSource
 
 - (void)cachedUsersWithCompletion:(QMCacheCollection)block {
     
-    [[QMUsersCache.instance usersSortedBy:@"id" ascending:YES] continueWithExecutor:[BFExecutor mainThreadExecutor]
-                                                                          withBlock:^id(BFTask *task) {
-                                                                              
-                                                                              if (block) block(task.result);
-                                                                              return nil;
-                                                                          }];
+    block([QMUsersCache.instance allUsers]);
 }
 
-#pragma mark - QMUsersServiceDelegate
+//MARK: - QMUsersServiceDelegate
 
 - (void)usersService:(QMUsersService *)usersService didAddUsers:(NSArray *)users {
     

@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		862360C91BDD5C6A0076D7A2 /* QBUUser+CustomData.m in Sources */ = {isa = PBXBuildFile; fileRef = 862360C51BDD5C6A0076D7A2 /* QBUUser+CustomData.m */; };
 		862360CA1BDD5C6A0076D7A2 /* QMUsersMemoryStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 862360C81BDD5C6A0076D7A2 /* QMUsersMemoryStorage.m */; };
-		86F9CD461BDA27ED0021B6F0 /* QMUsersService.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 86F9CD451BDA27ED0021B6F0 /* QMUsersService.h */; };
 		86F9CD481BDA27ED0021B6F0 /* QMUsersService.m in Sources */ = {isa = PBXBuildFile; fileRef = 86F9CD471BDA27ED0021B6F0 /* QMUsersService.m */; };
 /* End PBXBuildFile section */
 
@@ -20,7 +19,6 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
-				86F9CD461BDA27ED0021B6F0 /* QMUsersService.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -28,15 +26,15 @@
 
 /* Begin PBXFileReference section */
 		1F3F4859E581B61768FFDA92 /* libPods-QMUsersService.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-QMUsersService.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		52F09DA01C5268670039258C /* Quickblox.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Quickblox.xcconfig; path = ../Quickblox.xcconfig; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.xcconfig; };
+		52F09DA01C5268670039258C /* Quickblox.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Quickblox.xcconfig; path = ../Quickblox.xcconfig; sourceTree = "<group>"; };
 		862360C41BDD5C6A0076D7A2 /* QBUUser+CustomData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QBUUser+CustomData.h"; sourceTree = "<group>"; };
 		862360C51BDD5C6A0076D7A2 /* QBUUser+CustomData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "QBUUser+CustomData.m"; sourceTree = "<group>"; };
 		862360C71BDD5C6A0076D7A2 /* QMUsersMemoryStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMUsersMemoryStorage.h; sourceTree = "<group>"; };
 		862360C81BDD5C6A0076D7A2 /* QMUsersMemoryStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMUsersMemoryStorage.m; sourceTree = "<group>"; };
-		862360CB1BDD5DD20076D7A2 /* QMUsersService-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "QMUsersService-Prefix.pch"; sourceTree = "<group>"; };
 		86F9CD421BDA27ED0021B6F0 /* libQMUsersService.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libQMUsersService.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		86F9CD451BDA27ED0021B6F0 /* QMUsersService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QMUsersService.h; sourceTree = "<group>"; };
 		86F9CD471BDA27ED0021B6F0 /* QMUsersService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QMUsersService.m; sourceTree = "<group>"; };
+		FB5D70971EF189B000E50084 /* QMUsersService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMUsersService.h; sourceTree = "<group>"; };
+		FB805A4A1F051253000B3E9F /* QMUsersService-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QMUsersService-Prefix.pch"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +77,7 @@
 		86F9CD391BDA27ED0021B6F0 = {
 			isa = PBXGroup;
 			children = (
+				FB805A4A1F051253000B3E9F /* QMUsersService-Prefix.pch */,
 				52F09DA01C5268670039258C /* Quickblox.xcconfig */,
 				86F9CD441BDA27ED0021B6F0 /* QMUsersService */,
 				86F9CD431BDA27ED0021B6F0 /* Products */,
@@ -97,11 +96,10 @@
 		86F9CD441BDA27ED0021B6F0 /* QMUsersService */ = {
 			isa = PBXGroup;
 			children = (
-				86F9CD451BDA27ED0021B6F0 /* QMUsersService.h */,
+				FB5D70971EF189B000E50084 /* QMUsersService.h */,
 				86F9CD471BDA27ED0021B6F0 /* QMUsersService.m */,
 				862360C31BDD5C6A0076D7A2 /* Categories */,
 				862360C61BDD5C6A0076D7A2 /* QMUsersMemoryStorage */,
-				862360CB1BDD5DD20076D7A2 /* QMUsersService-Prefix.pch */,
 			);
 			path = QMUsersService;
 			sourceTree = "<group>";
@@ -132,7 +130,7 @@
 		86F9CD3A1BDA27ED0021B6F0 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0700;
+				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = Quickblox;
 				TargetAttributes = {
 					86F9CD411BDA27ED0021B6F0 = {
@@ -185,8 +183,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
@@ -228,8 +228,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
@@ -257,7 +259,7 @@
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "QMUsersService/QMUsersService-Prefix.pch";
+				GCC_PREFIX_HEADER = "QMUsersService-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../**",
@@ -274,7 +276,7 @@
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "QMUsersService/QMUsersService-Prefix.pch";
+				GCC_PREFIX_HEADER = "QMUsersService-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../**",
