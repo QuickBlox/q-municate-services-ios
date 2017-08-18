@@ -25,10 +25,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (copy, nonatomic) NSString *identifier;
 @property QBChatAttachment *attachment;
 @property NSError *error;
-@property NSOperation *storeOperation;
-@property NSOperation *mediaInfoOperation;
-@property NSOperation *sendOperation;
-@property NSOperation *uploadOperation;
 
 @property (copy, nonatomic) dispatch_block_t cancelBlock;
 
@@ -91,19 +87,6 @@ NS_ASSUME_NONNULL_BEGIN
                  message:(QBChatMessage *)message
            progressBlock:(nullable QMAttachmentProgressBlock)progressBlock
               completion:(nullable void(^)(QMAttachmentOperation *op))completionBlock;
-
-/**
- Gets the image from the attachment message.
- 
- @param attachment 'QBChatAttachment' instance
- @param message 'QBChatMessage' instance, that contains attachment.
- @param completion Fetched image or error if failed.
- */
-- (void)imageForAttachment:(QBChatAttachment *)attachment
-                   message:(QBChatMessage *)message
-                completion:(void(^)(UIImage * _Nullable image,
-                                    NSError * _Nullable error))completion;
-
 /**
  Indicates whether the attachment, or its URL, can be used to play.
  
