@@ -39,11 +39,9 @@
 
 - (void)loadAssetForAttachment:(QBChatAttachment *)attachment
                      messageID:(NSString *)messageID
-                    completion:(QMMediaInfoServiceCompletionBlock)completion
+                    completion:(QMAttachmentAssetLoaderCompletionBlock)completion
 {
-    
-    NSURL *url = attachment.localFileURL?:attachment.remoteURL;
-    NSParameterAssert(url);
+    NSParameterAssert(attachment.localFileURL?:attachment.remoteURL);
     
     if ([_assetServiceOperationQueue hasOperationWithID:messageID]) {
         return;
