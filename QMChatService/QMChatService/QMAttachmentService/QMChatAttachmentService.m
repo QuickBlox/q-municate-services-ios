@@ -495,6 +495,10 @@
            progressBlock:(QMAttachmentProgressBlock)progressBlock
               completion:(void(^)(QMAttachmentOperation *))completionBlock {
     
+    if (!attachmentID) {
+        return;
+    }
+    
     QMAttachmentOperation *attachmentOperation = [QMAttachmentOperation new];
     attachmentOperation.identifier = message.ID;
     QMSLog(@"CREATE ATTACHMENT OPERAION WITH ID ID: %@", attachmentOperation.identifier);
