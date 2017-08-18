@@ -19,7 +19,6 @@ extern "C" {
 void QMSLogSetEnabled(BOOL enabled);
 BOOL QMSLogEnabled();
 void QMSLog(NSString *format, ...);
-void QMSLogv(NSString *format, va_list args);
     
 #ifdef __cplusplus
 }

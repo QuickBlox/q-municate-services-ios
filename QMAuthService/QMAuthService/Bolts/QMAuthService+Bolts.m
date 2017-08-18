@@ -40,6 +40,23 @@
     });
 }
 
+- (BFTask<QBUUser *> *)logInWithFirebaseProjectID:(NSString *)projectID
+                                      accessToken:(NSString *)accessToken {
+    
+    return make_task(^(BFTaskCompletionSource *source) {
+        
+        [self logInWithFirebaseProjectID:projectID
+                             accessToken:accessToken
+                              completion:^(QBResponse *response,
+                                           QBUUser *userProfile)
+         {
+             response.success ?
+             [source setResult:userProfile] :
+             [source setError:response.error.error];
+         }];
+    });
+}
+
 - (BFTask *)loginWithTwitterDigitsAuthHeaders:(NSDictionary *)authHeaders {
     
     return make_task(^(BFTaskCompletionSource *source) {
@@ -74,7 +91,7 @@
                       accessTokenSecret:(NSString *)accessTokenSecret {
     
     return make_task(^(BFTaskCompletionSource *source) {
-       
+        
         [self loginWithTwitterAccessToken:accessToken
                         accessTokenSecret:accessTokenSecret
                                completion:^(QBResponse *response,
@@ -91,8 +108,8 @@
     
     return make_task(^(BFTaskCompletionSource *source) {
         
-        [self logOut:^(QBResponse *response)
-        {
+        [self logOut:^(QBResponse *response) {
+            
              response.success ?
              [source setResult:nil] :
              [source setError:response.error.error];

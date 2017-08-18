@@ -89,8 +89,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  Cancels queued or executing download operations.
- 
- @param messageID The message ID that contains attachment.
  */
 - (void)cancelDownloadOperations;
 

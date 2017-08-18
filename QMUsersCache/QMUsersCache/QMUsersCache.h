@@ -15,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface QMUsersCache : QMDBStorage
 
+@property (readonly, class) QMUsersCache *instance;
+
 + (nullable QMUsersCache *)instance;
 
 //MARK: - Insert/Update/Delete users in cache
