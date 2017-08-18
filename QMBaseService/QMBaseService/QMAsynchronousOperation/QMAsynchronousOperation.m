@@ -12,7 +12,8 @@
 typedef NS_ENUM(NSInteger, QMAsynchronousOperationState) {
     QMAsynchronousOperationStateStateReady,
     QMAsynchronousOperationStateStateExecuting,
-    QMAsynchronousOperationStateStateFinished
+    QMAsynchronousOperationStateStateFinished,
+    QMAsynchronousOperationStateStateCancelled
 };
 
 static inline NSString *QMKeyPathForState(QMAsynchronousOperationState state) {
@@ -21,6 +22,7 @@ static inline NSString *QMKeyPathForState(QMAsynchronousOperationState state) {
         case QMAsynchronousOperationStateStateReady:        return @"isReady";
         case QMAsynchronousOperationStateStateExecuting:    return @"isExecuting";
         case QMAsynchronousOperationStateStateFinished:     return @"isFinished";
+        case QMAsynchronousOperationStateStateCancelled:    return @"isCancelled";
     }
 }
 
@@ -89,6 +91,17 @@ dispatch_async(dispatch_get_main_queue(), block);\
     return isExecuting;
 }
 
+- (BOOL)isCancelled {
+    
+    __block BOOL isCancelled;
+    
+    [self performBlockAndWait:^{
+        isCancelled = self.state == QMAsynchronousOperationStateStateCancelled;
+    }];
+    
+    return isCancelled;
+}
+
 - (BOOL)isFinished
 {
     __block BOOL isFinished;
@@ -104,7 +117,7 @@ dispatch_async(dispatch_get_main_queue(), block);\
 {
     @autoreleasepool {
         
-        if ([self isCancelled]) {
+        if (self.isCancelled) {
             [self finish];
             return;
         }
@@ -144,7 +157,8 @@ dispatch_async(dispatch_get_main_queue(), block);\
 
 - (void)cancel {
     
-    [super cancel];
+    self.state = QMAsynchronousOperationStateStateCancelled;
+    
     if (self.cancelBlock) {
         self.cancelBlock();
         _cancelBlock = nil;

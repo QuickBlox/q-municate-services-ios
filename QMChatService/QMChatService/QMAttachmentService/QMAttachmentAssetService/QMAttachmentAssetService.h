@@ -22,6 +22,6 @@
  */
 - (void)loadAssetForAttachment:(QBChatAttachment *)attachment
                      messageID:(NSString *)messageID
-                    completion:(QMMediaInfoServiceCompletionBlock)completion;
+                    completion:(QMAttachmentAssetLoaderCompletionBlock)completion;
 @end
 
