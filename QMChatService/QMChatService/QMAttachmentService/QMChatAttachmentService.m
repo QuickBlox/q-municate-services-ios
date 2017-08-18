@@ -241,11 +241,6 @@
     if (delegate) {
         [self.multicastDelegate addDelegate:delegate];
     }
-    else {
-        [self.multicastDelegate removeDelegate:_delegate];
-    }
-    
-    _delegate = delegate;
 }
 
 - (void)addDelegate:(id <QMChatAttachmentServiceDelegate>)delegate {
