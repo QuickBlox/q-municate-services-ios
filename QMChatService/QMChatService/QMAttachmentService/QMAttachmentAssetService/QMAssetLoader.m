@@ -102,7 +102,7 @@
         AVAsset *asset = strongSelf.asset;
         QMSLog(@"3 Completed Load %@", _messageID);
         if (strongSelf.loaderStatus == QMAssetLoaderStatusCancelled) {
-            QMSLog(@"4 isCancelled %@", _messageID);
+            strongSelf.completion(0, CGSizeZero, nil, nil);
             return;
         }
         
@@ -230,11 +230,13 @@
 - (void)cancel {
     
     NSParameterAssert(self.loaderStatus != QMAssetLoaderStatusCancelled);
-    
+    QMSLog(@"6 Call cancel for %@", _messageID);
     [_preloadTimeout cancelTimeout];
     _loaderStatus = QMAssetLoaderStatusCancelled;
     [_asset cancelLoading];
     [_imageGenerator cancelAllCGImageGeneration];
+    _completion = nil;
 }
+
 
 @end
