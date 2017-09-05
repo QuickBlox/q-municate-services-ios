@@ -1556,26 +1556,23 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
         message.markable = YES;
         
         dispatch_group_enter(readGroup);
-        NSLog(@"_READ+ Start reading message :%@",message.text);
+        
         [[QBChat instance] readMessage:message completion:^(NSError *error) {
-            NSLog(@"_READ+ end reading message :%@ error:%@",message.text, error);
+            
             __typeof(weakSelf)strongSelf = weakSelf;
             
             if (error == nil) {
                 
                 if (chatDialogToUpdate.unreadMessagesCount > 0) {
-                   // NSLog(@"_READ+ unreadMessagesCount :%@",@(chatDialogToUpdate.unreadMessagesCount));
                     chatDialogToUpdate.unreadMessagesCount--;
                 }
                 
                 // updating dialog in cache
-                if (chatDialogToUpdate != nil) {
-                    chatDialogToUpdate.updatedAt = [NSDate date];
-                    NSLog(@"_READ+ HAS DIALOG IN CACHE :%@",@(chatDialogToUpdate.unreadMessagesCount));
-                    if ([strongSelf.multicastDelegate respondsToSelector:@selector(chatService:didUpdateChatDialogInMemoryStorage:)]) {
-                        [strongSelf.multicastDelegate chatService:strongSelf
-                               didUpdateChatDialogInMemoryStorage:chatDialogToUpdate];
-                    }
+                
+                chatDialogToUpdate.updatedAt = [NSDate date];
+                if ([strongSelf.multicastDelegate respondsToSelector:@selector(chatService:didUpdateChatDialogInMemoryStorage:)]) {
+                    [strongSelf.multicastDelegate chatService:strongSelf
+                           didUpdateChatDialogInMemoryStorage:chatDialogToUpdate];
                 }
                 
                 // updating message in memory storage
@@ -1618,7 +1615,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     [self.messagesMemoryStorage free];
     [self.dialogsMemoryStorage free];
     [self.readableMessages removeAllObjects];
-
+    
     [self.deferredQueueManager free];
     //    [self.linkPreviewManager free];
 }
@@ -1873,7 +1870,5 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
         }
     }
 }
-
-
 
 @end
