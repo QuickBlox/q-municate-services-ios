@@ -96,12 +96,6 @@
             [QMChatCache.instance truncateAll:^{
                 dispatch_group_leave(logoutGroup);
             }];
-        
-            dispatch_group_enter(logoutGroup);
-            [QMOpenGraphCache.instance deleteAllOpenGraphItemsWithCompletion:^{
-                
-                dispatch_group_leave(logoutGroup);
-            }];
             
             dispatch_group_notify(logoutGroup, dispatch_get_main_queue(), ^{
                 
