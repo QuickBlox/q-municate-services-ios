@@ -56,7 +56,7 @@ NSString  *kQMAttachmentSizeKey = @"size";
             
             contentType = QMAttachmentContentTypeVideo;
         }
-        else if ([self.type isEqualToString:@"image"]) {
+        else if ([self.type isEqualToString:@"image"] || [self.type isEqualToString:@"photo"]) {
             
             contentType = QMAttachmentContentTypeImage;
         }
@@ -250,6 +250,7 @@ NSString  *kQMAttachmentSizeKey = @"size";
             break;
     }
 }
+    
 //MARK: Helpers
 bool compareNearlyEqual (float a, float b, unsigned epsilonMultiplier) {
     float epsilon;

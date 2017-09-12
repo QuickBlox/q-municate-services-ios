@@ -20,8 +20,6 @@ typedef NS_ENUM(NSInteger, QMAttachmentContentType) {
 
 @property (assign, nonatomic) QMAttachmentContentType contentType;
 
-//@property (assign, nonatomic) QMAttachmentStatus status;
-
 /**
  *  The URL that identifies locally saved attachment resource.
  */
