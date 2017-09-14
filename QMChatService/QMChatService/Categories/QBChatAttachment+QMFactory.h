@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)initWithName:(nullable NSString *)name
                      fileURL:(nullable NSURL *)fileURL
                  contentType:(NSString *)contentType
-              attachmentType:(QMAttachmentType)contentType;
+              attachmentType:(QMAttachmentType)attachmentType;
 
 + (instancetype)videoAttachmentWithFileURL:(NSURL *)fileURL;
 + (instancetype)audioAttachmentWithFileURL:(NSURL *)fileURL;

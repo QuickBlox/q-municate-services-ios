@@ -13,12 +13,12 @@
 + (instancetype)initWithName:(nullable NSString *)name
                      fileURL:(nullable NSURL *)fileURL
                  contentType:(NSString *)contentType
-              attachmentType:(QMAttachmentType)contentType {
+              attachmentType:(QMAttachmentType)attachmentType {
     
     QBChatAttachment *attachment = [QBChatAttachment new];
     
     attachment.name = name;
-    attachment.localFileURL = localURL;
+    attachment.localFileURL = fileURL;
     attachment.attachmentType = attachmentType;
     attachment.contentType = contentType;
     attachment.type = [attachment stringContentType];
