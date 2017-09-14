@@ -10,45 +10,59 @@
 
 @implementation QBChatAttachment (QMFactory)
 
-+ (instancetype)initWithName:(NSString *)name
-                     mediaID:(NSString *)mediaID
-                    localURL:(NSURL *)localURL
-                 contentType:(QMAttachmentContentType)contentType {
++ (instancetype)initWithName:(nullable NSString *)name
+                     fileURL:(nullable NSURL *)fileURL
+                 contentType:(NSString *)contentType
+              attachmentType:(QMAttachmentType)contentType {
     
-    QBChatAttachment *attachment = [self new];
+    QBChatAttachment *attachment = [QBChatAttachment new];
+    
     attachment.name = name;
-    attachment.ID = mediaID;
     attachment.localFileURL = localURL;
+    attachment.attachmentType = attachmentType;
     attachment.contentType = contentType;
     attachment.type = [attachment stringContentType];
     
     return attachment;
 }
 
-+ (instancetype)videoAttachmentWithFileURL:(NSURL *)itemURL {
++ (instancetype)videoAttachmentWithFileURL:(NSURL *)fileURL {
+    
+    NSParameterAssert(fileURL);
     
     return [self initWithName:@"Video attachment"
-                       mediaID:nil
-                      localURL:itemURL
-                   contentType:QMAttachmentContentTypeVideo];
+                     fileURL:fileURL
+                  contentType:@"video/mp4"
+               attachmentType:QMAttachmentContentTypeVideo];
 }
 
-+ (instancetype)audioAttachmentWithFileURL:(NSURL *)itemURL {
++ (instancetype)audioAttachmentWithFileURL:(NSURL *)fileURL {
+    
+    NSParameterAssert(fileURL);
     
     return [self initWithName:@"Voice message"
-                      mediaID:nil
-                     localURL:itemURL
-                  contentType:QMAttachmentContentTypeAudio];
+                     fileURL:fileURL
+                  contentType:@"audio/m4a"
+               attachmentType:QMAttachmentContentTypeAudio];
 }
 
 + (instancetype)imageAttachmentWithImage:(UIImage *)image {
     
-    QBChatAttachment *attachment =  [self initWithName:@"Image attachment"
-                                               mediaID:nil
-                                              localURL:nil
-                                           contentType:QMAttachmentContentTypeImage];
+    NSParameterAssert(image);
     
+    int alphaInfo = CGImageGetAlphaInfo(image.CGImage);
+    BOOL hasAlpha = !(alphaInfo == kCGImageAlphaNone ||
+                      alphaInfo == kCGImageAlphaNoneSkipFirst ||
+                      alphaInfo == kCGImageAlphaNoneSkipLast);
+    
+    NSString *contentType = [NSString stringWithFormat:@"image/%@", hasAlpha ? @"png" : @"jpeg"];
+    
+    QBChatAttachment *attachment = [self initWithName:@"Image attachment"
+                                             fileURL:nil
+                                          contentType:contentType
+                                       attachmentType:QMAttachmentContentTypeImage];
     attachment.image = image;
+    
     return attachment;
 }
 

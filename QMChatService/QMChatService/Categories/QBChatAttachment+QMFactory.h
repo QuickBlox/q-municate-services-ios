@@ -9,15 +9,21 @@
 #import <Quickblox/Quickblox.h>
 #import "QBChatAttachment+QMCustomParameters.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface QBChatAttachment (QMFactory)
 
-+ (instancetype)initWithName:(NSString *)name
-                     mediaID:(NSString *)mediaID
-                    localURL:(NSURL *)localURL
-                 contentType:(QMAttachmentContentType)contentType;
+- (instancetype)init NS_UNAVAILABLE;
 
-+ (instancetype)videoAttachmentWithFileURL:(NSURL *)itemURL;
-+ (instancetype)audioAttachmentWithFileURL:(NSURL *)itemURL;
-+ (instancetype)imageAttachmentWithImage:(UIImage *)image;
++ (instancetype)initWithName:(nullable NSString *)name
+                     fileURL:(nullable NSURL *)fileURL
+                 contentType:(NSString *)contentType
+              attachmentType:(QMAttachmentType)contentType;
+
++ (instancetype)videoAttachmentWithFileURL:(NSURL *)fileURL;
++ (instancetype)audioAttachmentWithFileURL:(NSURL *)fileURL;
++ (instancetype)imageAttachmentWithImage:(UIImage *)fileURL;
 
 @end
+
+NS_ASSUME_NONNULL_END
