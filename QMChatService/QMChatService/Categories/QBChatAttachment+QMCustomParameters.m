@@ -8,6 +8,7 @@
 
 #import "QBChatAttachment+QMCustomParameters.h"
 #import <objc/runtime.h>
+#import <MobileCoreServices/MobileCoreServices.h>
 
 /**
  *  Attachment keys
@@ -16,8 +17,36 @@ NSString  *kQMAttachmentWidthKey = @"width";
 NSString  *kQMAttachmentHeightKey = @"height";
 NSString  *kQMAttachmentDurationKey = @"duration";
 NSString  *kQMAttachmentSizeKey = @"size";
+NSString  *kQMAttachmentContentTypeKey = @"content-type";
 
 @implementation QBChatAttachment (QMCustomParameters)
+
+@dynamic fileExtension;
+
+- (NSString *)fileExtension {
+    
+    CFStringRef MIMEType = (__bridge CFStringRef)self.contentType;
+    CFStringRef UTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassMIMEType, MIMEType, NULL);
+    return (__bridge_transfer NSString *)UTI;
+}
+
+- (NSString *)contentType {
+    
+    NSString *contentType = self[kQMAttachmentContentTypeKey];
+    
+    if (!contentType) {
+        contentType = [self defaultContentType];
+    }
+    
+    return contentType;
+}
+
+- (void)setContentType:(NSString *)contentType {
+    
+    if (![self.contentType isEqualToString:contentType]) {
+        self[kQMAttachmentContentTypeKey] = contentType;
+    }
+}
 
 - (NSURL *)localFileURL {
     return objc_getAssociatedObject(self, @selector(localFileURL));
@@ -43,43 +72,46 @@ NSString  *kQMAttachmentSizeKey = @"size";
     objc_setAssociatedObject(self, @selector(image), image, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (QMAttachmentContentType)contentType {
+
+- (QMAttachmentType)attachmentType {
     
-    if ([[self tContentType] integerValue] == 0) {
+    if ([[self tAttachmentType] integerValue] == 0) {
         
-        QMAttachmentContentType contentType = QMAttachmentContentTypeCustom;
+        QMAttachmentType attachmentType = QMAttachmentContentTypeCustom;
         
         if ([self.type isEqualToString:@"audio"]) {
-            contentType = QMAttachmentContentTypeAudio;
+            
+            attachmentType = QMAttachmentContentTypeAudio;
         }
         else if ([self.type isEqualToString:@"video"]) {
             
-            contentType = QMAttachmentContentTypeVideo;
+            attachmentType = QMAttachmentContentTypeVideo;
         }
-        else if ([self.type isEqualToString:@"image"] || [self.type isEqualToString:@"photo"]) {
+        else if ([self.type isEqualToString:@"image"] ||
+                 [self.type isEqualToString:@"photo"]) {
             
-            contentType = QMAttachmentContentTypeImage;
+            attachmentType = QMAttachmentContentTypeImage;
         }
         
-        [self setContentType:contentType];
+        [self setAttachmentType:attachmentType];
     }
     
-    return [[self tContentType] integerValue];
+    return [[self tAttachmentType] integerValue];
 }
 
-- (void)setContentType:(QMAttachmentContentType)contentType {
-    [self setTContentType:@(contentType)];
+- (void)setAttachmentType:(QMAttachmentType)attachmentType {
+    [self setTAttachmentType:@(attachmentType)];
 }
 
 
-- (NSNumber *)tContentType {
+- (NSNumber *)tAttachmentType {
     
-    return objc_getAssociatedObject(self, @selector(tContentType));
+    return objc_getAssociatedObject(self, @selector(tAttachmentType));
 }
 
-- (void)setTContentType:(NSNumber *)contentTypeNumber {
+- (void)setTAttachmentType:(NSNumber *)attachmentTypeNumber {
     
-    objc_setAssociatedObject(self, @selector(tContentType), contentTypeNumber, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, @selector(tAttachmentType), attachmentTypeNumber, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 
@@ -126,35 +158,34 @@ NSString  *kQMAttachmentSizeKey = @"size";
 
 - (void)setDuration:(NSInteger)duration {
     
-    if (!compareNearlyEqual(self.duration, duration, sizeof(duration))) {
-        
+    if (self.duration != duration) {
         self[kQMAttachmentDurationKey] = [NSString stringWithFormat:@"%ld",(unsigned long)duration];
     }
 }
 
-- (NSString *)stringMIMEType {
+- (NSString *)defaultContentType {
     
-    NSString *stringMIMEType = nil;
+    NSString *contentType = nil;
     
-    switch (self.contentType) {
+    switch (self.attachmentType) {
         case QMAttachmentContentTypeAudio:
-            stringMIMEType = @"audio/caf";
+            contentType = @"audio/m4a";
             break;
             
         case QMAttachmentContentTypeVideo:
-            stringMIMEType = @"video/mp4";
+            contentType = @"video/mp4";
             break;
             
         case QMAttachmentContentTypeImage:
-            stringMIMEType = @"image/png";
+            contentType = @"image/png";
             break;
             
         default:
-            stringMIMEType = @"";
+            contentType = @"";
             break;
     }
     
-    return stringMIMEType;
+    return contentType;
 }
 
 - (NSURL *)remoteURL {
@@ -186,7 +217,7 @@ NSString  *kQMAttachmentSizeKey = @"size";
     
     NSString *stringContentType = nil;
     
-    switch (self.contentType) {
+    switch (self.attachmentType) {
         case QMAttachmentContentTypeAudio:
             stringContentType = @"audio";
             break;
@@ -206,34 +237,9 @@ NSString  *kQMAttachmentSizeKey = @"size";
     return stringContentType;
 }
 
-
-- (NSString *)extension {
-    
-    NSString *stringMediaType = nil;
-    
-    switch (self.contentType) {
-        case QMAttachmentContentTypeAudio:
-            stringMediaType = @"m4a";
-            break;
-            
-        case QMAttachmentContentTypeVideo:
-            stringMediaType = @"mp4";
-            break;
-            
-        case QMAttachmentContentTypeImage:
-            stringMediaType = @"png";
-            break;
-            
-        default:
-            stringMediaType = @"";
-            break;
-    }
-    
-    return stringMediaType;
-}
 - (BOOL)isPrepared {
     
-    switch (self.contentType) {
+    switch (self.attachmentType) {
             
         case QMAttachmentContentTypeAudio:
             return self.duration > 0;
@@ -250,21 +256,7 @@ NSString  *kQMAttachmentSizeKey = @"size";
             break;
     }
 }
-    
-//MARK: Helpers
-bool compareNearlyEqual (float a, float b, unsigned epsilonMultiplier) {
-    float epsilon;
-    if (a == b)
-        return true;
-    
-    if (a > b) {
-        epsilon = scalbnf(1.0f, ilogb(a)) * FLT_EPSILON * epsilonMultiplier;
-    } else {
-        epsilon = scalbnf(1.0, ilogb(b)) * FLT_EPSILON * epsilonMultiplier;
-    }
-    
-    return fabs (a - b) <= epsilon;
-}
 
+//MARK: Helpers
 
 @end
