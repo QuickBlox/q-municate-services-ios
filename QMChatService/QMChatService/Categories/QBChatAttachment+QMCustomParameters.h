@@ -69,7 +69,4 @@ typedef NS_ENUM(NSInteger, QMAttachmentType) {
 - (NSURL *)remoteURLWithToken:(BOOL)withToken;
 - (NSURL *)remoteURL;
 
-- (NSString *)stringContentType;
-
-
 @end

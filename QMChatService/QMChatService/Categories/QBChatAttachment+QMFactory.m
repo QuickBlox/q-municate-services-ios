@@ -8,20 +8,26 @@
 
 #import "QBChatAttachment+QMFactory.h"
 
+static NSString *const kQMAttachmentTypeAudio = @"audio";
+static NSString *const kQMAttachmentTypeImage = @"video";
+static NSString *const kQMAttachmentTypeVideo = @"image";
+
+static NSString *const kQMAttachmentContentTypeAudio = @"audio/mp4";
+static NSString *const kQMAttachmentContentTypeVideo = @"video/mp4";
+
 @implementation QBChatAttachment (QMFactory)
 
 + (instancetype)initWithName:(nullable NSString *)name
                      fileURL:(nullable NSURL *)fileURL
                  contentType:(NSString *)contentType
-              attachmentType:(QMAttachmentType)attachmentType {
+              attachmentType:(NSString *)type {
     
     QBChatAttachment *attachment = [QBChatAttachment new];
     
     attachment.name = name;
     attachment.localFileURL = fileURL;
-    attachment.attachmentType = attachmentType;
     attachment.contentType = contentType;
-    attachment.type = [attachment stringContentType];
+    attachment.type = type;
     
     return attachment;
 }
@@ -32,8 +38,8 @@
     
     return [self initWithName:@"Video attachment"
                      fileURL:fileURL
-                  contentType:@"video/mp4"
-               attachmentType:QMAttachmentContentTypeVideo];
+                  contentType:kQMAttachmentContentTypeVideo
+               attachmentType:kQMAttachmentTypeVideo];
 }
 
 + (instancetype)audioAttachmentWithFileURL:(NSURL *)fileURL {
@@ -42,8 +48,8 @@
     
     return [self initWithName:@"Voice message"
                      fileURL:fileURL
-                  contentType:@"audio/mp4"
-               attachmentType:QMAttachmentContentTypeAudio];
+                  contentType:kQMAttachmentContentTypeAudio
+               attachmentType:kQMAttachmentTypeAudio];
 }
 
 + (instancetype)imageAttachmentWithImage:(UIImage *)image {
@@ -55,12 +61,12 @@
                       alphaInfo == kCGImageAlphaNoneSkipFirst ||
                       alphaInfo == kCGImageAlphaNoneSkipLast);
     
-    NSString *contentType = [NSString stringWithFormat:@"image/%@", hasAlpha ? @"png" : @"jpeg"];
+    NSString *contentType = [NSString stringWithFormat:@"image/%@", hasAlpha ? @"png" : @"jpg"];
     
     QBChatAttachment *attachment = [self initWithName:@"Image attachment"
                                              fileURL:nil
                                           contentType:contentType
-                                       attachmentType:QMAttachmentContentTypeImage];
+                                       attachmentType:kQMAttachmentTypeImage];
     attachment.image = image;
     
     return attachment;

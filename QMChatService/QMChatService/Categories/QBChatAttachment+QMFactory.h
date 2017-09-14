@@ -18,11 +18,11 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)initWithName:(nullable NSString *)name
                      fileURL:(nullable NSURL *)fileURL
                  contentType:(NSString *)contentType
-              attachmentType:(QMAttachmentType)attachmentType;
+              attachmentType:(NSString *)type;
 
 + (instancetype)videoAttachmentWithFileURL:(NSURL *)fileURL;
 + (instancetype)audioAttachmentWithFileURL:(NSURL *)fileURL;
-+ (instancetype)imageAttachmentWithImage:(UIImage *)fileURL;
++ (instancetype)imageAttachmentWithImage:(UIImage *)image;
 
 @end
 

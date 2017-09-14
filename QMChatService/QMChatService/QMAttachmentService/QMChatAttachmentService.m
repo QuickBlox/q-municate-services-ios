@@ -496,7 +496,8 @@
     __weak QMAttachmentOperation *weakOperation = attachmentOperation;
     
     if (attachment.attachmentType == QMAttachmentContentTypeAudio
-        || attachment.attachmentType == QMAttachmentContentTypeImage) {
+        || attachment.attachmentType == QMAttachmentContentTypeImage
+        || attachment.attachmentType == QMAttachmentContentTypeCustom) {
         
         if ([self attachmentStatusForMessage:message] == QMMessageAttachmentStatusLoading) {
             return;

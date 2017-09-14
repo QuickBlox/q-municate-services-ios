@@ -57,14 +57,6 @@ NSString  *kQMAttachmentContentTypeKey = @"content-type";
     objc_setAssociatedObject(self, @selector(localFileURL), localFileURL, OBJC_ASSOCIATION_COPY_NONATOMIC);
 }
 
-- (NSData *)mediaData {
-    return objc_getAssociatedObject(self, @selector(mediaData));
-}
-
-- (void)setMediaData:(NSData *)data {
-    objc_setAssociatedObject(self, @selector(mediaData), data, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
 - (UIImage *)image {
     return objc_getAssociatedObject(self, @selector(image));
 }
@@ -212,30 +204,6 @@ NSString  *kQMAttachmentContentTypeKey = @"content-type";
         components.query = [NSString stringWithFormat:@"token=%@",[QBSession currentSession].sessionDetails.token];
     }
     return components.URL;
-}
-
-- (NSString *)stringContentType {
-    
-    NSString *stringContentType = nil;
-    
-    switch (self.attachmentType) {
-        case QMAttachmentContentTypeAudio:
-            stringContentType = @"audio";
-            break;
-            
-        case QMAttachmentContentTypeVideo:
-            stringContentType = @"video";
-            break;
-            
-        case QMAttachmentContentTypeImage:
-            stringContentType = @"image";
-            break;
-        default:
-            stringContentType = @"";
-            break;
-    }
-    
-    return stringContentType;
 }
 
 - (BOOL)isPrepared {
