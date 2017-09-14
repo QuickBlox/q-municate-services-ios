@@ -42,7 +42,7 @@
     
     return [self initWithName:@"Voice message"
                      fileURL:fileURL
-                  contentType:@"audio/m4a"
+                  contentType:@"audio/mp4"
                attachmentType:QMAttachmentContentTypeAudio];
 }
 

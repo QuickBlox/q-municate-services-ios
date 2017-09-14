@@ -26,8 +26,9 @@ NSString  *kQMAttachmentContentTypeKey = @"content-type";
 - (NSString *)fileExtension {
     
     CFStringRef MIMEType = (__bridge CFStringRef)self.contentType;
-    CFStringRef UTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassMIMEType, MIMEType, NULL);
-    return (__bridge_transfer NSString *)UTI;
+    CFStringRef uti = UTTypeCreatePreferredIdentifierForTag(kUTTagClassMIMEType, MIMEType, NULL);
+    CFStringRef extension = UTTypeCopyPreferredTagWithClass(uti, kUTTagClassFilenameExtension);
+    return (__bridge_transfer NSString *)extension;
 }
 
 - (NSString *)contentType {
@@ -169,7 +170,7 @@ NSString  *kQMAttachmentContentTypeKey = @"content-type";
     
     switch (self.attachmentType) {
         case QMAttachmentContentTypeAudio:
-            contentType = @"audio/m4a";
+            contentType = @"audio/mp4";
             break;
             
         case QMAttachmentContentTypeVideo:
