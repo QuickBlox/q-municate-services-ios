@@ -9,8 +9,8 @@
 #import "QBChatAttachment+QMFactory.h"
 
 static NSString *const kQMAttachmentTypeAudio = @"audio";
-static NSString *const kQMAttachmentTypeImage = @"video";
-static NSString *const kQMAttachmentTypeVideo = @"image";
+static NSString *const kQMAttachmentTypeImage = @"image";
+static NSString *const kQMAttachmentTypeVideo = @"video";
 
 static NSString *const kQMAttachmentContentTypeAudio = @"audio/mp4";
 static NSString *const kQMAttachmentContentTypeVideo = @"video/mp4";
@@ -24,10 +24,10 @@ static NSString *const kQMAttachmentContentTypeVideo = @"video/mp4";
     
     QBChatAttachment *attachment = [QBChatAttachment new];
     
+    attachment.type = type;
     attachment.name = name;
     attachment.localFileURL = fileURL;
     attachment.contentType = contentType;
-    attachment.type = type;
     
     return attachment;
 }
@@ -37,7 +37,7 @@ static NSString *const kQMAttachmentContentTypeVideo = @"video/mp4";
     NSParameterAssert(fileURL);
     
     return [self initWithName:@"Video attachment"
-                     fileURL:fileURL
+                      fileURL:fileURL
                   contentType:kQMAttachmentContentTypeVideo
                attachmentType:kQMAttachmentTypeVideo];
 }
@@ -47,7 +47,7 @@ static NSString *const kQMAttachmentContentTypeVideo = @"video/mp4";
     NSParameterAssert(fileURL);
     
     return [self initWithName:@"Voice message"
-                     fileURL:fileURL
+                      fileURL:fileURL
                   contentType:kQMAttachmentContentTypeAudio
                attachmentType:kQMAttachmentTypeAudio];
 }
@@ -64,7 +64,7 @@ static NSString *const kQMAttachmentContentTypeVideo = @"video/mp4";
     NSString *contentType = [NSString stringWithFormat:@"image/%@", hasAlpha ? @"png" : @"jpg"];
     
     QBChatAttachment *attachment = [self initWithName:@"Image attachment"
-                                             fileURL:nil
+                                              fileURL:nil
                                           contentType:contentType
                                        attachmentType:kQMAttachmentTypeImage];
     attachment.image = image;

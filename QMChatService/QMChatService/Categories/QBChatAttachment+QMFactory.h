@@ -13,8 +13,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface QBChatAttachment (QMFactory)
 
-- (instancetype)init NS_UNAVAILABLE;
-
 + (instancetype)initWithName:(nullable NSString *)name
                      fileURL:(nullable NSURL *)fileURL
                  contentType:(NSString *)contentType

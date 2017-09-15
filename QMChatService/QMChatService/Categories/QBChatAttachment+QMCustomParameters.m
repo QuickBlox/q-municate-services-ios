@@ -9,6 +9,7 @@
 #import "QBChatAttachment+QMCustomParameters.h"
 #import <objc/runtime.h>
 #import <MobileCoreServices/MobileCoreServices.h>
+#import "QMSLog.h"
 
 /**
  *  Attachment keys
@@ -37,6 +38,7 @@ NSString  *kQMAttachmentContentTypeKey = @"content-type";
     
     if (!contentType) {
         contentType = [self defaultContentType];
+        self[kQMAttachmentContentTypeKey] = contentType;
     }
     
     return contentType;
@@ -44,7 +46,7 @@ NSString  *kQMAttachmentContentTypeKey = @"content-type";
 
 - (void)setContentType:(NSString *)contentType {
     
-    if (![self.contentType isEqualToString:contentType]) {
+    if (![self[kQMAttachmentContentTypeKey] isEqualToString:contentType]) {
         self[kQMAttachmentContentTypeKey] = contentType;
     }
 }
@@ -70,22 +72,7 @@ NSString  *kQMAttachmentContentTypeKey = @"content-type";
     
     if ([[self tAttachmentType] integerValue] == 0) {
         
-        QMAttachmentType attachmentType = QMAttachmentContentTypeCustom;
-        
-        if ([self.type isEqualToString:@"audio"]) {
-            
-            attachmentType = QMAttachmentContentTypeAudio;
-        }
-        else if ([self.type isEqualToString:@"video"]) {
-            
-            attachmentType = QMAttachmentContentTypeVideo;
-        }
-        else if ([self.type isEqualToString:@"image"] ||
-                 [self.type isEqualToString:@"photo"]) {
-            
-            attachmentType = QMAttachmentContentTypeImage;
-        }
-        
+        QMAttachmentType attachmentType = [self attachmentTypeFromString:self.type];
         [self setAttachmentType:attachmentType];
     }
     
@@ -160,7 +147,9 @@ NSString  *kQMAttachmentContentTypeKey = @"content-type";
     
     NSString *contentType = nil;
     
-    switch (self.attachmentType) {
+    QMAttachmentType attachmentType = [self attachmentTypeFromString:self.type];
+    
+    switch (attachmentType) {
         case QMAttachmentContentTypeAudio:
             contentType = @"audio/mp4";
             break;
@@ -174,7 +163,7 @@ NSString  *kQMAttachmentContentTypeKey = @"content-type";
             break;
             
         default:
-            contentType = @"";
+            QMSLog(@"ERROR: 'Content type' is not provided for custom attachment: %@");
             break;
     }
     
@@ -227,5 +216,24 @@ NSString  *kQMAttachmentContentTypeKey = @"content-type";
 }
 
 //MARK: Helpers
+
+- (QMAttachmentType)attachmentTypeFromString:(NSString *)type {
+    
+    QMAttachmentType attachmentType = QMAttachmentContentTypeCustom;
+    
+    if ([self.type isEqualToString:@"audio"]) {
+        attachmentType = QMAttachmentContentTypeAudio;
+    }
+    else if ([self.type isEqualToString:@"video"]) {
+        attachmentType = QMAttachmentContentTypeVideo;
+    }
+    else if ([self.type isEqualToString:@"image"] ||
+             [self.type isEqualToString:@"photo"]) {
+        
+        attachmentType = QMAttachmentContentTypeImage;
+    }
+    
+    return attachmentType;
+}
 
 @end
