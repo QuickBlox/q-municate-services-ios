@@ -202,7 +202,7 @@ NSString  *kQMAttachmentContentTypeKey = @"content-type";
         case QMAttachmentContentTypeAudio:
             return self.duration > 0;
         case QMAttachmentContentTypeImage:
-            return self.image != nil;
+            return YES;
             break;
         case QMAttachmentContentTypeVideo:
             return self.image != nil && self.duration > 0;
