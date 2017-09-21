@@ -31,10 +31,6 @@
     }
 }
 
-- (void)dealloc {
-    QMSLog(@"deallock");
-}
-
 - (void)cancel {
     
     [super cancel];
@@ -101,7 +97,7 @@
              if (cancelled) {
                  status = QMMessageAttachmentStatusNotLoaded;
              }
-             if (error) {
+             else if (error) {
                  status = QMMessageAttachmentStatusError;
              }
              else {
@@ -156,7 +152,7 @@
     [self.storeService cachedImageForAttachment:attachment
                                       messageID:attachmentMessage.ID
                                        dialogID:attachmentMessage.dialogID
-                                     completion:^(UIImage *image){
+                                     completion:^(UIImage *image) {
                                          if (completion) {
                                              completion(image);
                                          }
@@ -164,24 +160,22 @@
 }
 
 
-
 - (BOOL)attachmentIsReadyToPlay:(QBChatAttachment *)attachment
                         message:(QBChatMessage *)message {
     
-    
-    if (attachment.contentType == QMAttachmentContentTypeAudio) {
+    if (attachment.attachmentType == QMAttachmentContentTypeAudio) {
         
         NSURL *fileURL = [self.storeService fileURLForAttachment:attachment
                                                        messageID:message.ID
                                                         dialogID:message.dialogID];
         return fileURL != nil;
     }
-    else if (attachment.contentType == QMAttachmentContentTypeVideo) {
+    else if (attachment.attachmentType == QMAttachmentContentTypeVideo) {
         QMMessageAttachmentStatus status = [self attachmentStatusForMessage:message];
         BOOL isReady = status == QMMessageAttachmentStatusLoaded || status == QMMessageAttachmentStatusNotLoaded;
         return attachment.ID != nil && isReady;
     }
-    else if (attachment.contentType == QMAttachmentContentTypeImage) {
+    else if (attachment.attachmentType == QMAttachmentContentTypeImage) {
         return attachment.image != nil;
     }
     return NO;
@@ -189,7 +183,6 @@
 
 - (QBChatAttachment *)cachedAttachmentWithID:(NSString *)attachmentID
                                 forMessageID:(NSString *)messageID {
-    
     
     return [self.storeService cachedAttachmentWithID:attachmentID
                                         forMessageID:messageID];
@@ -208,7 +201,6 @@
     [self.storeService clearCacheForDialogWithID:dialogID
                                        cacheType:QMAttachmentCacheTypeMemory|QMAttachmentCacheTypeDisc
                                       completion:nil];
-    
 }
 
 - (void)removeMediaFilesForMessagesWithID:(NSArray<NSString *> *)messagesIDs
@@ -292,7 +284,7 @@
                        withChatService:(QMChatService *)chatService
                             attachment:(QBChatAttachment *)attachment
                             completion:(QBChatCompletionBlock)completion {
-    QMSLog(@"_UPLOAD and send call %@",message.ID);
+    
     [chatService.deferredQueueManager addOrUpdateMessage:message];
     
     [self uploadAttachmentMessage:message
@@ -301,11 +293,12 @@
                        completion:^(NSError *error, BOOL cancelled) {
                            if (cancelled) {
                                [chatService deleteMessageLocally:message];
-                               completion(nil);
+                               if (completion) {
+                                   completion(nil);
+                               }
                                return;
                            }
                            if (!error) {
-                               QMSLog(@"_UPLOAD NO ERROR completion %@",message.ID);
                                [chatService sendMessage:message
                                                toDialog:dialog
                                           saveToHistory:YES
@@ -313,9 +306,10 @@
                                              completion:completion];
                            }
                            else {
-                               QMSLog(@"_UPLOAD has error completion %@ %@",message.ID, error);
                                [chatService.deferredQueueManager addOrUpdateMessage:message];
-                               completion(error);
+                               if (completion) {
+                                   completion(error);
+                               }
                            }
                        }];
 }
@@ -331,8 +325,6 @@
     }
     
     if (hasOperation) {
-        QMSLog(@"__UPLOAD 0 HAS OPERATION %@", message.ID);
-        //   [self cancelOperationsWithMessageID:message.ID];
         return;
     }
     
@@ -363,6 +355,8 @@
     dispatch_group_t uploadGroup = dispatch_group_create();
     
     if (!attachment.isPrepared) {
+        
+        dispatch_group_enter(uploadGroup);
         
         [self.assetService loadAssetForAttachment:attachment
                                         messageID:message.ID
@@ -421,16 +415,14 @@
              {
                  NSError * error = operation.error;
                  __strong __typeof(weakOperation) strongOperation = weakOperation;
-                 QMSLog(@"_UPLOAD 5 completion upload: %@", message.ID);
+                 
                  if (!strongOperation || strongOperation.isCancelled) {
-                     QMSLog(@"_UPLOAD 6 is cancelled: %@", message.ID);
                      [self safelyRemoveOperationFromRunning:strongOperation];
                      [self changeMessageAttachmentStatus:QMMessageAttachmentStatusNotLoaded
                                               forMessage:message];
                      return;
                  }
                  else if (error) {
-                     QMSLog(@"_UPLOAD 6 error: %@ __%@", message.ID, error);
                      [self changeMessageAttachmentStatus:QMMessageAttachmentStatusNotLoaded
                                               forMessage:message];
                      [self safelyRemoveOperationFromRunning:strongOperation];
@@ -440,13 +432,13 @@
                      
                      [self.storeService storeAttachment:attachment
                                                withData:nil
-                                              cacheType:QMAttachmentCacheTypeDisc|QMAttachmentCacheTypeMemory messageID:message.ID
+                                              cacheType:QMAttachmentCacheTypeDisc|QMAttachmentCacheTypeMemory
+                                              messageID:message.ID
                                                dialogID:message.dialogID
                                              completion:^{
-                                                 QMSLog(@"_UPLOAD 7 save to storage: %@", message.ID);
+                                                 
                                                  if (strongOperation && !strongOperation.isCancelled) {
-                                                     QMSLog(@"_UPLOAD 8 change status: %@", message.ID);
-                                                     [self changeMessageAttachmentStatus:QMMessageAttachmentStatusNotLoaded
+                                                     [self changeMessageAttachmentStatus:QMMessageAttachmentStatusLoaded
                                                                               forMessage:message];
                                                      
                                                      completion(nil,attachmentOperation.isCancelled);
@@ -454,15 +446,12 @@
                                                  }
                                                  else {
                                                      [self safelyRemoveOperationFromRunning:strongOperation];
-                                                     QMSLog(@"_UPLOAD 8 Cancelled: %@", message.ID);
                                                  }
                                              }];
-                     
                  }
-                 
              };
              
-             if (attachment.contentType == QMAttachmentContentTypeImage) {
+             if (attachment.attachmentType == QMAttachmentContentTypeImage) {
                  NSData *imageData = [self.storeService dataForImage:attachment.image];
                  [self.contentService uploadAttachment:attachment messageID:message.ID withData:imageData progressBlock:progressBlock completionBlock:operationCompletionBlock];
              }
@@ -496,20 +485,21 @@
     
     QMAttachmentOperation *attachmentOperation = [QMAttachmentOperation new];
     attachmentOperation.identifier = message.ID;
-    QMSLog(@"CREATE ATTACHMENT OPERAION WITH ID ID: %@", attachmentOperation.identifier);
+    
     @synchronized (self.runningOperations) {
         self.runningOperations[message.ID] = attachmentOperation;
     }
     
     QBChatAttachment *attachment = message.attachments.firstObject;
+    
     NSParameterAssert(attachment != nil);
     __weak QMAttachmentOperation *weakOperation = attachmentOperation;
     
-    if (attachment.contentType == QMAttachmentContentTypeAudio
-        || attachment.contentType == QMAttachmentContentTypeImage) {
+    if (attachment.attachmentType == QMAttachmentContentTypeAudio
+        || attachment.attachmentType == QMAttachmentContentTypeImage
+        || attachment.attachmentType == QMAttachmentContentTypeCustom) {
         
         if ([self attachmentStatusForMessage:message] == QMMessageAttachmentStatusLoading) {
-            QMSLog(@"STATUS IS LOADING ID ID: %@", attachmentOperation.identifier);
             return;
         }
         __weak typeof(self) weakSelf = self;
@@ -522,16 +512,17 @@
              __strong typeof(weakSelf) strongSelf = weakSelf;
              
              if (attachmentOperation.isCancelled) {
-                 QMSLog(@"IS CANCELLED FOR STORE SERVICE ID: %@", attachmentOperation.identifier);
+                 
                  __strong __typeof(weakOperation) strongOperation = weakOperation;
                  [strongSelf safelyRemoveOperationFromRunning:strongOperation];
                  return;
              }
+             
              if (fileURL) {
-                 QMSLog(@"HAS FILE URL ID: %@", attachmentOperation.identifier);
+                 
                  [self changeMessageAttachmentStatus:QMMessageAttachmentStatusLoaded
                                           forMessage:message];
-                 if (attachment.contentType == QMAttachmentContentTypeImage) {
+                 if (attachment.attachmentType == QMAttachmentContentTypeImage) {
                      attachment.image = [UIImage imageWithData:data];
                  }
                  attachment.localFileURL = fileURL;
@@ -556,13 +547,11 @@
                                                  completionBlock:^(QMDownloadOperation * _Nonnull downloadOperation) {
                                                      
                                                      if (!downloadOperation || downloadOperation.isCancelled) {
-                                                         QMSLog(@"2 IS CANCELLED FOR DOWNLOAD SERVICE ID: %@", attachmentOperation.identifier);
                                                          [strongSelf changeMessageAttachmentStatus:QMMessageAttachmentStatusNotLoaded
                                                                                         forMessage:message];
                                                          return;
                                                      }
                                                      if (downloadOperation.error) {
-                                                         QMSLog(@"ERROR ID: %@", attachmentOperation.identifier);
                                                          [strongSelf changeMessageAttachmentStatus:QMMessageAttachmentStatusError
                                                                                         forMessage:message];
                                                          
@@ -571,7 +560,6 @@
                                                          completionBlock(attachmentOperation);
                                                      }
                                                      else if (downloadOperation.data) {
-                                                         QMSLog(@"NOT CANCELLED SAVE ID: %@", attachmentOperation.identifier);
                                                          attachment.ID = attachmentID;
                                                          
                                                          [strongSelf.storeService storeAttachment:attachment

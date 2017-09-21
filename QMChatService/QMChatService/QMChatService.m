@@ -31,7 +31,10 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
 
 @property (strong, nonatomic) NSMutableDictionary *loadedAllMessages;
 @property (strong, nonatomic) NSMutableDictionary *lastMessagesLoadDate;
-@property (strong, nonatomic) NSMutableSet *messagesToRead;
+
+@property (strong, nonatomic) NSMutableSet *readableMessages;
+
+
 @property (weak, nonatomic) BFTask* loadEarlierMessagesTask;
 
 @end
@@ -57,7 +60,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
         _cacheDataSource = cacheDataSource;
         _loadedAllMessages = [NSMutableDictionary dictionary];
         _lastMessagesLoadDate = [NSMutableDictionary dictionary];
-        _messagesToRead = [NSMutableSet set];
+        _readableMessages = [NSMutableSet set];
         
         if (self.serviceManager.currentUser != nil) {
             [self loadCachedDialogsWithCompletion:nil];
@@ -440,46 +443,39 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
                 updatedAt = message.dialogUpdatedAt;
             }
             
-            if ([chatDialogToUpdate.updatedAt compare:updatedAt] != NSOrderedDescending) {
-                
-                switch (message.dialogUpdateType) {
+            switch (message.dialogUpdateType) {
+                    
+                case QMDialogUpdateTypeName:
+                    chatDialogToUpdate.name = message.dialogName;
+                    break;
+                    
+                case QMDialogUpdateTypePhoto:
+                    chatDialogToUpdate.photo = message.dialogPhoto;
+                    break;
+                    
+                case QMDialogUpdateTypeOccupants: {
+                    
+                    NSMutableSet *occupantsSet = [NSMutableSet setWithArray:chatDialogToUpdate.occupantIDs];
+                    
+                    if (message.addedOccupantsIDs.count > 0) {
                         
-                    case QMDialogUpdateTypeName:
-                        chatDialogToUpdate.name = message.dialogName;
-                        break;
-                        
-                    case QMDialogUpdateTypePhoto:
-                        chatDialogToUpdate.photo = message.dialogPhoto;
-                        break;
-                        
-                    case QMDialogUpdateTypeOccupants: {
-                        
-                        NSMutableSet *occupantsSet = [NSMutableSet setWithArray:chatDialogToUpdate.occupantIDs];
-                        
-                        if (message.addedOccupantsIDs.count > 0) {
-                            
-                            [occupantsSet addObjectsFromArray:message.addedOccupantsIDs];
-                        }
-                        else if (message.deletedOccupantsIDs.count > 0) {
-                            
-                            [occupantsSet minusSet:[NSSet setWithArray:message.deletedOccupantsIDs]];
-                        }
-                        
-                        chatDialogToUpdate.occupantIDs = [occupantsSet allObjects];
-                        
-                        break;
+                        [occupantsSet addObjectsFromArray:message.addedOccupantsIDs];
                     }
+                    else if (message.deletedOccupantsIDs.count > 0) {
                         
-                    case QMDialogUpdateTypeNone:
-                        break;
+                        [occupantsSet minusSet:[NSSet setWithArray:message.deletedOccupantsIDs]];
+                    }
+                    
+                    chatDialogToUpdate.occupantIDs = [occupantsSet allObjects];
+                    
+                    break;
                 }
-                
-                chatDialogToUpdate.updatedAt = updatedAt;
+                    
+                case QMDialogUpdateTypeNone:
+                    break;
             }
-            else {
-                
-                chatDialogToUpdate.updatedAt = message.dateSent;
-            }
+            
+            chatDialogToUpdate.updatedAt = updatedAt;
         }
         // old custom parameters handling
         else if (message.dialog != nil) {
@@ -1510,7 +1506,9 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     [self readMessages:@[message] forDialogID:message.dialogID completion:completion];
 }
 
-- (void)readMessages:(NSArray *)messages forDialogID:(NSString *)dialogID completion:(QBChatCompletionBlock)completion {
+- (void)readMessages:(NSArray *)messages
+         forDialogID:(NSString *)dialogID
+          completion:(QBChatCompletionBlock)completion {
     
     NSAssert(dialogID != nil, @"dialogID can't be nil");
     
@@ -1518,26 +1516,21 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     
     NSAssert(chatDialogToUpdate != nil, @"Dialog wasn't found in memory storage!");
     
-    NSMutableArray<QBChatMessage *> * unreadedMessages = [NSMutableArray array];
+    NSMutableArray<QBChatMessage *>*unreadedMessages = [NSMutableArray arrayWithCapacity:messages.count];
     
-    for (QBChatMessage * message in messages) {
+    for (QBChatMessage *message in messages) {
         
-        if ([message.readIDs containsObject:@(self.serviceManager.currentUser.ID)] || [self.messagesToRead containsObject:message.ID]) {
+        if ([message.readIDs containsObject:@(self.serviceManager.currentUser.ID)]
+            || [self.readableMessages containsObject:message.ID]) {
             
             continue;
         }
         else {
-            
             [unreadedMessages addObject:message];
         }
     }
     
     if (unreadedMessages.count == 0) {
-        
-        if (completion) {
-            completion(nil);
-        }
-        
         return;
     }
     
@@ -1551,7 +1544,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
         
         NSAssert([message.dialogID isEqualToString:dialogID], @"Message is from incorrect dialog.");
         
-        [self.messagesToRead addObject:message.ID];
+        [self.readableMessages addObject:message.ID];
         
         message.markable = YES;
         
@@ -1568,12 +1561,11 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
                 }
                 
                 // updating dialog in cache
-                if (chatDialogToUpdate != nil) {
-                    
-                    if ([strongSelf.multicastDelegate respondsToSelector:@selector(chatService:didUpdateChatDialogInMemoryStorage:)]) {
-                        [strongSelf.multicastDelegate chatService:strongSelf
-                               didUpdateChatDialogInMemoryStorage:chatDialogToUpdate];
-                    }
+                
+                chatDialogToUpdate.updatedAt = [NSDate date];
+                if ([strongSelf.multicastDelegate respondsToSelector:@selector(chatService:didUpdateChatDialogInMemoryStorage:)]) {
+                    [strongSelf.multicastDelegate chatService:strongSelf
+                           didUpdateChatDialogInMemoryStorage:chatDialogToUpdate];
                 }
                 
                 // updating message in memory storage
@@ -1582,7 +1574,7 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
                 [updatedMessages addObject:message];
             }
             
-            [strongSelf.messagesToRead removeObject:message.ID];
+            [strongSelf.readableMessages removeObject:message.ID];
             
             dispatch_group_leave(readGroup);
         }];
@@ -1615,7 +1607,8 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
     [self.lastMessagesLoadDate removeAllObjects];
     [self.messagesMemoryStorage free];
     [self.dialogsMemoryStorage free];
-    [self.messagesToRead removeAllObjects];
+    [self.readableMessages removeAllObjects];
+    
     [self.deferredQueueManager free];
     //    [self.linkPreviewManager free];
 }
@@ -1870,7 +1863,5 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
         }
     }
 }
-
-
 
 @end
