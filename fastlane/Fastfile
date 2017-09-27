@@ -6,7 +6,7 @@ lane :build do
   gym(
     scheme: "QMServices", 
     configuration: "Release",
-    disable_xcpretty: false,
+    disable_xcpretty: true,
     skip_package_ipa: true,
     codesigning_identity: "",
     clean: true,
