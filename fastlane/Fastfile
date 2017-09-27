@@ -3,8 +3,9 @@ lane :build do |options|
         scheme: "QMServices",
         configuration: "Release",
         clean: true,
-        disable_xcpretty: true,
-        build: true,
+        skip_build_archive: true,
+        disable_xcpretty: false,
+        output_directory: "../builds",
         destination: "generic/platform=iOS",
         build_settings: {
         "CODE_SIGNING_REQUIRED" => "NO",
