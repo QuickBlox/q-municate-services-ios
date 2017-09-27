@@ -4,8 +4,8 @@ lane :build do |options|
     xcodebuild(
         scheme: "QMServices",
         configuration: "Release",
-        clean: options[:clean],
-        disable_xcpretty: options[:disable_xcpretty],
+        clean: true,
+        disable_xcpretty: true,
         build: true,
         destination: "generic/platform=iOS",
         build_settings: {
