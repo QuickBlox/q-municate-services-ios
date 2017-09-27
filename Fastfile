@@ -1,7 +1,7 @@
 lane :build do |options|
     xcodebuild(
         scheme: "QMServices",
-        configuration: "Debug",
+        configuration: "Release",
         clean: options[:clean],
         build: true,
         destination: "generic/platform=iOS",
