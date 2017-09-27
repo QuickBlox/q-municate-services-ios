@@ -25,21 +25,21 @@
 		2CE107F71B594BD800379D96 /* QMServicesManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 2CE107F51B594BD800379D96 /* QMServicesManager.h */; };
 		55013A801A1F68280030C134 /* QMServices.m in Sources */ = {isa = PBXBuildFile; fileRef = 55013A7F1A1F68280030C134 /* QMServices.m */; };
 		55013AEC1A1F72350030C134 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55013AEB1A1F72350030C134 /* Foundation.framework */; };
-		55A3651C1A2744A800C792C0 /* libQMAuthService.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 55A364E51A27378F00C792C0 /* libQMAuthService.a */; };
-		55A3651D1A2744A800C792C0 /* libQMContactListService.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 55A364F81A27378F00C792C0 /* libQMContactListService.a */; };
-		55A3651E1A2744A800C792C0 /* libQMDBStorage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 55A3651B1A27443B00C792C0 /* libQMDBStorage.a */; };
-		55A3653C1A2744ED00C792C0 /* libQMBaseService.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 55A364E71A27378F00C792C0 /* libQMBaseService.a */; };
-		55A3653D1A2744ED00C792C0 /* libQMChatCache.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 55A365341A2744ED00C792C0 /* libQMChatCache.a */; };
-		55A3653E1A2744ED00C792C0 /* libQMChatService.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 55A364EF1A27378F00C792C0 /* libQMChatService.a */; };
-		55A3653F1A2744ED00C792C0 /* libQMContactListCache.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 55A365391A2744ED00C792C0 /* libQMContactListCache.a */; };
 		584AFDCC1D13F462007D286D /* QMSLog.h in Headers */ = {isa = PBXBuildFile; fileRef = 584AFDCA1D13F462007D286D /* QMSLog.h */; };
 		584AFDCD1D13F462007D286D /* QMSLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 584AFDCB1D13F462007D286D /* QMSLog.m */; };
-		86E40FF11BDA4C50002B0496 /* libQMUsersCache.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 86F9CD721BDA28110021B6F0 /* libQMUsersCache.a */; };
-		86E40FF21BDA4C50002B0496 /* libQMUsersService.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 86F9CD571BDA27ED0021B6F0 /* libQMUsersService.a */; };
 		E0C3C38B1D632766003C0FB8 /* QMDeferredQueueManager.h in Headers */ = {isa = PBXBuildFile; fileRef = E0C3C3891D632766003C0FB8 /* QMDeferredQueueManager.h */; };
 		E0C3C3991D632FA9003C0FB8 /* QMDeferredQueueMemoryStorage.h in Headers */ = {isa = PBXBuildFile; fileRef = E0C3C3971D632FA9003C0FB8 /* QMDeferredQueueMemoryStorage.h */; };
-		FB5D709A1EF18A1D00E50084 /* libQMOpenGraphCache.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FB5D704B1EF14A2E00E50084 /* libQMOpenGraphCache.a */; };
-		FB5D70D11EF1922000E50084 /* libQMOpenGraphService.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FB5D70CE1EF190C800E50084 /* libQMOpenGraphService.a */; };
+		FBAC4B9F1F7C004200F12B80 /* libQMAuthService.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 55A364E51A27378F00C792C0 /* libQMAuthService.a */; };
+		FBAC4BA01F7C004200F12B80 /* libQMBaseService.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 55A364E71A27378F00C792C0 /* libQMBaseService.a */; };
+		FBAC4BA11F7C004200F12B80 /* libQMChatCache.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 55A365341A2744ED00C792C0 /* libQMChatCache.a */; };
+		FBAC4BA21F7C004200F12B80 /* libQMChatService.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 55A364EF1A27378F00C792C0 /* libQMChatService.a */; };
+		FBAC4BA31F7C004200F12B80 /* libQMContactListCache.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 55A365391A2744ED00C792C0 /* libQMContactListCache.a */; };
+		FBAC4BA41F7C004200F12B80 /* libQMContactListService.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 55A364F81A27378F00C792C0 /* libQMContactListService.a */; };
+		FBAC4BA51F7C004200F12B80 /* libQMDBStorage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 55A3651B1A27443B00C792C0 /* libQMDBStorage.a */; };
+		FBAC4BA61F7C004200F12B80 /* libQMOpenGraphCache.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FB5D704B1EF14A2E00E50084 /* libQMOpenGraphCache.a */; };
+		FBAC4BA71F7C004200F12B80 /* libQMOpenGraphService.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FB5D70CE1EF190C800E50084 /* libQMOpenGraphService.a */; };
+		FBAC4BA81F7C004200F12B80 /* libQMUsersCache.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 86F9CD721BDA28110021B6F0 /* libQMUsersCache.a */; };
+		FBAC4BA91F7C004200F12B80 /* libQMUsersService.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 86F9CD571BDA27ED0021B6F0 /* libQMUsersService.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -266,17 +266,17 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FB5D70D11EF1922000E50084 /* libQMOpenGraphService.a in Frameworks */,
-				55A3651E1A2744A800C792C0 /* libQMDBStorage.a in Frameworks */,
-				55A3653F1A2744ED00C792C0 /* libQMContactListCache.a in Frameworks */,
-				FB5D709A1EF18A1D00E50084 /* libQMOpenGraphCache.a in Frameworks */,
-				86E40FF11BDA4C50002B0496 /* libQMUsersCache.a in Frameworks */,
-				55A3653D1A2744ED00C792C0 /* libQMChatCache.a in Frameworks */,
-				86E40FF21BDA4C50002B0496 /* libQMUsersService.a in Frameworks */,
-				55A3653C1A2744ED00C792C0 /* libQMBaseService.a in Frameworks */,
-				55A3653E1A2744ED00C792C0 /* libQMChatService.a in Frameworks */,
-				55A3651C1A2744A800C792C0 /* libQMAuthService.a in Frameworks */,
-				55A3651D1A2744A800C792C0 /* libQMContactListService.a in Frameworks */,
+				FBAC4B9F1F7C004200F12B80 /* libQMAuthService.a in Frameworks */,
+				FBAC4BA01F7C004200F12B80 /* libQMBaseService.a in Frameworks */,
+				FBAC4BA11F7C004200F12B80 /* libQMChatCache.a in Frameworks */,
+				FBAC4BA21F7C004200F12B80 /* libQMChatService.a in Frameworks */,
+				FBAC4BA31F7C004200F12B80 /* libQMContactListCache.a in Frameworks */,
+				FBAC4BA41F7C004200F12B80 /* libQMContactListService.a in Frameworks */,
+				FBAC4BA51F7C004200F12B80 /* libQMDBStorage.a in Frameworks */,
+				FBAC4BA61F7C004200F12B80 /* libQMOpenGraphCache.a in Frameworks */,
+				FBAC4BA71F7C004200F12B80 /* libQMOpenGraphService.a in Frameworks */,
+				FBAC4BA81F7C004200F12B80 /* libQMUsersCache.a in Frameworks */,
+				FBAC4BA91F7C004200F12B80 /* libQMUsersService.a in Frameworks */,
 				55013AEC1A1F72350030C134 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -476,9 +476,9 @@
 			dependencies = (
 				55013B061A1F75870030C134 /* PBXTargetDependency */,
 				55013B0C1A1F78FC0030C134 /* PBXTargetDependency */,
+				55013A721A1F64F40030C134 /* PBXTargetDependency */,
 				55013B0E1A1F78FC0030C134 /* PBXTargetDependency */,
 				55013B101A1F78FC0030C134 /* PBXTargetDependency */,
-				55013A721A1F64F40030C134 /* PBXTargetDependency */,
 				55013B081A1F759F0030C134 /* PBXTargetDependency */,
 				86E40FF01BDA4C47002B0496 /* PBXTargetDependency */,
 				86E40FE41BDA4C3A002B0496 /* PBXTargetDependency */,

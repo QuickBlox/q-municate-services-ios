@@ -3,8 +3,11 @@ lane :build do
   gym(
     scheme: "QMServices", 
     configuration: "Release",
-    disable_xcpretty: true,
+    disable_xcpretty: false,
     skip_package_ipa: true,
-    codesigning_identity: ""
+    codesigning_identity: "",
+    clean: true,
+    archive_path: ""
+
     )
 end
