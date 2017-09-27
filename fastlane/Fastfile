@@ -1,15 +1,10 @@
-lane :build do |options|
-    xcodebuild(
-        scheme: "QMServices",
-        configuration: "Release",
-        clean: true,
-        skip_build_archive: true,
-        disable_xcpretty: false,
-        output_directory: "../builds",
-        destination: "generic/platform=iOS",
-        build_settings: {
-        "CODE_SIGNING_REQUIRED" => "NO",
-            "CODE_SIGN_IDENTITY" => ""
-        }
-)
+lane :build do
+
+  gym(
+    scheme: "QMServices", 
+    configuration: "Release",
+    disable_xcpretty: true,
+    skip_package_ipa: true,
+    codesigning_identity: ""
+    )
 end
