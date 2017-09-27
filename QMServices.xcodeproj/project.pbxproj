@@ -259,6 +259,7 @@
 		E0C3C3981D632FA9003C0FB8 /* QMDeferredQueueMemoryStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMDeferredQueueMemoryStorage.m; sourceTree = "<group>"; };
 		FB5D70461EF14A2E00E50084 /* QMOpenGraphCache.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMOpenGraphCache.xcodeproj; path = QMOpenGraphCache/QMOpenGraphCache.xcodeproj; sourceTree = "<group>"; };
 		FB5D70C91EF190C800E50084 /* QMOpenGraphService.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = QMOpenGraphService.xcodeproj; path = QMOpenGraphService/QMOpenGraphService.xcodeproj; sourceTree = "<group>"; };
+		FBAC4B6E1F7BA0DD00F12B80 /* Fastfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Fastfile; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -378,6 +379,7 @@
 		55C276A81A09162F005A0C38 = {
 			isa = PBXGroup;
 			children = (
+				FBAC4B6E1F7BA0DD00F12B80 /* Fastfile */,
 				553E72861AAF060A00449EFB /* LICENSE.txt */,
 				2CE107F01B594BCD00379D96 /* QMManagers */,
 				55013A321A1F63920030C134 /* QMServices */,
