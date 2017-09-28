@@ -25,6 +25,13 @@ NS_ASSUME_NONNULL_BEGIN
 @interface QBChat : NSObject
 
 /**
+ *  Get QBChat singleton
+ *
+ *  @return QBChat Chat service singleton
+ */
+@property (nonatomic, readonly, class) QBChat *instance;
+
+/**
  *  Determines whether chat is connected. Returns YES if the connection is open,
  *  and the stream has been properly established.
  *
@@ -49,13 +56,13 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, readonly, copy, nullable) QBUUser *currentUser;
 
-
 /**
  Current resource
  */
 @property (nonatomic, readonly, copy, nullable) NSString *currentResource;
 
 - (id)init NS_UNAVAILABLE;
++ (instancetype)new NS_UNAVAILABLE;
 
 //MARK: - Multicast Delegate
 
@@ -92,13 +99,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)forceReconnect;
 
 //MARK: - Base Messaging
-
-/**
- *  Get QBChat singleton
- *
- *  @return QBChat Chat service singleton
- */
-+ (instancetype)instance;
 
 /**
  *  Connect to QuickBlox Chat with completion.
@@ -288,16 +288,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)pingUserWithID:(NSUInteger)userID timeout:(NSTimeInterval)timeout completion:(QBPingCompleitonBlock)completion;
 
-//MARK: Deprecated
-
-/**
- *  Set an active privacy list. QBChatDelegate's method 'didSetActivePrivacyListWithName:' will be called if success or 'didNotSetActivePrivacyListWithName:error:' if there is an error
- *
- *  @param privacyListName name of privacy list
- *  @warning Deprecated in 2.9.3.
- */
-- (void)setActivePrivacyListWithName:(nullable NSString *)privacyListName
-DEPRECATED_MSG_ATTRIBUTE("Deprecated in 2.9.3. Use setDefaultPrivacyListWithName:");
 
 @end
 

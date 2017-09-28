@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		FB5D70B61EF1909300E50084 /* QMOpenGraphService.m in Sources */ = {isa = PBXBuildFile; fileRef = FB5D70B51EF1909300E50084 /* QMOpenGraphService.m */; };
-		FB5D70B71EF1909300E50084 /* QMOpenGraphService.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = FB5D70B41EF1909300E50084 /* QMOpenGraphService.h */; };
 		FB5D70D41EF193D100E50084 /* QMOpenGraphItem.m in Sources */ = {isa = PBXBuildFile; fileRef = FB5D70D31EF193D100E50084 /* QMOpenGraphItem.m */; };
 		FB5D70DD1EF19CD500E50084 /* QMOpenGraphMemoryStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = FB5D70DC1EF19CD500E50084 /* QMOpenGraphMemoryStorage.m */; };
 /* End PBXBuildFile section */
@@ -20,7 +19,6 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
-				FB5D70B71EF1909300E50084 /* QMOpenGraphService.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -28,7 +26,6 @@
 
 /* Begin PBXFileReference section */
 		FB5D70B11EF1909300E50084 /* libQMOpenGraphService.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libQMOpenGraphService.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		FB5D70B41EF1909300E50084 /* QMOpenGraphService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QMOpenGraphService.h; sourceTree = "<group>"; };
 		FB5D70B51EF1909300E50084 /* QMOpenGraphService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QMOpenGraphService.m; sourceTree = "<group>"; };
 		FB5D70D21EF193D100E50084 /* QMOpenGraphItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMOpenGraphItem.h; sourceTree = "<group>"; };
 		FB5D70D31EF193D100E50084 /* QMOpenGraphItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMOpenGraphItem.m; sourceTree = "<group>"; };
@@ -36,6 +33,7 @@
 		FB5D70DC1EF19CD500E50084 /* QMOpenGraphMemoryStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMOpenGraphMemoryStorage.m; sourceTree = "<group>"; };
 		FB805A471F050E74000B3E9F /* Quickblox.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Quickblox.xcconfig; path = ../Quickblox.xcconfig; sourceTree = "<group>"; };
 		FB805A491F050F94000B3E9F /* QMOpenGraphService-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QMOpenGraphService-Prefix.pch"; sourceTree = "<group>"; };
+		FBAC4BAA1F7C027000F12B80 /* QMOpenGraphService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMOpenGraphService.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,7 +68,7 @@
 		FB5D70B31EF1909300E50084 /* QMOpenGraphService */ = {
 			isa = PBXGroup;
 			children = (
-				FB5D70B41EF1909300E50084 /* QMOpenGraphService.h */,
+				FBAC4BAA1F7C027000F12B80 /* QMOpenGraphService.h */,
 				FB5D70B51EF1909300E50084 /* QMOpenGraphService.m */,
 				FB5D70D21EF193D100E50084 /* QMOpenGraphItem.h */,
 				FB5D70D31EF193D100E50084 /* QMOpenGraphItem.m */,
@@ -106,7 +104,7 @@
 		FB5D70A91EF1909300E50084 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0830;
+				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = QuickBlox;
 				TargetAttributes = {
 					FB5D70B01EF1909300E50084 = {
@@ -157,7 +155,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -165,7 +165,11 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -205,7 +209,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -213,7 +219,11 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
