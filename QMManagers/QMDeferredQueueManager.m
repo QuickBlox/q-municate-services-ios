@@ -141,7 +141,7 @@
         return;
     }
     
-    QMAsynchronousOperation *op =  [QMAsynchronousOperation asynchronousOperationWithID:message.ID];
+    QMAsynchronousBlockOperation *op =  [QMAsynchronousBlockOperation asynchronousOperationWithID:message.ID];
     
     [op setAsyncOperationBlock:^(dispatch_block_t  _Nonnull finish) {
         __weak typeof(self) weakSelf = self;
