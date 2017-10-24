@@ -17,7 +17,7 @@ static NSString *const kQMAttachmentContentTypeVideo = @"video/mp4";
 
 @implementation QBChatAttachment (QMFactory)
 
-+ (instancetype)initWithName:(nullable NSString *)name
+- (instancetype)initWithName:(nullable NSString *)name
                      fileURL:(nullable NSURL *)fileURL
                  contentType:(NSString *)contentType
               attachmentType:(NSString *)type {
@@ -36,7 +36,7 @@ static NSString *const kQMAttachmentContentTypeVideo = @"video/mp4";
     
     NSParameterAssert(fileURL);
     
-    return [self initWithName:@"Video attachment"
+    return [[self alloc] initWithName:@"Video attachment"
                       fileURL:fileURL
                   contentType:kQMAttachmentContentTypeVideo
                attachmentType:kQMAttachmentTypeVideo];
@@ -46,7 +46,7 @@ static NSString *const kQMAttachmentContentTypeVideo = @"video/mp4";
     
     NSParameterAssert(fileURL);
     
-    return [self initWithName:@"Voice message"
+    return [[self alloc] initWithName:@"Voice message"
                       fileURL:fileURL
                   contentType:kQMAttachmentContentTypeAudio
                attachmentType:kQMAttachmentTypeAudio];
@@ -63,7 +63,7 @@ static NSString *const kQMAttachmentContentTypeVideo = @"video/mp4";
     
     NSString *contentType = [NSString stringWithFormat:@"image/%@", hasAlpha ? @"png" : @"jpg"];
     
-    QBChatAttachment *attachment = [self initWithName:@"Image attachment"
+    QBChatAttachment *attachment = [[self alloc] initWithName:@"Image attachment"
                                               fileURL:nil
                                           contentType:contentType
                                        attachmentType:kQMAttachmentTypeImage];
