@@ -111,8 +111,6 @@
  
     
     [_uploadOperationQueue addOperation:uploadOperation];
-    
-    
 }
 
 - (BOOL)isUploadingMessageWithID:(NSString *)messageID {
