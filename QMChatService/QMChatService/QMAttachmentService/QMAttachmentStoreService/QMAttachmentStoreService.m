@@ -31,6 +31,7 @@
     self = [super init];
     
     if (self) {
+        
         _jpegCompressionQuality = 1.0;
         _storeDelegate = delegate;
         _imagesMemoryStorage = [NSMutableDictionary dictionary];
@@ -195,17 +196,12 @@
     NSAssert(dialogID, @"No ID");
     NSAssert(data.length, @"No data");
     
-    dispatch_block_t saveToCacheBlock = ^{
+    void(^saveToCacheBlock)(QBChatAttachment *attachment) = ^(QBChatAttachment *attachment){
         
         if (cacheType & QMAttachmentCacheTypeMemory) {
             
             [self.attachmentsMemoryStorage addAttachment:attachment
                                             forMessageID:messageID];
-            
-            [self updateAttachment:attachment
-                         messageID:messageID
-                          dialogID:dialogID];
-            
         }
     };
     
@@ -228,8 +224,13 @@
             }
             
             attachment.localFileURL = [NSURL fileURLWithPath:pathToFile];
+            
             dispatch_async(dispatch_get_main_queue(), ^{
-                saveToCacheBlock();
+                saveToCacheBlock(attachment);
+                [self.storeDelegate storeService:self
+                             didUpdateAttachment:attachment
+                                       messageID:messageID
+                                        dialogID:dialogID];
                 if (completion) {
                     completion();
                 }
@@ -237,7 +238,7 @@
         });
     }
     else {
-        saveToCacheBlock();
+        saveToCacheBlock(attachment);
         if (completion) {
             completion();
         }

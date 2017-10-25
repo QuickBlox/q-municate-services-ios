@@ -47,7 +47,6 @@
 
 @property (nonatomic, strong) QBMulticastDelegate <QMChatAttachmentServiceDelegate> *multicastDelegate;
 
-@property (nonatomic, strong) NSMutableDictionary *attachmentsStorage;
 @property (nonatomic, strong) NSMutableDictionary *attachmentsStates;
 @property (nonatomic, strong) NSMutableDictionary *runningOperations;
 
@@ -490,9 +489,18 @@
         self.runningOperations[message.ID] = attachmentOperation;
     }
     
-    QBChatAttachment *attachment = message.attachments.firstObject;
+    QBChatAttachment *cachedAttachmnet = [self.storeService cachedAttachmentWithID:attachmentID
+                                                                      forMessageID:message.ID];
+    if (cachedAttachmnet) {
+        attachmentOperation.attachment = cachedAttachmnet;
+        completionBlock(attachmentOperation);
+        return;
+    }
     
+    QBChatAttachment *attachment = message.attachments.firstObject;
+
     NSParameterAssert(attachment != nil);
+    
     __weak QMAttachmentOperation *weakOperation = attachmentOperation;
     
     if (attachment.attachmentType == QMAttachmentContentTypeAudio
@@ -522,13 +530,64 @@
                  
                  [self changeMessageAttachmentStatus:QMMessageAttachmentStatusLoaded
                                           forMessage:message];
+                 
                  if (attachment.attachmentType == QMAttachmentContentTypeImage) {
                      attachment.image = [UIImage imageWithData:data];
                  }
+                 
                  attachment.localFileURL = fileURL;
                  attachmentOperation.attachment = attachment;
+                 
+                 [self.storeService updateAttachment:attachment
+                                           messageID:message.ID
+                                            dialogID:message.dialogID];
+                 
                  completionBlock(attachmentOperation);
                  return;
+             }
+             
+             
+             if ([strongSelf.contentService.delegate respondsToSelector:@selector(attachmentContentService:
+                                                                                  shouldDownloadAttachment:
+                                                                                  messageID:)]
+                 
+                && ![strongSelf.contentService.delegate attachmentContentService:self.contentService
+                                                     shouldDownloadAttachment:attachment
+                                                                      messageID:message.ID]) {
+                    if (attachment.isPrepared) {
+                        
+                        [self.storeService.attachmentsMemoryStorage addAttachment:attachment forMessageID:message.ID];
+                        [strongSelf changeMessageAttachmentStatus:QMMessageAttachmentStatusLoaded
+                                                       forMessage:message];
+                        attachmentOperation.attachment = attachment;
+                        completionBlock(attachmentOperation);
+                    }
+                    else {
+                        
+                        [strongSelf changeMessageAttachmentStatus:QMMessageAttachmentStatusPreparing
+                                                       forMessage:message];
+                        [self prepareAttachment:attachment message:message completion:^(UIImage * _Nullable image, Float64 durationInSeconds, CGSize size, NSError * _Nullable error, BOOL cancelled) {
+                            
+                            if (!cancelled) {
+                                if (error) {
+                                    attachmentOperation.error = error;
+                                }
+                                else {
+                                    attachment.image = image;
+                                    attachment.duration = durationInSeconds;
+                                    
+                                    [self.storeService updateAttachment:attachment
+                                                              messageID:message.ID
+                                                               dialogID:message.dialogID];
+                                    
+                                    attachmentOperation.attachment = attachment;
+                                }
+                                completionBlock(attachmentOperation);
+                            }
+                        }];
+                    }
+                    
+                    return;
              }
              
              [strongSelf changeMessageAttachmentStatus:QMMessageAttachmentStatusLoading
@@ -537,6 +596,7 @@
              [strongSelf.contentService downloadAttachmentWithID:attachmentID
                                                          message:message
                                                    progressBlock:^(float progress) {
+                                                       
                                                        [strongSelf updateLoadingProgress:progress
                                                                            forAttachment:attachment
                                                                                  message:message];
@@ -570,9 +630,6 @@
                                                                                        completion:^
                                                           {
                                                               
-                                                              [strongSelf changeMessageAttachmentStatus:QMMessageAttachmentStatusLoaded
-                                                                                             forMessage:message];
-                                                              
                                                               if (downloadOperation && !downloadOperation.isCancelled) {
                                                                   if (!attachment.isPrepared) {
                                                                       [strongSelf prepareAttachment:attachment
@@ -590,14 +647,26 @@
                                                                                    [self.storeService updateAttachment:attachment messageID:message.ID dialogID:message.dialogID];
                                                                                    attachmentOperation.attachment = attachment;
                                                                                }
+                                                                               
+                                                                               [strongSelf changeMessageAttachmentStatus:QMMessageAttachmentStatusLoaded
+                                                                                                              forMessage:message];
+                                                                               
                                                                                completionBlock(attachmentOperation);
                                                                            }
                                                                        }];
                                                                   }
                                                                   else {
+                                                                      
+                                                                      [strongSelf changeMessageAttachmentStatus:QMMessageAttachmentStatusLoaded
+                                                                                                     forMessage:message];
+                                                                      
                                                                       attachmentOperation.attachment = attachment;
                                                                       completionBlock(attachmentOperation);
                                                                   }
+                                                              }
+                                                              else {
+                                                                  [strongSelf changeMessageAttachmentStatus:QMMessageAttachmentStatusNotLoaded
+                                                                                                 forMessage:message];
                                                               }
                                                           }];
                                                      }
@@ -636,11 +705,12 @@
     }
     else {
         QBChatAttachment *attachment = [message.attachments firstObject];
-        NSURL *fileURL = [self.storeService fileURLForAttachment:attachment
-                                                       messageID:message.ID
-                                                        dialogID:message.dialogID];
-        if (fileURL != nil) {
-            status = QMMessageAttachmentStatusLoaded;
+        if (attachment.ID == nil) {
+            return status;
+        }
+        QBChatAttachment *cachedAttachment = [self.storeService cachedAttachmentWithID:attachment.ID forMessageID:message.ID];
+        if (cachedAttachment.localFileURL) {
+             status = QMMessageAttachmentStatusLoaded;
         }
         else {
             BOOL downloading = [self.contentService isDownloadingMessageWithID:message.ID];
