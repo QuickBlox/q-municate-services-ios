@@ -708,8 +708,10 @@
         if (attachment.ID == nil) {
             return status;
         }
-        QBChatAttachment *cachedAttachment = [self.storeService cachedAttachmentWithID:attachment.ID forMessageID:message.ID];
-        if (cachedAttachment.localFileURL) {
+        NSURL *fileURL = [self.storeService fileURLForAttachment:attachment
+                                                       messageID:message.ID
+                                                        dialogID:message.dialogID];
+        if (fileURL) {
              status = QMMessageAttachmentStatusLoaded;
         }
         else {

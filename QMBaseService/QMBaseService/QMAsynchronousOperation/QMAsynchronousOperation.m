@@ -234,6 +234,15 @@ static inline NSString *QMKeyPathForState(QMAsynchronousOperationState state) {
     [super finish];
 }
 
++ (instancetype)asynchronousOperationWithID:(NSString *)operationID {
+    QMAsynchronousBlockOperation *operation = [QMAsynchronousBlockOperation operation];
+    
+    if (operationID.length != 0) {
+        operation.operationID = operationID;
+    }
+
+    return operation;
+}
 
 - (void)asyncTask {
     

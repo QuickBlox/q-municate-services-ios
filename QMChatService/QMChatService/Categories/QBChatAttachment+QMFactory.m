@@ -8,16 +8,16 @@
 
 #import "QBChatAttachment+QMFactory.h"
 
-static NSString *const kQMAttachmentTypeAudio = @"audio";
-static NSString *const kQMAttachmentTypeImage = @"image";
-static NSString *const kQMAttachmentTypeVideo = @"video";
+ NSString *const kQMAttachmentTypeAudio = @"audio";
+ NSString *const kQMAttachmentTypeImage = @"image";
+ NSString *const kQMAttachmentTypeVideo = @"video";
 
-static NSString *const kQMAttachmentContentTypeAudio = @"audio/mp4";
-static NSString *const kQMAttachmentContentTypeVideo = @"video/mp4";
+static NSString *const kQMAttachmentContentTypeM4AAudio = @"audio/x-m4a";
+static NSString *const kQMAttachmentContentTypeMP4Video = @"video/mp4";
 
 @implementation QBChatAttachment (QMFactory)
 
-- (instancetype)initWithName:(nullable NSString *)name
+- (instancetype)initWithName:(NSString *)name
                      fileURL:(nullable NSURL *)fileURL
                  contentType:(NSString *)contentType
               attachmentType:(NSString *)type {
@@ -38,7 +38,7 @@ static NSString *const kQMAttachmentContentTypeVideo = @"video/mp4";
     
     return [[self alloc] initWithName:@"Video attachment"
                       fileURL:fileURL
-                  contentType:kQMAttachmentContentTypeVideo
+                  contentType:kQMAttachmentContentTypeMP4Video
                attachmentType:kQMAttachmentTypeVideo];
 }
 
@@ -48,7 +48,7 @@ static NSString *const kQMAttachmentContentTypeVideo = @"video/mp4";
     
     return [[self alloc] initWithName:@"Voice message"
                       fileURL:fileURL
-                  contentType:kQMAttachmentContentTypeAudio
+                  contentType:kQMAttachmentContentTypeM4AAudio
                attachmentType:kQMAttachmentTypeAudio];
 }
 

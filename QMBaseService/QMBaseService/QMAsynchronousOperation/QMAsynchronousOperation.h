@@ -36,7 +36,7 @@ typedef  void(^QMCancellBlock)(void);
 @interface QMAsynchronousBlockOperation : QMAsynchronousOperation
 
 @property (nonatomic, copy, nullable) QMAsyncOperationBlock asyncOperationBlock;
-
++ (instancetype)asynchronousOperationWithID:(NSString *)operationID;
 @end
 
 
