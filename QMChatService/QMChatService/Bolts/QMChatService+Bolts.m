@@ -752,6 +752,23 @@ static NSString *const kQMChatServiceDomain = @"com.q-municate.chatservice";
     });
 }
 
+- (BFTask *)sendAttachmentMessage:(QBChatMessage *)attachmentMessage
+                         toDialog:(QBChatDialog *)dialog
+                   withAttachment:(QBChatAttachment *)attachment {
+    
+    return make_task(^(BFTaskCompletionSource * _Nonnull source) {
+        
+        [self sendAttachmentMessage:attachmentMessage
+                           toDialog:dialog
+                     withAttachment:attachment
+                         completion:^(NSError * _Nullable error) {
+                             error ?
+                             [source setError:error] :
+                             [source setResult:nil];
+                         }];
+    });
+}
+
 //MARK: - Message marking
 
 - (BFTask *)markMessageAsDelivered:(QBChatMessage *)message {
