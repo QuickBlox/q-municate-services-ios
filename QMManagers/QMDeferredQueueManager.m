@@ -190,14 +190,11 @@
 - (void)internalDefferedActionForMessage:(QBChatMessage *)message
                           withCompletion:(QBChatCompletionBlock)completion {
     
-    BOOL messageIsExisted = [self.deferredQueueMemoryStorage containsMessage:message];
-    NSParameterAssert(messageIsExisted);
+    NSParameterAssert([self.deferredQueueMemoryStorage containsMessage:message]);
     
-    if (messageIsExisted
-        && [self.multicastDelegate respondsToSelector:@selector(deferredQueueManager:
+    if ([self.multicastDelegate respondsToSelector:@selector(deferredQueueManager:
                                                                 performActionWithMessage:
                                                                 withCompletion:)]) {
-        
         [self.multicastDelegate deferredQueueManager:self
                             performActionWithMessage:message
                                       withCompletion:completion];
@@ -241,6 +238,5 @@
 - (void)cancelAllOperations {
     [_deferredOperationQueue cancelAllOperations];
 }
-
 
 @end
