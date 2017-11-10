@@ -8,6 +8,7 @@
 
 #import <Quickblox/Quickblox.h>
 #import "QBChatAttachment+QMCustomParameters.h"
+#import <CoreLocation/CLLocation.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -25,6 +26,7 @@ extern NSString *const kQMAttachmentTypeVideo;
 + (instancetype)videoAttachmentWithFileURL:(NSURL *)fileURL;
 + (instancetype)audioAttachmentWithFileURL:(NSURL *)fileURL;
 + (instancetype)imageAttachmentWithImage:(UIImage *)image;
++ (instancetype)locationAttachmentWithCoordinate:(CLLocationCoordinate2D)locationCoordinate;
 
 @end
 

@@ -7,10 +7,15 @@
 //
 
 #import "QBChatAttachment+QMFactory.h"
+#import "QBChatAttachment+QMCustomData.h"
 
  NSString *const kQMAttachmentTypeAudio = @"audio";
  NSString *const kQMAttachmentTypeImage = @"image";
  NSString *const kQMAttachmentTypeVideo = @"video";
+ NSString *const kQMAttachmentTypeLocation = @"location";
+
+static NSString * const kQMLocationLatitudeKey = @"lat";
+static NSString * const kQMLocationLongitudeKey = @"lng";
 
 static NSString *const kQMAttachmentContentTypeM4AAudio = @"audio/x-m4a";
 static NSString *const kQMAttachmentContentTypeMP4Video = @"video/mp4";
@@ -52,6 +57,22 @@ static NSString *const kQMAttachmentContentTypeMP4Video = @"video/mp4";
                attachmentType:kQMAttachmentTypeAudio];
 }
 
++ (instancetype)locationAttachmentWithCoordinate:(CLLocationCoordinate2D)locationCoordinate {
+    
+    QBChatAttachment *locationAttachment = [[self alloc] initWithName:@"Location"
+                                                              fileURL:nil
+                                                          contentType:kQMAttachmentTypeLocation
+                                                       attachmentType:kQMAttachmentTypeLocation];
+    
+    locationAttachment.context[kQMLocationLatitudeKey] =
+    [NSString stringWithFormat:@"%lf", locationCoordinate.latitude];
+    locationAttachment.context[kQMLocationLongitudeKey] =
+    [NSString stringWithFormat:@"%lf", locationCoordinate.longitude];
+    [locationAttachment synchronize];
+    
+    return locationAttachment;
+}
+
 + (instancetype)imageAttachmentWithImage:(UIImage *)image {
     
     NSParameterAssert(image);
@@ -71,5 +92,7 @@ static NSString *const kQMAttachmentContentTypeMP4Video = @"video/mp4";
     
     return attachment;
 }
+
+
 
 @end
