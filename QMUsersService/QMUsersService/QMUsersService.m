@@ -123,9 +123,8 @@
     return [[self getUsersWithIDs:@[@(userID)]
                              page:[self pageForCount:1]
                         forceLoad:forceLoad]
-            continueWithBlock:^id(BFTask *task)
-            {
-                return task.error ? task : [BFTask taskWithResult:[task.result firstObject]];
+            continueWithSuccessBlock:^id(BFTask *task) {
+                return [BFTask taskWithResult:[task.result firstObject]];
             }];
 }
 
