@@ -12,10 +12,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-extern NSString *const kQMAttachmentTypeAudio;
-extern NSString *const kQMAttachmentTypeImage;
-extern NSString *const kQMAttachmentTypeVideo;
-
 @interface QBChatAttachment (QMFactory)
 
 - (instancetype)initWithName:(NSString *)name

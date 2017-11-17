@@ -164,7 +164,7 @@
               attachment.size = tBlob.size;
               
               __strong typeof(weakOperation) strongOperation = weakOperation;
-              strongOperation.operationID = tBlob.UID;
+              strongOperation.attachmentID = tBlob.UID;
               if (completion) {
                   completion(strongOperation);
               }

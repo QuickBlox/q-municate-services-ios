@@ -153,6 +153,10 @@ static inline NSString *QMKeyPathForState(QMAsynchronousOperationState state) {
     
     self.state = QMAsynchronousOperationStateStateCancelled;
     
+    if (self.objectToCancel) {
+        [self.objectToCancel cancel];
+    }
+    
     if (_cancelBlock) {
         _cancelBlock();
         _cancelBlock = nil;

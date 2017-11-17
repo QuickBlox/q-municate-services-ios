@@ -9,10 +9,7 @@
 #import "QBChatAttachment+QMFactory.h"
 #import "QBChatAttachment+QMCustomData.h"
 
- NSString *const kQMAttachmentTypeAudio = @"audio";
- NSString *const kQMAttachmentTypeImage = @"image";
- NSString *const kQMAttachmentTypeVideo = @"video";
- NSString *const kQMAttachmentTypeLocation = @"location";
+
 
 static NSString * const kQMLocationLatitudeKey = @"lat";
 static NSString * const kQMLocationLongitudeKey = @"lng";
