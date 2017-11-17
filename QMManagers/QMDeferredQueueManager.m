@@ -115,10 +115,22 @@
     }
 }
 
-- (void)removeMessage:(QBChatMessage *)message {
+- (void)removeMessage:(QBChatMessage *)message
+      andCallDelegate:(BOOL)shouldCallDelegate {
     
     [self.deferredQueueMemoryStorage removeMessage:message];
     [self.deferredOperationQueue cancelOperationWithID:message.ID];
+    
+    if (shouldCallDelegate) {
+        if ([self.multicastDelegate respondsToSelector:@selector(deferredQueueManager:didRemoveMessageLocally:)]) {
+            [self.multicastDelegate deferredQueueManager:self
+                                 didRemoveMessageLocally:message];
+        }
+    }
+}
+- (void)removeMessage:(QBChatMessage *)message {
+    
+    [self removeMessage:message andCallDelegate:YES];
 }
 
 - (QMMessageStatus)statusForMessage:(QBChatMessage *)message {
