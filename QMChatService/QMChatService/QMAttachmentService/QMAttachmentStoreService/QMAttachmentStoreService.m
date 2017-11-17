@@ -153,7 +153,7 @@
              cacheType:(QMAttachmentCacheType)cacheType
              messageID:(NSString *)messageID
               dialogID:(NSString *)dialogID
-            completion:(dispatch_block_t)completion {
+            completion:(void(^)(NSURL *fileURL))completion {
     
     NSAssert(attachment.ID, @"No ID");
     NSAssert(messageID, @"No ID");
@@ -179,7 +179,7 @@
     }
     else {
         if (completion) {
-            completion();
+            completion(nil);
         }
     }
 }
@@ -189,7 +189,7 @@
        cacheType:(QMAttachmentCacheType)cacheType
        messageID:(NSString *)messageID
         dialogID:(NSString *)dialogID
-      completion:(dispatch_block_t)completion {
+      completion:(void(^)(NSURL *_Nullable fileURL))completion {
     
     NSAssert(attachment.ID, @"No ID");
     NSAssert(messageID, @"No ID");
@@ -221,18 +221,14 @@
             
             if  (![_fileManager createFileAtPath:pathToFile contents:data attributes:nil]) {
                 QMSLog(@"Error was code: %d - message: %s", errno, strerror(errno));
+                completion(nil);
+                return;
             }
-            
-            attachment.localFileURL = [NSURL fileURLWithPath:pathToFile];
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 saveToCacheBlock(attachment);
-                [self.storeDelegate storeService:self
-                             didUpdateAttachment:attachment
-                                       messageID:messageID
-                                        dialogID:dialogID];
                 if (completion) {
-                    completion();
+                    completion([NSURL fileURLWithPath:pathToFile]);
                 }
             });
         });
@@ -240,7 +236,7 @@
     else {
         saveToCacheBlock(attachment);
         if (completion) {
-            completion();
+            completion(nil);
         }
     }
 }
