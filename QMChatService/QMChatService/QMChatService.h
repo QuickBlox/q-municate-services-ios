@@ -352,7 +352,6 @@ typedef void(^QMCacheCollection)(NSArray * _Nullable collection);
  */
 - (void)earlierMessagesWithChatDialogID:(NSString *)chatDialogID
                              completion:(nullable void(^)(QBResponse *response, NSArray<QBChatMessage *> * _Nullable messages))completion;
-
 //MARK: - Fetch dialogs
 
 /**
