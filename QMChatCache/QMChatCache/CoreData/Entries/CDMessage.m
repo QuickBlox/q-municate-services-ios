@@ -1,10 +1,7 @@
 #import "CDMessage.h"
 #import "CDAttachment.h"
 #import "NSManagedObject+QMCDRecord.h"
-
-@interface CDMessage ()
-
-@end
+#import "QMSLog.h"
 
 @implementation CDMessage
 
@@ -36,6 +33,12 @@
 
     message.attachments = attachments;
     
+    if (!self.changedValues.count) {
+        [self.managedObjectContext refreshObject:self mergeChanges:NO];
+    }
+    else if (!self.isInserted){
+        QMSLog(@"Cache > %@ > %@: %@", self.class, self.messageID ,self.changedValues);
+    }
     return message;
 }
 

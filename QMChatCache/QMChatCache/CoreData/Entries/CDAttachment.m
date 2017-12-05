@@ -1,4 +1,5 @@
 #import "CDAttachment.h"
+#import "QMSLog.h"
 
 @implementation CDAttachment
 
@@ -26,6 +27,13 @@
     self.mimeType = attachment.type;
 
     self.customParameters = [self binaryDataWithObject:attachment.customParameters];
+    
+    if (!self.changedValues.count) {
+        [self.managedObjectContext refreshObject:self mergeChanges:NO];
+    }
+    else if (!self.isInserted){
+         QMSLog(@"Cache > %@ > %@: %@", self.class, self.id ,self.changedValues);
+    }
 }
 
 - (NSData *)binaryDataWithObject:(id)object {

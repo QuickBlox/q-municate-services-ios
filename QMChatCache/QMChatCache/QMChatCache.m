@@ -195,12 +195,6 @@ static QMChatCache *_chatCacheInstance = nil;
             [cachedDialog updateWithQBChatDialog:dialog];
         }
         
-        
-        QMSLog(@"[%@] Dialogs to insert %tu, update %tu",
-               NSStringFromClass([self class]),
-               ctx.insertedObjects.count,
-               ctx.updatedObjects.count);
-        
     } finish:completion];
 }
 
@@ -308,11 +302,6 @@ static QMChatCache *_chatCacheInstance = nil;
             [cachedDialog addMessagesObject:procMessage];
         }
         
-        QMSLog(@"[%@] Messages to insert %tu, update %tu",
-               NSStringFromClass([self class]),
-               ctx.insertedObjects.count,
-               ctx.updatedObjects.count);
-        
     } finish:completion];
 }
 
@@ -363,11 +352,9 @@ static QMChatCache *_chatCacheInstance = nil;
 - (void)truncateAll:(nullable dispatch_block_t)completion {
     
     [self save:^(NSManagedObjectContext *ctx) {
-        
         [CDDialog QM_truncateAllInContext:ctx];
         [CDMessage QM_truncateAllInContext:ctx];
         [CDAttachment QM_truncateAllInContext:ctx];
-        
     } finish:completion];
 }
 

@@ -49,3 +49,48 @@ BFTask *make_task(QMTaskSourceBlock b) {
 }
 
 @end
+
+@implementation BFTask (QMBaseService)
+
+- (BFTask<QMBFTaskErrorProtocol> *)successComplete:(dispatch_block_t)block {
+    
+    return [self continueWithBlock:^id _Nullable(BFTask * _Nonnull t) {
+        if (!t.error && block) {
+            block();
+        }
+        return t;
+    }];
+}
+
+- (BFTask<QMBFTaskErrorProtocol> *)successResult:(QMTaskBlock)block  {
+    
+    return [self continueWithBlock:^id _Nullable(BFTask * _Nonnull t) {
+        if (!t.error && block) {
+            block(t);
+        }
+        return t;
+    }];
+}
+
+- (BFTask<QMBFTaskErrorProtocol> *)complete:(dispatch_block_t)block {
+ 
+    return [self continueWithBlock:^id _Nullable(BFTask * _Nonnull t) {
+        if (block) {
+            block();
+        }
+        return t;
+    }];
+}
+
+
+- (BFTask *)errorBlock:(void (^)(NSError * _Nonnull))block {
+    
+    return [self continueWithBlock:^id _Nullable(BFTask * _Nonnull t) {
+        if (t.error && block) {
+            block(t.error);
+        }
+        return t;
+    }];
+}
+
+@end

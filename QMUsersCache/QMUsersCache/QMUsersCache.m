@@ -83,11 +83,6 @@ static QMUsersCache *_usersCacheInstance = nil;
             [cachedUser updateWithQBUser:user];
         }
         
-        QMSLog(@"[%@] Users to insert %tu, update %tu",
-               NSStringFromClass([QMUsersCache class]),
-               ctx.insertedObjects.count,
-               ctx.updatedObjects.count);
-        
     } finish:^{
         [source setResult:nil];
     }];

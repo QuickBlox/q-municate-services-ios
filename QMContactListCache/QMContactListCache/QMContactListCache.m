@@ -70,10 +70,6 @@ static QMContactListCache *_chatCacheInstance = nil;
                                                  inContext:ctx];
         [item updateWithQBContactListItem:contactListItem];
         
-        QMSLog(@"[%@] ContactListItems to insert %tu, update %tu", NSStringFromClass([self class]),
-               ctx.insertedObjects.count,
-               ctx.updatedObjects.count);
-        
     } finish:completion];
 }
 
@@ -90,10 +86,6 @@ static QMContactListCache *_chatCacheInstance = nil;
                                                      inContext:ctx];
             [item updateWithQBContactListItem:contactListItem];
         }
-        
-        QMSLog(@"[%@] ContactListItems to insert %tu, update %tu", NSStringFromClass([self class]),
-               ctx.insertedObjects.count,
-               ctx.updatedObjects.count);
         
     } finish:completion];
 }
@@ -126,7 +118,6 @@ static QMContactListCache *_chatCacheInstance = nil;
     } finish:completion];
 }
 
-
 - (NSArray<QBContactListItem *> *)allContactListItems {
     
     __block NSArray<QBContactListItem *> *result = nil;
@@ -136,7 +127,6 @@ static QMContactListCache *_chatCacheInstance = nil;
     
     return result;
 }
-
 
 - (void)contactListItems:(void(^)(NSArray<QBContactListItem *> *contactListItems))completion {
     

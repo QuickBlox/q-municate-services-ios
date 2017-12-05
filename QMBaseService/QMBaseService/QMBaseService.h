@@ -38,4 +38,22 @@ BFTask *make_task(QMTaskSourceBlock b);
 
 @end
 
+@protocol QMBFTaskErrorProtocol
+- (BFTask *)errorResult:(void (^)(NSError *error))block;
+@end
+@interface BFTask<__covariant ResultType> (QMBaseService) <QMBFTaskErrorProtocol>
+
+
+typedef void(^QMTaskBlock)(BFTask<ResultType> *t);
+typedef BFTask * _Nullable( ^QMContinueTaskBlock)(void);
+
+- (BFTask<QMBFTaskErrorProtocol> *)continueSuccess:(QMContinueTaskBlock)block;
+- (BFTask<QMBFTaskErrorProtocol> *)successResult:(QMTaskBlock)block;
+- (BFTask<QMBFTaskErrorProtocol> *)successComplete:(dispatch_block_t)block;
+- (BFTask<QMBFTaskErrorProtocol> *)complete:(dispatch_block_t)block;
+
+@end
+
+
+
 NS_ASSUME_NONNULL_END
