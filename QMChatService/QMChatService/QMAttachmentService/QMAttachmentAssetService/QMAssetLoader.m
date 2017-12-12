@@ -51,6 +51,7 @@ static inline NSArray *QMAssetKeysArrayForOptions(QMAssetLoaderKeyOptions option
 @property (copy, nonatomic) QMAssetLoaderCompletionBlock completion;
 @property (assign, nonatomic) QMAssetLoaderKeyOptions assetKeyOptions;
 @property (nonatomic, strong) dispatch_queue_t assetQueue;
+
 @end
 
 @implementation QMAssetOperation

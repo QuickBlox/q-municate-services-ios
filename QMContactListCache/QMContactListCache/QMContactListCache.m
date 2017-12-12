@@ -15,14 +15,14 @@
 
 @implementation QMContactListCache
 
-static QMContactListCache *_chatCacheInstance = nil;
+static QMContactListCache *_contactListcCacheInstance = nil;
 
 //MARK: - Singleton
 
 + (QMContactListCache *)instance {
     
-    NSAssert(_chatCacheInstance, @"You must first perform @selector(setupDBWithStoreNamed:)");
-    return _chatCacheInstance;
+    NSAssert(_contactListcCacheInstance, @"You must first perform @selector(setupDBWithStoreNamed:)");
+    return _contactListcCacheInstance;
 }
 
 //MARK: - Configure store
@@ -41,7 +41,7 @@ static QMContactListCache *_chatCacheInstance = nil;
                              inBundleNamed:@"QMContactListCacheModel.bundle"
                                  fromClass:[self class]];
     
-    _chatCacheInstance =
+    _contactListcCacheInstance =
     [[QMContactListCache alloc] initWithStoreNamed:storeName
                                              model:model
                         applicationGroupIdentifier:appGroupIdentifier];
@@ -49,8 +49,8 @@ static QMContactListCache *_chatCacheInstance = nil;
 
 + (void)cleanDBWithStoreName:(NSString *)name {
     
-    if (_chatCacheInstance) {
-        _chatCacheInstance = nil;
+    if (_contactListcCacheInstance) {
+        _contactListcCacheInstance = nil;
     }
     
     [super cleanDBWithStoreName:name];
@@ -131,7 +131,7 @@ static QMContactListCache *_chatCacheInstance = nil;
 - (void)contactListItems:(void(^)(NSArray<QBContactListItem *> *contactListItems))completion {
     
     [self performBackgroundQueue:^(NSManagedObjectContext *ctx) {
-        
+
         NSArray<QBContactListItem *> *result =
         [[CDContactListItem QM_findAllInContext:ctx] toQBContactListItems];
         

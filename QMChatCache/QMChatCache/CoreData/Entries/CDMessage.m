@@ -7,7 +7,7 @@
 
 - (QBChatMessage *)toQBChatMessage {
     
-    QBChatMessage *message = [[QBChatMessage alloc] init];
+    QBChatMessage *message = [QBChatMessage alloc];
     
     message.ID = self.messageID;
     message.text = self.text;
@@ -15,23 +15,22 @@
     message.senderID = self.senderID.intValue;
     message.dateSent = self.dateSend;
     message.dialogID = self.dialogID;
-    message.customParameters = [[self objectsWithBinaryData:self.customParameters] mutableCopy];
     message.updatedAt = self.updateAt;
     message.createdAt = self.createAt;
     message.delayed = self.delayed.boolValue;
-    message.readIDs = [[self objectsWithBinaryData:self.readIDs] copy];
-    message.deliveredIDs = [[self objectsWithBinaryData:self.deliveredIDs] copy];
+    message.customParameters = [[NSKeyedUnarchiver unarchiveObjectWithData:self.customParameters] mutableCopy];
+    message.readIDs = [NSKeyedUnarchiver unarchiveObjectWithData:self.readIDs];
+    message.deliveredIDs = [NSKeyedUnarchiver unarchiveObjectWithData:self.deliveredIDs];
 
-    NSMutableArray *attachments = [NSMutableArray arrayWithCapacity:self.attachments.count];
+    NSMutableArray<QBChatAttachment *> *attachments =
+    [NSMutableArray arrayWithCapacity:self.attachments.count];
     
     for (CDAttachment *cdAttachment in self.attachments) {
-        
         QBChatAttachment *attachment = [cdAttachment toQBChatAttachment];
-        
         [attachments addObject:attachment];
     }
 
-    message.attachments = attachments;
+    message.attachments = [attachments copy];
     
     if (!self.changedValues.count) {
         [self.managedObjectContext refreshObject:self mergeChanges:NO];
@@ -84,11 +83,6 @@
     
     NSData *binaryData = [NSKeyedArchiver archivedDataWithRootObject:object];
     return binaryData;
-}
-
-- (id)objectsWithBinaryData:(NSData *)data {
-    
-    return [NSKeyedUnarchiver unarchiveObjectWithData:data];
 }
 
 @end

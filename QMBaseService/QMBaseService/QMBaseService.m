@@ -62,11 +62,11 @@ BFTask *make_task(QMTaskSourceBlock b) {
     }];
 }
 
-- (BFTask<QMBFTaskErrorProtocol> *)successResult:(QMTaskBlock)block  {
+- (BFTask<QMBFTaskErrorProtocol> *)successResult:(QMTaskResultBlock)block  {
     
     return [self continueWithBlock:^id _Nullable(BFTask * _Nonnull t) {
         if (!t.error && block) {
-            block(t);
+            block(t.result);
         }
         return t;
     }];
@@ -82,8 +82,7 @@ BFTask *make_task(QMTaskSourceBlock b) {
     }];
 }
 
-
-- (BFTask *)errorBlock:(void (^)(NSError * _Nonnull))block {
+- (BFTask *)errorResult:(void (^)(NSError * _Nonnull))block {
     
     return [self continueWithBlock:^id _Nullable(BFTask * _Nonnull t) {
         if (t.error && block) {
@@ -92,5 +91,4 @@ BFTask *make_task(QMTaskSourceBlock b) {
         return t;
     }];
 }
-
 @end
