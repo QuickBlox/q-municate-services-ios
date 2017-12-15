@@ -38,6 +38,14 @@ NSString  *kQMAttachmentContentTypeKey = @"content-type";
     return (__bridge_transfer NSString *)extension;
 }
 
+- (NSString *)typeIdentifier {
+    
+    CFStringRef MIMEType = (__bridge CFStringRef)self.contentType;
+    CFStringRef uti = UTTypeCreatePreferredIdentifierForTag(kUTTagClassMIMEType, MIMEType, NULL);
+    return (__bridge_transfer NSString *)uti;
+}
+
+
 - (NSString *)contentType {
     
     NSString *contentType = self[kQMAttachmentContentTypeKey];
