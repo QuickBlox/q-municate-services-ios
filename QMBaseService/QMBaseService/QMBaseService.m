@@ -48,47 +48,10 @@ BFTask *make_task(QMTaskSourceBlock b) {
     
 }
 
+- (BOOL)isEmpty {
+    NSParameterAssert(nil);
+    return NO;
+}
+
 @end
 
-@implementation BFTask (QMBaseService)
-
-- (BFTask<QMBFTaskErrorProtocol> *)successComplete:(dispatch_block_t)block {
-    
-    return [self continueWithBlock:^id _Nullable(BFTask * _Nonnull t) {
-        if (!t.error && block) {
-            block();
-        }
-        return t;
-    }];
-}
-
-- (BFTask<QMBFTaskErrorProtocol> *)successResult:(QMTaskResultBlock)block  {
-    
-    return [self continueWithBlock:^id _Nullable(BFTask * _Nonnull t) {
-        if (!t.error && block) {
-            block(t.result);
-        }
-        return t;
-    }];
-}
-
-- (BFTask<QMBFTaskErrorProtocol> *)complete:(dispatch_block_t)block {
- 
-    return [self continueWithBlock:^id _Nullable(BFTask * _Nonnull t) {
-        if (block) {
-            block();
-        }
-        return t;
-    }];
-}
-
-- (BFTask *)errorResult:(void (^)(NSError * _Nonnull))block {
-    
-    return [self continueWithBlock:^id _Nullable(BFTask * _Nonnull t) {
-        if (t.error && block) {
-            block(t.error);
-        }
-        return t;
-    }];
-}
-@end

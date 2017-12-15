@@ -98,8 +98,9 @@
         }];
         
         dispatch_group_enter(logoutGroup);
-        [[QMUsersCache.instance  deleteAllUsers] complete:^{
+        [[QMUsersCache.instance  deleteAllUsers] continueWithBlock:^id _Nullable(BFTask * __unused t) {
             dispatch_group_leave(logoutGroup);
+            return nil;
         }];
         
         dispatch_group_notify(logoutGroup, dispatch_get_main_queue(), ^{
@@ -114,21 +115,26 @@
 - (void)logInWithUser:(QBUUser *)user
            completion:(void (^)(BOOL success, NSString *errorMessage))completion {
     
-    [[[self.authService loginWithUser:user] successComplete:^{
-           
-           [self.chatService connectWithCompletionBlock:^(NSError *error) {
-               
-               if (completion) {
-                   completion(!error, error.localizedDescription);
-               }
-           }];
-           
-       }] errorResult:^(NSError * _Nonnull error) {
-           
-           if (completion ) {
-               completion(NO, error.localizedDescription);
-           }
-       }];
+    [[self.authService loginWithUser:user] continueWithBlock:^id _Nullable(BFTask<QBUUser *> * _Nonnull t) {
+        
+        if (t.isFaulted) {
+            
+            if (completion ) {
+                completion(NO, t.error.localizedDescription);
+            }
+        }
+        else {
+            
+            [self.chatService connectWithCompletionBlock:^(NSError *error) {
+                
+                if (completion) {
+                    completion(!error, error.localizedDescription);
+                }
+            }];
+        }
+        
+        return nil;
+    }];
 }
 
 - (void)handleErrorResponse:(QBResponse *)response {
