@@ -222,8 +222,12 @@
                           cancellationToken:cancellationToken];
         
     }] continueWithSuccessBlock:^id _Nullable(BFTask * _Nonnull t) {
-        return [self taskCompleteBlob:t.result
-                    cancellationToken:cancellationToken];
+        return [[self taskCompleteBlob:t.result
+                     cancellationToken:cancellationToken] continueWithSuccessBlock:^id _Nullable(BFTask<QBCBlob *> * _Nonnull t) {
+            attachment.size = data.length;
+            attachment.ID = t.result.UID;
+            return [BFTask taskWithResult:attachment];
+        }];
     }];
 }
 
@@ -248,8 +252,12 @@
                          cancellationToken:cancellationToken];
         
     }] continueWithSuccessBlock:^id _Nullable(BFTask * _Nonnull t) {
-        return [self taskCompleteBlob:t.result
-                    cancellationToken:cancellationToken];
+        return [[self taskCompleteBlob:t.result
+                     cancellationToken:cancellationToken] continueWithSuccessBlock:^id _Nullable(BFTask<QBCBlob *> * _Nonnull t) {
+            attachment.size = fileSize;
+            attachment.ID = t.result.UID;
+            return [BFTask taskWithResult:attachment];
+        }];
     }];
 }
 
@@ -316,6 +324,7 @@
         QBRequest *request = [QBRequest createBlob:blob
                                       successBlock:^(QBResponse * _Nonnull response, QBCBlob * _Nonnull tBlob)
                               {
+                                  tBlob.size = size;
                                   [source setResult:tBlob];
                               } errorBlock:^(QBResponse * _Nonnull response) {
                                   [source setError:response.error.error];
