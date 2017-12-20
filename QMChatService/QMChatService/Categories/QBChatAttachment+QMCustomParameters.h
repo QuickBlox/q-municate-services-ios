@@ -80,6 +80,11 @@ extern NSString *const kQMAttachmentTypeLocation;
  */
 @property (nonatomic, assign, getter=isPrepared, readonly) BOOL prepared;
 
+/**
+ *  The NSData instance that identifies attachment resource.
+ */
+@property (nonatomic, copy) NSData *fileData;
+
 - (NSURL *)remoteURLWithToken:(BOOL)withToken;
 - (NSURL *)remoteURL;
 
