@@ -15,6 +15,7 @@
 
 @end
 
+
 @interface QMMediaUploadService()
 
 @property (strong, nonatomic) NSOperationQueue *uploadOperationQueue;
@@ -23,6 +24,7 @@
 @end
 
 @implementation QMMediaUploadService
+
 
 
 - (instancetype)init {
@@ -203,33 +205,31 @@
 
 
 
-//MARK: BFTask methods
+//MARK: BFTask Public methods
 
 + (BFTask <QBChatAttachment*> *)taskUploadAttachment:(QBChatAttachment *)attachment
                                             withData:(NSData *)data
                                        progressBlock:(_Nullable QMAttachmentProgressBlock)progressBlock
                                    cancellationToken:(BFCancellationToken *)cancellationToken {
     
-    return [[[self taskCreateBlobWithName:attachment.name
-                                 fileName:attachment.name
-                              contentType:attachment.contentType
-                                     size:data.length
-                                 isPublic:YES
-                        cancellationToken:cancellationToken] continueWithSuccessBlock:^id _Nullable(BFTask<QBCBlob *> * _Nonnull t) {
-        return [self taskUploadFileWithData:data
-                                    forBlob:t.result
-                              progressBlock:progressBlock
-                          cancellationToken:cancellationToken];
-        
-    }] continueWithSuccessBlock:^id _Nullable(BFTask * _Nonnull t) {
-        return [[self taskCompleteBlob:t.result
-                     cancellationToken:cancellationToken] continueWithSuccessBlock:^id _Nullable(BFTask<QBCBlob *> * _Nonnull t) {
-            attachment.size = data.length;
-            attachment.ID = t.result.UID;
-            return [BFTask taskWithResult:attachment];
-        }];
-    }];
+    __block QBCBlob *blob = nil;
+    
+    return  [[[[[taskCreateBlob(attachment, data.length, cancellationToken)
+                 continueWithSuccessBlock:^id _Nullable(BFTask<QBCBlob *> * _Nonnull t) {
+                     blob = t.result;
+                     return t;
+                 }]
+                continueWithSuccessBlock:uploadWithDataBlock(data, progressBlock, cancellationToken)]
+               continueWithSuccessBlock:continuationCompleteBlobBlock(cancellationToken)]
+              continueWithSuccessBlock:^id _Nullable(BFTask * _Nonnull t) {
+                  attachment.size = data.length;
+                  attachment.ID = t.result;
+                  return [BFTask taskWithResult:attachment];
+                  
+              }] continueWithBlock:continuationCompletionBlock(blob)];
+    
 }
+
 
 + (BFTask <QBChatAttachment*> *)taskUploadAttachment:(QBChatAttachment *)attachment
                                          withFileURL:(NSURL *)fileURL
@@ -240,31 +240,134 @@
     NSNumber *fileSizeNumber = fileAttributes[NSFileSize];
     NSUInteger fileSize = fileSizeNumber.unsignedIntegerValue;
     
-    return [[[self taskCreateBlobWithName:attachment.name
-                                 fileName:attachment.name
-                              contentType:attachment.contentType
-                                     size:fileSize
-                                 isPublic:YES
-                        cancellationToken:cancellationToken] continueWithSuccessBlock:^id _Nullable(BFTask<QBCBlob *> * _Nonnull t) {
-        return [self taskUploadFileWithURL:fileURL
-                                   forBlob:t.result
-                             progressBlock:progressBlock
-                         cancellationToken:cancellationToken];
-        
-    }] continueWithSuccessBlock:^id _Nullable(BFTask * _Nonnull t) {
-        return [[self taskCompleteBlob:t.result
-                     cancellationToken:cancellationToken] continueWithSuccessBlock:^id _Nullable(BFTask<QBCBlob *> * _Nonnull t) {
-            attachment.size = fileSize;
-            attachment.ID = t.result.UID;
-            return [BFTask taskWithResult:attachment];
-        }];
-    }];
+    __block QBCBlob *blob = nil;
+    
+    return  [[[[[taskCreateBlob(attachment, fileSize, cancellationToken)
+                 
+                 continueWithSuccessBlock:^id _Nullable(BFTask<QBCBlob *> * _Nonnull t) {
+                     blob = t.result;
+                     return t;
+                 }]
+                
+                continueWithSuccessBlock:uploadWithURLBlock(fileURL, progressBlock, cancellationToken)]
+               continueWithSuccessBlock:continuationCompleteBlobBlock(cancellationToken)]
+              continueWithSuccessBlock:^id _Nullable(BFTask * _Nonnull t) {
+                  attachment.size = fileSize;
+                  attachment.ID = t.result;
+                  return [BFTask taskWithResult:attachment];
+              }]
+             continueWithBlock:continuationCompletionBlock(blob)];
 }
 
-+ (BFTask <QBCBlob *> *)taskUploadFileWithURL:(NSURL *)fileURL
-                                      forBlob:(QBCBlob *)blob
-                                progressBlock:(_Nullable QMAttachmentProgressBlock)progressBlock
-                            cancellationToken:(BFCancellationToken *)cancellationToken {
+//MARK: BFTask Private static functions
+
+static inline BFTask<QBCBlob*> * taskCreateBlob(QBChatAttachment *attachment, NSUInteger size, BFCancellationToken *cancellationToken) {
+    
+    return make_task(^(BFTaskCompletionSource * _Nonnull source) {
+        
+        QBCBlob *blob = [QBCBlob blob];
+        blob.name = attachment.name;
+        blob.contentType = attachment.contentType;
+        blob.isPublic = YES;
+        blob.size = size;
+        
+        QBRequest *request = [QBRequest createBlob:blob
+                                      successBlock:^(QBResponse * _Nonnull response, QBCBlob * _Nonnull tBlob)
+                              {
+                                  tBlob.size = size;
+                                  [source setResult:tBlob];
+                              } errorBlock:^(QBResponse * _Nonnull response) {
+                                  [source setError:response.error.error];
+                              }];
+        
+        [cancellationToken registerCancellationObserverWithBlock:^{
+            [request cancel];
+        }];
+        
+    });
+}
+
+static inline BFTask<NSString*> * taskCompleteBlob(QBCBlob *blob, BFCancellationToken *cancellationToken) {
+    
+    return make_task(^(BFTaskCompletionSource * _Nonnull source) {
+        
+        QBRequest *request = [QBRequest completeBlobWithID:blob.ID
+                                                      size:blob.size
+                                              successBlock:^(QBResponse * _Nonnull response)
+                              {
+                                  [source setResult:blob.UID];
+                              } errorBlock:^(QBResponse * _Nonnull response) {
+                                  [source setError:response.error.error];
+                              }];
+        [cancellationToken registerCancellationObserverWithBlock:^{
+            [request cancel];
+        }];
+    });
+}
+
+static BFContinuationBlock continuationCompleteBlobBlock(BFCancellationToken * cancellationToken) {
+    
+    BFContinuationBlock  continuationCompleteBlobBlock = ^id(BFTask <QBCBlob *>*task) {
+        return taskCompleteBlob(task.result, cancellationToken);
+    };
+    return continuationCompleteBlobBlock;
+}
+
+
+
+static BFContinuationBlock continuationCompletionBlock(QBCBlob *blob) {
+    
+    BFContinuationBlock continuationCompletionBlock = ^id(BFTask *task) {
+        
+        //Blob should be deleted if any of the previous 'BFTask's was canceled or completed with error.
+        if (task.error || task.cancelled) {
+            if (blob.ID > 0) {
+                return [taskDeleteBlob(blob) continueWithBlock:^id _Nullable(BFTask * _Nonnull __unused t) {
+                    return task;
+                }];
+            }
+        }
+        
+        return task;
+    };
+    
+    return continuationCompletionBlock;
+}
+
+static BFContinuationBlock uploadWithDataBlock(NSData *data,
+                                               _Nullable QMAttachmentProgressBlock progressBlock,
+                                               BFCancellationToken * cancellationToken) {
+    
+    BFContinuationBlock continuationUploadBlobBlock = ^id(BFTask <QBCBlob *>*task) {
+        
+        return taskUploadFileWithData(data,
+                                      task.result,
+                                      progressBlock,
+                                      cancellationToken);
+    };
+    
+    return continuationUploadBlobBlock;
+}
+
+static BFContinuationBlock uploadWithURLBlock(NSURL *url,
+                                              _Nullable QMAttachmentProgressBlock progressBlock,
+                                              BFCancellationToken * cancellationToken) {
+    
+    BFContinuationBlock continuationUploadBlobBlock = ^id(BFTask <QBCBlob *>*task) {
+        
+        return taskUploadFileWithURL(url,
+                                     task.result,
+                                     progressBlock,
+                                     cancellationToken);
+    };
+    
+    return continuationUploadBlobBlock;
+}
+
+static BFTask <QBCBlob *>*taskUploadFileWithURL(NSURL *fileURL,
+                                                QBCBlob *blob,
+                                                _Nullable QMAttachmentProgressBlock progressBlock,
+                                                BFCancellationToken *cancellationToken) {
     
     return make_task(^(BFTaskCompletionSource * _Nonnull source) {
         QBRequest *request = [QBRequest uploadWithUrl:fileURL
@@ -283,10 +386,10 @@
     });
 }
 
-+ (BFTask <QBCBlob *> *)taskUploadFileWithData:(NSData *)data
-                                       forBlob:(QBCBlob *)blob
-                                 progressBlock:(_Nullable QMAttachmentProgressBlock)progressBlock
-                             cancellationToken:(BFCancellationToken *)cancellationToken {
+static BFTask <QBCBlob *>*taskUploadFileWithData(NSData *data,
+                                                 QBCBlob *blob,
+                                                 _Nullable QMAttachmentProgressBlock progressBlock,
+                                                 BFCancellationToken *cancellationToken) {
     
     return make_task(^(BFTaskCompletionSource * _Nonnull source) {
         
@@ -306,53 +409,16 @@
     });
 }
 
-+ (BFTask <QBCBlob *> *)taskCreateBlobWithName:(NSString *)name
-                                      fileName:(NSString *)fileName
-                                   contentType:(NSString *)contentType
-                                          size:(NSUInteger)size
-                                      isPublic:(BOOL)isPublic
-                             cancellationToken:(BFCancellationToken *)cancellationToken {
+static BFTask <QBCBlob *>*taskDeleteBlob(QBCBlob *blob) {
     
     return make_task(^(BFTaskCompletionSource * _Nonnull source) {
-        
-        QBCBlob *blob = [QBCBlob blob];
-        blob.name = fileName;
-        blob.contentType = contentType;
-        blob.isPublic = isPublic;
-        blob.size = size;
-        
-        QBRequest *request = [QBRequest createBlob:blob
-                                      successBlock:^(QBResponse * _Nonnull response, QBCBlob * _Nonnull tBlob)
-                              {
-                                  tBlob.size = size;
-                                  [source setResult:tBlob];
-                              } errorBlock:^(QBResponse * _Nonnull response) {
-                                  [source setError:response.error.error];
-                              }];
-        
-        [cancellationToken registerCancellationObserverWithBlock:^{
-            [request cancel];
-        }];
-        
-    });
-}
-
-+ (BFTask <QBCBlob *> *)taskCompleteBlob:(QBCBlob *)blob
-                       cancellationToken:(BFCancellationToken *)cancellationToken {
-    
-    return make_task(^(BFTaskCompletionSource * _Nonnull source) {
-        
-        QBRequest *request = [QBRequest completeBlobWithID:blob.ID
-                                                      size:blob.size
-                                              successBlock:^(QBResponse * _Nonnull response)
-                              {
-                                  [source setResult:blob];
-                              } errorBlock:^(QBResponse * _Nonnull response) {
-                                  [source setError:response.error.error];
-                              }];
-        [cancellationToken registerCancellationObserverWithBlock:^{
-            [request cancel];
-        }];
+        [QBRequest deleteBlobWithID:blob.ID
+                       successBlock:^(QBResponse * _Nonnull response) {
+                           [source setResult:blob];
+                       }
+                         errorBlock:^(QBResponse * _Nonnull response) {
+                             [source setResult:response.error.error];
+                         }];
     });
 }
 
