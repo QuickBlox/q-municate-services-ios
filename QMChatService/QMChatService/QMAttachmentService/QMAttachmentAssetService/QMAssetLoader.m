@@ -10,6 +10,8 @@
 #import "QMSLog.h"
 #import "QMTimeOut.h"
 #import "QMSLog.h"
+#import <AVFoundation/AVFoundation.h>
+#import <CoreMedia/CoreMedia.h>
 
 static inline NSArray *QMAssetKeysArrayForOptions(QMAssetLoaderKeyOptions options) {
     
