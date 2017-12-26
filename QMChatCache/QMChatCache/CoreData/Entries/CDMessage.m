@@ -53,22 +53,20 @@
     self.recipientIDValue = (int32_t)message.recipientID;
     self.senderID = @(message.senderID);
     self.dialogID = message.dialogID;
-    self.customParameters = [self binaryDataWithObject:message.customParameters];
-    self.readIDs = [self binaryDataWithObject:message.readIDs];
-    self.deliveredIDs = [self binaryDataWithObject:message.deliveredIDs];
+    
+    self.customParameters = [NSKeyedArchiver archivedDataWithRootObject:message.customParameters];
+    self.readIDs = [NSKeyedArchiver archivedDataWithRootObject:message.readIDs];
+    self.deliveredIDs = [NSKeyedArchiver archivedDataWithRootObject:message.deliveredIDs];
 
     if (message.attachments.count > 0) {
         
         NSMutableSet *attachments = [NSMutableSet setWithCapacity:message.attachments.count];
-        
         NSManagedObjectContext *context = [self managedObjectContext];
-        
+
         for (QBChatAttachment *qbChatAttachment in message.attachments) {
             
             CDAttachment *attachment = [CDAttachment QM_createEntityInContext:context];
-            
             [attachment updateWithQBChatAttachment:qbChatAttachment];
-            
             [attachments addObject:attachment];
         }
         
@@ -77,12 +75,6 @@
     else {
         message.attachments = @[];
     }
-}
-
-- (NSData *)binaryDataWithObject:(id)object {
-    
-    NSData *binaryData = [NSKeyedArchiver archivedDataWithRootObject:object];
-    return binaryData;
 }
 
 @end

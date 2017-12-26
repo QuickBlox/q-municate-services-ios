@@ -45,7 +45,7 @@
         [self.managedObjectContext refreshObject:self mergeChanges:NO];
     }
     else if (!self.isInserted){
-        NSLog(@"Cache > %@ > %@: %@", self.class, self.dialogID ,self.changedValues);
+        QMSLog(@"Cache > %@ > %@: %@", self.class, self.dialogID ,self.changedValues);
     }
 }
 
