@@ -120,7 +120,7 @@ static QMContactListCache *_contactListcCacheInstance = nil;
 
 - (void)truncateAll {
     [self performMainQueue:^(NSManagedObjectContext *ctx) {
-        [CDUser QM_truncateAllInContext:ctx];
+        [CDContactListItem QM_truncateAllInContext:ctx];
         [ctx QM_saveToPersistentStoreAndWait];
     }];
 }
