@@ -106,6 +106,14 @@ static QMUsersCache *_usersCacheInstance = nil;
     return source.task;
 }
 
+- (BFTask *)truncateAll {
+    [self performMainQueue:^(NSManagedObjectContext *ctx) {
+        [CDUser QM_truncateAllInContext:ctx];
+        [ctx QM_saveToPersistentStoreAndWait];
+    }];
+    return [BFTask taskWithResult:nil];
+}
+
 - (BFTask *)deleteAllUsers {
     
     BFTaskCompletionSource *source =

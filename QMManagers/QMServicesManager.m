@@ -78,37 +78,23 @@
 - (void)logoutWithCompletion:(dispatch_block_t)completion {
     
     __weak typeof(self)weakSelf = self;
-    [self.authService logOut:^(QBResponse *response) {
+    [self.chatService disconnectWithCompletionBlock:^(NSError *error) {
         
+        [weakSelf.chatService.chatAttachmentService removeAllMediaFiles];
         [weakSelf.chatService free];
         [weakSelf.usersService free];
-        [weakSelf.chatService.chatAttachmentService removeAllMediaFiles];
         
-        dispatch_group_t logoutGroup = dispatch_group_create();
+        [QMChatCache.instance truncateAll];
+        [QMUsersCache.instance truncateAll];
         
-        dispatch_group_enter(logoutGroup);
-        
-        [weakSelf.chatService disconnectWithCompletionBlock:^(NSError *error) {
-            dispatch_group_leave(logoutGroup);
-        }];
-        
-        dispatch_group_enter(logoutGroup);
-        [QMChatCache.instance truncateAll:^{
-            dispatch_group_leave(logoutGroup);
-        }];
-        
-        dispatch_group_enter(logoutGroup);
-        [[QMUsersCache.instance  deleteAllUsers] continueWithBlock:^id _Nullable(BFTask * __unused t) {
-            dispatch_group_leave(logoutGroup);
-            return nil;
-        }];
-        
-        dispatch_group_notify(logoutGroup, dispatch_get_main_queue(), ^{
+        [QBRequest cancelAllRequests:^{
             
-            if (completion) {
-                completion();
-            }
-        });
+            [self.authService logOut:^(QBResponse * _Nonnull response) {
+                if (completion) {
+                    completion();
+                }
+            }];
+        }];
     }];
 }
 

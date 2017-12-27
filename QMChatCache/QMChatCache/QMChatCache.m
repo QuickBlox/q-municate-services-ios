@@ -349,6 +349,15 @@ static QMChatCache *_chatCacheInstance = nil;
     } finish:completion];
 }
 
+- (void)truncateAll {
+    [self performMainQueue:^(NSManagedObjectContext *ctx) {
+        [CDDialog QM_truncateAllInContext:ctx];
+        [CDMessage QM_truncateAllInContext:ctx];
+        [CDAttachment QM_truncateAllInContext:ctx];
+        [ctx QM_saveToPersistentStoreAndWait];
+    }];
+}
+
 - (void)truncateAll:(nullable dispatch_block_t)completion {
     
     [self save:^(NSManagedObjectContext *ctx) {

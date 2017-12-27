@@ -118,6 +118,13 @@ static QMContactListCache *_contactListcCacheInstance = nil;
     } finish:completion];
 }
 
+- (void)truncateAll {
+    [self performMainQueue:^(NSManagedObjectContext *ctx) {
+        [CDUser QM_truncateAllInContext:ctx];
+        [ctx QM_saveToPersistentStoreAndWait];
+    }];
+}
+
 - (NSArray<QBContactListItem *> *)allContactListItems {
     
     __block NSArray<QBContactListItem *> *result = nil;
