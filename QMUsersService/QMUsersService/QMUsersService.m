@@ -51,6 +51,8 @@
 - (void)free {
     
     [self.usersMemoryStorage free];
+    [self.listeners removeAllObjects];
+    
 }
 //MARK: - Tasks
 
