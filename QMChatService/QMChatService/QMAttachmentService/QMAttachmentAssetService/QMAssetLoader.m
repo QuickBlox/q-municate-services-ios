@@ -216,8 +216,12 @@ static inline NSArray *QMAssetKeysArrayForOptions(QMAssetLoaderKeyOptions option
                            }];
         }
         else {
-            [self finishOperationWithResult:result
-                                      error:nil];
+            NSError *error =
+            [NSError errorWithDomain:[NSBundle mainBundle].bundleIdentifier
+                                code:0
+                            userInfo:@{NSLocalizedDescriptionKey : @"There are no video tracks for video asset"}];
+            [self finishOperationWithResult:nil
+                                      error:error];
         }
     }
     else {
