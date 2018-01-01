@@ -33,5 +33,5 @@ Pod::Spec.new do |s|
     'QMUsersCacheModel' => 'QMUsersCache/QMUsersCache/CoreData/QMUsersModel.xcdatamodeld',
     'QMOpenGraphCacheModel' => 'QMOpenGraphCache/QMOpenGraphCache/CoreData/QMOpenGraphModel.xcdatamodeld'
   }
-  s.dependency "Bolts",  '>= 1.8.4'
+  s.dependency "Bolts",  '>= 1.9.0'
 end
