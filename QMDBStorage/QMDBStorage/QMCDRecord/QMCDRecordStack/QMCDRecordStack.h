@@ -13,6 +13,7 @@
 @property (nonatomic, copy) NSString *stackName;
 
 @property (nonatomic, strong, readonly) NSManagedObjectContext *privateWriterContext;
+@property (nonatomic, strong, readonly) NSManagedObjectContext *mainContext;
 
 @property (nonatomic, strong) NSManagedObjectModel *model;
 @property (nonatomic, strong) NSPersistentStoreCoordinator *coordinator;
