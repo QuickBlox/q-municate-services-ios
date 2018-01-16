@@ -16,8 +16,6 @@
 @interface QMCDRecordStack ()
 
 @property (nonatomic, strong) NSManagedObjectContext *privateWriterContext;
-@property (nonatomic, strong) NSManagedObjectContext *mainContext;
-
 
 @property (nonatomic, strong) NSNotificationCenter *applicationWillTerminate;
 @property (nonatomic, strong) NSNotificationCenter *applicationWillResignActive;
@@ -154,23 +152,6 @@
     self.store = nil;
 }
 
-- (NSManagedObjectContext *)mainContext {
-    
-    if (!_mainContext) {
-        
-        _mainContext =
-        [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
-        
-        _mainContext.persistentStoreCoordinator = self.coordinator;
-        _mainContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
-        _mainContext.retainsRegisteredObjects = NO;
-        [_mainContext QM_setWorkingName:[NSString stringWithFormat:@"Main Queue Context (%@)", [self stackName]]];
-        
-    }
-    
-    return _mainContext;
-}
-
 - (NSManagedObjectContext *)privateWriterContext {
     
     if (!_privateWriterContext) {
@@ -180,7 +161,6 @@
         
         _privateWriterContext.persistentStoreCoordinator = self.coordinator;
         _privateWriterContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
-        _privateWriterContext.retainsRegisteredObjects = NO;
         [_privateWriterContext QM_setWorkingName:[NSString stringWithFormat:@"Private Queue Context (%@)", [self stackName]]];
     }
     

@@ -41,18 +41,19 @@
 }
 
 - (void)performBackgroundQueue:(void (^)(NSManagedObjectContext *ctx))block {
-    
-    __weak __typeof(self.stack.privateWriterContext)weakContext = self.stack.privateWriterContext;
-    [self.stack.privateWriterContext performBlock:^{
-        block(weakContext);
+    NSManagedObjectContext *backgroundContext = [NSManagedObjectContext QM_privateQueueContext];
+    [backgroundContext setParentContext:self.stack.privateWriterContext];
+    [backgroundContext performBlock:^{
+        block(backgroundContext);
     }];
 }
 
 - (void)performMainQueue:(void (^)(NSManagedObjectContext *ctx))block {
     
-    __weak __typeof(self.stack.mainContext)weakContext = self.stack.mainContext;
-    [self.stack.mainContext performBlockAndWait:^{
-        block(weakContext);
+    NSManagedObjectContext *mainContext = [NSManagedObjectContext QM_mainQueueContext];
+    [mainContext setParentContext:self.stack.privateWriterContext];
+    [mainContext performBlockAndWait:^{
+        block(mainContext);
     }];
 }
 
@@ -60,8 +61,6 @@
       finish:(dispatch_block_t)finish {
     
     NSManagedObjectContext *ctx = self.stack.privateWriterContext;
-    
-    __weak __typeof(ctx)weakContext = ctx;
     
     [ctx performBlock:^{
         
@@ -75,30 +74,30 @@
             });
         };
         
-        block(weakContext);
+        block(ctx);
         
-        if (!weakContext.hasChanges) {
+        if (!ctx.hasChanges) {
             complete();
             return;
         }
         
-        if (weakContext.insertedObjects.count > 0) {
+        if (ctx.insertedObjects.count > 0) {
             QMSLog(@"[%@] Save: %tu inserted object(s)",
                    NSStringFromClass([self class]),
-                   weakContext.insertedObjects.count);
+                   ctx.insertedObjects.count);
         }
-        else if (weakContext.updatedObjects.count > 0) {
+        else if (ctx.updatedObjects.count > 0) {
             QMSLog(@"[%@] Save: %tu updated object(s)",
                    NSStringFromClass([self class]),
-                   weakContext.updatedObjects.count);
+                   ctx.updatedObjects.count);
         }
-        else if (weakContext.deletedObjects.count > 0) {
+        else if (ctx.deletedObjects.count > 0) {
             QMSLog(@"[%@] Save: %tu deleted object(s)",
                    NSStringFromClass([self class]),
-                   weakContext.deletedObjects.count);
+                   ctx.deletedObjects.count);
         }
         
-        [weakContext QM_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
+        [ctx QM_saveToPersistentStoreWithCompletion:^(BOOL success, NSError *error) {
             
             if (!success) {
                 QMSLog(@"[%@] Save error: %@",

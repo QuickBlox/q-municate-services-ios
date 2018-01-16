@@ -71,11 +71,10 @@
                           inContext:(NSManagedObjectContext *)context {
     
     __block NSArray *results = nil;
-    __weak __typeof(context)weakContext = context;
     [context performBlockAndWait:^{
         
         NSError *error = nil;
-        results = [weakContext executeFetchRequest:request
+        results = [context executeFetchRequest:request
                                          error:&error];
         if (results == nil) {
             
