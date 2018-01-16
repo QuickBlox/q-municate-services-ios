@@ -171,7 +171,6 @@
                         completion(saved, error);
                     }
                 }
-                NSParameterAssert(![self hasChanges]);
                 [self reset];
             }
         }
