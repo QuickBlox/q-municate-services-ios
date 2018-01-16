@@ -34,8 +34,8 @@ NSString  *kQMAttachmentContentTypeKey = @"content-type";
     
     CFStringRef MIMEType = (__bridge CFStringRef)self.contentType;
     CFStringRef uti = UTTypeCreatePreferredIdentifierForTag(kUTTagClassMIMEType, MIMEType, NULL);
-
     CFStringRef extension = UTTypeCopyPreferredTagWithClass(uti, kUTTagClassFilenameExtension);
+    if (uti) CFRelease(uti);
     return (__bridge_transfer NSString *)extension;
 }
 
