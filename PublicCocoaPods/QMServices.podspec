@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
     s.homepage     = "https://github.com/QuickBlox/q-municate-services-ios"
     s.license      = { :type => 'BSD', :file => 'LICENSE.txt' }
     s.authors      = {"Andrey Ivanov" => "andrey.ivanov@quickblox.com", "Vitaliy Gorbachov" => "vitaliy.gorbachov@quickblox.com", "Vitaliy Gurkovsky" => "vitaliy.gurkovsky@injoit.com"}
-    s.platform     = :ios, "8.0"
+    s.platform     = :ios, "9.0"
     s.source       = { :git => "https://github.com/QuickBlox/q-municate-services-ios.git", :tag => "#{s.version}"}
     s.source_files  = "Classes", "**/*.{h,m}"
     s.exclude_files = "Pods", "Frameworks"
@@ -37,5 +37,5 @@ Pod::Spec.new do |s|
         }
 
     s.dependency "QuickBlox", ">= 2.11"
-    s.dependency "Bolts",  '>= 1.8.4'
+    s.dependency "Bolts",  '>= 1.9.0'
 end
