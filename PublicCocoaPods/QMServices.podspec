@@ -36,6 +36,6 @@ Pod::Spec.new do |s|
         'QMOpenGraphCacheModel' => 'QMOpenGraphCache/QMOpenGraphCache/CoreData/QMOpenGraphModel.xcdatamodeld'
         }
 
-    s.dependency "QuickBlox", ">= 2.11"
+    s.dependency "QuickBlox", ">= 2.15"
     s.dependency "Bolts",  '>= 1.9.0'
 end
