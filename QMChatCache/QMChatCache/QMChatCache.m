@@ -63,7 +63,7 @@ static QMChatCache *_chatCacheInstance = nil;
     
     __block QBChatDialog *result = nil;
     [self performMainQueue:^(NSManagedObjectContext *ctx) {
-        result = [[CDDialog QM_findFirstByAttribute:@"dialogID"
+        result = [[QMCDDialog QM_findFirstByAttribute:@"dialogID"
                                           withValue:dialogID
                                           inContext:ctx] toQBChatDialog];
     }];
@@ -75,7 +75,7 @@ static QMChatCache *_chatCacheInstance = nil;
     
     __block NSArray<QBChatDialog *> *result = nil;
     [self performMainQueue:^(NSManagedObjectContext *ctx) {
-        result = [[CDDialog QM_findAllInContext:ctx] toQBChatDialogs];
+        result = [[QMCDDialog QM_findAllInContext:ctx] toQBChatDialogs];
     }];
     
     return result;
@@ -87,7 +87,7 @@ static QMChatCache *_chatCacheInstance = nil;
     
     __block NSArray<QBChatDialog *> *result = nil;
     [self performMainQueue:^(NSManagedObjectContext *ctx) {
-        result = [[CDDialog QM_findAllSortedBy:sortTerm
+        result = [[QMCDDialog QM_findAllSortedBy:sortTerm
                                      ascending:ascending
                                  withPredicate:predicate
                                      inContext:ctx] toQBChatDialogs];
@@ -104,7 +104,7 @@ static QMChatCache *_chatCacheInstance = nil;
     [self performBackgroundQueue:^(NSManagedObjectContext *ctx) {
         
         QBChatDialog *result =
-        [[CDDialog QM_findFirstByAttribute:@"dialogID"
+        [[QMCDDialog QM_findFirstByAttribute:@"dialogID"
                                  withValue:dialogID
                                  inContext:ctx] toQBChatDialog];
         if (completion) {
@@ -120,7 +120,7 @@ static QMChatCache *_chatCacheInstance = nil;
     [self performBackgroundQueue:^(NSManagedObjectContext *ctx) {
         
         NSArray<QBChatDialog *> *result =
-        [[CDDialog QM_findAllInContext:ctx] toQBChatDialogs];
+        [[QMCDDialog QM_findAllInContext:ctx] toQBChatDialogs];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             
@@ -149,7 +149,7 @@ static QMChatCache *_chatCacheInstance = nil;
     [self performBackgroundQueue:^(NSManagedObjectContext *ctx) {
         
         NSArray<QBChatDialog *> *result =
-        [[CDDialog QM_findAllSortedBy:sortTerm
+        [[QMCDDialog QM_findAllSortedBy:sortTerm
                             ascending:ascending
                         withPredicate:predicate
                             inContext:ctx] toQBChatDialogs];
@@ -177,8 +177,8 @@ static QMChatCache *_chatCacheInstance = nil;
         
         for (QBChatDialog *dialog in dialogs) {
             
-            CDDialog *cachedDialog =
-            [CDDialog QM_findFirstOrCreateByAttribute:@"dialogID"
+            QMCDDialog *cachedDialog =
+            [QMCDDialog QM_findFirstOrCreateByAttribute:@"dialogID"
                                             withValue:dialog.ID
                                             inContext:ctx];
             [cachedDialog updateWithQBChatDialog:dialog];
@@ -193,7 +193,7 @@ static QMChatCache *_chatCacheInstance = nil;
                 completion:(dispatch_block_t)completion {
     
     [self save:^(NSManagedObjectContext *ctx) {
-        [CDDialog QM_deleteAllMatchingPredicate:IS(@"dialogID", dialogID)
+        [QMCDDialog QM_deleteAllMatchingPredicate:IS(@"dialogID", dialogID)
                                       inContext:ctx];
     } finish:completion];
 }
@@ -201,7 +201,7 @@ static QMChatCache *_chatCacheInstance = nil;
 - (void)deleteAllDialogsWithCompletion:(dispatch_block_t)completion {
     
     [self save:^(NSManagedObjectContext *ctx) {
-        [CDDialog QM_truncateAllInContext:ctx];
+        [QMCDDialog QM_truncateAllInContext:ctx];
     } finish:completion];
 }
 
@@ -216,7 +216,7 @@ static QMChatCache *_chatCacheInstance = nil;
     [self performMainQueue:^(NSManagedObjectContext *ctx) {
         
         result =
-        [[CDMessage QM_findAllSortedBy:sortTerm
+        [[QMCDMessage QM_findAllSortedBy:sortTerm
                              ascending:ascending
                          withPredicate:IS(@"dialogID", dialogId)
                                 offset:0
@@ -246,7 +246,7 @@ static QMChatCache *_chatCacheInstance = nil;
     [self performBackgroundQueue:^(NSManagedObjectContext *ctx) {
         
         NSArray<QBChatMessage *> *result =
-        [[CDMessage QM_findAllSortedBy:sortTerm
+        [[QMCDMessage QM_findAllSortedBy:sortTerm
                              ascending:ascending
                          withPredicate:predicate
                                 offset:0
@@ -278,13 +278,13 @@ static QMChatCache *_chatCacheInstance = nil;
     
     [self save:^(NSManagedObjectContext *ctx) {
         
-        CDDialog *cachedDialog =
-        [CDDialog QM_findFirstByAttribute:@"dialogID" withValue:dialogID inContext:ctx];
+        QMCDDialog *cachedDialog =
+        [QMCDDialog QM_findFirstByAttribute:@"dialogID" withValue:dialogID inContext:ctx];
         
         for (QBChatMessage *message in messages) {
             
-            CDMessage *procMessage =
-            [CDMessage QM_findFirstOrCreateByAttribute:@"messageID"
+            QMCDMessage *procMessage =
+            [QMCDMessage QM_findFirstOrCreateByAttribute:@"messageID"
                                              withValue:message.ID
                                              inContext:ctx];
             [procMessage updateWithQBChatMessage:message];
@@ -299,7 +299,7 @@ static QMChatCache *_chatCacheInstance = nil;
     
     [self save:^(NSManagedObjectContext *ctx) {
         
-        [CDMessage QM_deleteAllMatchingPredicate:IS(@"messageID", message.ID)
+        [QMCDMessage QM_deleteAllMatchingPredicate:IS(@"messageID", message.ID)
                                        inContext:ctx];
     } finish:completion];
 }
@@ -311,8 +311,8 @@ static QMChatCache *_chatCacheInstance = nil;
         
         for (QBChatMessage *message in messages) {
             
-            CDMessage *messageToDelete =
-            [CDMessage QM_findFirstByAttribute:@"messageID"
+            QMCDMessage *messageToDelete =
+            [QMCDMessage QM_findFirstByAttribute:@"messageID"
                                      withValue:message.ID
                                      inContext:ctx];
             
@@ -326,7 +326,7 @@ static QMChatCache *_chatCacheInstance = nil;
                        completion:(dispatch_block_t)completion {
     
     [self save:^(NSManagedObjectContext *ctx) {
-        [CDMessage QM_deleteAllMatchingPredicate:IS(@"dialogID", dialogID)
+        [QMCDMessage QM_deleteAllMatchingPredicate:IS(@"dialogID", dialogID)
                                        inContext:ctx];
     } finish:completion];
 }
@@ -334,15 +334,15 @@ static QMChatCache *_chatCacheInstance = nil;
 - (void)deleteAllMessagesWithCompletion:(dispatch_block_t)completion {
     
     [self save:^(NSManagedObjectContext *ctx) {
-        [CDMessage QM_truncateAllInContext:ctx];
+        [QMCDMessage QM_truncateAllInContext:ctx];
     } finish:completion];
 }
 
 - (void)truncateAll {
     [self performMainQueue:^(NSManagedObjectContext *ctx) {
-        [CDDialog QM_truncateAllInContext:ctx];
-        [CDMessage QM_truncateAllInContext:ctx];
-        [CDAttachment QM_truncateAllInContext:ctx];
+        [QMCDDialog QM_truncateAllInContext:ctx];
+        [QMCDMessage QM_truncateAllInContext:ctx];
+        [QMCDAttachment QM_truncateAllInContext:ctx];
         [ctx QM_saveToPersistentStoreAndWait];
     }];
 }
@@ -350,9 +350,9 @@ static QMChatCache *_chatCacheInstance = nil;
 - (void)truncateAll:(nullable dispatch_block_t)completion {
     
     [self save:^(NSManagedObjectContext *ctx) {
-        [CDDialog QM_truncateAllInContext:ctx];
-        [CDMessage QM_truncateAllInContext:ctx];
-        [CDAttachment QM_truncateAllInContext:ctx];
+        [QMCDDialog QM_truncateAllInContext:ctx];
+        [QMCDMessage QM_truncateAllInContext:ctx];
+        [QMCDAttachment QM_truncateAllInContext:ctx];
     } finish:completion];
 }
 

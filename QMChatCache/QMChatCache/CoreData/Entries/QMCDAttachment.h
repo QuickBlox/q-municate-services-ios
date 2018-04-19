@@ -1,7 +1,7 @@
 
-#import "_CDAttachment.h"
+#import "_QMCDAttachment.h"
 
-@interface CDAttachment : _CDAttachment {}
+@interface QMCDAttachment : _QMCDAttachment {}
 
 - (QBChatAttachment *)toQBChatAttachment;
 - (void)updateWithQBChatAttachment:(QBChatAttachment *)attachment;

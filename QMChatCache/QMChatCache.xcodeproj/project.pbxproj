@@ -22,12 +22,12 @@
 
 /* Begin PBXBuildFile section */
 		5590F2781A0B8C4200C5044F /* QMChatCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 5590F2771A0B8C4200C5044F /* QMChatCache.m */; };
-		55A621131A0BDC5D001BA470 /* CDAttachment.m in Sources */ = {isa = PBXBuildFile; fileRef = 55A621061A0BDC5D001BA470 /* CDAttachment.m */; };
-		55A621141A0BDC5D001BA470 /* CDDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = 55A621081A0BDC5D001BA470 /* CDDialog.m */; };
-		55A621151A0BDC5D001BA470 /* CDMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 55A6210A1A0BDC5D001BA470 /* CDMessage.m */; };
-		55A621161A0BDC5D001BA470 /* _CDAttachment.m in Sources */ = {isa = PBXBuildFile; fileRef = 55A6210D1A0BDC5D001BA470 /* _CDAttachment.m */; };
-		55A621171A0BDC5D001BA470 /* _CDDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = 55A6210F1A0BDC5D001BA470 /* _CDDialog.m */; };
-		55A621181A0BDC5D001BA470 /* _CDMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 55A621111A0BDC5D001BA470 /* _CDMessage.m */; };
+		55A621131A0BDC5D001BA470 /* QMCDAttachment.m in Sources */ = {isa = PBXBuildFile; fileRef = 55A621061A0BDC5D001BA470 /* QMCDAttachment.m */; };
+		55A621141A0BDC5D001BA470 /* QMCDDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = 55A621081A0BDC5D001BA470 /* QMCDDialog.m */; };
+		55A621151A0BDC5D001BA470 /* QMCDMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 55A6210A1A0BDC5D001BA470 /* QMCDMessage.m */; };
+		55A621161A0BDC5D001BA470 /* _QMCDAttachment.m in Sources */ = {isa = PBXBuildFile; fileRef = 55A6210D1A0BDC5D001BA470 /* _QMCDAttachment.m */; };
+		55A621171A0BDC5D001BA470 /* _QMCDDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = 55A6210F1A0BDC5D001BA470 /* _QMCDDialog.m */; };
+		55A621181A0BDC5D001BA470 /* _QMCDMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 55A621111A0BDC5D001BA470 /* _QMCDMessage.m */; };
 		FB5D70931EF17E2700E50084 /* QMChatServiceModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 554A280A1A0CE16200C4E03C /* QMChatServiceModel.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
@@ -54,18 +54,18 @@
 		554A287D1A0CECA000C4E03C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5590F2751A0B8C4200C5044F /* QMChatCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = QMChatCache.h; sourceTree = "<group>"; };
 		5590F2771A0B8C4200C5044F /* QMChatCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = QMChatCache.m; sourceTree = "<group>"; };
-		55A621051A0BDC5D001BA470 /* CDAttachment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDAttachment.h; sourceTree = "<group>"; };
-		55A621061A0BDC5D001BA470 /* CDAttachment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDAttachment.m; sourceTree = "<group>"; };
-		55A621071A0BDC5D001BA470 /* CDDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDDialog.h; sourceTree = "<group>"; };
-		55A621081A0BDC5D001BA470 /* CDDialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDDialog.m; sourceTree = "<group>"; };
-		55A621091A0BDC5D001BA470 /* CDMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDMessage.h; sourceTree = "<group>"; };
-		55A6210A1A0BDC5D001BA470 /* CDMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDMessage.m; sourceTree = "<group>"; };
-		55A6210C1A0BDC5D001BA470 /* _CDAttachment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _CDAttachment.h; sourceTree = "<group>"; };
-		55A6210D1A0BDC5D001BA470 /* _CDAttachment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _CDAttachment.m; sourceTree = "<group>"; };
-		55A6210E1A0BDC5D001BA470 /* _CDDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _CDDialog.h; sourceTree = "<group>"; };
-		55A6210F1A0BDC5D001BA470 /* _CDDialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _CDDialog.m; sourceTree = "<group>"; };
-		55A621101A0BDC5D001BA470 /* _CDMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _CDMessage.h; sourceTree = "<group>"; };
-		55A621111A0BDC5D001BA470 /* _CDMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _CDMessage.m; sourceTree = "<group>"; };
+		55A621051A0BDC5D001BA470 /* QMCDAttachment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMCDAttachment.h; sourceTree = "<group>"; };
+		55A621061A0BDC5D001BA470 /* QMCDAttachment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMCDAttachment.m; sourceTree = "<group>"; };
+		55A621071A0BDC5D001BA470 /* QMCDDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMCDDialog.h; sourceTree = "<group>"; };
+		55A621081A0BDC5D001BA470 /* QMCDDialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMCDDialog.m; sourceTree = "<group>"; };
+		55A621091A0BDC5D001BA470 /* QMCDMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMCDMessage.h; sourceTree = "<group>"; };
+		55A6210A1A0BDC5D001BA470 /* QMCDMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QMCDMessage.m; sourceTree = "<group>"; };
+		55A6210C1A0BDC5D001BA470 /* _QMCDAttachment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _QMCDAttachment.h; sourceTree = "<group>"; };
+		55A6210D1A0BDC5D001BA470 /* _QMCDAttachment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _QMCDAttachment.m; sourceTree = "<group>"; };
+		55A6210E1A0BDC5D001BA470 /* _QMCDDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _QMCDDialog.h; sourceTree = "<group>"; };
+		55A6210F1A0BDC5D001BA470 /* _QMCDDialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _QMCDDialog.m; sourceTree = "<group>"; };
+		55A621101A0BDC5D001BA470 /* _QMCDMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _QMCDMessage.h; sourceTree = "<group>"; };
+		55A621111A0BDC5D001BA470 /* _QMCDMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _QMCDMessage.m; sourceTree = "<group>"; };
 		55B2201C1A2C0C9D00668086 /* libQMChatCache.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libQMChatCache.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		58043EA71D2CF3540052CF4E /* QMChatCacheModel.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QMChatCacheModel.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		58043EA81D2CF38F0052CF4E /* QMModel4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = QMModel4.xcdatamodel; sourceTree = "<group>"; };
@@ -75,6 +75,7 @@
 		FB5D70801EF16F2300E50084 /* QMChatServiceModelIncludes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QMChatServiceModelIncludes.h; sourceTree = "<group>"; };
 		FB5D70951EF1840400E50084 /* QMChatCacheModel.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = QMChatCacheModel.bundle; sourceTree = SOURCE_ROOT; };
 		FB805A521F052E97000B3E9F /* QMChatCache-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QMChatCache-Prefix.pch"; sourceTree = "<group>"; };
+		FB9ED2522088E60D00808A43 /* QMModel7.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = QMModel7.xcdatamodel; sourceTree = "<group>"; };
 		FBF252721EAE1566001F2C74 /* QMModel6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = QMModel6.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -149,12 +150,12 @@
 		55A621041A0BDC5D001BA470 /* Entries */ = {
 			isa = PBXGroup;
 			children = (
-				55A621051A0BDC5D001BA470 /* CDAttachment.h */,
-				55A621061A0BDC5D001BA470 /* CDAttachment.m */,
-				55A621071A0BDC5D001BA470 /* CDDialog.h */,
-				55A621081A0BDC5D001BA470 /* CDDialog.m */,
-				55A621091A0BDC5D001BA470 /* CDMessage.h */,
-				55A6210A1A0BDC5D001BA470 /* CDMessage.m */,
+				55A621051A0BDC5D001BA470 /* QMCDAttachment.h */,
+				55A621061A0BDC5D001BA470 /* QMCDAttachment.m */,
+				55A621071A0BDC5D001BA470 /* QMCDDialog.h */,
+				55A621081A0BDC5D001BA470 /* QMCDDialog.m */,
+				55A621091A0BDC5D001BA470 /* QMCDMessage.h */,
+				55A6210A1A0BDC5D001BA470 /* QMCDMessage.m */,
 			);
 			path = Entries;
 			sourceTree = "<group>";
@@ -162,12 +163,12 @@
 		55A6210B1A0BDC5D001BA470 /* EntriesMachine */ = {
 			isa = PBXGroup;
 			children = (
-				55A6210C1A0BDC5D001BA470 /* _CDAttachment.h */,
-				55A6210D1A0BDC5D001BA470 /* _CDAttachment.m */,
-				55A6210E1A0BDC5D001BA470 /* _CDDialog.h */,
-				55A6210F1A0BDC5D001BA470 /* _CDDialog.m */,
-				55A621101A0BDC5D001BA470 /* _CDMessage.h */,
-				55A621111A0BDC5D001BA470 /* _CDMessage.m */,
+				55A6210C1A0BDC5D001BA470 /* _QMCDAttachment.h */,
+				55A6210D1A0BDC5D001BA470 /* _QMCDAttachment.m */,
+				55A6210E1A0BDC5D001BA470 /* _QMCDDialog.h */,
+				55A6210F1A0BDC5D001BA470 /* _QMCDDialog.m */,
+				55A621101A0BDC5D001BA470 /* _QMCDMessage.h */,
+				55A621111A0BDC5D001BA470 /* _QMCDMessage.m */,
 			);
 			path = EntriesMachine;
 			sourceTree = "<group>";
@@ -303,13 +304,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				55A621141A0BDC5D001BA470 /* CDDialog.m in Sources */,
-				55A621161A0BDC5D001BA470 /* _CDAttachment.m in Sources */,
-				55A621181A0BDC5D001BA470 /* _CDMessage.m in Sources */,
+				55A621141A0BDC5D001BA470 /* QMCDDialog.m in Sources */,
+				55A621161A0BDC5D001BA470 /* _QMCDAttachment.m in Sources */,
+				55A621181A0BDC5D001BA470 /* _QMCDMessage.m in Sources */,
 				5590F2781A0B8C4200C5044F /* QMChatCache.m in Sources */,
-				55A621131A0BDC5D001BA470 /* CDAttachment.m in Sources */,
-				55A621151A0BDC5D001BA470 /* CDMessage.m in Sources */,
-				55A621171A0BDC5D001BA470 /* _CDDialog.m in Sources */,
+				55A621131A0BDC5D001BA470 /* QMCDAttachment.m in Sources */,
+				55A621151A0BDC5D001BA470 /* QMCDMessage.m in Sources */,
+				55A621171A0BDC5D001BA470 /* _QMCDDialog.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -642,6 +643,7 @@
 		554A280A1A0CE16200C4E03C /* QMChatServiceModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				FB9ED2522088E60D00808A43 /* QMModel7.xcdatamodel */,
 				FBF252721EAE1566001F2C74 /* QMModel6.xcdatamodel */,
 				E03B85571E1FD85200AE6DE8 /* QMModel5.xcdatamodel */,
 				58043EA81D2CF38F0052CF4E /* QMModel4.xcdatamodel */,
@@ -649,7 +651,7 @@
 				14E9F54E1C6CA35B007F58B7 /* QMModel2.xcdatamodel */,
 				554A280B1A0CE16200C4E03C /* QMModel.xcdatamodel */,
 			);
-			currentVersion = FBF252721EAE1566001F2C74 /* QMModel6.xcdatamodel */;
+			currentVersion = FB9ED2522088E60D00808A43 /* QMModel7.xcdatamodel */;
 			path = QMChatServiceModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

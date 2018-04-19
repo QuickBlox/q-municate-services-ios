@@ -1,5 +1,5 @@
 // DO NOT EDIT. This file is machine-generated and constantly overwritten.
-// Make changes to CDDialog.h instead.
+// Make changes to QMCDDialog.h instead.
 
 #if __has_feature(modules)
     @import Foundation;
@@ -11,20 +11,20 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class CDMessage;
+@class QMCDMessage;
 
 @class NSObject;
 
 @class NSObject;
 
-@interface CDDialogID : NSManagedObjectID {}
+@interface QMCDDialogID : NSManagedObjectID {}
 @end
 
-@interface _CDDialog : NSManagedObject
+@interface _QMCDDialog : NSManagedObject
 + (instancetype)insertInManagedObjectContext:(NSManagedObjectContext *)moc_;
 + (NSString*)entityName;
 + (nullable NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
-@property (nonatomic, readonly, strong) CDDialogID *objectID;
+@property (nonatomic, readonly, strong) QMCDDialogID *objectID;
 
 @property (nonatomic, strong, nullable) NSDate* createdAt;
 
@@ -74,20 +74,20 @@ NS_ASSUME_NONNULL_BEGIN
 - (int32_t)userIDValue;
 - (void)setUserIDValue:(int32_t)value_;
 
-@property (nonatomic, strong, nullable) NSSet<CDMessage*> *messages;
-- (nullable NSMutableSet<CDMessage*>*)messagesSet;
+@property (nonatomic, strong, nullable) NSSet<QMCDMessage*> *messages;
+- (nullable NSMutableSet<QMCDMessage*>*)messagesSet;
 
 @end
 
-@interface _CDDialog (MessagesCoreDataGeneratedAccessors)
-- (void)addMessages:(NSSet<CDMessage*>*)value_;
-- (void)removeMessages:(NSSet<CDMessage*>*)value_;
-- (void)addMessagesObject:(CDMessage*)value_;
-- (void)removeMessagesObject:(CDMessage*)value_;
+@interface _QMCDDialog (MessagesCoreDataGeneratedAccessors)
+- (void)addMessages:(NSSet<QMCDMessage*>*)value_;
+- (void)removeMessages:(NSSet<QMCDMessage*>*)value_;
+- (void)addMessagesObject:(QMCDMessage*)value_;
+- (void)removeMessagesObject:(QMCDMessage*)value_;
 
 @end
 
-@interface _CDDialog (CoreDataGeneratedPrimitiveAccessors)
+@interface _QMCDDialog (CoreDataGeneratedPrimitiveAccessors)
 
 - (nullable NSDate*)primitiveCreatedAt;
 - (void)setPrimitiveCreatedAt:(nullable NSDate*)value;
@@ -146,12 +146,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (int32_t)primitiveUserIDValue;
 - (void)setPrimitiveUserIDValue:(int32_t)value_;
 
-- (NSMutableSet<CDMessage*>*)primitiveMessages;
-- (void)setPrimitiveMessages:(NSMutableSet<CDMessage*>*)value;
+- (NSMutableSet<QMCDMessage*>*)primitiveMessages;
+- (void)setPrimitiveMessages:(NSMutableSet<QMCDMessage*>*)value;
 
 @end
 
-@interface CDDialogAttributes: NSObject 
+@interface QMCDDialogAttributes: NSObject 
 + (NSString *)createdAt;
 + (NSString *)data;
 + (NSString *)dialogID;
@@ -168,7 +168,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSString *)userID;
 @end
 
-@interface CDDialogRelationships: NSObject
+@interface QMCDDialogRelationships: NSObject
 + (NSString *)messages;
 @end
 

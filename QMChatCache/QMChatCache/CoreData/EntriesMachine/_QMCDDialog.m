@@ -1,29 +1,29 @@
 // DO NOT EDIT. This file is machine-generated and constantly overwritten.
-// Make changes to CDDialog.m instead.
+// Make changes to QMCDDialog.m instead.
 
-#import "_CDDialog.h"
+#import "_QMCDDialog.h"
 
-@implementation CDDialogID
+@implementation QMCDDialogID
 @end
 
-@implementation _CDDialog
+@implementation _QMCDDialog
 
 + (instancetype)insertInManagedObjectContext:(NSManagedObjectContext *)moc_ {
 	NSParameterAssert(moc_);
-	return [NSEntityDescription insertNewObjectForEntityForName:@"CDDialog" inManagedObjectContext:moc_];
+	return [NSEntityDescription insertNewObjectForEntityForName:@"QMCDDialog" inManagedObjectContext:moc_];
 }
 
 + (NSString*)entityName {
-	return @"CDDialog";
+	return @"QMCDDialog";
 }
 
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_ {
 	NSParameterAssert(moc_);
-	return [NSEntityDescription entityForName:@"CDDialog" inManagedObjectContext:moc_];
+	return [NSEntityDescription entityForName:@"QMCDDialog" inManagedObjectContext:moc_];
 }
 
-- (CDDialogID*)objectID {
-	return (CDDialogID*)[super objectID];
+- (QMCDDialogID*)objectID {
+	return (QMCDDialogID*)[super objectID];
 }
 
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
@@ -178,10 +178,10 @@
 
 @dynamic messages;
 
-- (NSMutableSet<CDMessage*>*)messagesSet {
+- (NSMutableSet<QMCDMessage*>*)messagesSet {
 	[self willAccessValueForKey:@"messages"];
 
-	NSMutableSet<CDMessage*> *result = (NSMutableSet<CDMessage*>*)[self mutableSetValueForKey:@"messages"];
+	NSMutableSet<QMCDMessage*> *result = (NSMutableSet<QMCDMessage*>*)[self mutableSetValueForKey:@"messages"];
 
 	[self didAccessValueForKey:@"messages"];
 	return result;
@@ -189,7 +189,7 @@
 
 @end
 
-@implementation CDDialogAttributes 
+@implementation QMCDDialogAttributes 
 + (NSString *)createdAt {
 	return @"createdAt";
 }
@@ -234,7 +234,7 @@
 }
 @end
 
-@implementation CDDialogRelationships 
+@implementation QMCDDialogRelationships 
 + (NSString *)messages {
 	return @"messages";
 }

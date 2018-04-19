@@ -1,5 +1,5 @@
 // DO NOT EDIT. This file is machine-generated and constantly overwritten.
-// Make changes to CDMessage.h instead.
+// Make changes to QMCDMessage.h instead.
 
 #if __has_feature(modules)
     @import Foundation;
@@ -11,17 +11,17 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class CDAttachment;
-@class CDDialog;
+@class QMCDAttachment;
+@class QMCDDialog;
 
-@interface CDMessageID : NSManagedObjectID {}
+@interface QMCDMessageID : NSManagedObjectID {}
 @end
 
-@interface _CDMessage : NSManagedObject
+@interface _QMCDMessage : NSManagedObject
 + (instancetype)insertInManagedObjectContext:(NSManagedObjectContext *)moc_;
 + (NSString*)entityName;
 + (nullable NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
-@property (nonatomic, readonly, strong) CDMessageID *objectID;
+@property (nonatomic, readonly, strong) QMCDMessageID *objectID;
 
 @property (nonatomic, strong, nullable) NSDate* createAt;
 
@@ -61,22 +61,22 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong, nullable) NSDate* updateAt;
 
-@property (nonatomic, strong, nullable) NSSet<CDAttachment*> *attachments;
-- (nullable NSMutableSet<CDAttachment*>*)attachmentsSet;
+@property (nonatomic, strong, nullable) NSSet<QMCDAttachment*> *attachments;
+- (nullable NSMutableSet<QMCDAttachment*>*)attachmentsSet;
 
-@property (nonatomic, strong, nullable) CDDialog *dialog;
-
-@end
-
-@interface _CDMessage (AttachmentsCoreDataGeneratedAccessors)
-- (void)addAttachments:(NSSet<CDAttachment*>*)value_;
-- (void)removeAttachments:(NSSet<CDAttachment*>*)value_;
-- (void)addAttachmentsObject:(CDAttachment*)value_;
-- (void)removeAttachmentsObject:(CDAttachment*)value_;
+@property (nonatomic, strong, nullable) QMCDDialog *dialog;
 
 @end
 
-@interface _CDMessage (CoreDataGeneratedPrimitiveAccessors)
+@interface _QMCDMessage (AttachmentsCoreDataGeneratedAccessors)
+- (void)addAttachments:(NSSet<QMCDAttachment*>*)value_;
+- (void)removeAttachments:(NSSet<QMCDAttachment*>*)value_;
+- (void)addAttachmentsObject:(QMCDAttachment*)value_;
+- (void)removeAttachmentsObject:(QMCDAttachment*)value_;
+
+@end
+
+@interface _QMCDMessage (CoreDataGeneratedPrimitiveAccessors)
 
 - (nullable NSDate*)primitiveCreateAt;
 - (void)setPrimitiveCreateAt:(nullable NSDate*)value;
@@ -126,15 +126,15 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable NSDate*)primitiveUpdateAt;
 - (void)setPrimitiveUpdateAt:(nullable NSDate*)value;
 
-- (NSMutableSet<CDAttachment*>*)primitiveAttachments;
-- (void)setPrimitiveAttachments:(NSMutableSet<CDAttachment*>*)value;
+- (NSMutableSet<QMCDAttachment*>*)primitiveAttachments;
+- (void)setPrimitiveAttachments:(NSMutableSet<QMCDAttachment*>*)value;
 
-- (CDDialog*)primitiveDialog;
-- (void)setPrimitiveDialog:(CDDialog*)value;
+- (QMCDDialog*)primitiveDialog;
+- (void)setPrimitiveDialog:(QMCDDialog*)value;
 
 @end
 
-@interface CDMessageAttributes: NSObject 
+@interface QMCDMessageAttributes: NSObject 
 + (NSString *)createAt;
 + (NSString *)customParameters;
 + (NSString *)dateSend;
@@ -150,7 +150,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSString *)updateAt;
 @end
 
-@interface CDMessageRelationships: NSObject
+@interface QMCDMessageRelationships: NSObject
 + (NSString *)attachments;
 + (NSString *)dialog;
 @end

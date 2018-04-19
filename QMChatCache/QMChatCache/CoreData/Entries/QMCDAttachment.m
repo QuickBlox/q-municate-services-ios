@@ -1,7 +1,7 @@
-#import "CDAttachment.h"
+#import "QMCDAttachment.h"
 #import "QMSLog.h"
 
-@implementation CDAttachment
+@implementation QMCDAttachment
 
 - (QBChatAttachment *)toQBChatAttachment {
     

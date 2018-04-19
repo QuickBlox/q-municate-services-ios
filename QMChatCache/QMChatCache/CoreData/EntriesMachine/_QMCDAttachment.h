@@ -1,5 +1,5 @@
 // DO NOT EDIT. This file is machine-generated and constantly overwritten.
-// Make changes to CDAttachment.h instead.
+// Make changes to QMCDAttachment.h instead.
 
 #if __has_feature(modules)
     @import Foundation;
@@ -11,16 +11,16 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class CDMessage;
+@class QMCDMessage;
 
-@interface CDAttachmentID : NSManagedObjectID {}
+@interface QMCDAttachmentID : NSManagedObjectID {}
 @end
 
-@interface _CDAttachment : NSManagedObject
+@interface _QMCDAttachment : NSManagedObject
 + (instancetype)insertInManagedObjectContext:(NSManagedObjectContext *)moc_;
 + (NSString*)entityName;
 + (nullable NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_;
-@property (nonatomic, readonly, strong) CDAttachmentID *objectID;
+@property (nonatomic, readonly, strong) QMCDAttachmentID *objectID;
 
 @property (nonatomic, strong, nullable) NSData* customParameters;
 
@@ -34,11 +34,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong, nullable) NSString* url;
 
-@property (nonatomic, strong, nullable) CDMessage *message;
+@property (nonatomic, strong, nullable) QMCDMessage *message;
 
 @end
 
-@interface _CDAttachment (CoreDataGeneratedPrimitiveAccessors)
+@interface _QMCDAttachment (CoreDataGeneratedPrimitiveAccessors)
 
 - (nullable NSData*)primitiveCustomParameters;
 - (void)setPrimitiveCustomParameters:(nullable NSData*)value;
@@ -58,12 +58,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable NSString*)primitiveUrl;
 - (void)setPrimitiveUrl:(nullable NSString*)value;
 
-- (CDMessage*)primitiveMessage;
-- (void)setPrimitiveMessage:(CDMessage*)value;
+- (QMCDMessage*)primitiveMessage;
+- (void)setPrimitiveMessage:(QMCDMessage*)value;
 
 @end
 
-@interface CDAttachmentAttributes: NSObject 
+@interface QMCDAttachmentAttributes: NSObject 
 + (NSString *)customParameters;
 + (NSString *)data;
 + (NSString *)id;
@@ -72,7 +72,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSString *)url;
 @end
 
-@interface CDAttachmentRelationships: NSObject
+@interface QMCDAttachmentRelationships: NSObject
 + (NSString *)message;
 @end
 

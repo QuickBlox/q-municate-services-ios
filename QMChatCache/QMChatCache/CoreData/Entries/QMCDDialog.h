@@ -1,13 +1,13 @@
-#import "_CDDialog.h"
+#import "_QMCDDialog.h"
 
-@interface CDDialog : _CDDialog {}
+@interface QMCDDialog : _QMCDDialog {}
 
 - (QBChatDialog *)toQBChatDialog;
 - (void)updateWithQBChatDialog:(QBChatDialog *)dialog;
 
 @end
 
-@interface NSArray(CDDialog)
+@interface NSArray(QMCDDialog)
 
 - (NSArray<QBChatDialog *> *)toQBChatDialogs;
 
