@@ -43,6 +43,8 @@ static QMChatCache *_chatCacheInstance = nil;
     [[QMChatCache alloc] initWithStoreNamed:storeName
                                       model:model
                  applicationGroupIdentifier:appGroupIdentifier];
+    
+    _chatCacheInstance.messagesLimitPerDialog = NSNotFound;
 }
 
 + (void)cleanDBWithStoreName:(NSString *)name {
@@ -52,19 +54,6 @@ static QMChatCache *_chatCacheInstance = nil;
     }
     
     [super cleanDBWithStoreName:name];
-}
-
-//MARK: - Init
-
-- (instancetype)init {
-    
-    self = [super init];
-    
-    if (self) {
-        _messagesLimitPerDialog = NSNotFound;
-    }
-    
-    return self;
 }
 
 //MARK: - Fetch Dialogs

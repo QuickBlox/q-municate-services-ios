@@ -255,11 +255,11 @@
         
         dispatch_async(self.storeServiceQueue, ^{
             
-            [_fileManager removeItemAtPath:self.diskMediaCachePath error:nil];
-            [_fileManager createDirectoryAtPath:self.diskMediaCachePath
-                    withIntermediateDirectories:YES
-                                     attributes:nil
-                                          error:NULL];
+            [self.fileManager removeItemAtPath:self.diskMediaCachePath error:nil];
+            [self.fileManager createDirectoryAtPath:self.diskMediaCachePath
+                        withIntermediateDirectories:YES
+                                         attributes:nil
+                                              error:NULL];
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 clearMemoryBlock();
@@ -302,13 +302,13 @@
     
     dispatch_async(self.storeServiceQueue, ^{
         
-        NSString *dialogPath = [_diskMediaCachePath stringByAppendingPathComponent:dialogID];
+        NSString *dialogPath = [self.diskMediaCachePath stringByAppendingPathComponent:dialogID];
         
         for (NSString *messageID in messagesIDs) {
             
             NSString *messagePath = [dialogPath stringByAppendingPathComponent:messageID];
-            [_fileManager removeItemAtPath:messagePath
-                                     error:nil];
+            [self.fileManager removeItemAtPath:messagePath
+                                         error:nil];
         }
         
         if (completion) {
@@ -330,8 +330,6 @@
                             completion:completion];
 }
 
-
-
 //MARK: - Helpers
 - (NSURL *)fileURLForAttachment:(QBChatAttachment *)attachment
                       messageID:(NSString *)messageID
@@ -340,7 +338,7 @@
     __block NSURL *fileURL = nil;
     dispatch_sync(self.storeServiceQueue, ^{
         NSString *path = mediaPath(dialogID, messageID, attachment);
-        if ([_fileManager fileExistsAtPath:path]) {
+        if ([self.fileManager fileExistsAtPath:path]) {
             fileURL = [NSURL fileURLWithPath:path];
         }
     });
@@ -432,7 +430,7 @@
 - (NSUInteger)sizeForPath:(NSString *)path {
     __block NSUInteger size = 0;
     dispatch_sync(self.storeServiceQueue, ^{
-        NSDirectoryEnumerator *fileEnumerator = [_fileManager enumeratorAtPath:self.diskMediaCachePath];
+        NSDirectoryEnumerator *fileEnumerator = [self.fileManager enumeratorAtPath:self.diskMediaCachePath];
         for (NSString *fileName in fileEnumerator) {
             NSString *filePath = [self.diskMediaCachePath stringByAppendingPathComponent:fileName];
             NSDictionary<NSString *, id> *attrs = [[NSFileManager defaultManager] attributesOfItemAtPath:filePath error:nil];
