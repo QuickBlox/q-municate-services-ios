@@ -111,7 +111,7 @@
      {
          UIImage *image = nil;
          if (data) {
-             UIImage *image = [UIImage imageWithData:data];
+             image = [UIImage imageWithData:data];
              self.imagesMemoryStorage[messageID] = image;
          }
          dispatch_async(dispatch_get_main_queue(), ^{
