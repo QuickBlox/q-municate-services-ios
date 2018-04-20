@@ -1,7 +1,7 @@
-#import "CDDialog.h"
+#import "QMCDDialog.h"
 #import "QMSLog.h"
 
-@implementation CDDialog
+@implementation QMCDDialog
 
 - (QBChatDialog *)toQBChatDialog {
     
@@ -57,7 +57,7 @@
     
     NSMutableArray<QBChatDialog *> *result = [NSMutableArray arrayWithCapacity:self.count];
     
-    for (CDDialog *cache in self) {
+    for (QMCDDialog *cache in self) {
         
         QBChatDialog *dialog = [cache toQBChatDialog];
         [result addObject:dialog];

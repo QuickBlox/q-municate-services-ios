@@ -1,29 +1,29 @@
 // DO NOT EDIT. This file is machine-generated and constantly overwritten.
-// Make changes to CDMessage.m instead.
+// Make changes to QMCDMessage.m instead.
 
-#import "_CDMessage.h"
+#import "_QMCDMessage.h"
 
-@implementation CDMessageID
+@implementation QMCDMessageID
 @end
 
-@implementation _CDMessage
+@implementation _QMCDMessage
 
 + (instancetype)insertInManagedObjectContext:(NSManagedObjectContext *)moc_ {
 	NSParameterAssert(moc_);
-	return [NSEntityDescription insertNewObjectForEntityForName:@"CDMessage" inManagedObjectContext:moc_];
+	return [NSEntityDescription insertNewObjectForEntityForName:@"QMCDMessage" inManagedObjectContext:moc_];
 }
 
 + (NSString*)entityName {
-	return @"CDMessage";
+	return @"QMCDMessage";
 }
 
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_ {
 	NSParameterAssert(moc_);
-	return [NSEntityDescription entityForName:@"CDMessage" inManagedObjectContext:moc_];
+	return [NSEntityDescription entityForName:@"QMCDMessage" inManagedObjectContext:moc_];
 }
 
-- (CDMessageID*)objectID {
-	return (CDMessageID*)[super objectID];
+- (QMCDMessageID*)objectID {
+	return (QMCDMessageID*)[super objectID];
 }
 
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
@@ -130,10 +130,10 @@
 
 @dynamic attachments;
 
-- (NSMutableSet<CDAttachment*>*)attachmentsSet {
+- (NSMutableSet<QMCDAttachment*>*)attachmentsSet {
 	[self willAccessValueForKey:@"attachments"];
 
-	NSMutableSet<CDAttachment*> *result = (NSMutableSet<CDAttachment*>*)[self mutableSetValueForKey:@"attachments"];
+	NSMutableSet<QMCDAttachment*> *result = (NSMutableSet<QMCDAttachment*>*)[self mutableSetValueForKey:@"attachments"];
 
 	[self didAccessValueForKey:@"attachments"];
 	return result;
@@ -143,7 +143,7 @@
 
 @end
 
-@implementation CDMessageAttributes 
+@implementation QMCDMessageAttributes 
 + (NSString *)createAt {
 	return @"createAt";
 }
@@ -185,7 +185,7 @@
 }
 @end
 
-@implementation CDMessageRelationships 
+@implementation QMCDMessageRelationships 
 + (NSString *)attachments {
 	return @"attachments";
 }

@@ -1,29 +1,29 @@
 // DO NOT EDIT. This file is machine-generated and constantly overwritten.
-// Make changes to CDAttachment.m instead.
+// Make changes to QMCDAttachment.m instead.
 
-#import "_CDAttachment.h"
+#import "_QMCDAttachment.h"
 
-@implementation CDAttachmentID
+@implementation QMCDAttachmentID
 @end
 
-@implementation _CDAttachment
+@implementation _QMCDAttachment
 
 + (instancetype)insertInManagedObjectContext:(NSManagedObjectContext *)moc_ {
 	NSParameterAssert(moc_);
-	return [NSEntityDescription insertNewObjectForEntityForName:@"CDAttachment" inManagedObjectContext:moc_];
+	return [NSEntityDescription insertNewObjectForEntityForName:@"QMCDAttachment" inManagedObjectContext:moc_];
 }
 
 + (NSString*)entityName {
-	return @"CDAttachment";
+	return @"QMCDAttachment";
 }
 
 + (NSEntityDescription*)entityInManagedObjectContext:(NSManagedObjectContext*)moc_ {
 	NSParameterAssert(moc_);
-	return [NSEntityDescription entityForName:@"CDAttachment" inManagedObjectContext:moc_];
+	return [NSEntityDescription entityForName:@"QMCDAttachment" inManagedObjectContext:moc_];
 }
 
-- (CDAttachmentID*)objectID {
-	return (CDAttachmentID*)[super objectID];
+- (QMCDAttachmentID*)objectID {
+	return (QMCDAttachmentID*)[super objectID];
 }
 
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key {
@@ -48,7 +48,7 @@
 
 @end
 
-@implementation CDAttachmentAttributes 
+@implementation QMCDAttachmentAttributes 
 + (NSString *)customParameters {
 	return @"customParameters";
 }
@@ -69,7 +69,7 @@
 }
 @end
 
-@implementation CDAttachmentRelationships 
+@implementation QMCDAttachmentRelationships 
 + (NSString *)message {
 	return @"message";
 }

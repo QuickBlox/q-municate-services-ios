@@ -10,6 +10,32 @@
 #import <Quickblox/Quickblox.h>
 #import <Bolts/Bolts.h>
 
+#import <QMServices/QMDBStorage.h>
+#import <QMServices/QMChatCache.h>
+#import <QMServices/QMUsersCache.h>
+#import <QMServices/QMOpenGraphCache.h>
+#import <QMServices/QMContactListCache.h>
+#import <QMServices/QMServicesManager.h>
+#import <QMServices/QMSLog.h>
+
+#import <QMServices/QMContactListService.h>
+#import <QMServices/QMChatService.h>
+#import <QMServices/QMAuthService.h>
+#import <QMServices/QMUsersService.h>
+
+#import <QMServices/QBChatMessage+QMCustomParameters.h>
+#import <QMServices/QBChatAttachment+QMCustomData.h>
+#import <QMServices/QBChatAttachment+QMFactory.h>
+#import <QMServices/QBChatAttachment+QMCustomParameters.h>
+#import <QMServices/QMUsersMemoryStorage.h>
+#import <QMServices/QMContactListMemoryStorage.h>
+#import <QMServices/QMMessagesMemoryStorage.h>
+#import <QMServices/QMAsynchronousOperation.h>
+/*temp
+#import <Foundation/Foundation.h>
+#import <Quickblox/Quickblox.h>
+#import <Bolts/Bolts.h>
+
 #import <QMDBStorage.h>
 #import <QMChatCache.h>
 #import <QMUsersCache.h>
@@ -31,3 +57,4 @@
 #import <QMContactListMemoryStorage.h>
 #import <QMMessagesMemoryStorage.h>
 #import <QMAsynchronousOperation.h>
+*/
