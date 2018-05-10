@@ -45,7 +45,7 @@ static NSString *const kQMKeyImageURL = @"ogImage";
         _multicastDelegate = (id<QMOpenGraphServiceDelegate>)[[QBMulticastDelegate alloc] init];
         _ogsClient = [[QBHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:kQMBaseGraphURL]];
         _ogsClient.completionQueue = dispatch_queue_create("com.q-municate.ogsClient", DISPATCH_QUEUE_SERIAL);
-        _ogsQueue = dispatch_queue_create("com.q-municate.ogs", DISPATCH_QUEUE_CONCURRENT);
+        _ogsQueue = dispatch_queue_create("com.q-municate.ogs", DISPATCH_QUEUE_SERIAL);
         _operationQueue = [[NSOperationQueue alloc] init];
         _operationQueue.maxConcurrentOperationCount = 1;
         _errorsIDs = [[NSMutableSet alloc] init];
@@ -153,7 +153,7 @@ static NSString *const kQMKeyImageURL = @"ogImage";
                       dispatch_group_leave(group);
                   }];
                  
-                 dispatch_group_notify(group, _ogsQueue, ^{
+                 dispatch_group_notify(group, self.ogsQueue, ^{
                      
                      weakSelf.memoryStorage[ID] = openGraphItem;
                      [weakSelf.multicastDelegate openGraphSerivce:weakSelf
@@ -208,11 +208,10 @@ static NSString *const kQMKeyImageURL = @"ogImage";
                     return;
                 }
                 
+                NSDataDetector *detector =
+                [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink
+                                                error:nil];
                 dispatch_async(_ogsQueue, ^{
-                    
-                    NSDataDetector *detector =
-                    [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink
-                                                    error:nil];
                     
                     NSRange textRenge = NSMakeRange(0, text.length);
                     NSTextCheckingResult *result = [detector firstMatchInString:text options:0 range:textRenge];

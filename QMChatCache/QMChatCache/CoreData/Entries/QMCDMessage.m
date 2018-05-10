@@ -1,9 +1,9 @@
-#import "CDMessage.h"
-#import "CDAttachment.h"
+#import "QMCDMessage.h"
+#import "QMCDAttachment.h"
 #import "NSManagedObject+QMCDRecord.h"
 #import "QMSLog.h"
 
-@implementation CDMessage
+@implementation QMCDMessage
 
 - (QBChatMessage *)toQBChatMessage {
     
@@ -25,7 +25,7 @@
     NSMutableArray<QBChatAttachment *> *attachments =
     [NSMutableArray arrayWithCapacity:self.attachments.count];
     
-    for (CDAttachment *cdAttachment in self.attachments) {
+    for (QMCDAttachment *cdAttachment in self.attachments) {
         QBChatAttachment *attachment = [cdAttachment toQBChatAttachment];
         [attachments addObject:attachment];
     }
@@ -65,7 +65,7 @@
 
         for (QBChatAttachment *qbChatAttachment in message.attachments) {
             
-            CDAttachment *attachment = [CDAttachment QM_createEntityInContext:context];
+            QMCDAttachment *attachment = [QMCDAttachment QM_createEntityInContext:context];
             [attachment updateWithQBChatAttachment:qbChatAttachment];
             [attachments addObject:attachment];
         }
@@ -86,7 +86,7 @@
     NSMutableArray<QBChatMessage *> *result =
     [NSMutableArray arrayWithCapacity:self.count];
     
-    for (CDMessage *cache in self) {
+    for (QMCDMessage *cache in self) {
         
         QBChatMessage *message = [cache toQBChatMessage];
         [result addObject:message];

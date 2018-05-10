@@ -1,14 +1,14 @@
-#import "_CDMessage.h"
+#import "_QMCDMessage.h"
 #import <Quickblox/QBChatMessage.h>
 
-@interface CDMessage : _CDMessage
+@interface QMCDMessage : _QMCDMessage
 
 - (QBChatMessage *)toQBChatMessage;
 - (void)updateWithQBChatMessage:(QBChatMessage *)message;
 
 @end
 
-@interface NSArray(CDMessage)
+@interface NSArray(QMCDMessage)
 
 - (NSArray<QBChatMessage *> *)toQBChatMessages;
 
