@@ -69,19 +69,18 @@ static NSString *const kQMChatServiceDomain = @"com.q-municate.chatservice";
             
             [self.multicastDelegate chatServiceChatHasStartedConnecting:self];
         }
-        QBUUser *user = [QBUUser user];
-        user.ID = userID;
-        user.password = password;
         
-        [[QBChat instance] connectWithUser:user
-                                completion:^(NSError *error) {
-                                    if (error) {
-                                        [source setError:error];
-                                    }
-                                    else {
-                                        [source setResult:nil];
-                                    }
-                                }];
+        [QBChat.instance connectWithUserID:userID
+                                  password:password
+                                completion:^(NSError *error)
+        {
+            if (error) {
+                [source setError:error];
+            }
+            else {
+                [source setResult:nil];
+            }
+        }];
     });
 }
 
