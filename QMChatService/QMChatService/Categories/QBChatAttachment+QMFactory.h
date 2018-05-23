@@ -7,7 +7,6 @@
 //
 
 #import <Quickblox/Quickblox.h>
-#import "QBChatAttachment+QMCustomParameters.h"
 #import <CoreLocation/CLLocation.h>
 
 NS_ASSUME_NONNULL_BEGIN

@@ -1,4 +1,5 @@
 //
+
 //  QMContactsService.m
 //  QMServices
 //
@@ -11,7 +12,6 @@
 #import "QMSLog.h"
 
 static inline BOOL isContactListEmpty(QBContactList *contactList) {
-    
     return (contactList == nil || (contactList.contacts.count == 0 && contactList.pendingApproval.count == 0));
 }
 
@@ -61,17 +61,11 @@ static inline BOOL isContactListEmpty(QBContactList *contactList) {
     
     __weak __typeof(self)weakSelf = self;
     
-    if ([self.cacheDataSource respondsToSelector:@selector(cachedContactListItems:)]) {
-        
-        [self.cacheDataSource cachedContactListItems:^(NSArray *collection) {
-            [weakSelf.contactListMemoryStorage updateWithContactListItems:collection];
-        }];
-    }
+    [self.cacheDataSource cachedContactListItems:^(NSArray *collection) {
+        [weakSelf.contactListMemoryStorage updateWithContactListItems:collection];
+    }];
     
-    
-    if ([self.multicastDelegate respondsToSelector:@selector(contactListServiceDidLoadCache)]) {
-        [self.multicastDelegate contactListServiceDidLoadCache];
-    }
+    [self.multicastDelegate contactListServiceDidLoadCache];
 }
 
 //MARK: - Add Remove multicaste delegate
@@ -98,17 +92,11 @@ static inline BOOL isContactListEmpty(QBContactList *contactList) {
     }
     
     [self.contactListMemoryStorage updateWithContactList:contactList];
-    
-    if ([self.multicastDelegate respondsToSelector:@selector(contactListService:contactListDidChange:)]) {
-        [self.multicastDelegate contactListService:self contactListDidChange:contactList];
-    }
+    [self.multicastDelegate contactListService:self contactListDidChange:contactList];
 }
 
 - (void)chatDidReceiveContactItemActivity:(NSUInteger)userID isOnline:(BOOL)isOnline status:(NSString *)status {
-    
-    if ([self.multicastDelegate respondsToSelector:@selector(contactListService:didReceiveContactItemActivity:isOnline:status:)]) {
-        [self.multicastDelegate contactListService:self didReceiveContactItemActivity:userID isOnline:isOnline status:status];
-    }
+    [self.multicastDelegate contactListService:self didReceiveContactItemActivity:userID isOnline:isOnline status:status];
 }
 
 //MARK: - ContactList Request
@@ -117,25 +105,13 @@ static inline BOOL isContactListEmpty(QBContactList *contactList) {
     
     __weak __typeof(self)weakSelf = self;
     [[QBChat instance] addUserToContactListRequest:user.ID completion:^(NSError *error) {
-        __typeof(self) strongSelf = weakSelf;
         
-        if (error == nil) {
-            
-            if ([strongSelf.cacheDataSource respondsToSelector:@selector(contactListDidAddUser:)]) {
-                [strongSelf.cacheDataSource contactListDidAddUser:user];
-            }
-            
-            if (completion) {
-                
-                completion(YES);
-            }
+        if (!error) {
+            [weakSelf.cacheDataSource contactListDidAddUser:user];
         }
-        else {
-            
-            if (completion) {
-                
-                completion(NO);
-            }
+        
+        if (completion) {
+            completion(!error);
         }
     }];
 }
@@ -145,7 +121,7 @@ static inline BOOL isContactListEmpty(QBContactList *contactList) {
     [[QBChat instance] removeUserFromContactList:userID completion:^(NSError *error) {
         
         if (completion) {
-            completion(error == nil);
+            completion(!error);
         }
     }];
 }
@@ -155,7 +131,7 @@ static inline BOOL isContactListEmpty(QBContactList *contactList) {
     [[QBChat instance] confirmAddContactRequest:userID completion:^(NSError *error) {
         
         if (completion) {
-            completion(error == nil);
+            completion(!error);
         }
     }];
 }
@@ -165,7 +141,7 @@ static inline BOOL isContactListEmpty(QBContactList *contactList) {
     [[QBChat instance] rejectAddContactRequest:userID completion:^(NSError *error) {
         
         if (completion) {
-            completion(error == nil);
+            completion(!error);
         }
     }];
 }

@@ -8,8 +8,7 @@
 
 #import "QBChatAttachment+QMFactory.h"
 #import "QBChatAttachment+QMCustomData.h"
-
-
+#import "QBChatMessage+QMCustomParameters.h"
 
 static NSString * const kQMLocationLatitudeKey = @"lat";
 static NSString * const kQMLocationLongitudeKey = @"lng";

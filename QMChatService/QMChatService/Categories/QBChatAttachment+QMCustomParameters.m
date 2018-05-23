@@ -26,7 +26,7 @@ NSString  *kQMAttachmentDurationKey = @"duration";
 NSString  *kQMAttachmentSizeKey = @"size";
 NSString  *kQMAttachmentContentTypeKey = @"content-type";
 
-@implementation QBChatAttachment (QMCustomParameters)
+@implementation QBChatAttachment (CustomParameters)
 
 @dynamic fileExtension;
 
@@ -89,8 +89,6 @@ NSString  *kQMAttachmentContentTypeKey = @"content-type";
 - (void)setImage:(UIImage *)image {
     objc_setAssociatedObject(self, @selector(image), image, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
-
-
 
 - (QMAttachmentType)attachmentType {
     

@@ -23,7 +23,7 @@ extern NSString *const kQMAttachmentTypeVideo;
 extern NSString *const kQMAttachmentTypeLocation;
 
 
-@interface QBChatAttachment (QMCustomParameters)
+@interface QBChatAttachment (CustomParameters)
 
 @property (assign, nonatomic) QMAttachmentType attachmentType;
 

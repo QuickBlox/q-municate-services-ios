@@ -23,7 +23,7 @@
     self = [super init];
     if (self) {
         
-        self.contactsMemoryStorage = [NSMutableDictionary dictionary];
+        _contactsMemoryStorage = [NSMutableDictionary dictionary];
     }
     
     return self;
@@ -79,6 +79,7 @@
 // MARK: QMMemoryStorageProtocol
 
 - (BOOL)isEmpty {
+    
     return self.contactsMemoryStorage.count == 0;
 }
 
