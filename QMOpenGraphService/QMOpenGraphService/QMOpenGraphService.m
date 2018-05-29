@@ -62,7 +62,7 @@ static NSString *const kQMKeyImageURL = @"ogImage";
     [_multicastDelegate addDelegate:delegate];
 }
 
-- (void)loadOpenGraphForURL:(NSString *)url ID:(NSString *)ID {
+- (void)loadOpenGraphWithURL:(NSString *)url ID:(NSString *)ID {
     
     for (QMOpenGraphLoadOperation *o in _operationQueue.operations) {
         
@@ -97,8 +97,7 @@ static NSString *const kQMKeyImageURL = @"ogImage";
             self.memoryStorage[ID] = item;
             
             dispatch_sync(dispatch_get_main_queue(), ^{
-                [self.multicastDelegate openGraphSerivce:self
-                      didAddOpenGraphItemToMemoryStorage:item];
+                [self.multicastDelegate openGraphSerivce:self didAddOpenGraphItemToMemoryStorage:item];
                 QMSLog(@"ID: %@, url %@ - exists", ID, url);
             });
             
@@ -185,13 +184,13 @@ static NSString *const kQMKeyImageURL = @"ogImage";
 
 - (void)preloadGraphItemForText:(NSString *)text ID:(NSString *)ID {
     
-    if (text.length == 0 || ID.length == 0) {
+    if (text.length == 0 || ID.length == 0 || [self.errorsIDs containsObject:ID]) {
         return;
     }
     
     QMOpenGraphItem *openGraphItem = self.memoryStorage[ID];
     
-    if (!openGraphItem) {
+    if (!self.memoryStorage[ID]) {
         
         if ([self.cahceDataSource
              respondsToSelector:@selector(cachedOpenGraphItemWithID:)]) {
@@ -201,30 +200,25 @@ static NSString *const kQMKeyImageURL = @"ogImage";
             if (openGraphItem) {
                 self.memoryStorage[openGraphItem.ID] = openGraphItem;
                 [self.multicastDelegate openGraphSerivce:self didLoadFromCache:openGraphItem];
+                return;
             }
-            else {
+            
+            NSDataDetector *detector =
+            [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:nil];
+            dispatch_async(_ogsQueue, ^{
                 
-                if ([self.errorsIDs containsObject:ID]) {
-                    return;
+                NSRange textRenge = NSMakeRange(0, text.length);
+                NSTextCheckingResult *result =
+                [detector firstMatchInString:text options:0 range:textRenge];
+                
+                if (!result ||
+                    [result.URL.absoluteString hasPrefix:@"mailto:"]) {
                 }
-                
-                NSDataDetector *detector =
-                [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink
-                                                error:nil];
-                dispatch_async(_ogsQueue, ^{
+                else {
                     
-                    NSRange textRenge = NSMakeRange(0, text.length);
-                    NSTextCheckingResult *result = [detector firstMatchInString:text options:0 range:textRenge];
-                    
-                    if (!result ||
-                        [result.URL.absoluteString hasPrefix:@"mailto:"]) {
-                    }
-                    else {
-                        
-                        [self loadOpenGraphForURL:result.URL.absoluteString ID:ID];
-                    }
-                });
-            }
+                    [self loadOpenGraphWithURL:result.URL.absoluteString ID:ID];
+                }
+            });
         }
     }
 }
@@ -238,7 +232,6 @@ static NSString *const kQMKeyImageURL = @"ogImage";
     QMOpenGraphItem *openGraphItem = [[QMOpenGraphItem alloc] init];
     
     NSURL *_url = [NSURL URLWithString:baseUrl];
-    
     
     openGraphItem.baseUrl = baseUrl;
     openGraphItem.faviconUrl = [NSString stringWithFormat:@"%@://%@/favicon.ico", _url.scheme, _url.host];
@@ -256,12 +249,10 @@ static NSString *const kQMKeyImageURL = @"ogImage";
     }
     
     if (![dictionary[kQMKeyTitle] isKindOfClass:[NSNull class]]) {
-        
         openGraphItem.siteTitle = dictionary[kQMKeyTitle];
     }
     
     if (![dictionary[kQMKeyDescription] isKindOfClass:[NSNull class]]) {
-        
         openGraphItem.siteDescription = dictionary[kQMKeyDescription];
     }
     
@@ -308,14 +299,9 @@ static NSString *const kQMKeyImageURL = @"ogImage";
     
     if (self.cancelBlock) {
         self.cancelBlock();
-        
-        // TODO: this is a temporary fix to #809.
-        // Until we can figure the exact cause of the crash, going with the ivar instead of the setter
-        //        self.cancelBlock = nil;
         _cancelBlock = nil;
     }
 }
-
 
 - (void)dealloc {
     
@@ -323,11 +309,7 @@ static NSString *const kQMKeyImageURL = @"ogImage";
 }
 
 - (NSString *)description {
-    
-    NSMutableString *result = [NSMutableString stringWithString:[super description]];
-    [result appendFormat:@" ->>> %@", _identifier];
-    
-    return result.copy;
+    return [NSString stringWithFormat:@"%@ : %@", super.description, _identifier];
 }
 
 @end

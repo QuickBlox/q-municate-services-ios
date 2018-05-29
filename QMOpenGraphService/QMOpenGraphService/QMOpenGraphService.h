@@ -45,12 +45,15 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)removeDelegate:(id <QMOpenGraphServiceDelegate>)delegate;
 
 /**
- Method returns cached instance of QMOpenGraphItem class
+ Parse any text for matching the url patern
  
  @param ID Identifier
  */
 - (void)preloadGraphItemForText:(NSString *)text ID:(NSString *)ID;
 
+/**
+ Cancel allLoads
+ */
 - (void)cancelAllloads;
 
 @end
