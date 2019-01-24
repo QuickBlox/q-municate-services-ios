@@ -192,7 +192,7 @@ typedef void(^QMCacheCollection)(NSArray * _Nullable collection);
                 completion:(nullable void(^)(QBResponse *response))completion;
 
 /**
- *  Loads dialogs specific to user from disc cache and puth them in memory storage.
+ *  Loads dialogs specific to user from disc cache and puts them in memory storage.
  *  @warning This method MUST be called after the login.
  *
  *  @param completion Completion block to handle ending of operation.
