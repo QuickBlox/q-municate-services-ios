@@ -103,19 +103,32 @@ static NSString* const kQMChatServiceDomain = @"com.q-municate.chatservice";
         [self.cacheDataSource cachedDialogs:^(NSArray *collection) {
             
             if (collection.count > 0) {
-                
-                [weakSelf.dialogsMemoryStorage addChatDialogs:collection
-                                                      andJoin:NO];
-                
-                NSMutableSet *dialogsUsersIDs = [NSMutableSet set];
-                
+
+                NSMutableArray *currentUserDialogs = [[NSMutableArray alloc] init];
+
+                NSInteger currentUserId = self.serviceManager.currentUser.ID;
+
                 for (QBChatDialog *dialog in collection) {
+                    for (NSNumber *occupantId in dialog.occupantIDs) {
+                        if (occupantId.integerValue == currentUserId) {
+                            [currentUserDialogs addObject:dialog];
+                            break;
+                        }
+                    }
+                }
+
+                [weakSelf.dialogsMemoryStorage addChatDialogs:currentUserDialogs
+                                                      andJoin:NO];
+
+                NSMutableSet *dialogsUsersIDs = [NSMutableSet set];
+
+                for (QBChatDialog *dialog in currentUserDialogs) {
                     [dialogsUsersIDs addObjectsFromArray:dialog.occupantIDs];
                 }
-                
+
                 if ([weakSelf.multicastDelegate respondsToSelector:@selector(chatService:didLoadChatDialogsFromCache:withUsers:)]) {
                     [weakSelf.multicastDelegate chatService:weakSelf
-                                didLoadChatDialogsFromCache:collection
+                                didLoadChatDialogsFromCache:currentUserDialogs
                                                   withUsers:dialogsUsersIDs.copy];
                 }
             }
