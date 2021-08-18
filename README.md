@@ -1,4 +1,4 @@
-# QMServices are deprecated and won't be longer supported.
+# QMServices are deprecated and won't be supported.
 
 [![CocoaPods](https://img.shields.io/cocoapods/v/QMServices.svg)](https://cocoapods.org/pods/QMServices)
 [![CocoaPods](https://img.shields.io/cocoapods/dt/QMServices.svg)](https://cocoapods.org/pods/QMServices)
